@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.github.paperspigot.Title;
 
 import java.util.UUID;
 
@@ -30,6 +31,14 @@ public class PlayerUtils {
             player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
             player.getInventory().setHeldItemSlot(0);
             player.updateInventory();
+            player.resetTitle();
+        }
+    }
+
+    public static void sendTitle(UUID playerUUID, String header, String footer, int duration) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            player.sendTitle(new Title(CC.translate(header), CC.translate(footer), 1, duration, 10));
         }
     }
 }

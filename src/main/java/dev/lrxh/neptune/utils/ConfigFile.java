@@ -5,7 +5,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.List;
+import java.io.IOException;
 
 @Getter
 public class ConfigFile {
@@ -22,23 +22,10 @@ public class ConfigFile {
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 
-    public String getString(String path) {
-        return this.configuration.getString(path);
-    }
-
-    public int getInteger(String path) {
-        return configuration.getInt(path);
-    }
-
-    public boolean getBoolean(String path) {
-        return this.configuration.getBoolean(path);
-    }
-
-    public double getDouble(String path) {
-        return this.configuration.getDouble(path);
-    }
-
-    public List<String> getStringList(String path) {
-        return this.configuration.getStringList(path);
+    public void save() {
+        try {
+            configuration.save(file);
+        } catch (IOException ignored) {
+        }
     }
 }

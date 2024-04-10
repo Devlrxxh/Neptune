@@ -3,7 +3,7 @@ package dev.lrxh.neptune.queue;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.types.StandAloneArena;
-import dev.lrxh.neptune.match.Participant;
+import dev.lrxh.neptune.match.types.Participant;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 
@@ -14,14 +14,14 @@ public class QueueTask implements Runnable {
 
     @Override
     public void run() {
-        if (!plugin.getQueueManager().queueMap.isEmpty()) {
-            for (Map.Entry<UUID, Queue> entry1 : plugin.getQueueManager().queueMap.entrySet()) {
+        if (!plugin.getQueueManager().queues.isEmpty()) {
+            for (Map.Entry<UUID, Queue> entry1 : plugin.getQueueManager().queues.entrySet()) {
 
                 //Check if 2 same queue were found in the queue
                 UUID uuid1 = entry1.getKey();
                 Queue queue1 = entry1.getValue();
 
-                for (Map.Entry<UUID, Queue> entry2 : plugin.getQueueManager().queueMap.entrySet()) {
+                for (Map.Entry<UUID, Queue> entry2 : plugin.getQueueManager().queues.entrySet()) {
                     UUID uuid2 = entry2.getKey();
                     Queue queue2 = entry2.getValue();
 
@@ -43,8 +43,8 @@ public class QueueTask implements Runnable {
 
                         //If no arenas were found
                         if (arena == null) {
-                            plugin.getQueueManager().queueMap.remove(uuid1);
-                            plugin.getQueueManager().queueMap.remove(uuid2);
+                            plugin.getQueueManager().queues.remove(uuid1);
+                            plugin.getQueueManager().queues.remove(uuid2);
 
                             Bukkit.getPlayer(uuid1).sendMessage(CC.translate("&cNo arena was found!"));
                             Bukkit.getPlayer(uuid2).sendMessage(CC.translate("&cNo arena was found!"));
@@ -61,8 +61,8 @@ public class QueueTask implements Runnable {
                                 arena, queue1.isRanked(), false);
 
                         //Remove the players from queue
-                        plugin.getQueueManager().queueMap.remove(uuid1);
-                        plugin.getQueueManager().queueMap.remove(uuid2);
+                        plugin.getQueueManager().queues.remove(uuid1);
+                        plugin.getQueueManager().queues.remove(uuid2);
                     }
                 }
             }

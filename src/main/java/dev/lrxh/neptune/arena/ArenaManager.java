@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.arena;
 
-
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.types.ArenaType;
 import dev.lrxh.neptune.arena.types.SharedArena;
@@ -16,7 +15,7 @@ import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ArenaManager {
-    private final HashSet<Arena> arenas = new HashSet<>();
+    public final HashSet<Arena> arenas = new HashSet<>();
 
     public void loadArenas() {
         FileConfiguration config = Neptune.get().getArenasConfig().getConfiguration();
@@ -45,7 +44,7 @@ public class ArenaManager {
         }
     }
 
-    public void saveArenas(){
+    public void saveArenas() {
         FileConfiguration config = Neptune.get().getArenasConfig().getConfiguration();
         for (Arena arena : arenas) {
             String path = "arenas." + arena.getName() + ".";
@@ -54,14 +53,15 @@ public class ArenaManager {
             config.set(path + "blueSpawn", LocationUtil.serialize(arena.getBlueSpawn()));
             config.set(path + "enabled", arena.isEnabled());
 
-            if(arena instanceof StandAloneArena){
+            if (arena instanceof StandAloneArena) {
                 config.set(path + "type", "STANDALONE");
                 config.set(path + "edge1", LocationUtil.serialize(((StandAloneArena) arena).getEdge1()));
                 config.set(path + "edge2", LocationUtil.serialize(((StandAloneArena) arena).getEdge2()));
-            }else{
+            } else {
                 config.set(path + "type", "SHARED");
             }
         }
+        Neptune.get().getArenasConfig().save();
     }
 
     public Arena getArenaByName(String arenaName) {

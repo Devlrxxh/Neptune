@@ -5,13 +5,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class QueueManager {
-    public Map<UUID, Queue> queueMap = new ConcurrentHashMap<>();
+    public Map<UUID, Queue> queues = new ConcurrentHashMap<>();
 
     public void addToQueue(UUID playerUUID, Queue queue) {
-        queueMap.put(playerUUID, queue);
+        queues.put(playerUUID, queue);
     }
 
     public void removeFromQueue(UUID playerUUID) {
-        queueMap.remove(playerUUID);
+        queues.remove(playerUUID);
     }
 }

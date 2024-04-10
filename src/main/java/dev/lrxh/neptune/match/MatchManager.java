@@ -1,7 +1,12 @@
 package dev.lrxh.neptune.match;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
+import dev.lrxh.neptune.match.types.MatchState;
+import dev.lrxh.neptune.match.types.Participant;
+import dev.lrxh.neptune.match.types.Team;
 import dev.lrxh.neptune.match.types.TeamFightMatch;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.Bukkit;
@@ -13,16 +18,16 @@ import java.util.List;
 import java.util.UUID;
 
 public class MatchManager {
-    private final HashSet<Match> matches = new HashSet<>();
+    public final HashSet<Match> matches = new HashSet<>();
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean ranked, boolean duel) {
 
         //Create teams
-        HashSet<Participant> teamA = new HashSet<>(participants.subList(0, participants.size() / 2));
-        HashSet<Participant> teamB = new HashSet<>(participants.subList(participants.size() / 2, participants.size()));
+        Team teamA = new Team(new HashSet<>(participants.subList(0, participants.size() / 2)), false);
+        Team teamB = new Team(new HashSet<>(participants.subList(participants.size() / 2, participants.size())), false);
 
         //Create match
-        TeamFightMatch match = new TeamFightMatch(arena, kit, ranked, duel, teamA, teamB);
+        TeamFightMatch match = new TeamFightMatch(MatchState.STARTING, arena, kit, ranked, duel, participants, teamA, teamB);
         matches.add(match);
 
         //Setup participants
@@ -31,11 +36,11 @@ public class MatchManager {
             if (player == null) {
                 continue;
             }
-            setupPlayer(participant.getPlayerUUID(), kit);
+            setupPlayer(participant.getPlayerUUID(), kit, match);
         }
 
         //Teleport the team A to their spawns
-        for (Participant participantA : match.getParticipantsA()) {
+        for (Participant participantA : match.getTeamA().getParticipants()) {
             Player player = Bukkit.getPlayer(participantA.getPlayerUUID());
             if (player == null) {
                 continue;
@@ -44,19 +49,23 @@ public class MatchManager {
         }
 
         //Teleport the team B to their spawns
-        for (Participant participantB : match.getParticipantsB()) {
+        for (Participant participantB : match.getTeamB().getParticipants()) {
             Player player = Bukkit.getPlayer(participantB.getPlayerUUID());
             if (player == null) {
                 continue;
             }
             player.teleport(arena.getBlueSpawn());
         }
+
+        //Start match start runnable
+        new MatchStartRunnable(match).runTaskTimer(Neptune.get(), 0L, 20L);
     }
 
-    public void setupPlayer(UUID playerUUID, Kit kit) {
+    public void setupPlayer(UUID playerUUID, Kit kit, Match match) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         PlayerUtils.reset(player.getUniqueId());
+        Neptune.get().getProfileManager().getProfileByUUID(playerUUID).setMatch(match);
         player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
         player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
     }

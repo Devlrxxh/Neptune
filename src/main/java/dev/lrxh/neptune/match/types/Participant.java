@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.match;
+package dev.lrxh.neptune.match.types;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,5 +13,5 @@ import java.util.UUID;
 public class Participant {
     private UUID playerUUID;
     private HashSet<Participant> opponent;
-    private boolean loser;
+    private boolean dead;
 }

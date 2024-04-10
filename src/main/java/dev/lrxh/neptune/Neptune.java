@@ -1,13 +1,27 @@
 package dev.lrxh.neptune;
 
+import co.aikar.commands.BukkitCommandCompletionContext;
+import co.aikar.commands.CommandCompletions;
+import co.aikar.commands.PaperCommandManager;
+import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
+import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.command.KitCommand;
 import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.TaskScheduler;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 @Getter
 public final class Neptune extends JavaPlugin {
@@ -16,7 +30,12 @@ public final class Neptune extends JavaPlugin {
     private QueueManager queueManager;
     private MatchManager matchManager;
     private ArenaManager arenaManager;
+    private ProfileManager profileManager;
+    private KitManager kitManager;
+    private PaperCommandManager paperCommandManager;
+
     private ConfigFile arenasConfig;
+    private ConfigFile kitsConfig;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -31,27 +50,59 @@ public final class Neptune extends JavaPlugin {
     private void loadManager() {
         loadTasks();
         loadConfigs();
+        registerListeners();
+        loadCommandManager();
 
         queueManager = new QueueManager();
         matchManager = new MatchManager();
         arenaManager = new ArenaManager();
+        profileManager = new ProfileManager();
         arenaManager.loadArenas();
+        kitManager = new KitManager();
+        kitManager.loadKits();
+    }
+
+    private void registerListeners() {
+        Collections.singletonList(
+                new ProfileListener()
+        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, get()));
     }
 
     private void loadConfigs() {
         arenasConfig = new ConfigFile(this, "arenas");
+        kitsConfig = new ConfigFile(this, "kits");
     }
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler();
-
         taskScheduler.startTask(new QueueTask(), 500);
     }
 
-    private void disableManagers(){
+    private void loadCommandManager() {
+        paperCommandManager = new PaperCommandManager(get());
+        registerCommands();
+        loadCommandCompletions();
+    }
+
+    private void registerCommands() {
+        Collections.singletonList(
+                new KitCommand()
+        ).forEach(command -> paperCommandManager.registerCommand(command));
+    }
+
+    private void loadCommandCompletions() {
+        CommandCompletions<BukkitCommandCompletionContext> commandCompletions = getPaperCommandManager().getCommandCompletions();
+        commandCompletions.registerCompletion("names", c -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
+        commandCompletions.registerCompletion("arenas", c -> arenaManager.arenas.stream().map(Arena::getName).collect(Collectors.toList()));
+        commandCompletions.registerCompletion("kits", c -> kitManager.kits.stream().map(Kit::getName).collect(Collectors.toList()));
+    }
+
+    private void disableManagers() {
         arenaManager.saveArenas();
+        kitManager.saveKits();
         taskScheduler.stopAllTasks();
     }
+
     @Override
     public void onDisable() {
         disableManagers();
