@@ -33,7 +33,7 @@ public class ConfigFile {
     }
 
     public double getDouble(String path) {
-        return  this.configuration.getDouble(path);
+        return this.configuration.getDouble(path);
     }
 
     public List<String> getStringList(String path) {

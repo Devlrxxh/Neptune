@@ -8,9 +8,10 @@ import org.bukkit.Location;
 @Getter
 @Setter
 public class StandAloneArena extends Arena {
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn) {
-        super(name, displayName, redSpawn, blueSpawn);
-    }
     private Location edge1;
     private Location edge2;
+
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean active) {
+        super(name, displayName, redSpawn, blueSpawn, active);
+    }
 }

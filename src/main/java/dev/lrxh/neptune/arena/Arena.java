@@ -13,4 +13,5 @@ public class Arena {
     private String displayName;
     private Location redSpawn;
     private Location blueSpawn;
+    private boolean active;
 }
