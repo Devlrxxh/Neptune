@@ -24,16 +24,18 @@ public final class Neptune extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        instance = this;
         loadManager();
     }
 
     private void loadManager() {
-        taskScheduler = new TaskScheduler();
-        queueManager = new QueueManager();
-        matchManager = new MatchManager();
-
         loadTasks();
         loadConfigs();
+
+        queueManager = new QueueManager();
+        matchManager = new MatchManager();
+        arenaManager = new ArenaManager();
+        arenaManager.loadArenas();
     }
 
     private void loadConfigs() {
@@ -41,11 +43,17 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadTasks() {
+        taskScheduler = new TaskScheduler();
+
         taskScheduler.startTask(new QueueTask(), 500);
     }
 
+    private void disableManagers(){
+        arenaManager.saveArenas();
+        taskScheduler.stopAllTasks();
+    }
     @Override
     public void onDisable() {
-        taskScheduler.stopAllTasks();
+        disableManagers();
     }
 }

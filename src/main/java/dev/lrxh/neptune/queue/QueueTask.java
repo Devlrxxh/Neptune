@@ -1,7 +1,11 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.types.StandAloneArena;
 import dev.lrxh.neptune.match.Participant;
+import dev.lrxh.neptune.utils.CC;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 
@@ -10,42 +14,58 @@ public class QueueTask implements Runnable {
 
     @Override
     public void run() {
-        for (Map.Entry<UUID, Queue> entry1 : plugin.getQueueManager().queueMap.entrySet()) {
+        if (!plugin.getQueueManager().queueMap.isEmpty()) {
+            for (Map.Entry<UUID, Queue> entry1 : plugin.getQueueManager().queueMap.entrySet()) {
 
-            //Check if 2 same queue were found in the queue
-            UUID uuid1 = entry1.getKey();
-            Queue queue1 = entry1.getValue();
+                //Check if 2 same queue were found in the queue
+                UUID uuid1 = entry1.getKey();
+                Queue queue1 = entry1.getValue();
 
-            for (Map.Entry<UUID, Queue> entry2 : plugin.getQueueManager().queueMap.entrySet()) {
-                UUID uuid2 = entry2.getKey();
-                Queue queue2 = entry2.getValue();
+                for (Map.Entry<UUID, Queue> entry2 : plugin.getQueueManager().queueMap.entrySet()) {
+                    UUID uuid2 = entry2.getKey();
+                    Queue queue2 = entry2.getValue();
 
-                if ((!uuid1.equals(uuid2)) && queue1.equals(queue2)) {
+                    if ((!uuid1.equals(uuid2)) && queue1.equals(queue2)) {
 
-                    //Start match
-                    //TODO: THIS NEEDS IMPROVEMENTS
-                    Participant participant1 =
-                            new Participant(uuid1, null, false);
+                        //Create particpiants
+                        Participant participant1 =
+                                new Participant(uuid1, null, false);
 
-                    Participant participant2 =
-                            new Participant(uuid2,
-                                    new HashSet<>(Collections.singletonList(participant1)), false);
+                        Participant participant2 =
+                                new Participant(uuid2,
+                                        new HashSet<>(Collections.singletonList(participant1)), false);
 
-                    participant1.setOpponent(new HashSet<>(Collections.singletonList(participant2)));
-                    //TODO: THIS NEEDS IMPROVEMENTS
+                        participant1.setOpponent(new HashSet<>(Collections.singletonList(participant2)));
 
-                    HashSet<Participant> participants =
-                            new HashSet<>(Arrays.asList(participant1, participant2));
+                        List<Participant> participants = Arrays.asList(participant1, participant2);
 
-                    plugin.getMatchManager().startMatch(participants, queue1.getKit(),
-                            plugin.getArenaManager().getRandomArena(queue1.getKit()), queue1.isRanked(), false);
+                        Arena arena = plugin.getArenaManager().getRandomArena(queue1.getKit());
 
-                    //Remove the players from queue
-                    plugin.getQueueManager().queueMap.remove(uuid1);
-                    plugin.getQueueManager().queueMap.remove(uuid2);
+                        //If no arenas were found
+                        if (arena == null) {
+                            plugin.getQueueManager().queueMap.remove(uuid1);
+                            plugin.getQueueManager().queueMap.remove(uuid2);
+
+                            Bukkit.getPlayer(uuid1).sendMessage(CC.translate("&cNo arena was found!"));
+                            Bukkit.getPlayer(uuid2).sendMessage(CC.translate("&cNo arena was found!"));
+                            return;
+                        }
+
+                        //Set arena as being used
+                        if (arena instanceof StandAloneArena) {
+                            ((StandAloneArena) arena).setUsed(true);
+                        }
+
+                        //Start match
+                        plugin.getMatchManager().startMatch(participants, queue1.getKit(),
+                                arena, queue1.isRanked(), false);
+
+                        //Remove the players from queue
+                        plugin.getQueueManager().queueMap.remove(uuid1);
+                        plugin.getQueueManager().queueMap.remove(uuid2);
+                    }
                 }
             }
         }
-
     }
 }

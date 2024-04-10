@@ -12,6 +12,6 @@ import java.util.UUID;
 @Setter
 public class Participant {
     private UUID playerUUID;
-    private HashSet<Participant> opponent = new HashSet<>();
+    private HashSet<Participant> opponent;
     private boolean loser;
 }

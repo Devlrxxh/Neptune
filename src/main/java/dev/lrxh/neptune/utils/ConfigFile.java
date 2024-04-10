@@ -1,11 +1,13 @@
 package dev.lrxh.neptune.utils;
 
+import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.List;
 
+@Getter
 public class ConfigFile {
     private final File file;
     private final YamlConfiguration configuration;
