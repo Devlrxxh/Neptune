@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.arena.types.StandAloneArena;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.types.MatchState;
-import dev.lrxh.neptune.match.types.Participant;
+import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.scheduler.BukkitRunnable;

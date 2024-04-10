@@ -2,7 +2,7 @@ package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.types.MatchState;
+import dev.lrxh.neptune.match.impl.MatchState;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 

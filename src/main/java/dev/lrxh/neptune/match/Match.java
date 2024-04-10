@@ -2,8 +2,8 @@ package dev.lrxh.neptune.match;
 
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.types.MatchState;
-import dev.lrxh.neptune.match.types.Participant;
+import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

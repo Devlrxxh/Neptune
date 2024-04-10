@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.match.types;
+package dev.lrxh.neptune.match.impl;
 
 public enum MatchState {
     STARTING,

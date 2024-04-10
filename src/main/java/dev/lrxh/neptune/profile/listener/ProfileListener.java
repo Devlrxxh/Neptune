@@ -2,7 +2,7 @@ package dev.lrxh.neptune.profile.listener;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.types.TeamFightMatch;
+import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

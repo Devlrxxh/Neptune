@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.arena.types;
+package dev.lrxh.neptune.arena.impl;
 
 public enum ArenaType {
     SHARED,

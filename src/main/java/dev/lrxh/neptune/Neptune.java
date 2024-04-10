@@ -5,6 +5,7 @@ import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
+import dev.lrxh.neptune.arena.command.ArenaCommand;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
@@ -20,6 +21,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -85,8 +87,9 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void registerCommands() {
-        Collections.singletonList(
-                new KitCommand()
+        Arrays.asList(
+                new KitCommand(),
+                new ArenaCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

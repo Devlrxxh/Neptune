@@ -24,3 +24,4 @@ public class Kit {
     //RULES
     private boolean build;
 }
+

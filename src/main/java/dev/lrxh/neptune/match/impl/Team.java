@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.match.types;
+package dev.lrxh.neptune.match.impl;
 
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.AllArgsConstructor;

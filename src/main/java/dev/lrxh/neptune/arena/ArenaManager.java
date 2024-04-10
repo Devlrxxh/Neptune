@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.arena;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.arena.types.ArenaType;
-import dev.lrxh.neptune.arena.types.SharedArena;
-import dev.lrxh.neptune.arena.types.StandAloneArena;
+import dev.lrxh.neptune.arena.impl.ArenaType;
+import dev.lrxh.neptune.arena.impl.SharedArena;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.utils.LocationUtil;
 import org.bukkit.Location;

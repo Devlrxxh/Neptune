@@ -2,8 +2,8 @@ package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.types.StandAloneArena;
-import dev.lrxh.neptune.match.types.Participant;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 
@@ -27,7 +27,7 @@ public class QueueTask implements Runnable {
 
                     if ((!uuid1.equals(uuid2)) && queue1.equals(queue2)) {
 
-                        //Create particpiants
+                        //Create participants
                         Participant participant1 =
                                 new Participant(uuid1, null, false);
 

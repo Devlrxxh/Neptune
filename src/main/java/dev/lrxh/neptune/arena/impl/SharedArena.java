@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.arena.types;
+package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.arena.Arena;
 import lombok.Getter;
