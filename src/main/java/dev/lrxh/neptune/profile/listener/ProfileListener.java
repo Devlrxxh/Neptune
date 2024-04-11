@@ -18,8 +18,8 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        plugin.getProfileManager().createProfile(player.getUniqueId());
         PlayerUtils.teleportToSpawn(player.getUniqueId());
+        plugin.getProfileManager().createProfile(player.getUniqueId());
     }
 
     @EventHandler

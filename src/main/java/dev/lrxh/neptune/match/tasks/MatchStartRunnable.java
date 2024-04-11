@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class MatchStartRunnable extends BukkitRunnable {
 
     private final Match match;
-    private int startTimer = 6;
+    private int startTimer = 5;
 
     public MatchStartRunnable(Match match) {
         this.match = match;
@@ -24,17 +24,18 @@ public class MatchStartRunnable extends BukkitRunnable {
             cancel();
             return;
         }
-        startTimer--;
+        if (startTimer == 0) {
+            match.setMatchState(MatchState.IN_ROUND);
+            match.checkRules();
+            match.sendMessage(MessagesLocale.MATCH_STARTED);
+        }
         if (match.getMatchState().equals(MatchState.STARTING) && startTimer != 0) {
             match.playSound(Sound.CLICK);
             match.sendTitle(startTimer > 3 ? "&e" + startTimer : "&c" + startTimer, "", 5);
             match.sendMessage(MessagesLocale.MATCH_STARTING, "<timer>", String.valueOf(startTimer));
             match.checkRules();
         }
-        if (startTimer == 0) {
-            match.setMatchState(MatchState.IN_ROUND);
-            match.sendMessage(MessagesLocale.MATCH_STARTED);
-            match.checkRules();
-        }
+        startTimer--;
+
     }
 }

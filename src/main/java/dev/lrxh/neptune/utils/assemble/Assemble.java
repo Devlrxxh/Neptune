@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.utils.assemble;
 
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
+import dev.lrxh.neptune.utils.assemble.events.AssembleBoardCreateEvent;
 import lombok.Getter;
 import lombok.Setter;
-import dev.lrxh.neptune.utils.assemble.events.AssembleBoardCreateEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

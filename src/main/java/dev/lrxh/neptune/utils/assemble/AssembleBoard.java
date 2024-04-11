@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.utils.assemble;
 
-import lombok.Getter;
 import dev.lrxh.neptune.utils.assemble.events.AssembleBoardCreatedEvent;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

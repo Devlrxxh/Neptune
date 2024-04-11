@@ -23,10 +23,10 @@ public class ScoreboardAdapter implements AssembleAdapter {
         ProfileState state = profile.getState();
         YamlConfiguration config = plugin.getConfigManager().getScoreboardConfig().getConfiguration();
 
-        if(state.equals(ProfileState.LOBBY)){
+        if (state.equals(ProfileState.LOBBY)) {
             return PlaceholderUtil.format(new ArrayList<>(config.getStringList("SCOREBOARDS.LOBBY")), player);
         }
-        if(state.equals(ProfileState.IN_QUEUE)){
+        if (state.equals(ProfileState.IN_QUEUE)) {
             return PlaceholderUtil.format(new ArrayList<>(config.getStringList("SCOREBOARDS.IN_QUEUE")), player);
         }
         return null;

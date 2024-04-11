@@ -26,7 +26,7 @@ public class PlaceholderUtil {
             line = line.replaceAll("<player>", player.getName());
             line = line.replaceAll("<ping>", String.valueOf((PlayerUtils.getPing(player.getUniqueId()))));
 
-            if(profile.getState().equals(ProfileState.IN_QUEUE)){
+            if (profile.getState().equals(ProfileState.IN_QUEUE)) {
                 Queue queue = plugin.getQueueManager().queues.get(player.getUniqueId());
                 line = line.replaceAll("<type>", queue.isRanked() ? "Ranked" : "Unranked");
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());

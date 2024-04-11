@@ -20,7 +20,6 @@ import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
-import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.TaskScheduler;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import lombok.Getter;
@@ -89,7 +88,7 @@ public final class Neptune extends JavaPlugin {
         configManager.load();
     }
 
-    private void loadExtensions(){
+    private void loadExtensions() {
         Plugin placeholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (placeholderAPI != null && placeholderAPI.isEnabled()) {
             placeholder = true;

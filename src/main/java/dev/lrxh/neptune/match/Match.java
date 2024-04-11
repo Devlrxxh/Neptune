@@ -60,7 +60,6 @@ public abstract class Match {
     public void checkRules() {
         for (Participant participant : participants) {
             if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
-
             if (kit.isDenyMovement()) {
                 if (matchState.equals(MatchState.STARTING)) {
                     PlayerUtils.denyMovement(participant.getPlayerUUID());

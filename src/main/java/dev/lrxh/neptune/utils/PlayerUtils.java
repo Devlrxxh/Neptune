@@ -95,7 +95,8 @@ public class PlayerUtils {
         player.setWalkSpeed(0.0F);
         player.setFoodLevel(0);
         player.setSprinting(false);
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 200));
+
+        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 250));
     }
 
     public void allowMovement(UUID playerUUID) {

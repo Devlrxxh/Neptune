@@ -48,8 +48,9 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent event) {
-        Player player = (Player) event.getEntity();
-        if (event.getDamager() instanceof Player && event.getDamager() != player) {
+        if (event.getDamager() instanceof Player) {
+            Player player = (Player) event.getEntity();
+
             Player attacker = (Player) event.getDamager();
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
 
