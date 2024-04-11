@@ -48,6 +48,11 @@ public class KitCommand extends BaseCommand {
                 .items(Arrays.asList(player.getInventory().getContents()))
                 .armour(Arrays.asList(player.getInventory().getArmorContents()))
                 .ranked(false)
+                .build(false)
+                .hunger(false)
+                .sumo(false)
+                .fallDamage(false)
+                .denyMovement(false)
                 .arenas(new HashSet<>())
                 .build();
 

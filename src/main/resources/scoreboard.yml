@@ -1,0 +1,28 @@
+SCOREBOARDS:
+  TITLE:
+    - "&9&l&f&lP&9&lractice"
+    - "&9&lP&f&lr&9&lactice"
+    - "&9&lPr&f&la&9&lctice"
+    - "&9&lPra&f&lc&9&ltice"
+    - "&9&lPrac&f&lt&9&lice"
+    - "&9&lPract&f&li&9&lce"
+    - "&9&lPracti&f&lc&9&le"
+    - "&9&lPractic&f&le"
+  UPDATE-INTERVAL: 300
+  LOBBY:
+    - "&7&m--------------------"
+    - "&fOnline: &9<online>"
+    - "&fIn Fights: &9<in-match>"
+    - " "
+    - "&7&oserver.net"
+    - "&7&m--------------------"
+  IN_QUEUE:
+    - "&7&m--------------------"
+    - "&fOnline: &9<online>"
+    - "&fIn Fights: &9<in-match>"
+    - " "
+    - "&fQueueing: "
+    - " &9<type> <kit>"
+    - " "
+    - "&7&oserver.net"
+    - "&7&m--------------------"

@@ -6,24 +6,30 @@ import co.aikar.commands.PaperCommandManager;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
+import dev.lrxh.neptune.arena.listener.LobbyListener;
+import dev.lrxh.neptune.commands.MainCommand;
 import dev.lrxh.neptune.commands.QueueCommand;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
 import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
+import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.TaskScheduler;
+import dev.lrxh.neptune.utils.assemble.Assemble;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.stream.Collectors;
 
 @Getter
@@ -37,7 +43,9 @@ public final class Neptune extends JavaPlugin {
     private KitManager kitManager;
     private PaperCommandManager paperCommandManager;
     private ConfigManager configManager;
-
+    private Cache cache;
+    private Assemble assemble;
+    private boolean placeholder = false;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -54,6 +62,7 @@ public final class Neptune extends JavaPlugin {
         loadConfigs();
         registerListeners();
         loadCommandManager();
+        loadExtensions();
 
         queueManager = new QueueManager();
         matchManager = new MatchManager();
@@ -62,17 +71,29 @@ public final class Neptune extends JavaPlugin {
         arenaManager.loadArenas();
         kitManager = new KitManager();
         kitManager.loadKits();
+        cache = new Cache();
+        cache.load();
+        assemble = new Assemble(this, new ScoreboardAdapter());
     }
 
     private void registerListeners() {
-        Collections.singletonList(
-                new ProfileListener()
+        Arrays.asList(
+                new ProfileListener(),
+                new MatchListener(),
+                new LobbyListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, get()));
     }
 
-    private void loadConfigs() {
+    public void loadConfigs() {
         configManager = new ConfigManager();
         configManager.load();
+    }
+
+    private void loadExtensions(){
+        Plugin placeholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
+        if (placeholderAPI != null && placeholderAPI.isEnabled()) {
+            placeholder = true;
+        }
     }
 
     private void loadTasks() {
@@ -90,7 +111,8 @@ public final class Neptune extends JavaPlugin {
         Arrays.asList(
                 new KitCommand(),
                 new ArenaCommand(),
-                new QueueCommand()
+                new QueueCommand(),
+                new MainCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 
@@ -105,6 +127,7 @@ public final class Neptune extends JavaPlugin {
         arenaManager.saveArenas();
         kitManager.saveKits();
         taskScheduler.stopAllTasks();
+        cache.save();
     }
 
     @Override

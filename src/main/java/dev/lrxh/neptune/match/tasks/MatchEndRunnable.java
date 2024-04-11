@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MatchEndRunnable extends BukkitRunnable {
+    private final Neptune plugin = Neptune.get();
 
     private final Match match;
     private int endTimer = 4;
@@ -20,7 +21,7 @@ public class MatchEndRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!Neptune.get().getMatchManager().matches.contains(match)) {
+        if (!plugin.getMatchManager().matches.contains(match)) {
             cancel();
             return;
         }
@@ -32,7 +33,8 @@ public class MatchEndRunnable extends BukkitRunnable {
             for (Participant participant : match.participants) {
                 if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
                 PlayerUtils.reset(participant.getPlayerUUID());
-                Profile profile = Neptune.get().getProfileManager().getProfileByUUID(participant.getPlayerUUID());
+                PlayerUtils.teleportToSpawn(participant.getPlayerUUID());
+                Profile profile = Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID());
                 profile.setMatch(null);
             }
         }

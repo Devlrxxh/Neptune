@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.match;
 
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
-import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -51,12 +51,26 @@ public abstract class Match {
         }
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(MessagesLocale message, String... replacements) {
         for (Participant participant : participants) {
-            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
-            Bukkit.getPlayer(participant.getPlayerUUID()).sendMessage(CC.translate(message));
+            message.send(participant.getPlayerUUID(), replacements);
         }
     }
+
+    public void checkRules() {
+        for (Participant participant : participants) {
+            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+
+            if (kit.isDenyMovement()) {
+                if (matchState.equals(MatchState.STARTING)) {
+                    PlayerUtils.denyMovement(participant.getPlayerUUID());
+                } else {
+                    PlayerUtils.allowMovement(participant.getPlayerUUID());
+                }
+            }
+        }
+    }
+
 
     public void giveKit() {
         for (Participant participant : participants) {
@@ -66,7 +80,6 @@ public abstract class Match {
             player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
         }
     }
-
 
     public abstract void end();
 

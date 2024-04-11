@@ -30,8 +30,12 @@ public class KitManager {
                 }
 
                 boolean build = config.getBoolean(path + "build");
+                boolean hunger = config.getBoolean(path + "hunger");
+                boolean sumo = config.getBoolean(path + "sumo");
+                boolean fallDamage = config.getBoolean(path + "fallDamage");
+                boolean denyMovement = config.getBoolean(path + "denyMovement");
 
-                kits.add(new Kit(kitName, displayName, ranked, items, armour, arenas, build));
+                kits.add(new Kit(kitName, displayName, ranked, items, armour, arenas, build, hunger, sumo, fallDamage, denyMovement));
             }
         }
     }
@@ -54,6 +58,10 @@ public class KitManager {
             }
 
             config.set(path + "build", kit.isBuild());
+            config.set(path + "hunger", kit.isHunger());
+            config.set(path + "sumo", kit.isSumo());
+            config.set(path + "fallDamage", kit.isFallDamage());
+            config.set(path + "denyMovement", kit.isDenyMovement());
         }
         Neptune.get().getConfigManager().getKitsConfig().save();
     }

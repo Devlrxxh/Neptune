@@ -70,8 +70,7 @@ public class ItemUtils {
         String[] parts = serializedItemStack.split(",");
         if (parts.length < 3) return null;
 
-        XMaterial material = XMaterial.matchXMaterial(parts[0]).get();
-
+        XMaterial material = XMaterial.matchXMaterial(parts[0]).orElseThrow(() -> new IllegalArgumentException("Invalid material"));
 
         ItemStack itemStack = material.parseItem();
         if (itemStack == null) return null;

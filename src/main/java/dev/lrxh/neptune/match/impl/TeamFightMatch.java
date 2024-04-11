@@ -5,6 +5,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
+import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
@@ -62,17 +63,20 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
+        PlayerUtils.doVelocityChange(participant.getPlayerUUID());
+        PlayerUtils.animateDeath(participant.getPlayerUUID());
+
         getPlayerTeam(participant.getPlayerUUID()).setLoser(true);
         sendDeathMessage(participant);
+
         end();
     }
 
     private void sendDeathMessage(Participant deadParticipant) {
-        getPlayerTeam(deadParticipant.getPlayerUUID()).setLoser(true);
-
         for (Participant participant : participants) {
             deadParticipant.getDeathCause().getMessagesLocale().send(participant.getPlayerUUID(),
-                    "<player>", deadParticipant.getName());
+                    "<player>", deadParticipant.getName(),
+                    "<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : "");
         }
     }
 }

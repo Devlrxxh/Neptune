@@ -3,8 +3,10 @@ package dev.lrxh.neptune.queue;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -34,7 +36,7 @@ public class QueueTask extends BukkitRunnable {
                                     new Participant(uuid1, Bukkit.getPlayer(uuid1).getDisplayName());
 
                             Participant participant2 =
-                                    new Participant(uuid2, Bukkit.getPlayer(uuid1).getDisplayName());
+                                    new Participant(uuid2, Bukkit.getPlayer(uuid2).getDisplayName());
 
                             participant1.setOpponent(new HashSet<>(Collections.singletonList(participant2)));
                             participant2.setOpponent(new HashSet<>(Collections.singletonList(participant1)));
@@ -67,6 +69,15 @@ public class QueueTask extends BukkitRunnable {
                                 Bukkit.getPlayer(uuid2).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                                 return;
                             }
+
+                            //Send match found message
+                            MessagesLocale.MATCH_FOUND.send(uuid1, "<opponent>", participant2.getNameUnColored(),
+                                    "<arena>", arena.getDisplayName(),
+                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid2)));
+
+                            MessagesLocale.MATCH_FOUND.send(uuid2, "<opponent>", participant1.getNameUnColored(),
+                                    "<arena>", arena.getDisplayName(),
+                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid1)));
 
                             //Set arena as being used
                             if (arena instanceof StandAloneArena) {

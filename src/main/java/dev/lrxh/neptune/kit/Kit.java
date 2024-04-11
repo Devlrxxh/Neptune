@@ -23,5 +23,9 @@ public class Kit {
     private HashSet<Arena> arenas;
     //RULES
     private boolean build;
+    private boolean hunger;
+    private boolean sumo;
+    private boolean fallDamage;
+    private boolean denyMovement;
 }
 

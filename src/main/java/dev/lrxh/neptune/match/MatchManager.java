@@ -63,9 +63,9 @@ public class MatchManager {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         PlayerUtils.reset(player.getUniqueId());
-        Profile profile = Neptune.get().getProfileManager().getProfileByUUID(playerUUID);
+        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
         profile.setMatch(match);
-        profile.setState(ProfileState.LOBBY);
+        profile.setState(ProfileState.IN_GAME);
         match.giveKit();
         player.updateInventory();
     }

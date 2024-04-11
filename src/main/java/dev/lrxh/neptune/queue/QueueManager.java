@@ -1,16 +1,18 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.ProfileState;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class QueueManager {
+    public final Map<UUID, Queue> queues = new ConcurrentHashMap<>();
     private final Neptune plugin = Neptune.get();
-    public Map<UUID, Queue> queues = new ConcurrentHashMap<>();
 
     public void addToQueue(UUID playerUUID, Queue queue) {
+        plugin.getProfileManager().getByUUID(playerUUID).setState(ProfileState.IN_QUEUE);
         queues.put(playerUUID, queue);
     }
 

@@ -13,9 +13,13 @@ public enum MessagesLocale {
 
     MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", "<player> &7disconnected"),
     MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", "<player> &7was killed by <killer>"),
+    MATCH_DEATH_DIED("MATCH.DEATH.DIED", "<player> &7died"),
     MATCH_DEATH_VOID("MATCH.DEATH.VOID", "<player> &7fell into the void while fighting <killer>"),
     QUEUE_JOIN("MESSAGES.QUEUE.JOIN", "&aYou are now queued for <type> <kit>"),
-    QUEUE_LEAVE("MESSAGES.QUEUE.LEAVE", "&cYou have been removed from queue.");
+    QUEUE_LEAVE("MESSAGES.QUEUE.LEAVE", "&cYou have been removed from queue."),
+    MATCH_STARTED("MATCH.STARTED", "&aMatch Started!"),
+    MATCH_FOUND("MATCH.FOUND", "&9Match found against &f<opponent>"),
+    MATCH_STARTING("MATCH.START.TIMER", "&fMatch starting in &9<timer>&f...");
 
     private final String path;
     private final String defaultValue;

@@ -16,6 +16,7 @@ public class Participant {
     private HashSet<Participant> opponent;
     private DeathCause deathCause;
     private ParticipantColor color;
+    private Participant lastAttacker;
     private boolean dead;
 
     public Participant(UUID playerUUID, String name) {
@@ -27,5 +28,9 @@ public class Participant {
 
     public String getName() {
         return color.getColor() + name;
+    }
+
+    public String getNameUnColored() {
+        return name;
     }
 }
