@@ -7,7 +7,7 @@ public class ProfileManager {
     private final HashMap<UUID, Profile> profiles = new HashMap<>();
 
     public void createProfile(UUID playerUUID) {
-        Profile profile = new Profile(null);
+        Profile profile = new Profile(null, ProfileState.IN_GAME);
         profiles.put(playerUUID, profile);
     }
 

@@ -3,7 +3,7 @@ package dev.lrxh.neptune.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.configs.MessagesLocale;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.queue.Queue;
 import org.bukkit.entity.Player;
 

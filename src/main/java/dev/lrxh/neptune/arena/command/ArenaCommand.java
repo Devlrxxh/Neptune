@@ -7,6 +7,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.match.impl.ParticipantColor;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
@@ -61,6 +62,26 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().arenas.add(arena);
         plugin.getArenaManager().saveArenas();
         player.sendMessage(CC.translate("&aSuccessfully created new Arena!"));
+    }
+
+    @Subcommand("setspawn")
+    @Syntax("<arena> <red/blue>")
+    @CommandCompletion("@arenas")
+    public void setinv(Player player, String arenaName, ParticipantColor arenaSpawn) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        if (arenaSpawn.equals(ParticipantColor.BLUE)) {
+            arena.setBlueSpawn(player.getLocation());
+            player.sendMessage(CC.translate("&aSuccessfully set &9Blue &aspawn for arena " + arena.getDisplayName() + "&a!"));
+        } else {
+            arena.setRedSpawn(player.getLocation());
+            player.sendMessage(CC.translate("&aSuccessfully set &cRed &aspawn for arena " + arena.getDisplayName() + "&a!"));
+        }
+        plugin.getArenaManager().saveArenas();
     }
 
     private boolean checkArena(String arenaName) {

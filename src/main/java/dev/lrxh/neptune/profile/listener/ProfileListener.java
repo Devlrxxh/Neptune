@@ -2,6 +2,7 @@ package dev.lrxh.neptune.profile.listener;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.impl.DeathCause;
 import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import org.bukkit.entity.Player;
@@ -19,13 +20,15 @@ public class ProfileListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        event.setQuitMessage(null);
+
         Player player = event.getPlayer();
         Profile profile = Neptune.get().getProfileManager().getProfileByUUID(player.getUniqueId());
         Match match = profile.getMatch();
         if (match != null) {
             if (match instanceof TeamFightMatch) {
-                ((TeamFightMatch) match).getPlayerTeam(player.getUniqueId()).setLoser(true);
-                profile.getMatch().end();
+                match.getParticipant(player.getUniqueId()).setDeathCause(DeathCause.DISCONNECT);
+                profile.getMatch().onDeath(match.getParticipant(player.getUniqueId()));
             }
         }
         Neptune.get().getProfileManager().removeProfile(player.getUniqueId());

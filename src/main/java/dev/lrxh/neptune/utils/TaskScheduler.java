@@ -9,7 +9,7 @@ public class TaskScheduler {
     private final HashSet<BukkitRunnable> tasks = new HashSet<>();
 
     public void startTask(BukkitRunnable task, long delay) {
-        task.runTaskTimerAsynchronously(Neptune.get(), delay, 20L);
+        task.runTaskTimer(Neptune.get(), delay, 20L);
         tasks.add(task);
     }
 

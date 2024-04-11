@@ -3,10 +3,10 @@ package dev.lrxh.neptune.match.tasks;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.utils.PlayerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MatchEndRunnable extends BukkitRunnable {
@@ -25,16 +25,15 @@ public class MatchEndRunnable extends BukkitRunnable {
             return;
         }
         endTimer--;
-        if (match.getMatchState().equals(MatchState.ENDING)) {
-            if (endTimer == 0) {
-                if (match.kit.isBuild() && match.arena instanceof StandAloneArena) {
-                    ((StandAloneArena) match.arena).setUsed(false);
-                }
-                for (Participant participant : match.participants) {
-                    PlayerUtils.reset(participant.getPlayerUUID());
-                    Profile profile = Neptune.get().getProfileManager().getProfileByUUID(participant.getPlayerUUID());
-                    profile.setMatch(null);
-                }
+        if (endTimer == 0) {
+            if (match.kit.isBuild() && match.arena instanceof StandAloneArena) {
+                ((StandAloneArena) match.arena).setUsed(false);
+            }
+            for (Participant participant : match.participants) {
+                if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+                PlayerUtils.reset(participant.getPlayerUUID());
+                Profile profile = Neptune.get().getProfileManager().getProfileByUUID(participant.getPlayerUUID());
+                profile.setMatch(null);
             }
         }
     }

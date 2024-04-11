@@ -12,6 +12,20 @@ import java.util.UUID;
 @Setter
 public class Participant {
     private UUID playerUUID;
+    private String name;
     private HashSet<Participant> opponent;
+    private DeathCause deathCause;
+    private ParticipantColor color;
     private boolean dead;
+
+    public Participant(UUID playerUUID, String name) {
+        this.playerUUID = playerUUID;
+        this.name = name;
+        this.dead = false;
+    }
+
+
+    public String getName() {
+        return color.getColor() + name;
+    }
 }

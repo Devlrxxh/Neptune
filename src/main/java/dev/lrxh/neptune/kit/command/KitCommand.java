@@ -110,7 +110,7 @@ public class KitCommand extends BaseCommand {
 
     @Subcommand("addArena")
     @Syntax("<kit> <arena>")
-    @CommandCompletion("@kits")
+    @CommandCompletion("@kits @arenas")
     public void addArena(Player player, String kitName, String arenaName) {
         if (player == null) return;
         if (!checkKit(kitName)) {

@@ -4,6 +4,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 import java.util.UUID;
@@ -49,5 +51,24 @@ public abstract class Match {
         }
     }
 
+    public void sendMessage(String message) {
+        for (Participant participant : participants) {
+            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+            Bukkit.getPlayer(participant.getPlayerUUID()).sendMessage(CC.translate(message));
+        }
+    }
+
+    public void giveKit() {
+        for (Participant participant : participants) {
+            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
+            player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
+        }
+    }
+
+
     public abstract void end();
+
+    public abstract void onDeath(Participant participant);
 }

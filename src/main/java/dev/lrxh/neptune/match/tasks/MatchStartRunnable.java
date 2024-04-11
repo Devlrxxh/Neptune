@@ -17,7 +17,9 @@ public class MatchStartRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (!Neptune.get().getMatchManager().matches.contains(match)) {
+        if (match.matchState.equals(MatchState.ENDING)
+                || match.matchState.equals(MatchState.IN_ROUND)
+                || !Neptune.get().getMatchManager().matches.contains(match)) {
             cancel();
             return;
         }
@@ -28,6 +30,7 @@ public class MatchStartRunnable extends BukkitRunnable {
         }
         if (startTimer == 0) {
             match.setMatchState(MatchState.IN_ROUND);
+            match.sendMessage("Match started");
         }
     }
 }

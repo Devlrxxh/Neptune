@@ -18,7 +18,7 @@ public class QueueManager {
         queues.remove(playerUUID);
     }
 
-    public boolean compareQueue(Queue queue1, Queue queue2){
+    public boolean compareQueue(Queue queue1, Queue queue2) {
         return queue1.getKit().equals(queue2.getKit()) && (queue1.isRanked() == queue2.isRanked());
     }
 }

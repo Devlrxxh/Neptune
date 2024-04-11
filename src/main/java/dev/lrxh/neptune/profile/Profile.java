@@ -10,4 +10,5 @@ import lombok.Setter;
 @Setter
 public class Profile {
     private Match match;
+    private ProfileState state;
 }

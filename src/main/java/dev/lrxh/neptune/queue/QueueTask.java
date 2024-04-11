@@ -28,15 +28,16 @@ public class QueueTask extends BukkitRunnable {
 
                     if ((!uuid1.equals(uuid2))) {
                         if (plugin.getQueueManager().compareQueue(queue1, queue2)) {
+
                             //Create participants
                             Participant participant1 =
-                                    new Participant(uuid1, null, false);
+                                    new Participant(uuid1, Bukkit.getPlayer(uuid1).getDisplayName());
 
                             Participant participant2 =
-                                    new Participant(uuid2,
-                                            new HashSet<>(Collections.singletonList(participant1)), false);
+                                    new Participant(uuid2, Bukkit.getPlayer(uuid1).getDisplayName());
 
                             participant1.setOpponent(new HashSet<>(Collections.singletonList(participant2)));
+                            participant2.setOpponent(new HashSet<>(Collections.singletonList(participant1)));
 
                             List<Participant> participants = Arrays.asList(participant1, participant2);
 

@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.configs;
+package dev.lrxh.neptune.configs.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.utils.CC;
@@ -11,8 +11,11 @@ import java.util.UUID;
 @Getter
 public enum MessagesLocale {
 
-    QUEUE_JOIN("MESSAGES.QUEUE.JOIN", "&aSuccessfully joined <type> <kit> queue!"),
-    QUEUE_LEAVE("MESSAGES.QUEUE.LEAVE", "&cSuccessfully left queue");
+    MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", "<player> &7disconnected"),
+    MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", "<player> &7was killed by <killer>"),
+    MATCH_DEATH_VOID("MATCH.DEATH.VOID", "<player> &7fell into the void while fighting <killer>"),
+    QUEUE_JOIN("MESSAGES.QUEUE.JOIN", "&aYou are now queued for <type> <kit>"),
+    QUEUE_LEAVE("MESSAGES.QUEUE.LEAVE", "&cYou have been removed from queue.");
 
     private final String path;
     private final String defaultValue;

@@ -23,7 +23,6 @@ public class TeamFightMatch extends Match {
 
     public TeamFightMatch(MatchState matchState, Arena arena, Kit kit, boolean ranked, boolean duel, List<Participant> participants, Team teamA, Team teamB) {
         super(matchState, arena, kit, participants, ranked, duel);
-
         this.teamA = teamA;
         this.teamB = teamB;
     }
@@ -52,13 +51,28 @@ public class TeamFightMatch extends Match {
     @Override
     public void end() {
         matchState = MatchState.ENDING;
+        Team winnerTeam = teamA.isLoser() ? teamB : teamA;
+        Team loserTeam = teamA.isLoser() ? teamA : teamB;
 
-        teamA.sendTitle(teamA.isLoser() ? "&cDEFEAT!" : "&aVICTORY!",
-                teamA.isLoser() ? "&a" + teamB.getTeamNames() + "&7won the game" : "&aYou &7won the game", 100);
+        winnerTeam.sendTitle("&aVICTORY!", "&aYou &7won the game", 100);
+        loserTeam.sendTitle("&cDEFEAT!", winnerTeam.getTeamNames() + "&7won the game", 100);
 
-        teamB.sendTitle(teamB.isLoser() ? "&cDEFEAT!" : "&aVICTORY!",
-                teamB.isLoser() ? "&a" + teamA.getTeamNames() + "&7won the game" : "&aYou &7won the game", 100);
+        Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
+    }
 
-        new MatchEndRunnable(this).runTaskTimer(Neptune.get(), 0L, 20L);
+    @Override
+    public void onDeath(Participant participant) {
+        getPlayerTeam(participant.getPlayerUUID()).setLoser(true);
+        sendDeathMessage(participant);
+        end();
+    }
+
+    private void sendDeathMessage(Participant deadParticipant) {
+        getPlayerTeam(deadParticipant.getPlayerUUID()).setLoser(true);
+
+        for (Participant participant : participants) {
+            deadParticipant.getDeathCause().getMessagesLocale().send(participant.getPlayerUUID(),
+                    "<player>", deadParticipant.getName());
+        }
     }
 }

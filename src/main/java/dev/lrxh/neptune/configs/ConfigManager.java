@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.configs;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
