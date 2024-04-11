@@ -14,7 +14,7 @@ public class KitManager {
     public final HashSet<Kit> kits = new HashSet<>();
 
     public void loadKits() {
-        FileConfiguration config = Neptune.get().getKitsConfig().getConfiguration();
+        FileConfiguration config = Neptune.get().getConfigManager().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {
             for (String kitName : config.getConfigurationSection("kits").getKeys(false)) {
                 String path = "kits." + kitName + ".";
@@ -37,7 +37,7 @@ public class KitManager {
     }
 
     public void saveKits() {
-        FileConfiguration config = Neptune.get().getKitsConfig().getConfiguration();
+        FileConfiguration config = Neptune.get().getConfigManager().getKitsConfig().getConfiguration();
         for (Kit kit : kits) {
             String path = "kits." + kit.getName() + ".";
 
@@ -55,7 +55,7 @@ public class KitManager {
 
             config.set(path + "build", kit.isBuild());
         }
-        Neptune.get().getKitsConfig().save();
+        Neptune.get().getConfigManager().getKitsConfig().save();
     }
 
     public Kit getKitByName(String kitName) {

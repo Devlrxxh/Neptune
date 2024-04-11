@@ -18,7 +18,7 @@ public class ArenaManager {
     public final HashSet<Arena> arenas = new HashSet<>();
 
     public void loadArenas() {
-        FileConfiguration config = Neptune.get().getArenasConfig().getConfiguration();
+        FileConfiguration config = Neptune.get().getConfigManager().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
             for (String arenaName : config.getConfigurationSection("arenas").getKeys(false)) {
                 String path = "arenas." + arenaName + ".";
@@ -45,7 +45,7 @@ public class ArenaManager {
     }
 
     public void saveArenas() {
-        FileConfiguration config = Neptune.get().getArenasConfig().getConfiguration();
+        FileConfiguration config = Neptune.get().getConfigManager().getArenasConfig().getConfiguration();
         for (Arena arena : arenas) {
             String path = "arenas." + arena.getName() + ".";
             config.set(path + "displayName", arena.getDisplayName());
@@ -61,7 +61,7 @@ public class ArenaManager {
                 config.set(path + "type", "SHARED");
             }
         }
-        Neptune.get().getArenasConfig().save();
+        Neptune.get().getConfigManager().getArenasConfig().save();
     }
 
     public Arena getArenaByName(String arenaName) {
@@ -75,10 +75,16 @@ public class ArenaManager {
 
     public Arena getRandomArena(Kit kit) {
         List<Arena> kitArenas = new ArrayList<>();
-        kit.getArenas().stream()
-                .filter(arena -> !(arena instanceof StandAloneArena) || !((StandAloneArena) arena).isUsed())
-                .forEach(kitArenas::add);
+        for (Arena arena : kit.getArenas()) {
+            if (!arena.isEnabled()) continue;
+            if (kit.isBuild()) {
+                if ((arena instanceof StandAloneArena && !((StandAloneArena) arena).isUsed())) {
+                    kitArenas.add(arena);
+                }
+            } else {
+                kitArenas.add(arena);
+            }
+        }
         return kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
     }
-
 }

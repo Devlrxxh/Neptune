@@ -22,10 +22,12 @@ dev\lrxh\neptune\utils\PlayerUtils.class
 dev\lrxh\neptune\arena\Arena$1.class
 dev\lrxh\neptune\kit\KitManager.class
 dev\lrxh\neptune\arena\Arena.class
+dev\lrxh\neptune\commands\QueueCommand.class
 dev\lrxh\neptune\arena\Arena$ArenaBuilder.class
 dev\lrxh\neptune\arena\impl\StandAloneArena$StandAloneArenaBuilder.class
 dev\lrxh\neptune\queue\QueueManager.class
 dev\lrxh\neptune\arena\ArenaManager.class
+dev\lrxh\neptune\configs\MessagesLocale.class
 dev\lrxh\neptune\utils\ItemUtils.class
 dev\lrxh\neptune\match\impl\Team.class
 dev\lrxh\neptune\queue\Queue.class
@@ -33,5 +35,6 @@ dev\lrxh\neptune\match\impl\MatchState.class
 dev\lrxh\neptune\match\impl\Participant.class
 dev\lrxh\neptune\match\tasks\MatchStartRunnable.class
 dev\lrxh\neptune\profile\listener\ProfileListener.class
+dev\lrxh\neptune\configs\ConfigManager.class
 dev\lrxh\neptune\kit\command\KitCommand.class
 dev\lrxh\neptune\match\impl\TeamFightMatch.class

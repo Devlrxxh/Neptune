@@ -21,6 +21,11 @@ public class ArenaCommand extends BaseCommand {
         if (player == null)
             return;
 
+        if (plugin.getArenaManager().arenas.isEmpty()) {
+            player.sendMessage(CC.error("No arenas found!"));
+            return;
+        }
+
         player.sendMessage(CC.translate("&7&m----------------------------------"));
         player.sendMessage(CC.translate("&9Arenas: "));
         player.sendMessage(" ");

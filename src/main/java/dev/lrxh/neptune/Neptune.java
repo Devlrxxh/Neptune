@@ -6,6 +6,8 @@ import co.aikar.commands.PaperCommandManager;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
+import dev.lrxh.neptune.commands.QueueCommand;
+import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
@@ -14,7 +16,6 @@ import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
-import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.TaskScheduler;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -35,9 +36,8 @@ public final class Neptune extends JavaPlugin {
     private ProfileManager profileManager;
     private KitManager kitManager;
     private PaperCommandManager paperCommandManager;
+    private ConfigManager configManager;
 
-    private ConfigFile arenasConfig;
-    private ConfigFile kitsConfig;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -71,13 +71,13 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadConfigs() {
-        arenasConfig = new ConfigFile(this, "arenas");
-        kitsConfig = new ConfigFile(this, "kits");
+        configManager = new ConfigManager();
+        configManager.load();
     }
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler();
-        taskScheduler.startTask(new QueueTask(), 500);
+        taskScheduler.startTask(new QueueTask(), 20L);
     }
 
     private void loadCommandManager() {
@@ -89,7 +89,8 @@ public final class Neptune extends JavaPlugin {
     private void registerCommands() {
         Arrays.asList(
                 new KitCommand(),
-                new ArenaCommand()
+                new ArenaCommand(),
+                new QueueCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

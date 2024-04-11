@@ -1,30 +1,21 @@
 package dev.lrxh.neptune.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.TimeUnit;
+import dev.lrxh.neptune.Neptune;
+import org.bukkit.scheduler.BukkitRunnable;
+
+import java.util.HashSet;
 
 public class TaskScheduler {
-    private final ScheduledExecutorService executorService;
-    private final List<ScheduledFuture<?>> scheduledFutures;
+    private final HashSet<BukkitRunnable> tasks = new HashSet<>();
 
-    public TaskScheduler() {
-        executorService = Executors.newScheduledThreadPool(1);
-        scheduledFutures = new ArrayList<>();
-    }
-
-    public void startTask(Runnable task, long delay) {
-        ScheduledFuture<?> future = executorService.scheduleWithFixedDelay(task, 0, delay, TimeUnit.MILLISECONDS);
-        scheduledFutures.add(future);
+    public void startTask(BukkitRunnable task, long delay) {
+        task.runTaskTimerAsynchronously(Neptune.get(), delay, 20L);
+        tasks.add(task);
     }
 
     public void stopAllTasks() {
-        for (ScheduledFuture<?> future : scheduledFutures) {
-            future.cancel(true);
+        for (BukkitRunnable bukkitRunnable : tasks) {
+            bukkitRunnable.cancel();
         }
-        scheduledFutures.clear();
     }
 }

@@ -22,7 +22,10 @@ public class KitCommand extends BaseCommand {
     public void list(Player player) {
         if (player == null)
             return;
-
+        if (plugin.getKitManager().kits.isEmpty()) {
+            player.sendMessage(CC.error("No kits found!"));
+            return;
+        }
         player.sendMessage(CC.translate("&7&m----------------------------------"));
         player.sendMessage(CC.translate("&9Kits: "));
         player.sendMessage(" ");
@@ -124,7 +127,7 @@ public class KitCommand extends BaseCommand {
 
         kit.getArenas().add(arena);
         plugin.getKitManager().saveKits();
-        player.sendMessage(CC.translate("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7) !"));
+        player.sendMessage(CC.translate("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7)!"));
     }
 
     private boolean checkKit(String kitName) {
