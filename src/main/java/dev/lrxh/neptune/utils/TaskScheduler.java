@@ -13,6 +13,12 @@ public class TaskScheduler {
         tasks.add(task);
     }
 
+    public void startTask(BukkitRunnable task, long delay, long period) {
+        task.runTaskTimer(Neptune.get(), delay, period);
+        tasks.add(task);
+    }
+
+
     public void stopAllTasks() {
         for (BukkitRunnable bukkitRunnable : tasks) {
             bukkitRunnable.cancel();

@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
@@ -13,7 +14,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -29,8 +29,8 @@ public class TeamFightMatch extends Match {
     }
 
 
-    public Team getPlayerTeam(UUID playerUUID) {
-        return teamA.getParticipants().contains(getParticipant(playerUUID)) ? teamA : teamB;
+    public Team getPlayerTeam(Participant participant) {
+        return teamA.getParticipants().contains(participant) ? teamA : teamB;
     }
 
     public void playSoundTeamA(Sound sound) {
@@ -55,18 +55,23 @@ public class TeamFightMatch extends Match {
         Team winnerTeam = teamA.isLoser() ? teamB : teamA;
         Team loserTeam = teamA.isLoser() ? teamA : teamB;
 
-        winnerTeam.sendTitle("&aVICTORY!", "&aYou &7won the game", 100);
-        loserTeam.sendTitle("&cDEFEAT!", winnerTeam.getTeamNames() + "&7won the game", 100);
+        winnerTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
+                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winnerTeam.getTeamNames()), 100);
+
+        loserTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
+                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winnerTeam.getTeamNames()), 100);
+
 
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
     }
 
     @Override
     public void onDeath(Participant participant) {
+        getPlayerTeam(participant).setLoser(true);
+
         PlayerUtils.doVelocityChange(participant.getPlayerUUID());
         PlayerUtils.animateDeath(participant.getPlayerUUID());
 
-        getPlayerTeam(participant.getPlayerUUID()).setLoser(true);
         sendDeathMessage(participant);
 
         end();

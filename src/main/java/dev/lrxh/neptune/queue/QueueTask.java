@@ -72,12 +72,16 @@ public class QueueTask extends BukkitRunnable {
 
                             //Send match found message
                             MessagesLocale.MATCH_FOUND.send(uuid1, "<opponent>", participant2.getNameUnColored(),
+                                    "<kit>", queue1.getKit().getDisplayName(),
                                     "<arena>", arena.getDisplayName(),
-                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid2)));
+                                    "<opponent-ping>", String.valueOf(PlayerUtils.getPing(uuid2)),
+                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid1)));
 
                             MessagesLocale.MATCH_FOUND.send(uuid2, "<opponent>", participant1.getNameUnColored(),
+                                    "<kit>", queue1.getKit().getDisplayName(),
                                     "<arena>", arena.getDisplayName(),
-                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid1)));
+                                    "<opponent-ping>", String.valueOf(PlayerUtils.getPing(uuid1)),
+                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid2)));
 
                             //Set arena as being used
                             if (arena instanceof StandAloneArena) {

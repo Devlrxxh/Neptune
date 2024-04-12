@@ -5,10 +5,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
-import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.util.Arrays;
-import java.util.Collections;
 
 @Getter
 public class ConfigManager {
@@ -18,6 +15,7 @@ public class ConfigManager {
     private ConfigFile kitsConfig;
     private ConfigFile mainConfig;
     private ConfigFile scoreboardConfig;
+    private ConfigFile hotbarConfig;
 
     public void load() {
         loadConfigs();
@@ -25,18 +23,8 @@ public class ConfigManager {
     }
 
     private void loadLocales() {
-        YamlConfiguration messagesConfigConfiguration = messagesConfig.getConfiguration();
-        Arrays.stream(MessagesLocale.values())
-                .filter(messagesConfig -> messagesConfigConfiguration.getStringList(messagesConfig.getPath()).isEmpty())
-                .forEach(messagesConfig -> messagesConfigConfiguration.set(messagesConfig.getPath(), Collections.singletonList(messagesConfig.getDefaultValue())));
-        messagesConfig.save();
-
-
-        YamlConfiguration mainConfigConfiguration = mainConfig.getConfiguration();
-        Arrays.stream(SettingsLocale.values())
-                .filter(mainConfig -> mainConfigConfiguration.getString(mainConfig.getPath()) == null)
-                .forEach(mainConfig -> mainConfigConfiguration.set(mainConfig.getPath(), mainConfig.getDefaultValue()));
-        mainConfig.save();
+        MessagesLocale.MATCH_FOUND.load();
+        SettingsLocale.SPAWN_LOCATION.load();
     }
 
     private void loadConfigs() {
@@ -44,6 +32,7 @@ public class ConfigManager {
         arenasConfig = new ConfigFile(plugin, "arenas");
         kitsConfig = new ConfigFile(plugin, "kits");
         mainConfig = new ConfigFile(plugin, "settings");
+        hotbarConfig = new ConfigFile(plugin, "hotbar");
         scoreboardConfig = new ConfigFile(plugin, "scoreboard");
     }
 }

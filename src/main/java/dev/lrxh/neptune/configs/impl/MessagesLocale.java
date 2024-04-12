@@ -1,38 +1,68 @@
 package dev.lrxh.neptune.configs.impl;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 
 @Getter
-public enum MessagesLocale {
-
-    MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", "<player> &7disconnected"),
-    MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", "<player> &7was killed by <killer>"),
-    MATCH_DEATH_DIED("MATCH.DEATH.DIED", "<player> &7died"),
-    MATCH_DEATH_VOID("MATCH.DEATH.VOID", "<player> &7fell into the void while fighting <killer>"),
-    QUEUE_JOIN("MESSAGES.QUEUE.JOIN", "&aYou are now queued for <type> <kit>"),
-    QUEUE_LEAVE("MESSAGES.QUEUE.LEAVE", "&cYou have been removed from queue."),
-    MATCH_STARTED("MATCH.STARTED", "&aMatch Started!"),
-    MATCH_FOUND("MATCH.FOUND", "&9Match found against &f<opponent>"),
-    MATCH_STARTING("MATCH.START.TIMER", "&fMatch starting in &9<timer>&f...");
+public enum MessagesLocale implements IDataAccessor {
+    MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", DataType.STRING_LIST, "&7disconnected"),
+    MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", DataType.STRING_LIST, "<player> &7was killed by <killer>"),
+    MATCH_DEATH_DIED("MATCH.DEATH.DIED", DataType.STRING_LIST, "<player> &7died"),
+    MATCH_DEATH_VOID("MATCH.DEATH.VOID", DataType.STRING_LIST, "<player> &7fell into the void while fighting <killer>"),
+    QUEUE_JOIN("QUEUE.JOIN", DataType.STRING_LIST, "&aYou are now queued for <type> <kit>"),
+    QUEUE_LEAVE("QUEUE.LEAVE", DataType.STRING_LIST, "&cYou have been removed from queue."),
+    MATCH_STARTED("MATCH.STARTED", DataType.STRING_LIST, "&aMatch Started!"),
+    MATCH_FOUND("MATCH.FOUND", DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", " "),
+    MATCH_STARTING("MATCH.START.TIMER", DataType.STRING_LIST, "&fMatch starting in &9<timer>&f..."),
+    MATCH_WINNER_TITLE("MATCH.TITLE.WINNER", DataType.STRING, "&aVICTORY!"),
+    MATCH_LOSER_TITLE("MATCH.TITLE.LOSER", DataType.STRING, "&cDEFEAT!"),
+    MATCH_TITLE_SUBTITLE("MATCH.TITLE.SUBTITLE", DataType.STRING, "&a<player> &fwon the match!");
 
     private final String path;
-    private final String defaultValue;
+    private final List<String> defaultValue = new ArrayList<>();
+    private final DataType dataType;
+    private final YamlConfiguration config = plugin.getConfigManager().getMessagesConfig().getConfiguration();
 
-    MessagesLocale(String path, String defaultValue) {
+    MessagesLocale(String path, DataType dataType, String... defaultValue) {
         this.path = path;
-        this.defaultValue = defaultValue;
+        this.defaultValue.addAll(Arrays.asList(defaultValue));
+        this.dataType = dataType;
+    }
+
+    public String getString() {
+        return config.getString(path);
+    }
+
+    public List<String> getStringList() {
+        return config.getStringList(path);
+    }
+
+    public int getInt() {
+        return config.getInt(path);
+    }
+
+    public boolean getBoolean() {
+        return config.getBoolean(path);
+    }
+
+    @Override
+    public ConfigFile getConfigFile() {
+        return plugin.getConfigManager().getMessagesConfig();
     }
 
     public void send(UUID playerUUID, String... replacements) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        for (String string : Neptune.get().getConfigManager().getMessagesConfig().getConfiguration().getStringList(path)) {
+        for (String string : getStringList()) {
             String translatedMessage = string;
             if (replacements.length % 2 == 0) {
                 for (int i = 0; i < replacements.length; i += 2) {

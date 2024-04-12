@@ -1,28 +1,46 @@
 package dev.lrxh.neptune.configs.impl;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
+import org.bukkit.configuration.file.YamlConfiguration;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
-public enum SettingsLocale {
-
-    SPAWN_LOCATION("SPAWN.LOCATION", "NONE");
+public enum SettingsLocale implements IDataAccessor {
+    SPAWN_LOCATION("SPAWN.LOCATION", DataType.STRING, "NONE");
 
     private final String path;
-    private final String defaultValue;
-    private final Neptune plugin = Neptune.get();
+    private final List<String> defaultValue = new ArrayList<>();
+    private final DataType dataType;
+    private final YamlConfiguration config = plugin.getConfigManager().getMainConfig().getConfiguration();
 
-    SettingsLocale(String path, String defaultValue) {
+    SettingsLocale(String path, DataType dataType, String... defaultValue) {
         this.path = path;
-        this.defaultValue = defaultValue;
+        this.defaultValue.addAll(Arrays.asList(defaultValue));
+        this.dataType = dataType;
     }
 
-    public String get() {
-        return plugin.getConfigManager().getMainConfig().getConfiguration().getString(path);
+    public String getString() {
+        return config.getString(path);
     }
 
-    public void set(String value) {
-        plugin.getConfigManager().getMainConfig().getConfiguration().set(path, value);
-        plugin.getConfigManager().getMainConfig().save();
+    public List<String> getStringList() {
+        return config.getStringList(path);
+    }
+
+    public int getInt() {
+        return config.getInt(path);
+    }
+
+    public boolean getBoolean() {
+        return config.getBoolean(path);
+    }
+
+    @Override
+    public ConfigFile getConfigFile() {
+        return plugin.getConfigManager().getMainConfig();
     }
 }

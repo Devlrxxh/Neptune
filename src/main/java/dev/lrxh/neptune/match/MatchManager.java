@@ -56,7 +56,7 @@ public class MatchManager {
         }
 
         //Start match start runnable
-        new MatchStartRunnable(match).runTaskTimer(Neptune.get(), 0L, 20L);
+        Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
     }
 
     public void setupPlayer(UUID playerUUID, Match match) {

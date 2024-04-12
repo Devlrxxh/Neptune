@@ -13,10 +13,10 @@ public class Cache {
     private Location spawn;
 
     public void load() {
-        if (SettingsLocale.SPAWN_LOCATION.get().equalsIgnoreCase("none")) {
+        if (SettingsLocale.SPAWN_LOCATION.getString().equalsIgnoreCase("none")) {
             spawn = null;
         } else {
-            spawn = LocationUtil.deserialize(SettingsLocale.SPAWN_LOCATION.get());
+            spawn = LocationUtil.deserialize(SettingsLocale.SPAWN_LOCATION.getString());
         }
     }
 

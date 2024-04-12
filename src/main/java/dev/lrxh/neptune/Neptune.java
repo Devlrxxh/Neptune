@@ -17,6 +17,8 @@ import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
+import dev.lrxh.neptune.providers.hotbar.ItemListener;
+import dev.lrxh.neptune.providers.hotbar.ItemManager;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
@@ -45,6 +47,7 @@ public final class Neptune extends JavaPlugin {
     private Cache cache;
     private Assemble assemble;
     private boolean placeholder = false;
+    private ItemManager itemManager;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -72,6 +75,8 @@ public final class Neptune extends JavaPlugin {
         kitManager.loadKits();
         cache = new Cache();
         cache.load();
+        itemManager = new ItemManager();
+        itemManager.loadItems();
         assemble = new Assemble(this, new ScoreboardAdapter());
     }
 
@@ -79,7 +84,8 @@ public final class Neptune extends JavaPlugin {
         Arrays.asList(
                 new ProfileListener(),
                 new MatchListener(),
-                new LobbyListener()
+                new LobbyListener(),
+                new ItemListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, get()));
     }
 

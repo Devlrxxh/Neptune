@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
@@ -27,5 +28,17 @@ public class Kit {
     private boolean sumo;
     private boolean fallDamage;
     private boolean denyMovement;
+
+
+    public List<String> getArenasAsString() {
+        List<String> arenasString = null;
+        if (arenas != null && !arenas.isEmpty()) {
+            arenasString = new ArrayList<>();
+            for (Arena arena : arenas) {
+                arenasString.add(arena.getName());
+            }
+        }
+        return arenasString;
+    }
 }
 

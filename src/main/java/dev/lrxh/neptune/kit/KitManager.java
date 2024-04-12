@@ -1,20 +1,22 @@
 package dev.lrxh.neptune.kit;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.providers.manager.Value;
+import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.ItemUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
-public class KitManager {
+public class KitManager implements IManager {
     public final HashSet<Kit> kits = new HashSet<>();
 
     public void loadKits() {
-        FileConfiguration config = Neptune.get().getConfigManager().getKitsConfig().getConfiguration();
+        FileConfiguration config = plugin.getConfigManager().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {
             for (String kitName : config.getConfigurationSection("kits").getKeys(false)) {
                 String path = "kits." + kitName + ".";
@@ -25,7 +27,7 @@ public class KitManager {
                 HashSet<Arena> arenas = new HashSet<>();
                 if (config.getStringList(path + "arenas") != null) {
                     for (String arenaName : config.getStringList(path + "arenas")) {
-                        arenas.add(Neptune.get().getArenaManager().getArenaByName(arenaName));
+                        arenas.add(plugin.getArenaManager().getArenaByName(arenaName));
                     }
                 }
 
@@ -41,30 +43,24 @@ public class KitManager {
     }
 
     public void saveKits() {
-        FileConfiguration config = Neptune.get().getConfigManager().getKitsConfig().getConfiguration();
-        for (Kit kit : kits) {
+        kits.forEach(kit -> {
             String path = "kits." + kit.getName() + ".";
-
-            config.set(path + "displayName", kit.getDisplayName());
-            config.set(path + "ranked", kit.isRanked());
-            config.set(path + "items", ItemUtils.serializeItemStacks(kit.getItems()));
-            config.set(path + "armour", ItemUtils.serializeItemStacks(kit.getArmour()));
-            if (kit.getArenas() != null && !kit.getArenas().isEmpty()) {
-                List<String> arenas = new ArrayList<>();
-                for (Arena arena : kit.getArenas()) {
-                    arenas.add(arena.getName());
-                }
-                config.set(path + "arenas", arenas);
-            }
-
-            config.set(path + "build", kit.isBuild());
-            config.set(path + "hunger", kit.isHunger());
-            config.set(path + "sumo", kit.isSumo());
-            config.set(path + "fallDamage", kit.isFallDamage());
-            config.set(path + "denyMovement", kit.isDenyMovement());
-        }
-        Neptune.get().getConfigManager().getKitsConfig().save();
+            List<Value> values = Arrays.asList(
+                    new Value("displayName", kit.getDisplayName()),
+                    new Value("ranked", kit.isRanked()),
+                    new Value("items", ItemUtils.serializeItemStacks(kit.getItems())),
+                    new Value("armour", ItemUtils.serializeItemStacks(kit.getArmour())),
+                    new Value("build", kit.isBuild()),
+                    new Value("hunger", kit.isHunger()),
+                    new Value("sumo", kit.isSumo()),
+                    new Value("fallDamage", kit.isFallDamage()),
+                    new Value("denyMovement", kit.isDenyMovement()),
+                    new Value("arenas", kit.getArenasAsString())
+            );
+            save(values, path);
+        });
     }
+
 
     public Kit getKitByName(String kitName) {
         for (Kit kit : kits) {
@@ -73,5 +69,10 @@ public class KitManager {
             }
         }
         return null;
+    }
+
+    @Override
+    public ConfigFile getConfigFile() {
+        return plugin.getConfigManager().getKitsConfig();
     }
 }

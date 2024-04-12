@@ -1,24 +1,27 @@
 package dev.lrxh.neptune.arena;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.providers.manager.Value;
+import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class ArenaManager {
+public class ArenaManager implements IManager {
     public final HashSet<Arena> arenas = new HashSet<>();
 
     public void loadArenas() {
-        FileConfiguration config = Neptune.get().getConfigManager().getArenasConfig().getConfiguration();
+        FileConfiguration config = plugin.getConfigManager().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
             for (String arenaName : config.getConfigurationSection("arenas").getKeys(false)) {
                 String path = "arenas." + arenaName + ".";
@@ -45,24 +48,28 @@ public class ArenaManager {
     }
 
     public void saveArenas() {
-        FileConfiguration config = Neptune.get().getConfigManager().getArenasConfig().getConfiguration();
-        for (Arena arena : arenas) {
+        arenas.forEach(arena -> {
             String path = "arenas." + arena.getName() + ".";
-            config.set(path + "displayName", arena.getDisplayName());
-            config.set(path + "redSpawn", LocationUtil.serialize(arena.getRedSpawn()));
-            config.set(path + "blueSpawn", LocationUtil.serialize(arena.getBlueSpawn()));
-            config.set(path + "enabled", arena.isEnabled());
-
+            List<Value> values = new ArrayList<>(Arrays.asList(
+                    new Value("displayName", arena.getDisplayName()),
+                    new Value("redSpawn", arena.getRedSpawn()),
+                    new Value("blueSpawn", arena.getBlueSpawn()),
+                    new Value("enabled", arena.isEnabled())
+            ));
             if (arena instanceof StandAloneArena) {
-                config.set(path + "type", "STANDALONE");
-                config.set(path + "edge1", LocationUtil.serialize(((StandAloneArena) arena).getEdge1()));
-                config.set(path + "edge2", LocationUtil.serialize(((StandAloneArena) arena).getEdge2()));
+                StandAloneArena standAloneArena = (StandAloneArena) arena;
+                values.addAll(Arrays.asList(
+                        new Value("type", "STANDALONE"),
+                        new Value("edge1", LocationUtil.serialize(standAloneArena.getEdge1())),
+                        new Value("edge2", LocationUtil.serialize(standAloneArena.getEdge2()))
+                ));
             } else {
-                config.set(path + "type", "SHARED");
+                values.add(new Value("type", "SHARED"));
             }
-        }
-        Neptune.get().getConfigManager().getArenasConfig().save();
+            save(values, path);
+        });
     }
+
 
     public Arena getArenaByName(String arenaName) {
         for (Arena arena : arenas) {
@@ -86,5 +93,10 @@ public class ArenaManager {
             }
         }
         return kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
+    }
+
+    @Override
+    public ConfigFile getConfigFile() {
+        return plugin.getConfigManager().getArenasConfig();
     }
 }
