@@ -96,7 +96,7 @@ public class MatchListener implements Listener {
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
-            if (profile.getState().equals(ProfileState.LOBBY) ||
+            if (!profile.getState().equals(ProfileState.IN_GAME) ||
                     (match != null && !match.getKit().isFallDamage() && event.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
                 event.setCancelled(true);
             }
@@ -150,7 +150,7 @@ public class MatchListener implements Listener {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if (profile.getState().equals(ProfileState.LOBBY)) {
+        if (!profile.getState().equals(ProfileState.IN_GAME)) {
             event.setCancelled(true);
         }
     }

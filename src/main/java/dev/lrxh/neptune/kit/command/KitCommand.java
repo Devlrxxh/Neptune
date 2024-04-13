@@ -54,6 +54,7 @@ public class KitCommand extends BaseCommand {
                 .fallDamage(false)
                 .denyMovement(false)
                 .arenas(new HashSet<>())
+                .icon(player.getItemInHand())
                 .build();
 
 

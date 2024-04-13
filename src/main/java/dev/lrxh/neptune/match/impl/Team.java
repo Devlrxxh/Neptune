@@ -6,6 +6,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
 import java.util.HashSet;
 
 @Getter
@@ -43,6 +44,21 @@ public class Team {
             return names.toString();
         }
         return null;
+    }
+
+    public int getTeamPing() {
+        if (participants.size() == 1) {
+            for(Participant participant : participants){
+                return PlayerUtils.getPing(participant.getPlayerUUID());
+            }
+        }
+        return 0;
+    }
+
+    public void setOpponent(Team opponent){
+        for (Participant participant : participants) {
+            participant.setOpponent(opponent);
+        }
     }
 
     public void setColor(ParticipantColor color) {

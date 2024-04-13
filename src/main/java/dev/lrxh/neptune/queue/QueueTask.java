@@ -5,6 +5,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.Bukkit;
@@ -38,9 +39,6 @@ public class QueueTask extends BukkitRunnable {
                             Participant participant2 =
                                     new Participant(uuid2, Bukkit.getPlayer(uuid2).getDisplayName());
 
-                            participant1.setOpponent(new HashSet<>(Collections.singletonList(participant2)));
-                            participant2.setOpponent(new HashSet<>(Collections.singletonList(participant1)));
-
                             List<Participant> participants = Arrays.asList(participant1, participant2);
 
                             Arena arena = plugin.getArenaManager().getRandomArena(queue1.getKit());
@@ -48,7 +46,10 @@ public class QueueTask extends BukkitRunnable {
                             //If no arenas were found
                             if (arena == null) {
                                 plugin.getQueueManager().remove(uuid1);
+                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.IN_QUEUE);
+
                                 plugin.getQueueManager().remove(uuid2);
+                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.IN_QUEUE);
 
                                 Bukkit.getPlayer(uuid1).sendMessage(CC.error("No arena was found!"));
                                 Bukkit.getPlayer(uuid2).sendMessage(CC.error("No arena was found!"));
@@ -63,7 +64,11 @@ public class QueueTask extends BukkitRunnable {
                                                     ((StandAloneArena) arena).getEdge1() == null))) {
 
                                 plugin.getQueueManager().remove(uuid1);
+                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.IN_QUEUE);
+
                                 plugin.getQueueManager().remove(uuid2);
+                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.IN_QUEUE);
+
 
                                 Bukkit.getPlayer(uuid1).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                                 Bukkit.getPlayer(uuid2).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));

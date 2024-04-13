@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.queue.Queue;
@@ -30,6 +31,13 @@ public class PlaceholderUtil {
                 Queue queue = plugin.getQueueManager().queues.get(player.getUniqueId());
                 line = line.replaceAll("<type>", queue.isRanked() ? "Ranked" : "Unranked");
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
+            }
+
+            if(profile.getState().equals(ProfileState.IN_GAME)){
+                Participant participant = profile.getMatch().getParticipant(player.getUniqueId());
+                line = line.replaceAll("<opponent>", participant.getOpponent().getTeamNames());
+                line = line.replaceAll("<opponent-ping>", String.valueOf(participant.getOpponent().getTeamPing()));
+
             }
 
             if (Neptune.get().isPlaceholder()) {

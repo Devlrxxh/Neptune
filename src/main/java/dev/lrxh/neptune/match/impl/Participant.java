@@ -13,7 +13,7 @@ import java.util.UUID;
 public class Participant {
     private UUID playerUUID;
     private String name;
-    private HashSet<Participant> opponent;
+    private Team opponent;
     private DeathCause deathCause;
     private ParticipantColor color;
     private Participant lastAttacker;

@@ -4,7 +4,6 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -30,7 +29,6 @@ public enum MessagesLocale implements IDataAccessor {
     private final String path;
     private final List<String> defaultValue = new ArrayList<>();
     private final DataType dataType;
-    private final YamlConfiguration config = plugin.getConfigManager().getMessagesConfig().getConfiguration();
 
     MessagesLocale(String path, DataType dataType, String... defaultValue) {
         this.path = path;
@@ -38,26 +36,11 @@ public enum MessagesLocale implements IDataAccessor {
         this.dataType = dataType;
     }
 
-    public String getString() {
-        return config.getString(path);
-    }
-
-    public List<String> getStringList() {
-        return config.getStringList(path);
-    }
-
-    public int getInt() {
-        return config.getInt(path);
-    }
-
-    public boolean getBoolean() {
-        return config.getBoolean(path);
-    }
-
     @Override
     public ConfigFile getConfigFile() {
         return plugin.getConfigManager().getMessagesConfig();
     }
+
 
     public void send(UUID playerUUID, String... replacements) {
         Player player = Bukkit.getPlayer(playerUUID);

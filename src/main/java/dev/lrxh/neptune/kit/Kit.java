@@ -22,6 +22,7 @@ public class Kit {
     private List<ItemStack> items;
     private List<ItemStack> armour;
     private HashSet<Arena> arenas;
+    private ItemStack icon;
     //RULES
     private boolean build;
     private boolean hunger;

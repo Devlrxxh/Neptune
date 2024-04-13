@@ -22,6 +22,8 @@ public class KitManager implements IManager {
                 String path = "kits." + kitName + ".";
                 String displayName = config.getString(path + "displayName");
                 boolean ranked = config.getBoolean(path + "ranked");
+                ItemStack icon = ItemUtils.deserializeItemStack(config.getString(path + "icon"));
+
                 List<ItemStack> items = ItemUtils.deserializeItemStacks(config.getString(path + "items"));
                 List<ItemStack> armour = ItemUtils.deserializeItemStacks(config.getString(path + "armour"));
                 HashSet<Arena> arenas = new HashSet<>();
@@ -37,7 +39,7 @@ public class KitManager implements IManager {
                 boolean fallDamage = config.getBoolean(path + "fallDamage");
                 boolean denyMovement = config.getBoolean(path + "denyMovement");
 
-                kits.add(new Kit(kitName, displayName, ranked, items, armour, arenas, build, hunger, sumo, fallDamage, denyMovement));
+                kits.add(new Kit(kitName, displayName, ranked, items, armour, arenas, icon, build, hunger, sumo, fallDamage, denyMovement));
             }
         }
     }
@@ -55,7 +57,8 @@ public class KitManager implements IManager {
                     new Value("sumo", kit.isSumo()),
                     new Value("fallDamage", kit.isFallDamage()),
                     new Value("denyMovement", kit.isDenyMovement()),
-                    new Value("arenas", kit.getArenasAsString())
+                    new Value("arenas", kit.getArenasAsString()),
+                    new Value("icon", ItemUtils.serializeItemStack(kit.getIcon()))
             );
             save(values, path);
         });

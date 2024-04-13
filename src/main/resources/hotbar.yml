@@ -1,51 +1,13 @@
 items:
   LOBBY:
-    unranked:
-      name: "&dUnranked Queue &7(Right Click)"
+    UNRANKED:
+      name: "&bUnranked Queue &7(Right Click)"
       material: IRON_SWORD
       slot: 0
       durability: 0
-      command: "unranked"
-    ranked:
-      name: "&dRanked Queue &7(Right Click)"
-      material: DIAMOND_SWORD
-      slot: 1
-      durability: 0
-      command: "ranked"
-    coin-shop:
-      name: "&dCoin Shop &7(Right Click)"
-      material: ENDER_CHEST
-      slot: 2
-      durability: 0
-      command: "coinshop"
-    divisions:
-      name: "&dDivisions &7(Right Click)"
-      material: EMERALD
-      slot: 4
-      durability: 0
-      command: "divisions"
-    create-party:
-      name: "&dCreate Party &7(Right Click)"
-      material: NAME_TAG
-      slot: 6
-      durability: 0
-      command: "party create"
-    settings:
-      name: "&dSettings &7(Right Click)"
-      material: PAPER
-      slot: 7
-      durability: 0
-      command: "settings"
-    kit-editor:
-      name: "&dKit Editor &7(Right Click)"
-      material: BOOK
-      slot: 8
-      durability: 0
-      command: "settings"
   IN_QUEUE:
-    unranked:
+    QUEUE_LEAVE:
       name: "&dLeave Queue &7(Right Click)"
       material: INK_SACK
-      slot: 0
+      slot: 8
       durability: 1
-      command: "queue leave"

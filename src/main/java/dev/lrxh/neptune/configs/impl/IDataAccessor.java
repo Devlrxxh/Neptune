@@ -2,20 +2,29 @@ package dev.lrxh.neptune.configs.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.utils.ConfigFile;
-import org.bukkit.configuration.file.YamlConfiguration;
+import lombok.Getter;
 
 import java.util.List;
 
 public interface IDataAccessor {
+
     Neptune plugin = Neptune.get();
 
-    String getString();
+    default String getString() {
+        return getConfigFile().getConfiguration().getString(getPath());
+    }
 
-    List<String> getStringList();
+    default List<String> getStringList() {
+        return getConfigFile().getConfiguration().getStringList(getPath());
+    }
 
-    int getInt();
+    default int getInt() {
+        return getConfigFile().getConfiguration().getInt(getPath());
+    }
 
-    boolean getBoolean();
+    default boolean getBoolean() {
+        return getConfigFile().getConfiguration().getBoolean(getPath());
+    }
 
     String getPath();
 
@@ -23,36 +32,35 @@ public interface IDataAccessor {
 
     DataType getDataType();
 
-    YamlConfiguration getConfig();
-
     ConfigFile getConfigFile();
 
     default void setValue(String path, List<String> value, DataType dataType) {
         switch (dataType) {
             case STRING_LIST:
-                getConfig().set(path, value);
+                getConfigFile().getConfiguration().set(path, value);
                 break;
             case STRING:
-                getConfig().set(path, value.get(0));
+                getConfigFile().getConfiguration().set(path, value.get(0));
                 break;
             case INT:
-                getConfig().set(path, Integer.valueOf(value.get(0)));
+                getConfigFile().getConfiguration().set(path, Integer.valueOf(value.get(0)));
                 break;
             case BOOLEAN:
-                getConfig().set(path, Boolean.valueOf(value.get(0)));
+                getConfigFile().getConfiguration().set(path, Boolean.valueOf(value.get(0)));
                 break;
         }
     }
 
 
     default void set(String value) {
-        getConfig().set(getPath(), value);
+        getConfigFile().getConfiguration().set(getPath(), value);
         getConfigFile().save();
     }
 
     default void load() {
+
         for (IDataAccessor accessor : this.getClass().getEnumConstants()) {
-            if (accessor.getConfig().get(accessor.getPath()) == null) {
+            if (accessor.getConfigFile().getConfiguration().get(accessor.getPath()) == null) {
                 setValue(accessor.getPath(), accessor.getDefaultValue(), accessor.getDataType());
             }
         }

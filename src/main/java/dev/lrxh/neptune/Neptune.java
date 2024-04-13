@@ -24,6 +24,7 @@ import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
 import dev.lrxh.neptune.utils.TaskScheduler;
 import dev.lrxh.neptune.utils.assemble.Assemble;
+import dev.lrxh.neptune.utils.menu.MenuListener;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -85,7 +86,8 @@ public final class Neptune extends JavaPlugin {
                 new ProfileListener(),
                 new MatchListener(),
                 new LobbyListener(),
-                new ItemListener()
+                new ItemListener(),
+                new MenuListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, get()));
     }
 

@@ -52,8 +52,8 @@ public class ArenaManager implements IManager {
             String path = "arenas." + arena.getName() + ".";
             List<Value> values = new ArrayList<>(Arrays.asList(
                     new Value("displayName", arena.getDisplayName()),
-                    new Value("redSpawn", arena.getRedSpawn()),
-                    new Value("blueSpawn", arena.getBlueSpawn()),
+                    new Value("redSpawn", LocationUtil.serialize(arena.getRedSpawn())),
+                    new Value("blueSpawn", LocationUtil.serialize(arena.getBlueSpawn())),
                     new Value("enabled", arena.isEnabled())
             ));
             if (arena instanceof StandAloneArena) {

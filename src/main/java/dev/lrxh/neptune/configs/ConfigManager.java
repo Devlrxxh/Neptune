@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.configs;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
@@ -10,29 +12,18 @@ import lombok.Getter;
 @Getter
 public class ConfigManager {
     private final Neptune plugin = Neptune.get();
-    private ConfigFile messagesConfig;
-    private ConfigFile arenasConfig;
-    private ConfigFile kitsConfig;
-    private ConfigFile mainConfig;
-    private ConfigFile scoreboardConfig;
-    private ConfigFile hotbarConfig;
+    private final ConfigFile messagesConfig = new ConfigFile("messages");
+    private final ConfigFile arenasConfig = new ConfigFile("arenas");
+    private final ConfigFile kitsConfig = new ConfigFile("kits");
+    private final ConfigFile mainConfig = new ConfigFile("settings");
+    private final ConfigFile scoreboardConfig = new ConfigFile("scoreboard");
+    private final ConfigFile hotbarConfig = new ConfigFile("hotbar");
+    private final ConfigFile menusConfig = new ConfigFile("menus");
 
     public void load() {
-        loadConfigs();
-        loadLocales();
-    }
-
-    private void loadLocales() {
         MessagesLocale.MATCH_FOUND.load();
         SettingsLocale.SPAWN_LOCATION.load();
-    }
-
-    private void loadConfigs() {
-        messagesConfig = new ConfigFile(plugin, "messages");
-        arenasConfig = new ConfigFile(plugin, "arenas");
-        kitsConfig = new ConfigFile(plugin, "kits");
-        mainConfig = new ConfigFile(plugin, "settings");
-        hotbarConfig = new ConfigFile(plugin, "hotbar");
-        scoreboardConfig = new ConfigFile(plugin, "scoreboard");
+        MenusLocale.FILTER_NAME.load();
+        ScoreboardLocale.TITLE.load();
     }
 }

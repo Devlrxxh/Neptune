@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.VisibilityLogic;
 import lombok.experimental.UtilityClass;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;

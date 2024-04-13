@@ -3,12 +3,14 @@ package dev.lrxh.neptune.providers.hotbar;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.ProfileState;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 public class ItemManager {
@@ -24,8 +26,14 @@ public class ItemManager {
         }
     }
 
-    public void giveItems(Player player, ProfileState profileState) {
+    public void giveItems(UUID playerUUID) {
+        if(Bukkit.getPlayer(playerUUID) == null) return;
+        Player player = Bukkit.getPlayer(playerUUID);
+
         player.getInventory().clear();
+        ProfileState profileState = plugin.getProfileManager().getByUUID(player.getUniqueId()).getState();
+        if(profileState.equals(ProfileState.IN_GAME)) return;
+
         Hotbar inventory = items.get(profileState);
 
         if (inventory != null) {

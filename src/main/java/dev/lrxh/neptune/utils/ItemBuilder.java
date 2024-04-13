@@ -5,6 +5,9 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ItemBuilder {
     private final ItemStack item;
 
@@ -21,9 +24,10 @@ public class ItemBuilder {
     }
 
     public ItemBuilder clearFlags() {
-        ItemMeta itemMeta = item.getItemMeta();
-        itemMeta.addItemFlags(ItemFlag.values());
-        item.setItemMeta(itemMeta);
+        final ItemMeta meta = item.getItemMeta();
+        meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE,
+                ItemFlag.HIDE_ATTRIBUTES);
+        item.setItemMeta(meta);
 
         return this;
     }
@@ -33,7 +37,6 @@ public class ItemBuilder {
         item.setItemMeta(meta);
 
         meta.spigot().setUnbreakable(true);
-        meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE);
         item.setItemMeta(meta);
 
         return this;
@@ -41,6 +44,37 @@ public class ItemBuilder {
 
     public ItemBuilder durability(int durability) {
         item.setDurability((short) durability);
+
+        return this;
+    }
+
+    public ItemBuilder lore(String... lore) {
+        List<String> toSet = new ArrayList<>();
+        ItemMeta meta = item.getItemMeta();
+
+        for (String string : lore) {
+            toSet.add(CC.translate(string));
+        }
+
+        meta.setLore(toSet);
+        item.setItemMeta(meta);
+
+        return this;
+    }
+
+
+    public ItemBuilder lore(String name) {
+        ItemMeta meta = item.getItemMeta();
+        List<String> lore = meta.getLore();
+
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
+
+        lore.add(CC.translate(name));
+        meta.setLore(lore);
+
+        item.setItemMeta(meta);
 
         return this;
     }

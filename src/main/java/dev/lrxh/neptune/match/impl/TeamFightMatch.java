@@ -69,6 +69,8 @@ public class TeamFightMatch extends Match {
     public void onDeath(Participant participant) {
         getPlayerTeam(participant).setLoser(true);
 
+        PlayerUtils.reset(participant.getPlayerUUID());
+
         PlayerUtils.doVelocityChange(participant.getPlayerUUID());
         PlayerUtils.animateDeath(participant.getPlayerUUID());
 

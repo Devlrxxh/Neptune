@@ -7,6 +7,7 @@ import dev.lrxh.neptune.match.impl.*;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.profile.VisibilityLogic;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -23,6 +24,8 @@ public class MatchManager {
         //Create teams
         Team teamRed = new Team(new HashSet<>(participants.subList(0, participants.size() / 2)), false, ParticipantColor.RED);
         Team teamBlue = new Team(new HashSet<>(participants.subList(participants.size() / 2, participants.size())), false, ParticipantColor.BLUE);
+        teamRed.setOpponent(teamBlue);
+        teamBlue.setOpponent(teamRed);
 
         //Create match
         TeamFightMatch match = new TeamFightMatch(MatchState.STARTING, arena, kit, ranked, duel, participants, teamRed, teamBlue);
