@@ -70,6 +70,16 @@ public abstract class Match {
         }
     }
 
+    public void hidePlayer(Participant targetParticipant){
+        if(Bukkit.getPlayer(targetParticipant.getPlayerUUID())==null)return;
+        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
+        for (Participant participant : participants) {
+            if(Bukkit.getPlayer(participant.getPlayerUUID())==null)return;
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            player.hidePlayer(targetPlayer);
+        }
+    }
+
 
     public void giveKit() {
         for (Participant participant : participants) {

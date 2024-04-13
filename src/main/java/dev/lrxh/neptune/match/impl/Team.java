@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
 import java.util.HashSet;
 
 @Getter
@@ -14,6 +13,7 @@ import java.util.HashSet;
 public class Team {
     private final HashSet<Participant> participants;
     private boolean loser;
+    private boolean hasBed = true;
 
 
     public Team(HashSet<Participant> participants, boolean loser, ParticipantColor color) {

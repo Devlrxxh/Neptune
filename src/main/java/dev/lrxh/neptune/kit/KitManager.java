@@ -38,8 +38,9 @@ public class KitManager implements IManager {
                 boolean sumo = config.getBoolean(path + "sumo");
                 boolean fallDamage = config.getBoolean(path + "fallDamage");
                 boolean denyMovement = config.getBoolean(path + "denyMovement");
+                boolean bedwars = config.getBoolean(path + "bedwars");
 
-                kits.add(new Kit(kitName, displayName, ranked, items, armour, arenas, icon, build, hunger, sumo, fallDamage, denyMovement));
+                kits.add(new Kit(kitName, displayName, ranked, items, armour, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, bedwars));
             }
         }
     }
@@ -58,7 +59,8 @@ public class KitManager implements IManager {
                     new Value("fallDamage", kit.isFallDamage()),
                     new Value("denyMovement", kit.isDenyMovement()),
                     new Value("arenas", kit.getArenasAsString()),
-                    new Value("icon", ItemUtils.serializeItemStack(kit.getIcon()))
+                    new Value("icon", ItemUtils.serializeItemStack(kit.getIcon())),
+                    new Value("bedwars", kit.isBedwars())
             );
             save(values, path);
         });

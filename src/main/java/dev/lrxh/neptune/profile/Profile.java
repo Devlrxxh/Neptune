@@ -17,9 +17,8 @@ public class Profile {
     private ProfileState state;
 
     public void setState(ProfileState profileState){
-        VisibilityLogic.handle(playerUUID);
-        Neptune.get().getItemManager().giveItems(playerUUID);
-
         state = profileState;
+        VisibilityLogic.handle(playerUUID);
+        Neptune.get().getHotbarManager().giveItems(playerUUID);
     }
 }

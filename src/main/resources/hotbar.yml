@@ -1,13 +1,18 @@
-items:
+ITEMS:
   LOBBY:
     UNRANKED:
-      name: "&bUnranked Queue &7(Right Click)"
-      material: IRON_SWORD
-      slot: 0
-      durability: 0
+      NAME: "&bUnranked Queue &7(Right Click)"
+      MATERIAL: IRON_SWORD
+      SLOT: 0
+      DURABILITY: 0
+    RANKED:
+      NAME: "&aRanked Queue &7(Right Click)"
+      MATERIAL: DIAMOND_SWORD
+      SLOT: 1
+      DURABILITY: 0
   IN_QUEUE:
     QUEUE_LEAVE:
-      name: "&dLeave Queue &7(Right Click)"
-      material: INK_SACK
-      slot: 8
-      durability: 1
+      NAME: "&bLeave Queue &7(Right Click)"
+      MATERIAL: INK_SACK
+      SLOT: 8
+      DURABILITY: 1

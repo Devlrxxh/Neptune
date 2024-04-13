@@ -10,5 +10,11 @@
         <module name="Neptune" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="1_20" target="1.8" />
+      <module name="1_20_2" target="1.8" />
+      <module name="1_8" target="1.8" />
+      <module name="Build" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>

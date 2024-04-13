@@ -18,7 +18,7 @@ import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.hotbar.ItemListener;
-import dev.lrxh.neptune.providers.hotbar.ItemManager;
+import dev.lrxh.neptune.providers.hotbar.HotbarManager;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
@@ -48,7 +48,7 @@ public final class Neptune extends JavaPlugin {
     private Cache cache;
     private Assemble assemble;
     private boolean placeholder = false;
-    private ItemManager itemManager;
+    private HotbarManager hotbarManager;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -76,8 +76,8 @@ public final class Neptune extends JavaPlugin {
         kitManager.loadKits();
         cache = new Cache();
         cache.load();
-        itemManager = new ItemManager();
-        itemManager.loadItems();
+        hotbarManager = new HotbarManager();
+        hotbarManager.loadItems();
         assemble = new Assemble(this, new ScoreboardAdapter());
     }
 

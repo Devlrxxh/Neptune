@@ -84,6 +84,27 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
+    @Subcommand("deathY")
+    @Syntax("<arena>")
+    @CommandCompletion("@arenas")
+    public void deathY(Player player, String arenaName) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+
+        if(!(arena instanceof StandAloneArena)){
+            player.sendMessage(CC.error("Arena must be standalone to set deathY!"));
+            return;
+        }
+
+        ((StandAloneArena) arena).setDeathY(player.getLocation().getY());
+
+        plugin.getArenaManager().saveArenas();
+    }
+
     private boolean checkArena(String arenaName) {
         return plugin.getArenaManager().getArenaByName(arenaName) != null;
     }

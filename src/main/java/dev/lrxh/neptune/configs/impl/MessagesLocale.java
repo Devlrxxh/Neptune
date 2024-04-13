@@ -21,7 +21,7 @@ public enum MessagesLocale implements IDataAccessor {
     QUEUE_LEAVE("QUEUE.LEAVE", DataType.STRING_LIST, "&cYou have been removed from queue."),
     MATCH_STARTED("MATCH.STARTED", DataType.STRING_LIST, "&aMatch Started!"),
     MATCH_FOUND("MATCH.FOUND", DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", " "),
-    MATCH_STARTING("MATCH.START.TIMER", DataType.STRING_LIST, "&fMatch starting in &9<timer>&f..."),
+    MATCH_STARTING("MATCH.START.TIMER", DataType.STRING_LIST, "&fMatch starting in &b<timer>&f..."),
     MATCH_WINNER_TITLE("MATCH.TITLE.WINNER", DataType.STRING, "&aVICTORY!"),
     MATCH_LOSER_TITLE("MATCH.TITLE.LOSER", DataType.STRING, "&cDEFEAT!"),
     MATCH_TITLE_SUBTITLE("MATCH.TITLE.SUBTITLE", DataType.STRING, "&a<player> &fwon the match!");

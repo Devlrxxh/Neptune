@@ -3,6 +3,7 @@ dev\lrxh\neptune\utils\menu\filters\Filters.class
 dev\lrxh\neptune\match\tasks\MatchEndRunnable.class
 dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.class
 dev\lrxh\neptune\utils\menu\Button.class
+dev\lrxh\neptune\providers\hotbar\HotbarManager.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilderImpl.class
 dev\lrxh\neptune\utils\assemble\AssembleBoard.class
 dev\lrxh\neptune\arena\impl\StandAloneArena.class
@@ -18,6 +19,7 @@ dev\lrxh\neptune\arena\ArenaManager.class
 dev\lrxh\neptune\utils\ItemUtils.class
 dev\lrxh\neptune\match\impl\MatchState.class
 dev\lrxh\neptune\utils\assemble\AssembleAdapter.class
+dev\lrxh\neptune\providers\hotbar\ItemAction$3.class
 dev\lrxh\neptune\profile\Profile.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilder.class
 dev\lrxh\neptune\queue\menu\QueueMenu.class
@@ -31,7 +33,6 @@ dev\lrxh\neptune\match\impl\DeathCause.class
 dev\lrxh\neptune\utils\ConfigFile.class
 dev\lrxh\neptune\utils\PlayerUtils.class
 dev\lrxh\neptune\providers\hotbar\Item.class
-dev\lrxh\neptune\providers\hotbar\ItemManager.class
 dev\lrxh\neptune\utils\menu\Menu$1.class
 dev\lrxh\neptune\configs\impl\IDataAccessor.class
 dev\lrxh\neptune\queue\QueueManager.class

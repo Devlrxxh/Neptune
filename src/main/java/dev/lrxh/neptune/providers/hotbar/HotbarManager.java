@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Getter
-public class ItemManager {
+public class HotbarManager {
     private final Map<ProfileState, Hotbar> items = new HashMap<>();
     private final Neptune plugin = Neptune.get();
 
@@ -53,17 +53,17 @@ public class ItemManager {
 
     public void loadItems() {
         FileConfiguration config = Neptune.get().getConfigManager().getHotbarConfig().getConfiguration();
-        if (config.contains("items")) {
-            for (String section : config.getConfigurationSection("items").getKeys(false)) {
+        if (config.contains("ITEMS")) {
+            for (String section : config.getConfigurationSection("ITEMS").getKeys(false)) {
                 Hotbar inventory = new Hotbar();
 
-                for (String itemName : config.getConfigurationSection("items." + section).getKeys(false)) {
-                    String path = "items." + section + "." + itemName + ".";
+                for (String itemName : config.getConfigurationSection("ITEMS." + section).getKeys(false)) {
+                    String path = "ITEMS." + section + "." + itemName + ".";
 
-                    String displayName = config.getString(path + "name");
-                    Material material = Material.matchMaterial(config.getString(path + "material"));
-                    byte slot = (byte) config.getInt(path + "slot");
-                    byte durability = (byte) config.getInt(path + "durability");
+                    String displayName = config.getString(path + "NAME");
+                    Material material = Material.matchMaterial(config.getString(path + "MATERIAL"));
+                    byte slot = (byte) config.getInt(path + "SLOT");
+                    byte durability = (byte) config.getInt(path + "DURABILITY");
 
                     Item item = new Item(itemName, displayName, material, slot, durability);
 

@@ -6,7 +6,6 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\command
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\impl\ArenaType.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\manager\IManager.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\AssembleStyle.java
-C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\hotbar\ItemManager.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\impl\Team.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\Arena.java
@@ -37,6 +36,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\kit\Kit.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\listener\MatchListener.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\TaskScheduler.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\CC.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\hotbar\HotbarManager.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\profile\ProfileState.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\config\enums\MenusLocale.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\profile\ProfileManager.java

@@ -14,6 +14,12 @@ public enum ItemAction {
             new QueueMenu(false).openMenu(player);
         }
     },
+    RANKED() {
+        @Override
+        public void execute(Player player) {
+            new QueueMenu(true).openMenu(player);
+        }
+    },
     QUEUE_LEAVE() {
         @Override
         public void execute(Player player) {

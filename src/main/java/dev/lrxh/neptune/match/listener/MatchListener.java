@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.match.listener;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.DeathCause;
 import dev.lrxh.neptune.match.impl.MatchState;
@@ -77,14 +78,21 @@ public class MatchListener implements Listener {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         Match match = profile.getMatch();
 
-        if (match != null && match.getMatchState().equals(MatchState.IN_ROUND) && profile.getMatch().getKit().isSumo()) {
-            Location playerLocation = event.getPlayer().getLocation();
-            Block block = playerLocation.getBlock();
+        if (match != null && match.getMatchState().equals(MatchState.IN_ROUND)) {
+            Participant participant = match.getParticipant(player.getUniqueId());
+            Location playerLocation = player.getLocation();
 
-            if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) {
-                Participant participant = match.getParticipant(player.getUniqueId());
-                participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                match.onDeath(participant);
+            if (match.getKit().isSumo()) {
+                Block block = playerLocation.getBlock();
+
+                if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) {
+                    participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                    match.onDeath(participant);
+                }
+            } else if (match.getKit().isBedwars()) {
+                if(match.getArena() instanceof StandAloneArena && (playerLocation.getY() >= ((StandAloneArena) match.getArena()).getDeathY())){
+                 match.onDeath(participant);
+                }
             }
         }
     }

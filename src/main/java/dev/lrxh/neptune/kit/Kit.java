@@ -29,6 +29,7 @@ public class Kit {
     private boolean sumo;
     private boolean fallDamage;
     private boolean denyMovement;
+    private boolean bedwars;
 
 
     public List<String> getArenasAsString() {

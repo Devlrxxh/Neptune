@@ -72,8 +72,16 @@ public class TeamFightMatch extends Match {
         PlayerUtils.reset(participant.getPlayerUUID());
 
         PlayerUtils.doVelocityChange(participant.getPlayerUUID());
-        PlayerUtils.animateDeath(participant.getPlayerUUID());
 
+        if(!kit.isBedwars()){
+            PlayerUtils.animateDeath(participant.getPlayerUUID());
+        }
+
+        if (participant.getLastAttacker() != null) {
+            participant.getLastAttacker().playSound(Sound.NOTE_PLING);
+        }
+
+        hidePlayer(participant);
         sendDeathMessage(participant);
 
         end();

@@ -21,7 +21,7 @@ public class Item {
     private byte durability;
 
     public static Item getByItemStack(ItemStack itemStack) {
-        for (Map.Entry<ProfileState, Hotbar> entry : Neptune.get().getItemManager().getItems().entrySet()) {
+        for (Map.Entry<ProfileState, Hotbar> entry : Neptune.get().getHotbarManager().getItems().entrySet()) {
             Hotbar inventory = entry.getValue();
             Item foundItem = getItemFromInventory(itemStack, inventory);
             if (foundItem != null) {
@@ -34,7 +34,7 @@ public class Item {
     private static Item getItemFromInventory(ItemStack itemStack, Hotbar inventory) {
         if (inventory != null) {
             for (int slot = 0; slot <= 8; slot++) {
-                Item item = Neptune.get().getItemManager().getItemForSlot(inventory, slot);
+                Item item = Neptune.get().getHotbarManager().getItemForSlot(inventory, slot);
                 if (item != null && item.constructItem().isSimilar(itemStack)) {
                     return item;
                 }

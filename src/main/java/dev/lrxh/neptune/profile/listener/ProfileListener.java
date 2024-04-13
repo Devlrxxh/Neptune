@@ -22,7 +22,7 @@ public class ProfileListener implements Listener {
         PlayerUtils.reset(player.getUniqueId());
         PlayerUtils.teleportToSpawn(player.getUniqueId());
         plugin.getProfileManager().createProfile(player.getUniqueId());
-        plugin.getItemManager().giveItems(player.getUniqueId());
+        plugin.getHotbarManager().giveItems(player.getUniqueId());
         VisibilityLogic.handle(player.getUniqueId());
     }
 
