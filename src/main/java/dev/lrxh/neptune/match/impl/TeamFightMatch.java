@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -37,22 +38,6 @@ public class TeamFightMatch extends Match {
         return teamA.getParticipants().contains(participant) ? teamA : teamB;
     }
 
-    public void playSoundTeamA(Sound sound) {
-        for (Participant participant : teamA.getParticipants()) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
-            player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
-        }
-    }
-
-    public void playSoundTeamB(Sound sound) {
-        for (Participant participant : teamB.getParticipants()) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
-            player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
-        }
-    }
-
     @Override
     public void end() {
         matchState = MatchState.ENDING;
@@ -71,20 +56,30 @@ public class TeamFightMatch extends Match {
     }
 
     public void sendEndMessage(Team winnerTeam, Team loserTeam) {
-        for (Participant participant : participants) {
-            TextComponent winnerClickable =
-                    new ClickableBuilder(winnerTeam.getTeamNames()).event(ClickEvent.Action.RUN_COMMAND, "d")
-                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winnerTeam.getTeamNames())).build();
 
-            TextComponent loserClickable =
-                    new ClickableBuilder(loserTeam.getTeamNames()).event(ClickEvent.Action.RUN_COMMAND, "d")
-                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loserTeam.getTeamNames())).build();
+        sendMessage(MessagesLocale.MATCH_END_DETAILS,
+                new Replacement("<winner>", generateWinnerComponents(winnerTeam)),
+                new Replacement("<loser>", generateLoserComponents(loserTeam)));
+    }
 
-
-            MessagesLocale.MATCH_END_DETAILS.send(participant.getPlayerUUID(),
-                    new Replacement("<winner>", winnerClickable),
-                    new Replacement("<loser>", loserClickable));
+    public List<TextComponent> generateWinnerComponents(Team winnerTeam) {
+        List<TextComponent> components = new ArrayList<>();
+        for (Participant participant : winnerTeam.getParticipants()) {
+            components.add(
+                    new ClickableBuilder(participant.getNameUnColored()).event(ClickEvent.Action.RUN_COMMAND, "d")
+                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", participant.getNameUnColored())).build());
         }
+        return components;
+    }
+
+    public List<TextComponent> generateLoserComponents(Team loserTeam) {
+        List<TextComponent> components = new ArrayList<>();
+        for (Participant participant : loserTeam.getParticipants()) {
+            components.add(
+                    new ClickableBuilder(participant.getNameUnColored()).event(ClickEvent.Action.RUN_COMMAND, "d")
+                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", participant.getNameUnColored())).build());
+        }
+        return components;
     }
 
     @Override

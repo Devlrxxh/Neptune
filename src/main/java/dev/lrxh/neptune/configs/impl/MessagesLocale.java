@@ -29,6 +29,7 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_TITLE_SUBTITLE("MATCH.TITLE.SUBTITLE", DataType.STRING, "&a<player> &fwon the match!"),
     MATCH_VIEW_INV_TEXT_WINNER("MATCH.END_DETAILS.VIEW-INV-TEXT-WINNER", DataType.STRING, "&aClick to view <winner> inventory"),
     MATCH_VIEW_INV_TEXT_LOSER("MATCH.END_DETAILS.VIEW-INV-TEXT-LOSER", DataType.STRING, "&cClick to view <loser> inventory"),
+    MATCH_COMMA("MATCH.COMMA", DataType.STRING, "&7, "),
     MATCH_END_DETAILS("MATCH.END_DETAILS.MESSAGE", DataType.STRING_LIST, " ", "&bMatch Inventories &o&7(Click name to view)", "&aWinner: &e<winner> &7| &cLoser: &e<loser>", " ");
 
     private final String path;

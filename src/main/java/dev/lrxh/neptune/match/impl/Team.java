@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.impl;
 
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,8 +32,17 @@ public class Team {
             for (Participant participant : participants) {
                 return participant.getNameUnColored();
             }
+        } else {
+            StringBuilder names = new StringBuilder();
+            for (Participant participant : participants) {
+                if (names.length() > 0) {
+                    names.append(MessagesLocale.MATCH_COMMA.getString());
+                }
+                names.append(participant.getNameUnColored());
+            }
+            return names.toString();
         }
-        return "Enemy";
+        return null;
     }
 
     public int getTeamPing() {
