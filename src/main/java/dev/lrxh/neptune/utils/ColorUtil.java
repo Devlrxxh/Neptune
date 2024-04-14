@@ -40,16 +40,8 @@ public class ColorUtil {
                 }
 
                 if (lastColor != null && !str.isEmpty()) {
-                    TextComponent modifiedComponent = new TextComponent(CC.translate(lastColor + str));
-                    modifiedComponent.setBold(textComponent.isBold());
-                    modifiedComponent.setItalic(textComponent.isItalic());
-                    modifiedComponent.setUnderlined(textComponent.isUnderlined());
-                    modifiedComponent.setStrikethrough(textComponent.isStrikethrough());
-                    modifiedComponent.setObfuscated(textComponent.isObfuscated());
-                    modifiedComponent.setClickEvent(textComponent.getClickEvent());
-                    modifiedComponent.setHoverEvent(textComponent.getHoverEvent());
-                    modifiedComponent.setInsertion(textComponent.getInsertion());
-                    result.add(modifiedComponent);
+                    TextComponent component = new TextComponent(CC.translate(lastColor + str));
+                    result.add(component);
                 } else {
                     result.add(textComponent);
                 }
