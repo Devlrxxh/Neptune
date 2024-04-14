@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
 import org.bukkit.entity.Player;
 
@@ -21,8 +22,8 @@ public class QueueCommand extends BaseCommand {
 
             plugin.getQueueManager().addToQueue(player.getUniqueId(), queue);
             MessagesLocale.QUEUE_JOIN.send(player.getUniqueId(),
-
-                    "<type>", queue.isRanked() ? "Ranked" : "Unranked", "<kit>", queue.getKit().getDisplayName());
+                    new Replacement("<type>", queue.isRanked() ? "Ranked" : "Unranked"),
+                    new Replacement("<kit>", queue.getKit().getDisplayName()));
         }
     }
 }

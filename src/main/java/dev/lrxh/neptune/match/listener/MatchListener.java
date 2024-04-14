@@ -90,8 +90,8 @@ public class MatchListener implements Listener {
                     match.onDeath(participant);
                 }
             } else if (match.getKit().isBedwars()) {
-                if(match.getArena() instanceof StandAloneArena && (playerLocation.getY() >= ((StandAloneArena) match.getArena()).getDeathY())){
-                 match.onDeath(participant);
+                if (match.getArena() instanceof StandAloneArena && (playerLocation.getY() >= ((StandAloneArena) match.getArena()).getDeathY())) {
+                    match.onDeath(participant);
                 }
             }
         }

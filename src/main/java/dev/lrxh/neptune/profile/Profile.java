@@ -16,7 +16,7 @@ public class Profile {
     private Match match;
     private ProfileState state;
 
-    public void setState(ProfileState profileState){
+    public void setState(ProfileState profileState) {
         state = profileState;
         VisibilityLogic.handle(playerUUID);
         Neptune.get().getHotbarManager().giveItems(playerUUID);

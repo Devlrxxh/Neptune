@@ -33,7 +33,7 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
             }
 
-            if(profile.getState().equals(ProfileState.IN_GAME)){
+            if (profile.getState().equals(ProfileState.IN_GAME)) {
                 Participant participant = profile.getMatch().getParticipant(player.getUniqueId());
                 line = line.replaceAll("<opponent>", participant.getOpponent().getTeamNames());
                 line = line.replaceAll("<opponent-ping>", String.valueOf(participant.getOpponent().getTeamPing()));

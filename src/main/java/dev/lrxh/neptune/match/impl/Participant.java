@@ -7,7 +7,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
-import java.util.HashSet;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -37,7 +36,7 @@ public class Participant {
         return name;
     }
 
-    public void playSound(Sound sound){
+    public void playSound(Sound sound) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         player.playSound(player.getLocation(), sound, 1.0f, 1.0f);

@@ -6,9 +6,13 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
+import dev.lrxh.neptune.providers.clickable.ClickableBuilder;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.md_5.bungee.api.chat.ClickEvent;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -62,7 +66,25 @@ public class TeamFightMatch extends Match {
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winnerTeam.getTeamNames()), 100);
 
 
+        sendEndMessage(winnerTeam, loserTeam);
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
+    }
+
+    public void sendEndMessage(Team winnerTeam, Team loserTeam) {
+        for (Participant participant : participants) {
+            TextComponent winnerClickable =
+                    new ClickableBuilder(winnerTeam.getTeamNames()).event(ClickEvent.Action.RUN_COMMAND, "d")
+                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winnerTeam.getTeamNames())).build();
+
+            TextComponent loserClickable =
+                    new ClickableBuilder(loserTeam.getTeamNames()).event(ClickEvent.Action.RUN_COMMAND, "d")
+                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loserTeam.getTeamNames())).build();
+
+
+            MessagesLocale.MATCH_END_DETAILS.send(participant.getPlayerUUID(),
+                    new Replacement("<winner>", winnerClickable),
+                    new Replacement("<loser>", loserClickable));
+        }
     }
 
     @Override
@@ -73,7 +95,7 @@ public class TeamFightMatch extends Match {
 
         PlayerUtils.doVelocityChange(participant.getPlayerUUID());
 
-        if(!kit.isBedwars()){
+        if (!kit.isBedwars()) {
             PlayerUtils.animateDeath(participant.getPlayerUUID());
         }
 
@@ -90,8 +112,8 @@ public class TeamFightMatch extends Match {
     private void sendDeathMessage(Participant deadParticipant) {
         for (Participant participant : participants) {
             deadParticipant.getDeathCause().getMessagesLocale().send(participant.getPlayerUUID(),
-                    "<player>", deadParticipant.getName(),
-                    "<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : "");
+                    new Replacement("<player>", deadParticipant.getName()),
+                    new Replacement("<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : ""));
         }
     }
 }

@@ -95,7 +95,7 @@ public class ArenaCommand extends BaseCommand {
         }
         Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
 
-        if(!(arena instanceof StandAloneArena)){
+        if (!(arena instanceof StandAloneArena)) {
             player.sendMessage(CC.error("Arena must be standalone to set deathY!"));
             return;
         }

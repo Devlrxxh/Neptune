@@ -4,6 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -33,7 +34,7 @@ public class MatchStartRunnable extends BukkitRunnable {
         if (match.getMatchState().equals(MatchState.STARTING) && startTimer != 0) {
             match.playSound(Sound.CLICK);
             match.sendTitle(startTimer > 3 ? "&e" + startTimer : "&c" + startTimer, "", 5);
-            match.sendMessage(MessagesLocale.MATCH_STARTING, "<timer>", String.valueOf(startTimer));
+            match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));
             match.checkRules();
         }
         startTimer--;

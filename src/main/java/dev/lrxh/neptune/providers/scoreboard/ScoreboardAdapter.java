@@ -29,13 +29,13 @@ public class ScoreboardAdapter implements AssembleAdapter {
         if (state.equals(ProfileState.IN_QUEUE)) {
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_QUEUE.getStringList()), player);
         }
-        if(state.equals(ProfileState.IN_GAME)){
+        if (state.equals(ProfileState.IN_GAME)) {
             Match match = profile.getMatch();
-            if(match.getMatchState().equals(MatchState.STARTING)){
+            if (match.getMatchState().equals(MatchState.STARTING)) {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
             } else if (match.getMatchState().equals(MatchState.IN_ROUND)) {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
-            }else{
+            } else {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
             }
         }
@@ -45,6 +45,6 @@ public class ScoreboardAdapter implements AssembleAdapter {
     private String getAnimatedText() {
         int index = (int) ((System.currentTimeMillis() / ScoreboardLocale.UPDATE_INTERVAL.getInt())
                 % ScoreboardLocale.TITLE.getStringList().size());
-        return  ScoreboardLocale.TITLE.getStringList().get(index);
+        return ScoreboardLocale.TITLE.getStringList().get(index);
     }
 }

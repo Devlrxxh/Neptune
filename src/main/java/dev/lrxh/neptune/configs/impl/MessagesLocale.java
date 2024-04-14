@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.configs.impl;
 
-import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.providers.clickable.ClickableUtils;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ConfigFile;
+import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -24,7 +26,10 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_STARTING("MATCH.START.TIMER", DataType.STRING_LIST, "&fMatch starting in &b<timer>&f..."),
     MATCH_WINNER_TITLE("MATCH.TITLE.WINNER", DataType.STRING, "&aVICTORY!"),
     MATCH_LOSER_TITLE("MATCH.TITLE.LOSER", DataType.STRING, "&cDEFEAT!"),
-    MATCH_TITLE_SUBTITLE("MATCH.TITLE.SUBTITLE", DataType.STRING, "&a<player> &fwon the match!");
+    MATCH_TITLE_SUBTITLE("MATCH.TITLE.SUBTITLE", DataType.STRING, "&a<player> &fwon the match!"),
+    MATCH_VIEW_INV_TEXT_WINNER("MATCH.END_DETAILS.VIEW-INV-TEXT-WINNER", DataType.STRING, "&aClick to view <winner> inventory"),
+    MATCH_VIEW_INV_TEXT_LOSER("MATCH.END_DETAILS.VIEW-INV-TEXT-LOSER", DataType.STRING, "&cClick to view <loser> inventory"),
+    MATCH_END_DETAILS("MATCH.END_DETAILS.MESSAGE", DataType.STRING_LIST, " ", "&bMatch Inventories &o&7(Click name to view)", "&aWinner: &e<winner> &7| &cLoser: &e<loser>", " ");
 
     private final String path;
     private final List<String> defaultValue = new ArrayList<>();
@@ -41,18 +46,21 @@ public enum MessagesLocale implements IDataAccessor {
         return plugin.getConfigManager().getMessagesConfig();
     }
 
-
-    public void send(UUID playerUUID, String... replacements) {
+    public void send(UUID playerUUID, Replacement... replacements) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        for (String string : getStringList()) {
-            String translatedMessage = string;
+
+        for (String message : getStringList()) {
+
+            String translatedMessage = message;
             if (replacements.length % 2 == 0) {
-                for (int i = 0; i < replacements.length; i += 2) {
-                    translatedMessage = translatedMessage.replace(replacements[i], replacements[i + 1]);
+                for (Replacement replacement : replacements) {
+                    if (replacement.getReplacement() instanceof String) {
+                        translatedMessage = translatedMessage.replace(replacement.getPlaceholder(), (String) replacement.getReplacement());
+                    }
                 }
-                player.sendMessage(CC.translate(translatedMessage));
             }
+
+            PlayerUtils.sendMessage(player, ClickableUtils.returnMessage(translatedMessage, replacements));
         }
     }
 }

@@ -7,7 +7,6 @@ import dev.lrxh.neptune.match.impl.*;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
-import dev.lrxh.neptune.profile.VisibilityLogic;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

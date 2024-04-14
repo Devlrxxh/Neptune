@@ -6,12 +6,16 @@ import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class QueueTask extends BukkitRunnable {
     private final Neptune plugin = Neptune.get();
@@ -76,17 +80,19 @@ public class QueueTask extends BukkitRunnable {
                             }
 
                             //Send match found message
-                            MessagesLocale.MATCH_FOUND.send(uuid1, "<opponent>", participant2.getNameUnColored(),
-                                    "<kit>", queue1.getKit().getDisplayName(),
-                                    "<arena>", arena.getDisplayName(),
-                                    "<opponent-ping>", String.valueOf(PlayerUtils.getPing(uuid2)),
-                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid1)));
+                            MessagesLocale.MATCH_FOUND.send(uuid1,
+                                    new Replacement("<opponent>", participant2.getNameUnColored()),
+                                    new Replacement("<kit>", queue1.getKit().getDisplayName()),
+                                    new Replacement("<arena>", arena.getDisplayName()),
+                                    new Replacement("<opponent-ping>", String.valueOf(PlayerUtils.getPing(uuid2))),
+                                    new Replacement("<ping>", String.valueOf(PlayerUtils.getPing(uuid1))));
 
-                            MessagesLocale.MATCH_FOUND.send(uuid2, "<opponent>", participant1.getNameUnColored(),
-                                    "<kit>", queue1.getKit().getDisplayName(),
-                                    "<arena>", arena.getDisplayName(),
-                                    "<opponent-ping>", String.valueOf(PlayerUtils.getPing(uuid1)),
-                                    "<ping>", String.valueOf(PlayerUtils.getPing(uuid2)));
+                            MessagesLocale.MATCH_FOUND.send(uuid2,
+                                    new Replacement("<opponent>", participant1.getNameUnColored()),
+                                    new Replacement("<kit>", queue1.getKit().getDisplayName()),
+                                    new Replacement("<arena>", arena.getDisplayName()),
+                                    new Replacement("<opponent-ping>", String.valueOf(PlayerUtils.getPing(uuid1))),
+                                    new Replacement("<ping>", String.valueOf(PlayerUtils.getPing(uuid2))));
 
                             //Set arena as being used
                             if (arena instanceof StandAloneArena) {

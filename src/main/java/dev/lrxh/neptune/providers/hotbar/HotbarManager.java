@@ -27,12 +27,12 @@ public class HotbarManager {
     }
 
     public void giveItems(UUID playerUUID) {
-        if(Bukkit.getPlayer(playerUUID) == null) return;
+        if (Bukkit.getPlayer(playerUUID) == null) return;
         Player player = Bukkit.getPlayer(playerUUID);
 
         player.getInventory().clear();
         ProfileState profileState = plugin.getProfileManager().getByUUID(player.getUniqueId()).getState();
-        if(profileState.equals(ProfileState.IN_GAME)) return;
+        if (profileState.equals(ProfileState.IN_GAME)) return;
 
         Hotbar inventory = items.get(profileState);
 

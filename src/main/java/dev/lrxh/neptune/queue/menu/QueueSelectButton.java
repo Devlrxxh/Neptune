@@ -3,6 +3,7 @@ package dev.lrxh.neptune.queue.menu;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -29,7 +30,8 @@ public class QueueSelectButton extends Button {
     public void clicked(Player player, ClickType clickType) {
         plugin.getQueueManager().addToQueue(player.getUniqueId(), new Queue(kit, ranked));
         MessagesLocale.QUEUE_JOIN.send(player.getUniqueId(),
-                "<type>", ranked ? "Ranked" : "Unranked", "<kit>", kit.getDisplayName());
+                new Replacement("<type>", ranked ? "Ranked" : "Unranked"),
+                new Replacement("<kit>", kit.getDisplayName()));
         player.closeInventory();
     }
 }

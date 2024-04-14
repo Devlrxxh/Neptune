@@ -1,12 +1,10 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.VisibilityLogic;
 import lombok.experimental.UtilityClass;
-import net.minecraft.server.v1_8_R3.MinecraftServer;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityDestroy;
-import net.minecraft.server.v1_8_R3.PacketPlayOutEntityStatus;
-import net.minecraft.server.v1_8_R3.PacketPlayOutNamedEntitySpawn;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
+import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
@@ -19,9 +17,7 @@ import org.bukkit.util.Vector;
 import org.github.paperspigot.Title;
 
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @UtilityClass
 public class PlayerUtils {
@@ -79,11 +75,60 @@ public class PlayerUtils {
         }
     }
 
+    public void sendMessage(Player player, List<Object> content) {
+        if (((CraftPlayer) player).getHandle().playerConnection == null) return;
+
+        List<BaseComponent[]> combinedComponents = new ArrayList<>();
+
+        for (Object obj : ColorUtil.addLastColorToNext(content)) {
+
+            if (obj instanceof String) {
+                String message = CC.translate((String) obj);
+                combinedComponents.add(TextComponent.fromLegacyText(message));
+            } else if (obj instanceof BaseComponent) {
+                combinedComponents.add(new BaseComponent[]{(BaseComponent) obj});
+            }
+        }
+
+        PacketPlayOutChat packet = new PacketPlayOutChat();
+
+        List<BaseComponent> flattenedComponents = new ArrayList<>();
+        for (BaseComponent[] components : combinedComponents) {
+            flattenedComponents.addAll(Arrays.asList(components));
+        }
+
+        packet.components = flattenedComponents.toArray(new BaseComponent[0]);
+
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     public int getPing(UUID playerUUID) {
         if (Bukkit.getPlayer(playerUUID) == null) return 0;
         Player player = Bukkit.getPlayer(playerUUID);
         return ((CraftPlayer) player).getHandle().ping;
     }
+
+    public void sendMessage(Player player, Object... content) {
+        if (((CraftPlayer) player).getHandle().playerConnection == null) return;
+
+        List<BaseComponent> combinedComponents = new ArrayList<>();
+
+        for (Object obj : content) {
+            if (obj instanceof String) {
+                String message = (String) obj;
+                combinedComponents.addAll(Arrays.asList(TextComponent.fromLegacyText(message)));
+            } else if (obj instanceof BaseComponent) {
+                combinedComponents.add((BaseComponent) obj);
+            }
+        }
+
+        BaseComponent[] combinedArray = combinedComponents.toArray(new BaseComponent[0]);
+
+        PacketPlayOutChat packet = new PacketPlayOutChat();
+        packet.components = combinedArray;
+        ((CraftPlayer) player).getHandle().playerConnection.sendPacket(packet);
+    }
+
 
     public void denyMovement(UUID playerUUID) {
         if (Bukkit.getPlayer(playerUUID) == null) return;
@@ -120,6 +165,7 @@ public class PlayerUtils {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
             player.sendTitle(new Title(CC.translate(header), CC.translate(footer), 1, duration, 10));
+
         }
     }
 
