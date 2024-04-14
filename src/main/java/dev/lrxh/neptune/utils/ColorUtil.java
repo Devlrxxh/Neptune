@@ -40,8 +40,8 @@ public class ColorUtil {
                 }
 
                 if (lastColor != null && !str.isEmpty()) {
-                    TextComponent component = new TextComponent(CC.translate(lastColor + str));
-                    result.add(component);
+                    textComponent.setText(CC.translate(lastColor + str));
+                    result.add(textComponent);
                 } else {
                     result.add(textComponent);
                 }

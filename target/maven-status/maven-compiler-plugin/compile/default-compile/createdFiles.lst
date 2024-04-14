@@ -44,6 +44,7 @@ dev\lrxh\neptune\configs\impl\IDataAccessor$1.class
 dev\lrxh\neptune\match\impl\Team.class
 dev\lrxh\neptune\utils\assemble\events\AssembleBoardCreateEvent.class
 dev\lrxh\neptune\match\tasks\MatchStartRunnable.class
+dev\lrxh\neptune\match\impl\MatchSnapshot.class
 dev\lrxh\neptune\utils\menu\Menu.class
 dev\lrxh\neptune\utils\TaskScheduler.class
 dev\lrxh\neptune\arena\impl\ArenaType.class
