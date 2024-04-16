@@ -6,18 +6,16 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
-import dev.lrxh.neptune.providers.clickable.ClickableBuilder;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.Getter;
 import lombok.Setter;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.TextComponent;
-import org.bukkit.Bukkit;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -47,7 +45,7 @@ public class TeamFightMatch extends Match {
         winnerTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winnerTeam.getTeamNames()), 100);
 
-        loserTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
+        loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winnerTeam.getTeamNames()), 100);
 
 
@@ -56,30 +54,20 @@ public class TeamFightMatch extends Match {
     }
 
     public void sendEndMessage(Team winnerTeam, Team loserTeam) {
+        for (Participant participant : participants) {
 
-        sendMessage(MessagesLocale.MATCH_END_DETAILS,
-                new Replacement("<winner>", generateWinnerComponents(winnerTeam)),
-                new Replacement("<loser>", generateLoserComponents(loserTeam)));
-    }
+            TextComponent winnerMessage = Component.text(winnerTeam.getTeamNames())
+                    .clickEvent(ClickEvent.runCommand("d"))
+                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winnerTeam.getTeamNames()))));
 
-    public List<TextComponent> generateWinnerComponents(Team winnerTeam) {
-        List<TextComponent> components = new ArrayList<>();
-        for (Participant participant : winnerTeam.getParticipants()) {
-            components.add(
-                    new ClickableBuilder(participant.getNameUnColored()).event(ClickEvent.Action.RUN_COMMAND, "d")
-                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", participant.getNameUnColored())).build());
+            TextComponent loserMessage = Component.text(loserTeam.getTeamNames())
+                    .clickEvent(ClickEvent.runCommand("d"))
+                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loserTeam.getTeamNames()))));
+
+            MessagesLocale.MATCH_END_DETAILS.send(participant.getPlayerUUID(),
+                    new Replacement("<loser>", loserMessage),
+                    new Replacement("<winner>", winnerMessage));
         }
-        return components;
-    }
-
-    public List<TextComponent> generateLoserComponents(Team loserTeam) {
-        List<TextComponent> components = new ArrayList<>();
-        for (Participant participant : loserTeam.getParticipants()) {
-            components.add(
-                    new ClickableBuilder(participant.getNameUnColored()).event(ClickEvent.Action.RUN_COMMAND, "d")
-                            .hover(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", participant.getNameUnColored())).build());
-        }
-        return components;
     }
 
     @Override
@@ -90,12 +78,8 @@ public class TeamFightMatch extends Match {
 
         PlayerUtils.doVelocityChange(participant.getPlayerUUID());
 
-        if (!kit.isBedwars()) {
-            PlayerUtils.animateDeath(participant.getPlayerUUID());
-        }
-
         if (participant.getLastAttacker() != null) {
-            participant.getLastAttacker().playSound(Sound.NOTE_PLING);
+            participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
         }
 
         hidePlayer(participant);

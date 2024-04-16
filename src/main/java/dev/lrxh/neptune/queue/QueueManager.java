@@ -12,8 +12,8 @@ public class QueueManager {
     private final Neptune plugin = Neptune.get();
 
     public void addToQueue(UUID playerUUID, Queue queue) {
-        plugin.getProfileManager().getByUUID(playerUUID).setState(ProfileState.IN_QUEUE);
         queues.put(playerUUID, queue);
+        plugin.getProfileManager().getByUUID(playerUUID).setState(ProfileState.IN_QUEUE);
     }
 
     public void remove(UUID playerUUID) {

@@ -9,12 +9,12 @@ import java.util.List;
 public class ClickableUtils {
 
     public List<Object> returnMessage(String message, Replacement... replacements) {
-        List<Object> objects = new ArrayList<>();
+        ArrayList<Object> objects = new ArrayList<>();
         objects.add(message);
 
         for (Replacement replacement : replacements) {
             String placeholder = replacement.getPlaceholder();
-            List<Object> tempObjects = new ArrayList<>();
+            ArrayList<Object> tempObjects = new ArrayList<>();
 
             for (Object obj : objects) {
                 if (obj instanceof String) {
@@ -33,6 +33,10 @@ public class ClickableUtils {
                     } else {
                         tempObjects.add(obj);
                     }
+                } else if (obj instanceof List) {
+                    List<?> list = (List<?>) obj;
+                    System.out.println("Added list: " + list);
+                    tempObjects.addAll(list);
                 } else {
                     tempObjects.add(obj);
                 }
@@ -41,6 +45,7 @@ public class ClickableUtils {
             objects.addAll(tempObjects);
         }
 
+        System.out.println(objects);
         return objects;
     }
 }

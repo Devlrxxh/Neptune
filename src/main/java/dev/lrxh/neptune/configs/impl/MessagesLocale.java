@@ -52,16 +52,7 @@ public enum MessagesLocale implements IDataAccessor {
 
         for (String message : getStringList()) {
 
-            String translatedMessage = message;
-            if (replacements.length % 2 == 0) {
-                for (Replacement replacement : replacements) {
-                    if (replacement.getReplacement() instanceof String) {
-                        translatedMessage = translatedMessage.replace(replacement.getPlaceholder(), (String) replacement.getReplacement());
-                    }
-                }
-            }
-
-            PlayerUtils.sendMessage(player, ClickableUtils.returnMessage(translatedMessage, replacements));
+            PlayerUtils.sendMessage(player, ClickableUtils.returnMessage(message, replacements));
         }
     }
 }

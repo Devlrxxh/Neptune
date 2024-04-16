@@ -21,7 +21,6 @@ dev\lrxh\neptune\utils\ItemUtils.class
 dev\lrxh\neptune\match\impl\MatchState.class
 dev\lrxh\neptune\utils\assemble\AssembleAdapter.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$3.class
-dev\lrxh\neptune\providers\clickable\ClickableBuilder.class
 dev\lrxh\neptune\profile\Profile.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilder.class
 dev\lrxh\neptune\queue\menu\QueueMenu.class

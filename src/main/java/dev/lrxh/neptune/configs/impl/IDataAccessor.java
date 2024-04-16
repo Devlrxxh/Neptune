@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.configs.impl;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 
 import java.util.List;
@@ -10,7 +11,7 @@ public interface IDataAccessor {
     Neptune plugin = Neptune.get();
 
     default String getString() {
-        return getConfigFile().getConfiguration().getString(getPath());
+        return CC.translate(getConfigFile().getConfiguration().getString(getPath()));
     }
 
     default List<String> getStringList() {

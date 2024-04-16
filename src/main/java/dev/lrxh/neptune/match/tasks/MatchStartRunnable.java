@@ -29,11 +29,11 @@ public class MatchStartRunnable extends BukkitRunnable {
             match.setMatchState(MatchState.IN_ROUND);
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.checkRules();
-            match.playSound(Sound.FIREWORK_BLAST);
+            match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         }
         if (match.getMatchState().equals(MatchState.STARTING) && startTimer != 0) {
-            match.playSound(Sound.CLICK);
-            match.sendTitle(startTimer > 3 ? "&e" + startTimer : "&c" + startTimer, "", 5);
+            match.playSound(Sound.UI_BUTTON_CLICK);
+            match.sendTitle(startTimer > 3 ? "&e" + startTimer : "&c" + startTimer, "", 100);
             match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));
             match.checkRules();
         }

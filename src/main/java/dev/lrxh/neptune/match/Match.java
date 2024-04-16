@@ -65,6 +65,7 @@ public abstract class Match {
                 if (matchState.equals(MatchState.STARTING)) {
                     PlayerUtils.denyMovement(participant.getPlayerUUID());
                 } else {
+                    Bukkit.getPlayer(participant.getPlayerUUID()).resetTitle();
                     PlayerUtils.allowMovement(participant.getPlayerUUID());
                 }
             }

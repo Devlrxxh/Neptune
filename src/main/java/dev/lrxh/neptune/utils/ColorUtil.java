@@ -1,7 +1,8 @@
 package dev.lrxh.neptune.utils;
 
 import lombok.experimental.UtilityClass;
-import net.md_5.bungee.api.chat.TextComponent;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,15 +34,17 @@ public class ColorUtil {
                 }
             } else if (object instanceof TextComponent) {
                 TextComponent textComponent = (TextComponent) object;
-                String str = textComponent.getText();
+                String str = textComponent.content();
                 Matcher matcher = COLOR_PATTERN.matcher(str);
                 while (matcher.find()) {
                     lastColor = matcher.group();
                 }
 
                 if (lastColor != null && !str.isEmpty()) {
-                    textComponent.setText(CC.translate(lastColor + str));
-                    result.add(textComponent);
+                    TextComponent temp = Component.text(CC.translate(lastColor + str))
+                            .clickEvent(textComponent.clickEvent())
+                            .hoverEvent(textComponent.hoverEvent());
+                    result.add(temp);
                 } else {
                     result.add(textComponent);
                 }

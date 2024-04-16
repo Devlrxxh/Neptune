@@ -41,7 +41,6 @@ public class MatchListener implements Listener {
             if (match instanceof TeamFightMatch) {
                 Participant participant = match.getParticipant(player.getUniqueId());
                 participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-
                 profile.getMatch().onDeath(participant);
             }
         }
@@ -85,7 +84,7 @@ public class MatchListener implements Listener {
             if (match.getKit().isSumo()) {
                 Block block = playerLocation.getBlock();
 
-                if (block.getType() == Material.WATER || block.getType() == Material.STATIONARY_WATER) {
+                if (block.getType() == Material.WATER || block.getType() == Material.LEGACY_STATIONARY_WATER) {
                     participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(participant);
                 }

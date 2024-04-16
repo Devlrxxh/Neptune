@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.utils.menu;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.CC;
@@ -36,7 +37,7 @@ public abstract class Menu {
 
     {
 
-        fillerType = new ItemBuilder(Material.valueOf(MenusLocale.FILTER_MATERIAL.getString())).name(MenusLocale.FILTER_NAME.getString()).durability(MenusLocale.FILTER_DURABILITY.getInt()).amount(1).build();
+        fillerType = new ItemBuilder(XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseMaterial()).name(MenusLocale.FILTER_NAME.getString()).durability(MenusLocale.FILTER_DURABILITY.getInt()).amount(1).build();
     }
 
     private void fillBorder(Inventory inventory) {
@@ -79,7 +80,7 @@ public abstract class Menu {
     private ItemStack createItemStack(Player player, Button button) {
         ItemStack item = button.getButtonItem(player);
 
-        if (item.getType() != Material.SKULL_ITEM) {
+        if (item.getType() != Material.LEGACY_SKULL) {
             ItemMeta meta = item.getItemMeta();
 
             if (meta != null && meta.hasDisplayName()) {
