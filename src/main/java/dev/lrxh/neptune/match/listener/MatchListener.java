@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.listener;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
@@ -89,7 +90,8 @@ public class MatchListener implements Listener {
                     match.onDeath(participant);
                 }
             } else if (match.getKit().isBedwars()) {
-                if (match.getArena() instanceof StandAloneArena && (playerLocation.getY() >= ((StandAloneArena) match.getArena()).getDeathY())) {
+                if (match.getArena() instanceof StandAloneArena && (playerLocation.getY() <= ((StandAloneArena) match.getArena()).getDeathY()) || !participant.isDead()) {
+                    participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(participant);
                 }
             }
@@ -146,7 +148,7 @@ public class MatchListener implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         Match match = profile.getMatch();
-        if (!(match != null && match.getKit().isBuild())) {
+        if (!(match != null && match.getKit().isBuild()) || !(match.getKit().isBedwars() && (event.getBlock().getType().equals(Material.LEGACY_BED) || event.getBlock().getType().equals(Material.LEGACY_BED_BLOCK)) || event.getBlock().getType().equals(Material.END_STONE) || (event.getBlock().getType().equals(Material.OAK_PLANKS)))) {
             event.setCancelled(true);
         }
     }

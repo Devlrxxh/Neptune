@@ -14,9 +14,12 @@ public class QueueManager {
     public void addToQueue(UUID playerUUID, Queue queue) {
         queues.put(playerUUID, queue);
         plugin.getProfileManager().getByUUID(playerUUID).setState(ProfileState.IN_QUEUE);
+        queue.getKit().addQueue(queue.isRanked());
     }
 
     public void remove(UUID playerUUID) {
+        Queue queue = queues.get(playerUUID);
+        queue.getKit().removeQueue(queue.getKit().isRanked());
         queues.remove(playerUUID);
     }
 

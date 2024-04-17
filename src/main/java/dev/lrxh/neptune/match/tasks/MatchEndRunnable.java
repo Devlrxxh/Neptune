@@ -4,6 +4,8 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.match.impl.Team;
+import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.PlayerUtils;
@@ -29,6 +31,7 @@ public class MatchEndRunnable extends BukkitRunnable {
         if (endTimer == 0) {
             if (match.kit.isBuild() && match.arena instanceof StandAloneArena) {
                 ((StandAloneArena) match.arena).setUsed(false);
+                cancel();
             }
             for (Participant participant : match.participants) {
                 if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
@@ -36,8 +39,15 @@ public class MatchEndRunnable extends BukkitRunnable {
                 PlayerUtils.teleportToSpawn(participant.getPlayerUUID());
                 Profile profile = Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID());
                 profile.setState(ProfileState.LOBBY);
+                match.getKit().removePlaying(match.isRanked());
                 profile.setMatch(null);
                 plugin.getMatchManager().matches.remove(match);
+            }
+            if(match instanceof TeamFightMatch){
+                Team winnerTeam = ((TeamFightMatch) match).getTeamA().isLoser() ? ((TeamFightMatch) match).getTeamB() : ((TeamFightMatch) match).getTeamA();
+                Team loserTeam = ((TeamFightMatch) match).getTeamA().isLoser() ? ((TeamFightMatch) match).getTeamA() : ((TeamFightMatch) match).getTeamB();
+
+                ((TeamFightMatch) match).sendEndMessage(winnerTeam, loserTeam);
             }
         }
         endTimer--;

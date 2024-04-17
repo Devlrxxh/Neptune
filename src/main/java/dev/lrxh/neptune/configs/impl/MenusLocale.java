@@ -16,7 +16,8 @@ public enum MenusLocale implements IDataAccessor {
     QUEUE_SELECT_SIZE("QUEUE.SELECT.SIZE", DataType.INT, "36"),
     QUEUE_SELECT_STARTING_SLOT("QUEUE.SELECT.STARTING-SLOT", DataType.INT, "10"),
     QUEUE_SELECT_FILTER("QUEUE.SELECT.FILTER-TYPE", DataType.STRING, "FILL"),
-    QUEUE_SELECT_TITLE("QUEUE.SELECT.TITLE", DataType.STRING, "&7<type> Queue");
+    QUEUE_SELECT_TITLE("QUEUE.SELECT.TITLE", DataType.STRING, "&7<type> Queue"),
+    QUEUE_SELECT_UNRANKED_LORE("QUEUE.SELECT.UNRANKED.LORE", DataType.STRING_LIST, "", " &f&7* &fIn Fights: &b<playing>", " &f&7* &fQueued: &b<queue>");
 
     private final String path;
     private final List<String> defaultValue = new ArrayList<>();

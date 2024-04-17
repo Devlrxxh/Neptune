@@ -6,6 +6,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
+import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtils;
 import lombok.Getter;
@@ -48,8 +49,6 @@ public class TeamFightMatch extends Match {
         loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winnerTeam.getTeamNames()), 100);
 
-
-        sendEndMessage(winnerTeam, loserTeam);
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
     }
 
@@ -72,6 +71,16 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
+
+        if (participant.getLastAttacker() != null) {
+            participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
+        }
+
+        if(kit.isBedwars() && getPlayerTeam(participant).isHasBed()){
+            respawn(participant);
+            return;
+        }
+
         getPlayerTeam(participant).setLoser(true);
 
         PlayerUtils.reset(participant.getPlayerUUID());
@@ -86,6 +95,21 @@ public class TeamFightMatch extends Match {
         sendDeathMessage(participant);
 
         end();
+    }
+
+    @Override
+    public void respawn(Participant participant) {
+        if (matchState != MatchState.IN_ROUND) {
+            return;
+        }
+        participant.setDead(true);
+
+        hidePlayer(participant);
+        sendDeathMessage(participant);
+        PlayerUtils.reset(participant.getPlayerUUID());
+        PlayerUtils.doVelocityChange(participant.getPlayerUUID());
+
+        Neptune.get().getTaskScheduler().startTask(new MatchRespawnRunnable(this, participant), 0L);
     }
 
     private void sendDeathMessage(Participant deadParticipant) {

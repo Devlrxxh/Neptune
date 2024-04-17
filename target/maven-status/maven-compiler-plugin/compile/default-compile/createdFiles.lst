@@ -28,6 +28,7 @@ dev\lrxh\neptune\utils\ColorUtil.class
 dev\lrxh\neptune\arena\impl\StandAloneArena$StandAloneArenaBuilderImpl.class
 dev\lrxh\neptune\utils\CC.class
 dev\lrxh\neptune\match\MatchManager.class
+dev\lrxh\neptune\match\tasks\MatchRespawnRunnable.class
 dev\lrxh\neptune\profile\VisibilityLogic.class
 dev\lrxh\neptune\match\Match.class
 dev\lrxh\neptune\arena\impl\SharedArena.class

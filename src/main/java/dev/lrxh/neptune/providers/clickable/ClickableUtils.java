@@ -35,7 +35,6 @@ public class ClickableUtils {
                     }
                 } else if (obj instanceof List) {
                     List<?> list = (List<?>) obj;
-                    System.out.println("Added list: " + list);
                     tempObjects.addAll(list);
                 } else {
                     tempObjects.add(obj);
@@ -45,7 +44,6 @@ public class ClickableUtils {
             objects.addAll(tempObjects);
         }
 
-        System.out.println(objects);
         return objects;
     }
 }

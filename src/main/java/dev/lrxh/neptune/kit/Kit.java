@@ -30,7 +30,28 @@ public class Kit {
     private boolean fallDamage;
     private boolean denyMovement;
     private boolean bedwars;
+    //VALUES
+    private int unrankedQueue, rankedQueue, unrankedPlaying, rankedPlaying;
 
+    public Kit(String name, String displayName, boolean ranked, List<ItemStack> items, List<ItemStack> armour, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean bedwars) {
+        this.name = name;
+        this.displayName = displayName;
+        this.ranked = ranked;
+        this.items = items;
+        this.armour = armour;
+        this.arenas = arenas;
+        this.icon = icon;
+        this.build = build;
+        this.hunger = hunger;
+        this.sumo = sumo;
+        this.fallDamage = fallDamage;
+        this.denyMovement = denyMovement;
+        this.bedwars = bedwars;
+        this.unrankedQueue = 0;
+        this.rankedQueue = 0;
+        this.rankedPlaying = 0;
+        this.unrankedPlaying = 0;
+    }
 
     public List<String> getArenasAsString() {
         List<String> arenasString = null;
@@ -42,5 +63,38 @@ public class Kit {
         }
         return arenasString;
     }
+
+    public void removeQueue(boolean ranked) {
+        if (ranked) {
+            setRankedQueue(rankedQueue - 1);
+        } else {
+            setUnrankedQueue(unrankedQueue - 1);
+        }
+    }
+
+    public void addQueue(boolean ranked) {
+        if (ranked) {
+            setRankedQueue(rankedQueue + 1);
+        } else {
+            setUnrankedQueue(unrankedQueue + 1);
+        }
+    }
+
+    public void removePlaying(boolean ranked) {
+        if (ranked) {
+            setRankedPlaying(rankedPlaying - 1);
+        } else {
+            setRankedPlaying(rankedPlaying - 1);
+        }
+    }
+
+    public void addPlaying(boolean ranked) {
+        if (ranked) {
+            setRankedPlaying(rankedPlaying + 1);
+        } else {
+            setRankedPlaying(rankedPlaying + 1);
+        }
+    }
+
 }
 

@@ -26,11 +26,11 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("No kits found!"));
             return;
         }
-        player.sendMessage(CC.translate("&7&m----------------------------------"));
-        player.sendMessage(CC.translate("&9Kits: "));
+        player.sendMessage(CC.color("&7&m----------------------------------"));
+        player.sendMessage(CC.color("&9Kits: "));
         player.sendMessage(" ");
-        plugin.getKitManager().kits.forEach(kit -> player.sendMessage(CC.translate("&7- &9" + kit.getName() + " &7 | " + kit.getDisplayName())));
-        player.sendMessage(CC.translate("&7&m----------------------------------"));
+        plugin.getKitManager().kits.forEach(kit -> player.sendMessage(CC.color("&7- &9" + kit.getName() + " &7 | " + kit.getDisplayName())));
+        player.sendMessage(CC.color("&7&m----------------------------------"));
     }
 
     @Subcommand("create")
@@ -54,13 +54,13 @@ public class KitCommand extends BaseCommand {
                 .fallDamage(false)
                 .denyMovement(false)
                 .arenas(new HashSet<>())
-                .icon(player.getItemInHand())
+                .icon(player.getInventory().getItemInMainHand())
                 .build();
 
 
         plugin.getKitManager().kits.add(kit);
         plugin.getKitManager().saveKits();
-        player.sendMessage(CC.translate("&aSuccessfully created new Kit!"));
+        player.sendMessage(CC.color("&aSuccessfully created new Kit!"));
     }
 
     @Subcommand("getinv")
@@ -77,7 +77,7 @@ public class KitCommand extends BaseCommand {
         player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
         player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
 
-        player.sendMessage(CC.translate("&aSuccessfully given kit load out!"));
+        player.sendMessage(CC.color("&aSuccessfully given kit load out!"));
     }
 
 
@@ -95,7 +95,7 @@ public class KitCommand extends BaseCommand {
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
         kit.setArmour(Arrays.asList(player.getInventory().getArmorContents()));
         plugin.getKitManager().saveKits();
-        player.sendMessage(CC.translate("&aSuccessfully set kit load out!"));
+        player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
     }
 
     @Subcommand("ranked")
@@ -111,7 +111,7 @@ public class KitCommand extends BaseCommand {
 
         kit.setRanked(!kit.isRanked());
         plugin.getKitManager().saveKits();
-        player.sendMessage(CC.translate("&aSuccessfully set kit ranked status to " + (kit.isRanked() ? "&aTrue" : "&cFalse") + "!"));
+        player.sendMessage(CC.color("&aSuccessfully set kit ranked status to " + (kit.isRanked() ? "&aTrue" : "&cFalse") + "!"));
     }
 
     @Subcommand("addArena")
@@ -133,7 +133,7 @@ public class KitCommand extends BaseCommand {
 
         kit.getArenas().add(arena);
         plugin.getKitManager().saveKits();
-        player.sendMessage(CC.translate("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7)!"));
+        player.sendMessage(CC.color("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7)!"));
     }
 
     private boolean checkKit(String kitName) {

@@ -16,9 +16,9 @@ import java.util.UUID;
 @Getter
 public enum MessagesLocale implements IDataAccessor {
     MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", DataType.STRING_LIST, "&7disconnected"),
-    MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", DataType.STRING_LIST, "<player> &7was killed by <killer>"),
-    MATCH_DEATH_DIED("MATCH.DEATH.DIED", DataType.STRING_LIST, "<player> &7died"),
-    MATCH_DEATH_VOID("MATCH.DEATH.VOID", DataType.STRING_LIST, "<player> &7fell into the void while fighting <killer>"),
+    MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", DataType.STRING_LIST, "&c☠ <player> &7was killed by \uD83D\uDDE1 <killer>"),
+    MATCH_DEATH_DIED("MATCH.DEATH.DIED", DataType.STRING_LIST, "&c☠ <player> &7died"),
+    MATCH_DEATH_VOID("MATCH.DEATH.VOID", DataType.STRING_LIST, "&c☠ <player> &7fell into the void while fighting \uD83D\uDDE1 <killer>"),
     QUEUE_JOIN("QUEUE.JOIN", DataType.STRING_LIST, "&aYou are now queued for <type> <kit>"),
     QUEUE_LEAVE("QUEUE.LEAVE", DataType.STRING_LIST, "&cYou have been removed from queue."),
     MATCH_STARTED("MATCH.STARTED", DataType.STRING_LIST, "&aMatch Started!"),
@@ -30,7 +30,10 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_VIEW_INV_TEXT_WINNER("MATCH.END_DETAILS.VIEW-INV-TEXT-WINNER", DataType.STRING, "&aClick to view <winner> inventory"),
     MATCH_VIEW_INV_TEXT_LOSER("MATCH.END_DETAILS.VIEW-INV-TEXT-LOSER", DataType.STRING, "&cClick to view <loser> inventory"),
     MATCH_COMMA("MATCH.COMMA", DataType.STRING, "&7, "),
-    MATCH_END_DETAILS("MATCH.END_DETAILS.MESSAGE", DataType.STRING_LIST, " ", "&bMatch Inventories &o&7(Click name to view)", "&aWinner: &e<winner> &7| &cLoser: &e<loser>", " ");
+    MATCH_END_DETAILS("MATCH.END_DETAILS.MESSAGE", DataType.STRING_LIST, " ", "&bMatch Inventories &o&7(Click name to view)", "&aWinner: &e<winner> &7| &cLoser: &e<loser>", " "),
+    MATCH_RESPAWN_TIMER("MATCH.RESPAWN_TIMER", DataType.STRING_LIST, "&fRespawning in &b<timer>&f..."),
+    MATCH_RESPAWNED("MATCH.RESPAWNED", DataType.STRING_LIST, "&aRespawned!");
+
 
     private final String path;
     private final List<String> defaultValue = new ArrayList<>();

@@ -27,11 +27,11 @@ public class ArenaCommand extends BaseCommand {
             return;
         }
 
-        player.sendMessage(CC.translate("&7&m----------------------------------"));
-        player.sendMessage(CC.translate("&9Arenas: "));
+        player.sendMessage(CC.color("&7&m----------------------------------"));
+        player.sendMessage(CC.color("&9Arenas: "));
         player.sendMessage(" ");
-        plugin.getArenaManager().arenas.forEach(arena -> player.sendMessage(CC.translate("&7- &9" + arena.getName() + " &7| " + arena.getDisplayName() + " &7| " + (arena.isEnabled() ? "&aEnabled" : "&cDisabled"))));
-        player.sendMessage(CC.translate("&7&m----------------------------------"));
+        plugin.getArenaManager().arenas.forEach(arena -> player.sendMessage(CC.color("&7- &9" + arena.getName() + " &7| " + arena.getDisplayName() + " &7| " + (arena.isEnabled() ? "&aEnabled" : "&cDisabled"))));
+        player.sendMessage(CC.color("&7&m----------------------------------"));
     }
 
     @Subcommand("create")
@@ -61,7 +61,7 @@ public class ArenaCommand extends BaseCommand {
 
         plugin.getArenaManager().arenas.add(arena);
         plugin.getArenaManager().saveArenas();
-        player.sendMessage(CC.translate("&aSuccessfully created new Arena!"));
+        player.sendMessage(CC.color("&aSuccessfully created new Arena!"));
     }
 
     @Subcommand("setspawn")
@@ -76,10 +76,10 @@ public class ArenaCommand extends BaseCommand {
         Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
         if (arenaSpawn.equals(ParticipantColor.BLUE)) {
             arena.setBlueSpawn(player.getLocation());
-            player.sendMessage(CC.translate("&aSuccessfully set &9Blue &aspawn for arena " + arena.getDisplayName() + "&a!"));
+            player.sendMessage(CC.color("&aSuccessfully set &9Blue &aspawn for arena " + arena.getDisplayName() + "&a!"));
         } else {
             arena.setRedSpawn(player.getLocation());
-            player.sendMessage(CC.translate("&aSuccessfully set &cRed &aspawn for arena " + arena.getDisplayName() + "&a!"));
+            player.sendMessage(CC.color("&aSuccessfully set &cRed &aspawn for arena " + arena.getDisplayName() + "&a!"));
         }
         plugin.getArenaManager().saveArenas();
     }

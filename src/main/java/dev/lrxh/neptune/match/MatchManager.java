@@ -19,7 +19,9 @@ public class MatchManager {
     public final HashSet<Match> matches = new HashSet<>();
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean ranked, boolean duel) {
-
+        for (Participant ignored : participants) {
+            kit.addPlaying(kit.isRanked());
+        }
         //Create teams
         Team teamRed = new Team(new HashSet<>(participants.subList(0, participants.size() / 2)), false, ParticipantColor.RED);
         Team teamBlue = new Team(new HashSet<>(participants.subList(participants.size() / 2, participants.size())), false, ParticipantColor.BLUE);

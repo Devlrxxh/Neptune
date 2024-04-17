@@ -41,7 +41,7 @@ public class ColorUtil {
                 }
 
                 if (lastColor != null && !str.isEmpty()) {
-                    TextComponent temp = Component.text(CC.translate(lastColor + str))
+                    TextComponent temp = Component.text(CC.color(lastColor + str))
                             .clickEvent(textComponent.clickEvent())
                             .hoverEvent(textComponent.hoverEvent());
                     result.add(temp);

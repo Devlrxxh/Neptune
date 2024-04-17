@@ -30,6 +30,7 @@ public class MatchStartRunnable extends BukkitRunnable {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.checkRules();
             match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
+            cancel();
         }
         if (match.getMatchState().equals(MatchState.STARTING) && startTimer != 0) {
             match.playSound(Sound.UI_BUTTON_CLICK);

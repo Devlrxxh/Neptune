@@ -24,7 +24,7 @@ public class ItemBuilder {
     public ItemBuilder name(String name) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(CC.translate(name));
+            meta.setDisplayName(CC.color(name));
             item.setItemMeta(meta);
         }
         return this;
@@ -53,12 +53,12 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder lore(String... lore) {
+    public ItemBuilder lore(List<String> lore) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             List<String> toSet = new ArrayList<>();
             for (String string : lore) {
-                toSet.add(CC.translate(string));
+                toSet.add(CC.color(string));
             }
             meta.setLore(toSet);
             item.setItemMeta(meta);
@@ -74,15 +74,20 @@ public class ItemBuilder {
             if (lore == null) {
                 lore = new ArrayList<>();
             }
-            lore.add(CC.translate(name));
+            lore.add(CC.color(name));
             meta.setLore(lore);
             item.setItemMeta(meta);
         }
         return this;
     }
 
-    public ItemBuilder amount(int amount) {
-        item.setAmount(amount);
+
+    public ItemBuilder amount(int amount, boolean fixed) {
+        if (!fixed) {
+            item.setAmount(Math.min(amount, 64));
+        } else {
+            item.setAmount(amount == 0 ? 1 : Math.min(amount, 64));
+        }
         return this;
     }
 

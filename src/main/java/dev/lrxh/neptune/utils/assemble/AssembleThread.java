@@ -124,7 +124,7 @@ public class AssembleThread extends Thread {
                 }
 
             } catch (Exception e) {
-                //Bukkit.getServer().getScheduler().runTask(assemble.getPlugin(), () -> player.kickPlayer(CC.translate("&cPlease rejoin.")));
+                //Bukkit.getServer().getScheduler().runTask(assemble.getPlugin(), () -> player.kickPlayer(CC.color("&cPlease rejoin.")));
                 Bukkit.getLogger().warning("Error updating scoreboard for player " + player.getName() + ": " + e.getMessage());
 
             }

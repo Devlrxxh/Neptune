@@ -66,7 +66,7 @@ public class PlayerUtils {
 
         for (Object obj : ColorUtil.addLastColorToNext(content)) {
             if (obj instanceof String) {
-                String message = CC.translate((String) obj);
+                String message = CC.color((String) obj);
                 builder.append(Component.text(message));
             } else if (obj instanceof TextComponent) {
                 builder.append((TextComponent) obj);
@@ -111,7 +111,7 @@ public class PlayerUtils {
 
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
-            player.sendTitle(CC.translate(header), CC.translate(footer), 1, duration, 10);
+            player.sendTitle(CC.color(header), CC.color(footer), 1, duration, 10);
 
         }
     }

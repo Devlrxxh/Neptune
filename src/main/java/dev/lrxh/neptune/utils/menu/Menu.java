@@ -37,7 +37,7 @@ public abstract class Menu {
 
     {
 
-        fillerType = new ItemBuilder(XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseMaterial()).name(MenusLocale.FILTER_NAME.getString()).durability(MenusLocale.FILTER_DURABILITY.getInt()).amount(1).build();
+        fillerType = new ItemBuilder(XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseMaterial()).name(MenusLocale.FILTER_NAME.getString()).durability(MenusLocale.FILTER_DURABILITY.getInt()).amount(1, false).build();
     }
 
     private void fillBorder(Inventory inventory) {
@@ -106,7 +106,7 @@ public abstract class Menu {
         this.resetCursor = resetCursor();
 
         boolean update = false;
-        String title = CC.translate(this.getTitle(player));
+        String title = CC.color(this.getTitle(player));
 
         if (title.length() > 32) {
             title = title.substring(0, 32);

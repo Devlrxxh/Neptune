@@ -15,26 +15,26 @@ public class MainCommand extends BaseCommand {
     @Default
     @Subcommand("help")
     public void help(Player player) {
-        player.sendMessage(CC.translate("&7&m-----------------------------------------"));
-        player.sendMessage(CC.translate("&9" + Neptune.get().getName() + " Core"));
+        player.sendMessage(CC.color("&7&m-----------------------------------------"));
+        player.sendMessage(CC.color("&9" + Neptune.get().getName() + " Core"));
         player.sendMessage(" ");
-        player.sendMessage(CC.translate("&7* &9/neptune setspawn &7- &fSet server spawn"));
-        player.sendMessage(CC.translate("&7* &9/neptune reload &7- &fReload all configs"));
+        player.sendMessage(CC.color("&7* &9/neptune setspawn &7- &fSet server spawn"));
+        player.sendMessage(CC.color("&7* &9/neptune reload &7- &fReload all configs"));
         player.sendMessage(" ");
-        player.sendMessage(CC.translate("&7&m-----------------------------------------"));
+        player.sendMessage(CC.color("&7&m-----------------------------------------"));
     }
 
     @Subcommand("setspawn")
     public void setspawn(Player player) {
         Neptune.get().getCache().setSpawn(player.getLocation());
         Neptune.get().getCache().save();
-        player.sendMessage(CC.translate("&aSuccessfully set spawn!"));
+        player.sendMessage(CC.color("&aSuccessfully set spawn!"));
     }
 
 
     @Subcommand("reload")
     public void reload(Player player) {
         Neptune.get().loadConfigs();
-        player.sendMessage(CC.translate("&aSuccessfully reloaded configs!"));
+        player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 }
