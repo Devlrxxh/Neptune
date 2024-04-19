@@ -21,6 +21,14 @@ public class ItemBuilder {
         }
     }
 
+    public ItemBuilder(ItemStack itemStack) {
+        if (itemStack != null) {
+            item = itemStack;
+        } else {
+            item = new ItemStack(Material.AIR);
+        }
+    }
+
     public ItemBuilder name(String name) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {

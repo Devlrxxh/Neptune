@@ -8,6 +8,7 @@ import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.filters.Filters;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -112,24 +113,23 @@ public abstract class Menu {
             title = title.substring(0, 32);
         }
 
-        if (player.getOpenInventory() != null) {
-            if (previousMenu == null) {
+        player.getOpenInventory();
+        if (previousMenu == null) {
+            player.closeInventory();
+        } else {
+            if (resetCursor) {
+                previousMenu.setClosedByMenu(true);
                 player.closeInventory();
             } else {
-                if (resetCursor) {
-                    previousMenu.setClosedByMenu(true);
-                    player.closeInventory();
-                } else {
-                    previousMenu.setClosedByMenu(true);
-                    inventory = player.getOpenInventory().getTopInventory();
-                    update = true;
-                    player.updateInventory();
-                }
+                previousMenu.setClosedByMenu(true);
+                inventory = player.getOpenInventory().getTopInventory();
+                update = true;
+                player.updateInventory();
             }
         }
 
         if (inventory == null) {
-            inventory = Bukkit.createInventory(player, size, title);
+            inventory = Bukkit.createInventory(player, size, Component.text(title));
         }
 
         inventory.setContents(new ItemStack[inventory.getSize()]);

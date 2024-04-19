@@ -6,7 +6,7 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.PlayerUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -48,7 +48,7 @@ public abstract class Match {
 
     public void sendTitle(String header, String footer, int duration) {
         for (Participant participant : participants) {
-            PlayerUtils.sendTitle(participant.getPlayerUUID(), header, footer, duration);
+            PlayerUtil.sendTitle(participant.getPlayerUUID(), header, footer, duration);
         }
     }
 
@@ -63,10 +63,10 @@ public abstract class Match {
             if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
             if (kit.isDenyMovement()) {
                 if (matchState.equals(MatchState.STARTING)) {
-                    PlayerUtils.denyMovement(participant.getPlayerUUID());
+                    PlayerUtil.denyMovement(participant.getPlayerUUID());
                 } else {
                     Bukkit.getPlayer(participant.getPlayerUUID()).resetTitle();
-                    PlayerUtils.allowMovement(participant.getPlayerUUID());
+                    PlayerUtil.allowMovement(participant.getPlayerUUID());
                 }
             }
         }

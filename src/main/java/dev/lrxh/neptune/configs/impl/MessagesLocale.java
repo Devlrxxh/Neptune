@@ -3,7 +3,7 @@ package dev.lrxh.neptune.configs.impl;
 import dev.lrxh.neptune.providers.clickable.ClickableUtils;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ConfigFile;
-import dev.lrxh.neptune.utils.PlayerUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -55,7 +55,7 @@ public enum MessagesLocale implements IDataAccessor {
 
         for (String message : getStringList()) {
 
-            PlayerUtils.sendMessage(player, ClickableUtils.returnMessage(message, replacements));
+            PlayerUtil.sendMessage(player, ClickableUtils.returnMessage(message, replacements));
         }
     }
 }

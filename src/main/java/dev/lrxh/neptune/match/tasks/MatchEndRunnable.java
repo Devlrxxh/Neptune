@@ -8,7 +8,7 @@ import dev.lrxh.neptune.match.impl.Team;
 import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
-import dev.lrxh.neptune.utils.PlayerUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -35,15 +35,15 @@ public class MatchEndRunnable extends BukkitRunnable {
             }
             for (Participant participant : match.participants) {
                 if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
-                PlayerUtils.reset(participant.getPlayerUUID());
-                PlayerUtils.teleportToSpawn(participant.getPlayerUUID());
+                PlayerUtil.reset(participant.getPlayerUUID());
+                PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
                 Profile profile = Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID());
                 profile.setState(ProfileState.LOBBY);
                 match.getKit().removePlaying(match.isRanked());
                 profile.setMatch(null);
                 plugin.getMatchManager().matches.remove(match);
             }
-            if(match instanceof TeamFightMatch){
+            if (match instanceof TeamFightMatch) {
                 Team winnerTeam = ((TeamFightMatch) match).getTeamA().isLoser() ? ((TeamFightMatch) match).getTeamB() : ((TeamFightMatch) match).getTeamA();
                 Team loserTeam = ((TeamFightMatch) match).getTeamA().isLoser() ? ((TeamFightMatch) match).getTeamA() : ((TeamFightMatch) match).getTeamB();
 

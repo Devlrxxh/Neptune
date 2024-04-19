@@ -7,7 +7,7 @@ import dev.lrxh.neptune.match.impl.*;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
-import dev.lrxh.neptune.utils.PlayerUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -66,7 +66,7 @@ public class MatchManager {
     public void setupPlayer(UUID playerUUID, Match match) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        PlayerUtils.reset(player.getUniqueId());
+        PlayerUtil.reset(player.getUniqueId());
         Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
         profile.setMatch(match);
         profile.setState(ProfileState.IN_GAME);

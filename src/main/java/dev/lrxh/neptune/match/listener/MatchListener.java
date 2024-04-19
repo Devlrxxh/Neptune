@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.listener;
 
-import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
@@ -49,7 +48,7 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
 
             Player attacker = (Player) event.getDamager();
@@ -71,6 +70,24 @@ public class MatchListener implements Listener {
             }
         }
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onProjectileHitEvent(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player target = (Player) event.getEntity();
+            Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
+            Player damager = (Player) event.getDamager();
+
+            if (targetProfile.getState() == ProfileState.IN_GAME) {
+                Match match = targetProfile.getMatch();
+                if (match instanceof TeamFightMatch) {
+                    ((TeamFightMatch) match).getPlayerTeam(match.getParticipant(damager.getUniqueId())).handleHit();
+                    ((TeamFightMatch) match).getPlayerTeam(match.getParticipant(target.getUniqueId())).resetCombo();
+                }
+            }
+        }
+    }
+
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {

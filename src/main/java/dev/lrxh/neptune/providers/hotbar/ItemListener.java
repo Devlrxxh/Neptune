@@ -6,17 +6,12 @@ import dev.lrxh.neptune.profile.ProfileState;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 public class ItemListener implements Listener {
 
     @EventHandler()
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) {
-            return;
-        }
-
         Player player = event.getPlayer();
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
         if (event.getItem() != null && !profile.getState().equals(ProfileState.IN_GAME)) {

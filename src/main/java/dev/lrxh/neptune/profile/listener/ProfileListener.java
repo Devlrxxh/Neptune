@@ -6,7 +6,7 @@ import dev.lrxh.neptune.match.impl.DeathCause;
 import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.VisibilityLogic;
-import dev.lrxh.neptune.utils.PlayerUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -19,8 +19,8 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerUtils.reset(player.getUniqueId());
-        PlayerUtils.teleportToSpawn(player.getUniqueId());
+        PlayerUtil.reset(player.getUniqueId());
+        PlayerUtil.teleportToSpawn(player.getUniqueId());
         plugin.getProfileManager().createProfile(player.getUniqueId());
         plugin.getHotbarManager().giveItems(player.getUniqueId());
         VisibilityLogic.handle(player.getUniqueId());

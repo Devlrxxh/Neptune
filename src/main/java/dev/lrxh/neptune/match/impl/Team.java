@@ -1,29 +1,34 @@
 package dev.lrxh.neptune.match.impl;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.utils.PlayerUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.HashSet;
+import java.util.UUID;
 
 @Getter
 @Setter
 public class Team {
     private final HashSet<Participant> participants;
+    private UUID uuid;
     private boolean loser;
     private boolean hasBed = true;
-
+    private int hits;
+    private int longestCombo;
+    private int combo;
 
     public Team(HashSet<Participant> participants, boolean loser, ParticipantColor color) {
         this.participants = participants;
         this.loser = loser;
+        this.uuid = UUID.randomUUID();
         setColor(color);
     }
 
     public void sendTitle(String header, String footer, int duration) {
         for (Participant participant : participants) {
-            PlayerUtils.sendTitle(participant.getPlayerUUID(), header, footer, duration);
+            PlayerUtil.sendTitle(participant.getPlayerUUID(), header, footer, duration);
         }
     }
 
@@ -48,7 +53,7 @@ public class Team {
     public int getTeamPing() {
         if (participants.size() == 1) {
             for (Participant participant : participants) {
-                return PlayerUtils.getPing(participant.getPlayerUUID());
+                return PlayerUtil.getPing(participant.getPlayerUUID());
             }
         }
         return 0;
@@ -63,6 +68,18 @@ public class Team {
     public void setColor(ParticipantColor color) {
         for (Participant participant : participants) {
             participant.setColor(color);
+        }
+    }
+
+    public void resetCombo() {
+        combo = 0;
+    }
+
+    public void handleHit() {
+        hits++;
+        combo++;
+        if (combo > longestCombo) {
+            longestCombo = combo;
         }
     }
 }

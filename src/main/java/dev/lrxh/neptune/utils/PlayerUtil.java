@@ -6,8 +6,10 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -16,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 @UtilityClass
-public class PlayerUtils {
+public class PlayerUtil {
     private final Neptune plugin = Neptune.get();
 
     public void reset(UUID playerUUID) {
@@ -59,6 +61,15 @@ public class PlayerUtils {
         Player player = Bukkit.getPlayer(playerUUID);
         return player.getPing();
     }
+
+    public ItemStack getPlayerHead(UUID playerUUID) {
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+        skullMeta.setOwningPlayer(Bukkit.getPlayer(playerUUID));
+        head.setItemMeta(skullMeta);
+        return head;
+    }
+
 
     public void sendMessage(Player player, List<Object> content) {
 

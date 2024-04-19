@@ -16,22 +16,22 @@ public class MatchSnapshot {
     private final String username;
     private final double health;
     private final int hunger;
+    private final int ping;
     private final ItemStack[] armor;
     private final ItemStack[] contents;
     private final Collection<PotionEffect> effects;
-    private UUID opponent;
-    private int potionsThrown;
-    private int potionsMissed;
+    private String opponent;
     private int longestCombo;
     private int totalHits;
 
-    public MatchSnapshot(Player player, boolean dead) {
+    public MatchSnapshot(Player player, String username) {
         this.uuid = player.getUniqueId();
-        this.username = player.getName();
-        this.health = dead ? 0 : (player.getHealth() == 0 ? 0 : Math.round(player.getHealth() / 2));
+        this.health = Math.round(player.getHealth() / 2);
         this.hunger = player.getFoodLevel();
+        this.ping = player.getPing();
         this.armor = player.getInventory().getArmorContents();
         this.contents = player.getInventory().getContents();
         this.effects = player.getActivePotionEffects();
+        this.username = username;
     }
 }

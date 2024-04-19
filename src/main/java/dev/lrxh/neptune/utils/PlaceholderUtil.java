@@ -25,7 +25,7 @@ public class PlaceholderUtil {
             line = line.replaceAll("<queued>", String.valueOf(Neptune.get().getQueueManager().queues.size()));
             line = line.replaceAll("<in-match>", String.valueOf(Neptune.get().getMatchManager().matches.size()));
             line = line.replaceAll("<player>", player.getName());
-            line = line.replaceAll("<ping>", String.valueOf((PlayerUtils.getPing(player.getUniqueId()))));
+            line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player.getUniqueId()))));
 
             if (profile.getState().equals(ProfileState.IN_QUEUE)) {
                 Queue queue = plugin.getQueueManager().queues.get(player.getUniqueId());

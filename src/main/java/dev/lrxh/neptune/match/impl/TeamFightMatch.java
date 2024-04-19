@@ -8,14 +8,16 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.PlayerUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -56,11 +58,11 @@ public class TeamFightMatch extends Match {
         for (Participant participant : participants) {
 
             TextComponent winnerMessage = Component.text(winnerTeam.getTeamNames())
-                    .clickEvent(ClickEvent.runCommand("d"))
+                    .clickEvent(ClickEvent.runCommand("/viewinv " + winnerTeam.getTeamNames()))
                     .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winnerTeam.getTeamNames()))));
 
             TextComponent loserMessage = Component.text(loserTeam.getTeamNames())
-                    .clickEvent(ClickEvent.runCommand("d"))
+                    .clickEvent(ClickEvent.runCommand("/viewinv " + loserTeam.getTeamNames()))
                     .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loserTeam.getTeamNames()))));
 
             MessagesLocale.MATCH_END_DETAILS.send(participant.getPlayerUUID(),
@@ -76,16 +78,18 @@ public class TeamFightMatch extends Match {
             participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
         }
 
-        if(kit.isBedwars() && getPlayerTeam(participant).isHasBed()){
+        if (kit.isBedwars() && getPlayerTeam(participant).isHasBed()) {
             respawn(participant);
             return;
         }
 
         getPlayerTeam(participant).setLoser(true);
 
-        PlayerUtils.reset(participant.getPlayerUUID());
+        takeSnapshots();
 
-        PlayerUtils.doVelocityChange(participant.getPlayerUUID());
+        PlayerUtil.reset(participant.getPlayerUUID());
+
+        PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
@@ -97,6 +101,20 @@ public class TeamFightMatch extends Match {
         end();
     }
 
+    private void takeSnapshots() {
+        for (Participant participant : participants) {
+            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            Team team = getPlayerTeam(participant);
+            MatchSnapshot snapshot = new MatchSnapshot(player, player.getName());
+            snapshot.setLongestCombo(team.getLongestCombo());
+            snapshot.setTotalHits(team.getHits());
+            snapshot.setOpponent(participant.getOpponent().getTeamNames());
+
+            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).setMatchSnapshot(snapshot);
+        }
+    }
+
     @Override
     public void respawn(Participant participant) {
         if (matchState != MatchState.IN_ROUND) {
@@ -106,8 +124,8 @@ public class TeamFightMatch extends Match {
 
         hidePlayer(participant);
         sendDeathMessage(participant);
-        PlayerUtils.reset(participant.getPlayerUUID());
-        PlayerUtils.doVelocityChange(participant.getPlayerUUID());
+        PlayerUtil.reset(participant.getPlayerUUID());
+        PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         Neptune.get().getTaskScheduler().startTask(new MatchRespawnRunnable(this, participant), 0L);
     }

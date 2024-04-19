@@ -1,17 +1,12 @@
 package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
-import dev.lrxh.neptune.profile.Profile;
-import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.PlayerUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MatchRespawnRunnable extends BukkitRunnable {
