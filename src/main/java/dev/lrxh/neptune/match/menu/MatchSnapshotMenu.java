@@ -53,10 +53,9 @@ public class MatchSnapshotMenu extends Menu {
         }
 
 
-        int pos = 47;
+        int pos = 48;
 
-        buttons.put(pos++, new HealthButton(snapshot.getHealth()));
-        buttons.put(pos++, new HungerButton(snapshot.getHunger()));
+        buttons.put(pos++, new HealthButton((int) snapshot.getHealth()));
         buttons.put(pos++, new EffectsButton(snapshot.getEffects()));
 
         buttons.put(pos, new StatisticsButton(snapshot));
@@ -72,13 +71,16 @@ public class MatchSnapshotMenu extends Menu {
     @AllArgsConstructor
     private class HealthButton extends Button {
 
-        private double health;
+        private int health;
 
         @Override
         public ItemStack getButtonItem(Player player) {
             return new ItemBuilder(PlayerUtil.getPlayerHead(snapshot.getUuid()))
-                    .name("&bHealth: &f" + health + "/10 &4" + StringEscapeUtils.unescapeJava("❤"))
-                    .amount((int) (health == 0 ? 1 : health), false)
+                    .name("&7Player Stats")
+                    .lore(Arrays.asList(
+                            "&8| &7Health: &c" + health + StringEscapeUtils.unescapeJava("❤"),
+                            "&8| &7Hunger: &e" + snapshot.getHunger() + "&7/20"
+                    ))
                     .clearFlags()
                     .build();
         }
@@ -92,17 +94,17 @@ public class MatchSnapshotMenu extends Menu {
 
         @Override
         public ItemStack getButtonItem(Player player) {
-            ItemBuilder builder = new ItemBuilder(Material.BREWING_STAND).name("&bPotion Effects");
+            ItemBuilder builder = new ItemBuilder(Material.BREWING_STAND).name("&7Potion Effects");
 
             if (effects.isEmpty()) {
-                builder.lore("&bNo potion effects");
+                builder.lore("&7No potion effects");
             } else {
                 List<String> lore = new ArrayList<>();
 
                 effects.forEach(effect -> {
                     String name = PotionUtil.getName(effect.getType()) + " " + (effect.getAmplifier() + 1);
                     String duration = " (" + TimeUtil.millisToTimer((effect.getDuration() / 20) * 1000L) + ")";
-                    lore.add("&b" + name + "&f" + duration);
+                    lore.add("&7" + name + "&a" + duration);
                 });
 
                 builder.lore(lore);
@@ -121,11 +123,11 @@ public class MatchSnapshotMenu extends Menu {
         @Override
         public ItemStack getButtonItem(Player player) {
             return new ItemBuilder(Material.PAPER)
-                    .name("&bMatch Stats")
+                    .name("&7Match Stats")
                     .lore(Arrays.asList(
-                            "&7• &bHits: &f" + snapshot.getTotalHits(),
-                            "&7• &bLongest Combo: &f" + snapshot.getLongestCombo(),
-                            "&7• &bPing: &f" + snapshot.getPing()
+                            "&8| &7Hits: &a" + snapshot.getTotalHits(),
+                            "&8| &7Longest Combo: &a" + snapshot.getLongestCombo(),
+                            "&8| &7Ping: &a" + snapshot.getPing() + " ms"
                     ))
                     .clearFlags()
                     .build();
@@ -151,22 +153,6 @@ public class MatchSnapshotMenu extends Menu {
         public void clicked(Player player, ClickType clickType) {
             player.chat("/viewinv " + snapshot.getOpponent());
         }
-    }
-
-    @AllArgsConstructor
-    private class HungerButton extends Button {
-
-        private int hunger;
-
-        @Override
-        public ItemStack getButtonItem(Player player) {
-            return new ItemBuilder(Material.COOKED_BEEF)
-                    .name("&bHunger: &f" + hunger + "/20")
-                    .amount(hunger == 0 ? 1 : hunger, false)
-                    .clearFlags()
-                    .build();
-        }
-
     }
 
 }

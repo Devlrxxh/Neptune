@@ -40,7 +40,6 @@ dev\lrxh\neptune\arena\impl\SharedArena.class
 dev\lrxh\neptune\utils\InventoryUtil.class
 dev\lrxh\neptune\match\impl\DeathCause.class
 dev\lrxh\neptune\utils\menu\DisplayButton.class
-dev\lrxh\neptune\match\menu\MatchSnapshotMenu$HungerButton.class
 dev\lrxh\neptune\utils\ConfigFile.class
 dev\lrxh\neptune\providers\hotbar\Item.class
 dev\lrxh\neptune\utils\menu\Menu$1.class
