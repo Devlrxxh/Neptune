@@ -38,10 +38,10 @@ public class QueueTask extends BukkitRunnable {
 
                             //Create participants
                             Participant participant1 =
-                                    new Participant(uuid1, Bukkit.getPlayer(uuid1).getDisplayName());
+                                    new Participant(uuid1);
 
                             Participant participant2 =
-                                    new Participant(uuid2, Bukkit.getPlayer(uuid2).getDisplayName());
+                                    new Participant(uuid2);
 
                             List<Participant> participants = Arrays.asList(participant1, participant2);
 
@@ -50,12 +50,12 @@ public class QueueTask extends BukkitRunnable {
                             //If no arenas were found
                             if (arena == null) {
                                 plugin.getQueueManager().remove(uuid1);
-                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.IN_QUEUE);
+                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.LOBBY);
 
                                 plugin.getQueueManager().remove(uuid2);
-                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.IN_QUEUE);
+                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.LOBBY);
 
-                                Bukkit.getPlayer(uuid1).sendMessage(CC.error("No arena was found!"));
+                                Bukkit.getPlayer(uuid1).sendRichMessage(CC.error("No arena was found!"));
                                 Bukkit.getPlayer(uuid2).sendMessage(CC.error("No arena was found!"));
                                 return;
                             }
@@ -68,10 +68,10 @@ public class QueueTask extends BukkitRunnable {
                                                     ((StandAloneArena) arena).getEdge1() == null))) {
 
                                 plugin.getQueueManager().remove(uuid1);
-                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.IN_QUEUE);
+                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.LOBBY);
 
                                 plugin.getQueueManager().remove(uuid2);
-                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.IN_QUEUE);
+                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.LOBBY);
 
 
                                 Bukkit.getPlayer(uuid1).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
@@ -102,6 +102,7 @@ public class QueueTask extends BukkitRunnable {
                             //Start match
                             plugin.getMatchManager().startMatch(participants, queue1.getKit(),
                                     arena, queue1.isRanked(), false);
+
 
                             //Remove the players from queue
                             plugin.getQueueManager().remove(uuid1);

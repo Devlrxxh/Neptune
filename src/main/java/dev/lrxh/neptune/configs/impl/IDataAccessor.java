@@ -52,7 +52,7 @@ public interface IDataAccessor {
     }
 
 
-    default void set(String value) {
+    default void set(Object value) {
         getConfigFile().getConfiguration().set(getPath(), value);
         getConfigFile().save();
     }

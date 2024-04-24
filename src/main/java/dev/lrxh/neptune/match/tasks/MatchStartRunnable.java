@@ -36,7 +36,6 @@ public class MatchStartRunnable extends BukkitRunnable {
             match.playSound(Sound.UI_BUTTON_CLICK);
             match.sendTitle(startTimer > 3 ? "&e" + startTimer : "&c" + startTimer, "", 100);
             match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));
-            match.checkRules();
         }
         startTimer--;
 

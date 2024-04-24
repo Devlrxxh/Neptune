@@ -14,11 +14,11 @@ public class QueueCommand extends BaseCommand {
     private final Neptune plugin = Neptune.get();
 
     @Default
-    @Syntax("<kit>")
+    @Syntax("<kit> <ranked>")
     @CommandCompletion("@kits")
-    public void queue(Player player, String kitName) {
+    public void queue(Player player, String kitName, boolean ranked) {
         if (plugin.getKitManager().getKitByName(kitName) != null) {
-            Queue queue = new Queue(plugin.getKitManager().getKitByName(kitName), false);
+            Queue queue = new Queue(plugin.getKitManager().getKitByName(kitName), ranked);
 
             plugin.getQueueManager().addToQueue(player.getUniqueId(), queue);
             MessagesLocale.QUEUE_JOIN.send(player.getUniqueId(),

@@ -24,11 +24,13 @@ public class ProfileListener implements Listener {
         plugin.getProfileManager().createProfile(player.getUniqueId());
         plugin.getHotbarManager().giveItems(player.getUniqueId());
         VisibilityLogic.handle(player.getUniqueId());
+
+        event.joinMessage(null);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        event.setQuitMessage(null);
+        event.quitMessage(null);
 
         Player player = event.getPlayer();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());

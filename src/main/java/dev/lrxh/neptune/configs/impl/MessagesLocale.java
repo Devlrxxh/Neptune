@@ -27,13 +27,14 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_WINNER_TITLE("MATCH.TITLE.WINNER", DataType.STRING, "&aVICTORY!"),
     MATCH_LOSER_TITLE("MATCH.TITLE.LOSER", DataType.STRING, "&cDEFEAT!"),
     MATCH_TITLE_SUBTITLE("MATCH.TITLE.SUBTITLE", DataType.STRING, "&a<player> &fwon the match!"),
-    MATCH_VIEW_INV_TEXT_WINNER("MATCH.END_DETAILS.VIEW-INV-TEXT-WINNER", DataType.STRING, "&aClick to view <winner> inventory"),
-    MATCH_VIEW_INV_TEXT_LOSER("MATCH.END_DETAILS.VIEW-INV-TEXT-LOSER", DataType.STRING, "&cClick to view <loser> inventory"),
+    MATCH_VIEW_INV_TEXT_WINNER("MATCH.END_DETAILS.INV-TEXT-WINNER-HOVER", DataType.STRING, "&aClick to view <winner> inventory"),
+    MATCH_VIEW_INV_TEXT_LOSER("MATCH.END_DETAILS.INV-TEXT-LOSER-HOVER", DataType.STRING, "&cClick to view <loser> inventory"),
     MATCH_COMMA("MATCH.COMMA", DataType.STRING, "&7, "),
     MATCH_END_DETAILS("MATCH.END_DETAILS.MESSAGE", DataType.STRING_LIST, " ", "&bMatch Inventories &o&7(Click name to view)", "&aWinner: &e<winner> &7| &cLoser: &e<loser>", " "),
     MATCH_RESPAWN_TIMER("MATCH.RESPAWN_TIMER", DataType.STRING_LIST, "&fRespawning in &b<timer>&f..."),
-    MATCH_RESPAWNED("MATCH.RESPAWNED", DataType.STRING_LIST, "&aRespawned!");
-
+    MATCH_RESPAWNED("MATCH.RESPAWNED", DataType.STRING_LIST, "&aRespawned!"),
+    MATCH_PLAY_AGAIN("MATCH.PLAY_AGAIN.MESSAGE", DataType.STRING, "&bDo you want to play again? &a(Click here)"),
+    MATCH_PLAY_AGAIN_HOVER("MATCH.PLAY_AGAIN.HOVER", DataType.STRING, "&aClick to play again!");
 
     private final String path;
     private final List<String> defaultValue = new ArrayList<>();

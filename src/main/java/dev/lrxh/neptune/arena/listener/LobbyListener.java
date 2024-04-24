@@ -75,7 +75,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onSoilChange(PlayerInteractEvent event) {
-        if (event.getAction() == Action.PHYSICAL && event.getClickedBlock().getType() == Material.LEGACY_SOIL)
+        if (event.getAction() == Action.PHYSICAL && event.getClickedBlock().getType() == Material.FARMLAND)
             event.setCancelled(true);
     }
 

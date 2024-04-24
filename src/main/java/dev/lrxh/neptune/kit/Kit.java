@@ -66,33 +66,33 @@ public class Kit {
 
     public void removeQueue(boolean ranked) {
         if (ranked) {
-            setRankedQueue(rankedQueue - 1);
+            rankedQueue--;
         } else {
-            setUnrankedQueue(unrankedQueue - 1);
+            unrankedQueue--;
         }
     }
 
     public void addQueue(boolean ranked) {
         if (ranked) {
-            setRankedQueue(rankedQueue + 1);
+            rankedQueue++;
         } else {
-            setUnrankedQueue(unrankedQueue + 1);
+            unrankedQueue++;
         }
     }
 
     public void removePlaying(boolean ranked) {
         if (ranked) {
-            setRankedPlaying(rankedPlaying - 1);
+            rankedPlaying--;
         } else {
-            setRankedPlaying(rankedPlaying - 1);
+            unrankedPlaying--;
         }
     }
 
     public void addPlaying(boolean ranked) {
         if (ranked) {
-            setRankedPlaying(rankedPlaying + 1);
+            rankedPlaying++;
         } else {
-            setRankedPlaying(rankedPlaying + 1);
+            unrankedPlaying++;
         }
     }
 

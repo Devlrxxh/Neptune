@@ -20,7 +20,7 @@ public class MatchManager {
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean ranked, boolean duel) {
         for (Participant ignored : participants) {
-            kit.addPlaying(kit.isRanked());
+            kit.addPlaying(ranked);
         }
         //Create teams
         Team teamRed = new Team(new HashSet<>(participants.subList(0, participants.size() / 2)), false, ParticipantColor.RED);
@@ -58,6 +58,7 @@ public class MatchManager {
             }
             player.teleport(arena.getBlueSpawn());
         }
+        match.checkRules();
 
         //Start match start runnable
         Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);

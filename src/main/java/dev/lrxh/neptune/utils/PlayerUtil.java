@@ -87,6 +87,12 @@ public class PlayerUtil {
         player.sendMessage(builder);
     }
 
+    public void sendMessage(UUID playerUUID, TextComponent content) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        player.sendMessage(content);
+    }
+
 
     public void denyMovement(UUID playerUUID) {
         if (Bukkit.getPlayer(playerUUID) == null) return;

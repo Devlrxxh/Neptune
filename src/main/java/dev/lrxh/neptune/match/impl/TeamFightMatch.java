@@ -68,6 +68,12 @@ public class TeamFightMatch extends Match {
             MessagesLocale.MATCH_END_DETAILS.send(participant.getPlayerUUID(),
                     new Replacement("<loser>", loserMessage),
                     new Replacement("<winner>", winnerMessage));
+
+            TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
+                    .clickEvent(ClickEvent.runCommand("/queue " + kit.getName() + " " + isRanked()))
+                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));
+
+            PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
         }
     }
 
@@ -107,8 +113,8 @@ public class TeamFightMatch extends Match {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             Team team = getPlayerTeam(participant);
             MatchSnapshot snapshot = new MatchSnapshot(player, player.getName());
-            snapshot.setLongestCombo(team.getLongestCombo());
-            snapshot.setTotalHits(team.getHits());
+            snapshot.setLongestCombo(participant.getLongestCombo());
+            snapshot.setTotalHits(participant.getHits());
             snapshot.setOpponent(participant.getOpponent().getTeamNames());
 
             Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).setMatchSnapshot(snapshot);

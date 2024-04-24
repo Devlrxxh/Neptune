@@ -11,10 +11,7 @@ import dev.lrxh.neptune.utils.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ArenaManager implements IManager {
@@ -23,7 +20,7 @@ public class ArenaManager implements IManager {
     public void loadArenas() {
         FileConfiguration config = plugin.getConfigManager().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
-            for (String arenaName : config.getConfigurationSection("arenas").getKeys(false)) {
+            for (String arenaName : Objects.requireNonNull(config.getConfigurationSection("arenas")).getKeys(false)) {
                 String path = "arenas." + arenaName + ".";
 
                 String displayName = config.getString(path + "displayName");
@@ -94,7 +91,7 @@ public class ArenaManager implements IManager {
                 kitArenas.add(arena);
             }
         }
-        return kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
+        return kitArenas.isEmpty() ? null : kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
     }
 
     @Override

@@ -1,18 +1,18 @@
 ITEMS:
   LOBBY:
     UNRANKED:
-      NAME: "&bUnranked Queue &7(Right Click)"
+      NAME: "&#ADF3FDU&#9FE5FDn&#92D7FDr&#84C9FDa&#76BBFCn&#68ADFCk&#5BA0FCe&#4D92FCd &#3F84FCQ&#3176FCu&#2468FBe&#165AFBu&#084CFBe &7(Right Click)"
       MATERIAL: IRON_SWORD
       SLOT: 0
       DURABILITY: 0
     RANKED:
-      NAME: "&aRanked Queue &7(Right Click)"
+      NAME: "&#74EE7CR&#6DF078a&#66F174n&#5FF370k&#58F46Ce&#51F669d &#4AF865Q&#43F961u&#3CFB5De&#35FC59u&#2EFE55e &7(Right Click)"
       MATERIAL: DIAMOND_SWORD
       SLOT: 1
       DURABILITY: 0
   IN_QUEUE:
     QUEUE_LEAVE:
-      NAME: "&bLeave Queue &7(Right Click)"
-      MATERIAL: INK_SACK
+      NAME: "&#FF5E5EL&#F75959e&#F05454a&#E84F4Fv&#E04A4Ae &#D94444Q&#D13F3Fu&#C93A3Ae&#C23535u&#BA3030e &7(Right Click)"
+      MATERIAL: RED_DYE
       SLOT: 8
-      DURABILITY: 1
+      DURABILITY: 0

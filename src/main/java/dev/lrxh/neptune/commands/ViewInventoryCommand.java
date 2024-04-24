@@ -20,11 +20,16 @@ public class ViewInventoryCommand extends BaseCommand {
     @CommandCompletion("@players")
     public void execute(Player player, String playerName) {
         Player target = Bukkit.getPlayer(playerName);
+
         if (target == null) {
             player.sendMessage(CC.error("Player not found!"));
             return;
         }
         Profile profile = Neptune.get().getProfileManager().getByUUID(target.getUniqueId());
+        if (profile.getMatchSnapshot() == null) {
+            player.sendMessage(CC.error("Match Snapshot not found!"));
+            return;
+        }
         new MatchSnapshotMenu(profile.getMatchSnapshot()).openMenu(player);
     }
 }

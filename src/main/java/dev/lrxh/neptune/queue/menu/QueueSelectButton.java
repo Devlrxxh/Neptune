@@ -37,9 +37,8 @@ public class QueueSelectButton extends Button {
 
 
         return new ItemBuilder(kit.getIcon().getType()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
-                .amount(ranked ? kit.getRankedQueue() : kit.getUnrankedQueue(), true)
+                .amount(ranked ? kit.getRankedPlaying() : kit.getUnrankedPlaying())
                 .lore(lore)
-                .durability(kit.getIcon().getDurability())
                 .build();
     }
 

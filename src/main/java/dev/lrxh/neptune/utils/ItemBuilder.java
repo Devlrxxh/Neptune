@@ -90,12 +90,8 @@ public class ItemBuilder {
     }
 
 
-    public ItemBuilder amount(int amount, boolean fixed) {
-        if (!fixed) {
-            item.setAmount(Math.min(amount, 64));
-        } else {
-            item.setAmount(amount == 0 ? 1 : Math.min(amount, 64));
-        }
+    public ItemBuilder amount(int amount) {
+        item.setAmount(amount <= 0 ? 1 : Math.min(amount, 64));
         return this;
     }
 

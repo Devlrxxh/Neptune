@@ -33,7 +33,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        event.setDeathMessage(null);
+        event.deathMessage(null);
         event.getDrops().clear();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile.getMatch() != null) {
@@ -81,8 +81,8 @@ public class MatchListener implements Listener {
             if (targetProfile.getState() == ProfileState.IN_GAME) {
                 Match match = targetProfile.getMatch();
                 if (match instanceof TeamFightMatch) {
-                    ((TeamFightMatch) match).getPlayerTeam(match.getParticipant(damager.getUniqueId())).handleHit();
-                    ((TeamFightMatch) match).getPlayerTeam(match.getParticipant(target.getUniqueId())).resetCombo();
+                    match.getParticipant(damager.getUniqueId()).handleHit();
+                    match.getParticipant(target.getUniqueId()).resetCombo();
                 }
             }
         }

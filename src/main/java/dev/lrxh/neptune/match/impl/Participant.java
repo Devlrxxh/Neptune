@@ -7,6 +7,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -20,10 +21,13 @@ public class Participant {
     private ParticipantColor color;
     private Participant lastAttacker;
     private boolean dead;
+    private int hits;
+    private int longestCombo;
+    private int combo;
 
-    public Participant(UUID playerUUID, String name) {
+    public Participant(UUID playerUUID) {
         this.playerUUID = playerUUID;
-        this.name = name;
+        this.name = Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getName();
         this.dead = false;
     }
 
@@ -40,5 +44,17 @@ public class Participant {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+    }
+
+    public void resetCombo() {
+        combo = 0;
+    }
+
+    public void handleHit() {
+        hits++;
+        combo++;
+        if (combo > longestCombo) {
+            longestCombo = combo;
+        }
     }
 }

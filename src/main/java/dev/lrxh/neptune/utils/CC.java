@@ -13,7 +13,7 @@ public class CC {
 
 
     public String error(String message) {
-        return color("&#FE5757E&#FE4D4DR&#FE4343R&#FE3838O&#FE2E2ER &8- &c" + message);
+        return color("&cERROR &8- &c" + message);
     }
 
     public static String color(String text) {

@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.match.menu;
 
 import dev.lrxh.neptune.match.impl.MatchSnapshot;
-import dev.lrxh.neptune.utils.*;
+import dev.lrxh.neptune.utils.InventoryUtil;
+import dev.lrxh.neptune.utils.ItemBuilder;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.DisplayButton;
 import dev.lrxh.neptune.utils.menu.Menu;
@@ -12,9 +14,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 @AllArgsConstructor
 public class MatchSnapshotMenu extends Menu {
@@ -53,12 +56,8 @@ public class MatchSnapshotMenu extends Menu {
         }
 
 
-        int pos = 48;
-
-        buttons.put(pos++, new HealthButton((int) snapshot.getHealth()));
-        buttons.put(pos++, new EffectsButton(snapshot.getEffects()));
-
-        buttons.put(pos, new StatisticsButton(snapshot));
+        buttons.put(48, new HealthButton((int) snapshot.getHealth()));
+        buttons.put(50, new StatisticsButton(snapshot));
 
         if (this.snapshot.getOpponent() != null) {
             buttons.put(53, new SwitchInventoryButton(this.snapshot.getOpponent()));
@@ -87,33 +86,6 @@ public class MatchSnapshotMenu extends Menu {
 
     }
 
-    @AllArgsConstructor
-    private class EffectsButton extends Button {
-
-        private Collection<PotionEffect> effects;
-
-        @Override
-        public ItemStack getButtonItem(Player player) {
-            ItemBuilder builder = new ItemBuilder(Material.BREWING_STAND).name("&7Potion Effects");
-
-            if (effects.isEmpty()) {
-                builder.lore("&7No potion effects");
-            } else {
-                List<String> lore = new ArrayList<>();
-
-                effects.forEach(effect -> {
-                    String name = PotionUtil.getName(effect.getType()) + " " + (effect.getAmplifier() + 1);
-                    String duration = " (" + TimeUtil.millisToTimer((effect.getDuration() / 20) * 1000L) + ")";
-                    lore.add("&7" + name + "&a" + duration);
-                });
-
-                builder.lore(lore);
-            }
-
-            return builder.build();
-        }
-
-    }
 
     @AllArgsConstructor
     private class StatisticsButton extends Button {

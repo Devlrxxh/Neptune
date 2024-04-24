@@ -35,11 +35,13 @@ public class MatchEndRunnable extends BukkitRunnable {
             }
             for (Participant participant : match.participants) {
                 if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+                Profile profile = Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID());
+                if (profile.getMatch() == null) continue;
                 PlayerUtil.reset(participant.getPlayerUUID());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
-                Profile profile = Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID());
                 profile.setState(ProfileState.LOBBY);
                 match.getKit().removePlaying(match.isRanked());
+                System.out.println("MatchEndRunnable: " + participant.getPlayerUUID() + " is removed from kit.");
                 profile.setMatch(null);
                 plugin.getMatchManager().matches.remove(match);
             }

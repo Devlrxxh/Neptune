@@ -12,14 +12,15 @@ public class QueueManager {
     private final Neptune plugin = Neptune.get();
 
     public void addToQueue(UUID playerUUID, Queue queue) {
+        if (queues.containsKey(playerUUID)) return;
         queues.put(playerUUID, queue);
         plugin.getProfileManager().getByUUID(playerUUID).setState(ProfileState.IN_QUEUE);
         queue.getKit().addQueue(queue.isRanked());
     }
 
     public void remove(UUID playerUUID) {
-        Queue queue = queues.get(playerUUID);
-        queue.getKit().removeQueue(queue.getKit().isRanked());
+        if (!queues.containsKey(playerUUID)) return;
+        queues.get(playerUUID).getKit().removeQueue(queues.get(playerUUID).isRanked());
         queues.remove(playerUUID);
     }
 

@@ -15,9 +15,7 @@ public class Team {
     private UUID uuid;
     private boolean loser;
     private boolean hasBed = true;
-    private int hits;
-    private int longestCombo;
-    private int combo;
+
 
     public Team(HashSet<Participant> participants, boolean loser, ParticipantColor color) {
         this.participants = participants;
@@ -68,18 +66,6 @@ public class Team {
     public void setColor(ParticipantColor color) {
         for (Participant participant : participants) {
             participant.setColor(color);
-        }
-    }
-
-    public void resetCombo() {
-        combo = 0;
-    }
-
-    public void handleHit() {
-        hits++;
-        combo++;
-        if (combo > longestCombo) {
-            longestCombo = combo;
         }
     }
 }
