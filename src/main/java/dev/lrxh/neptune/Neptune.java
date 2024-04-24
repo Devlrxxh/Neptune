@@ -66,8 +66,8 @@ public final class Neptune extends JavaPlugin {
         loadConfigs();
         registerListeners();
         loadCommandManager();
-        loadExtensions();
         loadTasks();
+        loadExtensions();
 
         queueManager = new QueueManager();
         matchManager = new MatchManager();
