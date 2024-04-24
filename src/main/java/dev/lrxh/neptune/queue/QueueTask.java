@@ -10,6 +10,7 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
@@ -55,8 +56,8 @@ public class QueueTask extends BukkitRunnable {
                                 plugin.getQueueManager().remove(uuid2);
                                 plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.LOBBY);
 
-                                Bukkit.getPlayer(uuid1).sendRichMessage(CC.error("No arena was found!"));
-                                Bukkit.getPlayer(uuid2).sendMessage(CC.error("No arena was found!"));
+                                PlayerUtil.sendMessage(uuid1, CC.error("No arena was found!"));
+                                PlayerUtil.sendMessage(uuid2, CC.error("No arena was found!"));
                                 return;
                             }
 

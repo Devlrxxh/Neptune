@@ -11,10 +11,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class MatchStartRunnable extends BukkitRunnable {
 
     private final Match match;
-    private int startTimer = 3;
+    private int startTimer;
 
     public MatchStartRunnable(Match match) {
         this.match = match;
+        this.startTimer = match.getKit().isSumo() ? 3 : 5;
     }
 
     @Override

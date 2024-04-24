@@ -32,6 +32,7 @@ public class MatchManager {
         TeamFightMatch match = new TeamFightMatch(MatchState.STARTING, arena, kit, ranked, duel, participants, teamRed, teamBlue);
         matches.add(match);
 
+
         //Setup participants
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
@@ -40,6 +41,9 @@ public class MatchManager {
             }
             setupPlayer(participant.getPlayerUUID(), match);
         }
+
+        //Apply kit rules for players
+        match.checkRules();
 
         //Teleport the team A to their spawns
         for (Participant participantA : match.getTeamA().getParticipants()) {
@@ -58,8 +62,6 @@ public class MatchManager {
             }
             player.teleport(arena.getBlueSpawn());
         }
-        match.checkRules();
-
         //Start match start runnable
         Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
     }

@@ -11,6 +11,7 @@ import dev.lrxh.neptune.commands.MainCommand;
 import dev.lrxh.neptune.commands.QueueCommand;
 import dev.lrxh.neptune.commands.ViewInventoryCommand;
 import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
@@ -62,11 +63,11 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadManager() {
-        loadTasks();
         loadConfigs();
         registerListeners();
         loadCommandManager();
         loadExtensions();
+        loadTasks();
 
         queueManager = new QueueManager();
         matchManager = new MatchManager();
@@ -106,7 +107,7 @@ public final class Neptune extends JavaPlugin {
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler();
-        taskScheduler.startTask(new QueueTask(), 20L);
+        taskScheduler.startTask(new QueueTask(), SettingsLocale.QUEUE_UPDATE_TIME.getInt());
     }
 
     private void loadCommandManager() {

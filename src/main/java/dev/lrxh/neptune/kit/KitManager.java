@@ -8,26 +8,24 @@ import dev.lrxh.neptune.utils.ItemUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class KitManager implements IManager {
-    public final HashSet<Kit> kits = new HashSet<>();
+    public final List<Kit> kits = new ArrayList<>();
 
     public void loadKits() {
         FileConfiguration config = plugin.getConfigManager().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {
-            for (String kitName : config.getConfigurationSection("kits").getKeys(false)) {
+            for (String kitName : Objects.requireNonNull(config.getConfigurationSection("kits")).getKeys(false)) {
                 String path = "kits." + kitName + ".";
                 String displayName = config.getString(path + "displayName");
                 boolean ranked = config.getBoolean(path + "ranked");
-                ItemStack icon = ItemUtils.deserializeItemStack(config.getString(path + "icon"));
+                ItemStack icon = ItemUtils.deserializeItemStack(Objects.requireNonNull(config.getString(path + "icon")));
 
                 List<ItemStack> items = ItemUtils.deserializeItemStacks(config.getString(path + "items"));
                 List<ItemStack> armour = ItemUtils.deserializeItemStacks(config.getString(path + "armour"));
                 HashSet<Arena> arenas = new HashSet<>();
-                if (config.getStringList(path + "arenas") != null) {
+                if (!config.getStringList(path + "arenas").isEmpty()) {
                     for (String arenaName : config.getStringList(path + "arenas")) {
                         arenas.add(plugin.getArenaManager().getArenaByName(arenaName));
                     }

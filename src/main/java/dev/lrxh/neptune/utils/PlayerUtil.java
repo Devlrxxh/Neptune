@@ -94,6 +94,13 @@ public class PlayerUtil {
     }
 
 
+    public void sendMessage(UUID playerUUID, String message) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        player.sendMessage(message);
+    }
+
+
     public void denyMovement(UUID playerUUID) {
         if (Bukkit.getPlayer(playerUUID) == null) return;
         Player player = Bukkit.getPlayer(playerUUID);

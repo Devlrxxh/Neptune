@@ -41,7 +41,6 @@ public class MatchEndRunnable extends BukkitRunnable {
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
                 profile.setState(ProfileState.LOBBY);
                 match.getKit().removePlaying(match.isRanked());
-                System.out.println("MatchEndRunnable: " + participant.getPlayerUUID() + " is removed from kit.");
                 profile.setMatch(null);
                 plugin.getMatchManager().matches.remove(match);
             }

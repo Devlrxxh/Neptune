@@ -6,7 +6,6 @@ dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.class
 dev\lrxh\neptune\utils\menu\Button.class
 dev\lrxh\neptune\providers\hotbar\HotbarManager.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilderImpl.class
-dev\lrxh\neptune\utils\PotionUtil.class
 dev\lrxh\neptune\utils\assemble\AssembleBoard.class
 dev\lrxh\neptune\arena\impl\StandAloneArena.class
 dev\lrxh\neptune\commands\ViewInventoryCommand.class
@@ -22,7 +21,6 @@ dev\lrxh\neptune\arena\impl\StandAloneArena$StandAloneArenaBuilder.class
 dev\lrxh\neptune\arena\ArenaManager.class
 dev\lrxh\neptune\utils\ItemUtils.class
 dev\lrxh\neptune\match\impl\MatchState.class
-dev\lrxh\neptune\match\menu\MatchSnapshotMenu$EffectsButton.class
 dev\lrxh\neptune\utils\assemble\AssembleAdapter.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$3.class
 dev\lrxh\neptune\profile\Profile.class

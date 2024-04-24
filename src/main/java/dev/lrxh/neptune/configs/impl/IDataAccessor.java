@@ -4,6 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 
+import java.util.Collections;
 import java.util.List;
 
 public interface IDataAccessor {
@@ -27,7 +28,7 @@ public interface IDataAccessor {
     }
 
     String getPath();
-
+    String getComment();
     List<String> getDefaultValue();
 
     DataType getDataType();
@@ -57,11 +58,18 @@ public interface IDataAccessor {
         getConfigFile().save();
     }
 
+    default void comment(String path, String comment) {
+        if(comment == null) return;
+        getConfigFile().getConfiguration().setInlineComments(path, Collections.singletonList(comment));
+        getConfigFile().save();
+    }
+
     default void load() {
 
         for (IDataAccessor accessor : this.getClass().getEnumConstants()) {
             if (accessor.getConfigFile().getConfiguration().get(accessor.getPath()) == null) {
                 setValue(accessor.getPath(), accessor.getDefaultValue(), accessor.getDataType());
+                comment(accessor.getPath(), accessor.getComment());
             }
         }
 
