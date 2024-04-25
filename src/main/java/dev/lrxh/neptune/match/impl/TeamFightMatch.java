@@ -69,11 +69,13 @@ public class TeamFightMatch extends Match {
                     new Replacement("<loser>", loserMessage),
                     new Replacement("<winner>", winnerMessage));
 
-            TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
-                    .clickEvent(ClickEvent.runCommand("/queue " + kit.getName() + " " + isRanked()))
-                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));
+            if(MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
+                TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
+                        .clickEvent(ClickEvent.runCommand("/queue " + kit.getName() + " " + isRanked()))
+                        .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));
 
-            PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
+                PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
+            }
         }
     }
 
@@ -109,9 +111,8 @@ public class TeamFightMatch extends Match {
 
     private void takeSnapshots() {
         for (Participant participant : participants) {
-            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            Team team = getPlayerTeam(participant);
+            if (player == null) continue;
             MatchSnapshot snapshot = new MatchSnapshot(player, player.getName());
             snapshot.setLongestCombo(participant.getLongestCombo());
             snapshot.setTotalHits(participant.getHits());

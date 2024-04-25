@@ -41,7 +41,7 @@ public class MatchListener implements Listener {
             if (match instanceof TeamFightMatch) {
                 Participant participant = match.getParticipant(player.getUniqueId());
                 participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                profile.getMatch().onDeath(participant);
+                match.onDeath(participant);
             }
         }
     }

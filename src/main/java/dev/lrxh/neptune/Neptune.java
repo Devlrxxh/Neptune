@@ -80,7 +80,7 @@ public final class Neptune extends JavaPlugin {
         cache.load();
         hotbarManager = new HotbarManager();
         hotbarManager.loadItems();
-        assemble = new Assemble(this, new ScoreboardAdapter());
+        assemble = new Assemble(get(), new ScoreboardAdapter());
     }
 
     private void registerListeners() {

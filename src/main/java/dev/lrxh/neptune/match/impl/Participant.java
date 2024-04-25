@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.match.impl;
 
+import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.match.Match;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,6 +57,16 @@ public class Participant {
         combo++;
         if (combo > longestCombo) {
             longestCombo = combo;
+        }
+
+        Match match = Neptune.get().getProfileManager().getByUUID(playerUUID).getMatch();
+        if(match.getKit().isBoxing()){
+            if(hits >= 100){
+                if (match instanceof TeamFightMatch) {
+                    setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                    match.onDeath(this);
+                }
+            }
         }
     }
 }

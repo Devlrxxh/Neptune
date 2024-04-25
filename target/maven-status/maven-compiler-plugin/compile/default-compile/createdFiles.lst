@@ -6,6 +6,7 @@ dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.class
 dev\lrxh\neptune\utils\menu\Button.class
 dev\lrxh\neptune\providers\hotbar\HotbarManager.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilderImpl.class
+dev\lrxh\neptune\match\menu\button\HealthButton.class
 dev\lrxh\neptune\utils\assemble\AssembleBoard.class
 dev\lrxh\neptune\arena\impl\StandAloneArena.class
 dev\lrxh\neptune\commands\ViewInventoryCommand.class
@@ -63,6 +64,7 @@ dev\lrxh\neptune\providers\manager\Value.class
 dev\lrxh\neptune\match\impl\ParticipantColor.class
 dev\lrxh\neptune\providers\hotbar\ItemListener.class
 dev\lrxh\neptune\queue\menu\QueueSelectButton.class
+dev\lrxh\neptune\match\menu\button\StatisticsButton.class
 dev\lrxh\neptune\providers\hotbar\ItemAction.class
 dev\lrxh\neptune\arena\Arena$1.class
 dev\lrxh\neptune\kit\KitManager.class
@@ -72,12 +74,10 @@ dev\lrxh\neptune\queue\Queue.class
 dev\lrxh\neptune\configs\impl\DataType.class
 dev\lrxh\neptune\match\impl\Participant.class
 dev\lrxh\neptune\providers\clickable\Replacement.class
-dev\lrxh\neptune\match\menu\MatchSnapshotMenu$HealthButton.class
 dev\lrxh\neptune\configs\impl\MenusLocale.class
 dev\lrxh\neptune\profile\listener\ProfileListener.class
 dev\lrxh\neptune\configs\impl\SettingsLocale.class
 dev\lrxh\neptune\configs\ConfigManager.class
-dev\lrxh\neptune\match\menu\MatchSnapshotMenu$StatisticsButton.class
 dev\lrxh\neptune\utils\PlaceholderUtil.class
 dev\lrxh\neptune\utils\assemble\events\AssembleBoardCreatedEvent.class
 dev\lrxh\neptune\profile\ProfileManager.class
@@ -92,8 +92,7 @@ dev\lrxh\neptune\configs\impl\MessagesLocale.class
 dev\lrxh\neptune\profile\ProfileState.class
 dev\lrxh\neptune\utils\assemble\Assemble.class
 dev\lrxh\neptune\commands\QueueCommand.class
-dev\lrxh\neptune\utils\EntityUtils.class
-dev\lrxh\neptune\match\menu\MatchSnapshotMenu$SwitchInventoryButton.class
+dev\lrxh\neptune\match\menu\button\SwitchInventoryButton.class
 dev\lrxh\neptune\providers\manager\IManager.class
 dev\lrxh\neptune\kit\command\KitCommand.class
 dev\lrxh\neptune\utils\assemble\AssembleThread.class

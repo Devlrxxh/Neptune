@@ -3,6 +3,7 @@ package dev.lrxh.neptune.utils;
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
 import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -19,14 +20,13 @@ public class ItemUtils {
             builder.append(serializeItemStack(itemStack)).append(":");
         }
 
-        return Base64.getEncoder().encodeToString(builder.toString().getBytes());
+        return builder.toString();
     }
 
     public static List<ItemStack> deserializeItemStacks(String base64String) {
         List<ItemStack> itemStacks = new ArrayList<>();
 
-        byte[] data = Base64.getDecoder().decode(base64String);
-        String[] parts = new String(data).split(":");
+        String[] parts = base64String.split(":");
 
         for (String part : parts) {
             ItemStack itemStack = deserializeItemStack(part);
@@ -50,7 +50,7 @@ public class ItemUtils {
 
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null && meta.hasDisplayName()) {
-            builder.append(meta.getDisplayName()).append(",");
+            builder.append(meta.displayName()).append(",");
         } else {
             builder.append(",");
         }
@@ -82,7 +82,7 @@ public class ItemUtils {
         if (parts.length > 3 && !parts[3].isEmpty()) {
             ItemMeta meta = itemStack.getItemMeta();
             if (meta != null) {
-                meta.setDisplayName(parts[3]);
+                meta.displayName(Component.text(parts[3]));
                 itemStack.setItemMeta(meta);
             }
         }
@@ -93,7 +93,7 @@ public class ItemUtils {
                 Enchantment enchantment = Enchantment.getByName(enchantmentData[i]);
                 if (enchantment != null) {
                     int level = Integer.parseInt(enchantmentData[i + 1]);
-                    itemStack.addEnchantment(XEnchantment.matchXEnchantment(enchantment).getEnchant(), level);
+                    itemStack.addEnchantment(Objects.requireNonNull(XEnchantment.matchXEnchantment(enchantment).getEnchant()), level);
                 }
             }
         }
