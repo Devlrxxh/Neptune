@@ -46,8 +46,8 @@ public class PlayerUtil {
     }
 
     public void teleportToSpawn(UUID playerUUID) {
-        if (Bukkit.getPlayer(playerUUID) == null) return;
         Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
         if (plugin.getCache().getSpawn() != null) {
             player.teleport(plugin.getCache().getSpawn());
         } else {
@@ -57,8 +57,8 @@ public class PlayerUtil {
 
 
     public int getPing(UUID playerUUID) {
-        if (Bukkit.getPlayer(playerUUID) == null) return 0;
         Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return 0;
         return player.getPing();
     }
 
@@ -131,18 +131,14 @@ public class PlayerUtil {
     }
 
     public static void sendTitle(UUID playerUUID, String header, String footer, int duration) {
-        if (Bukkit.getPlayer(playerUUID) == null) return;
-
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player != null) {
-            player.sendTitle(CC.color(header), CC.color(footer), 1, duration, 10);
-
-        }
+        if (player == null) return;
+        player.sendTitle(CC.color(header), CC.color(footer), 1, duration, 10);
     }
 
     public void doVelocityChange(UUID playerUUID) {
-        if (Bukkit.getPlayer(playerUUID) == null) return;
         Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
 
         player.setVelocity(player.getVelocity().add(new Vector(0, 0.25, 0)));
         player.setAllowFlight(true);

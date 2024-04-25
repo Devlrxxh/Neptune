@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -60,12 +61,13 @@ public abstract class Match {
 
     public void checkRules() {
         for (Participant participant : participants) {
-            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player == null) continue;
             if (kit.isDenyMovement()) {
                 if (matchState.equals(MatchState.STARTING)) {
                     PlayerUtil.denyMovement(participant.getPlayerUUID());
                 } else {
-                    Bukkit.getPlayer(participant.getPlayerUUID()).resetTitle();
+                    player.resetTitle();
                     PlayerUtil.allowMovement(participant.getPlayerUUID());
                 }
             }
@@ -73,25 +75,22 @@ public abstract class Match {
     }
 
     public void hidePlayer(Participant targetParticipant) {
-        if (Bukkit.getPlayer(targetParticipant.getPlayerUUID()) == null) return;
         Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
+        if (targetPlayer == null) return;
         for (Participant participant : participants) {
-            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            player.hidePlayer(targetPlayer);
+            if (player == null) return;
+            player.hidePlayer(Neptune.get(), targetPlayer);
         }
     }
 
 
     public void giveKit() {
         for (Participant participant : participants) {
-            if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player == null) continue;
             player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
-            player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
         }
-
-
     }
 
     public abstract void end();

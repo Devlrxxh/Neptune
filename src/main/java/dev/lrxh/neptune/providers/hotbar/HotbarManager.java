@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Getter
@@ -27,8 +28,8 @@ public class HotbarManager {
     }
 
     public void giveItems(UUID playerUUID) {
-        if (Bukkit.getPlayer(playerUUID) == null) return;
         Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
 
         player.getInventory().clear();
         ProfileState profileState = plugin.getProfileManager().getByUUID(player.getUniqueId()).getState();
@@ -53,7 +54,7 @@ public class HotbarManager {
 
     public void loadItems() {
         FileConfiguration config = Neptune.get().getConfigManager().getHotbarConfig().getConfiguration();
-        if (config.contains("ITEMS")) {
+        if (config.getConfigurationSection("ITEMS") != null) {
             for (String section : config.getConfigurationSection("ITEMS").getKeys(false)) {
                 Hotbar inventory = new Hotbar();
 
@@ -61,7 +62,7 @@ public class HotbarManager {
                     String path = "ITEMS." + section + "." + itemName + ".";
 
                     String displayName = config.getString(path + "NAME");
-                    Material material = Material.matchMaterial(config.getString(path + "MATERIAL"));
+                    Material material = Material.matchMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL")));
                     byte slot = (byte) config.getInt(path + "SLOT");
                     byte durability = (byte) config.getInt(path + "DURABILITY");
 

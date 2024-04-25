@@ -46,7 +46,6 @@ public class KitCommand extends BaseCommand {
                 .displayName("&9" + kitName)
                 .name(kitName)
                 .items(Arrays.asList(player.getInventory().getContents()))
-                .armour(Arrays.asList(player.getInventory().getArmorContents()))
                 .ranked(false)
                 .build(false)
                 .hunger(false)
@@ -75,7 +74,6 @@ public class KitCommand extends BaseCommand {
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
         player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
-        player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
 
         player.sendMessage(CC.color("&aSuccessfully given kit load out!"));
     }
@@ -93,7 +91,6 @@ public class KitCommand extends BaseCommand {
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
-        kit.setArmour(Arrays.asList(player.getInventory().getArmorContents()));
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
     }

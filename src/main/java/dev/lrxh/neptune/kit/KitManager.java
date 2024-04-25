@@ -11,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public class KitManager implements IManager {
-    public final List<Kit> kits = new ArrayList<>();
+    public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
 
     public void loadKits() {
         FileConfiguration config = plugin.getConfigManager().getKitsConfig().getConfiguration();
@@ -23,7 +23,6 @@ public class KitManager implements IManager {
                 ItemStack icon = ItemUtils.deserializeItemStack(Objects.requireNonNull(config.getString(path + "icon")));
 
                 List<ItemStack> items = ItemUtils.deserializeItemStacks(config.getString(path + "items"));
-                List<ItemStack> armour = ItemUtils.deserializeItemStacks(config.getString(path + "armour"));
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
                     for (String arenaName : config.getStringList(path + "arenas")) {
@@ -38,7 +37,7 @@ public class KitManager implements IManager {
                 boolean denyMovement = config.getBoolean(path + "denyMovement");
                 boolean bedwars = config.getBoolean(path + "bedwars");
 
-                kits.add(new Kit(kitName, displayName, ranked, items, armour, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, bedwars));
+                kits.add(new Kit(kitName, displayName, ranked, items, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, bedwars));
             }
         }
     }
@@ -50,7 +49,6 @@ public class KitManager implements IManager {
                     new Value("displayName", kit.getDisplayName()),
                     new Value("ranked", kit.isRanked()),
                     new Value("items", ItemUtils.serializeItemStacks(kit.getItems())),
-                    new Value("armour", ItemUtils.serializeItemStacks(kit.getArmour())),
                     new Value("build", kit.isBuild()),
                     new Value("hunger", kit.isHunger()),
                     new Value("sumo", kit.isSumo()),

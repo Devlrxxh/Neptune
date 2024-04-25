@@ -45,6 +45,9 @@ public class MatchManager {
         //Apply kit rules for players
         match.checkRules();
 
+        //Give the players their kit
+        match.giveKit();
+
         //Teleport the team A to their spawns
         for (Participant participantA : match.getTeamA().getParticipants()) {
             Player player = Bukkit.getPlayer(participantA.getPlayerUUID());
@@ -73,7 +76,6 @@ public class MatchManager {
         Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
         profile.setMatch(match);
         profile.setState(ProfileState.IN_GAME);
-        match.giveKit();
         player.updateInventory();
     }
 }
