@@ -11,7 +11,6 @@ public class ProfileManager {
 
     public void createProfile(UUID playerUUID) {
         Profile profile = new Profile(playerUUID, ProfileState.LOBBY);
-        profile.load();
         profiles.put(playerUUID, profile);
     }
 

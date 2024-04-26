@@ -11,6 +11,7 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -23,8 +24,8 @@ public class MatchManager {
             kit.addPlaying(ranked);
         }
         //Create teams
-        Team teamRed = new Team(new HashSet<>(participants.subList(0, participants.size() / 2)), false, ParticipantColor.RED);
-        Team teamBlue = new Team(new HashSet<>(participants.subList(participants.size() / 2, participants.size())), false, ParticipantColor.BLUE);
+        Team teamRed = new Team(new ArrayList<>(participants.subList(0, participants.size() / 2)), false, ParticipantColor.RED);
+        Team teamBlue = new Team(new ArrayList<>(participants.subList(participants.size() / 2, participants.size())), false, ParticipantColor.BLUE);
         teamRed.setOpponent(teamBlue);
         teamBlue.setOpponent(teamRed);
 

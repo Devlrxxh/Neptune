@@ -39,9 +39,8 @@ public class Profile {
         this.username = Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getName();
         this.match = null;
         this.matchSnapshot = null;
-        for (Kit kit : Neptune.get().getKitManager().kits) {
-            this.playerData.getKitData().put(kit, new KitData());
-        }
+
+        load();
     }
 
     public void setState(ProfileState profileState) {

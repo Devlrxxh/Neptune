@@ -5,19 +5,19 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.UUID;
 
 @Getter
 @Setter
 public class Team {
-    private final HashSet<Participant> participants;
+    private final ArrayList<Participant> participants;
     private UUID uuid;
     private boolean loser;
     private boolean hasBed = true;
 
 
-    public Team(HashSet<Participant> participants, boolean loser, ParticipantColor color) {
+    public Team(ArrayList<Participant> participants, boolean loser, ParticipantColor color) {
         this.participants = participants;
         this.loser = loser;
         this.uuid = UUID.randomUUID();

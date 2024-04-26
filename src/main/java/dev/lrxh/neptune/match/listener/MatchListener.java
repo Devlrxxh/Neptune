@@ -63,7 +63,7 @@ public class MatchListener implements Listener {
             if (!match.matchState.equals(MatchState.IN_ROUND)) {
                 event.setCancelled(true);
             } else {
-                if (match.getKit().isSumo()) {
+                if (!match.getKit().isDamage()) {
                     event.setDamage(0);
                 }
                 match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));

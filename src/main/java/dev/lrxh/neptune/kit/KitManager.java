@@ -22,7 +22,7 @@ public class KitManager implements IManager {
                 boolean ranked = config.getBoolean(path + "ranked");
                 ItemStack icon = ItemUtils.deserializeItemStack(Objects.requireNonNull(config.getString(path + "icon")));
 
-                List<ItemStack> items = ItemUtils.deserializeItemStacks(config.getString(path + "items"));
+                List<ItemStack> items = ItemUtils.deserializeItemStacks(Objects.requireNonNull(config.getString(path + "items")));
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
                     for (String arenaName : config.getStringList(path + "arenas")) {
@@ -37,8 +37,9 @@ public class KitManager implements IManager {
                 boolean denyMovement = config.getBoolean(path + "denyMovement");
                 boolean bedwars = config.getBoolean(path + "bedwars");
                 boolean boxing = config.getBoolean(path + "boxing");
+                boolean damage = config.getBoolean(path + "damage");
 
-                kits.add(new Kit(kitName, displayName, ranked, items, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, bedwars, boxing));
+                kits.add(new Kit(kitName, displayName, ranked, items, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, bedwars, boxing, damage));
             }
         }
     }
@@ -58,7 +59,8 @@ public class KitManager implements IManager {
                     new Value("arenas", kit.getArenasAsString()),
                     new Value("icon", ItemUtils.serializeItemStack(kit.getIcon())),
                     new Value("bedwars", kit.isBedwars()),
-                    new Value("boxing", kit.isBoxing())
+                    new Value("boxing", kit.isBoxing()),
+                    new Value("damange", kit.isDamage())
             );
             save(values, path);
         });

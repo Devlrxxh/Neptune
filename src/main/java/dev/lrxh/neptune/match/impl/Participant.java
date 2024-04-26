@@ -72,13 +72,16 @@ public class Participant {
                     break;
             }
         }
-
         Match match = Neptune.get().getProfileManager().getByUUID(playerUUID).getMatch();
-        if (match.getKit().isBoxing()) {
-            if (hits >= 100) {
-                if (match instanceof TeamFightMatch) {
-                    setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                    match.onDeath(this);
+        if (match instanceof TeamFightMatch) {
+            if (match.getKit().isBoxing()) {
+                if (hits >= 100) {
+
+                    Participant opponent = match.getParticipant(
+                            getOpponent().getParticipants().get(getOpponent().getParticipants().size() - 1).getPlayerUUID());
+
+                    opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                    match.onDeath(opponent);
                 }
             }
         }
