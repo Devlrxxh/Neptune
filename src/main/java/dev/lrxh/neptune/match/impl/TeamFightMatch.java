@@ -69,7 +69,7 @@ public class TeamFightMatch extends Match {
                     new Replacement("<loser>", loserMessage),
                     new Replacement("<winner>", winnerMessage));
 
-            if(MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
+            if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
                 TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
                         .clickEvent(ClickEvent.runCommand("/queue " + kit.getName() + " " + isRanked()))
                         .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));

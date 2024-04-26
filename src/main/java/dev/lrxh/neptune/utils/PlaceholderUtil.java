@@ -17,7 +17,7 @@ import java.util.List;
 public class PlaceholderUtil {
     private final Neptune plugin = Neptune.get();
 
-    public static List<String> format(List<String> lines, Player player) {
+    public List<String> format(List<String> lines, Player player) {
         List<String> formattedLines = new ArrayList<>();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         for (String line : lines) {

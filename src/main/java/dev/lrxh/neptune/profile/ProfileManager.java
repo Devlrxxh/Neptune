@@ -11,11 +11,13 @@ public class ProfileManager {
 
     public void createProfile(UUID playerUUID) {
         Profile profile = new Profile(playerUUID, ProfileState.LOBBY);
+        profile.load();
         profiles.put(playerUUID, profile);
     }
 
     public void removeProfile(UUID playerUUID) {
         plugin.getQueueManager().queues.remove(playerUUID);
+        profiles.get(playerUUID).save();
         profiles.remove(playerUUID);
     }
 

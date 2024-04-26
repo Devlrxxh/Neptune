@@ -18,7 +18,7 @@ public class HotbarManager {
     private final Map<ProfileState, Hotbar> items = new HashMap<>();
     private final Neptune plugin = Neptune.get();
 
-    static Item getItem(Hotbar inventory, int slot) {
+    Item getItem(Hotbar inventory, int slot) {
         Item[] slots = inventory.getSlots();
         if (slot >= 0 && slot < slots.length) {
             return slots[slot];

@@ -19,6 +19,7 @@ import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
+import dev.lrxh.neptune.providers.database.MongoManager;
 import dev.lrxh.neptune.providers.hotbar.HotbarManager;
 import dev.lrxh.neptune.providers.hotbar.ItemListener;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
@@ -51,6 +52,7 @@ public final class Neptune extends JavaPlugin {
     private Assemble assemble;
     private boolean placeholder = false;
     private HotbarManager hotbarManager;
+    private MongoManager mongoManager;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -81,6 +83,8 @@ public final class Neptune extends JavaPlugin {
         hotbarManager = new HotbarManager();
         hotbarManager.loadItems();
         assemble = new Assemble(get(), new ScoreboardAdapter());
+        this.mongoManager = new MongoManager();
+        mongoManager.connect();
     }
 
     private void registerListeners() {

@@ -130,7 +130,7 @@ public class PlayerUtil {
         player.removePotionEffect(PotionEffectType.JUMP);
     }
 
-    public static void sendTitle(UUID playerUUID, String header, String footer, int duration) {
+    public void sendTitle(UUID playerUUID, String header, String footer, int duration) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         player.sendTitle(CC.color(header), CC.color(footer), 1, duration, 10);

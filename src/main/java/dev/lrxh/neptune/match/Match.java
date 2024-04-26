@@ -6,6 +6,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
@@ -89,6 +90,11 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) continue;
+            Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+            if (!profile.getPlayerData().getKitData().get(kit).getKit().isEmpty()) {
+                player.getInventory().setContents(profile.getPlayerData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
+                return;
+            }
             player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
         }
     }

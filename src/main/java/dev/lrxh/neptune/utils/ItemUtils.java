@@ -8,12 +8,15 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @UtilityClass
 public class ItemUtils {
 
-    public static String serializeItemStacks(List<ItemStack> itemStacks) {
+    public String serializeItemStacks(List<ItemStack> itemStacks) {
         StringBuilder builder = new StringBuilder();
 
         for (ItemStack itemStack : itemStacks) {
@@ -23,10 +26,10 @@ public class ItemUtils {
         return builder.toString();
     }
 
-    public static List<ItemStack> deserializeItemStacks(String base64String) {
+    public List<ItemStack> deserializeItemStacks(String deserializedItemStack) {
         List<ItemStack> itemStacks = new ArrayList<>();
 
-        String[] parts = base64String.split(":");
+        String[] parts = deserializedItemStack.split(":");
 
         for (String part : parts) {
             ItemStack itemStack = deserializeItemStack(part);

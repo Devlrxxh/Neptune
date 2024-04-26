@@ -16,7 +16,7 @@ public class CC {
         return color("&#FE5757E&#FE4D4DR&#FE4343R&#FE3838O&#FE2E2ER &8- &c" + message);
     }
 
-    public static String color(String text) {
+    public String color(String text) {
         if (text == null) {
             return "";
         } else {
