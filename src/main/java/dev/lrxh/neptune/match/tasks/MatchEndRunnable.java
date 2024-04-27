@@ -42,14 +42,15 @@ public class MatchEndRunnable extends BukkitRunnable {
                 profile.setState(ProfileState.LOBBY);
                 match.getKit().removePlaying(match.isRanked());
                 profile.setMatch(null);
-                plugin.getMatchManager().matches.remove(match);
             }
             if (match instanceof TeamFightMatch) {
-                Team winnerTeam = ((TeamFightMatch) match).getTeamA().isLoser() ? ((TeamFightMatch) match).getTeamB() : ((TeamFightMatch) match).getTeamA();
-                Team loserTeam = ((TeamFightMatch) match).getTeamA().isLoser() ? ((TeamFightMatch) match).getTeamA() : ((TeamFightMatch) match).getTeamB();
+                TeamFightMatch teamFightMatch = (TeamFightMatch) match;
+                Team winnerTeam = teamFightMatch.getTeamA().isLoser() ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
+                Team loserTeam = teamFightMatch.getTeamA().isLoser() ? teamFightMatch.getTeamA() : teamFightMatch.getTeamB();
 
-                ((TeamFightMatch) match).sendEndMessage(winnerTeam, loserTeam);
+                teamFightMatch.sendEndMessage(winnerTeam, loserTeam);
             }
+            plugin.getMatchManager().matches.remove(match);
         }
         endTimer--;
     }

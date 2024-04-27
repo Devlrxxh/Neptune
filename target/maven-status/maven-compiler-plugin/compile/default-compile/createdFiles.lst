@@ -42,6 +42,7 @@ dev\lrxh\neptune\match\impl\DeathCause.class
 dev\lrxh\neptune\providers\database\MongoManager.class
 dev\lrxh\neptune\utils\menu\DisplayButton.class
 dev\lrxh\neptune\utils\ConfigFile.class
+dev\lrxh\neptune\providers\hotbar\ItemAction$4.class
 dev\lrxh\neptune\providers\hotbar\Item.class
 dev\lrxh\neptune\utils\menu\Menu$1.class
 dev\lrxh\neptune\configs\impl\IDataAccessor.class
@@ -58,6 +59,7 @@ dev\lrxh\neptune\utils\TaskScheduler.class
 dev\lrxh\neptune\arena\impl\ArenaType.class
 dev\lrxh\neptune\commands\MainCommand.class
 dev\lrxh\neptune\arena\Arena$ArenaBuilderImpl.class
+dev\lrxh\neptune\providers\menus\KitEditor\KitEditorMenu.class
 dev\lrxh\neptune\arena\listener\LobbyListener.class
 dev\lrxh\neptune\utils\LocationUtil.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$2.class
@@ -89,6 +91,7 @@ dev\lrxh\neptune\Neptune.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$1.class
 dev\lrxh\neptune\utils\assemble\AssembleUtils.class
 dev\lrxh\neptune\configs\impl\ScoreboardLocale.class
+dev\lrxh\neptune\providers\menus\KitEditor\KitEditorSelectButton.class
 dev\lrxh\neptune\utils\assemble\AssembleStyle.class
 dev\lrxh\neptune\profile\data\PlayerData.class
 dev\lrxh\neptune\utils\assemble\AssembleException.class

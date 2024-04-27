@@ -16,9 +16,16 @@ public enum MenusLocale implements IDataAccessor {
     QUEUE_SELECT_KIT_NAME("QUEUE.SELECT.NAME", null, DataType.STRING, "&b<kit>"),
     QUEUE_SELECT_SIZE("QUEUE.SELECT.SIZE", null, DataType.INT, "36"),
     QUEUE_SELECT_STARTING_SLOT("QUEUE.SELECT.STARTING-SLOT", null, DataType.INT, "10"),
-    QUEUE_SELECT_FILTER("QUEUE.SELECT.FILTER-TYPE", null, DataType.STRING, "FILL"),
+    QUEUE_SELECT_FILTER("QUEUE.SELECT.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
     QUEUE_SELECT_TITLE("QUEUE.SELECT.TITLE", null, DataType.STRING, "&7<type> Queue"),
-    QUEUE_SELECT_UNRANKED_LORE("QUEUE.SELECT.UNRANKED.LORE", null, DataType.STRING_LIST, "", " &f&7* &fIn Fights: &b<playing>", " &f&7* &fQueued: &b<queue>");
+    QUEUE_SELECT_UNRANKED_LORE("QUEUE.SELECT.UNRANKED.LORE", null, DataType.STRING_LIST, "", " &f&7* &fIn Fights: &b<playing>", " &f&7* &fQueued: &b<queue>"),
+    KIT_EDITOR_SELECT_KIT_NAME("KIT_EDITOR.SELECT.NAME", null, DataType.STRING, "&b<kit>"),
+    KIT_EDITOR_SELECT_SIZE("KIT_EDITOR.SELECT.SIZE", null, DataType.INT, "36"),
+    KIT_EDITOR_SELECT_STARTING_SLOT("KIT_EDITOR.SELECT.STARTING-SLOT", null, DataType.INT, "10"),
+    KIT_EDITOR_SELECT_FILTER("KIT_EDITOR.SELECT.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
+    KIT_EDITOR_SELECT_TITLE("KIT_EDITOR.SELECT.TITLE", null, DataType.STRING, "&7Kit Editor"),
+    KIT_EDITOR_SELECT_LORE("KIT_EDITOR.SELECT.LORE", null, DataType.STRING_LIST, "", " &aClick to edit kit");
+
 
     private final String path;
     private final String comment;

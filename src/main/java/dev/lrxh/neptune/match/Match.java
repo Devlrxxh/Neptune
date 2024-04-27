@@ -68,10 +68,10 @@ public abstract class Match {
                 if (matchState.equals(MatchState.STARTING)) {
                     PlayerUtil.denyMovement(participant.getPlayerUUID());
                 } else {
-                    player.resetTitle();
                     PlayerUtil.allowMovement(participant.getPlayerUUID());
                 }
             }
+            player.resetTitle();
         }
     }
 
@@ -91,11 +91,7 @@ public abstract class Match {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) continue;
             Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
-            if (!profile.getPlayerData().getKitData().get(kit).getKit().isEmpty()) {
-                player.getInventory().setContents(profile.getPlayerData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
-                return;
-            }
-            player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
+            player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
         }
     }
 

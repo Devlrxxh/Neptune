@@ -3,9 +3,11 @@ package dev.lrxh.neptune.providers.hotbar;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.menus.KitEditor.KitEditorMenu;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import org.bukkit.entity.Player;
 
+@SuppressWarnings("unused")
 public enum ItemAction {
 
     UNRANKED() {
@@ -26,6 +28,12 @@ public enum ItemAction {
             Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).setState(ProfileState.LOBBY);
             Neptune.get().getQueueManager().remove(player.getUniqueId());
             MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId());
+        }
+    },
+    KIT_EDITOR() {
+        @Override
+        public void execute(Player player) {
+            new KitEditorMenu().openMenu(player);
         }
     };
 

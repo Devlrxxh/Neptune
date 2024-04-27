@@ -60,7 +60,7 @@ public class KitManager implements IManager {
                     new Value("icon", ItemUtils.serializeItemStack(kit.getIcon())),
                     new Value("bedwars", kit.isBedwars()),
                     new Value("boxing", kit.isBoxing()),
-                    new Value("damange", kit.isDamage())
+                    new Value("damage", kit.isDamage())
             );
             save(values, path);
         });

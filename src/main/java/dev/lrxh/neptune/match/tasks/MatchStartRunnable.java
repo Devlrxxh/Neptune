@@ -15,7 +15,7 @@ public class MatchStartRunnable extends BukkitRunnable {
 
     public MatchStartRunnable(Match match) {
         this.match = match;
-        this.startTimer = match.getKit().isSumo() ? 3 : 5;
+        this.startTimer = match.getKit().isDenyMovement() ? 3 : 5;
     }
 
     @Override

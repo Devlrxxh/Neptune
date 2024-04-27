@@ -34,6 +34,7 @@ public class HotbarManager {
         player.getInventory().clear();
         ProfileState profileState = plugin.getProfileManager().getByUUID(player.getUniqueId()).getState();
         if (profileState.equals(ProfileState.IN_GAME)) return;
+        if (profileState.equals(ProfileState.IN_KIT_EDITOR)) return;
 
         Hotbar inventory = items.get(profileState);
 

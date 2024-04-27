@@ -85,7 +85,7 @@ public abstract class Menu {
             ItemMeta meta = item.getItemMeta();
 
             if (meta != null && meta.hasDisplayName()) {
-                meta.setDisplayName(meta.getDisplayName() + "§b§c§d§e");
+                meta.displayName(Component.text(meta.displayName() + "§b§c§d§e"));
             }
 
             item.setItemMeta(meta);
@@ -113,7 +113,6 @@ public abstract class Menu {
             title = title.substring(0, 32);
         }
 
-        player.getOpenInventory();
         if (previousMenu == null) {
             player.closeInventory();
         } else {
@@ -123,6 +122,7 @@ public abstract class Menu {
             } else {
                 previousMenu.setClosedByMenu(true);
                 inventory = player.getOpenInventory().getTopInventory();
+                player.getOpenInventory().setTitle(title);
                 update = true;
                 player.updateInventory();
             }
@@ -169,7 +169,6 @@ public abstract class Menu {
             player.openInventory(inventory);
         }
 
-        this.onOpen(player);
         this.setClosedByMenu(false);
 
     }
@@ -202,18 +201,7 @@ public abstract class Menu {
         return true;
     }
 
-    public int getSlot(int x, int y) {
-        return ((9 * y) + x);
-    }
-
     public abstract String getTitle(Player player);
 
     public abstract Map<Integer, Button> getButtons(Player player);
-
-    public void onOpen(Player player) {
-    }
-
-    public void onClose(Player player) {
-    }
-
 }

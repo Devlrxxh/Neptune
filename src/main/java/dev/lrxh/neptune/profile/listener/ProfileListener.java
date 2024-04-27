@@ -1,17 +1,22 @@
 package dev.lrxh.neptune.profile.listener;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.DeathCause;
 import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.profile.VisibilityLogic;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.Arrays;
 
 public class ProfileListener implements Listener {
     private final Neptune plugin = Neptune.get();
@@ -42,5 +47,19 @@ public class ProfileListener implements Listener {
             }
         }
         plugin.getProfileManager().removeProfile(player.getUniqueId());
+    }
+
+    @EventHandler
+    public void onInventoryClose(InventoryCloseEvent event) {
+        Player player = (Player) event.getPlayer();
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+            profile.getData().getKitData().get(profile.getKitEditor()).setKit
+                    (Arrays.asList(player.getInventory().getContents()));
+
+            MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());
+            System.out.println(profile.getData().getKitData().get(profile.getKitEditor()).getKit());
+            profile.setState(ProfileState.LOBBY);
+        }
     }
 }

@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @Getter
 public enum MessagesLocale implements IDataAccessor {
-    MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", null, DataType.STRING_LIST, "&7disconnected"),
+    MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", null, DataType.STRING_LIST, "<player> &7disconnected"),
     MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", null, DataType.STRING_LIST, "&c☠ <player> &7was killed by \uD83D\uDDE1 <killer>"),
     MATCH_DEATH_DIED("MATCH.DEATH.DIED", null, DataType.STRING_LIST, "&c☠ <player> &7died"),
     MATCH_DEATH_VOID("MATCH.DEATH.VOID", null, DataType.STRING_LIST, "&c☠ <player> &7fell into the void while fighting \uD83D\uDDE1 <killer>"),
@@ -40,7 +40,9 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_COMBO_MESSAGE_ENABLE("MATCH.COMBO_MESSAGE.ENABLE", null, DataType.BOOLEAN, "true"),
     MATCH_COMBO_MESSAGE_5("MATCH.COMBO_MESSAGE.5COMBO", null, DataType.STRING_LIST, "&a5 COMBO!"),
     MATCH_COMBO_MESSAGE_10("MATCH.COMBO_MESSAGE.10COMBO", null, DataType.STRING_LIST, "&e10 COMBO!"),
-    MATCH_COMBO_MESSAGE_20("MATCH.COMBO_MESSAGE.20COMBO", null, DataType.STRING_LIST, "&c!!!20 COMBO!!!");
+    MATCH_COMBO_MESSAGE_20("MATCH.COMBO_MESSAGE.20COMBO", null, DataType.STRING_LIST, "&c!!!20 COMBO!!!"),
+    KIT_EDITOR_START("KIT_EDITOR.START", "This is sent when the player starts editing a kit.", DataType.STRING_LIST, "&bOpen you inventory to edit the kit"),
+    KIT_EDITOR_STOP("KIT_EDITOR.STOP", "This is sent when the player finishes editing a kit.", DataType.STRING_LIST, "&aKit layout has been saved.");
 
     private final String path;
     private final String comment;
@@ -61,9 +63,8 @@ public enum MessagesLocale implements IDataAccessor {
 
     public void send(UUID playerUUID, Replacement... replacements) {
         Player player = Bukkit.getPlayer(playerUUID);
-
+        if (player == null) return;
         for (String message : getStringList()) {
-
             PlayerUtil.sendMessage(player, ClickableUtils.returnMessage(message, replacements));
         }
     }

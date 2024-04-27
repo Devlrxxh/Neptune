@@ -30,6 +30,8 @@ import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuListener;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.GameRule;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -70,6 +72,7 @@ public final class Neptune extends JavaPlugin {
         loadCommandManager();
         loadTasks();
         loadExtensions();
+        loadWorlds();
 
         queueManager = new QueueManager();
         matchManager = new MatchManager();
@@ -106,6 +109,14 @@ public final class Neptune extends JavaPlugin {
         Plugin placeholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
         if (placeholderAPI != null && placeholderAPI.isEnabled()) {
             placeholder = true;
+        }
+    }
+
+    private void loadWorlds() {
+        for (World world : get().getServer().getWorlds()) {
+            world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
         }
     }
 

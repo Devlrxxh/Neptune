@@ -16,7 +16,6 @@ import lombok.Setter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
@@ -30,7 +29,8 @@ public class Profile {
     private ProfileState state;
     private Match match;
     private MatchSnapshot matchSnapshot;
-    private PlayerData playerData = new PlayerData();
+    private PlayerData data = new PlayerData();
+    private Kit kitEditor;
     private MongoCollection<Document> collection = Neptune.get().getMongoManager().getCollection();
 
     public Profile(UUID playerUUID, ProfileState state) {
@@ -39,6 +39,10 @@ public class Profile {
         this.username = Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getName();
         this.match = null;
         this.matchSnapshot = null;
+        this.kitEditor = null;
+        for (Kit kit : Neptune.get().getKitManager().kits) {
+            this.data.getKitData().put(kit, new KitData(kit));
+        }
 
         load();
     }
@@ -64,7 +68,7 @@ public class Profile {
             Kit kit = Neptune.get().getKitManager().getKitByName(key);
 
             if (kit != null) {
-                KitData profileKitData = new KitData();
+                KitData profileKitData = new KitData(kit);
                 profileKitData.setUnrankedElo(kitDocument.getInteger("unrankedElo"));
                 profileKitData.setRankedElo(kitDocument.getInteger("rankedElo"));
                 profileKitData.setUnrankedWins(kitDocument.getInteger("unrankedWins"));
@@ -74,9 +78,9 @@ public class Profile {
                 profileKitData.setUnrankedStreak(kitDocument.getInteger("unrankedStreak"));
                 profileKitData.setRankedStreak(kitDocument.getInteger("rankedStreak"));
                 profileKitData.setElo(kitDocument.getInteger("elo"));
-                profileKitData.setKit(kitDocument.getString("kit").isEmpty() ? new ArrayList<>() : ItemUtils.deserializeItemStacks(kitDocument.getString("kit")));
+                profileKitData.setKit(kitDocument.getString("kit").isEmpty() ? kit.getItems() : ItemUtils.deserializeItemStacks(kitDocument.getString("kit")));
 
-                playerData.getKitData().put(kit, profileKitData);
+                data.getKitData().put(kit, profileKitData);
             }
         }
 
@@ -89,7 +93,7 @@ public class Profile {
 
         Document kitStatsDoc = new Document();
 
-        for (Map.Entry<Kit, KitData> entry : playerData.getKitData().entrySet()) {
+        for (Map.Entry<Kit, KitData> entry : data.getKitData().entrySet()) {
             Document kitStatisticsDocument = new Document();
             kitStatisticsDocument.put("elo", entry.getValue().getElo());
             kitStatisticsDocument.put("unrankedElo", entry.getValue().getUnrankedElo());
