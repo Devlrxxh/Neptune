@@ -1,7 +1,5 @@
 package dev.lrxh.neptune.utils;
 
-import com.comphenix.protocol.PacketType;
-import com.comphenix.protocol.events.PacketContainer;
 import dev.lrxh.neptune.Neptune;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;

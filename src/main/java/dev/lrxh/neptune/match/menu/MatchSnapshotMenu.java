@@ -24,7 +24,7 @@ public class MatchSnapshotMenu extends Menu {
 
     @Override
     public String getTitle(Player player) {
-        return "&7Match Inventory";
+        return "&8" + snapshot.getUsername() + "'s inventory";
     }
 
     @Override

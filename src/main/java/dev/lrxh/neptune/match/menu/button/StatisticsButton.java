@@ -17,7 +17,7 @@ public class StatisticsButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(Material.PAPER)
+        return new ItemBuilder(Material.COMPASS)
                 .name("&7Match Stats")
                 .lore(Arrays.asList(
                         "&8| &7Hits: &a" + snapshot.getTotalHits(),

@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
@@ -21,6 +20,7 @@ public class PlaceholderUtil {
     public List<String> format(List<String> lines, Player player) {
         List<String> formattedLines = new ArrayList<>();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile == null) return formattedLines;
         for (String line : lines) {
             line = line.replaceAll("<online>", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
             line = line.replaceAll("<queued>", String.valueOf(Neptune.get().getQueueManager().queues.size()));
@@ -39,17 +39,14 @@ public class PlaceholderUtil {
                 Participant opponent = profile.getMatch().getParticipant(
                         participant.getOpponent().getParticipants().get(participant.getOpponent().getParticipants().size() - 1).getPlayerUUID());
 
-                Match match = profile.getMatch();
                 line = line.replaceAll("<opponent>", participant.getOpponent().getTeamNames());
-                line = line.replaceAll("<opponent-ping>", String.valueOf(PlayerUtil.getPing(opponent.getPlayerUUID())));
+                line = line.replaceAll("<opponent-ping>", String.valueOf(participant.getOpponent().getTeamPing()));
 
-                if (match.getKit().isBoxing()) {
-                    line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
-                    line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
-                    line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
-                    line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
-                    line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
-                }
+               line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
+               line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
+               line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
+               line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
+               line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
             }
 
             if (Neptune.get().isPlaceholder()) {

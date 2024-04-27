@@ -104,7 +104,7 @@ public class Profile {
             kitStatisticsDocument.put("rankedLosses", entry.getValue().getRankedLosses());
             kitStatisticsDocument.put("unrankedStreak", entry.getValue().getUnrankedStreak());
             kitStatisticsDocument.put("rankedStreak", entry.getValue().getRankedStreak());
-            kitStatisticsDocument.put("kit", entry.getValue().getKit() == null ? "" : ItemUtils.serializeItemStacks(entry.getValue().getKit()));
+            kitStatisticsDocument.put("kit", ItemUtils.serializeItemStacks(entry.getValue().getKit()));
 
             kitStatsDoc.put(entry.getKey().getName(), kitStatisticsDocument);
 

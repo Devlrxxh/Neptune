@@ -39,6 +39,7 @@ public class ProfileListener implements Listener {
 
         Player player = event.getPlayer();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile == null) return;
         Match match = profile.getMatch();
         if (match != null) {
             if (match instanceof TeamFightMatch) {
@@ -53,12 +54,12 @@ public class ProfileListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile == null) return;
         if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
             profile.getData().getKitData().get(profile.getKitEditor()).setKit
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());
-            System.out.println(profile.getData().getKitData().get(profile.getKitEditor()).getKit());
             profile.setState(ProfileState.LOBBY);
         }
     }

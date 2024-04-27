@@ -17,7 +17,7 @@ public class SwitchInventoryButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(Material.LEVER)
+        return new ItemBuilder(Material.PAPER)
                 .name("&7Press to switch to " + opponent + " inventory.")
                 .lore("&aClick to Switch")
                 .clearFlags()
@@ -26,6 +26,7 @@ public class SwitchInventoryButton extends Button {
 
     @Override
     public void clicked(Player player, ClickType clickType) {
+        if (snapshot.getUsername().equals(opponent)) return;
         player.chat("/viewinv " + snapshot.getOpponent());
     }
 }

@@ -41,7 +41,7 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_COMBO_MESSAGE_5("MATCH.COMBO_MESSAGE.5COMBO", null, DataType.STRING_LIST, "&a5 COMBO!"),
     MATCH_COMBO_MESSAGE_10("MATCH.COMBO_MESSAGE.10COMBO", null, DataType.STRING_LIST, "&e10 COMBO!"),
     MATCH_COMBO_MESSAGE_20("MATCH.COMBO_MESSAGE.20COMBO", null, DataType.STRING_LIST, "&c!!!20 COMBO!!!"),
-    KIT_EDITOR_START("KIT_EDITOR.START", "This is sent when the player starts editing a kit.", DataType.STRING_LIST, "&bOpen you inventory to edit the kit"),
+    KIT_EDITOR_START("KIT_EDITOR.START", "This is sent when the player starts editing a kit.", DataType.STRING_LIST, "&bOpen your Inventory to edit layout!"),
     KIT_EDITOR_STOP("KIT_EDITOR.STOP", "This is sent when the player finishes editing a kit.", DataType.STRING_LIST, "&aKit layout has been saved.");
 
     private final String path;
