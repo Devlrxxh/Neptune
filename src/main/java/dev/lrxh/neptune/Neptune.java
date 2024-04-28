@@ -9,6 +9,7 @@ import dev.lrxh.neptune.arena.command.ArenaCommand;
 import dev.lrxh.neptune.arena.listener.LobbyListener;
 import dev.lrxh.neptune.commands.MainCommand;
 import dev.lrxh.neptune.commands.QueueCommand;
+import dev.lrxh.neptune.commands.StatCommand;
 import dev.lrxh.neptune.commands.ViewInventoryCommand;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
@@ -137,7 +138,8 @@ public final class Neptune extends JavaPlugin {
                 new ArenaCommand(),
                 new QueueCommand(),
                 new MainCommand(),
-                new ViewInventoryCommand()
+                new ViewInventoryCommand(),
+                new StatCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

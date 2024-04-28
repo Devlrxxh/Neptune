@@ -42,11 +42,11 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<opponent>", participant.getOpponent().getTeamNames());
                 line = line.replaceAll("<opponent-ping>", String.valueOf(participant.getOpponent().getTeamPing()));
 
-               line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
-               line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
-               line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
-               line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
-               line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
+                line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
+                line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
+                line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
+                line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
+                line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
             }
 
             if (Neptune.get().isPlaceholder()) {

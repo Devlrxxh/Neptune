@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.providers.menus.KitEditor;
+package dev.lrxh.neptune.providers.menus.kitEditor;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;

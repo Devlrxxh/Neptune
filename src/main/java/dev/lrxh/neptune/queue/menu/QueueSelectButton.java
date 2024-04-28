@@ -28,13 +28,21 @@ public class QueueSelectButton extends Button {
 
         List<String> lore = new ArrayList<>();
 
-        MenusLocale.QUEUE_SELECT_UNRANKED_LORE.getStringList().forEach(line -> {
-            line = line.replaceAll("<playing>", String.valueOf(ranked ? kit.getRankedPlaying() : kit.getUnrankedPlaying()));
-            line = line.replaceAll("<queue>", String.valueOf(ranked ? kit.getRankedQueue() : kit.getUnrankedQueue()));
-            line = line.replaceAll("<kit>", kit.getDisplayName());
-            lore.add(line);
-        });
-
+        if (!ranked) {
+            MenusLocale.QUEUE_SELECT_UNRANKED_LORE.getStringList().forEach(line -> {
+                line = line.replaceAll("<playing>", String.valueOf(kit.getUnrankedPlaying()));
+                line = line.replaceAll("<queue>", String.valueOf(kit.getUnrankedQueue()));
+                line = line.replaceAll("<kit>", kit.getDisplayName());
+                lore.add(line);
+            });
+        } else {
+            MenusLocale.QUEUE_SELECT_RANKED_LORE.getStringList().forEach(line -> {
+                line = line.replaceAll("<playing>", String.valueOf(kit.getRankedPlaying()));
+                line = line.replaceAll("<queue>", String.valueOf(kit.getRankedQueue()));
+                line = line.replaceAll("<kit>", kit.getDisplayName());
+                lore.add(line);
+            });
+        }
 
         return new ItemBuilder(kit.getIcon().getType()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .amount(ranked ? kit.getRankedPlaying() : kit.getUnrankedPlaying())

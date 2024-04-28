@@ -3,7 +3,8 @@ package dev.lrxh.neptune.providers.hotbar;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.ProfileState;
-import dev.lrxh.neptune.providers.menus.KitEditor.KitEditorMenu;
+import dev.lrxh.neptune.providers.menus.kitEditor.KitEditorMenu;
+import dev.lrxh.neptune.providers.menus.stats.StatsMenu;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import org.bukkit.entity.Player;
 
@@ -34,6 +35,12 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             new KitEditorMenu().openMenu(player);
+        }
+    },
+    STATS() {
+        @Override
+        public void execute(Player player) {
+            new StatsMenu().openMenu(player);
         }
     };
 

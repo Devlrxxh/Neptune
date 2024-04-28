@@ -54,6 +54,19 @@ public class TeamFightMatch extends Match {
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
     }
 
+    public void addStats() {
+        Team winnerTeam = teamA.isLoser() ? teamB : teamA;
+        Team loserTeam = teamA.isLoser() ? teamA : teamB;
+
+        for (Participant participant : winnerTeam.getParticipants()) {
+            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, isRanked(), true);
+        }
+
+        for (Participant participant : loserTeam.getParticipants()) {
+            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, isRanked(), false);
+        }
+    }
+
     public void sendEndMessage(Team winnerTeam, Team loserTeam) {
         for (Participant participant : participants) {
 
@@ -105,6 +118,7 @@ public class TeamFightMatch extends Match {
 
         hidePlayer(participant);
         sendDeathMessage(participant);
+        addStats();
 
         end();
     }
