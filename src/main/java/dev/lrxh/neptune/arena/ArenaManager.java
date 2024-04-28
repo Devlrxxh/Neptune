@@ -36,6 +36,7 @@ public class ArenaManager implements IManager {
 
                     StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, deathZone, enabled);
                     arenas.add(arena);
+                    arena.takeSnapshot();
 
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
