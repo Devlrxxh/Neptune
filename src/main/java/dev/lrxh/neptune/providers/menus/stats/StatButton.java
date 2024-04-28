@@ -16,11 +16,12 @@ import java.util.List;
 @AllArgsConstructor
 public class StatButton extends Button {
     private final Kit kit;
+    private final Player target;
 
     @Override
     public ItemStack getButtonItem(Player player) {
         List<String> lore = new ArrayList<>();
-        KitData data = Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getData().getKitData().get(kit);
+        KitData data = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getData().getKitData().get(kit);
 
         MenusLocale.STAT_LORE.getStringList().forEach(line -> {
             line = line.replaceAll("<wins_unranked>", String.valueOf(data.getUnrankedWins()));

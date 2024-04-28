@@ -29,8 +29,9 @@ public class MatchEndRunnable extends BukkitRunnable {
             return;
         }
         if (endTimer == 0) {
-            if (match.kit.isBuild() && match.arena instanceof StandAloneArena) {
+            if (match.arena instanceof StandAloneArena) {
                 ((StandAloneArena) match.arena).setUsed(false);
+                ((StandAloneArena) match.arena).restoreSnapshot();
                 cancel();
             }
             for (Participant participant : match.participants) {

@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.ArenaType;
+import dev.lrxh.neptune.arena.impl.EdgeType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.impl.ParticipantColor;
@@ -80,6 +81,31 @@ public class ArenaCommand extends BaseCommand {
         } else {
             arena.setRedSpawn(player.getLocation());
             player.sendMessage(CC.color("&aSuccessfully set &cRed &aspawn for arena " + arena.getDisplayName() + "&a!"));
+        }
+        plugin.getArenaManager().saveArenas();
+    }
+
+    @Subcommand("setedge")
+    @Syntax("<arena> <edge_1/edge_2>")
+    @CommandCompletion("@arenas")
+    public void setEdge(Player player, String arenaName, EdgeType edgeType) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena)) {
+            player.sendMessage(CC.error("Arena isn't standalone!"));
+            return;
+        }
+        StandAloneArena arena = (StandAloneArena) plugin.getArenaManager().getArenaByName(arenaName);
+
+        if (edgeType.equals(EdgeType.EDGE_1)) {
+            arena.setEdge1(player.getLocation());
+            player.sendMessage(CC.color("&aSuccessfully set &9Edge 1 for arena " + arena.getDisplayName() + "&a!"));
+        } else {
+            arena.setEdge2(player.getLocation());
+            player.sendMessage(CC.color("&aSuccessfully set &cEdge 2 for arena " + arena.getDisplayName() + "&a!"));
         }
         plugin.getArenaManager().saveArenas();
     }

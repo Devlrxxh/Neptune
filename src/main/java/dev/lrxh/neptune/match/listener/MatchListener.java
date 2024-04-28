@@ -71,11 +71,12 @@ public class MatchListener implements Listener {
                 match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
             }
         }
+
     }
 
     @EventHandler(ignoreCancelled = true)
     public void onProjectileHitEvent(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player) {
+        if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
             Player target = (Player) event.getEntity();
             Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
             Player damager = (Player) event.getDamager();

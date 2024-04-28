@@ -97,6 +97,7 @@ public class QueueTask extends BukkitRunnable {
                             //Set arena as being used
                             if (arena instanceof StandAloneArena) {
                                 ((StandAloneArena) arena).setUsed(true);
+                                ((StandAloneArena) arena).takeSnapshot();
                             }
 
                             //Start match

@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.arena.impl;
 
 @SuppressWarnings("unused")
-public enum ArenaType {
-    SHARED,
-    STANDALONE
+public enum EdgeType {
+    EDGE_1,
+    EDGE_2,
 }

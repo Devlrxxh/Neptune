@@ -40,7 +40,7 @@ public enum ItemAction {
     STATS() {
         @Override
         public void execute(Player player) {
-            new StatsMenu().openMenu(player);
+            new StatsMenu(player).openMenu(player);
         }
     };
 
