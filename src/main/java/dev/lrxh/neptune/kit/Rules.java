@@ -5,7 +5,7 @@ import lombok.Getter;
 @SuppressWarnings("unused")
 @Getter
 public enum Rules {
-    BUILD("Allow/Deny Building", "Build") {
+    BUILD("Allow/Deny Players to place blocks.", "Build") {
         @Override
         public void execute(Kit kit, boolean value) {
             kit.setBuild(value);
@@ -16,7 +16,7 @@ public enum Rules {
             return kit.isBuild();
         }
     },
-    HUNGER("Allow/Deny Losing Hunger", "Hunger") {
+    HUNGER("Allow/Deny Players losing Hunger", "Hunger") {
         @Override
         public void execute(Kit kit, boolean value) {
             kit.setHunger(value);
@@ -38,7 +38,7 @@ public enum Rules {
             return kit.isSumo();
         }
     },
-    FALL_DAMAGE("Allow/Deny Fall Damage", "Fall Damage") {
+    FALL_DAMAGE("Allow/Deny Player to take Fall Damage", "Fall Damage") {
         @Override
         public void execute(Kit kit, boolean value) {
             kit.setFallDamage(value);
@@ -93,7 +93,7 @@ public enum Rules {
             return kit.isRanked();
         }
     },
-    DAMAGE("Allow/Deny Damage", "Damage") {
+    DAMAGE("Allow/Deny Players to take Damage", "Damage") {
         @Override
         public void execute(Kit kit, boolean value) {
             kit.setDamage(value);

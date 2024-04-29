@@ -35,7 +35,7 @@ public class KitCommand extends BaseCommand {
     }
 
     @Subcommand("manage")
-    @Syntax("<kitName>")
+    @Syntax("<kit>")
     @CommandCompletion("@kits")
     public void manage(Player player, String kitName) {
         if (player == null) return;
@@ -58,7 +58,7 @@ public class KitCommand extends BaseCommand {
         }
 
         Kit kit = Kit.builder()
-                .displayName("&9" + kitName)
+                .displayName("&7" + kitName)
                 .name(kitName)
                 .items(Arrays.asList(player.getInventory().getContents()))
                 .ranked(false)
