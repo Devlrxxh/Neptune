@@ -78,5 +78,7 @@ public class MatchManager {
         profile.setMatch(match);
         profile.setState(ProfileState.IN_GAME);
         player.updateInventory();
+
+        Neptune.get().getLeaderboardManager().changes.add(playerUUID);
     }
 }

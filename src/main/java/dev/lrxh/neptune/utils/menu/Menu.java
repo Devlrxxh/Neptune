@@ -122,7 +122,9 @@ public abstract class Menu {
             } else {
                 previousMenu.setClosedByMenu(true);
                 inventory = player.getOpenInventory().getTopInventory();
-                player.getOpenInventory().setTitle(title);
+                if (player.getOpenInventory() != null) {
+                    player.getOpenInventory().setTitle(title);
+                }
                 update = true;
                 player.updateInventory();
             }

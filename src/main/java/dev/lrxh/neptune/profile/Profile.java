@@ -60,7 +60,7 @@ public class Profile {
             save();
             return;
         }
-
+        username = document.getString("username");
         Document kitStatistics = (Document) document.get("kitData");
 
         for (String key : kitStatistics.keySet()) {
@@ -69,14 +69,14 @@ public class Profile {
 
             if (kit != null) {
                 KitData profileKitData = new KitData(kit);
-                profileKitData.setCurrentRankedStreak(kitDocument.getInteger("currentRankedStreak", 0));
-                profileKitData.setCurrentUnrankedStreak(kitDocument.getInteger("currentUnrankedStreak", 0));
-                profileKitData.setUnrankedWins(kitDocument.getInteger("unrankedWins", 0));
-                profileKitData.setRankedWins(kitDocument.getInteger("rankedWins", 0));
-                profileKitData.setUnrankedLosses(kitDocument.getInteger("unrankedLosses", 0));
-                profileKitData.setRankedLosses(kitDocument.getInteger("rankedLosses", 0));
-                profileKitData.setUnrankedBestStreak(kitDocument.getInteger("unrankedStreak", 0));
-                profileKitData.setRankedBestStreak(kitDocument.getInteger("rankedStreak", 0));
+                profileKitData.setCurrentRankedStreak(kitDocument.getInteger("RANKED_WIN_STREAK_CURRENT", 0));
+                profileKitData.setCurrentUnrankedStreak(kitDocument.getInteger("UNRANKED_WIN_STREAK_CURRENT", 0));
+                profileKitData.setUnrankedWins(kitDocument.getInteger("UNRANKED_WINS", 0));
+                profileKitData.setRankedWins(kitDocument.getInteger("RANKED_WINS", 0));
+                profileKitData.setUnrankedLosses(kitDocument.getInteger("UNRANKED_LOSSES", 0));
+                profileKitData.setRankedLosses(kitDocument.getInteger("RANKED_LOSSES", 0));
+                profileKitData.setUnrankedBestStreak(kitDocument.getInteger("UNRANKED_WIN_STREAK_BEST", 0));
+                profileKitData.setRankedBestStreak(kitDocument.getInteger("RANKED_WIN_STREAK_BEST", 0));
                 profileKitData.setElo(kitDocument.getInteger("elo", 1000));
                 profileKitData.setKit(kitDocument.getString("kit").isEmpty() ? kit.getItems() : ItemUtils.deserializeItemStacks(kitDocument.getString("kit")));
 
@@ -96,14 +96,14 @@ public class Profile {
         for (Map.Entry<Kit, KitData> entry : data.getKitData().entrySet()) {
             Document kitStatisticsDocument = new Document();
             kitStatisticsDocument.put("elo", entry.getValue().getElo());
-            kitStatisticsDocument.put("currentUnrankedStreak", entry.getValue().getCurrentUnrankedStreak());
-            kitStatisticsDocument.put("currentRankedStreak", entry.getValue().getCurrentRankedStreak());
-            kitStatisticsDocument.put("unrankedWins", entry.getValue().getUnrankedWins());
-            kitStatisticsDocument.put("rankedWins", entry.getValue().getRankedWins());
-            kitStatisticsDocument.put("unrankedLosses", entry.getValue().getUnrankedLosses());
-            kitStatisticsDocument.put("rankedLosses", entry.getValue().getRankedLosses());
-            kitStatisticsDocument.put("unrankedStreak", entry.getValue().getUnrankedBestStreak());
-            kitStatisticsDocument.put("rankedStreak", entry.getValue().getRankedBestStreak());
+            kitStatisticsDocument.put("UNRANKED_WIN_STREAK_CURRENT", entry.getValue().getCurrentUnrankedStreak());
+            kitStatisticsDocument.put("RANKED_WIN_STREAK_CURRENT", entry.getValue().getCurrentRankedStreak());
+            kitStatisticsDocument.put("UNRANKED_WINS", entry.getValue().getUnrankedWins());
+            kitStatisticsDocument.put("RANKED_WINS", entry.getValue().getRankedWins());
+            kitStatisticsDocument.put("UNRANKED_LOSSES", entry.getValue().getUnrankedLosses());
+            kitStatisticsDocument.put("RANKED_LOSSES", entry.getValue().getRankedLosses());
+            kitStatisticsDocument.put("UNRANKED_WIN_STREAK_BEST", entry.getValue().getUnrankedBestStreak());
+            kitStatisticsDocument.put("RANKED_WIN_STREAK_BEST", entry.getValue().getRankedBestStreak());
             kitStatisticsDocument.put("kit", ItemUtils.serializeItemStacks(entry.getValue().getKit()));
 
             kitStatsDoc.put(entry.getKey().getName(), kitStatisticsDocument);

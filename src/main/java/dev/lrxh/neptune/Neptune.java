@@ -23,6 +23,8 @@ import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.database.MongoManager;
 import dev.lrxh.neptune.providers.hotbar.HotbarManager;
 import dev.lrxh.neptune.providers.hotbar.ItemListener;
+import dev.lrxh.neptune.providers.leaderboard.LeaderboardManager;
+import dev.lrxh.neptune.providers.leaderboard.LeaderboardTask;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.QueueTask;
@@ -31,6 +33,7 @@ import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuListener;
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -56,6 +59,7 @@ public final class Neptune extends JavaPlugin {
     private boolean placeholder = false;
     private HotbarManager hotbarManager;
     private MongoManager mongoManager;
+    private LeaderboardManager leaderboardManager;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -89,6 +93,7 @@ public final class Neptune extends JavaPlugin {
         assemble = new Assemble(get(), new ScoreboardAdapter());
         this.mongoManager = new MongoManager();
         mongoManager.connect();
+        this.leaderboardManager = new LeaderboardManager();
     }
 
     private void registerListeners() {
@@ -118,12 +123,14 @@ public final class Neptune extends JavaPlugin {
             world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
             world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
             world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+            world.setDifficulty(Difficulty.HARD);
         }
     }
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler();
         taskScheduler.startTask(new QueueTask(), SettingsLocale.QUEUE_UPDATE_TIME.getInt());
+        taskScheduler.startTask(new LeaderboardTask(), SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
     }
 
     private void loadCommandManager() {

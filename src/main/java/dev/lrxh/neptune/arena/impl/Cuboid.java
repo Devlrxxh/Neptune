@@ -12,7 +12,6 @@ public class Cuboid {
     private final int y2;
     private final int z2;
 
-
     public Cuboid(Location l1, Location l2) {
         this(l1.getWorld(),
                 l1.getBlockX(), l1.getBlockY(), l1.getBlockZ(),

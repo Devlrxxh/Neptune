@@ -27,6 +27,8 @@ public class StandAloneArena extends Arena {
         this.edge2 = edge2;
         this.deathY = deathY;
         this.used = false;
+
+        takeSnapshot();
     }
 
     public void takeSnapshot() {

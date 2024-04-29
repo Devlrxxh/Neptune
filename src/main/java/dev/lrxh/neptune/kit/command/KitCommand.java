@@ -5,6 +5,7 @@ import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +32,20 @@ public class KitCommand extends BaseCommand {
         player.sendMessage(" ");
         plugin.getKitManager().kits.forEach(kit -> player.sendMessage(CC.color("&7- &9" + kit.getName() + " &7 | " + kit.getDisplayName())));
         player.sendMessage(CC.color("&7&m----------------------------------"));
+    }
+
+    @Subcommand("manage")
+    @Syntax("<kitName>")
+    @CommandCompletion("@kits")
+    public void manage(Player player, String kitName) {
+        if (player == null) return;
+        if (!checkKit(kitName)) {
+            player.sendMessage(CC.error("Kit doesn't exist!"));
+            return;
+        }
+        Kit kit = plugin.getKitManager().getKitByName(kitName);
+
+        new KitManagementMenu(kit).openMenu(player);
     }
 
     @Subcommand("create")
@@ -93,22 +108,6 @@ public class KitCommand extends BaseCommand {
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
-    }
-
-    @Subcommand("ranked")
-    @Syntax("<kit>")
-    @CommandCompletion("@kits")
-    public void ranked(Player player, String kitName) {
-        if (player == null) return;
-        if (!checkKit(kitName)) {
-            player.sendMessage(CC.error("Kit doesn't exist!"));
-            return;
-        }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
-
-        kit.setRanked(!kit.isRanked());
-        plugin.getKitManager().saveKits();
-        player.sendMessage(CC.color("&aSuccessfully set kit ranked status to " + (kit.isRanked() ? "&aTrue" : "&cFalse") + "!"));
     }
 
     @Subcommand("addArena")
