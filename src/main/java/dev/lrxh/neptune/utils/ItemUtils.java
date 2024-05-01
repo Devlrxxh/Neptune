@@ -2,6 +2,7 @@ package dev.lrxh.neptune.utils;
 
 import com.cryptomorin.xseries.XEnchantment;
 import com.cryptomorin.xseries.XMaterial;
+import com.cryptomorin.xseries.XPotion;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
@@ -90,7 +91,6 @@ public class ItemUtils {
         if (itemStack == null) return null;
 
         itemStack.setAmount(Integer.parseInt(parts[1]));
-
         itemStack.setDurability(Short.parseShort(parts[2]));
 
         if (parts.length > 3 && !parts[3].isEmpty()) {
@@ -112,14 +112,20 @@ public class ItemUtils {
             }
         }
 
-        if (parts.length > 5) {
-            PotionType potionType = PotionType.valueOf(parts[5]);
-            PotionData potionData = new PotionData(potionType);
+        if (parts.length > 4) {
+            PotionType potionType = null;
+            if (!parts[4].isEmpty()) {
+                potionType = XPotion.valueOf(parts[4]).getPotionType();
+                System.out.println(potionType);
+            }
             PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
-            potionMeta.setBasePotionData(potionData);
-            itemStack.setItemMeta(potionMeta);
+            if (potionMeta != null && potionType != null) {
+                potionMeta.setBasePotionType(potionType);
+                itemStack.setItemMeta(potionMeta);
+            }
         }
 
         return itemStack;
     }
+
 }

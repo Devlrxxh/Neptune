@@ -30,7 +30,7 @@ public enum MenusLocale implements IDataAccessor {
     STAT_SIZE("STAT.SIZE", null, DataType.INT, "36"),
     STAT_STARTING_SLOT("STAT.STARTING-SLOT", null, DataType.INT, "10"),
     STAT_FILTER("STAT.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
-    STAT_TITLE("STAT.TITLE", null, DataType.STRING, "&7Player Statistics"),
+    STAT_TITLE("STAT.TITLE", null, DataType.STRING, "&7<player> Statistics"),
     STAT_LORE("STAT.UNRANKED.LORE", null, DataType.STRING_LIST,
             "&bUnranked Statistics",
             " &f&7* &fWins: &b<wins_unranked>",
