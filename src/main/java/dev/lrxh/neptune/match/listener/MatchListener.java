@@ -5,26 +5,27 @@ import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.DeathCause;
 import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.OneVersusOneMatch;
 import dev.lrxh.neptune.match.impl.Participant;
-import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.EntityUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent;
-import org.bukkit.event.entity.FoodLevelChangeEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -33,14 +34,14 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
-        Player player = event.getEntity();
+        Player player = event.getPlayer();
         event.deathMessage(null);
         event.getDrops().clear();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
-            if (match instanceof TeamFightMatch) {
+            if (match instanceof OneVersusOneMatch) {
                 Participant participant = match.getParticipant(player.getUniqueId());
                 participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                 match.onDeath(participant);
@@ -84,7 +85,7 @@ public class MatchListener implements Listener {
 
             if (targetProfile.getState() == ProfileState.IN_GAME) {
                 Match match = targetProfile.getMatch();
-                if (match instanceof TeamFightMatch) {
+                if (match instanceof OneVersusOneMatch) {
                     match.getParticipant(damager.getUniqueId()).handleHit();
                     match.getParticipant(target.getUniqueId()).resetCombo();
                 }
@@ -107,11 +108,6 @@ public class MatchListener implements Listener {
                 Block block = playerLocation.getBlock();
 
                 if (block.getType() == Material.WATER) {
-                    participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                    match.onDeath(participant);
-                }
-            } else if (match.getKit().isBedwars()) {
-                if (match.getArena() instanceof StandAloneArena && (playerLocation.getY() <= ((StandAloneArena) match.getArena()).getDeathY()) || !participant.isDead()) {
                     participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(participant);
                 }
@@ -155,6 +151,13 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
+    public void onBlockExplosion(BlockExplodeEvent e) {
+        for (Block block : e.blockList()) {
+            block.breakNaturally();
+        }
+    }
+
+    @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
@@ -175,6 +178,18 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerInteract(EntityPlaceEvent event) {
+        if (!event.getEntity().getType().equals(EntityType.ENDER_CRYSTAL)) return;
+        if (event.getPlayer() == null) return;
+        Profile profile = plugin.getProfileManager().getByUUID(event.getPlayer().getUniqueId());
+        if (profile == null) return;
+        if (profile.getMatch() == null) return;
+
+        profile.getMatch().getEntities().add(event.getEntity());
+    }
+
+
+    @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
@@ -182,14 +197,10 @@ public class MatchListener implements Listener {
         if (profile == null) return;
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
-        if (!(match != null && match.getKit().isBuild() && match.getPlacedBlocks().contains(blockLocation))
-                || !(match.getKit().isBedwars() && (event.getBlock().getType().equals(Material.LEGACY_BED)
-                || event.getBlock().getType().equals(Material.LEGACY_BED_BLOCK))
-                || event.getBlock().getType().equals(Material.END_STONE)
-                || (event.getBlock().getType().equals(Material.OAK_PLANKS)))) {
-
+        if (!(match != null && match.getKit().isBuild() && match.getPlacedBlocks().contains(blockLocation))) {
             event.setCancelled(true);
-        }else{match.getPlacedBlocks().remove(blockLocation);
+        } else {
+            match.getPlacedBlocks().remove(blockLocation);
         }
     }
 
@@ -202,6 +213,13 @@ public class MatchListener implements Listener {
         if (profile == null) return;
         if (!profile.getState().equals(ProfileState.IN_GAME)) {
             event.setCancelled(true);
+        } else {
+            plugin.getTaskScheduler().startTaskLater(new BukkitRunnable() {
+                @Override
+                public void run() {
+                    profile.getMatch().getEntities().add(EntityUtils.getEntityById(player.getWorld(), event.getItemDrop().getEntityId()));
+                }
+            }, 20);
         }
     }
 }

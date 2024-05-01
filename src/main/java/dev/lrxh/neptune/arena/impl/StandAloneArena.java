@@ -14,12 +14,12 @@ import java.util.LinkedHashMap;
 @Setter
 @SuperBuilder
 public class StandAloneArena extends Arena {
+    private final transient LinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots = new LinkedHashMap<>();
     private Location edge1;
     private Location edge2;
     private double deathY;
     private double limit;
     private boolean used;
-    private final transient LinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots = new LinkedHashMap<>();
 
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location edge1, Location edge2, double deathY, double limit, boolean enabled) {

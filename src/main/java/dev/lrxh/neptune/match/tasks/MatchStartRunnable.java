@@ -5,6 +5,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -31,6 +32,7 @@ public class MatchStartRunnable extends BukkitRunnable {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.checkRules();
             match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
+            match.sendTitle(CC.color("&aFight!"), "", 10);
             cancel();
         }
         if (match.getMatchState().equals(MatchState.STARTING) && startTimer != 0) {

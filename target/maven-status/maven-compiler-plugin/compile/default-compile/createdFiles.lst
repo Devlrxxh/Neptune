@@ -2,6 +2,7 @@ dev\lrxh\neptune\arena\impl\StandAloneArena$1.class
 dev\lrxh\neptune\kit\Rules$5.class
 dev\lrxh\neptune\utils\menu\filters\Filters.class
 dev\lrxh\neptune\utils\PlayerUtil.class
+dev\lrxh\neptune\match\listener\MatchListener$1.class
 dev\lrxh\neptune\match\tasks\MatchEndRunnable.class
 dev\lrxh\neptune\providers\menus\kitEditor\KitEditorSelectButton.class
 dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.class
@@ -84,7 +85,6 @@ dev\lrxh\neptune\providers\manager\Value.class
 dev\lrxh\neptune\match\impl\ParticipantColor.class
 dev\lrxh\neptune\providers\hotbar\ItemListener.class
 dev\lrxh\neptune\queue\menu\QueueSelectButton.class
-dev\lrxh\neptune\kit\Rules$9.class
 dev\lrxh\neptune\match\menu\button\StatisticsButton.class
 dev\lrxh\neptune\arena\impl\EdgeType.class
 dev\lrxh\neptune\kit\Rules$4.class
@@ -120,10 +120,12 @@ dev\lrxh\neptune\profile\ProfileState.class
 dev\lrxh\neptune\utils\assemble\Assemble.class
 dev\lrxh\neptune\commands\QueueCommand.class
 dev\lrxh\neptune\arena\impl\Cuboid.class
+dev\lrxh\neptune\utils\EntityUtils.class
 dev\lrxh\neptune\match\menu\button\SwitchInventoryButton.class
 dev\lrxh\neptune\kit\Rules$6.class
 dev\lrxh\neptune\providers\manager\IManager.class
 dev\lrxh\neptune\kit\Rules.class
+dev\lrxh\neptune\match\impl\OneVersusOneMatch.class
 dev\lrxh\neptune\kit\command\KitCommand.class
 dev\lrxh\neptune\utils\assemble\AssembleThread.class
 dev\lrxh\neptune\match\impl\TeamFightMatch.class

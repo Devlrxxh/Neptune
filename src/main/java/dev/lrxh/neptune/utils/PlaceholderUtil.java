@@ -36,11 +36,10 @@ public class PlaceholderUtil {
 
             if (profile.getState().equals(ProfileState.IN_GAME)) {
                 Participant participant = profile.getMatch().getParticipant(player.getUniqueId());
-                Participant opponent = profile.getMatch().getParticipant(
-                        participant.getOpponent().getParticipants().get(participant.getOpponent().getParticipants().size() - 1).getPlayerUUID());
+                Participant opponent = participant.getOpponent();
 
-                line = line.replaceAll("<opponent>", participant.getOpponent().getTeamNames());
-                line = line.replaceAll("<opponent-ping>", String.valueOf(participant.getOpponent().getTeamPing()));
+                line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
+                line = line.replaceAll("<opponent-ping>", String.valueOf(PlayerUtil.getPing(participant.getOpponent().getPlayerUUID())));
 
                 line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
                 line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");

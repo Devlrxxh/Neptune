@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match.impl;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,7 @@ import java.util.UUID;
 public class Participant {
     private UUID playerUUID;
     private String name;
-    private Team opponent;
+    private Participant opponent;
     private DeathCause deathCause;
     private ParticipantColor color;
     private Participant lastAttacker;
@@ -27,6 +28,7 @@ public class Participant {
     private int hits;
     private int longestCombo;
     private int combo;
+    private boolean loser;
 
     public Participant(UUID playerUUID) {
         this.playerUUID = playerUUID;
@@ -46,6 +48,10 @@ public class Participant {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+    }
+
+    public void sendTitle(String header, String footer, int duration) {
+        PlayerUtil.sendTitle(playerUUID, header, footer, duration);
     }
 
     public void resetCombo() {
@@ -73,12 +79,10 @@ public class Participant {
             }
         }
         Match match = Neptune.get().getProfileManager().getByUUID(playerUUID).getMatch();
-        if (match instanceof TeamFightMatch) {
+        if (match instanceof OneVersusOneMatch) {
             if (match.getKit().isBoxing()) {
                 if (hits >= 100) {
-
-                    Participant opponent = match.getParticipant(
-                            getOpponent().getParticipants().get(getOpponent().getParticipants().size() - 1).getPlayerUUID());
+                    Participant opponent = getOpponent();
 
                     opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(opponent);

@@ -125,6 +125,7 @@ public final class Neptune extends JavaPlugin {
             world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
             world.setDifficulty(Difficulty.HARD);
         }
+        System.gc();
     }
 
     private void loadTasks() {

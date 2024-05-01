@@ -15,6 +15,7 @@ import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -28,6 +29,7 @@ import java.util.UUID;
 public abstract class Match {
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
+    private final HashSet<Entity> entities = new HashSet<>();
     public MatchState matchState;
     public Arena arena;
     public Kit kit;
@@ -78,6 +80,14 @@ public abstract class Match {
         }
     }
 
+    public void removeEntities() {
+        for (Entity entity : entities) {
+            if (entity != null) {
+                entity.remove();
+            }
+        }
+    }
+
     public void hidePlayer(Participant targetParticipant) {
         Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
         if (targetPlayer == null) return;
@@ -94,8 +104,10 @@ public abstract class Match {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) continue;
             Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+            if (!profile.getData().getKitData().get(kit).getKit().isEmpty()) {
+                player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
+            }
             player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
-            player.getInventory().setContents(kit.getArmour().toArray(new ItemStack[0]));
         }
     }
 

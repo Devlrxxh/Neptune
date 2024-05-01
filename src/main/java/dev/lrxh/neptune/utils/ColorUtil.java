@@ -16,7 +16,6 @@ public class ColorUtil {
 
     public List<Object> addColors(List<Object> input) {
         List<Object> result = new ArrayList<>();
-
         String lastColor = null;
 
         for (Object object : input) {
@@ -28,14 +27,7 @@ public class ColorUtil {
                     lastColor = matcher.group();
                 }
 
-                if (!result.isEmpty() && input.indexOf(object) == input.size() - 1 && result.get(result.size() - 1) != null){
-                    String color = (String) result.get(result.size() - 1);
-                    result.add(color.replace(" ", "") + str);
-                    continue;
-                }
-
                 if (lastColor != null && !str.isEmpty()) {
-
                     result.add(lastColor + str);
                 } else {
                     result.add(str);
@@ -47,12 +39,6 @@ public class ColorUtil {
                 Matcher matcher = COLOR_PATTERN.matcher(str);
                 while (matcher.find()) {
                     lastColor = matcher.group();
-                }
-
-                if (!result.isEmpty() && input.indexOf(object) == input.size() - 1 && result.get(result.size() - 1) != null){
-                    String color = (String) result.get(result.size() - 1);
-                    result.add(color.replace(" ", "") + str);
-                    continue;
                 }
 
                 if (lastColor != null && !str.isEmpty()) {
@@ -69,5 +55,6 @@ public class ColorUtil {
         }
         return result;
     }
+
 
 }

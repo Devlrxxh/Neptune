@@ -23,60 +23,53 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TeamFightMatch extends Match {
+public class OneVersusOneMatch extends Match {
 
-    private final Team teamA;
-    private final Team teamB;
+    private final Participant participantA;
+    private final Participant participantB;
 
-    public TeamFightMatch(MatchState matchState, Arena arena, Kit kit, boolean ranked, boolean duel, List<Participant> participants, Team teamA, Team teamB) {
-        super(matchState, arena, kit, participants, ranked, duel);
-        this.teamA = teamA;
-        this.teamB = teamB;
+    public OneVersusOneMatch(Arena arena, Kit kit, boolean ranked, boolean duel, List<Participant> participants, Participant participantA, Participant participantB) {
+        super(MatchState.STARTING, arena, kit, participants, ranked, duel);
+        this.participantA = participantA;
+        this.participantB = participantB;
     }
 
-
-    public Team getPlayerTeam(Participant participant) {
-        return teamA.getParticipants().contains(participant) ? teamA : teamB;
-    }
 
     @Override
     public void end() {
         matchState = MatchState.ENDING;
-        Team winnerTeam = teamA.isLoser() ? teamB : teamA;
-        Team loserTeam = teamA.isLoser() ? teamA : teamB;
+        Participant winner = participantA.isLoser() ? participantB : participantA;
+        Participant loser = participantA.isLoser() ? participantA : participantB;
 
-        winnerTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
+        winner.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "You"), 100);
 
-        loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winnerTeam.getTeamNames()), 100);
+        loser.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
+                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
 
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
     }
 
     public void addStats() {
-        Team winnerTeam = teamA.isLoser() ? teamB : teamA;
-        Team loserTeam = teamA.isLoser() ? teamA : teamB;
+        Participant winner = participantA.isLoser() ? participantB : participantA;
+        Participant loser = participantA.isLoser() ? participantA : participantB;
 
-        for (Participant participant : winnerTeam.getParticipants()) {
-            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, isRanked(), true);
-        }
+        Neptune.get().getProfileManager().getByUUID(winner.getPlayerUUID()).getData().run(kit, isRanked(), true);
+        Neptune.get().getProfileManager().getByUUID(loser.getPlayerUUID()).getData().run(kit, isRanked(), false);
 
-        for (Participant participant : loserTeam.getParticipants()) {
-            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, isRanked(), false);
-        }
     }
 
-    public void sendEndMessage(Team winnerTeam, Team loserTeam) {
+    public void sendEndMessage(Participant winner, Participant loser) {
+
+
         for (Participant participant : participants) {
+            TextComponent winnerMessage = Component.text(winner.getNameUnColored())
+                    .clickEvent(ClickEvent.runCommand("/viewinv " + winner.getNameUnColored()))
+                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winner.getNameUnColored()))));
 
-            TextComponent winnerMessage = Component.text(winnerTeam.getTeamNames())
-                    .clickEvent(ClickEvent.runCommand("/viewinv " + winnerTeam.getTeamNames()))
-                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winnerTeam.getTeamNames()))));
-
-            TextComponent loserMessage = Component.text(loserTeam.getTeamNames())
-                    .clickEvent(ClickEvent.runCommand("/viewinv " + loserTeam.getTeamNames()))
-                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loserTeam.getTeamNames()))));
+            TextComponent loserMessage = Component.text(loser.getNameUnColored())
+                    .clickEvent(ClickEvent.runCommand("/viewinv " + loser.getNameUnColored()))
+                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loser.getNameUnColored()))));
 
             MessagesLocale.MATCH_END_DETAILS.send(participant.getPlayerUUID(),
                     new Replacement("<loser>", loserMessage),
@@ -99,7 +92,7 @@ public class TeamFightMatch extends Match {
             participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
         }
 
-        getPlayerTeam(participant).setLoser(true);
+        participant.setLoser(true);
 
         takeSnapshots();
 
@@ -125,6 +118,7 @@ public class TeamFightMatch extends Match {
             MatchSnapshot snapshot = new MatchSnapshot(player, player.getName());
             snapshot.setLongestCombo(participant.getLongestCombo());
             snapshot.setTotalHits(participant.getHits());
+            snapshot.setOpponent(participant.getOpponent().getNameUnColored());
 
             Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).setMatchSnapshot(snapshot);
         }

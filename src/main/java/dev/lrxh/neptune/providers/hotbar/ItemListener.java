@@ -16,6 +16,7 @@ public class ItemListener implements Listener {
         if (event.getItem() == null) return;
         if (event.getItem().getType().equals(Material.AIR)) return;
 
+
         Player player = event.getPlayer();
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
         if (!profile.getState().equals(ProfileState.IN_GAME)) {

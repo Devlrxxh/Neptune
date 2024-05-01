@@ -18,6 +18,11 @@ public class TaskScheduler {
         tasks.add(task);
     }
 
+    public void startTaskLater(BukkitRunnable task, long delay) {
+        task.runTaskLater(Neptune.get(), delay);
+        tasks.add(task);
+    }
+
     public void stopAllTasks() {
         for (BukkitRunnable bukkitRunnable : tasks) {
             bukkitRunnable.cancel();

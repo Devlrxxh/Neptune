@@ -29,14 +29,13 @@ public class Kit {
     private boolean sumo;
     private boolean fallDamage;
     private boolean denyMovement;
-    private boolean bedwars;
     private boolean boxing;
     private boolean damage;
 
     //VALUES
     private int unrankedQueue, rankedQueue, unrankedPlaying, rankedPlaying;
 
-    public Kit(String name, String displayName, boolean ranked, List<ItemStack> items, List<ItemStack> armour, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean bedwars, boolean boxing, boolean damage) {
+    public Kit(String name, String displayName, boolean ranked, List<ItemStack> items, List<ItemStack> armour, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean boxing, boolean damage) {
         this.name = name;
         this.displayName = displayName;
         this.ranked = ranked;
@@ -49,7 +48,6 @@ public class Kit {
         this.sumo = sumo;
         this.fallDamage = fallDamage;
         this.denyMovement = denyMovement;
-        this.bedwars = bedwars;
         this.boxing = boxing;
         this.damage = damage;
         this.unrankedQueue = 0;

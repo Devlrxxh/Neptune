@@ -16,7 +16,6 @@ public class Team {
     private boolean loser;
     private boolean hasBed = true;
 
-
     public Team(ArrayList<Participant> participants, boolean loser, ParticipantColor color) {
         this.participants = participants;
         this.loser = loser;
@@ -57,11 +56,11 @@ public class Team {
         return 0;
     }
 
-    public void setOpponent(Team opponent) {
-        for (Participant participant : participants) {
-            participant.setOpponent(opponent);
-        }
-    }
+//    public void setOpponent(Team opponent) {
+//        for (Participant participant : participants) {
+//            participant.setOpponent(opponent);
+//        }
+//    }
 
     public void setColor(ParticipantColor color) {
         for (Participant participant : participants) {

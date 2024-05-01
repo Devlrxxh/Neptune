@@ -3,9 +3,8 @@ package dev.lrxh.neptune.match.tasks;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.impl.OneVersusOneMatch;
 import dev.lrxh.neptune.match.impl.Participant;
-import dev.lrxh.neptune.match.impl.Team;
-import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -44,13 +43,16 @@ public class MatchEndRunnable extends BukkitRunnable {
                 match.getKit().removePlaying(match.isRanked());
                 profile.setMatch(null);
             }
-            if (match instanceof TeamFightMatch) {
-                TeamFightMatch teamFightMatch = (TeamFightMatch) match;
-                Team winnerTeam = teamFightMatch.getTeamA().isLoser() ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
-                Team loserTeam = teamFightMatch.getTeamA().isLoser() ? teamFightMatch.getTeamA() : teamFightMatch.getTeamB();
+            if (match instanceof OneVersusOneMatch) {
 
-                teamFightMatch.sendEndMessage(winnerTeam, loserTeam);
+                OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
+                Participant winner = oneVersusOneMatch.getParticipantA().isLoser() ? oneVersusOneMatch.getParticipantB() : oneVersusOneMatch.getParticipantA();
+                Participant loser = oneVersusOneMatch.getParticipantA().isLoser() ? oneVersusOneMatch.getParticipantA() : oneVersusOneMatch.getParticipantB();
+
+                oneVersusOneMatch.sendEndMessage(winner, loser);
             }
+
+            match.removeEntities();
             plugin.getMatchManager().matches.remove(match);
         }
         endTimer--;

@@ -60,17 +60,6 @@ public enum Rules {
             return kit.isDenyMovement();
         }
     },
-    BEDWARS("Allow/Deny BedWars", "BedWars") {
-        @Override
-        public void execute(Kit kit, boolean value) {
-            kit.setBedwars(value);
-        }
-
-        @Override
-        public boolean enabled(Kit kit) {
-            return kit.isBedwars();
-        }
-    },
     BOXING("Allow/Deny Boxing", "Boxing") {
         @Override
         public void execute(Kit kit, boolean value) {
