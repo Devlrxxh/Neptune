@@ -75,7 +75,7 @@ public class PlayerUtil {
 
         TextComponent.Builder builder = Component.text();
 
-        for (Object obj : ColorUtil.addLastColorToNext(content)) {
+        for (Object obj : ColorUtil.addColors(content)) {
             if (obj instanceof String) {
                 String message = CC.color((String) obj);
                 builder.append(Component.text(message));

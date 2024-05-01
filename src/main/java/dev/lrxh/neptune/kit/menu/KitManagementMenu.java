@@ -37,7 +37,7 @@ public class KitManagementMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = 9;
+        int i = 10;
         for (Rules rules : Rules.values()) {
             buttons.put(i++, new KitManagementButton(rules, kit));
         }

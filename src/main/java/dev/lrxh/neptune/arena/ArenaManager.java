@@ -33,8 +33,9 @@ public class ArenaManager implements IManager {
                     Location edge1 = LocationUtil.deserialize(config.getString(path + "edge1"));
                     Location edge2 = LocationUtil.deserialize(config.getString(path + "edge2"));
                     double deathZone = config.getDouble(path + "deathZone");
+                    double limit = config.getDouble(path + "limit");
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, deathZone, enabled);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, deathZone, limit, enabled);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
@@ -59,7 +60,8 @@ public class ArenaManager implements IManager {
                         new Value("type", "STANDALONE"),
                         new Value("edge1", LocationUtil.serialize(standAloneArena.getEdge1())),
                         new Value("edge2", LocationUtil.serialize(standAloneArena.getEdge2())),
-                        new Value("deathZone", ((StandAloneArena) arena).getDeathY())
+                        new Value("deathZone", ((StandAloneArena) arena).getDeathY()),
+                        new Value("limit", ((StandAloneArena) arena).getLimit())
                 ));
             } else {
                 values.add(new Value("type", "SHARED"));

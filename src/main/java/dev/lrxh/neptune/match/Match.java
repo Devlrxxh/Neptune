@@ -13,10 +13,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,6 +27,7 @@ import java.util.UUID;
 @Setter
 public abstract class Match {
     private final UUID uuid = UUID.randomUUID();
+    private final HashSet<Location> placedBlocks = new HashSet<>();
     public MatchState matchState;
     public Arena arena;
     public Kit kit;
@@ -92,6 +95,7 @@ public abstract class Match {
             if (player == null) continue;
             Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
             player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
+            player.getInventory().setContents(kit.getArmour().toArray(new ItemStack[0]));
         }
     }
 

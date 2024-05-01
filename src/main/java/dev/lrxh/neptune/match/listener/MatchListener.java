@@ -9,6 +9,7 @@ import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.utils.CC;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -68,8 +69,8 @@ public class MatchListener implements Listener {
                 if (!match.getKit().isDamage()) {
                     event.setDamage(0);
                 }
-                match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
             }
+            match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
         }
 
     }
@@ -90,7 +91,6 @@ public class MatchListener implements Listener {
             }
         }
     }
-
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
@@ -161,7 +161,15 @@ public class MatchListener implements Listener {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         Match match = profile.getMatch();
-        if (!(match != null && match.getKit().isBuild())) {
+        Location blockLocation = event.getBlock().getLocation();
+        if (match != null && match.getKit().isBuild()) {
+            if (blockLocation.getY() >= ((StandAloneArena) match.arena).getLimit()) {
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou have reached build limit!"));
+                return;
+            }
+            match.getPlacedBlocks().add(blockLocation);
+        } else {
             event.setCancelled(true);
         }
     }
@@ -173,8 +181,15 @@ public class MatchListener implements Listener {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         Match match = profile.getMatch();
-        if (!(match != null && match.getKit().isBuild()) || !(match.getKit().isBedwars() && (event.getBlock().getType().equals(Material.LEGACY_BED) || event.getBlock().getType().equals(Material.LEGACY_BED_BLOCK)) || event.getBlock().getType().equals(Material.END_STONE) || (event.getBlock().getType().equals(Material.OAK_PLANKS)))) {
+        Location blockLocation = event.getBlock().getLocation();
+        if (!(match != null && match.getKit().isBuild() && match.getPlacedBlocks().contains(blockLocation))
+                || !(match.getKit().isBedwars() && (event.getBlock().getType().equals(Material.LEGACY_BED)
+                || event.getBlock().getType().equals(Material.LEGACY_BED_BLOCK))
+                || event.getBlock().getType().equals(Material.END_STONE)
+                || (event.getBlock().getType().equals(Material.OAK_PLANKS)))) {
+
             event.setCancelled(true);
+        }else{match.getPlacedBlocks().remove(blockLocation);
         }
     }
 

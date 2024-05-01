@@ -7,6 +7,9 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,6 +61,14 @@ public class ItemUtils {
             builder.append(",");
         }
 
+        if (meta instanceof PotionMeta) {
+            PotionMeta potionMeta = (PotionMeta) meta;
+            PotionData potionData = potionMeta.getBasePotionData();
+            builder.append(potionData.getType().name()).append(",");
+        } else {
+            builder.append(",");
+        }
+
         Map<Enchantment, Integer> enchantments = itemStack.getEnchantments();
         if (!enchantments.isEmpty()) {
             builder.append("enchantments:");
@@ -99,6 +110,14 @@ public class ItemUtils {
                     itemStack.addEnchantment(Objects.requireNonNull(XEnchantment.matchXEnchantment(enchantment).getEnchant()), level);
                 }
             }
+        }
+
+        if (parts.length > 5) {
+            PotionType potionType = PotionType.valueOf(parts[5]);
+            PotionData potionData = new PotionData(potionType);
+            PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+            potionMeta.setBasePotionData(potionData);
+            itemStack.setItemMeta(potionMeta);
         }
 
         return itemStack;

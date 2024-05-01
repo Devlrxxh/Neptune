@@ -102,10 +102,10 @@ public class ArenaCommand extends BaseCommand {
 
         if (edgeType.equals(EdgeType.EDGE_1)) {
             arena.setEdge1(player.getLocation());
-            player.sendMessage(CC.color("&aSuccessfully set &9Edge 1 for arena " + arena.getDisplayName() + "&a!"));
+            player.sendMessage(CC.color("&aSuccessfully set &9Edge 1&a for arena " + arena.getDisplayName()));
         } else {
             arena.setEdge2(player.getLocation());
-            player.sendMessage(CC.color("&aSuccessfully set &cEdge 2 for arena " + arena.getDisplayName() + "&a!"));
+            player.sendMessage(CC.color("&aSuccessfully set &cEdge 2&a for arena " + arena.getDisplayName()));
         }
         plugin.getArenaManager().saveArenas();
     }
@@ -122,11 +122,34 @@ public class ArenaCommand extends BaseCommand {
         Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
 
         if (!(arena instanceof StandAloneArena)) {
-            player.sendMessage(CC.error("Arena must be standalone to set deathY!"));
+            player.sendMessage(CC.error("Arena must be standalone!"));
             return;
         }
 
         ((StandAloneArena) arena).setDeathY(player.getLocation().getY());
+        player.sendMessage(CC.color("&aSuccessfully set Death Y for arena " + arena.getDisplayName()));
+
+        plugin.getArenaManager().saveArenas();
+    }
+
+    @Subcommand("limit")
+    @Syntax("<arena>")
+    @CommandCompletion("@arenas")
+    public void limit(Player player, String arenaName) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+
+        if (!(arena instanceof StandAloneArena)) {
+            player.sendMessage(CC.error("Arena must be standalone!"));
+            return;
+        }
+
+        ((StandAloneArena) arena).setLimit(player.getLocation().getY());
+        player.sendMessage(CC.color("&aSuccessfully set Build limit for arena " + arena.getDisplayName()));
 
         plugin.getArenaManager().saveArenas();
     }

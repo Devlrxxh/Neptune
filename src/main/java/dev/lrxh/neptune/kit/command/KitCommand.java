@@ -106,6 +106,8 @@ public class KitCommand extends BaseCommand {
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
+        kit.setArmour(Arrays.asList(player.getInventory().getArmorContents()));
+
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
     }
@@ -130,6 +132,33 @@ public class KitCommand extends BaseCommand {
         kit.getArenas().add(arena);
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7)!"));
+    }
+
+    @Subcommand("removeArena")
+    @Syntax("<kit> <arena>")
+    @CommandCompletion("@kits @arenas")
+    public void removeArena(Player player, String kitName, String arenaName) {
+        if (player == null) return;
+        if (!checkKit(kitName)) {
+            player.sendMessage(CC.error("Kit doesn't exist!"));
+            return;
+        }
+
+        if (plugin.getArenaManager().getArenaByName(arenaName) == null) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+
+        if (!kit.getArenas().contains(arena)) {
+            player.sendMessage(CC.error("Arena isn't added to the kit!"));
+            return;
+        }
+
+        kit.getArenas().remove(arena);
+        plugin.getKitManager().saveKits();
+        player.sendMessage(CC.color("&aSuccessfully removed arena &7(" + arena.getDisplayName() + "&7) from kit &7(" + kit.getDisplayName() + "&7)!"));
     }
 
     private boolean checkKit(String kitName) {

@@ -14,7 +14,7 @@ public class ColorUtil {
 
     private final Pattern COLOR_PATTERN = Pattern.compile("&[0-9a-fA-Fk-oK-OrR]");
 
-    public List<Object> addLastColorToNext(List<Object> input) {
+    public List<Object> addColors(List<Object> input) {
         List<Object> result = new ArrayList<>();
 
         String lastColor = null;
@@ -22,12 +22,20 @@ public class ColorUtil {
         for (Object object : input) {
             if (object instanceof String) {
                 String str = (String) object;
+
                 Matcher matcher = COLOR_PATTERN.matcher(str);
                 while (matcher.find()) {
                     lastColor = matcher.group();
                 }
 
+                if (!result.isEmpty() && input.indexOf(object) == input.size() - 1 && result.get(result.size() - 1) != null){
+                    String color = (String) result.get(result.size() - 1);
+                    result.add(color.replace(" ", "") + str);
+                    continue;
+                }
+
                 if (lastColor != null && !str.isEmpty()) {
+
                     result.add(lastColor + str);
                 } else {
                     result.add(str);
@@ -35,9 +43,16 @@ public class ColorUtil {
             } else if (object instanceof TextComponent) {
                 TextComponent textComponent = (TextComponent) object;
                 String str = textComponent.content();
+
                 Matcher matcher = COLOR_PATTERN.matcher(str);
                 while (matcher.find()) {
                     lastColor = matcher.group();
+                }
+
+                if (!result.isEmpty() && input.indexOf(object) == input.size() - 1 && result.get(result.size() - 1) != null){
+                    String color = (String) result.get(result.size() - 1);
+                    result.add(color.replace(" ", "") + str);
+                    continue;
                 }
 
                 if (lastColor != null && !str.isEmpty()) {
@@ -54,4 +69,5 @@ public class ColorUtil {
         }
         return result;
     }
+
 }
