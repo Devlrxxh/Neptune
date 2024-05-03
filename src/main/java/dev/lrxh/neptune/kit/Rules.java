@@ -71,6 +71,17 @@ public enum Rules {
             return kit.isBoxing();
         }
     },
+    ALLOW_ARENA_BREAK("Allow Players to break blocks from the arena", "Arena Break") {
+        @Override
+        public void execute(Kit kit, boolean value) {
+            kit.setArenaBreak(value);
+        }
+
+        @Override
+        public boolean enabled(Kit kit) {
+            return kit.isArenaBreak();
+        }
+    },
     DAMAGE("Allow/Deny Players to take Damage", "Damage") {
         @Override
         public void execute(Kit kit, boolean value) {

@@ -107,7 +107,7 @@ public class OneVersusOneMatch extends Match {
         hidePlayer(participant);
         sendDeathMessage(participant);
 
-        if(!isDuel()){
+        if (!isDuel()) {
             addStats();
         }
 
@@ -126,6 +126,7 @@ public class OneVersusOneMatch extends Match {
             Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).setMatchSnapshot(snapshot);
         }
     }
+
 
     @Override
     public void respawn(Participant participant) {

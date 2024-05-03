@@ -30,12 +30,20 @@ public class ArenaManager implements IManager {
                 ArenaType arenaType = ArenaType.valueOf(config.getString(path + ".type"));
 
                 if (arenaType.equals(ArenaType.STANDALONE)) {
-                    Location edge1 = LocationUtil.deserialize(config.getString(path + "edge1"));
-                    Location edge2 = LocationUtil.deserialize(config.getString(path + "edge2"));
+                    Location edge1 = LocationUtil.deserialize(config.getString(path + "min"));
+                    Location edge2 = LocationUtil.deserialize(config.getString(path + "max"));
+
+                    HashSet<Arena> copies = new HashSet<>();
+                    if (!config.getStringList(path + "copies").isEmpty()) {
+                        for (String copyName : config.getStringList(path + "copies")) {
+                            copies.add(plugin.getArenaManager().getArenaByName(copyName));
+                        }
+                    }
+
                     double deathZone = config.getDouble(path + "deathZone");
                     double limit = config.getDouble(path + "limit");
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, deathZone, limit, enabled);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, copies, deathZone, limit, enabled);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
@@ -58,8 +66,9 @@ public class ArenaManager implements IManager {
                 StandAloneArena standAloneArena = (StandAloneArena) arena;
                 values.addAll(Arrays.asList(
                         new Value("type", "STANDALONE"),
-                        new Value("edge1", LocationUtil.serialize(standAloneArena.getEdge1())),
-                        new Value("edge2", LocationUtil.serialize(standAloneArena.getEdge2())),
+                        new Value("min", LocationUtil.serialize(standAloneArena.getMin())),
+                        new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
+                        new Value("copies", ((StandAloneArena) arena).getCopiesAsString()),
                         new Value("deathZone", ((StandAloneArena) arena).getDeathY()),
                         new Value("limit", ((StandAloneArena) arena).getLimit())
                 ));
@@ -92,6 +101,7 @@ public class ArenaManager implements IManager {
                 kitArenas.add(arena);
             }
         }
+        Collections.shuffle(kitArenas);
         return kitArenas.isEmpty() ? null : kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
     }
 

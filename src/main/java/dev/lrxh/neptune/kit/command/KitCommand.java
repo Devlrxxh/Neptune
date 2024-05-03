@@ -58,7 +58,7 @@ public class KitCommand extends BaseCommand {
         }
 
         Kit kit = Kit.builder()
-                .displayName("&7" + kitName)
+                .displayName(kitName)
                 .name(kitName)
                 .items(Arrays.asList(player.getInventory().getContents()))
                 .build(false)
@@ -66,6 +66,9 @@ public class KitCommand extends BaseCommand {
                 .sumo(false)
                 .fallDamage(false)
                 .denyMovement(false)
+                .damage(true)
+                .arenaBreak(false)
+                .boxing(false)
                 .arenas(new HashSet<>())
                 .icon(player.getInventory().getItemInMainHand())
                 .build();
@@ -137,12 +140,19 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        if (plugin.getArenaManager().getArenaByName(arenaName) == null) {
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+
+        if (arena == null) {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
+
         Kit kit = plugin.getKitManager().getKitByName(kitName);
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+
+        if (kit.getArenas().contains(arena)) {
+            player.sendMessage(CC.error("Arena is already added!"));
+            return;
+        }
 
         kit.getArenas().add(arena);
         plugin.getKitManager().saveKits();

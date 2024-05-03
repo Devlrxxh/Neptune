@@ -42,11 +42,6 @@ public class LobbyListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockExplosion(BlockExplodeEvent event) {
-        event.setCancelled(true);
-    }
-
-    @EventHandler
     public void onLeavesDecay(LeavesDecayEvent event) {
         event.setCancelled(true);
     }

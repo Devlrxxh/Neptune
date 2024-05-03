@@ -36,11 +36,11 @@ public class PlayerData {
     }
 
     public void addWinStreak(Kit kit) {
-            kitData.get(kit).setCurrentStreak(kitData.get(kit).getCurrentStreak() + 1);
+        kitData.get(kit).setCurrentStreak(kitData.get(kit).getCurrentStreak() + 1);
 
-            if (kitData.get(kit).getCurrentStreak() > kitData.get(kit).getBestStreak()) {
-                setBestWinStreak(kit, kitData.get(kit).getCurrentStreak());
-            }
+        if (kitData.get(kit).getCurrentStreak() > kitData.get(kit).getBestStreak()) {
+            setBestWinStreak(kit, kitData.get(kit).getCurrentStreak());
+        }
     }
 
     public void setBestWinStreak(Kit kit, int value) {

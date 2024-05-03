@@ -151,9 +151,16 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockExplosion(BlockExplodeEvent e) {
-        for (Block block : e.blockList()) {
-            block.breakNaturally();
+    public void onBlockExplosion(EntityExplodeEvent event) {
+        for (Block block : event.blockList()) {
+            block.setType(Material.AIR);
+        }
+    }
+
+    @EventHandler
+    public void onBlockExplosion(BlockExplodeEvent event) {
+        for (Block block : event.blockList()) {
+            block.setType(Material.AIR);
         }
     }
 
@@ -201,6 +208,10 @@ public class MatchListener implements Listener {
             event.setCancelled(true);
         } else {
             match.getPlacedBlocks().remove(blockLocation);
+        }
+        if (match != null && match.getKit().isArenaBreak()) {
+            event.setCancelled(false);
+            event.getBlock().setType(Material.AIR);
         }
     }
 

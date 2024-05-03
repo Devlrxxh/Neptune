@@ -31,6 +31,7 @@ dev\lrxh\neptune\kit\Rules$2.class
 dev\lrxh\neptune\match\impl\MatchState.class
 dev\lrxh\neptune\profile\data\StatTypes.class
 dev\lrxh\neptune\providers\duel\DuelRequest.class
+dev\lrxh\neptune\kit\Rules$8.class
 dev\lrxh\neptune\utils\assemble\AssembleAdapter.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$3.class
 dev\lrxh\neptune\profile\data\KitData.class
@@ -48,7 +49,6 @@ dev\lrxh\neptune\match\tasks\MatchRespawnRunnable.class
 dev\lrxh\neptune\profile\VisibilityLogic.class
 dev\lrxh\neptune\match\Match.class
 dev\lrxh\neptune\arena\impl\SharedArena.class
-dev\lrxh\neptune\utils\InventoryUtil.class
 dev\lrxh\neptune\match\impl\DeathCause.class
 dev\lrxh\neptune\providers\database\MongoManager.class
 dev\lrxh\neptune\utils\menu\DisplayButton.class
@@ -91,12 +91,14 @@ dev\lrxh\neptune\providers\hotbar\ItemAction.class
 dev\lrxh\neptune\arena\Arena$1.class
 dev\lrxh\neptune\kit\KitManager.class
 dev\lrxh\neptune\arena\Arena.class
+dev\lrxh\neptune\commands\DuelCommand.class
 dev\lrxh\neptune\utils\TimeUtil.class
 dev\lrxh\neptune\queue\Queue.class
 dev\lrxh\neptune\providers\menus\kitEditor\KitEditorMenu.class
 dev\lrxh\neptune\configs\impl\DataType.class
 dev\lrxh\neptune\match\impl\Participant.class
 dev\lrxh\neptune\providers\clickable\Replacement.class
+dev\lrxh\neptune\utils\GenerationUtils.class
 dev\lrxh\neptune\configs\impl\MenusLocale.class
 dev\lrxh\neptune\profile\listener\ProfileListener.class
 dev\lrxh\neptune\configs\impl\SettingsLocale.class

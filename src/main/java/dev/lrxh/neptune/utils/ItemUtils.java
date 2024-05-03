@@ -1,8 +1,10 @@
 package dev.lrxh.neptune.utils;
 
 import lombok.experimental.UtilityClass;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
 
@@ -17,6 +19,40 @@ import java.util.zip.GZIPOutputStream;
 
 @UtilityClass
 public class ItemUtils {
+
+    public static ItemStack[] fixInventoryOrder(ItemStack[] source) {
+        ItemStack[] fixed = new ItemStack[36];
+
+        System.arraycopy(source, 0, fixed, 27, 9);
+        System.arraycopy(source, 9, fixed, 0, 27);
+
+        return fixed;
+    }
+
+    public static List<ItemStack> color(List<ItemStack> itemStackList, Color color) {
+        List<ItemStack> items = new ArrayList<>();
+        for (ItemStack itemStack : itemStackList) {
+            if (itemStack == null) {
+                continue;
+            } else {
+                itemStack.getType();
+            }
+            if (itemStack.getType() == Material.LEATHER_BOOTS || itemStack.getType() == Material.LEATHER_CHESTPLATE || itemStack.getType() == Material.LEATHER_HELMET
+                    || itemStack.getType() == Material.LEATHER_LEGGINGS) {
+                LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
+                meta.setColor(color);
+                itemStack.setItemMeta(meta);
+            } else if (itemStack.getType() == Material.WHITE_WOOL) {
+                if (color.equals(Color.BLUE)) {
+                    itemStack.setType(Material.BLUE_WOOL);
+                } else {
+                    itemStack.setType(Material.RED_WOOL);
+                }
+            }
+            items.add(itemStack);
+        }
+        return items;
+    }
 
     public String serialize(List<ItemStack> items) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();

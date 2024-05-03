@@ -8,24 +8,28 @@ import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 @Getter
 @Setter
 @SuperBuilder
 public class StandAloneArena extends Arena {
     private final transient LinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots = new LinkedHashMap<>();
-    private Location edge1;
-    private Location edge2;
+    private Location min;
+    private Location max;
     private double deathY;
     private double limit;
     private boolean used;
+    private HashSet<Arena> copies;
 
-
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location edge1, Location edge2, double deathY, double limit, boolean enabled) {
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, HashSet<Arena> copies, double deathY, double limit, boolean enabled) {
         super(name, displayName, redSpawn, blueSpawn, enabled);
-        this.edge1 = edge1;
-        this.edge2 = edge2;
+        this.min = min;
+        this.max = max;
+        this.copies = copies;
         this.limit = limit;
         this.deathY = deathY;
         this.used = false;
@@ -33,10 +37,21 @@ public class StandAloneArena extends Arena {
         takeSnapshot();
     }
 
+    public List<String> getCopiesAsString() {
+        List<String> copiesString = null;
+        if (copies != null && !copies.isEmpty()) {
+            copiesString = new ArrayList<>();
+            for (Arena arena : copies) {
+                copiesString.add(arena.getName());
+            }
+        }
+        return copiesString;
+    }
+
     public void takeSnapshot() {
         chunkSnapshots.clear();
-        Cuboid cuboid = new Cuboid(edge1, edge2);
-        World world = edge1.getWorld();
+        Cuboid cuboid = new Cuboid(min, max);
+        World world = min.getWorld();
 
         synchronized (chunkSnapshots) {
             for (int x = cuboid.getLowerCorner().getBlockX() >> 4; x <= cuboid.getUpperCorner().getBlockX() >> 4; x++) {

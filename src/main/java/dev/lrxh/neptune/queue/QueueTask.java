@@ -64,8 +64,8 @@ public class QueueTask extends BukkitRunnable {
                             if (arena.getBlueSpawn() == null ||
                                     arena.getRedSpawn() == null ||
                                     (arena instanceof StandAloneArena &&
-                                            (((StandAloneArena) arena).getEdge2() == null ||
-                                                    ((StandAloneArena) arena).getEdge1() == null))) {
+                                            (((StandAloneArena) arena).getMax() == null ||
+                                                    ((StandAloneArena) arena).getMin() == null))) {
 
                                 plugin.getQueueManager().remove(uuid1);
                                 plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.LOBBY);

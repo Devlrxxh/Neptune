@@ -1,14 +1,19 @@
 ITEMS:
   LOBBY:
     UNRANKED:
-      NAME: "&#ADF3FDU&#9FE5FDn&#92D7FDr&#84C9FDa&#76BBFCn&#68ADFCk&#5BA0FCe&#4D92FCd &#3F84FCQ&#3176FCu&#2468FBe&#165AFBu&#084CFBe &7(Right Click)"
+      NAME: "&aQueue Match &7(Right Click)"
       MATERIAL: IRON_SWORD
       SLOT: 0
       DURABILITY: 0
-    RANKED:
-      NAME: "&#74EE7CR&#6DF078a&#66F174n&#5FF370k&#58F46Ce&#51F669d &#4AF865Q&#43F961u&#3CFB5De&#35FC59u&#2EFE55e &7(Right Click)"
-      MATERIAL: DIAMOND_SWORD
-      SLOT: 1
+    STATS:
+      NAME: "&eStats &7(Right Click)"
+      MATERIAL: COMPASS
+      SLOT: 7
+      DURABILITY: 0
+    KIT_EDITOR:
+      NAME: "&dKit Editor &7(Right Click)"
+      MATERIAL: BOOK
+      SLOT: 8
       DURABILITY: 0
   IN_QUEUE:
     QUEUE_LEAVE:

@@ -20,8 +20,8 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", null, DataType.STRING_LIST, "&c☠ <player> &7was killed by \uD83D\uDDE1 <killer>"),
     MATCH_DEATH_DIED("MATCH.DEATH.DIED", null, DataType.STRING_LIST, "&c☠ <player> &7died"),
     MATCH_DEATH_VOID("MATCH.DEATH.VOID", null, DataType.STRING_LIST, "&c☠ <player> &7fell into the void while fighting \uD83D\uDDE1 <killer>"),
-    QUEUE_JOIN("QUEUE.JOIN", null, DataType.STRING_LIST, "&7(&bDuels&7) Queue Joined"),
-    QUEUE_LEAVE("QUEUE.LEAVE", null, DataType.STRING_LIST, "&7(&bDuels&7) left queue"),
+    QUEUE_JOIN("QUEUE.JOIN", null, DataType.STRING_LIST, "&7(&bDuels&7) Joined Queue"),
+    QUEUE_LEAVE("QUEUE.LEAVE", null, DataType.STRING_LIST, "&7(&bDuels&7) Left queue"),
     MATCH_STARTED("MATCH.STARTED", null, DataType.STRING_LIST, "&aMatch Started!"),
     MATCH_FOUND("MATCH.FOUND", null, DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", " "),
     MATCH_STARTING("MATCH.START.TIMER", null, DataType.STRING_LIST, "&fMatch starting in &b<timer>&f..."),
@@ -42,7 +42,14 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_COMBO_MESSAGE_10("MATCH.COMBO_MESSAGE.10COMBO", null, DataType.STRING_LIST, "&e10 COMBO!"),
     MATCH_COMBO_MESSAGE_20("MATCH.COMBO_MESSAGE.20COMBO", null, DataType.STRING_LIST, "&c!!!20 COMBO!!!"),
     KIT_EDITOR_START("KIT_EDITOR.START", "This is sent when the player starts editing a kit.", DataType.STRING_LIST, "&bOpen your Inventory to edit layout!"),
-    KIT_EDITOR_STOP("KIT_EDITOR.STOP", "This is sent when the player finishes editing a kit.", DataType.STRING_LIST, "&aKit layout has been saved.");
+    KIT_EDITOR_STOP("KIT_EDITOR.STOP", "This is sent when the player finishes editing a kit.", DataType.STRING_LIST, "&aKit layout has been saved."),
+    DUEL_SENT("DUEL.SENT", null, DataType.STRING_LIST, " ",
+            "&bDuel Request",
+            " ",
+            "&fSender: &a<sender>",
+            "&fKit: &a<kit>",
+            "&fAren: &aArena",
+            " ");
 
     private final String path;
     private final String comment;

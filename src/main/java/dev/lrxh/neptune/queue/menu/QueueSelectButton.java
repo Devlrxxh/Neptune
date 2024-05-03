@@ -26,12 +26,12 @@ public class QueueSelectButton extends Button {
 
         List<String> lore = new ArrayList<>();
 
-            MenusLocale.QUEUE_SELECT_LORE.getStringList().forEach(line -> {
-                line = line.replaceAll("<playing>", String.valueOf(kit.getPlaying()));
-                line = line.replaceAll("<queue>", String.valueOf(kit.getQueue()));
-                line = line.replaceAll("<kit>", kit.getDisplayName());
-                lore.add(line);
-            });
+        MenusLocale.QUEUE_SELECT_LORE.getStringList().forEach(line -> {
+            line = line.replaceAll("<playing>", String.valueOf(kit.getPlaying()));
+            line = line.replaceAll("<queue>", String.valueOf(kit.getQueue()));
+            line = line.replaceAll("<kit>", kit.getDisplayName());
+            lore.add(line);
+        });
 
         return new ItemBuilder(kit.getIcon().getType()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .amount(kit.getPlaying())

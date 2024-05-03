@@ -31,6 +31,7 @@ public class KitManager implements IManager {
                 }
 
                 boolean build = config.getBoolean(path + "build");
+                boolean arenaBreak = config.getBoolean(path + "arenaBreak");
                 boolean hunger = config.getBoolean(path + "hunger");
                 boolean sumo = config.getBoolean(path + "sumo");
                 boolean fallDamage = config.getBoolean(path + "fallDamage");
@@ -38,7 +39,7 @@ public class KitManager implements IManager {
                 boolean boxing = config.getBoolean(path + "boxing");
                 boolean damage = config.getBoolean(path + "damage");
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, boxing, damage));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, arenaBreak, hunger, sumo, fallDamage, denyMovement, boxing, damage));
             }
         }
     }
@@ -50,6 +51,7 @@ public class KitManager implements IManager {
                     new Value("displayName", kit.getDisplayName()),
                     new Value("items", ItemUtils.serialize(kit.getItems())),
                     new Value("build", kit.isBuild()),
+                    new Value("arenaBreak", kit.isArenaBreak()),
                     new Value("hunger", kit.isHunger()),
                     new Value("sumo", kit.isSumo()),
                     new Value("fallDamage", kit.isFallDamage()),

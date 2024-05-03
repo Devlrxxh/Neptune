@@ -4,7 +4,6 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assembl
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\impl\Team.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\Arena.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\impl\TeamFightMatch.java
-C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\InventoryUtil.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\ConfigFile.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\ViewInventoryCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\MatchManager.java
@@ -23,6 +22,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\men
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\TaskScheduler.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\profile\ProfileState.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\profile\ProfileManager.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\GenerationUtils.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\tasks\MatchRespawnRunnable.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\ItemBuilder.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\kit\menu\KitManagementButton.java
@@ -84,6 +84,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\queue\menu\Qu
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\menu\button\StatisticsButton.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\StatsCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\events\AssembleBoardDestroyEvent.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\DuelCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\AssembleException.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\impl\StandAloneArena.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\clickable\Replacement.java

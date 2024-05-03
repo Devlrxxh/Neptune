@@ -10,6 +10,7 @@ import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.impl.ParticipantColor;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.GenerationUtils;
 import org.bukkit.entity.Player;
 
 @CommandAlias("arena")
@@ -85,8 +86,21 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
+    @Subcommand("tp")
+    @Syntax("<arena>")
+    @CommandCompletion("@arenas")
+    public void tp(Player player, String arenaName) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        player.teleport(Neptune.get().getArenaManager().getArenaByName(arenaName).getRedSpawn());
+        player.sendMessage(CC.color("&aThere you go!"));
+    }
+
     @Subcommand("setedge")
-    @Syntax("<arena> <edge_1/edge_2>")
+    @Syntax("<arena> <min/max>")
     @CommandCompletion("@arenas")
     public void setEdge(Player player, String arenaName, EdgeType edgeType) {
         if (player == null) return;
@@ -100,14 +114,50 @@ public class ArenaCommand extends BaseCommand {
         }
         StandAloneArena arena = (StandAloneArena) plugin.getArenaManager().getArenaByName(arenaName);
 
-        if (edgeType.equals(EdgeType.EDGE_1)) {
-            arena.setEdge1(player.getLocation());
-            player.sendMessage(CC.color("&aSuccessfully set &9Edge 1&a for arena " + arena.getDisplayName()));
+        if (edgeType.equals(EdgeType.MIN)) {
+            arena.setMin(player.getLocation());
+            player.sendMessage(CC.color("&aSuccessfully set &9Min 1&a for arena " + arena.getDisplayName()));
         } else {
-            arena.setEdge2(player.getLocation());
-            player.sendMessage(CC.color("&aSuccessfully set &cEdge 2&a for arena " + arena.getDisplayName()));
+            arena.setMax(player.getLocation());
+            player.sendMessage(CC.color("&aSuccessfully set &cMax 2&a for arena " + arena.getDisplayName()));
+        }
+
+        if (arena.getMin() != null && arena.getMax() != null) {
+            arena.takeSnapshot();
         }
         plugin.getArenaManager().saveArenas();
+    }
+
+    @Subcommand("generate")
+    @Syntax("<arena> <amount>")
+    public void generate(Player player, String arenaName, int amount) {
+        if (player == null) return;
+
+        if(!plugin.isFawe()){
+            player.sendMessage(CC.error("FastAsyncWorldEdit isn't installed!"));
+            return;
+        }
+
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+
+        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena)) {
+            player.sendMessage(CC.error("Arena isn't standalone!"));
+            return;
+        }
+        StandAloneArena arena = (StandAloneArena) plugin.getArenaManager().getArenaByName(arenaName);
+
+        if (arena.getMin() == null && arena.getMax() == null) {
+            player.sendMessage(CC.error("Arena isn't setup completely!"));
+            return;
+        }
+
+        player.sendMessage(CC.color("&aGenerating " + amount + " arena copy(s)"));
+
+        GenerationUtils.generateCopies(arena, amount);
+        player.sendMessage(CC.color("&aGenerated " + amount + " arena copy(s)"));
     }
 
     @Subcommand("deathY")

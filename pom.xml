@@ -72,6 +72,15 @@
             <artifactId>mongodb-driver-sync</artifactId>
             <version>4.11.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.boydti</groupId>
+            <artifactId>fawe-api</artifactId>
+            <version>latest</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/fawe.jar</systemPath>
+        </dependency>
+
     </dependencies>
 
     <build>

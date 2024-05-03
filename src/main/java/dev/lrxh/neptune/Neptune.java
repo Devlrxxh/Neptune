@@ -7,10 +7,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
 import dev.lrxh.neptune.arena.listener.LobbyListener;
-import dev.lrxh.neptune.commands.MainCommand;
-import dev.lrxh.neptune.commands.QueueCommand;
-import dev.lrxh.neptune.commands.StatsCommand;
-import dev.lrxh.neptune.commands.ViewInventoryCommand;
+import dev.lrxh.neptune.commands.*;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -57,6 +54,7 @@ public final class Neptune extends JavaPlugin {
     private Cache cache;
     private Assemble assemble;
     private boolean placeholder = false;
+    private boolean fawe = false;
     private HotbarManager hotbarManager;
     private MongoManager mongoManager;
     private LeaderboardManager leaderboardManager;
@@ -116,6 +114,10 @@ public final class Neptune extends JavaPlugin {
         if (placeholderAPI != null && placeholderAPI.isEnabled()) {
             placeholder = true;
         }
+        Plugin fastAsyncWorldEdit = getServer().getPluginManager().getPlugin("FastAsyncWorldEdit");
+        if (fastAsyncWorldEdit != null && fastAsyncWorldEdit.isEnabled()) {
+            fawe = true;
+        }
     }
 
     private void loadWorlds() {
@@ -147,7 +149,8 @@ public final class Neptune extends JavaPlugin {
                 new QueueCommand(),
                 new MainCommand(),
                 new ViewInventoryCommand(),
-                new StatsCommand()
+                new StatsCommand(),
+                new DuelCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

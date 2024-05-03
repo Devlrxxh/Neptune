@@ -4,7 +4,7 @@ import dev.lrxh.neptune.match.impl.MatchSnapshot;
 import dev.lrxh.neptune.match.menu.button.HealthButton;
 import dev.lrxh.neptune.match.menu.button.StatisticsButton;
 import dev.lrxh.neptune.match.menu.button.SwitchInventoryButton;
-import dev.lrxh.neptune.utils.InventoryUtil;
+import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.DisplayButton;
 import dev.lrxh.neptune.utils.menu.Menu;
@@ -43,7 +43,7 @@ public class MatchSnapshotMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        ItemStack[] fixedContents = InventoryUtil.fixInventoryOrder(snapshot.getContents());
+        ItemStack[] fixedContents = ItemUtils.fixInventoryOrder(snapshot.getContents());
 
         for (int i = 0; i < fixedContents.length; i++) {
             ItemStack itemStack = fixedContents[i];
