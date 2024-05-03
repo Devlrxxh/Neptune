@@ -61,7 +61,6 @@ public class KitCommand extends BaseCommand {
                 .displayName("&7" + kitName)
                 .name(kitName)
                 .items(Arrays.asList(player.getInventory().getContents()))
-                .ranked(false)
                 .build(false)
                 .hunger(false)
                 .sumo(false)

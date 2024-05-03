@@ -19,9 +19,9 @@ import java.util.UUID;
 public class MatchManager {
     public final HashSet<Match> matches = new HashSet<>();
 
-    public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean ranked, boolean duel, boolean versus) {
+    public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, boolean versus) {
         for (Participant ignored : participants) {
-            kit.addPlaying(ranked);
+            kit.addPlaying();
         }
         Match match;
         if (!versus) {
@@ -33,7 +33,7 @@ public class MatchManager {
 //            teamBlue.setOpponent(teamRed);
 
             //Create match
-            match = new TeamFightMatch(MatchState.STARTING, arena, kit, ranked, duel, participants, teamRed, teamBlue);
+            match = new TeamFightMatch(MatchState.STARTING, arena, kit, duel, participants, teamRed, teamBlue);
         } else {
             //Create teams
             Participant playerRed = participants.get(0);
@@ -46,7 +46,7 @@ public class MatchManager {
             playerBlue.setColor(ParticipantColor.BLUE);
 
             //Create match
-            match = new OneVersusOneMatch(arena, kit, ranked, duel, participants, playerRed, playerBlue);
+            match = new OneVersusOneMatch(arena, kit, duel, participants, playerRed, playerBlue);
         }
 
         matches.add(match);

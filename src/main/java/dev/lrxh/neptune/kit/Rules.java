@@ -71,17 +71,6 @@ public enum Rules {
             return kit.isBoxing();
         }
     },
-    RANKED("Enable/Disable Ranked", "Ranked") {
-        @Override
-        public void execute(Kit kit, boolean value) {
-            kit.setRanked(value);
-        }
-
-        @Override
-        public boolean enabled(Kit kit) {
-            return kit.isRanked();
-        }
-    },
     DAMAGE("Allow/Deny Players to take Damage", "Damage") {
         @Override
         public void execute(Kit kit, boolean value) {

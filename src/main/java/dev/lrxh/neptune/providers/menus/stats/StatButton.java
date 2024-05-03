@@ -24,17 +24,12 @@ public class StatButton extends Button {
         KitData data = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getData().getKitData().get(kit);
 
         MenusLocale.STAT_LORE.getStringList().forEach(line -> {
-            line = line.replaceAll("<wins_unranked>", String.valueOf(data.getUnrankedWins()));
-            line = line.replaceAll("<losses_unranked>", String.valueOf(data.getUnrankedLosses()));
+            line = line.replaceAll("<wins>", String.valueOf(data.getWins()));
+            line = line.replaceAll("<losses>", String.valueOf(data.getLosses()));
 
-            line = line.replaceAll("<wins_ranked>", String.valueOf(data.getRankedWins()));
-            line = line.replaceAll("<losses_ranked>", String.valueOf(data.getRankedLosses()));
+            line = line.replaceAll("<win_streak_current>", String.valueOf(data.getCurrentStreak()));
+            line = line.replaceAll("<win_streak_best>", String.valueOf(data.getBestStreak()));
 
-            line = line.replaceAll("<win_streak_unranked_current>", String.valueOf(data.getCurrentUnrankedStreak()));
-            line = line.replaceAll("<win_streak_ranked_current>", String.valueOf(data.getCurrentRankedStreak()));
-
-            line = line.replaceAll("<win_streak_unranked_best>", String.valueOf(data.getUnrankedBestStreak()));
-            line = line.replaceAll("<win_streak_ranked_best>", String.valueOf(data.getRankedBestStreak()));
 
             lore.add(line);
         });

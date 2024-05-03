@@ -28,8 +28,8 @@ public class OneVersusOneMatch extends Match {
     private final Participant participantA;
     private final Participant participantB;
 
-    public OneVersusOneMatch(Arena arena, Kit kit, boolean ranked, boolean duel, List<Participant> participants, Participant participantA, Participant participantB) {
-        super(MatchState.STARTING, arena, kit, participants, ranked, duel);
+    public OneVersusOneMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB) {
+        super(MatchState.STARTING, arena, kit, participants, duel);
         this.participantA = participantA;
         this.participantB = participantB;
     }
@@ -54,8 +54,8 @@ public class OneVersusOneMatch extends Match {
         Participant winner = participantA.isLoser() ? participantB : participantA;
         Participant loser = participantA.isLoser() ? participantA : participantB;
 
-        Neptune.get().getProfileManager().getByUUID(winner.getPlayerUUID()).getData().run(kit, isRanked(), true);
-        Neptune.get().getProfileManager().getByUUID(loser.getPlayerUUID()).getData().run(kit, isRanked(), false);
+        Neptune.get().getProfileManager().getByUUID(winner.getPlayerUUID()).getData().run(kit, true);
+        Neptune.get().getProfileManager().getByUUID(loser.getPlayerUUID()).getData().run(kit, false);
 
     }
 
@@ -77,7 +77,7 @@ public class OneVersusOneMatch extends Match {
 
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
                 TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
-                        .clickEvent(ClickEvent.runCommand("/queue " + kit.getName() + " " + isRanked()))
+                        .clickEvent(ClickEvent.runCommand("/queue " + kit.getName()))
                         .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));
 
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
@@ -106,7 +106,10 @@ public class OneVersusOneMatch extends Match {
 
         hidePlayer(participant);
         sendDeathMessage(participant);
-        addStats();
+
+        if(!isDuel()){
+            addStats();
+        }
 
         end();
     }

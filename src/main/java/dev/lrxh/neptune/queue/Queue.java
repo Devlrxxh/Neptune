@@ -10,5 +10,4 @@ import lombok.Setter;
 @Setter
 public class Queue {
     private Kit kit;
-    private boolean ranked;
 }

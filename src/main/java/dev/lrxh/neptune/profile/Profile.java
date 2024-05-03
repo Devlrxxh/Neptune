@@ -69,14 +69,10 @@ public class Profile {
 
             if (kit != null) {
                 KitData profileKitData = new KitData();
-                profileKitData.setCurrentRankedStreak(kitDocument.getInteger("RANKED_WIN_STREAK_CURRENT", 0));
-                profileKitData.setCurrentUnrankedStreak(kitDocument.getInteger("UNRANKED_WIN_STREAK_CURRENT", 0));
-                profileKitData.setUnrankedWins(kitDocument.getInteger("UNRANKED_WINS", 0));
-                profileKitData.setRankedWins(kitDocument.getInteger("RANKED_WINS", 0));
-                profileKitData.setUnrankedLosses(kitDocument.getInteger("UNRANKED_LOSSES", 0));
-                profileKitData.setRankedLosses(kitDocument.getInteger("RANKED_LOSSES", 0));
-                profileKitData.setUnrankedBestStreak(kitDocument.getInteger("UNRANKED_WIN_STREAK_BEST", 0));
-                profileKitData.setRankedBestStreak(kitDocument.getInteger("RANKED_WIN_STREAK_BEST", 0));
+                profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
+                profileKitData.setWins(kitDocument.getInteger("WINS", 0));
+                profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
+                profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
                 profileKitData.setElo(kitDocument.getInteger("elo", 1000));
                 profileKitData.setKit(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
 
@@ -96,14 +92,10 @@ public class Profile {
         for (Map.Entry<Kit, KitData> entry : data.getKitData().entrySet()) {
             Document kitStatisticsDocument = new Document();
             kitStatisticsDocument.put("elo", entry.getValue().getElo());
-            kitStatisticsDocument.put("UNRANKED_WIN_STREAK_CURRENT", entry.getValue().getCurrentUnrankedStreak());
-            kitStatisticsDocument.put("RANKED_WIN_STREAK_CURRENT", entry.getValue().getCurrentRankedStreak());
-            kitStatisticsDocument.put("UNRANKED_WINS", entry.getValue().getUnrankedWins());
-            kitStatisticsDocument.put("RANKED_WINS", entry.getValue().getRankedWins());
-            kitStatisticsDocument.put("UNRANKED_LOSSES", entry.getValue().getUnrankedLosses());
-            kitStatisticsDocument.put("RANKED_LOSSES", entry.getValue().getRankedLosses());
-            kitStatisticsDocument.put("UNRANKED_WIN_STREAK_BEST", entry.getValue().getUnrankedBestStreak());
-            kitStatisticsDocument.put("RANKED_WIN_STREAK_BEST", entry.getValue().getRankedBestStreak());
+            kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getValue().getCurrentStreak());
+            kitStatisticsDocument.put("WINS", entry.getValue().getWins());
+            kitStatisticsDocument.put("LOSSES", entry.getValue().getLosses());
+            kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getValue().getBestStreak());
             kitStatisticsDocument.put("kit", entry.getValue().getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getValue().getKit()));
 
             kitStatsDoc.put(entry.getKey().getName(), kitStatisticsDocument);

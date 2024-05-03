@@ -10,10 +10,10 @@ import java.util.List;
 @Getter
 @Setter
 public class KitData {
-    private int unrankedWins, rankedWins;
-    private int unrankedLosses, rankedLosses;
-    private int unrankedBestStreak, rankedBestStreak;
-    private int currentUnrankedStreak, currentRankedStreak;
+    private int wins;
+    private int losses;
+    private int bestStreak;
+    private int currentStreak;
     private int elo;
     private List<ItemStack> kit;
 

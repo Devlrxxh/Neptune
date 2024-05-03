@@ -18,7 +18,6 @@ import java.util.List;
 public class Kit {
     private String name;
     private String displayName;
-    private boolean ranked;
     private List<ItemStack> items;
     private HashSet<Arena> arenas;
     private ItemStack icon;
@@ -32,12 +31,11 @@ public class Kit {
     private boolean damage;
 
     //VALUES
-    private int unrankedQueue, rankedQueue, unrankedPlaying, rankedPlaying;
+    private int queue, playing;
 
-    public Kit(String name, String displayName, boolean ranked, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean boxing, boolean damage) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean boxing, boolean damage) {
         this.name = name;
         this.displayName = displayName;
-        this.ranked = ranked;
         this.items = items;
         this.arenas = arenas;
         this.icon = icon;
@@ -48,10 +46,8 @@ public class Kit {
         this.denyMovement = denyMovement;
         this.boxing = boxing;
         this.damage = damage;
-        this.unrankedQueue = 0;
-        this.rankedQueue = 0;
-        this.rankedPlaying = 0;
-        this.unrankedPlaying = 0;
+        this.queue = 0;
+        this.playing = 0;
     }
 
     public List<String> getArenasAsString() {
@@ -65,36 +61,20 @@ public class Kit {
         return arenasString;
     }
 
-    public void removeQueue(boolean ranked) {
-        if (ranked) {
-            rankedQueue--;
-        } else {
-            unrankedQueue--;
-        }
+    public void removeQueue() {
+            queue--;
     }
 
-    public void addQueue(boolean ranked) {
-        if (ranked) {
-            rankedQueue++;
-        } else {
-            unrankedQueue++;
-        }
+    public void addQueue() {
+        queue++;
     }
 
-    public void removePlaying(boolean ranked) {
-        if (ranked) {
-            rankedPlaying--;
-        } else {
-            unrankedPlaying--;
-        }
+    public void removePlaying() {
+        playing--;
     }
 
-    public void addPlaying(boolean ranked) {
-        if (ranked) {
-            rankedPlaying++;
-        } else {
-            unrankedPlaying++;
-        }
+    public void addPlaying() {
+        playing++;
     }
 
 }

@@ -19,7 +19,6 @@ public class KitManager implements IManager {
             for (String kitName : Objects.requireNonNull(config.getConfigurationSection("kits")).getKeys(false)) {
                 String path = "kits." + kitName + ".";
                 String displayName = config.getString(path + "displayName");
-                boolean ranked = config.getBoolean(path + "ranked");
                 ItemStack icon = ItemUtils.deserializeItem(Objects.requireNonNull(config.getString(path + "icon")));
 
                 List<ItemStack> items = ItemUtils.deserialize(Objects.requireNonNull(config.getString(path + "items")));
@@ -39,7 +38,7 @@ public class KitManager implements IManager {
                 boolean boxing = config.getBoolean(path + "boxing");
                 boolean damage = config.getBoolean(path + "damage");
 
-                kits.add(new Kit(kitName, displayName, ranked, items, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, boxing, damage));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, hunger, sumo, fallDamage, denyMovement, boxing, damage));
             }
         }
     }
@@ -49,7 +48,6 @@ public class KitManager implements IManager {
             String path = "kits." + kit.getName() + ".";
             List<Value> values = Arrays.asList(
                     new Value("displayName", kit.getDisplayName()),
-                    new Value("ranked", kit.isRanked()),
                     new Value("items", ItemUtils.serialize(kit.getItems())),
                     new Value("build", kit.isBuild()),
                     new Value("hunger", kit.isHunger()),

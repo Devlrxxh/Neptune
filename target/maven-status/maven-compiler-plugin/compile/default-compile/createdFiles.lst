@@ -31,7 +31,6 @@ dev\lrxh\neptune\kit\Rules$2.class
 dev\lrxh\neptune\match\impl\MatchState.class
 dev\lrxh\neptune\profile\data\StatTypes.class
 dev\lrxh\neptune\providers\duel\DuelRequest.class
-dev\lrxh\neptune\kit\Rules$8.class
 dev\lrxh\neptune\utils\assemble\AssembleAdapter.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$3.class
 dev\lrxh\neptune\profile\data\KitData.class
@@ -57,7 +56,6 @@ dev\lrxh\neptune\utils\ConfigFile.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$4.class
 dev\lrxh\neptune\kit\menu\KitManagementButton.class
 dev\lrxh\neptune\providers\hotbar\Item.class
-dev\lrxh\neptune\providers\hotbar\ItemAction$5.class
 dev\lrxh\neptune\utils\menu\Menu$1.class
 dev\lrxh\neptune\configs\impl\IDataAccessor.class
 dev\lrxh\neptune\queue\QueueManager.class

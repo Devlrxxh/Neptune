@@ -101,7 +101,7 @@ public class QueueTask extends BukkitRunnable {
 
                             //Start match
                             plugin.getMatchManager().startMatch(participants, queue1.getKit(),
-                                    arena, queue1.isRanked(), false, true);
+                                    arena, false, true);
 
 
                             //Remove the players from queue

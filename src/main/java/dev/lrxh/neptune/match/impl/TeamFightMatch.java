@@ -28,8 +28,8 @@ public class TeamFightMatch extends Match {
     private final Team teamA;
     private final Team teamB;
 
-    public TeamFightMatch(MatchState matchState, Arena arena, Kit kit, boolean ranked, boolean duel, List<Participant> participants, Team teamA, Team teamB) {
-        super(matchState, arena, kit, participants, ranked, duel);
+    public TeamFightMatch(MatchState matchState, Arena arena, Kit kit, boolean duel, List<Participant> participants, Team teamA, Team teamB) {
+        super(matchState, arena, kit, participants, duel);
         this.teamA = teamA;
         this.teamB = teamB;
     }
@@ -59,11 +59,11 @@ public class TeamFightMatch extends Match {
         Team loserTeam = teamA.isLoser() ? teamA : teamB;
 
         for (Participant participant : winnerTeam.getParticipants()) {
-            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, isRanked(), true);
+            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, true);
         }
 
         for (Participant participant : loserTeam.getParticipants()) {
-            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, isRanked(), false);
+            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getData().run(kit, false);
         }
     }
 
@@ -84,7 +84,7 @@ public class TeamFightMatch extends Match {
 
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
                 TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
-                        .clickEvent(ClickEvent.runCommand("/queue " + kit.getName() + " " + isRanked()))
+                        .clickEvent(ClickEvent.runCommand("/queue " + kit.getName()))
                         .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));
 
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);

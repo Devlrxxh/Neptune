@@ -15,16 +15,16 @@ public class QueueManager {
         if (queues.containsKey(playerUUID)) return;
         queues.put(playerUUID, queue);
         plugin.getProfileManager().getByUUID(playerUUID).setState(ProfileState.IN_QUEUE);
-        queue.getKit().addQueue(queue.isRanked());
+        queue.getKit().addQueue();
     }
 
     public void remove(UUID playerUUID) {
         if (!queues.containsKey(playerUUID)) return;
-        queues.get(playerUUID).getKit().removeQueue(queues.get(playerUUID).isRanked());
+        queues.get(playerUUID).getKit().removeQueue();
         queues.remove(playerUUID);
     }
 
     public boolean compareQueue(Queue queue1, Queue queue2) {
-        return queue1.getKit().equals(queue2.getKit()) && (queue1.isRanked() == queue2.isRanked());
+        return queue1.getKit().getName().equals(queue2.getKit().getName());
     }
 }

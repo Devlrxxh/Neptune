@@ -40,7 +40,7 @@ public class MatchEndRunnable extends BukkitRunnable {
                 PlayerUtil.reset(participant.getPlayerUUID());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
                 profile.setState(ProfileState.LOBBY);
-                match.getKit().removePlaying(match.isRanked());
+                match.getKit().removePlaying();
                 profile.setMatch(null);
             }
             if (match instanceof OneVersusOneMatch) {

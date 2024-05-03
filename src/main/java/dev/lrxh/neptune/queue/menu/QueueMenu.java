@@ -14,11 +14,10 @@ import java.util.Map;
 
 @AllArgsConstructor
 public class QueueMenu extends Menu {
-    private boolean ranked;
 
     @Override
     public String getTitle(Player player) {
-        return MenusLocale.QUEUE_SELECT_TITLE.getString().replace("<type>", ranked ? "Ranked" : "Unranked");
+        return MenusLocale.QUEUE_SELECT_TITLE.getString();
     }
 
     @Override
@@ -36,7 +35,7 @@ public class QueueMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.QUEUE_SELECT_STARTING_SLOT.getInt();
         for (Kit kit : Neptune.get().getKitManager().kits) {
-            buttons.put(i++, new QueueSelectButton(kit, ranked));
+            buttons.put(i++, new QueueSelectButton(kit));
         }
         return buttons;
     }

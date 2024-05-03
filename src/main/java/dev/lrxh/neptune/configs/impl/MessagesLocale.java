@@ -20,7 +20,7 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", null, DataType.STRING_LIST, "&c☠ <player> &7was killed by \uD83D\uDDE1 <killer>"),
     MATCH_DEATH_DIED("MATCH.DEATH.DIED", null, DataType.STRING_LIST, "&c☠ <player> &7died"),
     MATCH_DEATH_VOID("MATCH.DEATH.VOID", null, DataType.STRING_LIST, "&c☠ <player> &7fell into the void while fighting \uD83D\uDDE1 <killer>"),
-    QUEUE_JOIN("QUEUE.JOIN", null, DataType.STRING_LIST, "&7(&bDuels&7) <type> <kit> Joined"),
+    QUEUE_JOIN("QUEUE.JOIN", null, DataType.STRING_LIST, "&7(&bDuels&7) Queue Joined"),
     QUEUE_LEAVE("QUEUE.LEAVE", null, DataType.STRING_LIST, "&7(&bDuels&7) left queue"),
     MATCH_STARTED("MATCH.STARTED", null, DataType.STRING_LIST, "&aMatch Started!"),
     MATCH_FOUND("MATCH.FOUND", null, DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", " "),

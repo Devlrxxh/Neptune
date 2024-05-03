@@ -34,7 +34,7 @@ public enum ScoreboardLocale implements IDataAccessor {
             "&fOnline: &b<online>",
             "&fIn Fights: &b<in-match>",
             "&7&m--------------------",
-            "&a<type> <kit>",
+            "&a<kit>",
             " ",
             "&blunar.gg",
             "&7&m--------------------"),

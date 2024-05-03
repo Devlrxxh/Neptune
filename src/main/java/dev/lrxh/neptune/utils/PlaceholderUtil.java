@@ -30,7 +30,6 @@ public class PlaceholderUtil {
 
             if (profile.getState().equals(ProfileState.IN_QUEUE)) {
                 Queue queue = plugin.getQueueManager().queues.get(player.getUniqueId());
-                line = line.replaceAll("<type>", queue.isRanked() ? "Ranked" : "Unranked");
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
             }
 
