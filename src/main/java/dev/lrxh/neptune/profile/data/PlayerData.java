@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.profile.data;
 
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.providers.duel.DuelRequest;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.WeakHashMap;
 @Setter
 public class PlayerData {
     private WeakHashMap<Kit, KitData> kitData;
+    private DuelRequest duelRequest;
 
     public PlayerData() {
         this.kitData = new WeakHashMap<>();

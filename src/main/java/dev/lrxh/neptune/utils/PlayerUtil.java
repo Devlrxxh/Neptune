@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.profile.Profile;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -42,6 +44,17 @@ public class PlayerUtil {
             player.updateInventory();
             allowMovement(playerUUID);
             player.resetTitle();
+        }
+    }
+
+    public void giveKit(UUID playerUUID, Kit kit) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        if (profile.getData().getKitData().get(kit).getKit().isEmpty() || profile.getData().getKitData() == null) {
+            player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
+        } else {
+            player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
         }
     }
 

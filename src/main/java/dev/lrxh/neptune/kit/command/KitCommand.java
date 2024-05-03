@@ -106,7 +106,23 @@ public class KitCommand extends BaseCommand {
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
-        kit.setArmour(Arrays.asList(player.getInventory().getArmorContents()));
+
+        plugin.getKitManager().saveKits();
+        player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
+    }
+
+    @Subcommand("seticon")
+    @Syntax("<kit>")
+    @CommandCompletion("@kits")
+    public void seticon(Player player, String kitName) {
+        if (player == null) return;
+        if (!checkKit(kitName)) {
+            player.sendMessage(CC.error("Kit doesn't exist!"));
+            return;
+        }
+        Kit kit = plugin.getKitManager().getKitByName(kitName);
+
+        kit.setIcon(player.getInventory().getItemInMainHand());
 
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));

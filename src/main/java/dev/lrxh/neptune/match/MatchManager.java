@@ -62,9 +62,6 @@ public class MatchManager {
         //Apply kit rules for players
         match.checkRules();
 
-        //Give the players their kit
-        match.giveKit();
-
         if (!versus) {
             TeamFightMatch teamFightMatch = (TeamFightMatch) match;
 
@@ -115,6 +112,7 @@ public class MatchManager {
         profile.setMatch(match);
         profile.setState(ProfileState.IN_GAME);
         player.updateInventory();
+        PlayerUtil.giveKit(player.getUniqueId(), match.getKit());
 
         Neptune.get().getLeaderboardManager().changes.add(playerUUID);
     }

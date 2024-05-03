@@ -7,6 +7,7 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.ItemBuilder;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
@@ -29,9 +30,6 @@ public class KitEditorSelectButton extends Button {
     public void clicked(Player player, ClickType clickType) {
 
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
-        if (!profile.getData().getKitData().get(kit).getKit().isEmpty()) {
-            player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
-        }
 
         MessagesLocale.KIT_EDITOR_START.send(player.getUniqueId());
         player.closeInventory();
@@ -39,7 +37,8 @@ public class KitEditorSelectButton extends Button {
         profile.setKitEditor(kit);
         profile.setState(ProfileState.IN_KIT_EDITOR);
 
-        player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
+        PlayerUtil.giveKit(player.getUniqueId(), kit);
+
         player.updateInventory();
     }
 }

@@ -6,7 +6,6 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
-import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
@@ -17,7 +16,6 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.HashSet;
 import java.util.List;
@@ -95,17 +93,6 @@ public abstract class Match {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) return;
             player.hidePlayer(Neptune.get(), targetPlayer);
-        }
-    }
-
-
-    public void giveKit() {
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
-            Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
-            player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
-            player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
         }
     }
 

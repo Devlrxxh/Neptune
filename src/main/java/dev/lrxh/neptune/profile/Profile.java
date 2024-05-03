@@ -41,7 +41,7 @@ public class Profile {
         this.matchSnapshot = null;
         this.kitEditor = null;
         for (Kit kit : Neptune.get().getKitManager().kits) {
-            this.data.getKitData().put(kit, new KitData(kit));
+            this.data.getKitData().put(kit, new KitData());
         }
 
         load();
@@ -68,7 +68,7 @@ public class Profile {
             Kit kit = Neptune.get().getKitManager().getKitByName(key);
 
             if (kit != null) {
-                KitData profileKitData = new KitData(kit);
+                KitData profileKitData = new KitData();
                 profileKitData.setCurrentRankedStreak(kitDocument.getInteger("RANKED_WIN_STREAK_CURRENT", 0));
                 profileKitData.setCurrentUnrankedStreak(kitDocument.getInteger("UNRANKED_WIN_STREAK_CURRENT", 0));
                 profileKitData.setUnrankedWins(kitDocument.getInteger("UNRANKED_WINS", 0));
@@ -78,7 +78,7 @@ public class Profile {
                 profileKitData.setUnrankedBestStreak(kitDocument.getInteger("UNRANKED_WIN_STREAK_BEST", 0));
                 profileKitData.setRankedBestStreak(kitDocument.getInteger("RANKED_WIN_STREAK_BEST", 0));
                 profileKitData.setElo(kitDocument.getInteger("elo", 1000));
-                profileKitData.setKit(kitDocument.getString("kit").isEmpty() ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
+                profileKitData.setKit(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
 
                 data.getKitData().put(kit, profileKitData);
             }
@@ -104,7 +104,7 @@ public class Profile {
             kitStatisticsDocument.put("RANKED_LOSSES", entry.getValue().getRankedLosses());
             kitStatisticsDocument.put("UNRANKED_WIN_STREAK_BEST", entry.getValue().getUnrankedBestStreak());
             kitStatisticsDocument.put("RANKED_WIN_STREAK_BEST", entry.getValue().getRankedBestStreak());
-            kitStatisticsDocument.put("kit", ItemUtils.serialize(entry.getValue().getKit()));
+            kitStatisticsDocument.put("kit", entry.getValue().getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getValue().getKit()));
 
             kitStatsDoc.put(entry.getKey().getName(), kitStatisticsDocument);
 
