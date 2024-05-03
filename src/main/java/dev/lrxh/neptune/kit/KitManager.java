@@ -20,10 +20,10 @@ public class KitManager implements IManager {
                 String path = "kits." + kitName + ".";
                 String displayName = config.getString(path + "displayName");
                 boolean ranked = config.getBoolean(path + "ranked");
-                ItemStack icon = ItemUtils.deserializeItemStack(Objects.requireNonNull(config.getString(path + "icon")));
+                ItemStack icon = ItemUtils.deserializeItem(Objects.requireNonNull(config.getString(path + "icon")));
 
-                List<ItemStack> items = ItemUtils.deserializeItemStacks(Objects.requireNonNull(config.getString(path + "items")));
-                List<ItemStack> armour = ItemUtils.deserializeItemStacks(Objects.requireNonNull(config.getString(path + "armour")));
+                List<ItemStack> items = ItemUtils.deserialize(Objects.requireNonNull(config.getString(path + "items")));
+                List<ItemStack> armour = ItemUtils.deserialize(config.getString(path + "armour"));
 
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
@@ -51,15 +51,15 @@ public class KitManager implements IManager {
             List<Value> values = Arrays.asList(
                     new Value("displayName", kit.getDisplayName()),
                     new Value("ranked", kit.isRanked()),
-                    new Value("items", ItemUtils.serializeItemStacks(kit.getItems())),
-                    new Value("armour", ItemUtils.serializeItemStacks(kit.getItems())),
+                    new Value("items", ItemUtils.serialize(kit.getItems())),
+                    new Value("armour", ItemUtils.serialize(kit.getArmour())),
                     new Value("build", kit.isBuild()),
                     new Value("hunger", kit.isHunger()),
                     new Value("sumo", kit.isSumo()),
                     new Value("fallDamage", kit.isFallDamage()),
                     new Value("denyMovement", kit.isDenyMovement()),
                     new Value("arenas", kit.getArenasAsString()),
-                    new Value("icon", ItemUtils.serializeItemStack(kit.getIcon())),
+                    new Value("icon", ItemUtils.serialize(kit.getIcon())),
                     new Value("boxing", kit.isBoxing()),
                     new Value("damage", kit.isDamage())
             );

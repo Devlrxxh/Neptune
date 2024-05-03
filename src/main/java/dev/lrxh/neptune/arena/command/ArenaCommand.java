@@ -68,7 +68,7 @@ public class ArenaCommand extends BaseCommand {
     @Subcommand("setspawn")
     @Syntax("<arena> <red/blue>")
     @CommandCompletion("@arenas")
-    public void setinv(Player player, String arenaName, ParticipantColor arenaSpawn) {
+    public void setspawn(Player player, String arenaName, ParticipantColor arenaSpawn) {
         if (player == null) return;
         if (!checkArena(arenaName)) {
             player.sendMessage(CC.error("Arena doesn't exist!"));

@@ -104,10 +104,8 @@ public abstract class Match {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) continue;
             Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
-            if (!profile.getData().getKitData().get(kit).getKit().isEmpty()) {
-                player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
-            }
             player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
+            player.getInventory().setArmorContents(kit.getArmour().toArray(new ItemStack[0]));
         }
     }
 
