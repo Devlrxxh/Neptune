@@ -31,7 +31,7 @@ public class ArenaManagmentButton extends Button {
                             " ",
                             "&a&lRIGHT CLICK | TOGGLE ARENA",
                             "&b&lRIGHT | TELEPORT",
-                            "&c&lLEFT | DELETE"))
+                            "&c&lSHIFT LEFT | DELETE ARENA"))
                     .build();
         } else {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
@@ -74,6 +74,7 @@ public class ArenaManagmentButton extends Button {
                 plugin.getKitManager().removeArenasFromKits(arena);
                 menu.openMenu(player);
                 player.sendMessage(CC.color("&aDeleted arena!"));
+                player.closeInventory();
                 break;
             case RIGHT:
                 player.teleport(arena.getRedSpawn());
