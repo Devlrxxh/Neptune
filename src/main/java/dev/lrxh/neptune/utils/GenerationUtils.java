@@ -24,7 +24,7 @@ import java.util.HashSet;
 @UtilityClass
 public class GenerationUtils {
     public void generateCopies(StandAloneArena arena, int amount) {
-        int xCurrent = 350;
+        int xCurrent = 350 * (arena.getCopies().size() + 1);
 
         for (int i = 0; i < amount; i++) {
             if (Neptune.get().getArenaManager().getArenaByName(arena + "#" + amount) != null) {
@@ -56,8 +56,6 @@ public class GenerationUtils {
             Location blueSpawn = new Location(arena.getBlueSpawn().getWorld(), arena.getBlueSpawn().getX() + xCurrent, arena.getBlueSpawn().getY(), arena.getBlueSpawn().getZ(), arena.getBlueSpawn().getYaw(), arena.getBlueSpawn().getPitch());
             Location min = new Location(arena.getMin().getWorld(), arena.getMin().getX() + xCurrent, arena.getMin().getY(), arena.getMin().getZ());
             Location max = new Location(arena.getMax().getWorld(), arena.getMax().getX() + xCurrent, arena.getMax().getY(), arena.getMax().getZ());
-
-            xCurrent = xCurrent + 350;
 
             StandAloneArena copy = new StandAloneArena(arena.getName() + "#" + (arena.getCopies().size() + 1), arena.getDisplayName(), redSpawn, blueSpawn, min, max, new HashSet<>(), arena.getDeathY(), arena.getLimit(), arena.isEnabled(), true);
 
