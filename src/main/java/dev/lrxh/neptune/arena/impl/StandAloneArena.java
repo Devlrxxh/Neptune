@@ -7,6 +7,8 @@ import lombok.experimental.SuperBuilder;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.HumanEntity;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -59,6 +61,7 @@ public class StandAloneArena extends Arena {
             for (int x = cuboid.getLowerCorner().getBlockX() >> 4; x <= cuboid.getUpperCorner().getBlockX() >> 4; x++) {
                 for (int z = cuboid.getLowerCorner().getBlockZ() >> 4; z <= cuboid.getUpperCorner().getBlockZ() >> 4; z++) {
                     Chunk chunk = world.getChunkAt(x, z);
+                    chunk.load();
                     ChunkSnapshot snapshot = chunk.getChunkSnapshot();
                     chunkSnapshots.put(chunk, snapshot);
                 }
@@ -77,12 +80,14 @@ public class StandAloneArena extends Arena {
                             Material material = snapshot.getBlockType(x, y, z);
                             BlockData blockData = snapshot.getBlockData(x, y, z);
 
-                            if (material != null) {
-                                Block block = chunk.getBlock(x, y, z);
-                                block.setType(material);
-                                block.setBlockData(blockData);
-                            }
+                            Block block = chunk.getBlock(x, y, z);
+                            block.setType(material);
+                            block.setBlockData(blockData, false);
                         }
+                    }
+                    for(Entity entity : chunk.getEntities()){
+                        if(entity instanceof HumanEntity) continue;
+                        entity.remove();
                     }
                 }
             }

@@ -73,7 +73,6 @@ public class QueueTask extends BukkitRunnable {
                                 plugin.getQueueManager().remove(uuid2);
                                 plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.LOBBY);
 
-
                                 Bukkit.getPlayer(uuid1).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                                 Bukkit.getPlayer(uuid2).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                                 return;

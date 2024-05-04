@@ -170,6 +170,7 @@ public final class Neptune extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        matchManager.stopAllGames();
         disableManagers();
     }
 }

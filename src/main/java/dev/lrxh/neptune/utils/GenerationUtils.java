@@ -42,22 +42,21 @@ public class GenerationUtils {
         );
         Operations.complete(forwardExtentCopy);
 
+        Location min = getNewLocation(arena.getMin(), xCurrent);
+        Location max = getNewLocation(arena.getMax(), xCurrent);
+
         //Paste arena
         try (EditSession editSession = WorldEdit.getInstance().newEditSession(new BukkitWorld(arena.getMin().getWorld()))) {
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)
-                    .to(BlockVector3.at(arena.getMin().getX() + xCurrent, arena.getMin().getY(), arena.getMin().getZ()))
+                    .to(BlockVector3.at(max.getX(), arena.getMin().getY(), arena.getMin().getZ()))
                     .build();
             Operations.complete(operation);
         }
-        
-        StandAloneArena copy = new StandAloneArena(arena.getName() + "#" + (arena.getCopies().size() + 1),
-                arena.getDisplayName(),
-                getNewLocation(arena.getRedSpawn(), xCurrent),
-                getNewLocation(arena.getRedSpawn(), xCurrent),
-                getNewLocation(arena.getMin(), xCurrent),
-                getNewLocation(arena.getMax(), xCurrent),
-                new HashSet<>(), arena.getDeathY(), arena.getLimit(), arena.isEnabled(), true);
+        Location redSpawn = getNewLocation(arena.getRedSpawn(), xCurrent);
+        Location blueSpawn = getNewLocation(arena.getBlueSpawn(), xCurrent);
+
+        StandAloneArena copy = new StandAloneArena(arena.getName() + "#" + (arena.getCopies().size() + 1), arena.getDisplayName(), redSpawn, blueSpawn, min, max, new HashSet<>(), arena.getDeathY(), arena.getLimit(), arena.isEnabled(), true);
 
         arena.getCopies().add(copy);
 

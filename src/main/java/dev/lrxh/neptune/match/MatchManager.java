@@ -2,12 +2,15 @@ package dev.lrxh.neptune.match;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.*;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -115,5 +118,19 @@ public class MatchManager {
         PlayerUtil.giveKit(player.getUniqueId(), match.getKit());
 
         Neptune.get().getLeaderboardManager().changes.add(playerUUID);
+    }
+
+    public void stopAllGames(){
+        for(Match match : matches){
+            for(Participant participant : match.getParticipants()){
+                Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+                if(player == null) continue;
+                player.kick();
+            }
+            if(match instanceof OneVersusOneMatch){
+                ((StandAloneArena) match.arena).restoreSnapshot();
+            }
+
+        }
     }
 }

@@ -13,6 +13,8 @@ import dev.lrxh.neptune.match.impl.ParticipantColor;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
+import java.util.HashSet;
+
 @CommandAlias("arena")
 @CommandPermission("neptune.admin.arena")
 @Description("Command to manage and create new Arena.")
@@ -54,6 +56,7 @@ public class ArenaCommand extends BaseCommand {
             arena = StandAloneArena.builder()
                     .name(arenaName)
                     .displayName(arenaName)
+                    .copies(new HashSet<>())
                     .enabled(true)
                     .build();
         } else {

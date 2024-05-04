@@ -28,11 +28,6 @@ public class MatchEndRunnable extends BukkitRunnable {
             return;
         }
         if (endTimer == 0) {
-            if (match.arena instanceof StandAloneArena) {
-                ((StandAloneArena) match.arena).setUsed(false);
-                ((StandAloneArena) match.arena).restoreSnapshot();
-                cancel();
-            }
             for (Participant participant : match.participants) {
                 if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
                 Profile profile = Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID());
@@ -52,6 +47,11 @@ public class MatchEndRunnable extends BukkitRunnable {
                 oneVersusOneMatch.sendEndMessage(winner, loser);
             }
 
+            if (match.arena instanceof StandAloneArena) {
+                ((StandAloneArena) match.arena).setUsed(false);
+                ((StandAloneArena) match.arena).restoreSnapshot();
+                cancel();
+            }
             match.removeEntities();
             plugin.getMatchManager().matches.remove(match);
         }

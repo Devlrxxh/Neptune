@@ -151,20 +151,6 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockExplosion(EntityExplodeEvent event) {
-        for (Block block : event.blockList()) {
-            block.setType(Material.AIR);
-        }
-    }
-
-    @EventHandler
-    public void onBlockExplosion(BlockExplodeEvent event) {
-        for (Block block : event.blockList()) {
-            block.setType(Material.AIR);
-        }
-    }
-
-    @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
@@ -211,7 +197,6 @@ public class MatchListener implements Listener {
         }
         if (match != null && match.getKit().isArenaBreak()) {
             event.setCancelled(false);
-            event.getBlock().setType(Material.AIR);
         }
     }
 

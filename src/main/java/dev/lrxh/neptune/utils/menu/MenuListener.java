@@ -48,19 +48,7 @@ public class MenuListener implements Listener {
                 }
 
                 button.clicked(player, event.getClick());
-
-                if (openMenu.updateOnClick()) {
-
-                    List<String> menusToOpen = new ArrayList<>();
-
-                    Menu.currentlyOpenedMenus.forEach((key, value) -> {
-                        if (value.getTitle().equals(openMenu.getTitle())) {
-                            menusToOpen.add(key);
-                        }
-                    });
-
-                    menusToOpen.forEach(key -> openMenu.openMenu(Objects.requireNonNull(Bukkit.getPlayer(key))));
-                }
+                Menu.updateMenu(openMenu);
 
                 button.clicked(player, event.getSlot(), event.getClick(), event.getHotbarButton());
                 if (Menu.currentlyOpenedMenus.containsKey(player.getName())) {

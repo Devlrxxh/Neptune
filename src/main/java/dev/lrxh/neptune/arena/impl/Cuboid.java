@@ -1,7 +1,11 @@
 package dev.lrxh.neptune.arena.impl;
 
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Cuboid {
     private final World world;
@@ -28,6 +32,46 @@ public class Cuboid {
         this.y2 = Math.max(y1, y2);
         this.z1 = Math.min(z1, z2);
         this.z2 = Math.max(z1, z2);
+    }
+
+    public List<Chunk> getChunks() {
+        List<Chunk> chunks = new ArrayList<>();
+        int x1 = getLowerX() & ~0xf;
+        int x2 = getUpperX() & ~0xf;
+        int z1 = getLowerZ() & ~0xf;
+        int z2 = getUpperZ() & ~0xf;
+
+        for (int x = x1; x <= x2; x += 16) {
+            for (int z = z1; z <= z2; z += 16) {
+                chunks.add(world.getChunkAt(x >> 4, z >> 4));
+            }
+        }
+
+        return chunks;
+    }
+
+    public int getLowerX() {
+        return x1;
+    }
+
+    public int getLowerY() {
+        return y1;
+    }
+
+    public int getLowerZ() {
+        return z1;
+    }
+
+    public int getUpperX() {
+        return x2;
+    }
+
+    public int getUpperY() {
+        return y2;
+    }
+
+    public int getUpperZ() {
+        return z2;
     }
 
     public Location getLowerCorner() {

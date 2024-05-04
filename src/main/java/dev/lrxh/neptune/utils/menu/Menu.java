@@ -14,8 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 @Setter
@@ -157,6 +156,20 @@ public abstract class Menu {
 
     public boolean updateOnClick() {
         return false;
+    }
+
+    public static void updateMenu(Menu menu){
+        if (menu.updateOnClick()) {
+            List<String> menusToOpen = new ArrayList<>();
+
+            currentlyOpenedMenus.forEach((key, value) -> {
+                if (value.getTitle().equalsIgnoreCase(menu.getTitle())) {
+                    menusToOpen.add(key);
+                }
+            });
+
+            menusToOpen.forEach(key -> menu.openMenu(Objects.requireNonNull(Bukkit.getPlayer(key))));
+        }
     }
 
     public abstract String getTitle(Player player);

@@ -65,10 +65,14 @@ public class ArenaManagmentButton extends Button {
                 break;
             case SHIFT_LEFT:
                 if (arena instanceof StandAloneArena) {
+                    StandAloneArena standAloneArena = (StandAloneArena) arena;
                     player.sendMessage(CC.color("&cDeleting all arenas copies..."));
-                    for (StandAloneArena copy : ((StandAloneArena) arena).getCopies()) {
-                        GenerationUtils.removeCopy(copy);
+                    if(!((StandAloneArena) arena).getCopies().isEmpty()){
+                        for (StandAloneArena copy : standAloneArena.getCopies()) {
+                            GenerationUtils.removeCopy(copy);
+                        }
                     }
+
                 }
                 plugin.getArenaManager().deleteArena(arena);
                 player.sendMessage(CC.color("&aDeleted arena!"));
