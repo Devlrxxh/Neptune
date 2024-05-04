@@ -23,54 +23,58 @@ import java.util.HashSet;
 
 @UtilityClass
 public class GenerationUtils {
-    public void generateCopies(StandAloneArena arena, int amount) {
+    public void generateCopies(StandAloneArena arena) {
         int xCurrent = 350 * (arena.getCopies().size() + 1);
 
-        for (int i = 0; i < amount; i++) {
-            if (Neptune.get().getArenaManager().getArenaByName(arena + "#" + amount) != null) {
-                continue;
-            }
-
-            BlockVector3 maxV = BlockVector3.at(arena.getMax().getX(), arena.getMax().getY(), arena.getMax().getZ());
-            BlockVector3 minV = BlockVector3.at(arena.getMin().getX(), arena.getMin().getY(), arena.getMin().getZ());
-
-            CuboidRegion region = new CuboidRegion(minV, maxV);
-
-            BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
-
-            ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
-                    new BukkitWorld(arena.getMin().getWorld()), region, clipboard, region.getMinimumPoint()
-            );
-            Operations.complete(forwardExtentCopy);
-
-            //Paste arena
-            try (EditSession editSession = WorldEdit.getInstance().newEditSession(new BukkitWorld(arena.getMin().getWorld()))) {
-                Operation operation = new ClipboardHolder(clipboard)
-                        .createPaste(editSession)
-                        .to(BlockVector3.at(arena.getMin().getX() + xCurrent, arena.getMin().getY(), arena.getMin().getZ()))
-                        .build();
-                Operations.complete(operation);
-            }
-
-            Location redSpawn = new Location(arena.getRedSpawn().getWorld(), arena.getRedSpawn().getX() + xCurrent, arena.getRedSpawn().getY(), arena.getRedSpawn().getZ(), arena.getRedSpawn().getYaw(), arena.getRedSpawn().getPitch());
-            Location blueSpawn = new Location(arena.getBlueSpawn().getWorld(), arena.getBlueSpawn().getX() + xCurrent, arena.getBlueSpawn().getY(), arena.getBlueSpawn().getZ(), arena.getBlueSpawn().getYaw(), arena.getBlueSpawn().getPitch());
-            Location min = new Location(arena.getMin().getWorld(), arena.getMin().getX() + xCurrent, arena.getMin().getY(), arena.getMin().getZ());
-            Location max = new Location(arena.getMax().getWorld(), arena.getMax().getX() + xCurrent, arena.getMax().getY(), arena.getMax().getZ());
-
-            StandAloneArena copy = new StandAloneArena(arena.getName() + "#" + (arena.getCopies().size() + 1), arena.getDisplayName(), redSpawn, blueSpawn, min, max, new HashSet<>(), arena.getDeathY(), arena.getLimit(), arena.isEnabled(), true);
-
-            arena.getCopies().add(copy);
-
-            for (Kit kit : Neptune.get().getKitManager().kits) {
-                if (kit.getArenas().contains(arena)) {
-                    kit.getArenas().add(copy);
-                }
-            }
-
-            Neptune.get().getArenaManager().arenas.add(copy);
-            Neptune.get().getArenaManager().saveArenas();
-            Neptune.get().getKitManager().saveKits();
+        if (Neptune.get().getArenaManager().getArenaByName(arena + "#" + (arena.getCopies().size() + 1)) != null) {
+            return;
         }
+
+        BlockVector3 maxV = BlockVector3.at(arena.getMax().getX(), arena.getMax().getY(), arena.getMax().getZ());
+        BlockVector3 minV = BlockVector3.at(arena.getMin().getX(), arena.getMin().getY(), arena.getMin().getZ());
+
+        CuboidRegion region = new CuboidRegion(minV, maxV);
+
+        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
+
+        ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
+                new BukkitWorld(arena.getMin().getWorld()), region, clipboard, region.getMinimumPoint()
+        );
+        Operations.complete(forwardExtentCopy);
+
+        //Paste arena
+        try (EditSession editSession = WorldEdit.getInstance().newEditSession(new BukkitWorld(arena.getMin().getWorld()))) {
+            Operation operation = new ClipboardHolder(clipboard)
+                    .createPaste(editSession)
+                    .to(BlockVector3.at(arena.getMin().getX() + xCurrent, arena.getMin().getY(), arena.getMin().getZ()))
+                    .build();
+            Operations.complete(operation);
+        }
+        
+        StandAloneArena copy = new StandAloneArena(arena.getName() + "#" + (arena.getCopies().size() + 1),
+                arena.getDisplayName(),
+                getNewLocation(arena.getRedSpawn(), xCurrent),
+                getNewLocation(arena.getRedSpawn(), xCurrent),
+                getNewLocation(arena.getMin(), xCurrent),
+                getNewLocation(arena.getMax(), xCurrent),
+                new HashSet<>(), arena.getDeathY(), arena.getLimit(), arena.isEnabled(), true);
+
+        arena.getCopies().add(copy);
+
+        for (Kit kit : Neptune.get().getKitManager().kits) {
+            if (kit.getArenas().contains(arena)) {
+                kit.getArenas().add(copy);
+            }
+        }
+
+        Neptune.get().getArenaManager().arenas.add(copy);
+        Neptune.get().getArenaManager().saveArenas();
+        Neptune.get().getKitManager().saveKits();
+
+    }
+
+    private Location getNewLocation(Location oldLoc, int xChange){
+        return new Location(oldLoc.getWorld(), oldLoc.getX() + xChange, oldLoc.getY(), oldLoc.getZ(), oldLoc.getYaw(), oldLoc.getPitch());
     }
 
     public void removeCopy(StandAloneArena copy) {

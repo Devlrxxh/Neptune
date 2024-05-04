@@ -24,6 +24,11 @@ public class ArenaCopyMenu extends Menu {
     }
 
     @Override
+    public boolean updateOnClick(){
+        return true;
+    }
+
+    @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = 0;
