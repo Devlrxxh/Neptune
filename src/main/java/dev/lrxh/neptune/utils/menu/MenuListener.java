@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class MenuListener implements Listener {
                 }
 
                 button.clicked(player, event.getClick());
-                if (openMenu.updateAfterClick && !openMenu.isPrevious()) {
+                if (openMenu.updateAfterClick) {
                     if (!openMenu.getInventory().getViewers().isEmpty()) {
                         List<HumanEntity> viewersCopy = new ArrayList<>(openMenu.getInventory().getViewers());
                         for (HumanEntity viewer : viewersCopy) {
@@ -62,12 +63,10 @@ public class MenuListener implements Listener {
                         boolean buttonUpdate = button.shouldUpdate(player, event.getClick());
 
                         if (buttonUpdate) {
-                            openMenu.setClosedByMenu(true);
                             newMenu.openMenu(player);
                         }
                     }
                 } else if (button.shouldUpdate(player, event.getClick())) {
-                    openMenu.setClosedByMenu(true);
                     openMenu.openMenu(player);
                 }
 
@@ -89,6 +88,12 @@ public class MenuListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
+        Menu.currentlyOpenedMenus.remove(player.getName());
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onQuit(PlayerQuitEvent event) {
+        Player player = event.getPlayer();
         Menu.currentlyOpenedMenus.remove(player.getName());
     }
 }

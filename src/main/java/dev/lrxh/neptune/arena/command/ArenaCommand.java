@@ -32,8 +32,8 @@ public class ArenaCommand extends BaseCommand {
         player.sendMessage(CC.color("&7&m----------------------------------"));
         player.sendMessage(CC.color("&9Arenas: "));
         player.sendMessage(" ");
-        for(Arena arena : plugin.getArenaManager().arenas){
-            if(arena instanceof StandAloneArena && ((StandAloneArena) arena).isDuplicate()) continue;
+        for (Arena arena : plugin.getArenaManager().arenas) {
+            if (arena instanceof StandAloneArena && ((StandAloneArena) arena).isDuplicate()) continue;
             player.sendMessage(CC.color("&7- &9" + arena.getName() + " &7| " + arena.getDisplayName() + " &7| " + (arena.isEnabled() ? "&aEnabled" : "&cDisabled")));
         }
         player.sendMessage(CC.color("&7&m----------------------------------"));

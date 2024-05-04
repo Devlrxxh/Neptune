@@ -17,9 +17,10 @@ public class ArenaManagmentMenu extends PaginatedMenu {
     }
 
     @Override
-    public boolean resetCursor() {
-        return false;
+    public int getMaxItemsPerPage(Player player) {
+        return 36;
     }
+
 
     @Override
     public Map<Integer, Button> getAllPagesButtons(Player player) {

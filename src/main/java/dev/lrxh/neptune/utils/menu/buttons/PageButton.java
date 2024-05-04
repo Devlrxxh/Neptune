@@ -30,7 +30,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(Material.REDSTONE)
+                return new ItemBuilder(Material.REDSTONE_TORCH)
                         .name(ChatColor.GRAY + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
@@ -48,7 +48,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(Material.REDSTONE)
+                return new ItemBuilder(Material.REDSTONE_TORCH)
                         .name(ChatColor.GRAY + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",

@@ -29,14 +29,9 @@ public abstract class Menu {
     protected Neptune plugin = Neptune.get();
     private Map<Integer, Button> buttons = new HashMap<>();
     private boolean autoUpdate = false;
-    private boolean closedByMenu = false;
     private ItemStack fillerType;
     private int size = 9;
-    private Filters filter;
     private boolean fixedPositions = true;
-    private boolean resetCursor;
-    private boolean previous = true;
-    private String title;
 
     {
         fillerType = new ItemBuilder(XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseMaterial()).name(MenusLocale.FILTER_NAME.getString()).durability(MenusLocale.FILTER_DURABILITY.getInt()).amount(1).build();
@@ -96,58 +91,32 @@ public abstract class Menu {
     }
 
     public void openMenu(final Player player) {
+        currentlyOpenedMenus.remove(player.getName());
+
         this.buttons = this.getButtons(player);
 
-        Menu previousMenu = Menu.currentlyOpenedMenus.get(player.getName());
-
-        title = getTitle();
-        previous = title != null && title.equals(Menu.currentlyOpenedMenus.get(player.getName()).getTitle());
-
-        Inventory inventory = null;
         int size = this.getSize() == -1 ? this.size(this.buttons) : this.getSize();
-        if (getFilter() != null) {
-            this.filter = getFilter();
-        }
-        this.fixedPositions = getFixedPositions();
-        this.resetCursor = resetCursor();
 
-        boolean update = false;
         String title = CC.color(this.getTitle(player));
 
         if (title.length() > 32) {
             title = title.substring(0, 32);
         }
 
-        if (previousMenu == null) {
-            player.closeInventory();
-        } else {
-            if (resetCursor) {
-                previousMenu.setClosedByMenu(true);
-                player.closeInventory();
-            } else {
-                previousMenu.setClosedByMenu(true);
-                inventory = player.getOpenInventory().getTopInventory();
-                if (player.getOpenInventory() != null) {
-                    player.getOpenInventory().setTitle(title);
-                }
-                update = true;
-                player.updateInventory();
-            }
-        }
+        Inventory inventory = Bukkit.createInventory(player, size, Component.text(title));
 
-        if (inventory == null) {
-            inventory = Bukkit.createInventory(player, size, Component.text(title));
-        }
+        this.fixedPositions = getFixedPositions();
+
+        player.updateInventory();
+
 
         inventory.setContents(new ItemStack[inventory.getSize()]);
-
-        currentlyOpenedMenus.put(player.getName(), this);
 
         if (fixedPositions) {
             Map<Integer, Button> modifiedButtons = new HashMap<>();
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
                 int slot = buttonEntry.getKey();
-                if (filter != Filters.NONE && (slot % 9 == 0 || slot % 9 == 8)) {
+                if (getFilter() != Filters.NONE && (slot % 9 == 0 || slot % 9 == 8)) {
                     slot += 2;
                 }
                 modifiedButtons.put(slot, buttonEntry.getValue());
@@ -163,7 +132,7 @@ public abstract class Menu {
 
         this.inventory = inventory;
 
-        switch (filter) {
+        switch (getFilter()) {
             case BORDER:
                 fillBorder(inventory);
                 break;
@@ -172,15 +141,10 @@ public abstract class Menu {
                 break;
         }
 
-        if (update) {
-            player.updateInventory();
-        } else {
-            player.openInventory(inventory);
-        }
+        player.openInventory(inventory);
+        player.updateInventory();
 
-        this.onOpen(player);
-        this.setClosedByMenu(false);
-
+        currentlyOpenedMenus.put(player.getName(), this);
     }
 
     public int size(Map<Integer, Button> buttons) {
@@ -207,22 +171,7 @@ public abstract class Menu {
         return true;
     }
 
-    public boolean resetCursor() {
-        return true;
-    }
-
-    public int getSlot(int x, int y) {
-        return ((9 * y) + x);
-    }
-
     public abstract String getTitle(Player player);
 
     public abstract Map<Integer, Button> getButtons(Player player);
-
-    public void onOpen(Player player) {
-    }
-
-    public void onClose(Player player) {
-    }
-
 }

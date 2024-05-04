@@ -16,11 +16,6 @@ public class KitManagementMenu extends Menu {
     private Kit kit;
 
     @Override
-    public boolean resetCursor() {
-        return false;
-    }
-
-    @Override
     public Filters getFilter() {
         return Filters.FILL;
     }

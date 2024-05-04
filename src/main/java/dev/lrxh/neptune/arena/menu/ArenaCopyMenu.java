@@ -14,18 +14,13 @@ public class ArenaCopyMenu extends Menu {
     private final StandAloneArena arena;
 
     @Override
-    public boolean resetCursor() {
-        return false;
-    }
-
-    @Override
     public String getTitle(Player player) {
         return "&7" + arena.getName() + " Copy Management";
     }
 
     @Override
     public int getSize() {
-        return 16;
+        return 9;
     }
 
     @Override
@@ -38,7 +33,7 @@ public class ArenaCopyMenu extends Menu {
                 buttons.put(i++, new ArenaCopyButton(arena, i));
             }
         }
-        if (i <= 15) {
+        if (i <= 8) {
             buttons.put(i, new ArenaCopyCreateButton(arena));
         }
         return buttons;
