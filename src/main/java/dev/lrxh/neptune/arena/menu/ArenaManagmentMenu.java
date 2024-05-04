@@ -21,6 +21,11 @@ public class ArenaManagmentMenu extends PaginatedMenu {
         return 36;
     }
 
+    @Override
+    public boolean updateOnClick(){
+        return true;
+    }
+
 
     @Override
     public Map<Integer, Button> getAllPagesButtons(Player player) {

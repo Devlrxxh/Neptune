@@ -21,6 +21,11 @@ public class QueueMenu extends Menu {
     }
 
     @Override
+    public boolean updateOnClick(){
+        return true;
+    }
+
+    @Override
     public int getSize() {
         return MenusLocale.QUEUE_SELECT_SIZE.getInt();
     }

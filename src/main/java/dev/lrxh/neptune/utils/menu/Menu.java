@@ -10,11 +10,9 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,14 +22,13 @@ import java.util.Map;
 public abstract class Menu {
 
     public static Map<String, Menu> currentlyOpenedMenus = new HashMap<>();
-    public boolean updateAfterClick = true;
-    public Inventory inventory;
+    public Inventory inventoryBukkit = null;
     protected Neptune plugin = Neptune.get();
     private Map<Integer, Button> buttons = new HashMap<>();
-    private boolean autoUpdate = false;
     private ItemStack fillerType;
     private int size = 9;
     private boolean fixedPositions = true;
+    private String title;
 
     {
         fillerType = new ItemBuilder(XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseMaterial()).name(MenusLocale.FILTER_NAME.getString()).durability(MenusLocale.FILTER_DURABILITY.getInt()).amount(1).build();
@@ -73,21 +70,8 @@ public abstract class Menu {
         }
     }
 
-
     private ItemStack createItemStack(Player player, Button button) {
-        ItemStack item = button.getButtonItem(player);
-
-        if (item.getType() != Material.LEGACY_SKULL) {
-            ItemMeta meta = item.getItemMeta();
-
-            if (meta != null && meta.hasDisplayName()) {
-                meta.setDisplayName(meta.getDisplayName() + "§b§c§d§e");
-            }
-
-            item.setItemMeta(meta);
-        }
-
-        return item;
+        return button.getButtonItem(player);
     }
 
     public void openMenu(final Player player) {
@@ -97,13 +81,13 @@ public abstract class Menu {
 
         int size = this.getSize() == -1 ? this.size(this.buttons) : this.getSize();
 
-        String title = CC.color(this.getTitle(player));
+        title = CC.color(this.getTitle(player));
 
         if (title.length() > 32) {
             title = title.substring(0, 32);
         }
 
-        Inventory inventory = Bukkit.createInventory(player, size, Component.text(title));
+        Inventory inventory = Bukkit.createInventory(null, size, Component.text(title));
 
         this.fixedPositions = getFixedPositions();
 
@@ -130,7 +114,7 @@ public abstract class Menu {
             this.buttons = getButtons();
         }
 
-        this.inventory = inventory;
+        this.inventoryBukkit = inventory;
 
         switch (getFilter()) {
             case BORDER:
@@ -169,6 +153,10 @@ public abstract class Menu {
 
     public boolean getFixedPositions() {
         return true;
+    }
+
+    public boolean updateOnClick() {
+        return false;
     }
 
     public abstract String getTitle(Player player);
