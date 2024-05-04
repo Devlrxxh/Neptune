@@ -110,14 +110,13 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadExtensions() {
-        Plugin placeholderAPI = getServer().getPluginManager().getPlugin("PlaceholderAPI");
-        if (placeholderAPI != null && placeholderAPI.isEnabled()) {
-            placeholder = true;
-        }
-        Plugin fastAsyncWorldEdit = getServer().getPluginManager().getPlugin("FastAsyncWorldEdit");
-        if (fastAsyncWorldEdit != null && fastAsyncWorldEdit.isEnabled()) {
-            fawe = true;
-        }
+        placeholder = loadExtension("PlaceholderAPI");
+        fawe = loadExtension("FastAsyncWorldEdit");
+    }
+
+    private boolean loadExtension(String pluginName) {
+        Plugin placeholderAPI = getServer().getPluginManager().getPlugin(pluginName);
+        return placeholderAPI != null && placeholderAPI.isEnabled();
     }
 
     private void loadWorlds() {
