@@ -24,14 +24,19 @@ public class ArenaCopyButton extends Button {
                 .name("&7Copy: " + copyCount)
                 .lore(Arrays.asList(
                         " ",
-                        "&c&lCLICK TO DELETE"))
+                        "&b&lRIGHT | TELEPORT",
+                        "&c&lLEFT CLICK | DELETE"))
                 .build();
     }
 
     @Override
     public void clicked(Player player, ClickType clickType) {
-        player.sendMessage(CC.color("&cDeleting copy..."));
-        GenerationUtils.removeCopy(arena);
-        player.sendMessage(CC.color("&aSuccessfully deleted copy!"));
+        if (clickType.equals(ClickType.RIGHT)) {
+            player.teleport(arena.getRedSpawn());
+        } else if (clickType.equals(ClickType.LEFT)) {
+            player.sendMessage(CC.color("&cDeleting copy..."));
+            GenerationUtils.removeCopy(arena);
+            player.sendMessage(CC.color("&aSuccessfully deleted copy!"));
+        }
     }
 }

@@ -29,8 +29,9 @@ public class ArenaManagmentButton extends Button {
                     .name(arena.getDisplayName() + " &7( " + arena.getName() + "&7)")
                     .lore(Arrays.asList(
                             " ",
-                            "&aRIGHT CLICK | TOGGLE ARENA",
-                            "&c&lLEFT | DELETE ARENA"))
+                            "&a&lRIGHT CLICK | TOGGLE ARENA",
+                            "&b&lRIGHT | TELEPORT",
+                            "&c&lLEFT | DELETE"))
                     .build();
         } else {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
@@ -41,9 +42,10 @@ public class ArenaManagmentButton extends Button {
                             " ",
                             "&fCopies: &9" + standAloneArena.getCopies().size(),
                             " ",
-                            "&e&lSHIFT_LEFT | COPIES MENU",
-                            "&a&lRIGHT CLICK | TOGGLE ARENA",
-                            "&c&lLEFT | DELETE ARENA"))
+                            "&e&lLEFT | COPIES MENU",
+                            "&b&lRIGHT | TELEPORT",
+                            "&a&lSHIFT RIGHT | TOGGLE ARENA",
+                            "&c&lSHIFT LEFT | DELETE ARENA"))
                     .build();
         }
 
@@ -51,18 +53,17 @@ public class ArenaManagmentButton extends Button {
 
     @Override
     public void clicked(Player player, ClickType clickType) {
-        player.sendMessage(clickType.toString());
         switch (clickType) {
-            case RIGHT:
+            case SHIFT_RIGHT:
                 arena.setEnabled(!arena.isEnabled());
                 menu.openMenu(player);
                 break;
-            case SHIFT_LEFT:
+            case LEFT:
                 if (arena instanceof StandAloneArena) {
                     new ArenaCopyMenu((StandAloneArena) arena).openMenu(player);
                 }
                 break;
-            case LEFT:
+            case SHIFT_LEFT:
                 if (arena instanceof StandAloneArena) {
                     player.sendMessage(CC.color("&cDeleting all arenas copies..."));
                     for (StandAloneArena copy : ((StandAloneArena) arena).getCopies()) {
@@ -74,6 +75,10 @@ public class ArenaManagmentButton extends Button {
                 }
                 menu.openMenu(player);
                 player.sendMessage(CC.color("&aDeleted arena!"));
+                break;
+            case RIGHT:
+                player.teleport(arena.getRedSpawn());
+                break;
         }
     }
 }
