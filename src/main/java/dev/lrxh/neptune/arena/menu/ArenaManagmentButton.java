@@ -29,8 +29,8 @@ public class ArenaManagmentButton extends Button {
                     .name(arena.getDisplayName() + " &7( " + arena.getName() + "&7)")
                     .lore(Arrays.asList(
                             " ",
-                            "&a&lRIGHT CLICK | TOGGLE ARENA",
                             "&b&lRIGHT | TELEPORT",
+                            "&a&lSHIFT RIGHT | TOGGLE ARENA",
                             "&c&lSHIFT LEFT | DELETE ARENA"))
                     .build();
         } else {
