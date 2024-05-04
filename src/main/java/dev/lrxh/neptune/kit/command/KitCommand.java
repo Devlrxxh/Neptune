@@ -119,7 +119,7 @@ public class KitCommand extends BaseCommand {
         plugin.getKitManager().saveKits();
 
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
-        player.sendMessage(CC.color("&9IMPORTANT &8- &7Make sure to run /kit updateDB " + kitName));
+        player.sendMessage(CC.color("&4IMPORTANT &8- &cMake sure to run /kit updateDB " + kitName));
     }
 
     @Subcommand("updateDB")

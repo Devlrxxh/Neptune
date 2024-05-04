@@ -51,17 +51,6 @@ public class MatchManager {
         }
 
         matches.add(match);
-        //Setup participants
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) {
-                continue;
-            }
-            setupPlayer(participant.getPlayerUUID(), match);
-        }
-
-        //Apply kit rules for players
-        match.checkRules();
 
         if (!versus) {
             TeamFightMatch teamFightMatch = (TeamFightMatch) match;
@@ -101,6 +90,18 @@ public class MatchManager {
             playerB.teleport(arena.getBlueSpawn());
         }
 
+        //Setup participants
+        for (Participant participant : participants) {
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player == null) {
+                continue;
+            }
+            setupPlayer(participant.getPlayerUUID(), match);
+        }
+
+        //Apply kit rules for players
+        match.checkRules();
+
         //Start match start runnable
         Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
     }
@@ -126,7 +127,9 @@ public class MatchManager {
                 PlayerUtil.kick(player.getUniqueId(), "&cServer is restarting...");
             }
             if (match instanceof OneVersusOneMatch) {
-                ((StandAloneArena) match.arena).restoreSnapshot();
+                if(match.arena instanceof StandAloneArena){
+                    ((StandAloneArena) match.arena).restoreSnapshot();
+                }
             }
 
         }
