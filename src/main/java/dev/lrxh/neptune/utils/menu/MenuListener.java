@@ -50,11 +50,9 @@ public class MenuListener implements Listener {
                 button.clicked(player, event.getClick());
 
                 if (openMenu.updateOnClick()) {
-                    System.out.println(Menu.currentlyOpenedMenus);
 
                     List<String> menusToOpen = new ArrayList<>();
 
-                    // Simplify loop using Java 8 Stream
                     Menu.currentlyOpenedMenus.forEach((key, value) -> {
                         if (value.getTitle().equals(openMenu.getTitle())) {
                             menusToOpen.add(key);
