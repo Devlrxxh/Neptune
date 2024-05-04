@@ -22,7 +22,7 @@ public class ArenaManagmentMenu extends PaginatedMenu {
     }
 
     @Override
-    public boolean updateOnClick(){
+    public boolean updateOnClick() {
         return true;
     }
 

@@ -7,7 +7,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Menu;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

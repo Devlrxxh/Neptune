@@ -2,16 +2,23 @@ package dev.lrxh.neptune.kit.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import com.mongodb.client.model.Filters;
+import com.mongodb.client.model.ReplaceOptions;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.Console;
+import dev.lrxh.neptune.utils.PlayerUtil;
+import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Objects;
 
 @CommandAlias("kit")
 @CommandPermission("neptune.admin.kit")
@@ -110,7 +117,40 @@ public class KitCommand extends BaseCommand {
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
 
         plugin.getKitManager().saveKits();
+
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
+        player.sendMessage(CC.color("&9IMPORTANT &8- &7Make sure to run /kit updateDB " + kitName));
+    }
+
+    @Subcommand("updateDB")
+    @Syntax("<kit>")
+    @CommandCompletion("@kits")
+    public void updateDB(Player player, String kitName) {
+        if (player == null) return;
+        if (!checkKit(kitName)) {
+            player.sendMessage(CC.error("Kit doesn't exist!"));
+            return;
+        }
+        int i = 0;
+        Kit kit = plugin.getKitManager().getKitByName(kitName);
+
+        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
+            PlayerUtil.kick(onlinePlayer.getUniqueId(), "&cUpdating player data...");
+        }
+
+        for (Document document : plugin.getMongoManager().collection.find()) {
+            Document kitStatistics = (Document) document.get("kitData");
+            Document kitDocument = (Document) kitStatistics.get(kit.getName());
+
+            if (!Objects.equals(kitDocument.getString("kit"), "")) {
+                kitDocument.put("kit", "");
+                i++;
+            }
+
+            kitStatistics.put("kitData", kitDocument);
+            plugin.getMongoManager().collection.replaceOne(Filters.eq("uuid", document.get("uuid")), document, new ReplaceOptions().upsert(true));
+        }
+        Console.sendMessage("&aUpdated kit for " + i + " players!");
     }
 
     @Subcommand("seticon")

@@ -47,6 +47,13 @@ public class PlayerUtil {
         }
     }
 
+    public void kick(UUID playerUUID, String message) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+
+        player.kick(Component.text(CC.color(message)));
+    }
+
     public void giveKit(UUID playerUUID, Kit kit) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;

@@ -7,7 +7,7 @@ import org.bukkit.Bukkit;
 public class Console {
 
     public void sendMessage(String message) {
-        Bukkit.getServer().getConsoleSender().sendMessage(message);
+        Bukkit.getServer().getConsoleSender().sendMessage(CC.color(message));
     }
 
     public void error(String message) {

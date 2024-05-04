@@ -7,7 +7,6 @@ import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
-import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.LocationUtil;
 import org.bukkit.Location;
@@ -94,7 +93,7 @@ public class ArenaManager implements IManager {
 
     public Arena getArenaByName(String arenaName) {
         for (Arena arena : arenas) {
-            if (arena.getName().equals(arenaName)) {
+            if (arena.getName().equalsIgnoreCase(arenaName)) {
                 return arena;
             }
         }
@@ -111,7 +110,7 @@ public class ArenaManager implements IManager {
         return null;
     }
 
-    public void deleteArena(Arena arena){
+    public void deleteArena(Arena arena) {
         plugin.getArenaManager().arenas.remove(arena);
         plugin.getKitManager().removeArenasFromKits(arena);
         plugin.getArenaManager().saveArenas();

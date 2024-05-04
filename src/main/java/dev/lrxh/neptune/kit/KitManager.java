@@ -69,7 +69,7 @@ public class KitManager implements IManager {
 
     public Kit getKitByName(String kitName) {
         for (Kit kit : kits) {
-            if (kit.getName().equals(kitName)) {
+            if (kit.getName().equalsIgnoreCase(kitName)) {
                 return kit;
             }
         }

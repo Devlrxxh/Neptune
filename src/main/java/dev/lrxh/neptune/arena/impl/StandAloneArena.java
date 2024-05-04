@@ -85,8 +85,8 @@ public class StandAloneArena extends Arena {
                             block.setBlockData(blockData, false);
                         }
                     }
-                    for(Entity entity : chunk.getEntities()){
-                        if(entity instanceof HumanEntity) continue;
+                    for (Entity entity : chunk.getEntities()) {
+                        if (entity instanceof HumanEntity) continue;
                         entity.remove();
                     }
                 }

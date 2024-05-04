@@ -72,7 +72,7 @@ public class GenerationUtils {
 
     }
 
-    private Location getNewLocation(Location oldLoc, int xChange){
+    private Location getNewLocation(Location oldLoc, int xChange) {
         return new Location(oldLoc.getWorld(), oldLoc.getX() + xChange, oldLoc.getY(), oldLoc.getZ(), oldLoc.getYaw(), oldLoc.getPitch());
     }
 
