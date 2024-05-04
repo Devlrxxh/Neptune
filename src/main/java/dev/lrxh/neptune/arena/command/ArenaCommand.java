@@ -8,9 +8,9 @@ import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.EdgeType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.arena.menu.ArenaManagmentMenu;
 import dev.lrxh.neptune.match.impl.ParticipantColor;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.GenerationUtils;
 import org.bukkit.entity.Player;
 
 @CommandAlias("arena")
@@ -128,36 +128,17 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
-    @Subcommand("generate")
-    @Syntax("<arena> <amount>")
-    public void generate(Player player, String arenaName, int amount) {
+    @Subcommand("manage")
+    @Syntax("<arena>")
+    public void manage(Player player) {
         if (player == null) return;
 
-        if(!plugin.isFawe()){
-            player.sendMessage(CC.error("FastAsyncWorldEdit isn't installed!"));
+        if (plugin.getArenaManager().arenas.isEmpty()) {
+            player.sendMessage(CC.error("No arenas found!"));
             return;
         }
 
-        if (!checkArena(arenaName)) {
-            player.sendMessage(CC.error("Arena doesn't exist!"));
-            return;
-        }
-
-        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena)) {
-            player.sendMessage(CC.error("Arena isn't standalone!"));
-            return;
-        }
-        StandAloneArena arena = (StandAloneArena) plugin.getArenaManager().getArenaByName(arenaName);
-
-        if (arena.getMin() == null && arena.getMax() == null) {
-            player.sendMessage(CC.error("Arena isn't setup completely!"));
-            return;
-        }
-
-        player.sendMessage(CC.color("&aGenerating " + amount + " arena copy(s)"));
-
-        GenerationUtils.generateCopies(arena, amount);
-        player.sendMessage(CC.color("&aGenerated " + amount + " arena copy(s)"));
+        new ArenaManagmentMenu().openMenu(player);
     }
 
     @Subcommand("deathY")

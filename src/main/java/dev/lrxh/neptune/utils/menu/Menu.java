@@ -18,26 +18,28 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Setter
 public abstract class Menu {
 
     public static Map<String, Menu> currentlyOpenedMenus = new HashMap<>();
-
+    public boolean updateAfterClick = true;
+    public Inventory inventory;
     protected Neptune plugin = Neptune.get();
     private Map<Integer, Button> buttons = new HashMap<>();
     private boolean autoUpdate = false;
-    private boolean updateAfterClick = true;
     private boolean closedByMenu = false;
     private ItemStack fillerType;
     private int size = 9;
     private Filters filter;
     private boolean fixedPositions = true;
     private boolean resetCursor;
+    private boolean previous = true;
+    private String title;
 
     {
-
         fillerType = new ItemBuilder(XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseMaterial()).name(MenusLocale.FILTER_NAME.getString()).durability(MenusLocale.FILTER_DURABILITY.getInt()).amount(1).build();
     }
 
@@ -98,6 +100,10 @@ public abstract class Menu {
         this.buttons = this.getButtons(player);
 
         Menu previousMenu = Menu.currentlyOpenedMenus.get(player.getName());
+
+        title = getTitle();
+        previous = title != null && title.equals(Menu.currentlyOpenedMenus.get(player.getName()).getTitle());
+
         Inventory inventory = null;
         int size = this.getSize() == -1 ? this.size(this.buttons) : this.getSize();
         if (getFilter() != null) {
@@ -155,6 +161,8 @@ public abstract class Menu {
             }
             this.buttons = getButtons();
         }
+
+        this.inventory = inventory;
 
         switch (filter) {
             case BORDER:

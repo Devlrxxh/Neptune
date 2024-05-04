@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.arena;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
@@ -15,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class ArenaManager implements IManager {
-    public final HashSet<Arena> arenas = new HashSet<>();
+    public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
 
     public void loadArenas() {
         FileConfiguration config = plugin.getConfigManager().getArenasConfig().getConfiguration();
@@ -33,17 +34,12 @@ public class ArenaManager implements IManager {
                     Location edge1 = LocationUtil.deserialize(config.getString(path + "min"));
                     Location edge2 = LocationUtil.deserialize(config.getString(path + "max"));
 
-                    HashSet<Arena> copies = new HashSet<>();
-                    if (!config.getStringList(path + "copies").isEmpty()) {
-                        for (String copyName : config.getStringList(path + "copies")) {
-                            copies.add(plugin.getArenaManager().getArenaByName(copyName));
-                        }
-                    }
 
                     double deathZone = config.getDouble(path + "deathZone");
                     double limit = config.getDouble(path + "limit");
+                    boolean duplicate = config.getBoolean(path + "duplicate", false);
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, copies, deathZone, limit, enabled);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, null, deathZone, limit, enabled, duplicate);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
@@ -51,9 +47,23 @@ public class ArenaManager implements IManager {
                 }
             }
         }
+
+        for (Arena arena : arenas) {
+            if (arena instanceof StandAloneArena) {
+                String path = "arenas." + arena.getName() + ".";
+                LinkedHashSet<StandAloneArena> copies = new LinkedHashSet<>();
+                if (!config.getStringList(path + "copies").isEmpty()) {
+                    for (String copyName : config.getStringList(path + "copies")) {
+                        copies.add((StandAloneArena) getArenaByName(copyName));
+                    }
+                }
+                ((StandAloneArena) arena).setCopies(copies);
+            }
+        }
     }
 
     public void saveArenas() {
+        getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         arenas.forEach(arena -> {
             String path = "arenas." + arena.getName() + ".";
             List<Value> values = new ArrayList<>(Arrays.asList(
@@ -70,7 +80,8 @@ public class ArenaManager implements IManager {
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
                         new Value("copies", ((StandAloneArena) arena).getCopiesAsString()),
                         new Value("deathZone", ((StandAloneArena) arena).getDeathY()),
-                        new Value("limit", ((StandAloneArena) arena).getLimit())
+                        new Value("limit", ((StandAloneArena) arena).getLimit()),
+                        new Value("duplicate", ((StandAloneArena) arena).isDuplicate())
                 ));
             } else {
                 values.add(new Value("type", "SHARED"));
@@ -84,6 +95,16 @@ public class ArenaManager implements IManager {
         for (Arena arena : arenas) {
             if (arena.getName().equals(arenaName)) {
                 return arena;
+            }
+        }
+        return null;
+    }
+
+    public StandAloneArena getOriginalArena(StandAloneArena copy) {
+        for (Arena arena : Neptune.get().getArenaManager().arenas) {
+            if (!(arena instanceof StandAloneArena)) continue;
+            if (((StandAloneArena) arena).getCopies().contains(copy)) {
+                return (StandAloneArena) arena;
             }
         }
         return null;

@@ -23,9 +23,10 @@ public class StandAloneArena extends Arena {
     private double deathY;
     private double limit;
     private boolean used;
-    private HashSet<Arena> copies;
+    private HashSet<StandAloneArena> copies;
+    private boolean duplicate;
 
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, HashSet<Arena> copies, double deathY, double limit, boolean enabled) {
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, HashSet<StandAloneArena> copies, double deathY, double limit, boolean enabled, boolean duplicate) {
         super(name, displayName, redSpawn, blueSpawn, enabled);
         this.min = min;
         this.max = max;
@@ -33,6 +34,7 @@ public class StandAloneArena extends Arena {
         this.limit = limit;
         this.deathY = deathY;
         this.used = false;
+        this.duplicate = duplicate;
 
         takeSnapshot();
     }

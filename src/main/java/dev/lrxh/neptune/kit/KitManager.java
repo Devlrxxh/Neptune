@@ -45,6 +45,7 @@ public class KitManager implements IManager {
     }
 
     public void saveKits() {
+        getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         kits.forEach(kit -> {
             String path = "kits." + kit.getName() + ".";
             List<Value> values = Arrays.asList(
@@ -73,6 +74,12 @@ public class KitManager implements IManager {
             }
         }
         return null;
+    }
+
+    public void removeArenasFromKits(Arena arena) {
+        for (Kit kit : kits) {
+            kit.getArenas().remove(arena);
+        }
     }
 
     @Override

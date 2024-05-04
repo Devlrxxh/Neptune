@@ -2,6 +2,7 @@ package dev.lrxh.neptune.utils.menu;
 
 import dev.lrxh.neptune.Neptune;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,6 +10,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MenuListener implements Listener {
 
@@ -41,6 +45,15 @@ public class MenuListener implements Listener {
                 }
 
                 button.clicked(player, event.getClick());
+                if (openMenu.updateAfterClick && !openMenu.isPrevious()) {
+                    if (!openMenu.getInventory().getViewers().isEmpty()) {
+                        List<HumanEntity> viewersCopy = new ArrayList<>(openMenu.getInventory().getViewers());
+                        for (HumanEntity viewer : viewersCopy) {
+                            openMenu.openMenu((Player) viewer);
+                        }
+                    }
+
+                }
                 button.clicked(player, event.getSlot(), event.getClick(), event.getHotbarButton());
                 if (Menu.currentlyOpenedMenus.containsKey(player.getName())) {
                     Menu newMenu = Menu.currentlyOpenedMenus.get(player.getName());
@@ -76,11 +89,6 @@ public class MenuListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        Menu openMenu = Menu.currentlyOpenedMenus.get(player.getName());
-
-        if (openMenu != null) {
-            Menu.currentlyOpenedMenus.remove(player.getName());
-        }
+        Menu.currentlyOpenedMenus.remove(player.getName());
     }
-
 }
