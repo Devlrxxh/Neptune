@@ -6,6 +6,8 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
@@ -17,6 +19,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
@@ -25,6 +28,7 @@ import java.util.UUID;
 @Getter
 @Setter
 public abstract class Match {
+    public final List<UUID> spectators = new ArrayList<>();
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
@@ -60,6 +64,50 @@ public abstract class Match {
     public void sendMessage(MessagesLocale message, Replacement... replacements) {
         for (Participant participant : participants) {
             message.send(participant.getPlayerUUID(), replacements);
+        }
+    }
+
+    public void addSpectator(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+
+        profile.setState(ProfileState.IN_SPECTATOR);
+        profile.setMatch(this);
+        spectators.add(playerUUID);
+
+        for (Participant participant : participants) {
+            Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (participiantPlayer == null) return;
+            player.showPlayer(Neptune.get(), participiantPlayer);
+        }
+        broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
+    }
+
+
+    public void removeSpectator(UUID playerUUID){
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+
+        if (profile.getMatch() == null) return;
+        PlayerUtil.reset(playerUUID);
+        PlayerUtil.teleportToSpawn(playerUUID);
+        profile.setState(ProfileState.LOBBY);
+        profile.setMatch(null);
+
+        spectators.remove(playerUUID);
+
+        broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
+    }
+
+    public void broadcast(MessagesLocale messagesLocale, Replacement... replacements){
+        for (Participant participant : participants) {
+            messagesLocale.send(participant.getPlayerUUID(), replacements);
+        }
+
+        for (UUID spectator : spectators) {
+            messagesLocale.send(spectator, replacements);
         }
     }
 

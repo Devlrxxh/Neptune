@@ -4,6 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.PaginatedMenu;
+import dev.lrxh.neptune.utils.menu.filters.Filters;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -25,12 +26,16 @@ public class ArenaManagmentMenu extends PaginatedMenu {
     public boolean updateOnClick() {
         return true;
     }
-
+//
+//    @Override
+//    public Filters getFilter() {
+//        return Filters.FILL;
+//    }
 
     @Override
     public Map<Integer, Button> getAllPagesButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = 0;
+        int i = 1;
         for (Arena arena : Neptune.get().getArenaManager().arenas) {
             if (arena.getName().contains("#")) continue;
             buttons.put(i++, new ArenaManagmentButton(arena, this));

@@ -43,6 +43,9 @@ public class ScoreboardAdapter implements AssembleAdapter {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
             }
         }
+        if (state.equals(ProfileState.IN_SPECTATOR)) {
+            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
+        }
         return null;
     }
 

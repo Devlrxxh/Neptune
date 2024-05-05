@@ -15,6 +15,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
+import java.util.HashSet;
 
 @AllArgsConstructor
 public class ArenaManagmentButton extends Button {
@@ -68,7 +69,8 @@ public class ArenaManagmentButton extends Button {
                     StandAloneArena standAloneArena = (StandAloneArena) arena;
                     player.sendMessage(CC.color("&cDeleting all arenas copies..."));
                     if (!((StandAloneArena) arena).getCopies().isEmpty()) {
-                        for (StandAloneArena copy : standAloneArena.getCopies()) {
+                        HashSet<StandAloneArena> copies = new HashSet<>(standAloneArena.getCopies());
+                        for (StandAloneArena copy : copies) {
                             GenerationUtils.removeCopy(copy);
                         }
                     }

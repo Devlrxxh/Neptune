@@ -127,11 +127,10 @@ public class MatchManager {
                 PlayerUtil.kick(player.getUniqueId(), "&cServer is restarting...");
             }
             if (match instanceof OneVersusOneMatch) {
-                if(match.arena instanceof StandAloneArena){
+                if (match.arena instanceof StandAloneArena) {
                     ((StandAloneArena) match.arena).restoreSnapshot();
                 }
             }
-
         }
     }
 }

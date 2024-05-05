@@ -169,6 +169,24 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
+    @Subcommand("displayName")
+    @Syntax("<arena>")
+    @CommandCompletion("@arenas")
+    public void displayName(Player player, String arenaName, String displayName) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+
+        arena.setDisplayName(displayName);
+
+        player.sendMessage(CC.color("&aSuccessfully set Display Name arena " + arena.getDisplayName()));
+
+        plugin.getArenaManager().saveArenas();
+    }
+
     @Subcommand("limit")
     @Syntax("<arena>")
     @CommandCompletion("@arenas")

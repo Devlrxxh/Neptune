@@ -5,4 +5,5 @@ public enum ProfileState {
     IN_QUEUE,
     IN_GAME,
     IN_KIT_EDITOR,
+    IN_SPECTATOR
 }

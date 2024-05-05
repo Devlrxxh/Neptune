@@ -5,6 +5,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
+import dev.lrxh.neptune.utils.menu.buttons.PageButton;
 import dev.lrxh.neptune.utils.menu.filters.Filters;
 import lombok.Getter;
 import lombok.Setter;
@@ -77,8 +78,9 @@ public abstract class Menu {
         int size = inventory.getSize();
 
         for (int pos = 0; pos < size; pos++) {
-            if (inventory.getItem(pos) == null)
+            if (inventory.getItem(pos) == null) {
                 inventory.setItem(pos, fillerType);
+            }
         }
     }
 
@@ -103,16 +105,22 @@ public abstract class Menu {
 
         this.fixedPositions = getFixedPositions();
 
-        player.updateInventory();
-
-
         inventory.setContents(new ItemStack[inventory.getSize()]);
+
+        switch (getFilter()) {
+            case BORDER:
+                fillBorder(inventory);
+                break;
+            case FILL:
+                fill(inventory);
+                break;
+        }
 
         if (fixedPositions) {
             Map<Integer, Button> modifiedButtons = new HashMap<>();
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
                 int slot = buttonEntry.getKey();
-                if (getFilter() != Filters.NONE && (slot % 9 == 0 || slot % 9 == 8)) {
+                if (getFilter() != Filters.NONE && (slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton)) {
                     slot += 2;
                 }
                 modifiedButtons.put(slot, buttonEntry.getValue());
@@ -127,15 +135,6 @@ public abstract class Menu {
         }
 
         this.inventoryBukkit = inventory;
-
-        switch (getFilter()) {
-            case BORDER:
-                fillBorder(inventory);
-                break;
-            case FILL:
-                fill(inventory);
-                break;
-        }
 
         player.openInventory(inventory);
         player.updateInventory();

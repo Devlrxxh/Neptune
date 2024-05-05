@@ -11,6 +11,8 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.UUID;
+
 public class MatchEndRunnable extends BukkitRunnable {
     private final Neptune plugin = Neptune.get();
 
@@ -38,6 +40,7 @@ public class MatchEndRunnable extends BukkitRunnable {
                 match.getKit().removePlaying();
                 profile.setMatch(null);
             }
+
             if (match instanceof OneVersusOneMatch) {
 
                 OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
@@ -45,6 +48,10 @@ public class MatchEndRunnable extends BukkitRunnable {
                 Participant loser = oneVersusOneMatch.getParticipantA().isLoser() ? oneVersusOneMatch.getParticipantA() : oneVersusOneMatch.getParticipantB();
 
                 oneVersusOneMatch.sendEndMessage(winner, loser);
+            }
+
+            for (UUID spectator : match.spectators) {
+                match.removeSpectator(spectator);
             }
 
             if (match.arena instanceof StandAloneArena) {

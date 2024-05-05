@@ -49,7 +49,10 @@ public enum MessagesLocale implements IDataAccessor {
             "&fSender: &a<sender>",
             "&fKit: &a<kit>",
             "&fAren: &aArena",
-            " ");
+            " "),
+    SPECTATE_START("MATCH.SPECTATE.START", null, DataType.STRING_LIST, "&b<player> &fstarted spectating match."),
+    SPECTATE_STOP("MATCH.SPECTATE.STOP", null, DataType.STRING_LIST, "&b<player> &fstopped spectating match.");
+
 
     private final String path;
     private final String comment;

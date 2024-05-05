@@ -20,6 +20,7 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -61,20 +62,7 @@ public class OneVersusOneMatch extends Match {
 
     public void sendEndMessage(Participant winner, Participant loser) {
 
-
         for (Participant participant : participants) {
-            TextComponent winnerMessage = Component.text(winner.getNameUnColored())
-                    .clickEvent(ClickEvent.runCommand("/viewinv " + winner.getNameUnColored()))
-                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winner.getNameUnColored()))));
-
-            TextComponent loserMessage = Component.text(loser.getNameUnColored())
-                    .clickEvent(ClickEvent.runCommand("/viewinv " + loser.getNameUnColored()))
-                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loser.getNameUnColored()))));
-
-            MessagesLocale.MATCH_END_DETAILS.send(participant.getPlayerUUID(),
-                    new Replacement("<loser>", loserMessage),
-                    new Replacement("<winner>", winnerMessage));
-
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
                 TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
                         .clickEvent(ClickEvent.runCommand("/queue " + kit.getName()))
@@ -83,6 +71,17 @@ public class OneVersusOneMatch extends Match {
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
             }
         }
+            TextComponent winnerMessage = Component.text(winner.getNameUnColored())
+                    .clickEvent(ClickEvent.runCommand("/viewinv " + winner.getNameUnColored()))
+                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winner.getNameUnColored()))));
+
+            TextComponent loserMessage = Component.text(loser.getNameUnColored())
+                    .clickEvent(ClickEvent.runCommand("/viewinv " + loser.getNameUnColored()))
+                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loser.getNameUnColored()))));
+
+            broadcast(MessagesLocale.MATCH_END_DETAILS,
+                    new Replacement("<loser>", loserMessage),
+                    new Replacement("<winner>", winnerMessage));
     }
 
     @Override
@@ -144,10 +143,9 @@ public class OneVersusOneMatch extends Match {
     }
 
     private void sendDeathMessage(Participant deadParticipant) {
-        for (Participant participant : participants) {
-            deadParticipant.getDeathCause().getMessagesLocale().send(participant.getPlayerUUID(),
-                    new Replacement("<player>", deadParticipant.getName()),
-                    new Replacement("<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : ""));
-        }
+
+        broadcast(deadParticipant.getDeathCause().getMessagesLocale(),
+                new Replacement("<player>", deadParticipant.getName()),
+                new Replacement("<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : ""));
     }
 }

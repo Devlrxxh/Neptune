@@ -13,6 +13,7 @@ import dev.lrxh.neptune.utils.Console;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -112,6 +113,11 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
+        if (!player.getGameMode().equals(GameMode.SURVIVAL)) {
+            player.sendMessage(CC.error("You need to be in survival mode!"));
+            return;
+        }
+
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
@@ -142,7 +148,7 @@ public class KitCommand extends BaseCommand {
             Document kitStatistics = (Document) document.get("kitData");
             Document kitDocument = (Document) kitStatistics.get(kit.getName());
 
-            if (!Objects.equals(kitDocument.getString("kit"), "")) {
+            if (kitDocument != null && !Objects.equals(kitDocument.getString("kit"), "")) {
                 kitDocument.put("kit", "");
                 i++;
             }

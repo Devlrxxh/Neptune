@@ -6,6 +6,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.Console;
 import lombok.Getter;
 import org.bson.Document;
@@ -28,5 +29,9 @@ public class MongoManager {
         } else {
             Console.error("MongoDB URI is missing or empty in the config.yml");
         }
+    }
+
+    public void add(Document orignalDocument, Replacement... replacements) {
+
     }
 }

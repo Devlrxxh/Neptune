@@ -54,10 +54,11 @@ public class MatchListener implements Listener {
             Player player = (Player) event.getEntity();
 
             Player attacker = (Player) event.getDamager();
+            Profile attackerProfile = plugin.getProfileManager().getByUUID(attacker.getUniqueId());
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (profile == null) return;
 
-            if (profile.getMatch() == null) {
+            if (profile.getMatch() == null || attackerProfile.getState().equals(ProfileState.IN_SPECTATOR)) {
                 event.setCancelled(true);
                 return;
             }
@@ -81,8 +82,9 @@ public class MatchListener implements Listener {
             Player target = (Player) event.getEntity();
             Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
             Player damager = (Player) event.getDamager();
+            Profile playerProfile = plugin.getProfileManager().getByUUID(damager.getUniqueId());
 
-            if (targetProfile.getState() == ProfileState.IN_GAME) {
+            if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME)) {
                 Match match = targetProfile.getMatch();
                 if (match instanceof OneVersusOneMatch) {
                     match.getParticipant(damager.getUniqueId()).handleHit();

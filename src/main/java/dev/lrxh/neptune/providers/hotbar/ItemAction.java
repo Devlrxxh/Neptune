@@ -36,6 +36,12 @@ public enum ItemAction {
         public void execute(Player player) {
             new StatsMenu(player).openMenu(player);
         }
+    },
+    SPEC_LEAVE(){
+        @Override
+        public void execute(Player player){
+            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId());
+        }
     };
 
     public abstract void execute(Player player);

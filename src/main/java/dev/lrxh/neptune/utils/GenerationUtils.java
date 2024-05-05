@@ -23,7 +23,7 @@ import java.util.HashSet;
 
 @UtilityClass
 public class GenerationUtils {
-    public void generateCopies(StandAloneArena arena) {
+    public synchronized  void generateCopies(StandAloneArena arena) {
         int xCurrent = 350 * (arena.getCopies().size() + 1);
 
         if (Neptune.get().getArenaManager().getArenaByName(arena + "#" + (arena.getCopies().size() + 1)) != null) {
@@ -76,7 +76,7 @@ public class GenerationUtils {
         return new Location(oldLoc.getWorld(), oldLoc.getX() + xChange, oldLoc.getY(), oldLoc.getZ(), oldLoc.getYaw(), oldLoc.getPitch());
     }
 
-    public void removeCopy(StandAloneArena copy) {
+    public synchronized void removeCopy(StandAloneArena copy) {
         Neptune plugin = Neptune.get();
         StandAloneArena originalArena = plugin.getArenaManager().getOriginalArena(copy);
         if (originalArena != null) {
