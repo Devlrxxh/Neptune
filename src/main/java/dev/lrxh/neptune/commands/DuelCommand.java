@@ -29,7 +29,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        if(player.getName().equalsIgnoreCase(otherPlayer)){
+        if (player.getName().equalsIgnoreCase(otherPlayer)) {
             player.sendMessage(CC.error("You can't duel yourself!"));
             return;
         }
@@ -53,15 +53,21 @@ public class DuelCommand extends BaseCommand {
     public void accept(Player player) {
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
 
-        if(profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.getState().equals(ProfileState.IN_KIT_EDITOR)){
+        if (profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
             player.sendMessage(CC.error("You can't accept duel requests right now!"));
             return;
         }
 
         DuelRequest duelRequest = profile.getData().getDuelRequest();
 
-        if(duelRequest == null){
+        if (duelRequest == null) {
             player.sendMessage(CC.error("You don't have any pending duel request!"));
+            return;
+        }
+
+        if (Bukkit.getPlayer(duelRequest.getSender()) == null) {
+            player.sendMessage(CC.error("You don't have any pending duel request!"));
+            profile.getData().setDuelRequest(null);
             return;
         }
 

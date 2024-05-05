@@ -89,9 +89,9 @@ public class Profile {
         }
     }
 
-    public void sendDuel(DuelRequest duelRequest){
+    public void sendDuel(DuelRequest duelRequest) {
         Player sender = Bukkit.getPlayer(duelRequest.getSender());
-        if(sender == null) return;
+        if (sender == null) return;
 
         data.setDuelRequest(duelRequest);
 

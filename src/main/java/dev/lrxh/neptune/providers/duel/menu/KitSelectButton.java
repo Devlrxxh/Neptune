@@ -29,7 +29,7 @@ public class KitSelectButton extends Button {
     @Override
     public void clicked(Player player, ClickType clickType) {
         Profile profile = plugin.getProfileManager().getByUUID(receiver);
-        if(profile == null) return;
+        if (profile == null) return;
 
         profile.sendDuel(new DuelRequest(player.getUniqueId(), kit, plugin.getArenaManager().getRandomArena(kit)));
     }
