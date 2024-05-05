@@ -48,8 +48,11 @@ public enum MessagesLocale implements IDataAccessor {
             " ",
             "&fSender: &a<sender>",
             "&fKit: &a<kit>",
-            "&fAren: &aArena",
-            " "),
+            "&fArena: &a<arena>",
+            " ",
+            "<accept>"),
+    DUEL_ACCEPT("DUEL.ACCEPT", null, DataType.STRING, "&a&l(ACCEPT)"),
+    DUEL_ACCEPT_HOVER("DUEL.ACCEPT_HOVER", null, DataType.STRING, "&aClick to accept duel request"),
     SPECTATE_START("MATCH.SPECTATE.START", null, DataType.STRING_LIST, "&b<player> &fstarted spectating match."),
     SPECTATE_STOP("MATCH.SPECTATE.STOP", null, DataType.STRING_LIST, "&b<player> &fstopped spectating match.");
 

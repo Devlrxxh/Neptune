@@ -22,14 +22,14 @@ public class SpectateCommand extends BaseCommand {
             return;
         }
 
-        if(player.getName().equalsIgnoreCase(otherPlayer)){
+        if (player.getName().equalsIgnoreCase(otherPlayer)) {
             player.sendMessage(CC.error("You can't spectate yourself!"));
             return;
         }
 
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
 
-        if(profile.getMatch() != null){
+        if (profile.getMatch() != null) {
             player.sendMessage(CC.error("You can't spectate while in a match!"));
             return;
         }

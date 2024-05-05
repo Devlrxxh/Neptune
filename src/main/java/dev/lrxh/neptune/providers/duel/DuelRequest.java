@@ -13,5 +13,4 @@ public class DuelRequest {
     private UUID sender;
     private Kit kit;
     private Arena arena;
-    private UUID receiver;
 }

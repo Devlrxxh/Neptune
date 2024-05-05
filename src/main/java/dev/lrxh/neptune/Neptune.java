@@ -150,7 +150,8 @@ public final class Neptune extends JavaPlugin {
                 new ViewInventoryCommand(),
                 new StatsCommand(),
                 new DuelCommand(),
-                new SpectateCommand()
+                new SpectateCommand(),
+                new DuelCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

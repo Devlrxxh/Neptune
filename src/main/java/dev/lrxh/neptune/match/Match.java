@@ -101,7 +101,7 @@ public abstract class Match {
 
         spectators.remove(playerUUID);
 
-        if(sendMessage){
+        if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
         }
     }

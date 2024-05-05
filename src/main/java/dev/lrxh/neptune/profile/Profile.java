@@ -4,17 +4,25 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchSnapshot;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.data.PlayerData;
+import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.duel.DuelRequest;
 import dev.lrxh.neptune.utils.ItemUtils;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Map;
 import java.util.Objects;
@@ -79,7 +87,23 @@ public class Profile {
                 data.getKitData().put(kit, profileKitData);
             }
         }
+    }
 
+    public void sendDuel(DuelRequest duelRequest){
+        Player sender = Bukkit.getPlayer(duelRequest.getSender());
+        if(sender == null) return;
+
+        data.setDuelRequest(duelRequest);
+
+        TextComponent accept = Component.text(MessagesLocale.DUEL_ACCEPT.getString())
+                .clickEvent(ClickEvent.runCommand("/duel accept"))
+                .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.DUEL_ACCEPT_HOVER.getString())));
+
+        MessagesLocale.DUEL_SENT.send(playerUUID,
+                new Replacement("<accept>", accept),
+                new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
+                new Replacement("<arena>", duelRequest.getArena().getDisplayName()),
+                new Replacement("<sender>", sender.getName()));
     }
 
     public void save() {

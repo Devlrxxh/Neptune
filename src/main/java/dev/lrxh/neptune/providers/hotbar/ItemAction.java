@@ -48,7 +48,7 @@ public enum ItemAction {
     SPECTATE_MENU {
         @Override
         public void execute(Player player) {
-            if(Neptune.get().getMatchManager().matches.isEmpty()){
+            if (Neptune.get().getMatchManager().matches.isEmpty()) {
                 player.sendMessage(CC.error("&cThere are no ongoing matches!"));
                 return;
             }
