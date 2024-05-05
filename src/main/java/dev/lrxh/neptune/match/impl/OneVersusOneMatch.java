@@ -20,7 +20,6 @@ import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -60,7 +59,21 @@ public class OneVersusOneMatch extends Match {
 
     }
 
-    public void sendEndMessage(Participant winner, Participant loser) {
+    public void sendEndMessage() {
+        Participant winner = participantA.isLoser() ? participantB : participantA;
+        Participant loser = participantA.isLoser() ? participantA : participantB;
+
+        TextComponent winnerMessage = Component.text(winner.getNameUnColored())
+                .clickEvent(ClickEvent.runCommand("/viewinv " + winner.getNameUnColored()))
+                .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winner.getNameUnColored()))));
+
+        TextComponent loserMessage = Component.text(loser.getNameUnColored())
+                .clickEvent(ClickEvent.runCommand("/viewinv " + loser.getNameUnColored()))
+                .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loser.getNameUnColored()))));
+
+        broadcast(MessagesLocale.MATCH_END_DETAILS,
+                new Replacement("<loser>", loserMessage),
+                new Replacement("<winner>", winnerMessage));
 
         for (Participant participant : participants) {
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
@@ -71,17 +84,6 @@ public class OneVersusOneMatch extends Match {
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
             }
         }
-            TextComponent winnerMessage = Component.text(winner.getNameUnColored())
-                    .clickEvent(ClickEvent.runCommand("/viewinv " + winner.getNameUnColored()))
-                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_WINNER.getString().replace("<winner>", winner.getNameUnColored()))));
-
-            TextComponent loserMessage = Component.text(loser.getNameUnColored())
-                    .clickEvent(ClickEvent.runCommand("/viewinv " + loser.getNameUnColored()))
-                    .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_VIEW_INV_TEXT_LOSER.getString().replace("<loser>", loser.getNameUnColored()))));
-
-            broadcast(MessagesLocale.MATCH_END_DETAILS,
-                    new Replacement("<loser>", loserMessage),
-                    new Replacement("<winner>", winnerMessage));
     }
 
     @Override

@@ -5,6 +5,11 @@ ITEMS:
       MATERIAL: IRON_SWORD
       SLOT: 0
       DURABILITY: 0
+    SPECTATE_MENU:
+      NAME: "&6View Matches &7(Right Click)"
+      MATERIAL: EMERALD
+      SLOT: 1
+      DURABILITY: 0
     STATS:
       NAME: "&eStats &7(Right Click)"
       MATERIAL: COMPASS
@@ -26,5 +31,4 @@ ITEMS:
       NAME: "&#FF5E5EL&#F75959e&#F05454a&#E84F4Fv&#E04A4Ae &#D94444Q&#D13F3Fu&#C93A3Ae&#C23535u&#BA3030e &7(Right Click)"
       MATERIAL: RED_DYE
       SLOT: 8
-
       DURABILITY: 0

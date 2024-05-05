@@ -4,7 +4,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.PaginatedMenu;
-import dev.lrxh.neptune.utils.menu.filters.Filters;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

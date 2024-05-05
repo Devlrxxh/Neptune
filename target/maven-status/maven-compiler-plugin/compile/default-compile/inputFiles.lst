@@ -47,6 +47,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\men
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\menu\DisplayButton.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\impl\Participant.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\EntityUtils.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\SpectateCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\tasks\MatchEndRunnable.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\profile\VisibilityLogic.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\queue\menu\QueueSelectButton.java
@@ -77,6 +78,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\impl\On
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\CC.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\impl\EdgeType.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\hotbar\HotbarManager.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\menu\MatchListMenu.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\Console.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\impl\DeathCause.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\QueueCommand.java
@@ -99,6 +101,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assembl
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\Neptune.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\menu\MatchSnapshotMenu.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\menu\Menu.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\menu\button\MatchSpectateButton.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\Cache.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\leaderboard\LeaderboardTask.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\TimeUtil.java

@@ -23,7 +23,7 @@ import java.util.HashSet;
 
 @UtilityClass
 public class GenerationUtils {
-    public synchronized  void generateCopies(StandAloneArena arena) {
+    public synchronized void generateCopies(StandAloneArena arena) {
         int xCurrent = 350 * (arena.getCopies().size() + 1);
 
         if (Neptune.get().getArenaManager().getArenaByName(arena + "#" + (arena.getCopies().size() + 1)) != null) {

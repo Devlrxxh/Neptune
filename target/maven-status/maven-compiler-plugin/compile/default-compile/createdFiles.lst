@@ -6,8 +6,10 @@ dev\lrxh\neptune\match\listener\MatchListener$1.class
 dev\lrxh\neptune\match\tasks\MatchEndRunnable.class
 dev\lrxh\neptune\providers\menus\kitEditor\KitEditorSelectButton.class
 dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.class
+dev\lrxh\neptune\match\menu\MatchListMenu.class
 dev\lrxh\neptune\utils\menu\Button.class
 dev\lrxh\neptune\providers\hotbar\HotbarManager.class
+dev\lrxh\neptune\providers\hotbar\ItemAction$6.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilderImpl.class
 dev\lrxh\neptune\match\menu\button\HealthButton.class
 dev\lrxh\neptune\utils\assemble\AssembleBoard.class
@@ -43,6 +45,7 @@ dev\lrxh\neptune\queue\menu\QueueMenu.class
 dev\lrxh\neptune\utils\ColorUtil.class
 dev\lrxh\neptune\utils\menu\buttons\PageButton.class
 dev\lrxh\neptune\arena\impl\StandAloneArena$StandAloneArenaBuilderImpl.class
+dev\lrxh\neptune\commands\SpectateCommand.class
 dev\lrxh\neptune\match\menu\MatchSnapshotMenu.class
 dev\lrxh\neptune\utils\CC.class
 dev\lrxh\neptune\match\MatchManager.class
@@ -57,6 +60,7 @@ dev\lrxh\neptune\utils\ConfigFile.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$4.class
 dev\lrxh\neptune\kit\menu\KitManagementButton.class
 dev\lrxh\neptune\providers\hotbar\Item.class
+dev\lrxh\neptune\providers\hotbar\ItemAction$5.class
 dev\lrxh\neptune\utils\menu\Menu$1.class
 dev\lrxh\neptune\configs\impl\IDataAccessor.class
 dev\lrxh\neptune\queue\QueueManager.class
@@ -65,6 +69,7 @@ dev\lrxh\neptune\configs\impl\IDataAccessor$1.class
 dev\lrxh\neptune\match\impl\Team.class
 dev\lrxh\neptune\utils\assemble\events\AssembleBoardCreateEvent.class
 dev\lrxh\neptune\arena\menu\ArenaCopyMenu.class
+dev\lrxh\neptune\match\menu\button\MatchSpectateButton.class
 dev\lrxh\neptune\utils\Console.class
 dev\lrxh\neptune\match\tasks\MatchStartRunnable.class
 dev\lrxh\neptune\match\impl\MatchSnapshot.class

@@ -76,6 +76,9 @@ public abstract class Match {
         profile.setMatch(this);
         spectators.add(playerUUID);
 
+        player.setAllowFlight(true);
+        player.setFlying(true);
+
         for (Participant participant : participants) {
             Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
             if (participiantPlayer == null) return;
@@ -85,7 +88,7 @@ public abstract class Match {
     }
 
 
-    public void removeSpectator(UUID playerUUID){
+    public void removeSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
@@ -98,10 +101,12 @@ public abstract class Match {
 
         spectators.remove(playerUUID);
 
-        broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
+        if(sendMessage){
+            broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
+        }
     }
 
-    public void broadcast(MessagesLocale messagesLocale, Replacement... replacements){
+    public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
         for (Participant participant : participants) {
             messagesLocale.send(participant.getPlayerUUID(), replacements);
         }

@@ -11,6 +11,7 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.HashSet;
 import java.util.UUID;
 
 public class MatchEndRunnable extends BukkitRunnable {
@@ -42,16 +43,12 @@ public class MatchEndRunnable extends BukkitRunnable {
             }
 
             if (match instanceof OneVersusOneMatch) {
-
                 OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
-                Participant winner = oneVersusOneMatch.getParticipantA().isLoser() ? oneVersusOneMatch.getParticipantB() : oneVersusOneMatch.getParticipantA();
-                Participant loser = oneVersusOneMatch.getParticipantA().isLoser() ? oneVersusOneMatch.getParticipantA() : oneVersusOneMatch.getParticipantB();
-
-                oneVersusOneMatch.sendEndMessage(winner, loser);
+                oneVersusOneMatch.sendEndMessage();
             }
 
-            for (UUID spectator : match.spectators) {
-                match.removeSpectator(spectator);
+            for (UUID spectator : new HashSet<>(match.spectators)) {
+                match.removeSpectator(spectator, false);
             }
 
             if (match.arena instanceof StandAloneArena) {

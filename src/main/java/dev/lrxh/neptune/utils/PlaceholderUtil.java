@@ -35,7 +35,7 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
             }
 
-            if(profile.getMatch() != null){
+            if (profile.getMatch() != null) {
                 Match match = profile.getMatch();
                 if (profile.getState().equals(ProfileState.IN_GAME)) {
                     Participant participant = match.getParticipant(player.getUniqueId());
@@ -50,8 +50,8 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
                     line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
                 }
-                if(profile.getState().equals(ProfileState.IN_SPECTATOR)){
-                    if(match instanceof OneVersusOneMatch){
+                if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
+                    if (match instanceof OneVersusOneMatch) {
                         OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
                         Participant redPlayer = oneVersusOneMatch.getParticipantA();
                         Participant bluePlayer = oneVersusOneMatch.getParticipantB();
