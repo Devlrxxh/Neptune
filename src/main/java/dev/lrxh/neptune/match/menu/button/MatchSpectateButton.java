@@ -32,6 +32,7 @@ public class MatchSpectateButton extends Button {
                         .replace("<playerRed_name>", match.getParticipantA().getNameUnColored())
                         .replace("<playerBlue_name>", match.getParticipantB().getNameUnColored()))
                 .lore(lore)
+                .clearFlags()
                 .build();
     }
 
