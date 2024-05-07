@@ -201,6 +201,10 @@ public class MatchListener implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
+        if(profile.getState().equals(ProfileState.IN_SPECTATOR)){
+            event.setCancelled(true);
+            return;
+        }
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
         if (!(match != null && match.getKit().isBuild() && match.getPlacedBlocks().contains(blockLocation))) {
