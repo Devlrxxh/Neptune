@@ -96,6 +96,7 @@ public abstract class Match {
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
         PlayerUtil.giveKit(player.getUniqueId(), kit);
+        profile.getData().setDuelRequest(null);
 
         Neptune.get().getLeaderboardManager().changes.add(playerUUID);
     }
@@ -149,7 +150,6 @@ public abstract class Match {
                 entity.remove();
             }
         }
-        entities.clear();
     }
 
     public void hidePlayer(Participant targetParticipant) {

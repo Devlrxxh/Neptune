@@ -30,7 +30,7 @@ public class OneVersusOneMatch extends Match {
     private final Participant participantB;
 
     public OneVersusOneMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB, int rounds) {
-        super(MatchState.STARTING, arena, kit, participants, duel, rounds);
+        super(MatchState.STARTING, arena, kit, participants,rounds, duel);
         this.participantA = participantA;
         this.participantB = participantB;
     }

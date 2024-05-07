@@ -58,7 +58,6 @@ public class DuelCommand extends BaseCommand {
     @CommandCompletion("@names")
     public void statsOthers(Player player, String otherPlayer, int rounds) {
 
-        System.out.println("This run");
         Player target = Bukkit.getPlayer(otherPlayer);
         if (target == null) {
             player.sendMessage(CC.error("Player isn't online!"));
@@ -122,8 +121,6 @@ public class DuelCommand extends BaseCommand {
 
         Neptune.get().getMatchManager().startMatch(participants, duelRequest.getKit(),
                 duelRequest.getArena(), true, duelRequest.getRounds());
-
-        System.out.println(duelRequest.getRounds());
 
         profile.getData().setDuelRequest(null);
     }
