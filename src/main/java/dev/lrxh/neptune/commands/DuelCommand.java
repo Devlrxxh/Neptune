@@ -29,6 +29,11 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
+        if (Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch() != null) {
+            player.sendMessage(CC.error("You can't send duel requests right now!"));
+            return;
+        }
+
         if (player.getName().equalsIgnoreCase(otherPlayer)) {
             player.sendMessage(CC.error("You can't duel yourself!"));
             return;
