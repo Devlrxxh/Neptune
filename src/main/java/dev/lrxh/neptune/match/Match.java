@@ -175,7 +175,4 @@ public abstract class Match {
     public abstract void end();
 
     public abstract void onDeath(Participant participant);
-
-    public abstract void respawn(Participant participant);
-
 }

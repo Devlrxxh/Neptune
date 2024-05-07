@@ -104,7 +104,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        if (Bukkit.getPlayer(duelRequest.getSender()) == null) {
+        if (Bukkit.getPlayer(duelRequest.getSender()) == null || profile.getData().getDuelRequest() == null) {
             player.sendMessage(CC.error("You don't have any pending duel request!"));
             profile.getData().setDuelRequest(null);
             return;

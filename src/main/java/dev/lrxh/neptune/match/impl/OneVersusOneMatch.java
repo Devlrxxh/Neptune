@@ -96,9 +96,9 @@ public class OneVersusOneMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
 
-        Participant participantKiller = participantA.getName().equals(participant.getName()) ? participantB : participantA;
-
         if (rounds > 1 && !participant.isDisconnected()) {
+            Participant participantKiller = participantA.getName().equals(participant.getName()) ? participantB : participantA;
+
             participantKiller.addWin();
             if (participantKiller.getRoundsWon() < rounds) {
                 participantKiller.setCombo(0);
@@ -143,14 +143,6 @@ public class OneVersusOneMatch extends Match {
 
             Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).setMatchSnapshot(snapshot);
         }
-    }
-
-
-    @Override
-    public void respawn(Participant participant) {
-        hidePlayer(participant);
-
-        Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(this), 0L, 20L);
     }
 
     private void sendDeathMessage(Participant deadParticipant) {

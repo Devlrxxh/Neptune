@@ -10,7 +10,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 @Data
-@Getter
 public class MatchSnapshot {
     private final UUID uuid;
     private final String username;
