@@ -1,12 +1,15 @@
 package dev.lrxh.neptune.providers.duel.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.duel.DuelRequest;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -20,9 +23,10 @@ public class KitSelectButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(kit.getIcon().getType()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
+        return new ItemBuilder(kit.getIcon()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .amount(kit.getPlaying())
                 .lore(MenusLocale.DUEL_LORE.getStringList())
+                .clearFlags()
                 .build();
     }
 
@@ -30,7 +34,19 @@ public class KitSelectButton extends Button {
     public void clicked(Player player, ClickType clickType) {
         Profile profile = plugin.getProfileManager().getByUUID(receiver);
         if (profile == null) return;
+        Player receiverPlayer = Bukkit.getPlayer(receiver);
+        if (receiverPlayer == null) {
+            player.closeInventory();
+            return;
+        }
 
-        profile.sendDuel(new DuelRequest(player.getUniqueId(), kit, plugin.getArenaManager().getRandomArena(kit)));
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, plugin.getArenaManager().getRandomArena(kit));
+        MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
+                new Replacement("<receiver>", receiverPlayer.getName()),
+                new Replacement("<kit>", kit.getDisplayName()),
+                new Replacement("<arena>", duelRequest.getArena().getDisplayName()));
+
+        player.closeInventory();
+        profile.sendDuel(duelRequest);
     }
 }

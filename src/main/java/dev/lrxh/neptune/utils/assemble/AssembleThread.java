@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.utils.assemble;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
@@ -40,11 +39,7 @@ public class AssembleThread extends Thread {
      */
     private void tick() {
         for (Player player : this.assemble.getPlugin().getServer().getOnlinePlayers()) {
-//            Profile profile = Profile.getByUuid(player.getUniqueId());
             try {
-//                if (!profile.getOptions().showScoreboard()) {
-//                    return;
-//                }
                 AssembleBoard board = this.assemble.getBoards().get(player.getUniqueId());
 
                 // This shouldn't happen, but just in case.
@@ -122,12 +117,11 @@ public class AssembleThread extends Thread {
                 if (player.getScoreboard() != scoreboard && !assemble.isHook()) {
                     player.setScoreboard(scoreboard);
                 }
-
             } catch (Exception e) {
-                //Bukkit.getServer().getScheduler().runTask(assemble.getPlugin(), () -> player.kickPlayer(CC.color("&cPlease rejoin.")));
-                Bukkit.getLogger().warning("Error updating scoreboard for player " + player.getName() + ": " + e.getMessage());
-
+                e.printStackTrace();
+                throw new AssembleException("There was an error updating " + player.getName() + "'s scoreboard.");
             }
         }
     }
+
 }

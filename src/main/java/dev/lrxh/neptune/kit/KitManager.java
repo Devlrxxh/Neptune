@@ -38,8 +38,9 @@ public class KitManager implements IManager {
                 boolean denyMovement = config.getBoolean(path + "denyMovement");
                 boolean boxing = config.getBoolean(path + "boxing");
                 boolean damage = config.getBoolean(path + "damage");
+                boolean bestOfThree = config.getBoolean(path + "bestOfThree");
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, arenaBreak, hunger, sumo, fallDamage, denyMovement, boxing, damage));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, arenaBreak, hunger, sumo, fallDamage, denyMovement, boxing, damage, bestOfThree));
             }
         }
     }
@@ -60,7 +61,8 @@ public class KitManager implements IManager {
                     new Value("arenas", kit.getArenasAsString()),
                     new Value("icon", ItemUtils.serialize(kit.getIcon())),
                     new Value("boxing", kit.isBoxing()),
-                    new Value("damage", kit.isDamage())
+                    new Value("damage", kit.isDamage()),
+                    new Value("bestOfThree", kit.isBestOfThree())
             );
             save(values, path);
         });

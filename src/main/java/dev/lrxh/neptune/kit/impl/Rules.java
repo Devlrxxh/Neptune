@@ -1,5 +1,6 @@
-package dev.lrxh.neptune.kit;
+package dev.lrxh.neptune.kit.impl;
 
+import dev.lrxh.neptune.kit.Kit;
 import lombok.Getter;
 
 @SuppressWarnings("unused")
@@ -91,6 +92,17 @@ public enum Rules {
         @Override
         public boolean enabled(Kit kit) {
             return kit.isDamage();
+        }
+    },
+    BESTOFTHREE("If enabled Players would need to win 3 times", "Best of 3") {
+        @Override
+        public void execute(Kit kit, boolean value) {
+            kit.setBestOfThree(value);
+        }
+
+        @Override
+        public boolean enabled(Kit kit) {
+            return kit.isBestOfThree();
         }
     };
 

@@ -4,6 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.DeathCause;
+import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.profile.VisibilityLogic;
@@ -41,8 +42,10 @@ public class ProfileListener implements Listener {
         if (profile == null) return;
         Match match = profile.getMatch();
         if (match != null) {
-            match.getParticipant(player.getUniqueId()).setDeathCause(DeathCause.DISCONNECT);
-            profile.getMatch().onDeath(match.getParticipant(player.getUniqueId()));
+            Participant participant = match.getParticipant(player.getUniqueId());
+            participant.setDeathCause(DeathCause.DISCONNECT);
+            participant.setDisconnected(true);
+            profile.getMatch().onDeath(participant);
         }
         plugin.getProfileManager().removeProfile(player.getUniqueId());
     }

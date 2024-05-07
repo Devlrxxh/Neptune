@@ -49,6 +49,18 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
+    public void onItemPickup(EntityPickupItemEvent event) {
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+
+            if (!profile.getState().equals(ProfileState.IN_GAME)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
     public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();

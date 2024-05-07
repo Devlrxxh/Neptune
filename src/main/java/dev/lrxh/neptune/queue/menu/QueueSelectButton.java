@@ -31,9 +31,10 @@ public class QueueSelectButton extends Button {
             lore.add(line);
         });
 
-        return new ItemBuilder(kit.getIcon().getType()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
+        return new ItemBuilder(kit.getIcon()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .amount(kit.getPlaying())
                 .lore(lore)
+                .clearFlags()
                 .build();
     }
 

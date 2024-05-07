@@ -41,7 +41,9 @@ public class ItemBuilder {
     public ItemBuilder clearFlags() {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES);
+            for (ItemFlag itemFlag : ItemFlag.values()) {
+                meta.addItemFlags(itemFlag);
+            }
             item.setItemMeta(meta);
         }
         return this;

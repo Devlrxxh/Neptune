@@ -6,6 +6,9 @@
       <item index="1" class="java.lang.String" itemvalue="co.aikar.commands.annotation.Subcommand" />
       <item index="2" class="java.lang.String" itemvalue="co.aikar.commands.annotation.Syntax" />
     </list>
+    <writeAnnotations>
+      <writeAnnotation name="lombok.Getter" />
+    </writeAnnotations>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="MavenProjectsManager">

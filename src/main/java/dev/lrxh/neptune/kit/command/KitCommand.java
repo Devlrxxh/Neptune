@@ -170,10 +170,11 @@ public class KitCommand extends BaseCommand {
         }
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
+        player.sendMessage(player.getInventory().getItemInMainHand().toString());
         kit.setIcon(player.getInventory().getItemInMainHand());
 
         plugin.getKitManager().saveKits();
-        player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
+        player.sendMessage(CC.color("&aSuccessfully set kit icon!"));
     }
 
     @Subcommand("addArena")

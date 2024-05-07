@@ -37,10 +37,10 @@ public class PlaceholderUtil {
 
             if (profile.getMatch() != null) {
                 Match match = profile.getMatch();
+
                 if (profile.getState().equals(ProfileState.IN_GAME)) {
                     Participant participant = match.getParticipant(player.getUniqueId());
                     Participant opponent = participant.getOpponent();
-
                     line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
                     line = line.replaceAll("<opponent-ping>", String.valueOf(PlayerUtil.getPing(participant.getOpponent().getPlayerUUID())));
 
@@ -49,23 +49,29 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
                     line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
                     line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
+                    line = line.replaceAll("<kit>", match.getKit().getDisplayName());
+                    line = line.replaceAll("<arena>", match.getArena().getDisplayName());
+
+                    if (match.getKit().isBestOfThree()) {
+                        line = line.replaceAll("<points>", participant.getWinsAsString());
+                        line = line.replaceAll("<opponent-points>", opponent.getWinsAsString());
+                    }
                 }
-                if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-                    if (match instanceof OneVersusOneMatch) {
-                        OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
-                        Participant redPlayer = oneVersusOneMatch.getParticipantA();
-                        Participant bluePlayer = oneVersusOneMatch.getParticipantB();
+                if (match instanceof OneVersusOneMatch) {
+                    OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
+                    Participant redPlayer = oneVersusOneMatch.getParticipantA();
+                    Participant bluePlayer = oneVersusOneMatch.getParticipantB();
+                    if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
 
                         line = line.replaceAll("<playerRed_name>", redPlayer.getNameUnColored());
                         line = line.replaceAll("<playerBlue_name>", bluePlayer.getNameUnColored());
 
                         line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(redPlayer.getPlayerUUID())));
                         line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayerUUID())));
+                        line = line.replaceAll("<kit>", match.getKit().getDisplayName());
+                        line = line.replaceAll("<arena>", match.getArena().getDisplayName());
                     }
                 }
-
-                line = line.replaceAll("<kit>", match.getKit().getDisplayName());
-                line = line.replaceAll("<arena>", match.getArena().getDisplayName());
             }
 
             if (Neptune.get().isPlaceholder()) {

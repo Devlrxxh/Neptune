@@ -7,6 +7,7 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
+import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
@@ -89,6 +90,19 @@ public class OneVersusOneMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
 
+        Participant participantKiller = participantA.getName().equals(participant.getName()) ? participantB : participantA;
+
+        if (kit.isBestOfThree() && !participant.isDisconnected()) {
+            participantKiller.addWin();
+            if (participantKiller.getRoundsWon() < 3) {
+                participantKiller.setCombo(0);
+
+                matchState = MatchState.STARTING;
+                Neptune.get().getTaskScheduler().startTask(new MatchRespawnRunnable(this, participant), 0L, 20L);
+                return;
+            }
+        }
+
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
         }
@@ -100,10 +114,6 @@ public class OneVersusOneMatch extends Match {
         PlayerUtil.reset(participant.getPlayerUUID());
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
-
-        if (participant.getLastAttacker() != null) {
-            participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
-        }
 
         hidePlayer(participant);
         sendDeathMessage(participant);
@@ -131,17 +141,9 @@ public class OneVersusOneMatch extends Match {
 
     @Override
     public void respawn(Participant participant) {
-        if (matchState != MatchState.IN_ROUND) {
-            return;
-        }
-        participant.setDead(true);
-
         hidePlayer(participant);
-        sendDeathMessage(participant);
-        PlayerUtil.reset(participant.getPlayerUUID());
-        PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
-        Neptune.get().getTaskScheduler().startTask(new MatchRespawnRunnable(this, participant), 0L);
+        Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(this), 0L, 20L);
     }
 
     private void sendDeathMessage(Participant deadParticipant) {

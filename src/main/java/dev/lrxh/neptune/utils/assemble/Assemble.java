@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.utils.assemble;
 
-import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.utils.assemble.events.AssembleBoardCreateEvent;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,12 +19,11 @@ public class Assemble {
 
     private final JavaPlugin plugin;
     private final ChatColor[] chatColorCache = ChatColor.values();
-    @Getter
-    public Map<UUID, AssembleBoard> boards;
-    private ScoreboardAdapter adapter;
+    private AssembleAdapter adapter;
     private AssembleThread thread;
     private AssembleListener listeners;
-    private AssembleStyle assembleStyle = AssembleStyle.MODERN;
+    private AssembleStyle assembleStyle = AssembleStyle.VIPER;
+    private Map<UUID, AssembleBoard> boards;
     private long ticks = 2;
     private boolean hook = false, debugMode = true, callEvents = true;
 
@@ -35,7 +33,7 @@ public class Assemble {
      * @param plugin  instance.
      * @param adapter that is being provided.
      */
-    public Assemble(JavaPlugin plugin, ScoreboardAdapter adapter) {
+    public Assemble(JavaPlugin plugin, AssembleAdapter adapter) {
         if (plugin == null) {
             throw new RuntimeException("Assemble can not be instantiated without a plugin instance!");
         }

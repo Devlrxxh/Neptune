@@ -29,6 +29,8 @@ public class StatButton extends Button {
 
             line = line.replaceAll("<win_streak_current>", String.valueOf(data.getCurrentStreak()));
             line = line.replaceAll("<win_streak_best>", String.valueOf(data.getBestStreak()));
+            line = line.replaceAll("<kill_death_ratio>", String.valueOf(data.getKdr()));
+
 
 
             lore.add(line);

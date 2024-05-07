@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.tasks;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
@@ -21,21 +20,17 @@ public class MatchStartRunnable extends BukkitRunnable {
 
     @Override
     public void run() {
-        if (match.matchState.equals(MatchState.ENDING)
-                || match.matchState.equals(MatchState.IN_ROUND)
-                || !Neptune.get().getMatchManager().matches.contains(match)) {
-            cancel();
-            return;
-        }
         if (startTimer == 0) {
             match.setMatchState(MatchState.IN_ROUND);
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.checkRules();
             match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
             match.sendTitle(CC.color("&aFight!"), "", 10);
+
             cancel();
+            return;
         }
-        if (match.getMatchState().equals(MatchState.STARTING) && startTimer != 0) {
+        if (match.getMatchState().equals(MatchState.STARTING)) {
             match.playSound(Sound.UI_BUTTON_CLICK);
             match.sendTitle(startTimer > 3 ? "&e" + startTimer : "&c" + startTimer, "", 100);
             match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));

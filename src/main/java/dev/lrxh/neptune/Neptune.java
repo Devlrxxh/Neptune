@@ -101,7 +101,7 @@ public final class Neptune extends JavaPlugin {
                 new LobbyListener(),
                 new ItemListener(),
                 new MenuListener()
-        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, get()));
+        ).forEach(listener -> get().getServer().getPluginManager().registerEvents(listener, get()));
     }
 
     public void loadConfigs() {
@@ -115,7 +115,7 @@ public final class Neptune extends JavaPlugin {
     }
 
     private boolean loadExtension(String pluginName) {
-        Plugin placeholderAPI = getServer().getPluginManager().getPlugin(pluginName);
+        Plugin placeholderAPI = get().getServer().getPluginManager().getPlugin(pluginName);
         return placeholderAPI != null && placeholderAPI.isEnabled();
     }
 

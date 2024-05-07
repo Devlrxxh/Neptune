@@ -63,6 +63,8 @@ public class PlayerUtil {
         } else {
             player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
         }
+
+        player.updateInventory();
     }
 
     public void teleportToSpawn(UUID playerUUID) {

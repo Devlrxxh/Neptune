@@ -4,9 +4,8 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -14,9 +13,7 @@ import org.bukkit.entity.Player;
 import java.util.Objects;
 import java.util.UUID;
 
-@AllArgsConstructor
-@Getter
-@Setter
+@Data
 public class Participant {
     private UUID playerUUID;
     private String name;
@@ -24,20 +21,24 @@ public class Participant {
     private DeathCause deathCause;
     private ParticipantColor color;
     private Participant lastAttacker;
-    private boolean dead;
     private int hits;
     private int longestCombo;
     private int combo;
     private boolean loser;
+    private boolean disconnected = false;
+    private int roundsWon = 0;
 
     public Participant(UUID playerUUID) {
         this.playerUUID = playerUUID;
         this.name = Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getName();
-        this.dead = false;
     }
 
     public String getName() {
         return color.getColor() + name;
+    }
+
+    public void addWin() {
+        roundsWon++;
     }
 
     public String getNameUnColored() {
@@ -53,6 +54,21 @@ public class Participant {
     public void sendTitle(String header, String footer, int duration) {
         PlayerUtil.sendTitle(playerUUID, header, footer, duration);
     }
+
+    public String getWinsAsString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < 3; i++) {
+            if (i < roundsWon) {
+                sb.append(color.getColor()).append("• ");
+            } else {
+                sb.append(ChatColor.WHITE).append("• ");
+            }
+        }
+
+        return sb.toString().trim();
+    }
+
 
     public void resetCombo() {
         combo = 0;

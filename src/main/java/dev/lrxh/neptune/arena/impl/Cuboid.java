@@ -74,6 +74,19 @@ public class Cuboid {
         return z2;
     }
 
+    public Location getLowerRightEdge() {
+        int edgeX = Math.max(x1, x2);
+        int edgeZ = Math.min(z1, z2);
+        return new Location(world, edgeX, y2, edgeZ);
+    }
+
+    public Location getUpperLeftEdge() {
+        int edgeX = Math.min(x1, x2);
+        int edgeZ = Math.max(z1, z2);
+        return new Location(world, edgeX, y1, edgeZ);
+    }
+
+
     public Location getLowerCorner() {
         return new Location(world, x1, y1, z1);
     }

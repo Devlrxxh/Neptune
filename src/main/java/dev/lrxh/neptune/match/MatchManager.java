@@ -8,15 +8,12 @@ import dev.lrxh.neptune.match.impl.OneVersusOneMatch;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.match.impl.ParticipantColor;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
-import dev.lrxh.neptune.profile.Profile;
-import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
 
 public class MatchManager {
     public final HashSet<Match> matches = new HashSet<>();
@@ -25,7 +22,6 @@ public class MatchManager {
         for (Participant ignored : participants) {
             kit.addPlaying();
         }
-        OneVersusOneMatch match;
 
         //Create teams
         Participant playerRed = participants.get(0);
@@ -38,21 +34,19 @@ public class MatchManager {
         playerBlue.setColor(ParticipantColor.BLUE);
 
         //Create match
-        match = new OneVersusOneMatch(arena, kit, duel, participants, playerRed, playerBlue);
+        OneVersusOneMatch match = new OneVersusOneMatch(arena, kit, duel, participants, playerRed, playerBlue);
 
         matches.add(match);
 
-        OneVersusOneMatch oneVersusOneMatch = match;
-
         //Teleport the team A to their spawns
-        Player playerA = Bukkit.getPlayer(oneVersusOneMatch.getParticipantA().getPlayerUUID());
+        Player playerA = Bukkit.getPlayer(match.getParticipantA().getPlayerUUID());
         if (playerA == null) {
             return;
         }
         playerA.teleport(arena.getRedSpawn());
 
         //Teleport the team B to their spawns
-        Player playerB = Bukkit.getPlayer(oneVersusOneMatch.getParticipantB().getPlayerUUID());
+        Player playerB = Bukkit.getPlayer(match.getParticipantB().getPlayerUUID());
         if (playerB == null) {
             return;
         }
@@ -64,7 +58,7 @@ public class MatchManager {
             if (player == null) {
                 continue;
             }
-            setupPlayer(participant.getPlayerUUID(), match);
+            match.setupPlayer(participant.getPlayerUUID());
         }
 
         //Apply kit rules for players
@@ -72,19 +66,6 @@ public class MatchManager {
 
         //Start match start runnable
         Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
-    }
-
-    public void setupPlayer(UUID playerUUID, Match match) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        PlayerUtil.reset(player.getUniqueId());
-        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
-        profile.setMatch(match);
-        profile.setState(ProfileState.IN_GAME);
-        player.updateInventory();
-        PlayerUtil.giveKit(player.getUniqueId(), match.getKit());
-
-        Neptune.get().getLeaderboardManager().changes.add(playerUUID);
     }
 
     public void stopAllGames() {

@@ -87,6 +87,18 @@ public abstract class Match {
         broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
     }
 
+    public void setupPlayer(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        PlayerUtil.reset(player.getUniqueId());
+        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+        profile.setMatch(this);
+        profile.setState(ProfileState.IN_GAME);
+        PlayerUtil.giveKit(player.getUniqueId(), kit);
+
+        Neptune.get().getLeaderboardManager().changes.add(playerUUID);
+    }
+
 
     public void removeSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
@@ -127,7 +139,6 @@ public abstract class Match {
                     PlayerUtil.allowMovement(participant.getPlayerUUID());
                 }
             }
-            player.resetTitle();
         }
     }
 
@@ -137,6 +148,7 @@ public abstract class Match {
                 entity.remove();
             }
         }
+        entities.clear();
     }
 
     public void hidePlayer(Participant targetParticipant) {
@@ -146,6 +158,16 @@ public abstract class Match {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) return;
             player.hidePlayer(Neptune.get(), targetPlayer);
+        }
+    }
+
+    public void showPlayer(Participant targetParticipant) {
+        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
+        if (targetPlayer == null) return;
+        for (Participant participant : participants) {
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player == null) return;
+            player.showPlayer(Neptune.get(), targetPlayer);
         }
     }
 

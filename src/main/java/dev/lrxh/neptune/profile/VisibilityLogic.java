@@ -4,12 +4,13 @@ import dev.lrxh.neptune.Neptune;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
 @UtilityClass
 public class VisibilityLogic {
-    private final Neptune plugin = Neptune.get();
+    private final JavaPlugin plugin = Neptune.get();
 
     public void handle(UUID playerUUID) {
         for (Player players : Bukkit.getOnlinePlayers()) {
