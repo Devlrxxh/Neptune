@@ -29,8 +29,8 @@ public class OneVersusOneMatch extends Match {
     private final Participant participantA;
     private final Participant participantB;
 
-    public OneVersusOneMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB) {
-        super(MatchState.STARTING, arena, kit, participants, duel);
+    public OneVersusOneMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB, int rounds) {
+        super(MatchState.STARTING, arena, kit, participants, duel, rounds);
         this.participantA = participantA;
         this.participantB = participantB;
     }
@@ -49,6 +49,12 @@ public class OneVersusOneMatch extends Match {
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
 
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
+    }
+
+    private void removePlaying(){
+        for(Participant ignored : participants){
+            kit.removePlaying();
+        }
     }
 
     public void addStats() {
@@ -92,9 +98,9 @@ public class OneVersusOneMatch extends Match {
 
         Participant participantKiller = participantA.getName().equals(participant.getName()) ? participantB : participantA;
 
-        if (kit.isBestOfThree() && !participant.isDisconnected()) {
+        if (rounds > 1 && !participant.isDisconnected()) {
             participantKiller.addWin();
-            if (participantKiller.getRoundsWon() < 3) {
+            if (participantKiller.getRoundsWon() < rounds) {
                 participantKiller.setCombo(0);
 
                 matchState = MatchState.STARTING;
@@ -117,6 +123,7 @@ public class OneVersusOneMatch extends Match {
 
         hidePlayer(participant);
         sendDeathMessage(participant);
+        removePlaying();
 
         if (!isDuel()) {
             addStats();

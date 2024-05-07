@@ -37,6 +37,7 @@ public abstract class Match {
     public Kit kit;
     public List<Participant> participants;
     private boolean duel;
+    public int rounds;
 
     public void playSound(Sound sound) {
         for (Participant participant : participants) {

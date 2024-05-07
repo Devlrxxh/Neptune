@@ -20,6 +20,7 @@ import java.util.UUID;
 public class KitSelectButton extends Button {
     private final Kit kit;
     private final UUID receiver;
+    private int rounds;
 
     @Override
     public ItemStack getButtonItem(Player player) {
@@ -40,7 +41,7 @@ public class KitSelectButton extends Button {
             return;
         }
 
-        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, plugin.getArenaManager().getRandomArena(kit));
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, plugin.getArenaManager().getRandomArena(kit), rounds);
         MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
                 new Replacement("<receiver>", receiverPlayer.getName()),
                 new Replacement("<kit>", kit.getDisplayName()),

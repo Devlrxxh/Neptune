@@ -38,6 +38,7 @@ dev\lrxh\neptune\utils\assemble\AssembleAdapter.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$3.class
 dev\lrxh\neptune\profile\data\KitData.class
 dev\lrxh\neptune\providers\menus\stats\StatsMenu.class
+dev\lrxh\neptune\kit\impl\Rules$10.class
 dev\lrxh\neptune\profile\Profile.class
 dev\lrxh\neptune\providers\menus\stats\StatButton.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilder.class

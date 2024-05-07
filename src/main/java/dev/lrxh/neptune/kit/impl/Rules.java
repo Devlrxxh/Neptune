@@ -104,6 +104,17 @@ public enum Rules {
         public boolean enabled(Kit kit) {
             return kit.isBestOfThree();
         }
+    },
+    SATURATIONHEAL("If Players should regen from saturation", "Saturation Heal") {
+        @Override
+        public void execute(Kit kit, boolean value) {
+            kit.setSaturationHeal(value);
+        }
+
+        @Override
+        public boolean enabled(Kit kit) {
+            return kit.isSaturationHeal();
+        }
     };
 
     private final String description;

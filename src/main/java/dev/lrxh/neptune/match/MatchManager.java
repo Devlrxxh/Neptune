@@ -18,7 +18,7 @@ import java.util.List;
 public class MatchManager {
     public final HashSet<Match> matches = new HashSet<>();
 
-    public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel) {
+    public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {
         for (Participant ignored : participants) {
             kit.addPlaying();
         }
@@ -34,7 +34,7 @@ public class MatchManager {
         playerBlue.setColor(ParticipantColor.BLUE);
 
         //Create match
-        OneVersusOneMatch match = new OneVersusOneMatch(arena, kit, duel, participants, playerRed, playerBlue);
+        OneVersusOneMatch match = new OneVersusOneMatch(arena, kit, duel, participants, playerRed, playerBlue, rounds);
 
         matches.add(match);
 

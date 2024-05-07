@@ -5,7 +5,6 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Data;
-import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -54,21 +53,6 @@ public class Participant {
     public void sendTitle(String header, String footer, int duration) {
         PlayerUtil.sendTitle(playerUUID, header, footer, duration);
     }
-
-    public String getWinsAsString() {
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < 3; i++) {
-            if (i < roundsWon) {
-                sb.append(color.getColor()).append("• ");
-            } else {
-                sb.append(ChatColor.WHITE).append("• ");
-            }
-        }
-
-        return sb.toString().trim();
-    }
-
 
     public void resetCombo() {
         combo = 0;

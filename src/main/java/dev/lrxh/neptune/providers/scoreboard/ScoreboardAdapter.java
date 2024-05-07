@@ -35,7 +35,7 @@ public class ScoreboardAdapter implements AssembleAdapter {
             if (match.getMatchState().equals(MatchState.STARTING)) {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
             } else if (match.getMatchState().equals(MatchState.IN_ROUND)) {
-                if (match.getKit().isBestOfThree()) {
+                if (match.getRounds() > 1) {
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
                 }
                 if (match.getKit().isBoxing()) {

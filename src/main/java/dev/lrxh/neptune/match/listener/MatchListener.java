@@ -150,14 +150,23 @@ public class MatchListener implements Listener {
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (profile == null) return;
             Match match = profile.getMatch();
-            if (match != null && match.getKit().isHunger()) {
-                if (event.getFoodLevel() >= 20) {
-                    event.setFoodLevel(20);
-                    player.setSaturation(20);
-                } else {
-                    event.setCancelled(ThreadLocalRandom.current().nextInt(100) > 25);
-                }
-            } else {
+            if (!profile.getState().equals(ProfileState.IN_GAME)) {
+                event.setCancelled(true);
+            }
+            if (match != null && !match.getKit().isHunger()) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
+        Player player = (Player) event.getEntity();
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile == null) return;
+        Match match = profile.getMatch();
+        if(event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED){
+            if(!match.getKit().isSaturationHeal()){
                 event.setCancelled(true);
             }
         }

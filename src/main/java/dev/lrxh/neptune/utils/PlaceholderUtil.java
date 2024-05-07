@@ -49,18 +49,20 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
                     line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
                     line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
-                    line = line.replaceAll("<kit>", match.getKit().getDisplayName());
-                    line = line.replaceAll("<arena>", match.getArena().getDisplayName());
 
-                    if (match.getKit().isBestOfThree()) {
-                        line = line.replaceAll("<points>", participant.getWinsAsString());
-                        line = line.replaceAll("<opponent-points>", opponent.getWinsAsString());
+
+                    if (match.getRounds() > 1) {
+                        line = line.replaceAll("<points>", String.valueOf(participant.getRoundsWon()));
+                        line = line.replaceAll("<opponent-points>", String.valueOf(opponent.getRoundsWon()));
                     }
                 }
                 if (match instanceof OneVersusOneMatch) {
                     OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
+
                     Participant redPlayer = oneVersusOneMatch.getParticipantA();
                     Participant bluePlayer = oneVersusOneMatch.getParticipantB();
+
+
                     if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
 
                         line = line.replaceAll("<playerRed_name>", redPlayer.getNameUnColored());
@@ -68,10 +70,11 @@ public class PlaceholderUtil {
 
                         line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(redPlayer.getPlayerUUID())));
                         line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayerUUID())));
-                        line = line.replaceAll("<kit>", match.getKit().getDisplayName());
-                        line = line.replaceAll("<arena>", match.getArena().getDisplayName());
                     }
                 }
+
+                line = line.replaceAll("<kit>", match.getKit().getDisplayName());
+                line = line.replaceAll("<arena>", match.getArena().getDisplayName());
             }
 
             if (Neptune.get().isPlaceholder()) {
