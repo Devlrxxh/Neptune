@@ -51,8 +51,8 @@ public class OneVersusOneMatch extends Match {
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
     }
 
-    private void removePlaying(){
-        for(Participant ignored : participants){
+    private void removePlaying() {
+        for (Participant ignored : participants) {
             kit.removePlaying();
         }
     }

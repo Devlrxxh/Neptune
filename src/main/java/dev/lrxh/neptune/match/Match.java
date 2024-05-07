@@ -36,8 +36,8 @@ public abstract class Match {
     public Arena arena;
     public Kit kit;
     public List<Participant> participants;
-    private boolean duel;
     public int rounds;
+    private boolean duel;
 
     public void playSound(Sound sound) {
         for (Participant participant : participants) {

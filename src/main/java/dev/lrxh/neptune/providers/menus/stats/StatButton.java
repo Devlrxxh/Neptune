@@ -32,7 +32,6 @@ public class StatButton extends Button {
             line = line.replaceAll("<kill_death_ratio>", String.valueOf(data.getKdr()));
 
 
-
             lore.add(line);
         });
 

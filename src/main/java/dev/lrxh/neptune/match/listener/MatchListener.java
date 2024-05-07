@@ -26,8 +26,6 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.concurrent.ThreadLocalRandom;
-
 public class MatchListener implements Listener {
     private final Neptune plugin = Neptune.get();
 
@@ -165,8 +163,8 @@ public class MatchListener implements Listener {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         Match match = profile.getMatch();
-        if(event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED){
-            if(!match.getKit().isSaturationHeal()){
+        if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
+            if (match != null && !match.getKit().isSaturationHeal()) {
                 event.setCancelled(true);
             }
         }
@@ -210,7 +208,7 @@ public class MatchListener implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
-        if(profile.getState().equals(ProfileState.IN_SPECTATOR)){
+        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
             event.setCancelled(true);
             return;
         }
