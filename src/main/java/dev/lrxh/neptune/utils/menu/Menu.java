@@ -121,7 +121,9 @@ public abstract class Menu {
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
                 int slot = buttonEntry.getKey();
                 if (getFilter() != Filters.NONE && (slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton)) {
-                    slot += 2;
+                    while (buttons.get(slot) != null){
+                        slot += 2;
+                    }
                 }
                 modifiedButtons.put(slot, buttonEntry.getValue());
                 inventory.setItem(slot, createItemStack(player, buttonEntry.getValue()));

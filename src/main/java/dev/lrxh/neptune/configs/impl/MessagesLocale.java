@@ -52,7 +52,7 @@ public enum MessagesLocale implements IDataAccessor {
             "&fKit: &a<kit>",
             "&fArena: &a<arena>",
             " ",
-            "<accept>"),
+            "<accept> <deny>"),
     DUEL_REQUEST_SENDER("DUEL.SENDER", null, DataType.STRING_LIST, " ",
             "&bDuel Request Sent",
             " ",
@@ -62,6 +62,8 @@ public enum MessagesLocale implements IDataAccessor {
             " "),
     DUEL_ACCEPT("DUEL.ACCEPT", null, DataType.STRING, "&a&l(ACCEPT)"),
     DUEL_ACCEPT_HOVER("DUEL.ACCEPT_HOVER", null, DataType.STRING, "&aClick to accept duel request"),
+    DUEL_DENY("DUEL.DENY", null, DataType.STRING, "&c&l(DENY)"),
+    DUEL_DENY_HOVER("DUEL.DENY_HOVER", null, DataType.STRING, "&cClick to deny duel request"),
     SPECTATE_START("MATCH.SPECTATE.START", null, DataType.STRING_LIST, "&b<player> &fstarted spectating match."),
     SPECTATE_STOP("MATCH.SPECTATE.STOP", null, DataType.STRING_LIST, "&b<player> &fstopped spectating match.");
 

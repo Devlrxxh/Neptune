@@ -35,9 +35,10 @@ public class StatButton extends Button {
             lore.add(line);
         });
 
-        return new ItemBuilder(kit.getIcon().getType())
+        return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.STAT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .lore(lore)
+                .clearFlags()
                 .build();
     }
 }

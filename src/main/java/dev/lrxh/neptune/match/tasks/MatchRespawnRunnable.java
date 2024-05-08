@@ -37,6 +37,22 @@ public class MatchRespawnRunnable extends BukkitRunnable {
             MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
 
             match.setMatchState(MatchState.IN_ROUND);
+
+            if (match instanceof OneVersusOneMatch) {
+            OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
+            Player playerA = Bukkit.getPlayer(oneVersusOneMatch.getParticipantA().getPlayerUUID());
+            if (playerA == null) {
+                return;
+            }
+            playerA.teleport(match.getArena().getRedSpawn());
+
+            Player playerB = Bukkit.getPlayer(oneVersusOneMatch.getParticipantB().getPlayerUUID());
+            if (playerB == null) {
+                return;
+            }
+            playerB.teleport(match.getArena().getBlueSpawn());
+
+        }
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.checkRules();
             match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
@@ -52,7 +68,6 @@ public class MatchRespawnRunnable extends BukkitRunnable {
         }
 
         if (respawnTimer == 3) {
-            OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
 
             for (Participant p : match.participants) {
                 match.setupPlayer(p.getPlayerUUID());
@@ -64,18 +79,6 @@ public class MatchRespawnRunnable extends BukkitRunnable {
             }
 
             match.checkRules();
-
-            Player playerA = Bukkit.getPlayer(oneVersusOneMatch.getParticipantA().getPlayerUUID());
-            if (playerA == null) {
-                return;
-            }
-            playerA.teleport(match.getArena().getRedSpawn());
-
-            Player playerB = Bukkit.getPlayer(oneVersusOneMatch.getParticipantB().getPlayerUUID());
-            if (playerB == null) {
-                return;
-            }
-            playerB.teleport(match.getArena().getBlueSpawn());
         }
         respawnTimer--;
     }

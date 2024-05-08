@@ -104,7 +104,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        if (Bukkit.getPlayer(duelRequest.getSender()) == null || profile.getData().getDuelRequest() == null) {
+        if (Bukkit.getPlayer(duelRequest.getSender()) == null) {
             player.sendMessage(CC.error("You don't have any pending duel request!"));
             profile.getData().setDuelRequest(null);
             return;
@@ -121,6 +121,28 @@ public class DuelCommand extends BaseCommand {
 
         Neptune.get().getMatchManager().startMatch(participants, duelRequest.getKit(),
                 duelRequest.getArena(), true, duelRequest.getRounds());
+
+        profile.getData().setDuelRequest(null);
+    }
+
+    @Subcommand("deny")
+    public void deny(Player player) {
+        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+
+        DuelRequest duelRequest = profile.getData().getDuelRequest();
+
+        if (duelRequest == null) {
+            player.sendMessage(CC.error("You don't have any pending duel request!"));
+            return;
+        }
+
+        if (Bukkit.getPlayer(duelRequest.getSender()) == null || profile.getData().getDuelRequest() == null) {
+            player.sendMessage(CC.error("You don't have any pending duel request!"));
+            profile.getData().setDuelRequest(null);
+            return;
+        }
+
+        player.sendMessage(CC.color("&cDuel request denied."));
 
         profile.getData().setDuelRequest(null);
     }

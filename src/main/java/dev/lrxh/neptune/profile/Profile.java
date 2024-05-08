@@ -98,9 +98,13 @@ public class Profile {
         TextComponent accept = Component.text(MessagesLocale.DUEL_ACCEPT.getString())
                 .clickEvent(ClickEvent.runCommand("/duel accept"))
                 .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.DUEL_ACCEPT_HOVER.getString())));
+        TextComponent deny = Component.text(MessagesLocale.DUEL_DENY.getString())
+                .clickEvent(ClickEvent.runCommand("/duel deny"))
+                .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.DUEL_DENY_HOVER.getString())));
 
         MessagesLocale.DUEL_REQUEST_RECEIVER.send(playerUUID,
                 new Replacement("<accept>", accept),
+                new Replacement("<deny>", deny),
                 new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
                 new Replacement("<arena>", duelRequest.getArena().getDisplayName()),
                 new Replacement("<sender>", sender.getName()));
