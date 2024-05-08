@@ -37,31 +37,32 @@ public class PlaceholderUtil {
 
             if (profile.getMatch() != null) {
                 Match match = profile.getMatch();
-
-                if (profile.getState().equals(ProfileState.IN_GAME)) {
-                    Participant participant = match.getParticipant(player.getUniqueId());
-                    Participant opponent = participant.getOpponent();
-                    line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
-                    line = line.replaceAll("<opponent-ping>", String.valueOf(PlayerUtil.getPing(participant.getOpponent().getPlayerUUID())));
-
-                    line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
-                    line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
-                    line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
-                    line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
-                    line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
-
-
-                    if (match.getRounds() > 1) {
-                        line = line.replaceAll("<points>", String.valueOf(participant.getRoundsWon()));
-                        line = line.replaceAll("<opponent-points>", String.valueOf(opponent.getRoundsWon()));
-                    }
-                }
                 if (match instanceof OneVersusOneMatch) {
                     OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
 
                     Participant redPlayer = oneVersusOneMatch.getParticipantA();
                     Participant bluePlayer = oneVersusOneMatch.getParticipantB();
 
+
+                    if (profile.getState().equals(ProfileState.IN_GAME)) {
+                        Participant participant = match.getParticipant(player.getUniqueId());
+                        Participant opponent = participant.getOpponent();
+                        line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
+                        line = line.replaceAll("<opponent-ping>", String.valueOf(PlayerUtil.getPing(participant.getOpponent().getPlayerUUID())));
+
+                        line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
+                        line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
+                        line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
+                        line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
+                        line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
+
+
+                        if (match.getRounds() > 1) {
+                            line = line.replaceAll("<maxPoints>", String.valueOf(oneVersusOneMatch.getRounds()));
+                            line = line.replaceAll("<points>", String.valueOf(participant.getRoundsWon()));
+                            line = line.replaceAll("<opponent-points>", String.valueOf(opponent.getRoundsWon()));
+                        }
+                    }
 
                     if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
 

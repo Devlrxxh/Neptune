@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -42,5 +43,23 @@ public class SpectateCommand extends BaseCommand {
 
         targetProfile.getMatch().addSpectator(player.getUniqueId());
         player.teleport(target);
+    }
+
+    @Subcommand("leave")
+    public void leave(Player player) {
+        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+
+        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
+            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
+        }
+    }
+
+    @Subcommand("quit")
+    public void quit(Player player) {
+        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+
+        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
+            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
+        }
     }
 }

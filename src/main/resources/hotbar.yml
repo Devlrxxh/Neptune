@@ -20,12 +20,6 @@ ITEMS:
       MATERIAL: BOOK
       SLOT: 8
       DURABILITY: 0
-  IN_SPECTATOR:
-    SPEC_LEAVE:
-      NAME: "&cStop Spectating &7(Right Click)"
-      MATERIAL: RED_DYE
-      SLOT: 8
-      DURABILITY: 0
   IN_QUEUE:
     QUEUE_LEAVE:
       NAME: "&#FF5E5EL&#F75959e&#F05454a&#E84F4Fv&#E04A4Ae &#D94444Q&#D13F3Fu&#C93A3Ae&#C23535u&#BA3030e &7(Right Click)"

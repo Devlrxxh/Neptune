@@ -95,6 +95,8 @@ public class OneVersusOneMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
 
+        sendDeathMessage(participant);
+
         if (rounds > 1 && !participant.isDisconnected()) {
             Participant participantKiller = participantA.getName().equals(participant.getName()) ? participantB : participantA;
 
@@ -121,7 +123,6 @@ public class OneVersusOneMatch extends Match {
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         hidePlayer(participant);
-        sendDeathMessage(participant);
         removePlaying();
 
         if (!isDuel()) {

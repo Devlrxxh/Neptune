@@ -34,14 +34,17 @@ public class MatchRespawnRunnable extends BukkitRunnable {
         }
         if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;
         if (respawnTimer == 0) {
+
             MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
 
             match.setMatchState(MatchState.IN_ROUND);
 
             match.sendMessage(MessagesLocale.MATCH_STARTED);
-            match.checkRules();
             match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
             match.sendTitle(CC.color("&aFight!"), "", 10);
+
+            match.checkRules();
+
             cancel();
             return;
         }
@@ -57,6 +60,8 @@ public class MatchRespawnRunnable extends BukkitRunnable {
             for (Participant p : match.participants) {
                 match.setupPlayer(p.getPlayerUUID());
             }
+
+            match.checkRules();
 
             if (match instanceof OneVersusOneMatch) {
                 OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
@@ -78,7 +83,6 @@ public class MatchRespawnRunnable extends BukkitRunnable {
                 ((StandAloneArena) match.arena).restoreSnapshot();
             }
 
-            match.checkRules();
         }
         respawnTimer--;
     }
