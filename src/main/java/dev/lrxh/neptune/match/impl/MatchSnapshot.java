@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.match.impl;
 
 import lombok.Data;
-import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;

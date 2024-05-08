@@ -24,6 +24,7 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MatchListener implements Listener {
@@ -55,6 +56,22 @@ public class MatchListener implements Listener {
             if (!profile.getState().equals(ProfileState.IN_GAME)) {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        if (!(event.getEntityType() == EntityType.ENDER_PEARL)) return;
+
+        ProjectileSource shooter = event.getEntity().getShooter();
+        if (!(shooter instanceof Player)) return;
+
+        Player player = (Player) shooter;
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Match match = profile.getMatch();
+        if (match == null) return;
+        if (match.getMatchState().equals(MatchState.STARTING)) {
+            event.setCancelled(true);
         }
     }
 

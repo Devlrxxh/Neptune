@@ -7,7 +7,6 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
-import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
@@ -30,7 +29,7 @@ public class OneVersusOneMatch extends Match {
     private final Participant participantB;
 
     public OneVersusOneMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB, int rounds) {
-        super(MatchState.STARTING, arena, kit, participants,rounds, duel);
+        super(MatchState.STARTING, arena, kit, participants, rounds, duel);
         this.participantA = participantA;
         this.participantB = participantB;
     }

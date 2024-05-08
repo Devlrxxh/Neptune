@@ -121,7 +121,7 @@ public abstract class Menu {
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
                 int slot = buttonEntry.getKey();
                 if (getFilter() != Filters.NONE && (slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton)) {
-                    while (buttons.get(slot) != null){
+                    while (buttons.get(slot) != null) {
                         slot += 2;
                     }
                 }
