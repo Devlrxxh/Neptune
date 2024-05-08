@@ -21,18 +21,25 @@ public class VisibilityLogic {
     public void handle(UUID viewerUUID, UUID otherUUID) {
         Player viewerPlayer = Bukkit.getPlayer(viewerUUID);
         Player otherPlayer = Bukkit.getPlayer(otherUUID);
-        if (viewerPlayer == null) return;
-        if (otherPlayer == null) return;
+        if (viewerPlayer == null || otherPlayer == null || viewerPlayer.equals(otherPlayer)) {
+            return;
+        }
 
         Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(viewerUUID);
         Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
 
-        if (viewerProfile.getMatch() != null && otherProfile.getMatch() != null && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())) {
+        if (viewerProfile.getMatch() != null && otherProfile.getMatch() != null && viewerProfile.getMatch().equals(otherProfile.getMatch())) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
         } else {
             viewerPlayer.hidePlayer(plugin, otherPlayer);
             otherPlayer.hidePlayer(plugin, viewerPlayer);
         }
+
+        if (viewerProfile.getState() == ProfileState.LOBBY || viewerProfile.getState() == ProfileState.IN_QUEUE) {
+            viewerPlayer.showPlayer(plugin, otherPlayer);
+            otherPlayer.showPlayer(plugin, viewerPlayer);
+        }
     }
+
 }

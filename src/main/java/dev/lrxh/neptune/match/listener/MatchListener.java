@@ -176,13 +176,15 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
-        Player player = (Player) event.getEntity();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if (profile == null) return;
-        Match match = profile.getMatch();
-        if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
-            if (match != null && !match.getKit().isSaturationHeal()) {
-                event.setCancelled(true);
+        if (event.getEntity() instanceof Player) {
+            Player player = (Player) event.getEntity();
+            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            if (profile == null) return;
+            Match match = profile.getMatch();
+            if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
+                if (match != null && !match.getKit().isSaturationHeal()) {
+                    event.setCancelled(true);
+                }
             }
         }
     }

@@ -9,7 +9,6 @@ dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.class
 dev\lrxh\neptune\match\menu\MatchListMenu.class
 dev\lrxh\neptune\utils\menu\Button.class
 dev\lrxh\neptune\providers\hotbar\HotbarManager.class
-dev\lrxh\neptune\providers\hotbar\ItemAction$6.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilderImpl.class
 dev\lrxh\neptune\match\menu\button\HealthButton.class
 dev\lrxh\neptune\utils\assemble\AssembleBoard.class
