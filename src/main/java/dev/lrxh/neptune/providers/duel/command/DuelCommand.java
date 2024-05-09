@@ -46,42 +46,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        new KitSelectMenu(target.getUniqueId(), 1, false).openMenu(player);
-    }
-
-    @Default
-    @Syntax("<name> <rounds>")
-    @CommandCompletion("@names")
-    public void statsOthers(Player player, String otherPlayer, int rounds) {
-
-        Player target = Bukkit.getPlayer(otherPlayer);
-        if (target == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
-
-        if (Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch() != null) {
-            player.sendMessage(CC.error("You can't send duel requests right now!"));
-            return;
-        }
-
-        if (player.getName().equalsIgnoreCase(otherPlayer)) {
-            player.sendMessage(CC.error("You can't duel yourself!"));
-            return;
-        }
-        Profile targetProfile = Neptune.get().getProfileManager().getByUUID(target.getUniqueId());
-
-        if (targetProfile.getMatch() != null || targetProfile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
-            player.sendMessage(CC.error("Player can't accept duel requests!"));
-            return;
-        }
-
-        if (targetProfile.getData().getDuelRequest() != null) {
-            player.sendMessage(CC.error("Player already has pending duel request!"));
-            return;
-        }
-
-        new KitSelectMenu(target.getUniqueId(), rounds, false).openMenu(player);
+        new KitSelectMenu(target.getUniqueId(), false).openMenu(player);
     }
 
     @Subcommand("accept")

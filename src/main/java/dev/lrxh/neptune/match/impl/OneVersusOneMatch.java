@@ -8,6 +8,7 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -143,6 +144,29 @@ public class OneVersusOneMatch extends Match {
 
             Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).setMatchSnapshot(snapshot);
         }
+    }
+
+    public void startMatch(){
+        matchState = MatchState.IN_ROUND;
+        checkRules();
+        teleportPlayersToPositions();
+
+        playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
+        sendTitle(CC.color("&aFight!"), "", 10);
+    }
+
+    public void teleportPlayersToPositions(){
+        Player playerA = Bukkit.getPlayer(participantA.getPlayerUUID());
+        if (playerA == null) {
+            return;
+        }
+        playerA.teleport(arena.getRedSpawn());
+
+        Player playerB = Bukkit.getPlayer(participantB.getPlayerUUID());
+        if (playerB == null) {
+            return;
+        }
+        playerB.teleport(arena.getBlueSpawn());
     }
 
     private void sendDeathMessage(Participant deadParticipant) {

@@ -59,7 +59,15 @@ public enum MenusLocale implements IDataAccessor {
     DUEL_ITEM_NAME("DUEL.ITEM.NAME", null, DataType.STRING, "&b<kit>"),
     DUEL_LORE("DUEL.LORE", null, DataType.STRING_LIST,
             "",
-            "&a&lClick to select kit!");
+            "&a&lClick to select kit!"),
+    ROUNDS_TITLE("ROUNDS.TITLE", null, DataType.STRING, "&7Select Rounds amount"),
+    ROUNDS_SIZE("ROUNDS.SIZE", null, DataType.INT, "27"),
+    ROUNDS_STARTING_SLOT("DUEL.STARTING-SLOT", null, DataType.INT, "10"),
+    ROUNDS_FILTER("ROUNDS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
+    ROUNDS_ITEM_NAME("ROUNDS.ITEM.NAME", null, DataType.STRING, "&bFirst to &b&l<rounds>"),
+    ROUNDS_LORE("ROUNDS.LORE", null, DataType.STRING_LIST,
+            "",
+            "&a&lClick to select rounds amount!");
 
 
     private final String path;

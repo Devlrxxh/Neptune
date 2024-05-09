@@ -21,12 +21,8 @@ public class MatchStartRunnable extends BukkitRunnable {
     @Override
     public void run() {
         if (startTimer == 0) {
-            match.setMatchState(MatchState.IN_ROUND);
             match.sendMessage(MessagesLocale.MATCH_STARTED);
-            match.checkRules();
-            match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-            match.sendTitle(CC.color("&aFight!"), "", 10);
-
+            match.startMatch();
             cancel();
             return;
         }

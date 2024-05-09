@@ -16,7 +16,6 @@ import java.util.UUID;
 @AllArgsConstructor
 public class KitSelectMenu extends Menu {
     private final UUID receiver;
-    private int rounds;
     private boolean test;
 
     @Override
@@ -40,7 +39,7 @@ public class KitSelectMenu extends Menu {
         int i = MenusLocale.DUEL_STARTING_SLOT.getInt();
 
         for (Kit kit : Neptune.get().getKitManager().kits) {
-            buttons.put(i++, new KitSelectButton(kit, receiver, rounds, test));
+            buttons.put(i++, new KitSelectButton(kit, receiver, test));
         }
 
         return buttons;

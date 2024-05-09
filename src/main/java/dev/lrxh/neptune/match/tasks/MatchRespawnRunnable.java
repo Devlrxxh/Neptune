@@ -8,10 +8,8 @@ import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.OneVersusOneMatch;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MatchRespawnRunnable extends BukkitRunnable {
@@ -35,16 +33,8 @@ public class MatchRespawnRunnable extends BukkitRunnable {
         if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;
         if (respawnTimer == 0) {
 
-            match.checkRules();
-
             MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
-
-            match.setMatchState(MatchState.IN_ROUND);
-
-            match.sendMessage(MessagesLocale.MATCH_STARTED);
-            match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-            match.sendTitle(CC.color("&aFight!"), "", 10);
-
+            match.startMatch();
             cancel();
             return;
         }
@@ -56,33 +46,20 @@ public class MatchRespawnRunnable extends BukkitRunnable {
         }
 
         if (respawnTimer == 3) {
-
             for (Participant p : match.participants) {
                 match.setupPlayer(p.getPlayerUUID());
             }
 
-            match.checkRules();
-
             if (match instanceof OneVersusOneMatch) {
                 OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
-                Player playerA = Bukkit.getPlayer(oneVersusOneMatch.getParticipantA().getPlayerUUID());
-                if (playerA == null) {
-                    return;
-                }
-                playerA.teleport(match.getArena().getRedSpawn());
-
-                Player playerB = Bukkit.getPlayer(oneVersusOneMatch.getParticipantB().getPlayerUUID());
-                if (playerB == null) {
-                    return;
-                }
-                playerB.teleport(match.getArena().getBlueSpawn());
-
+                oneVersusOneMatch.teleportPlayersToPositions();
             }
 
             if (match.arena instanceof StandAloneArena) {
                 ((StandAloneArena) match.arena).restoreSnapshot();
             }
 
+            match.checkRules();
         }
         respawnTimer--;
     }

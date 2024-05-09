@@ -166,6 +166,7 @@ public abstract class Match {
         }
     }
 
+
     private void showHealth(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
@@ -214,4 +215,6 @@ public abstract class Match {
     public abstract void end();
 
     public abstract void onDeath(Participant participant);
+
+    public abstract void startMatch();
 }

@@ -90,6 +90,7 @@ dev\lrxh\neptune\commands\MainCommand.class
 dev\lrxh\neptune\arena\menu\ArenaCopyCreateButton.class
 dev\lrxh\neptune\arena\Arena$ArenaBuilderImpl.class
 dev\lrxh\neptune\providers\leaderboard\LeaderboardTask.class
+dev\lrxh\neptune\providers\duel\menu\RoundSelectButton.class
 dev\lrxh\neptune\arena\listener\LobbyListener.class
 dev\lrxh\neptune\providers\duel\command\TierTestCommand.class
 dev\lrxh\neptune\utils\LocationUtil.class
@@ -145,6 +146,7 @@ dev\lrxh\neptune\match\menu\button\SwitchInventoryButton.class
 dev\lrxh\neptune\providers\manager\IManager.class
 dev\lrxh\neptune\kit\impl\Rules$5.class
 dev\lrxh\neptune\match\impl\OneVersusOneMatch.class
+dev\lrxh\neptune\providers\duel\menu\RoundsSelectMenu.class
 dev\lrxh\neptune\kit\command\KitCommand.class
 dev\lrxh\neptune\utils\assemble\AssembleThread.class
 dev\lrxh\neptune\arena\impl\SharedArena$1.class

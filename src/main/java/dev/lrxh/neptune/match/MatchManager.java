@@ -38,19 +38,8 @@ public class MatchManager {
 
         matches.add(match);
 
-        //Teleport the team A to their spawns
-        Player playerA = Bukkit.getPlayer(match.getParticipantA().getPlayerUUID());
-        if (playerA == null) {
-            return;
-        }
-        playerA.teleport(arena.getRedSpawn());
-
-        //Teleport the team B to their spawns
-        Player playerB = Bukkit.getPlayer(match.getParticipantB().getPlayerUUID());
-        if (playerB == null) {
-            return;
-        }
-        playerB.teleport(arena.getBlueSpawn());
+        //Teleport the Players to their spawn
+        match.teleportPlayersToPositions();
 
         //Setup participants
         for (Participant participant : participants) {
