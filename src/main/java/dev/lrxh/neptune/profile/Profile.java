@@ -8,6 +8,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchSnapshot;
+import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.data.PlayerData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -24,9 +25,7 @@ import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
@@ -108,6 +107,22 @@ public class Profile {
                 new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
                 new Replacement("<arena>", duelRequest.getArena().getDisplayName()),
                 new Replacement("<sender>", sender.getName()));
+    }
+
+    public void acceptDuel() {
+        //Create participants
+        Participant participant1 =
+                new Participant(data.getDuelRequest().getSender());
+
+        Participant participant2 =
+                new Participant(playerUUID);
+
+        List<Participant> participants = Arrays.asList(participant1, participant2);
+
+        Neptune.get().getMatchManager().startMatch(participants, data.getDuelRequest().getKit(),
+                data.getDuelRequest().getArena(), true, data.getDuelRequest().getRounds());
+
+        data.setDuelRequest(null);
     }
 
     public void save() {

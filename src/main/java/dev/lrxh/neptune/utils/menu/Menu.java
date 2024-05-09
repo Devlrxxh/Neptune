@@ -116,15 +116,16 @@ public abstract class Menu {
                 break;
         }
 
-        if (fixedPositions) {
-            Map<Integer, Button> modifiedButtons = new HashMap<>();
+        if (getFilter() != Filters.NONE) {
+            TreeMap<Integer, Button> modifiedButtons = new TreeMap<>();
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
                 int slot = buttonEntry.getKey();
-                if (getFilter() != Filters.NONE && (slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton)) {
+                if ((slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton)) {
                     while (buttons.get(slot) != null) {
                         slot += 2;
                     }
                 }
+
                 modifiedButtons.put(slot, buttonEntry.getValue());
                 inventory.setItem(slot, createItemStack(player, buttonEntry.getValue()));
             }

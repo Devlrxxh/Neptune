@@ -1,9 +1,8 @@
-package dev.lrxh.neptune.commands;
+package dev.lrxh.neptune.providers.duel.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.duel.DuelRequest;
@@ -11,9 +10,6 @@ import dev.lrxh.neptune.providers.duel.menu.KitSelectMenu;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.Arrays;
-import java.util.List;
 
 @CommandAlias("duel|1v1")
 @Description("Duel other players.")
@@ -50,7 +46,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        new KitSelectMenu(target.getUniqueId(), 1).openMenu(player);
+        new KitSelectMenu(target.getUniqueId(), 1, false).openMenu(player);
     }
 
     @Default
@@ -85,7 +81,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        new KitSelectMenu(target.getUniqueId(), rounds).openMenu(player);
+        new KitSelectMenu(target.getUniqueId(), rounds, false).openMenu(player);
     }
 
     @Subcommand("accept")
@@ -110,19 +106,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        //Create participants
-        Participant participant1 =
-                new Participant(duelRequest.getSender());
-
-        Participant participant2 =
-                new Participant(player.getUniqueId());
-
-        List<Participant> participants = Arrays.asList(participant1, participant2);
-
-        Neptune.get().getMatchManager().startMatch(participants, duelRequest.getKit(),
-                duelRequest.getArena(), true, duelRequest.getRounds());
-
-        profile.getData().setDuelRequest(null);
+        profile.acceptDuel();
     }
 
     @Subcommand("deny")

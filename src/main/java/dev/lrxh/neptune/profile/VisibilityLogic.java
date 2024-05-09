@@ -36,7 +36,7 @@ public class VisibilityLogic {
             otherPlayer.hidePlayer(plugin, viewerPlayer);
         }
 
-        if (viewerProfile.getState() == ProfileState.LOBBY || viewerProfile.getState() == ProfileState.IN_QUEUE) {
+        if (viewerProfile.getState().equals(ProfileState.LOBBY) || viewerProfile.getState().equals(ProfileState.IN_QUEUE)) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
         }

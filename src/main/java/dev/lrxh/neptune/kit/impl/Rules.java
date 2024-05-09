@@ -115,6 +115,17 @@ public enum Rules {
         public boolean enabled(Kit kit) {
             return kit.isSaturationHeal();
         }
+    },
+    SHOWHP("If players should see their enemies health under their name", "Show Health") {
+        @Override
+        public void execute(Kit kit, boolean value) {
+            kit.setShowHP(value);
+        }
+
+        @Override
+        public boolean enabled(Kit kit) {
+            return kit.isShowHP();
+        }
     };
 
     private final String description;

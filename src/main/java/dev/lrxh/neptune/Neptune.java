@@ -18,6 +18,7 @@ import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.database.MongoManager;
+import dev.lrxh.neptune.providers.duel.command.DuelCommand;
 import dev.lrxh.neptune.providers.hotbar.HotbarManager;
 import dev.lrxh.neptune.providers.hotbar.ItemListener;
 import dev.lrxh.neptune.providers.leaderboard.LeaderboardManager;

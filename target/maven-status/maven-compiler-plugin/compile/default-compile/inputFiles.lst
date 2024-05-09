@@ -13,6 +13,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\lea
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\configs\impl\SettingsLocale.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\kit\command\KitCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\kit\KitManager.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\duel\command\TierTestCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\events\AssembleBoardCreatedEvent.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\MainCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\queue\QueueTask.java
@@ -81,6 +82,7 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\hot
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\menu\MatchListMenu.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\Console.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\impl\DeathCause.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\tiertest\Tiers.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\QueueCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\PlaceholderUtil.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\manager\Value.java
@@ -91,12 +93,12 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\queue\menu\Qu
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\menu\button\StatisticsButton.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\StatsCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\events\AssembleBoardDestroyEvent.java
-C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\DuelCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\AssembleException.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\impl\StandAloneArena.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\menu\ArenaCopyCreateButton.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\clickable\Replacement.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\duel\menu\KitSelectButton.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\duel\command\DuelCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\ColorUtil.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\events\AssembleBoardCreateEvent.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\Neptune.java

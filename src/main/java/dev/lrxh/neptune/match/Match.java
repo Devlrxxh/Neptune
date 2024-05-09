@@ -9,16 +9,20 @@ import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -143,6 +147,41 @@ public abstract class Match {
                     PlayerUtil.allowMovement(participant.getPlayerUUID());
                 }
             }
+            if (kit.isShowHP()) {
+                if (matchState.equals(MatchState.STARTING)) {
+                    showHealth(participant.getPlayerUUID());
+                } else if (matchState.equals(MatchState.ENDING)) {
+                    hideHealth();
+                }
+            }
+        }
+    }
+
+    private void hideHealth(){
+        for (Participant participant : participants) {
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player == null) return;
+            Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
+            if (objective != null) {
+                objective.unregister();
+            }
+        }
+    }
+
+    private void showHealth(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        for (Participant participant : participants) {
+            Player viewer = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (viewer == null) return;
+
+            Objective objective = viewer.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
+            if (objective == null) {
+                objective = viewer.getScoreboard().registerNewObjective("showhealth", "health");
+            }
+            objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            objective.displayName(Component.text(CC.color("&c") + "❤"));
+            objective.getScore(player.getName()).setScore((int) Math.floor(player.getHealth() / 2));
         }
     }
 
