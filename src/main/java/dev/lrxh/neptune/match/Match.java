@@ -150,14 +150,12 @@ public abstract class Match {
             if (kit.isShowHP()) {
                 if (matchState.equals(MatchState.STARTING)) {
                     showHealth(participant.getPlayerUUID());
-                } else if (matchState.equals(MatchState.ENDING)) {
-                    hideHealth();
                 }
             }
         }
     }
 
-    private void hideHealth(){
+    public void hideHealth() {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) return;

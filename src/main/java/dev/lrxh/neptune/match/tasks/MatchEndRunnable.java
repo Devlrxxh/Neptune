@@ -46,6 +46,10 @@ public class MatchEndRunnable extends BukkitRunnable {
                 oneVersusOneMatch.sendEndMessage();
             }
 
+            if (match.getKit().isShowHP()) {
+                match.hideHealth();
+            }
+
             for (UUID spectator : new HashSet<>(match.spectators)) {
                 match.removeSpectator(spectator, false);
             }

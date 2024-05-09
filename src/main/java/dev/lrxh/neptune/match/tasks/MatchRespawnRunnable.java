@@ -35,6 +35,8 @@ public class MatchRespawnRunnable extends BukkitRunnable {
         if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;
         if (respawnTimer == 0) {
 
+            match.checkRules();
+
             MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
 
             match.setMatchState(MatchState.IN_ROUND);
@@ -42,8 +44,6 @@ public class MatchRespawnRunnable extends BukkitRunnable {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
             match.sendTitle(CC.color("&aFight!"), "", 10);
-
-            match.checkRules();
 
             cancel();
             return;
