@@ -22,7 +22,6 @@ import java.util.*;
 public abstract class Menu {
 
     public static Map<String, Menu> currentlyOpenedMenus = new HashMap<>();
-    public Inventory inventoryBukkit = null;
     protected Neptune plugin = Neptune.get();
     private Map<Integer, Button> buttons = new HashMap<>();
     private ItemStack fillerType;
@@ -127,22 +126,26 @@ public abstract class Menu {
                 }
 
                 modifiedButtons.put(slot, buttonEntry.getValue());
-                inventory.setItem(slot, createItemStack(player, buttonEntry.getValue()));
+                setItem(inventory, buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
             }
             this.buttons = modifiedButtons;
         } else {
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
-                inventory.setItem(buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
+                setItem(inventory, buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
             }
             this.buttons = getButtons();
         }
-
-        this.inventoryBukkit = inventory;
 
         player.openInventory(inventory);
         player.updateInventory();
 
         currentlyOpenedMenus.put(player.getName(), this);
+    }
+
+    private void setItem(Inventory inventory, int slot, ItemStack item) {
+        if (slot < inventory.getSize()) {
+            inventory.setItem(slot, item);
+        }
     }
 
     public int size(Map<Integer, Button> buttons) {

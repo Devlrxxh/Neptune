@@ -91,6 +91,7 @@ public abstract class Match {
             if (participiantPlayer == null) return;
             player.showPlayer(Neptune.get(), participiantPlayer);
         }
+
         broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
     }
 

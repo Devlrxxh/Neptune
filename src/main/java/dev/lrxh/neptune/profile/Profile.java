@@ -110,6 +110,8 @@ public class Profile {
     }
 
     public void acceptDuel() {
+        Neptune.get().getQueueManager().queues.remove(playerUUID);
+
         //Create participants
         Participant participant1 =
                 new Participant(data.getDuelRequest().getSender());

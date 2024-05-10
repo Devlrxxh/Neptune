@@ -198,6 +198,11 @@ public class MatchListener implements Listener {
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
         if (match != null && match.getKit().isBuild()) {
+            if(match.getMatchState().equals(MatchState.STARTING)){
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou can't place blocks yet!"));
+                return;
+            }
             if (blockLocation.getY() >= ((StandAloneArena) match.arena).getLimit()) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou have reached build limit!"));
