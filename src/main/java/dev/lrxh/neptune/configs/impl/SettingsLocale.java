@@ -13,7 +13,7 @@ public enum SettingsLocale implements IDataAccessor {
     SPAWN_LOCATION("SPAWN.LOCATION", null, DataType.STRING, "NONE"),
     QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "20"),
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "300"),
-    MONGO_URI("MONGO.URI", "MongoDB URI.", DataType.STRING, "mongodb+srv://lrxh:KlR0lOFSbtAxanOi@cluster0.st1wrul.mongodb.net/?retryWrites=true&w=majority"),
+    MONGO_URI("MONGO.URI", "MongoDB URI.", DataType.STRING, "none"),
     MONGO_DATABASE("MONGO.DATABASE", "MongoDB Database.", DataType.STRING, "neptune");
     private final String path;
     private final String comment;
