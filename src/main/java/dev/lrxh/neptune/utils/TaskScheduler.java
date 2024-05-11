@@ -9,6 +9,11 @@ public class TaskScheduler {
     private final Vector<BukkitRunnable> tasks = new Vector<>();
 
     public void startTask(BukkitRunnable task, long delay) {
+        task.runTaskTimer(Neptune.get(), delay, 20L);
+        tasks.add(task);
+    }
+
+    public void startTaskAsync(BukkitRunnable task, long delay) {
         task.runTaskTimerAsynchronously(Neptune.get(), delay, 20L);
         tasks.add(task);
     }

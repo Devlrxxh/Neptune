@@ -25,7 +25,7 @@ import dev.lrxh.neptune.providers.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.providers.leaderboard.LeaderboardTask;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
-import dev.lrxh.neptune.queue.QueueTask;
+import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.TaskScheduler;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuListener;
@@ -132,7 +132,7 @@ public final class Neptune extends JavaPlugin {
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler();
-        taskScheduler.startTask(new QueueTask(), SettingsLocale.QUEUE_UPDATE_TIME.getInt());
+        taskScheduler.startTask(new QueueCheckTask(), SettingsLocale.QUEUE_UPDATE_TIME.getInt());
         taskScheduler.startTask(new LeaderboardTask(), SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
     }
 
