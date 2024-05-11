@@ -146,7 +146,7 @@ public class OneVersusOneMatch extends Match {
         }
     }
 
-    public void startMatch(){
+    public void startMatch() {
         matchState = MatchState.IN_ROUND;
         checkRules();
         teleportPlayersToPositions();
@@ -155,7 +155,7 @@ public class OneVersusOneMatch extends Match {
         sendTitle(CC.color("&aFight!"), "", 10);
     }
 
-    public void teleportPlayersToPositions(){
+    public void teleportPlayersToPositions() {
         Player playerA = Bukkit.getPlayer(participantA.getPlayerUUID());
         if (playerA == null) {
             return;

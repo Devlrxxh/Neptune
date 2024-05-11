@@ -124,12 +124,9 @@ public class PlayerUtil {
 
 
     public void denyMovement(UUID playerUUID) {
-        if (Bukkit.getPlayer(playerUUID) == null) return;
         Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
 
-        if (player == null) {
-            return;
-        }
         player.setFlying(false);
         player.setWalkSpeed(0.0F);
         player.setFoodLevel(0);
@@ -139,12 +136,9 @@ public class PlayerUtil {
     }
 
     public void allowMovement(UUID playerUUID) {
-        if (Bukkit.getPlayer(playerUUID) == null) return;
         Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
 
-        if (player == null) {
-            return;
-        }
         player.setFlying(false);
         player.setWalkSpeed(0.2F);
         player.setFoodLevel(20);

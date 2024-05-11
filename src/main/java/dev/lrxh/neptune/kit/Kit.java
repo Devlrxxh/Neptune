@@ -70,7 +70,9 @@ public class Kit {
     }
 
     public void removeQueue() {
-        queue--;
+        if (!(queue == 0)) {
+            queue--;
+        }
     }
 
     public void addQueue() {
@@ -78,7 +80,9 @@ public class Kit {
     }
 
     public void removePlaying() {
-        playing--;
+        if (!(playing == 0)) {
+            playing--;
+        }
     }
 
     public void addPlaying() {

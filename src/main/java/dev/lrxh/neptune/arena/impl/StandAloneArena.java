@@ -73,7 +73,6 @@ public class StandAloneArena extends Arena {
         synchronized (chunkSnapshots) {
             for (Chunk chunk : chunkSnapshots.keySet()) {
                 ChunkSnapshot snapshot = chunkSnapshots.get(chunk);
-
                 for (int x = 0; x < 16; x++) {
                     for (int y = 0; y < chunk.getWorld().getMaxHeight(); y++) {
                         for (int z = 0; z < 16; z++) {

@@ -15,7 +15,7 @@ public class ProfileManager {
     }
 
     public void removeProfile(UUID playerUUID) {
-        plugin.getQueueManager().queues.remove(playerUUID);
+        plugin.getQueueManager().remove(playerUUID);
         profiles.get(playerUUID).save();
         profiles.remove(playerUUID);
     }

@@ -197,8 +197,13 @@ public class MatchListener implements Listener {
         if (profile == null) return;
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
+        if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+            event.setCancelled(true);
+            player.sendMessage(CC.color("&cYou can't place blocks here!"));
+            return;
+        }
         if (match != null && match.getKit().isBuild()) {
-            if(match.getMatchState().equals(MatchState.STARTING)){
+            if (match.getMatchState().equals(MatchState.STARTING)) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou can't place blocks yet!"));
                 return;

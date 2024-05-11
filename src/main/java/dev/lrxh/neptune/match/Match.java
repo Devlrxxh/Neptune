@@ -86,12 +86,6 @@ public abstract class Match {
         player.setFlying(true);
         player.setGameMode(GameMode.SPECTATOR);
 
-        for (Participant participant : participants) {
-            Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (participiantPlayer == null) return;
-            player.showPlayer(Neptune.get(), participiantPlayer);
-        }
-
         broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
     }
 

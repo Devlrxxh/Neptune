@@ -9,7 +9,6 @@ import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Arrays;
@@ -73,9 +72,14 @@ public class QueueTask extends BukkitRunnable {
                                 plugin.getQueueManager().remove(uuid2);
                                 plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.LOBBY);
 
-                                Bukkit.getPlayer(uuid1).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
-                                Bukkit.getPlayer(uuid2).sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
+                                PlayerUtil.sendMessage(uuid1, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
+                                PlayerUtil.sendMessage(uuid2, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                                 return;
+                            }
+
+                            //Set arena as being used
+                            if (arena instanceof StandAloneArena) {
+                                ((StandAloneArena) arena).setUsed(true);
                             }
 
                             //Send match found message
@@ -92,11 +96,6 @@ public class QueueTask extends BukkitRunnable {
                                     new Replacement("<arena>", arena.getDisplayName()),
                                     new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid1))),
                                     new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
-
-                            //Set arena as being used
-                            if (arena instanceof StandAloneArena) {
-                                ((StandAloneArena) arena).setUsed(true);
-                            }
 
                             //Start match
                             plugin.getMatchManager().startMatch(participants, queue1.getKit(),
