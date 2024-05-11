@@ -111,6 +111,7 @@ dev\lrxh\neptune\arena\Arena.class
 dev\lrxh\neptune\providers\duel\menu\KitSelectMenu.class
 dev\lrxh\neptune\utils\TimeUtil.class
 dev\lrxh\neptune\queue\Queue.class
+dev\lrxh\neptune\commands\LeaveCommand.class
 dev\lrxh\neptune\providers\menus\kitEditor\KitEditorMenu.class
 dev\lrxh\neptune\configs\impl\DataType.class
 dev\lrxh\neptune\match\impl\Participant.class

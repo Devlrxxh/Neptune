@@ -126,12 +126,12 @@ public abstract class Menu {
                 }
 
                 modifiedButtons.put(slot, buttonEntry.getValue());
-                setItem(inventory, buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
+                inventory.setItem(slot, createItemStack(player, buttonEntry.getValue()));
             }
             this.buttons = modifiedButtons;
         } else {
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
-                setItem(inventory, buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
+                inventory.setItem(buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
             }
             this.buttons = getButtons();
         }

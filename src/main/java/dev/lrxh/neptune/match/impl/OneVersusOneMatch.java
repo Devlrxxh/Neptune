@@ -48,7 +48,7 @@ public class OneVersusOneMatch extends Match {
         loser.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
 
-        Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
+        Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L, 20L);
     }
 
     private void removePlaying() {

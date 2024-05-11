@@ -41,7 +41,7 @@ public class ProfileListener implements Listener {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         Match match = profile.getMatch();
-        if (match != null) {
+        if (profile.getState().equals(ProfileState.IN_GAME)) {
             Participant participant = match.getParticipant(player.getUniqueId());
             participant.setDeathCause(DeathCause.DISCONNECT);
             participant.setDisconnected(true);

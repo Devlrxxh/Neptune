@@ -78,13 +78,19 @@ public abstract class Match {
         if (player == null) return;
         Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
 
-        profile.setState(ProfileState.IN_SPECTATOR);
         profile.setMatch(this);
+        profile.setState(ProfileState.IN_SPECTATOR);
         spectators.add(playerUUID);
 
         player.setAllowFlight(true);
         player.setFlying(true);
         player.setGameMode(GameMode.SPECTATOR);
+
+        for (Participant participant : participants) {
+            Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (participiantPlayer == null) return;
+            player.showPlayer(Neptune.get(), participiantPlayer);
+        }
 
         broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
     }

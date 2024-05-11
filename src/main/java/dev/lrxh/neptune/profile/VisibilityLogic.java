@@ -28,15 +28,19 @@ public class VisibilityLogic {
         Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(viewerUUID);
         Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
 
-        if (viewerProfile.getMatch() != null && otherProfile.getMatch() != null && viewerProfile.getMatch().equals(otherProfile.getMatch())) {
+
+        if (viewerProfile.getState().equals(ProfileState.LOBBY) || viewerProfile.getState().equals(ProfileState.IN_QUEUE) &&
+                (otherProfile.getState().equals(ProfileState.LOBBY) || otherProfile.getState().equals(ProfileState.IN_QUEUE))) {
+
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
+            return;
         } else {
             viewerPlayer.hidePlayer(plugin, otherPlayer);
             otherPlayer.hidePlayer(plugin, viewerPlayer);
         }
 
-        if (viewerProfile.getState().equals(ProfileState.LOBBY) || viewerProfile.getState().equals(ProfileState.IN_QUEUE)) {
+        if (viewerProfile.getMatch() != null && otherProfile.getMatch() != null && viewerProfile.getMatch().equals(otherProfile.getMatch())) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
         } else {
