@@ -96,7 +96,6 @@ dev\lrxh\neptune\providers\duel\command\TierTestCommand.class
 dev\lrxh\neptune\utils\LocationUtil.class
 dev\lrxh\neptune\utils\menu\PaginatedMenu.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$2.class
-dev\lrxh\neptune\queue\QueueTask.class
 dev\lrxh\neptune\kit\Kit$KitBuilder.class
 dev\lrxh\neptune\providers\manager\Value.class
 dev\lrxh\neptune\match\impl\ParticipantColor.class
@@ -148,6 +147,7 @@ dev\lrxh\neptune\providers\manager\IManager.class
 dev\lrxh\neptune\kit\impl\Rules$5.class
 dev\lrxh\neptune\match\impl\OneVersusOneMatch.class
 dev\lrxh\neptune\providers\duel\menu\RoundsSelectMenu.class
+dev\lrxh\neptune\queue\tasks\QueueCheckTask.class
 dev\lrxh\neptune\kit\command\KitCommand.class
 dev\lrxh\neptune\utils\assemble\AssembleThread.class
 dev\lrxh\neptune\arena\impl\SharedArena$1.class

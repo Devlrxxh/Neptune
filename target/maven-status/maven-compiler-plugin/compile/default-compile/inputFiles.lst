@@ -17,13 +17,13 @@ C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\kit\KitManage
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\duel\command\TierTestCommand.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\events\AssembleBoardCreatedEvent.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\commands\MainCommand.java
-C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\queue\QueueTask.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\arena\menu\ArenaCopyMenu.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\queue\QueueManager.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\assemble\AssembleThread.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\match\Match.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\providers\menus\kitEditor\KitEditorMenu.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\menu\buttons\PageButton.java
+C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\queue\tasks\QueueCheckTask.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\utils\TaskScheduler.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\profile\ProfileState.java
 C:\Users\nodyt\IdeaProjects\Neptune\src\main\java\dev\lrxh\neptune\profile\ProfileManager.java
