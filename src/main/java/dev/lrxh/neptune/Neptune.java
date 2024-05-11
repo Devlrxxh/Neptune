@@ -153,7 +153,8 @@ public final class Neptune extends JavaPlugin {
                 new DuelCommand(),
                 new SpectateCommand(),
                 new DuelCommand(),
-                new LeaveCommand()
+                new LeaveCommand(),
+                new MatchHistoryCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

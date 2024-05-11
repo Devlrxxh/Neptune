@@ -67,11 +67,14 @@ public class Profile {
             save();
             return;
         }
+
+        data.setMatchHistories(data.deserializeHistory(document.getList("history", String.class, new ArrayList<>())));
+
         username = document.getString("username");
         Document kitStatistics = (Document) document.get("kitData");
 
         for (String key : kitStatistics.keySet()) {
-            Document kitDocument = (Document) kitStatistics.get(key);
+            Document kitDocument = kitStatistics.get(key, Document.class);
             Kit kit = Neptune.get().getKitManager().getKitByName(key);
 
             if (kit != null) {
@@ -80,7 +83,6 @@ public class Profile {
                 profileKitData.setWins(kitDocument.getInteger("WINS", 0));
                 profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
                 profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
-                profileKitData.setElo(kitDocument.getInteger("elo", 1000));
                 profileKitData.setKit(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
 
                 data.getKitData().put(kit, profileKitData);
@@ -134,21 +136,20 @@ public class Profile {
 
         Document kitStatsDoc = new Document();
 
+        document.put("history", data.serializeHistory());
+
         for (Map.Entry<Kit, KitData> entry : data.getKitData().entrySet()) {
             Document kitStatisticsDocument = new Document();
-            kitStatisticsDocument.put("elo", entry.getValue().getElo());
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getValue().getCurrentStreak());
             kitStatisticsDocument.put("WINS", entry.getValue().getWins());
             kitStatisticsDocument.put("LOSSES", entry.getValue().getLosses());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getValue().getBestStreak());
             kitStatisticsDocument.put("kit", entry.getValue().getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getValue().getKit()));
-
             kitStatsDoc.put(entry.getKey().getName(), kitStatisticsDocument);
-
         }
 
-        document.put("kitData", kitStatsDoc);
 
+        document.put("kitData", kitStatsDoc);
 
         collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
     }

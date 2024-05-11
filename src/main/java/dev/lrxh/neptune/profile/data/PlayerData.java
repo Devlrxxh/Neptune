@@ -1,10 +1,15 @@
 package dev.lrxh.neptune.profile.data;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.providers.duel.DuelRequest;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.WeakHashMap;
 
 @Getter
@@ -12,6 +17,8 @@ import java.util.WeakHashMap;
 public class PlayerData {
     private WeakHashMap<Kit, KitData> kitData;
     private DuelRequest duelRequest;
+    private ArrayList<MatchHistory> matchHistories = new ArrayList<>();
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public PlayerData() {
         this.kitData = new WeakHashMap<>();
@@ -43,11 +50,48 @@ public class PlayerData {
         }
     }
 
-    public void setBestWinStreak(Kit kit, int value) {
-        kitData.get(kit).setBestStreak(value);
+    public List<String> serializeHistory() {
+        if (matchHistories.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        ArrayList<String> serialized = new ArrayList<>();
+        for (MatchHistory matchHistory : matchHistories) {
+            serialized.add(serialize(matchHistory));
+        }
+        return serialized;
     }
 
-    public void addElo(Kit kit, int elo) {
-        kitData.get(kit).setElo(kitData.get(kit).getElo() + elo);
+    public ArrayList<MatchHistory> deserializeHistory(List<String> historySerialized) {
+        if (historySerialized == null || historySerialized.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        ArrayList<MatchHistory> punishments = new ArrayList<>();
+        for (String serialized : historySerialized) {
+            punishments.add(deserialize(serialized));
+        }
+        return punishments;
+    }
+
+    public void addHistory(MatchHistory matchHistory) {
+        if (matchHistories.size() >= 7) {
+            matchHistories.remove(matchHistories.size() - 1);
+            matchHistories.add(matchHistory);
+        } else {
+            matchHistories.add(matchHistory);
+        }
+    }
+
+    private String serialize(MatchHistory matchHistory) {
+        return gson.toJson(matchHistory);
+    }
+
+    private MatchHistory deserialize(String serialized) {
+        return gson.fromJson(serialized, MatchHistory.class);
+    }
+
+    public void setBestWinStreak(Kit kit, int value) {
+        kitData.get(kit).setBestStreak(value);
     }
 }

@@ -67,7 +67,19 @@ public enum MenusLocale implements IDataAccessor {
     ROUNDS_ITEM_NAME("ROUNDS.ITEM.NAME", null, DataType.STRING, "&bFirst to &b&l<rounds>"),
     ROUNDS_LORE("ROUNDS.LORE", null, DataType.STRING_LIST,
             "",
-            "&a&lClick to select rounds amount!");
+            "&a&lClick to select rounds amount!"),
+    MATCH_HISTORY_TITLE("MATCH_HISTORY.TITLE", null, DataType.STRING, "&7Match History"),
+    MATCH_HISTORY_SIZE("MATCH_HISTORY.SIZE", null, DataType.INT, "27"),
+    MATCH_HISTORY_STARTING_SLOT("MATCH_HISTORY.STARTING-SLOT", null, DataType.INT, "10"),
+    MATCH_HISTORY_FILTER("MATCH_HISTORY.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
+    MATCH_HISTORY_ITEM_NAME("MATCH_HISTORY.ITEM.NAME", null, DataType.STRING, "&b<kit> &7| <won>"),
+    MATCH_HISTORY_LORE("MATCH_HISTORY.LORE", null, DataType.STRING_LIST,
+            "",
+            "&fWinner: &a<winner>",
+            "&fLoser: &c<loser>",
+            " ",
+            "&fArena: &b<arena>",
+            " ");
 
 
     private final String path;

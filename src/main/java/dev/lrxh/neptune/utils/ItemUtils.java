@@ -20,7 +20,7 @@ import java.util.zip.GZIPOutputStream;
 @UtilityClass
 public class ItemUtils {
 
-    public static ItemStack[] fixInventoryOrder(ItemStack[] source) {
+    public ItemStack[] fixInventoryOrder(ItemStack[] source) {
         ItemStack[] fixed = new ItemStack[36];
 
         System.arraycopy(source, 0, fixed, 27, 9);
@@ -29,7 +29,7 @@ public class ItemUtils {
         return fixed;
     }
 
-    public static List<ItemStack> color(List<ItemStack> itemStackList, Color color) {
+    public List<ItemStack> color(List<ItemStack> itemStackList, Color color) {
         List<ItemStack> items = new ArrayList<>();
         for (ItemStack itemStack : itemStackList) {
             if (itemStack == null) {

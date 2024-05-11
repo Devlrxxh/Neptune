@@ -82,6 +82,15 @@ public class KitManager implements IManager {
         return null;
     }
 
+    public Kit getKitByDisplay(String kitName) {
+        for (Kit kit : kits) {
+            if (kit.getDisplayName().equalsIgnoreCase(kitName)) {
+                return kit;
+            }
+        }
+        return null;
+    }
+
     public void removeArenasFromKits(Arena arena) {
         for (Kit kit : kits) {
             kit.getArenas().remove(arena);

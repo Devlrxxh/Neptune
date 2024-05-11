@@ -32,6 +32,7 @@ dev\lrxh\neptune\utils\ItemUtils.class
 dev\lrxh\neptune\kit\impl\Rules$3.class
 dev\lrxh\neptune\match\impl\MatchState.class
 dev\lrxh\neptune\profile\data\StatTypes.class
+dev\lrxh\neptune\commands\MatchHistoryCommand.class
 dev\lrxh\neptune\providers\duel\DuelRequest.class
 dev\lrxh\neptune\utils\assemble\AssembleAdapter.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$3.class
@@ -44,6 +45,7 @@ dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilder.class
 dev\lrxh\neptune\queue\menu\QueueMenu.class
 dev\lrxh\neptune\utils\ColorUtil.class
 dev\lrxh\neptune\kit\impl\Rules$7.class
+dev\lrxh\neptune\profile\data\MatchHistory.class
 dev\lrxh\neptune\utils\menu\buttons\PageButton.class
 dev\lrxh\neptune\arena\impl\StandAloneArena$StandAloneArenaBuilderImpl.class
 dev\lrxh\neptune\commands\SpectateCommand.class
@@ -70,6 +72,7 @@ dev\lrxh\neptune\queue\QueueManager.class
 dev\lrxh\neptune\Cache.class
 dev\lrxh\neptune\configs\impl\IDataAccessor$1.class
 dev\lrxh\neptune\providers\tiertest\Tiers.class
+dev\lrxh\neptune\match\menu\button\MatchHistoryButton.class
 dev\lrxh\neptune\utils\assemble\events\AssembleBoardCreateEvent.class
 dev\lrxh\neptune\kit\impl\Rules$8.class
 dev\lrxh\neptune\arena\menu\ArenaCopyMenu.class
@@ -79,6 +82,7 @@ dev\lrxh\neptune\utils\Console.class
 dev\lrxh\neptune\match\tasks\MatchStartRunnable.class
 dev\lrxh\neptune\match\impl\MatchSnapshot.class
 dev\lrxh\neptune\arena\menu\ArenaCopyButton.class
+dev\lrxh\neptune\match\menu\MatchHistoryMenu.class
 dev\lrxh\neptune\arena\menu\ArenaManagmentButton$1.class
 dev\lrxh\neptune\utils\menu\Menu.class
 dev\lrxh\neptune\kit\menu\KitManagementMenu.class
@@ -108,7 +112,6 @@ dev\lrxh\neptune\arena\Arena$1.class
 dev\lrxh\neptune\kit\KitManager.class
 dev\lrxh\neptune\arena\Arena.class
 dev\lrxh\neptune\providers\duel\menu\KitSelectMenu.class
-dev\lrxh\neptune\utils\TimeUtil.class
 dev\lrxh\neptune\queue\Queue.class
 dev\lrxh\neptune\commands\LeaveCommand.class
 dev\lrxh\neptune\providers\menus\kitEditor\KitEditorMenu.class

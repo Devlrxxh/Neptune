@@ -7,6 +7,8 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
+import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -61,9 +63,16 @@ public class OneVersusOneMatch extends Match {
         Participant winner = participantA.isLoser() ? participantB : participantA;
         Participant loser = participantA.isLoser() ? participantA : participantB;
 
-        Neptune.get().getProfileManager().getByUUID(winner.getPlayerUUID()).getData().run(kit, true);
-        Neptune.get().getProfileManager().getByUUID(loser.getPlayerUUID()).getData().run(kit, false);
+        Profile winnerProfile = Neptune.get().getProfileManager().getByUUID(winner.getPlayerUUID());
+        Profile loserProfile = Neptune.get().getProfileManager().getByUUID(loser.getPlayerUUID());
+        winnerProfile.getData().run(kit, true);
+        loserProfile.getData().run(kit, false);
 
+        winnerProfile.getData().addHistory(
+                new MatchHistory(true, loserProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName()));
+
+        loserProfile.getData().addHistory(
+                new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName()));
     }
 
     public void sendEndMessage() {
