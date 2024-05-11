@@ -13,11 +13,6 @@ public class TaskScheduler {
         tasks.add(task);
     }
 
-    public void startTaskAsync(BukkitRunnable task, long delay) {
-        task.runTaskTimerAsynchronously(Neptune.get(), delay, 20L);
-        tasks.add(task);
-    }
-
     public void startTask(BukkitRunnable task, long delay, long period) {
         task.runTaskTimer(Neptune.get(), delay, period);
         tasks.add(task);
@@ -33,4 +28,4 @@ public class TaskScheduler {
             bukkitRunnable.cancel();
         }
     }
-}
+            }
