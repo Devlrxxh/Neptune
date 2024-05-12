@@ -18,7 +18,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Objects;
 
 @CommandAlias("kit")
@@ -65,22 +64,7 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Kit kit = Kit.builder()
-                .displayName(kitName)
-                .name(kitName)
-                .items(Arrays.asList(player.getInventory().getContents()))
-                .build(false)
-                .hunger(false)
-                .sumo(false)
-                .fallDamage(false)
-                .denyMovement(false)
-                .damage(true)
-                .arenaBreak(false)
-                .boxing(false)
-                .arenas(new HashSet<>())
-                .icon(player.getInventory().getItemInMainHand())
-                .build();
-
+        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), player.getInventory().getItemInMainHand());
 
         plugin.getKitManager().kits.add(kit);
         plugin.getKitManager().saveKits();

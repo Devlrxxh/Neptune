@@ -2,19 +2,15 @@ package dev.lrxh.neptune.kit;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@Getter
-@Setter
-@Builder
+@Data
 @AllArgsConstructor
 public class Kit {
     private String name;
@@ -55,6 +51,27 @@ public class Kit {
         this.bestOfThree = bestOfThree;
         this.saturationHeal = saturationHeal;
         this.showHP = showHP;
+        this.queue = 0;
+        this.playing = 0;
+    }
+
+    public Kit(String name, List<ItemStack> items, ItemStack icon){
+        this.name = name;
+        this.displayName = name;
+        this.items = items;
+        this.arenas = new HashSet<>();
+        this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : icon;
+        this.build = false;
+        this.arenaBreak = false;
+        this.hunger = false;
+        this.sumo = false;
+        this.fallDamage = false;
+        this.denyMovement = false;
+        this.boxing = false;
+        this.damage = false;
+        this.bestOfThree = false;
+        this.saturationHeal = false;
+        this.showHP = false;
         this.queue = 0;
         this.playing = 0;
     }
