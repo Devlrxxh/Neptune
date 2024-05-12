@@ -10,9 +10,8 @@ import java.util.List;
 
 @Getter
 public enum MenusLocale implements IDataAccessor {
-    FILTER_MATERIAL("FILTER.MATERIAL", "Filter Item for menus.", DataType.STRING, "STAINED_GLASS_PANE"),
+    FILTER_MATERIAL("FILTER.MATERIAL", "Filter Item for menus.", DataType.STRING, "BLACK_STAINED_GLASS_PANE"),
     FILTER_NAME("FILTER.NAME", "Filter Item name.", DataType.STRING, ""),
-    FILTER_DURABILITY("FILTER.DURABILITY", "Filter Item Durability", DataType.INT, "15"),
     QUEUE_SELECT_KIT_NAME("QUEUE.SELECT.NAME", null, DataType.STRING, "&b<kit>"),
     QUEUE_SELECT_SIZE("QUEUE.SELECT.SIZE", null, DataType.INT, "36"),
     QUEUE_SELECT_STARTING_SLOT("QUEUE.SELECT.STARTING-SLOT", null, DataType.INT, "10"),
