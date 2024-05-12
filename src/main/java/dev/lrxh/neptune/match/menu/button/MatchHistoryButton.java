@@ -44,7 +44,6 @@ public class MatchHistoryButton extends Button {
                             matchHistory.getKitName()).replace("<won>", matchHistory.isWon() ? "&aWon" : "&cLost"))
                     .lore(lore)
                     .clearFlags()
-
                     .build();
         }
 

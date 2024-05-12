@@ -9,6 +9,8 @@ import dev.lrxh.neptune.utils.menu.Menu;
 import dev.lrxh.neptune.utils.menu.filters.Filters;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,7 +37,10 @@ public class MatchHistoryMenu extends Menu {
 
         int i = MenusLocale.MATCH_LIST_STARTING_SLOT.getInt();
 
-        for (MatchHistory matchHistory : profile.getData().getMatchHistories()) {
+        ArrayList<MatchHistory> matchHistories = new ArrayList<>(profile.getData().getMatchHistories());
+        Collections.reverse(matchHistories);
+
+        for (MatchHistory matchHistory : matchHistories) {
             buttons.put(i++, new MatchHistoryButton(matchHistory));
         }
 

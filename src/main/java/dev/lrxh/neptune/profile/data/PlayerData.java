@@ -76,7 +76,7 @@ public class PlayerData {
 
     public void addHistory(MatchHistory matchHistory) {
         if (matchHistories.size() >= 7) {
-            matchHistories.remove(matchHistories.size() - 1);
+            matchHistories.remove(0);
             matchHistories.add(matchHistory);
         } else {
             matchHistories.add(matchHistory);

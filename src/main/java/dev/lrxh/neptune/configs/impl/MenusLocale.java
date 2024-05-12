@@ -74,12 +74,12 @@ public enum MenusLocale implements IDataAccessor {
     MATCH_HISTORY_FILTER("MATCH_HISTORY.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
     MATCH_HISTORY_ITEM_NAME("MATCH_HISTORY.ITEM.NAME", null, DataType.STRING, "&b<kit> &7| <won>"),
     MATCH_HISTORY_LORE("MATCH_HISTORY.LORE", null, DataType.STRING_LIST,
-            "",
+            "&7&m-------------------",
             "&fWinner: &a<winner>",
             "&fLoser: &c<loser>",
             " ",
             "&fArena: &b<arena>",
-            " ");
+            "&7&m-------------------");
 
 
     private final String path;

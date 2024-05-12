@@ -41,6 +41,13 @@ public class OneVersusOneMatch extends Match {
     @Override
     public void end() {
         matchState = MatchState.ENDING;
+
+        removePlaying();
+
+        if (!isDuel()) {
+            addStats();
+        }
+
         Participant winner = participantA.isLoser() ? participantB : participantA;
         Participant loser = participantA.isLoser() ? participantA : participantB;
 
@@ -133,11 +140,6 @@ public class OneVersusOneMatch extends Match {
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         hidePlayer(participant);
-        removePlaying();
-
-        if (!isDuel()) {
-            addStats();
-        }
 
         end();
     }

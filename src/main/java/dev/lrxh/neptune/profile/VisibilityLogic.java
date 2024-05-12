@@ -34,7 +34,6 @@ public class VisibilityLogic {
 
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
-            return;
         } else {
             viewerPlayer.hidePlayer(plugin, otherPlayer);
             otherPlayer.hidePlayer(plugin, viewerPlayer);
