@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.utils.menu;
 
 import dev.lrxh.neptune.Neptune;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,6 +9,7 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class MenuListener implements Listener {
 
@@ -60,7 +60,12 @@ public class MenuListener implements Listener {
                 }
 
                 if (event.isCancelled()) {
-                    Bukkit.getScheduler().runTaskLater(Neptune.get(), player::updateInventory, 1L);
+                    Neptune.get().getTaskScheduler().startTaskLater(new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            player.updateInventory();
+                        }
+                    }, 1L);
                 }
             } else {
                 if (event.getCurrentItem() != null) {

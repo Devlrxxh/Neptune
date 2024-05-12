@@ -43,6 +43,7 @@ import java.util.stream.Collectors;
 
 @Getter
 public final class Neptune extends JavaPlugin {
+
     private static Neptune instance;
     private TaskScheduler taskScheduler;
     private QueueManager queueManager;
@@ -63,6 +64,7 @@ public final class Neptune extends JavaPlugin {
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
     }
+
 
     @Override
     public void onEnable() {

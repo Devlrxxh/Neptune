@@ -16,7 +16,7 @@ public class MainCommand extends BaseCommand {
     @Subcommand("help")
     public void help(Player player) {
         player.sendMessage(CC.color("&7&m-----------------------------------------"));
-        player.sendMessage(CC.color("&9" + Neptune.get().getName() + " Core"));
+        player.sendMessage(CC.color("&9Neptune Core"));
         player.sendMessage(" ");
         player.sendMessage(CC.color("&7* &9/neptune setspawn &7- &fSet server spawn"));
         player.sendMessage(CC.color("&7* &9/neptune reload &7- &fReload all configs"));

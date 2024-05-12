@@ -110,11 +110,6 @@ public class ArenaManager implements IManager {
         return null;
     }
 
-    public void deleteArena(Arena arena) {
-        plugin.getArenaManager().arenas.remove(arena);
-        plugin.getKitManager().removeArenasFromKits(arena);
-        plugin.getArenaManager().saveArenas();
-    }
 
     public Arena getRandomArena(Kit kit) {
         List<Arena> kitArenas = new ArrayList<>();

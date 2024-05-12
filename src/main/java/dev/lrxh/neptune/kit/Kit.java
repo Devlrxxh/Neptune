@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.kit;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -89,5 +90,8 @@ public class Kit {
         playing++;
     }
 
+    public void delete() {
+        Neptune.get().getKitManager().kits.remove(this);
+    }
 }
 

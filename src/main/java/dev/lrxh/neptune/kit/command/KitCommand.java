@@ -128,6 +128,25 @@ public class KitCommand extends BaseCommand {
         player.sendMessage(CC.color("&4IMPORTANT &8- &cMake sure to run /kit updateDB " + kitName));
     }
 
+    @Subcommand("delete")
+    @Syntax("<kit>")
+    @CommandCompletion("@kits")
+    public void delete(Player player, String kitName) {
+        if (player == null) return;
+        if (!checkKit(kitName)) {
+            player.sendMessage(CC.error("Kit doesn't exist!"));
+            return;
+        }
+
+        Kit kit = plugin.getKitManager().getKitByName(kitName);
+
+        kit.delete();
+
+        plugin.getKitManager().saveKits();
+
+        player.sendMessage(CC.color("&aSuccessfully deleted kit!"));
+    }
+
     @Subcommand("updateDB")
     @Syntax("<kit>")
     @CommandCompletion("@kits")

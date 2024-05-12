@@ -27,6 +27,8 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_FOUND("MATCH.FOUND", null, DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", " "),
     MATCH_STARTING("MATCH.START.TIMER", null, DataType.STRING_LIST, "&fMatch starting in &b<timer>&f..."),
     ROUND_STARTING("MATCH.ROUND.START.TIMER", null, DataType.STRING_LIST, "&fRound starting in &b<timer>&f..."),
+    MATCH_START_TITLE("MATCH.START.TITLE", null, DataType.STRING, "&aFight!"),
+    MATCH_START_HEADER("MATCH.START.HEADER", null, DataType.STRING, ""),
     MATCH_WINNER_TITLE("MATCH.TITLE.WINNER", null, DataType.STRING, "&aVICTORY!"),
     MATCH_LOSER_TITLE("MATCH.TITLE.LOSER", null, DataType.STRING, "&cDEFEAT!"),
     MATCH_TITLE_SUBTITLE("MATCH.TITLE.SUBTITLE", null, DataType.STRING, "&a<player> &fwon the match!"),

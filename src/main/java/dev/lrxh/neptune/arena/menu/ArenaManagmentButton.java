@@ -76,7 +76,7 @@ public class ArenaManagmentButton extends Button {
                     }
 
                 }
-                plugin.getArenaManager().deleteArena(arena);
+                arena.delete();
                 player.sendMessage(CC.color("&aDeleted arena!"));
                 player.closeInventory();
                 break;
