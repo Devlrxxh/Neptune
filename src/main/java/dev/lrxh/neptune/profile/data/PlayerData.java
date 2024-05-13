@@ -22,6 +22,11 @@ public class PlayerData {
         this.kitData = new WeakHashMap<>();
     }
 
+    public KitData get(Kit kit){
+        kitData.computeIfAbsent(kit, k -> new KitData());
+        return kitData.get(kit);
+    }
+
     public void run(Kit kit, boolean won) {
         if (won) {
             addWin(kit);

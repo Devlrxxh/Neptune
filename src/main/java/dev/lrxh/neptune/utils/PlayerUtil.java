@@ -58,10 +58,10 @@ public class PlayerUtil {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
-        if (profile.getData().getKitData().get(kit).getKit().isEmpty() || profile.getData().getKitData() == null) {
+        if (profile.getData().getKitData() == null || profile.getData().get(kit).getKit().isEmpty()) {
             player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
         } else {
-            player.getInventory().setContents(profile.getData().getKitData().get(kit).getKit().toArray(new ItemStack[0]));
+            player.getInventory().setContents(profile.getData().get(kit).getKit().toArray(new ItemStack[0]));
         }
 
         player.updateInventory();

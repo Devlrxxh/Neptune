@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.profile.data;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
@@ -9,8 +8,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 public class KitData {
     private int wins;
     private int losses;
@@ -21,6 +19,10 @@ public class KitData {
 
     public KitData() {
         this.kit = new ArrayList<>();
+    }
+
+    public List<ItemStack> getKit(){
+        return kit == null ? new ArrayList<>() : kit;
     }
 
     public double getKdr() {
