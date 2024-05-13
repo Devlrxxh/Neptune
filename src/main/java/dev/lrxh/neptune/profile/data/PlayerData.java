@@ -4,16 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.providers.duel.DuelRequest;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.WeakHashMap;
 
-@Getter
-@Setter
+@Data
 public class PlayerData {
     private WeakHashMap<Kit, KitData> kitData;
     private DuelRequest duelRequest;

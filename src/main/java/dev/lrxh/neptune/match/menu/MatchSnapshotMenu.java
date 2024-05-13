@@ -36,23 +36,20 @@ public class MatchSnapshotMenu extends Menu {
         return false;
     }
 
-    public boolean resetCursor() {
-        return false;
-    }
-
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         ItemStack[] fixedContents = ItemUtils.fixInventoryOrder(snapshot.getContents());
 
-        for (int i = 0; i < fixedContents.length; i++) {
-            ItemStack itemStack = fixedContents[i];
+        int slot = 0;
 
-            if (itemStack != null && itemStack.getType() != Material.AIR) {
-                buttons.put(i, new DisplayButton(itemStack, true));
+        for (ItemStack itemStack : fixedContents) {
+            if (slot == 40) {
+                continue;
             }
-        }
 
+            buttons.put(slot++, new DisplayButton(itemStack, true));
+        }
 
         buttons.put(48, new HealthButton(snapshot));
         buttons.put(50, new StatisticsButton(snapshot));
@@ -64,4 +61,5 @@ public class MatchSnapshotMenu extends Menu {
 
         return buttons;
     }
+
 }

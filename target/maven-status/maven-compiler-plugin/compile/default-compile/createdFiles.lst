@@ -100,7 +100,6 @@ dev\lrxh\neptune\providers\duel\command\TierTestCommand.class
 dev\lrxh\neptune\utils\LocationUtil.class
 dev\lrxh\neptune\utils\menu\PaginatedMenu.class
 dev\lrxh\neptune\providers\hotbar\ItemAction$2.class
-dev\lrxh\neptune\kit\Kit$KitBuilder.class
 dev\lrxh\neptune\providers\manager\Value.class
 dev\lrxh\neptune\match\impl\ParticipantColor.class
 dev\lrxh\neptune\providers\hotbar\ItemListener.class

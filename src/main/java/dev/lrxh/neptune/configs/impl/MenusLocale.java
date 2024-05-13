@@ -80,7 +80,6 @@ public enum MenusLocale implements IDataAccessor {
             "&fArena: &b<arena>",
             "&7&m-------------------");
 
-
     private final String path;
     private final String comment;
     private final List<String> defaultValue = new ArrayList<>();

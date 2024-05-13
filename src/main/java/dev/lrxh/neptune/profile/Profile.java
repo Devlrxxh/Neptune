@@ -15,8 +15,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.duel.DuelRequest;
 import dev.lrxh.neptune.utils.ItemUtils;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -27,8 +25,6 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-@Getter
-@Setter
 @Data
 public class Profile {
     private final UUID playerUUID;
@@ -36,7 +32,7 @@ public class Profile {
     private ProfileState state;
     private Match match;
     private MatchSnapshot matchSnapshot;
-    private PlayerData data = new PlayerData();
+    private PlayerData data;
     private Kit kitEditor;
     private MongoCollection<Document> collection = Neptune.get().getMongoManager().getCollection();
 
@@ -47,6 +43,7 @@ public class Profile {
         this.match = null;
         this.matchSnapshot = null;
         this.kitEditor = null;
+        this.data = new PlayerData();
         for (Kit kit : Neptune.get().getKitManager().kits) {
             this.data.getKitData().put(kit, new KitData());
         }
