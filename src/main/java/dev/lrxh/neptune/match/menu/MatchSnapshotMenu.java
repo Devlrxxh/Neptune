@@ -41,14 +41,12 @@ public class MatchSnapshotMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         ItemStack[] fixedContents = ItemUtils.fixInventoryOrder(snapshot.getContents());
 
-        int slot = 0;
+        for (int i = 0; i < fixedContents.length; i++) {
+            ItemStack itemStack = fixedContents[i];
 
-        for (ItemStack itemStack : fixedContents) {
-            if (slot == 40) {
-                continue;
+            if (itemStack != null && itemStack.getType() != Material.AIR) {
+                buttons.put(i, new DisplayButton(itemStack, true));
             }
-
-            buttons.put(slot++, new DisplayButton(itemStack, true));
         }
 
         buttons.put(48, new HealthButton(snapshot));

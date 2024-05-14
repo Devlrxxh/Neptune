@@ -1,4 +1,5 @@
 # Neptune | 1.20 Practice Core
+
 ![pfp](https://github.com/Devlrxxh/Neptune/assets/125221056/c9ec6441-34c8-472e-9fe3-1bd20a3b31db)
 
 📖**Features:**  
@@ -14,11 +15,11 @@
 • Player Statistics  
 • Player Particle Death Effects (Soon)  
 • Nearly everything is customizable (Menus, scoreboard, etc.)  
-• Easy to use managment menus  
+• Easy to use managment menus
 
 📎**Requirements:**  
- • (Optional) FastAsyncWorldEdit  
- • Mongo Database  
+• (Optional) FastAsyncWorldEdit  
+• Mongo Database
 
 🖼️**Media:**
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/6e0d63dd-f0f0-4165-ac0e-1b7d6f66f588)

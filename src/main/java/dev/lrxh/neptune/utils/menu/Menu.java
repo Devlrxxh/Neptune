@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
@@ -84,8 +83,8 @@ public abstract class Menu {
         }
     }
 
-    private void setItem(Inventory inventory, ItemStack itemStack, int slot){
-        if(inventory.getSize() >= slot){
+    private void setItem(Inventory inventory, ItemStack itemStack, int slot) {
+        if (inventory.getSize() >= slot) {
             inventory.setItem(slot, itemStack);
         }
     }

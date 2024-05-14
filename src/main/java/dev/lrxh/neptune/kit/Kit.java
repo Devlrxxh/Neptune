@@ -2,7 +2,8 @@ package dev.lrxh.neptune.kit;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -55,7 +56,7 @@ public class Kit {
         this.playing = 0;
     }
 
-    public Kit(String name, List<ItemStack> items, ItemStack icon){
+    public Kit(String name, List<ItemStack> items, ItemStack icon) {
         this.name = name;
         this.displayName = name;
         this.items = items;

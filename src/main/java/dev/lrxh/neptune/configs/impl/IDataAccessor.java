@@ -3,7 +3,6 @@ package dev.lrxh.neptune.configs.impl;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collections;
 import java.util.List;

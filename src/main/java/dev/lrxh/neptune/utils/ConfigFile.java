@@ -3,7 +3,6 @@ package dev.lrxh.neptune.utils;
 import dev.lrxh.neptune.Neptune;
 import lombok.Getter;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +11,7 @@ import java.io.IOException;
 public class ConfigFile {
     private final File file;
     private final YamlConfiguration configuration;
-    private final JavaPlugin plugin = Neptune.get();
+    private final Neptune plugin = Neptune.get();
 
     public ConfigFile(String name) {
         this.file = new File(plugin.getDataFolder(), name + ".yml");

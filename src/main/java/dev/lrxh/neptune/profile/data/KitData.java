@@ -10,18 +10,13 @@ import java.util.List;
 
 @Data
 public class KitData {
-    private int wins;
-    private int losses;
-    private int bestStreak;
-    private int currentStreak;
-    private int elo;
-    private List<ItemStack> kit;
+    private int wins = 0;
+    private int losses = 0;
+    private int bestStreak = 0;
+    private int currentStreak = 0;
+    private List<ItemStack> kit = new ArrayList<>();
 
-    public KitData() {
-        this.kit = new ArrayList<>();
-    }
-
-    public List<ItemStack> getKit(){
+    public List<ItemStack> getKit() {
         return kit == null ? new ArrayList<>() : kit;
     }
 
