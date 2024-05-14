@@ -5,7 +5,8 @@
 📖**Features:**  
 • Arena System (Shared, Standalone)  
 • Kit System (Boxing, Crystal, Axe, etc.)  
-• Kit Editor with Inventories • View match System  
+• Kit Editor with Inventories  
+• View match System  
 • Queue Ping Range System (Soon)  
 • Animated Scoreboard System  
 • Placeholder API (Compatibility)  
