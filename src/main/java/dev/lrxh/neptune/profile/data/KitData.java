@@ -5,20 +5,15 @@ import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
 public class KitData {
-    private int wins = 0;
-    private int losses = 0;
-    private int bestStreak = 0;
-    private int currentStreak = 0;
-    private List<ItemStack> kit = new ArrayList<>();
-
-    public List<ItemStack> getKit() {
-        return kit == null ? new ArrayList<>() : kit;
-    }
+    private int wins;
+    private int losses;
+    private int bestStreak;
+    private int currentStreak;
+    private List<ItemStack> kit;
 
     public double getKdr() {
         double kd = wins;

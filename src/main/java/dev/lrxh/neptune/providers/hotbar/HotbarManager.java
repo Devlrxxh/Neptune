@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.providers.hotbar;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.ProfileState;
 import lombok.Getter;
@@ -63,7 +64,7 @@ public class HotbarManager {
                     String path = "ITEMS." + section + "." + itemName + ".";
 
                     String displayName = config.getString(path + "NAME");
-                    Material material = Material.matchMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL")));
+                    Material material = XMaterial.matchXMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL"))).get().parseMaterial();
                     byte slot = (byte) config.getInt(path + "SLOT");
                     byte durability = (byte) config.getInt(path + "DURABILITY");
 

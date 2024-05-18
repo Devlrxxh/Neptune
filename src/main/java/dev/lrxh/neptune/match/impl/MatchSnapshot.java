@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.impl;
 
+import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Data;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +27,7 @@ public class MatchSnapshot {
         this.uuid = player.getUniqueId();
         this.health = Math.round(player.getHealth() / 2);
         this.hunger = player.getFoodLevel();
-        this.ping = player.getPing();
+        this.ping = PlayerUtil.getPing(player.getUniqueId());
         this.armor = player.getInventory().getArmorContents();
         this.contents = player.getInventory().getContents();
         this.effects = player.getActivePotionEffects();

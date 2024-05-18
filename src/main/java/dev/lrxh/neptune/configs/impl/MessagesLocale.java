@@ -5,8 +5,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -88,10 +86,8 @@ public enum MessagesLocale implements IDataAccessor {
     }
 
     public void send(UUID playerUUID, Replacement... replacements) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
         for (String message : getStringList()) {
-            PlayerUtil.sendMessage(player, ClickableUtils.returnMessage(message, replacements));
+            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
         }
     }
 }

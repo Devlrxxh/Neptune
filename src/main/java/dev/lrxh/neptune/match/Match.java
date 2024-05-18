@@ -11,14 +11,13 @@ import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.sounds.Sound;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
-import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -48,7 +47,9 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) continue;
-            player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+
+            player.playSound(player.getLocation(),
+                    (org.bukkit.Sound) Neptune.get().getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
         }
     }
 
@@ -89,7 +90,7 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
             if (participiantPlayer == null) return;
-            player.showPlayer(Neptune.get(), participiantPlayer);
+            player.showPlayer(participiantPlayer);
         }
 
         broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
@@ -103,7 +104,7 @@ public abstract class Match {
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
         PlayerUtil.giveKit(player.getUniqueId(), kit);
-        profile.getData().setDuelRequest(null);
+        profile.getGameData().setDuelRequest(null);
 
         Neptune.get().getLeaderboardManager().changes.add(playerUUID);
     }
@@ -180,7 +181,7 @@ public abstract class Match {
                 objective = viewer.getScoreboard().registerNewObjective("showhealth", "health");
             }
             objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-            objective.displayName(Component.text(CC.color("&c") + "❤"));
+            objective.setDisplayName(CC.color("&c") + "❤");
             objective.getScore(player.getName()).setScore((int) Math.floor(player.getHealth() / 2));
         }
     }
@@ -199,7 +200,7 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) return;
-            player.hidePlayer(Neptune.get(), targetPlayer);
+            player.hidePlayer(targetPlayer);
         }
     }
 
@@ -209,13 +210,15 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) return;
-            player.showPlayer(Neptune.get(), targetPlayer);
+            player.showPlayer(targetPlayer);
         }
     }
 
     public abstract void end();
 
     public abstract void onDeath(Participant participant);
+
+    public abstract void onLeave(Participant participant);
 
     public abstract void startMatch();
 }

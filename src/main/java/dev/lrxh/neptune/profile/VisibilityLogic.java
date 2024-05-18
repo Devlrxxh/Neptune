@@ -9,7 +9,6 @@ import java.util.UUID;
 
 @UtilityClass
 public class VisibilityLogic {
-    private final Neptune plugin = Neptune.get();
 
     public void handle(UUID playerUUID) {
         for (Player players : Bukkit.getOnlinePlayers()) {
@@ -27,21 +26,23 @@ public class VisibilityLogic {
         Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(viewerUUID);
         Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
 
-        if (viewerProfile.getMatch() != null && otherProfile.getMatch() != null &&
-                viewerProfile.getMatch().equals(otherProfile.getMatch())) {
-            viewerPlayer.showPlayer(plugin, otherPlayer);
-            otherPlayer.showPlayer(plugin, viewerPlayer);
-            return;
+        if (viewerProfile.getState().equals(ProfileState.IN_GAME)) {
+            if (viewerProfile.getMatch() != null && otherProfile.getMatch() != null &&
+                    viewerProfile.getMatch().equals(otherProfile.getMatch())) {
+                viewerPlayer.showPlayer(otherPlayer);
+                otherPlayer.showPlayer(viewerPlayer);
+                return;
+            }
         }
 
         if (viewerProfile.getState().equals(ProfileState.LOBBY) || viewerProfile.getState().equals(ProfileState.IN_QUEUE) &&
                 (otherProfile.getState().equals(ProfileState.LOBBY) || otherProfile.getState().equals(ProfileState.IN_QUEUE))) {
-            viewerPlayer.showPlayer(plugin, otherPlayer);
-            otherPlayer.showPlayer(plugin, viewerPlayer);
+            viewerPlayer.showPlayer(otherPlayer);
+            otherPlayer.showPlayer(viewerPlayer);
             return;
         }
 
-        viewerPlayer.hidePlayer(plugin, otherPlayer);
-        otherPlayer.hidePlayer(plugin, viewerPlayer);
+        viewerPlayer.hidePlayer(otherPlayer);
+        otherPlayer.hidePlayer(viewerPlayer);
     }
 }

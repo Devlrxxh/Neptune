@@ -32,8 +32,8 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
-        Player player = event.getPlayer();
-        event.deathMessage(null);
+        Player player = event.getEntity();
+        event.setDeathMessage(null);
         event.getDrops().clear();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
@@ -237,6 +237,10 @@ public class MatchListener implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
+        if (profile.getState().equals(ProfileState.LOBBY)) {
+            event.setCancelled(true);
+            return;
+        }
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
             event.setCancelled(true);
             return;

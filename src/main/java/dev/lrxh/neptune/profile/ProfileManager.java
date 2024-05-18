@@ -6,12 +6,13 @@ import java.util.HashMap;
 import java.util.UUID;
 
 public class ProfileManager {
-    private final HashMap<UUID, Profile> profiles = new HashMap<>();
+    public final HashMap<UUID, Profile> profiles = new HashMap<>();
     private final Neptune plugin = Neptune.get();
 
-    public void createProfile(UUID playerUUID) {
+    public Profile createProfile(UUID playerUUID) {
         Profile profile = new Profile(playerUUID, ProfileState.LOBBY);
         profiles.put(playerUUID, profile);
+        return profile;
     }
 
     public void removeProfile(UUID playerUUID) {
@@ -21,6 +22,6 @@ public class ProfileManager {
     }
 
     public Profile getByUUID(UUID playerUUID) {
-        return profiles.get(playerUUID);
+        return profiles.get(playerUUID) == null ? createProfile(playerUUID) : profiles.get(playerUUID);
     }
 }

@@ -47,6 +47,7 @@ dev\lrxh\neptune\utils\ColorUtil.class
 dev\lrxh\neptune\kit\impl\Rules$7.class
 dev\lrxh\neptune\profile\data\MatchHistory.class
 dev\lrxh\neptune\utils\menu\buttons\PageButton.class
+dev\lrxh\neptune\profile\data\GameData.class
 dev\lrxh\neptune\arena\impl\StandAloneArena$StandAloneArenaBuilderImpl.class
 dev\lrxh\neptune\commands\SpectateCommand.class
 dev\lrxh\neptune\match\menu\MatchSnapshotMenu.class
@@ -136,14 +137,12 @@ dev\lrxh\neptune\configs\impl\ScoreboardLocale.class
 dev\lrxh\neptune\providers\leaderboard\PlayerEntry.class
 dev\lrxh\neptune\arena\menu\ArenaManagmentMenu.class
 dev\lrxh\neptune\utils\assemble\AssembleStyle.class
-dev\lrxh\neptune\profile\data\PlayerData.class
 dev\lrxh\neptune\utils\assemble\AssembleException.class
 dev\lrxh\neptune\configs\impl\MessagesLocale.class
 dev\lrxh\neptune\profile\ProfileState.class
 dev\lrxh\neptune\arena\menu\ArenaManagmentButton.class
 dev\lrxh\neptune\utils\assemble\Assemble.class
 dev\lrxh\neptune\commands\QueueCommand.class
-dev\lrxh\neptune\arena\impl\Cuboid.class
 dev\lrxh\neptune\utils\EntityUtils.class
 dev\lrxh\neptune\match\menu\button\SwitchInventoryButton.class
 dev\lrxh\neptune\providers\manager\IManager.class

@@ -9,7 +9,6 @@ import dev.lrxh.neptune.utils.menu.buttons.PageButton;
 import dev.lrxh.neptune.utils.menu.filters.Filters;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -30,7 +29,9 @@ public abstract class Menu {
     private String title;
 
     {
-        fillerType = new ItemBuilder(XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseMaterial()).name(MenusLocale.FILTER_NAME.getString()).amount(1).build();
+        fillerType = new ItemBuilder(
+                XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseItem())
+                .name(MenusLocale.FILTER_NAME.getString()).amount(1).build();
     }
 
     public static void updateMenu(Menu menu) {
@@ -106,7 +107,7 @@ public abstract class Menu {
             title = title.substring(0, 32);
         }
 
-        Inventory inventory = Bukkit.createInventory(null, size, Component.text(title));
+        Inventory inventory = Bukkit.createInventory(null, size, title);
 
         this.fixedPositions = getFixedPositions();
 

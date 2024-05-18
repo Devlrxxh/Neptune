@@ -3,7 +3,8 @@ package dev.lrxh.neptune.kit;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
@@ -11,7 +12,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class Kit {
     private String name;

@@ -3,6 +3,7 @@ package dev.lrxh.neptune;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
+import dev.lrxh.VersionHandler;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
@@ -29,10 +30,10 @@ import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.TaskScheduler;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuListener;
+import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
-import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -60,6 +61,7 @@ public final class Neptune extends JavaPlugin {
     private HotbarManager hotbarManager;
     private MongoManager mongoManager;
     private LeaderboardManager leaderboardManager;
+    private VersionHandler versionHandler;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -73,6 +75,8 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadManager() {
+        this.versionHandler = new VersionControll(get()).getHandler();
+
         loadConfigs();
         registerListeners();
         loadCommandManager();
@@ -81,20 +85,25 @@ public final class Neptune extends JavaPlugin {
         loadWorlds();
 
         queueManager = new QueueManager();
+
         matchManager = new MatchManager();
+
         arenaManager = new ArenaManager();
-        profileManager = new ProfileManager();
         arenaManager.loadArenas();
+
         kitManager = new KitManager();
         kitManager.loadKits();
+
         cache = new Cache();
         cache.load();
+
         hotbarManager = new HotbarManager();
         hotbarManager.loadItems();
+
         assemble = new Assemble(get(), new ScoreboardAdapter());
         this.mongoManager = new MongoManager();
         mongoManager.connect();
-        this.leaderboardManager = new LeaderboardManager();
+        profileManager = new ProfileManager();
     }
 
     private void registerListeners() {
@@ -124,9 +133,9 @@ public final class Neptune extends JavaPlugin {
 
     private void loadWorlds() {
         for (World world : get().getServer().getWorlds()) {
-            world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
-            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
-            world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
+            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_WEATHER_CYCLE, false);
+            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_DAYLIGHT_CYCLE, false);
+            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_IMMEDIATE_RESPAWN, false);
             world.setDifficulty(Difficulty.HARD);
         }
         System.gc();

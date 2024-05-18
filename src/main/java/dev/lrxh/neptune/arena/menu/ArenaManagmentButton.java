@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.arena.menu;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
@@ -9,7 +10,6 @@ import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import lombok.AllArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -26,7 +26,7 @@ public class ArenaManagmentButton extends Button {
     public ItemStack getButtonItem(Player player) {
 
         if (arena instanceof SharedArena) {
-            return new ItemBuilder(arena.isEnabled() ? Material.GREEN_WOOL : Material.RED_WOOL)
+            return new ItemBuilder(arena.isEnabled() ? XMaterial.GREEN_WOOL.parseMaterial() : XMaterial.RED_WOOL.parseMaterial())
                     .name(arena.getDisplayName() + " &7( " + arena.getName() + "&7)")
                     .lore(Arrays.asList(
                             " ",
@@ -37,7 +37,7 @@ public class ArenaManagmentButton extends Button {
         } else {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
 
-            return new ItemBuilder(arena.isEnabled() ? Material.GREEN_WOOL : Material.RED_WOOL)
+            return new ItemBuilder(arena.isEnabled() ? XMaterial.GREEN_WOOL.parseMaterial() : XMaterial.RED_WOOL.parseMaterial())
                     .name(arena.getDisplayName() + " &7(" + arena.getName() + "&7)")
                     .lore(Arrays.asList(
                             " ",

@@ -26,10 +26,10 @@ public class ViewInventoryCommand extends BaseCommand {
             return;
         }
         Profile profile = Neptune.get().getProfileManager().getByUUID(target.getUniqueId());
-        if (profile.getMatchSnapshot() == null) {
+        if (profile.getGameData().getMatchSnapshot() == null) {
             player.sendMessage(CC.error("Match Snapshot not found!"));
             return;
         }
-        new MatchSnapshotMenu(profile.getMatchSnapshot()).openMenu(player);
+        new MatchSnapshotMenu(profile.getGameData().getMatchSnapshot()).openMenu(player);
     }
 }

@@ -6,14 +6,12 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import dev.lrxh.neptune.utils.menu.filters.Filters;
-import lombok.AllArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@AllArgsConstructor
 public class StatsMenu extends Menu {
     private final Player target;
 

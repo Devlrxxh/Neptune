@@ -3,8 +3,6 @@ package dev.lrxh.neptune.profile.listener;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.DeathCause;
-import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.profile.VisibilityLogic;
@@ -30,24 +28,20 @@ public class ProfileListener implements Listener {
         plugin.getHotbarManager().giveItems(player.getUniqueId());
         VisibilityLogic.handle(player.getUniqueId());
 
-        event.joinMessage(null);
+        event.setJoinMessage(null);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        event.quitMessage(null);
+        event.setQuitMessage(null);
 
         Player player = event.getPlayer();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         Match match = profile.getMatch();
-        if (profile.getState().equals(ProfileState.IN_GAME)) {
-            Participant participant = match.getParticipant(player.getUniqueId());
-            participant.setDeathCause(DeathCause.DISCONNECT);
-            participant.setDisconnected(true);
-            profile.getMatch().onDeath(participant);
+        if (match != null) {
+            match.onLeave(match.getParticipant(player.getUniqueId()));
         }
-        plugin.getProfileManager().removeProfile(player.getUniqueId());
     }
 
     @EventHandler
@@ -56,7 +50,7 @@ public class ProfileListener implements Listener {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
-            profile.getData().get(profile.getKitEditor()).setKit
+            profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKit
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());

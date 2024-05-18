@@ -21,7 +21,7 @@ public class StatButton extends Button {
     @Override
     public ItemStack getButtonItem(Player player) {
         List<String> lore = new ArrayList<>();
-        KitData data = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getData().get(kit);
+        KitData data = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getGameData().getKitData().get(kit);
 
         MenusLocale.STAT_LORE.getStringList().forEach(line -> {
             line = line.replaceAll("<wins>", String.valueOf(data.getWins()));

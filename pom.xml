@@ -6,7 +6,7 @@
 
     <groupId>dev.me.lrxh</groupId>
     <artifactId>Neptune</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>Neptune</name>
@@ -35,10 +35,11 @@
 
     <dependencies>
         <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.19.4-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>paperspigot-api</artifactId>
+            <version>1.8.8-R0.1-SNAPSHOT</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/PaperSpigot-1.8.8-R0.1-SNAPSHOT.jar</systemPath>
         </dependency>
 
         <dependency>
@@ -79,6 +80,17 @@
             <version>latest</version>
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/fawe.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>dev.lrxh</groupId>
+            <artifactId>Build</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>dev.lrxh</groupId>
+            <artifactId>Shared</artifactId>
+            <version>1.0</version>
         </dependency>
 
         <!--                <dependency>-->

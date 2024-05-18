@@ -34,7 +34,7 @@ public class KitEditorSelectButton extends Button {
         MessagesLocale.KIT_EDITOR_START.send(player.getUniqueId());
         player.closeInventory();
 
-        profile.setKitEditor(kit);
+        profile.getGameData().setKitEditor(kit);
         profile.setState(ProfileState.IN_KIT_EDITOR);
 
         PlayerUtil.giveKit(player.getUniqueId(), kit);

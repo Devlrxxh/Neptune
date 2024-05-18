@@ -4,7 +4,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import org.bukkit.Sound;
+import dev.lrxh.sounds.Sound;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class MatchStartRunnable extends BukkitRunnable {

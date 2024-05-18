@@ -12,6 +12,7 @@ import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.sounds.Sound;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
@@ -19,7 +20,6 @@ import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -72,13 +72,13 @@ public class OneVersusOneMatch extends Match {
 
         Profile winnerProfile = Neptune.get().getProfileManager().getByUUID(winner.getPlayerUUID());
         Profile loserProfile = Neptune.get().getProfileManager().getByUUID(loser.getPlayerUUID());
-        winnerProfile.getData().run(kit, true);
-        loserProfile.getData().run(kit, false);
+        winnerProfile.run(kit, true);
+        loserProfile.run(kit, false);
 
-        winnerProfile.getData().addHistory(
+        winnerProfile.addHistory(
                 new MatchHistory(true, loserProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName()));
 
-        loserProfile.getData().addHistory(
+        loserProfile.addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName()));
     }
 
@@ -128,7 +128,7 @@ public class OneVersusOneMatch extends Match {
         }
 
         if (participant.getLastAttacker() != null) {
-            participant.getLastAttacker().playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
+            participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
         }
 
         participant.setLoser(true);
@@ -144,6 +144,16 @@ public class OneVersusOneMatch extends Match {
         end();
     }
 
+    @Override
+    public void onLeave(Participant participant) {
+
+        participant.setDeathCause(DeathCause.DISCONNECT);
+        participant.setDisconnected(true);
+        onDeath(participant);
+
+        Neptune.get().getProfileManager().removeProfile(participant.getPlayerUUID());
+    }
+
     private void takeSnapshots() {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
@@ -153,7 +163,7 @@ public class OneVersusOneMatch extends Match {
             snapshot.setTotalHits(participant.getHits());
             snapshot.setOpponent(participant.getOpponent().getNameUnColored());
 
-            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).setMatchSnapshot(snapshot);
+            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getGameData().setMatchSnapshot(snapshot);
         }
     }
 

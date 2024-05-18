@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.arena.listener;
 
+import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -70,7 +71,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onSoilChange(PlayerInteractEvent event) {
-        if (event.getAction() == Action.PHYSICAL && event.getClickedBlock().getType() == Material.FARMLAND)
+        if (event.getAction() == Action.PHYSICAL && event.getClickedBlock().getType() == XMaterial.FARMLAND.parseMaterial())
             event.setCancelled(true);
     }
 

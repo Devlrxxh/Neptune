@@ -4,9 +4,9 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.sounds.Sound;
 import lombok.Data;
 import org.bukkit.Bukkit;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
@@ -47,7 +47,8 @@ public class Participant {
     public void playSound(Sound sound) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
+        player.playSound(player.getLocation(),
+                (org.bukkit.Sound) Neptune.get().getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
     }
 
     public void sendTitle(String header, String footer, int duration) {

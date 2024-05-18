@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.utils.menu.buttons;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.PaginatedMenu;
@@ -30,7 +31,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(Material.REDSTONE_TORCH)
+                return new ItemBuilder(XMaterial.REDSTONE_TORCH.parseMaterial())
                         .name(ChatColor.GRAY + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
@@ -39,7 +40,7 @@ public class PageButton extends Button {
                         .build();
             }
         } else {
-            if (hasPrevious(player)) {
+            if (hasPrevious()) {
                 return new ItemBuilder(Material.LEVER)
                         .name(ChatColor.GREEN + "Previous Page")
                         .lore(Arrays.asList(
@@ -48,7 +49,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(Material.REDSTONE_TORCH)
+                return new ItemBuilder(XMaterial.REDSTONE_TORCH.parseMaterial())
                         .name(ChatColor.GRAY + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
@@ -66,7 +67,7 @@ public class PageButton extends Button {
                 this.menu.modPage(player, this.mod);
             }
         } else {
-            if (hasPrevious(player)) {
+            if (hasPrevious()) {
                 this.menu.modPage(player, this.mod);
             }
         }
@@ -77,7 +78,7 @@ public class PageButton extends Button {
         return this.menu.getPages(player) >= pg;
     }
 
-    private boolean hasPrevious(Player player) {
+    private boolean hasPrevious() {
         int pg = this.menu.getPage() + this.mod;
         return pg > 0;
     }

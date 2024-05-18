@@ -36,7 +36,7 @@ public enum ItemAction {
     STATS() {
         @Override
         public void execute(Player player) {
-            new StatsMenu(player).openMenu(player);
+            new StatsMenu(player.getName()).openMenu(player);
         }
     },
     SPECTATE_MENU {

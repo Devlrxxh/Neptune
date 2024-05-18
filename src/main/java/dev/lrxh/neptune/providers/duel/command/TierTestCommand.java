@@ -41,7 +41,7 @@ public class TierTestCommand {
             return;
         }
 
-        if (targetProfile.getData().getDuelRequest() != null) {
+        if (targetProfile.getGameData().getDuelRequest() != null) {
             player.sendMessage(CC.error("Player already has pending duel request!"));
             return;
         }

@@ -52,7 +52,7 @@ public class ItemBuilder {
     public ItemBuilder makeUnbreakable() {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setUnbreakable(true);
+//            meta.setUnbreakable(true);
             item.setItemMeta(meta);
         }
         return this;

@@ -13,7 +13,7 @@ public class StatsCommand extends BaseCommand {
 
     @Default
     public void open(Player player) {
-        new StatsMenu(player).openMenu(player);
+        new StatsMenu(player.getName()).openMenu(player);
 
     }
 

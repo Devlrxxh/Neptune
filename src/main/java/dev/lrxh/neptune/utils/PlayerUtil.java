@@ -3,15 +3,15 @@ package dev.lrxh.neptune.utils;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.data.GameData;
+import dev.lrxh.utils.IPlayerUtils;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -22,6 +22,7 @@ import java.util.UUID;
 @UtilityClass
 public class PlayerUtil {
     private final Neptune plugin = Neptune.get();
+    private final IPlayerUtils utils = plugin.getVersionHandler().getPlayerUtils();
 
     public void reset(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
@@ -48,20 +49,19 @@ public class PlayerUtil {
     }
 
     public void kick(UUID playerUUID, String message) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-
-        player.kick(Component.text(CC.color(message)));
+        utils.kick(playerUUID, CC.color(message));
     }
 
     public void giveKit(UUID playerUUID, Kit kit) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
-        if (profile.getData().getKitData() == null || profile.getData().get(kit).getKit().isEmpty()) {
+        GameData gameData = profile.getGameData();
+        if (gameData.getKitData() == null || gameData.getKitData().get(kit) == null ||
+                gameData.getKitData().get(kit).getKit().isEmpty()) {
             player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
         } else {
-            player.getInventory().setContents(profile.getData().get(kit).getKit().toArray(new ItemStack[0]));
+            player.getInventory().setContents(gameData.getKitData().get(kit).getKit().toArray(new ItemStack[0]));
         }
 
         player.updateInventory();
@@ -79,21 +79,15 @@ public class PlayerUtil {
 
 
     public int getPing(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return 0;
-        return player.getPing();
+        return utils.getPing(playerUUID);
     }
 
     public ItemStack getPlayerHead(UUID playerUUID) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-        skullMeta.setOwningPlayer(Bukkit.getPlayer(playerUUID));
-        head.setItemMeta(skullMeta);
-        return head;
+        return utils.getPlayerHead(playerUUID);
     }
 
 
-    public void sendMessage(Player player, List<Object> content) {
+    public void sendMessage(UUID playerUUID, List<Object> content) {
 
         TextComponent.Builder builder = Component.text();
 
@@ -106,13 +100,16 @@ public class PlayerUtil {
             }
         }
 
-        player.sendMessage(builder);
+        utils.sendMessage(playerUUID, builder);
     }
 
+
     public void sendMessage(UUID playerUUID, TextComponent content) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        player.sendMessage(content);
+        utils.sendMessage(playerUUID, content);
+    }
+
+    public ItemStack getItemInHand(UUID playerUUID) {
+        return utils.getItemInHand(playerUUID);
     }
 
 
@@ -147,9 +144,7 @@ public class PlayerUtil {
     }
 
     public void sendTitle(UUID playerUUID, String header, String footer, int duration) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        player.sendTitle(CC.color(header), CC.color(footer), 1, duration, 10);
+        utils.sendTitle(playerUUID, CC.color(header), CC.color(footer), 1, duration, 5);
     }
 
     public void doVelocityChange(UUID playerUUID) {

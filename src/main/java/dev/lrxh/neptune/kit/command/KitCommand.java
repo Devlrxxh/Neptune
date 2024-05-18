@@ -64,7 +64,7 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), player.getInventory().getItemInMainHand());
+        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), PlayerUtil.getItemInHand(player.getUniqueId()));
 
         plugin.getKitManager().kits.add(kit);
         plugin.getKitManager().saveKits();
@@ -173,8 +173,7 @@ public class KitCommand extends BaseCommand {
         }
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
-        player.sendMessage(player.getInventory().getItemInMainHand().toString());
-        kit.setIcon(player.getInventory().getItemInMainHand());
+        kit.setIcon(PlayerUtil.getItemInHand(player.getUniqueId()));
 
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit icon!"));
