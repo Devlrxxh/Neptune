@@ -55,7 +55,7 @@ public class Profile {
             return;
         }
 
-        gameData.setMatchHistories(deserializeHistory(document.getList("history", String.class, new ArrayList<>())));
+        gameData.setMatchHistories(gameData.deserializeHistory(document.getList("history", String.class, new ArrayList<>())));
 
         username = document.getString("username");
         Document kitStatistics = (Document) document.get("kitData");
@@ -133,7 +133,7 @@ public class Profile {
 
         Document kitStatsDoc = new Document();
 
-        document.put("history", serializeHistory());
+        document.put("history", gameData.serializeHistory());
 
         for (Kit kit : Neptune.get().getKitManager().kits) {
             KitData entry = new KitData();
@@ -150,76 +150,5 @@ public class Profile {
         document.put("kitData", kitStatsDoc);
 
         collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
-    }
-
-    public void run(Kit kit, boolean won) {
-        if (won) {
-            addWin(kit);
-        } else {
-            addLoss(kit);
-            gameData.getKitData().get(kit).setCurrentStreak(0);
-        }
-    }
-
-    public void addWin(Kit kit) {
-        gameData.getKitData().get(kit).setWins(gameData.getKitData().get(kit).getWins() + 1);
-        addWinStreak(kit);
-    }
-
-    public void addLoss(Kit kit) {
-        gameData.getKitData().get(kit).setLosses(gameData.getKitData().get(kit).getLosses() + 1);
-    }
-
-    public void addWinStreak(Kit kit) {
-        gameData.getKitData().get(kit).setCurrentStreak(gameData.getKitData().get(kit).getCurrentStreak() + 1);
-
-        if (gameData.getKitData().get(kit).getCurrentStreak() > gameData.getKitData().get(kit).getBestStreak()) {
-            setBestWinStreak(kit, gameData.getKitData().get(kit).getCurrentStreak());
-        }
-    }
-
-    public List<String> serializeHistory() {
-        if (gameData.getMatchHistories().isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        ArrayList<String> serialized = new ArrayList<>();
-        for (MatchHistory matchHistory : gameData.getMatchHistories()) {
-            serialized.add(serialize(matchHistory));
-        }
-        return serialized;
-    }
-
-    public ArrayList<MatchHistory> deserializeHistory(List<String> historySerialized) {
-        if (historySerialized == null || historySerialized.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        ArrayList<MatchHistory> punishments = new ArrayList<>();
-        for (String serialized : historySerialized) {
-            punishments.add(deserialize(serialized));
-        }
-        return punishments;
-    }
-
-    public void addHistory(MatchHistory matchHistory) {
-        if (gameData.getMatchHistories().size() >= 7) {
-            gameData.getMatchHistories().remove(0);
-            gameData.getMatchHistories().add(matchHistory);
-        } else {
-            gameData.getMatchHistories().add(matchHistory);
-        }
-    }
-
-    private String serialize(MatchHistory matchHistory) {
-        return gameData.getGson().toJson(matchHistory);
-    }
-
-    private MatchHistory deserialize(String serialized) {
-        return gameData.getGson().fromJson(serialized, MatchHistory.class);
-    }
-
-    public void setBestWinStreak(Kit kit, int value) {
-        gameData.getKitData().get(kit).setBestStreak(value);
     }
 }

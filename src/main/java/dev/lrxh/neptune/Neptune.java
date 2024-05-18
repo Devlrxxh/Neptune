@@ -104,6 +104,8 @@ public final class Neptune extends JavaPlugin {
         this.mongoManager = new MongoManager();
         mongoManager.connect();
         profileManager = new ProfileManager();
+
+        System.gc();
     }
 
     private void registerListeners() {

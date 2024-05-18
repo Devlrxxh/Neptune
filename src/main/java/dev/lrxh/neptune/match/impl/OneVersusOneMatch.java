@@ -72,13 +72,13 @@ public class OneVersusOneMatch extends Match {
 
         Profile winnerProfile = Neptune.get().getProfileManager().getByUUID(winner.getPlayerUUID());
         Profile loserProfile = Neptune.get().getProfileManager().getByUUID(loser.getPlayerUUID());
-        winnerProfile.run(kit, true);
-        loserProfile.run(kit, false);
+        winnerProfile.getGameData().run(kit, true);
+        loserProfile.getGameData().run(kit, false);
 
-        winnerProfile.addHistory(
+        winnerProfile.getGameData().addHistory(
                 new MatchHistory(true, loserProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName()));
 
-        loserProfile.addHistory(
+        loserProfile.getGameData().addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName()));
     }
 
