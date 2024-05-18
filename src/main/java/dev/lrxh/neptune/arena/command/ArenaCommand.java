@@ -122,10 +122,10 @@ public class ArenaCommand extends BaseCommand {
 
         if (edgeType.equals(EdgeType.MIN)) {
             arena.setMin(player.getLocation());
-            player.sendMessage(CC.color("&aSuccessfully set &9Min 1&a for arena " + arena.getDisplayName()));
+            player.sendMessage(CC.color("&aSuccessfully set &9Min&a for arena " + arena.getDisplayName()));
         } else {
             arena.setMax(player.getLocation());
-            player.sendMessage(CC.color("&aSuccessfully set &cMax 2&a for arena " + arena.getDisplayName()));
+            player.sendMessage(CC.color("&aSuccessfully set &cMax&a for arena " + arena.getDisplayName()));
         }
 
         if (arena.getMin() != null && arena.getMax() != null) {
