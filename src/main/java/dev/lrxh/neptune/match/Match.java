@@ -106,7 +106,7 @@ public abstract class Match {
         PlayerUtil.giveKit(player.getUniqueId(), kit);
         profile.getGameData().setDuelRequest(null);
 
-        Neptune.get().getLeaderboardManager().changes.add(playerUUID);
+//        Neptune.get().getLeaderboardManager().changes.add(playerUUID);
     }
 
 

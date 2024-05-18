@@ -100,6 +100,7 @@ public class PlayerUtil {
             }
         }
 
+        System.out.println(builder.toString());
         utils.sendMessage(playerUUID, builder);
     }
 

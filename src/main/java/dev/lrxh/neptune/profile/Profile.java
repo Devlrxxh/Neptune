@@ -16,7 +16,7 @@ import dev.lrxh.neptune.providers.duel.DuelRequest;
 import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.utils.chatComponent.ChatComponent;
 import lombok.Data;
-import me.clip.placeholderapi.libs.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.TextComponent;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -82,10 +82,14 @@ public class Profile {
         gameData.setDuelRequest(duelRequest);
 
         TextComponent accept =
-                Neptune.get().getVersionHandler().getChatComponent().create(new ChatComponent(MessagesLocale.DUEL_ACCEPT.getString(), "/duel accept", MessagesLocale.DUEL_ACCEPT_HOVER.getString()));
+                Neptune.get().getVersionHandler().getChatComponent().create
+                        (new ChatComponent(MessagesLocale.DUEL_ACCEPT.getString(),
+                                MessagesLocale.DUEL_ACCEPT_HOVER.getString(), "/duel accept"));
 
         TextComponent deny =
-                Neptune.get().getVersionHandler().getChatComponent().create(new ChatComponent(MessagesLocale.DUEL_DENY.getString(), "/duel deny", MessagesLocale.DUEL_DENY_HOVER.getString()));
+                Neptune.get().getVersionHandler().getChatComponent().create(
+                        new ChatComponent(MessagesLocale.DUEL_DENY.getString(),
+                                MessagesLocale.DUEL_DENY_HOVER.getString(), "/duel deny"));
 
         MessagesLocale.DUEL_REQUEST_RECEIVER.send(playerUUID,
                 new Replacement("<accept>", accept),
