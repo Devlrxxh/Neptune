@@ -65,7 +65,8 @@ public enum MessagesLocale implements IDataAccessor {
     DUEL_DENY("DUEL.DENY", null, DataType.STRING, "&c&l(DENY)"),
     DUEL_DENY_HOVER("DUEL.DENY_HOVER", null, DataType.STRING, "&cClick to deny duel request"),
     SPECTATE_START("MATCH.SPECTATE.START", null, DataType.STRING_LIST, "&b<player> &fstarted spectating match."),
-    SPECTATE_STOP("MATCH.SPECTATE.STOP", null, DataType.STRING_LIST, "&b<player> &fstopped spectating match.");
+    SPECTATE_STOP("MATCH.SPECTATE.STOP", null, DataType.STRING_LIST, "&b<player> &fstopped spectating match."),
+    ERROR_MESSAGE("ERROR_MESSAGE", null, DataType.STRING, "&4ERROR &7- &c<error>");
 
 
     private final String path;
