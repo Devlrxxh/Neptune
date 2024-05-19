@@ -28,9 +28,9 @@ public class ColorUtil {
                 }
 
                 if (lastColor != null && !str.isEmpty()) {
-                    result.add(lastColor + str);
+                    result.add(CC.color(lastColor + str));
                 } else {
-                    result.add(str);
+                    result.add(CC.color(str));
                 }
             } else if (object instanceof TextComponent) {
                 TextComponent textComponent = (TextComponent) object;

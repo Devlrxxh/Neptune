@@ -10,7 +10,6 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
-import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.duel.DuelRequest;
 import dev.lrxh.neptune.utils.ItemUtils;
@@ -35,7 +34,7 @@ public class Profile {
     public Profile(UUID playerUUID, ProfileState state) {
         this.playerUUID = playerUUID;
         this.state = state;
-        this.username = Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getName();
+        this.username = Bukkit.getPlayer(playerUUID).getName();
         this.gameData = new GameData();
 
         load();
@@ -57,7 +56,6 @@ public class Profile {
 
         gameData.setMatchHistories(gameData.deserializeHistory(document.getList("history", String.class, new ArrayList<>())));
 
-        username = document.getString("username");
         Document kitStatistics = (Document) document.get("kitData");
 
         for (Kit kit : Neptune.get().getKitManager().kits) {
@@ -72,7 +70,32 @@ public class Profile {
 
             gameData.getKitData().put(kit, profileKitData);
         }
+    }
 
+    public void save() {
+        Document document = new Document();
+        document.put("uuid", playerUUID.toString());
+        document.put("username", username);
+
+        Document kitStatsDoc = new Document();
+
+        document.put("history", gameData.serializeHistory());
+
+        for (Kit kit : Neptune.get().getKitManager().kits) {
+            KitData entry = new KitData();
+            Document kitStatisticsDocument = new Document();
+            kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
+            kitStatisticsDocument.put("WINS", entry.getWins());
+            kitStatisticsDocument.put("LOSSES", entry.getLosses());
+            kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
+            kitStatisticsDocument.put("kit", entry.getKit() == null || entry.getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getKit()));
+
+            kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
+        }
+
+        document.put("kitData", kitStatsDoc);
+
+        collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
     }
 
     public void sendDuel(DuelRequest duelRequest) {
@@ -103,7 +126,6 @@ public class Profile {
         Neptune.get().getQueueManager().remove(playerUUID);
         DuelRequest duelRequest = gameData.getDuelRequest();
 
-        //Create participants
         Participant participant1 =
                 new Participant(duelRequest.getSender());
 
@@ -124,31 +146,5 @@ public class Profile {
 
     public void setMatch(Match match) {
         gameData.setMatch(match);
-    }
-
-    public void save() {
-        Document document = new Document();
-        document.put("uuid", playerUUID.toString());
-        document.put("username", username);
-
-        Document kitStatsDoc = new Document();
-
-        document.put("history", gameData.serializeHistory());
-
-        for (Kit kit : Neptune.get().getKitManager().kits) {
-            KitData entry = new KitData();
-            Document kitStatisticsDocument = new Document();
-            kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
-            kitStatisticsDocument.put("WINS", entry.getWins());
-            kitStatisticsDocument.put("LOSSES", entry.getLosses());
-            kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
-            kitStatisticsDocument.put("kit", entry.getKit() == null || entry.getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getKit()));
-
-            kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
-        }
-
-        document.put("kitData", kitStatsDoc);
-
-        collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
     }
 }

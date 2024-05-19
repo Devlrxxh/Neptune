@@ -6,8 +6,6 @@ import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.utils.IPlayerUtils;
 import lombok.experimental.UtilityClass;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -88,23 +86,10 @@ public class PlayerUtil {
 
 
     public void sendMessage(UUID playerUUID, List<Object> content) {
-
-        TextComponent.Builder builder = Component.text();
-
-        for (Object obj : ColorUtil.addColors(content)) {
-            if (obj instanceof String) {
-                String message = CC.color((String) obj);
-                builder.append(Component.text(message));
-            } else if (obj instanceof TextComponent) {
-                builder.append((TextComponent) obj);
-            }
-        }
-
-        utils.sendMessage(playerUUID, builder);
+        utils.sendMessage(playerUUID, ColorUtil.addColors(content));
     }
 
-
-    public void sendMessage(UUID playerUUID, TextComponent content) {
+    public void sendMessage(UUID playerUUID, Object content) {
         utils.sendMessage(playerUUID, content);
     }
 

@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchSnapshot;
-import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.providers.duel.DuelRequest;
 import lombok.Data;
 
