@@ -6,7 +6,9 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.profile.VisibilityLogic;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,13 +30,11 @@ public class ProfileListener implements Listener {
         plugin.getHotbarManager().giveItems(player.getUniqueId());
         VisibilityLogic.handle(player.getUniqueId());
 
-        event.setJoinMessage(null);
+        event.joinMessage(Component.text(CC.color(MessagesLocale.JOIN_MESSAGE.getString())));
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        event.setQuitMessage(null);
-
         Player player = event.getPlayer();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
@@ -42,6 +42,8 @@ public class ProfileListener implements Listener {
         if (match != null) {
             match.onLeave(match.getParticipant(player.getUniqueId()));
         }
+
+        event.quitMessage(Component.text(CC.color(MessagesLocale.LEAVE_MESSAGE.getString())));
     }
 
     @EventHandler
