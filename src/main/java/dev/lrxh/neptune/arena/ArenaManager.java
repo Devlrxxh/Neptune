@@ -18,6 +18,10 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ArenaManager implements IManager {
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
 
+    public ArenaManager() {
+        loadArenas();
+    }
+
     public void loadArenas() {
         FileConfiguration config = plugin.getConfigManager().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {

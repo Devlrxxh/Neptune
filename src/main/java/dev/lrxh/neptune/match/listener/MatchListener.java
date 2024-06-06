@@ -5,7 +5,6 @@ import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.DeathCause;
 import dev.lrxh.neptune.match.impl.MatchState;
-import dev.lrxh.neptune.match.impl.OneVersusOneMatch;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
@@ -39,11 +38,9 @@ public class MatchListener implements Listener {
         if (profile == null) return;
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
-            if (match instanceof OneVersusOneMatch) {
-                Participant participant = match.getParticipant(player.getUniqueId());
-                participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                match.onDeath(participant);
-            }
+            Participant participant = match.getParticipant(player.getUniqueId());
+            participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+            match.onDeath(participant);
         }
     }
 
@@ -113,10 +110,8 @@ public class MatchListener implements Listener {
 
             if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME)) {
                 Match match = targetProfile.getMatch();
-                if (match instanceof OneVersusOneMatch) {
-                    match.getParticipant(damager.getUniqueId()).handleHit();
-                    match.getParticipant(target.getUniqueId()).resetCombo();
-                }
+                match.getParticipant(damager.getUniqueId()).handleHit();
+                match.getParticipant(target.getUniqueId()).resetCombo();
             }
         }
     }

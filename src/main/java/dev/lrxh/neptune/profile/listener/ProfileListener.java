@@ -6,9 +6,8 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.profile.VisibilityLogic;
-import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import net.kyori.adventure.text.Component;
+import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -30,7 +29,13 @@ public class ProfileListener implements Listener {
         plugin.getHotbarManager().giveItems(player.getUniqueId());
         VisibilityLogic.handle(player.getUniqueId());
 
-        event.joinMessage(Component.text(CC.color(MessagesLocale.JOIN_MESSAGE.getString())));
+        event.setJoinMessage(null);
+        if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
+            ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE.getString().replace("<player>", player.getName()));
+        }
+
+
+        System.out.println(plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getKitData());
     }
 
     @EventHandler
@@ -43,7 +48,12 @@ public class ProfileListener implements Listener {
             match.onLeave(match.getParticipant(player.getUniqueId()));
         }
 
-        event.quitMessage(Component.text(CC.color(MessagesLocale.LEAVE_MESSAGE.getString())));
+        event.setQuitMessage(null);
+        if (!MessagesLocale.LEAVE_MESSAGE.getString().equals("NONE")) {
+            ServerUtils.broadcast(MessagesLocale.LEAVE_MESSAGE.getString().replace("<player>", player.getName()));
+        }
+
+        plugin.getProfileManager().removeProfile(player.getUniqueId());
     }
 
     @EventHandler

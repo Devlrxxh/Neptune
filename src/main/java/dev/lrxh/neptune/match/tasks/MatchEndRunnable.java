@@ -3,7 +3,6 @@ package dev.lrxh.neptune.match.tasks;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.OneVersusOneMatch;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
@@ -37,14 +36,11 @@ public class MatchEndRunnable extends BukkitRunnable {
                 if (profile.getMatch() == null) continue;
                 PlayerUtil.reset(participant.getPlayerUUID());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
-                profile.setState(ProfileState.LOBBY);
+                profile.setState(profile.getGameData().getParty() == null ? ProfileState.LOBBY : ProfileState.IN_PARTY);
                 profile.setMatch(null);
             }
 
-            if (match instanceof OneVersusOneMatch) {
-                OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
-                oneVersusOneMatch.sendEndMessage();
-            }
+            match.sendEndMessage();
 
             if (match.getKit().isShowHP()) {
                 match.hideHealth();

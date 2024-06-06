@@ -4,6 +4,8 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.PlaceholderUtil;
@@ -27,27 +29,40 @@ public class ScoreboardAdapter implements AssembleAdapter {
         if (state.equals(ProfileState.LOBBY) || state.equals(ProfileState.IN_KIT_EDITOR)) {
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.LOBBY.getStringList()), player);
         }
+        if (state.equals(ProfileState.IN_PARTY)) {
+            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.PARTY_LOBBY.getStringList()), player);
+        }
         if (state.equals(ProfileState.IN_QUEUE)) {
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_QUEUE.getStringList()), player);
         }
         if (state.equals(ProfileState.IN_GAME)) {
             Match match = profile.getMatch();
-            if (match.getMatchState().equals(MatchState.STARTING)) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
-            } else if (match.getMatchState().equals(MatchState.IN_ROUND)) {
-                if (match.getRounds() > 1) {
-                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
+            if (match instanceof SoloFightMatch) {
+                if (match.getMatchState().equals(MatchState.STARTING)) {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
+                } else if (match.getMatchState().equals(MatchState.IN_ROUND)) {
+                    if (match.getRounds() > 1) {
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
+                    }
+                    if (match.getKit().isBoxing()) {
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
+                    }
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
+                } else {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
                 }
-                if (match.getKit().isBoxing()) {
-                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
-                }
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
-            } else {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
+            }
+            if (match instanceof TeamFightMatch) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
             }
         }
         if (state.equals(ProfileState.IN_SPECTATOR)) {
-            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
+            Match match = profile.getMatch();
+            if (match instanceof SoloFightMatch) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
+            } else if (match instanceof TeamFightMatch) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
+            }
         }
         return null;
     }

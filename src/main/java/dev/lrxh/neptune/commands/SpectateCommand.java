@@ -41,7 +41,7 @@ public class SpectateCommand extends BaseCommand {
             return;
         }
 
-        targetProfile.getMatch().addSpectator(player.getUniqueId());
+        targetProfile.getMatch().addSpectator(player.getUniqueId(), true);
         player.teleport(target);
     }
 

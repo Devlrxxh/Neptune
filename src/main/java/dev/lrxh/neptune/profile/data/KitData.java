@@ -1,19 +1,22 @@
 package dev.lrxh.neptune.profile.data;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 public class KitData {
-    private int wins;
-    private int losses;
-    private int bestStreak;
-    private int currentStreak;
-    private List<ItemStack> kit;
+    private int wins = 0;
+    private int losses = 0;
+    private int bestStreak = 0;
+    private int currentStreak = 0;
+    private List<ItemStack> kit = new ArrayList<>();
 
     public double getKdr() {
         double kd = wins;

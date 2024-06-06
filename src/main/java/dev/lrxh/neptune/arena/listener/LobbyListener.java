@@ -13,6 +13,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.event.world.WorldLoadEvent;
 
+import java.util.Objects;
+
 public class LobbyListener implements Listener {
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
@@ -64,14 +66,14 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onPlayerDropItem(PlayerDropItemEvent event) {
-        if (event.getItemDrop().getItemStack().getType() == Material.GLASS_BOTTLE) {
+        if (event.getItemDrop().getItemStack().getType().equals(Material.GLASS_BOTTLE)) {
             event.getItemDrop().remove();
         }
     }
 
     @EventHandler
     public void onSoilChange(PlayerInteractEvent event) {
-        if (event.getAction() == Action.PHYSICAL && event.getClickedBlock().getType() == XMaterial.FARMLAND.parseMaterial())
+        if (event.getAction() == Action.PHYSICAL && Objects.requireNonNull(event.getClickedBlock()).getType() == XMaterial.FARMLAND.parseMaterial())
             event.setCancelled(true);
     }
 

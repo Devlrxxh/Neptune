@@ -11,19 +11,20 @@ import dev.lrxh.neptune.arena.listener.LobbyListener;
 import dev.lrxh.neptune.commands.*;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
+import dev.lrxh.neptune.database.MongoManager;
+import dev.lrxh.neptune.duel.command.DuelCommand;
+import dev.lrxh.neptune.hotbar.HotbarManager;
+import dev.lrxh.neptune.hotbar.ItemListener;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
+import dev.lrxh.neptune.leaderboard.LeaderboardManager;
+import dev.lrxh.neptune.leaderboard.task.LeaderboardTask;
 import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.listener.MatchListener;
+import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
-import dev.lrxh.neptune.providers.database.MongoManager;
-import dev.lrxh.neptune.providers.duel.command.DuelCommand;
-import dev.lrxh.neptune.providers.hotbar.HotbarManager;
-import dev.lrxh.neptune.providers.hotbar.ItemListener;
-import dev.lrxh.neptune.providers.leaderboard.LeaderboardManager;
-import dev.lrxh.neptune.providers.leaderboard.LeaderboardTask;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
@@ -40,6 +41,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
+import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Getter
@@ -67,7 +70,6 @@ public final class Neptune extends JavaPlugin {
         return instance == null ? new Neptune() : instance;
     }
 
-
     @Override
     public void onEnable() {
         instance = this;
@@ -75,35 +77,29 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadManager() {
-        this.versionHandler = new VersionControll(get()).getHandler();
+        this.versionHandler = new VersionControll(this).getHandler();
+        if (!isEnabled()) {
+            return;
+        }
 
-        loadConfigs();
+        this.configManager = new ConfigManager();
+        this.configManager.load();
+        this.queueManager = new QueueManager();
+        this.matchManager = new MatchManager();
+        this.arenaManager = new ArenaManager();
+        this.kitManager = new KitManager();
+        this.cache = new Cache();
+        this.hotbarManager = new HotbarManager();
+        this.assemble = new Assemble(this, new ScoreboardAdapter());
+        this.mongoManager = new MongoManager();
+        this.profileManager = new ProfileManager();
+        this.leaderboardManager = new LeaderboardManager();
+
         registerListeners();
         loadCommandManager();
         loadTasks();
         loadExtensions();
         loadWorlds();
-
-        queueManager = new QueueManager();
-
-        matchManager = new MatchManager();
-
-        arenaManager = new ArenaManager();
-        arenaManager.loadArenas();
-
-        kitManager = new KitManager();
-        kitManager.loadKits();
-
-        cache = new Cache();
-        cache.load();
-
-        hotbarManager = new HotbarManager();
-        hotbarManager.loadItems();
-
-        assemble = new Assemble(get(), new ScoreboardAdapter());
-        this.mongoManager = new MongoManager();
-        mongoManager.connect();
-        profileManager = new ProfileManager();
 
         System.gc();
     }
@@ -115,12 +111,7 @@ public final class Neptune extends JavaPlugin {
                 new LobbyListener(),
                 new ItemListener(),
                 new MenuListener()
-        ).forEach(listener -> get().getServer().getPluginManager().registerEvents(listener, get()));
-    }
-
-    public void loadConfigs() {
-        configManager = new ConfigManager();
-        configManager.load();
+        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void loadExtensions() {
@@ -129,15 +120,15 @@ public final class Neptune extends JavaPlugin {
     }
 
     private boolean loadExtension(String pluginName) {
-        Plugin placeholderAPI = get().getServer().getPluginManager().getPlugin(pluginName);
-        return placeholderAPI != null && placeholderAPI.isEnabled();
+        Plugin plugin = getServer().getPluginManager().getPlugin(pluginName);
+        return plugin != null && plugin.isEnabled();
     }
 
     private void loadWorlds() {
-        for (World world : get().getServer().getWorlds()) {
+        for (World world : getServer().getWorlds()) {
             versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_WEATHER_CYCLE, false);
             versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_DAYLIGHT_CYCLE, false);
-            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_IMMEDIATE_RESPAWN, false);
+            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_IMMEDIATE_RESPAWN, true);
             world.setDifficulty(Difficulty.HARD);
         }
     }
@@ -149,7 +140,7 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadCommandManager() {
-        paperCommandManager = new PaperCommandManager(get());
+        paperCommandManager = new PaperCommandManager(this);
         registerCommands();
         loadCommandCompletions();
     }
@@ -166,7 +157,8 @@ public final class Neptune extends JavaPlugin {
                 new SpectateCommand(),
                 new DuelCommand(),
                 new LeaveCommand(),
-                new MatchHistoryCommand()
+                new MatchHistoryCommand(),
+                new PartyCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 
@@ -177,16 +169,20 @@ public final class Neptune extends JavaPlugin {
         commandCompletions.registerCompletion("kits", c -> kitManager.kits.stream().map(Kit::getName).collect(Collectors.toList()));
     }
 
-    private void disableManagers() {
-        arenaManager.saveArenas();
-        kitManager.saveKits();
-        taskScheduler.stopAllTasks();
-        cache.save();
-    }
-
     @Override
     public void onDisable() {
-        matchManager.stopAllGames();
         disableManagers();
+    }
+
+    private void disableManagers() {
+        stopService(kitManager, KitManager::saveKits);
+        stopService(arenaManager, ArenaManager::saveArenas);
+        stopService(matchManager, MatchManager::stopAllGames);
+        stopService(taskScheduler, TaskScheduler::stopAllTasks);
+        stopService(cache, Cache::save);
+    }
+
+    private <T> void stopService(T service, Consumer<T> consumer) {
+        Optional.ofNullable(service).ifPresent(consumer);
     }
 }

@@ -4,25 +4,41 @@ ITEMS:
       NAME: "&aQueue Match &7(Right Click)"
       MATERIAL: IRON_SWORD
       SLOT: 0
-      DURABILITY: 0
     SPECTATE_MENU:
       NAME: "&6View Matches &7(Right Click)"
       MATERIAL: EMERALD
       SLOT: 1
-      DURABILITY: 0
+    PARTY_CREATE:
+      NAME: "&9Create Party &7(Right Click)"
+      MATERIAL: NAME_TAG
+      SLOT: 4
     STATS:
       NAME: "&eStats &7(Right Click)"
       MATERIAL: COMPASS
       SLOT: 7
-      DURABILITY: 0
     KIT_EDITOR:
       NAME: "&dKit Editor &7(Right Click)"
       MATERIAL: BOOK
       SLOT: 8
-      DURABILITY: 0
   IN_QUEUE:
     QUEUE_LEAVE:
       NAME: "&cLeave Queue &7(Right Click)"
       MATERIAL: RED_DYE
       SLOT: 8
-      DURABILITY: 0
+  IN_PARTY:
+    PARTY_INFO:
+      NAME: "&aParty Information &7(Right Click)"
+      MATERIAL: COMPASS
+      SLOT: 0
+    PARTY_SETTINGS:
+      NAME: "&eParty Settings &7(Right Click)"
+      MATERIAL: PAPER
+      SLOT: 1
+    PARTY_EVENTS:
+      NAME: "&dParty Events &7(Right Click)"
+      MATERIAL: NAME_TAG
+      SLOT: 2
+    PARTY_DISBAND:
+      NAME: "&cLeave Party &7(Right Click)"
+      MATERIAL: RED_DYE
+      SLOT: 8

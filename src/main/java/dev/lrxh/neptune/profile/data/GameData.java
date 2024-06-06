@@ -2,43 +2,55 @@ package dev.lrxh.neptune.profile.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchSnapshot;
-import dev.lrxh.neptune.providers.duel.DuelRequest;
-import lombok.Data;
+import dev.lrxh.neptune.party.Party;
+import dev.lrxh.neptune.providers.request.Request;
+import dev.lrxh.neptune.utils.TtlHashMap;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.WeakHashMap;
+import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 public class GameData {
+    private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.DUEL_EXPIRY_TIME.getInt());
     private Match match;
     private MatchSnapshot matchSnapshot;
-    private WeakHashMap<Kit, KitData> kitData;
-    private DuelRequest duelRequest;
+    private HashMap<Kit, KitData> kitData;
     private ArrayList<MatchHistory> matchHistories;
     private Gson gson;
     private Kit kitEditor;
-
+    private Party party;
 
     public GameData() {
         this.match = null;
         this.matchSnapshot = null;
         this.kitEditor = null;
-        kitData = new WeakHashMap<>();
-        matchHistories = new ArrayList<>();
-        gson = new GsonBuilder().setPrettyPrinting().create();
+        this.kitData = new HashMap<>();
+        this.matchHistories = new ArrayList<>();
+        this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
     public void run(Kit kit, boolean won) {
+        createIfNull(kit);
         if (won) {
             addWin(kit);
         } else {
             addLoss(kit);
             kitData.get(kit).setCurrentStreak(0);
+        }
+    }
+
+    private void createIfNull(Kit kit) {
+        if (kitData.get(kit) == null) {
+            kitData.put(kit, new KitData());
         }
     }
 
@@ -59,9 +71,17 @@ public class GameData {
         }
     }
 
+    public void addRequest(Request duelRequest, UUID name) {
+        requests.put(name, duelRequest);
+    }
+
+    public void removeRequest(UUID playerUUID) {
+        this.requests.remove(playerUUID);
+    }
+
     public List<String> serializeHistory() {
         if (matchHistories.isEmpty()) {
-            return Collections.emptyList();
+            return new ArrayList<>();
         }
 
         ArrayList<String> serialized = new ArrayList<>();

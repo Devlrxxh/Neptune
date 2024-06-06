@@ -13,6 +13,10 @@ import java.util.*;
 public class KitManager implements IManager {
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
 
+    public KitManager() {
+        loadKits();
+    }
+
     public void loadKits() {
         FileConfiguration config = plugin.getConfigManager().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {

@@ -5,8 +5,8 @@ import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
-import dev.lrxh.neptune.match.impl.OneVersusOneMatch;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.sounds.Sound;
 import org.bukkit.Bukkit;
@@ -41,7 +41,10 @@ public class MatchRespawnRunnable extends BukkitRunnable {
 
         if (match.getMatchState().equals(MatchState.STARTING)) {
             match.playSound(Sound.UI_BUTTON_CLICK);
-            match.sendTitle(respawnTimer > 3 ? "&e" + respawnTimer : "&c" + respawnTimer, "", 100);
+
+            match.sendTitle(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(respawnTimer)),
+                    MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(respawnTimer)),
+                    100);
             match.sendMessage(MessagesLocale.ROUND_STARTING, new Replacement("<timer>", String.valueOf(respawnTimer)));
         }
 
@@ -50,10 +53,8 @@ public class MatchRespawnRunnable extends BukkitRunnable {
                 match.setupPlayer(p.getPlayerUUID());
             }
 
-            if (match instanceof OneVersusOneMatch) {
-                OneVersusOneMatch oneVersusOneMatch = (OneVersusOneMatch) match;
-                oneVersusOneMatch.teleportPlayersToPositions();
-            }
+            SoloFightMatch soloFightMatch = (SoloFightMatch) match;
+            soloFightMatch.teleportToPositions();
 
             if (match.arena instanceof StandAloneArena) {
                 ((StandAloneArena) match.arena).restoreSnapshot();

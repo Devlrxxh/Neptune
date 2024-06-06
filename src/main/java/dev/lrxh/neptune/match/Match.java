@@ -4,6 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.match.impl.MatchSnapshot;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
@@ -15,6 +16,7 @@ import dev.lrxh.sounds.Sound;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -33,6 +35,7 @@ import java.util.UUID;
 @Setter
 public abstract class Match {
     public final List<UUID> spectators = new ArrayList<>();
+    public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
@@ -49,7 +52,7 @@ public abstract class Match {
             if (player == null) continue;
 
             player.playSound(player.getLocation(),
-                    (org.bukkit.Sound) Neptune.get().getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
+                    (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
         }
     }
 
@@ -74,10 +77,10 @@ public abstract class Match {
         }
     }
 
-    public void addSpectator(UUID playerUUID) {
+    public void addSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
 
         profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
@@ -93,27 +96,15 @@ public abstract class Match {
             player.showPlayer(participiantPlayer);
         }
 
-        broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
+        if (sendMessage) {
+            broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
+        }
     }
-
-    public void setupPlayer(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        PlayerUtil.reset(player.getUniqueId());
-        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
-        profile.setMatch(this);
-        profile.setState(ProfileState.IN_GAME);
-        PlayerUtil.giveKit(player.getUniqueId(), kit);
-        profile.getGameData().setDuelRequest(null);
-
-//        Neptune.get().getLeaderboardManager().changes.add(playerUUID);
-    }
-
 
     public void removeSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
 
         if (profile.getMatch() == null) return;
         PlayerUtil.reset(playerUUID);
@@ -126,6 +117,16 @@ public abstract class Match {
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
         }
+    }
+
+    public void setupPlayer(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        PlayerUtil.reset(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        profile.setMatch(this);
+        profile.setState(ProfileState.IN_GAME);
+        PlayerUtil.giveKit(player.getUniqueId(), kit);
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
@@ -181,7 +182,7 @@ public abstract class Match {
                 objective = viewer.getScoreboard().registerNewObjective("showhealth", "health");
             }
             objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-            objective.setDisplayName(CC.color("&c") + "❤");
+            objective.displayName(Component.text(CC.color("&c") + "❤"));
             objective.getScore(player.getName()).setScore((int) Math.floor(player.getHealth() / 2));
         }
     }
@@ -200,7 +201,7 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) return;
-            player.hidePlayer(targetPlayer);
+            player.showPlayer(targetPlayer);
         }
     }
 
@@ -214,6 +215,30 @@ public abstract class Match {
         }
     }
 
+    public void setupParticipants() {
+        //Setup participants
+        for (Participant participant : participants) {
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player == null) {
+                continue;
+            }
+            setupPlayer(participant.getPlayerUUID());
+        }
+    }
+
+    public void takeSnapshots() {
+        for (Participant participant : participants) {
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player == null) continue;
+            MatchSnapshot snapshot = new MatchSnapshot(player, player.getName());
+            snapshot.setLongestCombo(participant.getLongestCombo());
+            snapshot.setTotalHits(participant.getHits());
+            snapshot.setOpponent(participant.getOpponent().getNameUnColored());
+
+            plugin.getProfileManager().getByUUID(participant.getPlayerUUID()).getGameData().setMatchSnapshot(snapshot);
+        }
+    }
+
     public abstract void end();
 
     public abstract void onDeath(Participant participant);
@@ -221,4 +246,8 @@ public abstract class Match {
     public abstract void onLeave(Participant participant);
 
     public abstract void startMatch();
+
+    public abstract void teleportToPositions();
+
+    public abstract void sendEndMessage();
 }

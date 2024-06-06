@@ -12,15 +12,23 @@ import lombok.Getter;
 @Getter
 public class ConfigManager {
     private final Neptune plugin = Neptune.get();
-    private final ConfigFile messagesConfig = new ConfigFile("messages");
-    private final ConfigFile arenasConfig = new ConfigFile("arenas");
-    private final ConfigFile kitsConfig = new ConfigFile("kits");
-    private final ConfigFile mainConfig = new ConfigFile("settings");
-    private final ConfigFile scoreboardConfig = new ConfigFile("scoreboard");
-    private final ConfigFile hotbarConfig = new ConfigFile("hotbar");
-    private final ConfigFile menusConfig = new ConfigFile("menus");
+    private ConfigFile messagesConfig;
+    private ConfigFile arenasConfig;
+    private ConfigFile kitsConfig;
+    private ConfigFile mainConfig;
+    private ConfigFile scoreboardConfig;
+    private ConfigFile hotbarConfig;
+    private ConfigFile menusConfig;
 
     public void load() {
+        messagesConfig = new ConfigFile("messages");
+        arenasConfig = new ConfigFile("arenas");
+        kitsConfig = new ConfigFile("kits");
+        mainConfig = new ConfigFile("settings");
+        scoreboardConfig = new ConfigFile("scoreboard");
+        hotbarConfig = new ConfigFile("hotbar");
+        menusConfig = new ConfigFile("menus");
+
         MessagesLocale.MATCH_FOUND.load();
         SettingsLocale.SPAWN_LOCATION.load();
         MenusLocale.FILTER_NAME.load();

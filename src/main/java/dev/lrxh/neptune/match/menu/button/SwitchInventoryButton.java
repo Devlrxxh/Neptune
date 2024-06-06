@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.match.menu.button;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.match.impl.MatchSnapshot;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -17,7 +17,7 @@ public class SwitchInventoryButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(Material.PAPER)
+        return new ItemBuilder(XMaterial.PAPER)
                 .name("&7Press to switch to " + opponent + " inventory.")
                 .lore("&aClick to Switch")
                 .clearFlags()

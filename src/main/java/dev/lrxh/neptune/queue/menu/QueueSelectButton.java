@@ -6,14 +6,12 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.utils.ItemBuilder;
+import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @AllArgsConstructor
 public class QueueSelectButton extends Button {
@@ -22,18 +20,12 @@ public class QueueSelectButton extends Button {
     @Override
     public ItemStack getButtonItem(Player player) {
 
-        List<String> lore = new ArrayList<>();
-
-        MenusLocale.QUEUE_SELECT_LORE.getStringList().forEach(line -> {
-            line = line.replaceAll("<playing>", String.valueOf(kit.getPlaying()));
-            line = line.replaceAll("<queue>", String.valueOf(kit.getQueue()));
-            line = line.replaceAll("<kit>", kit.getDisplayName());
-            lore.add(line);
-        });
-
         return new ItemBuilder(kit.getIcon()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .amount(kit.getPlaying())
-                .lore(lore)
+                .lore(ItemUtils.getLore(MenusLocale.QUEUE_SELECT_LORE.getStringList(),
+                        new Replacement("<kit>", kit.getDisplayName()),
+                        new Replacement("<playing>", String.valueOf(kit.getPlaying())),
+                        new Replacement("<queue>", String.valueOf(kit.getQueue()))))
                 .clearFlags()
                 .build();
     }

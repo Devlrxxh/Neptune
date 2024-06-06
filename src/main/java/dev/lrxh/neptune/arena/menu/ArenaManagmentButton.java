@@ -26,7 +26,7 @@ public class ArenaManagmentButton extends Button {
     public ItemStack getButtonItem(Player player) {
 
         if (arena instanceof SharedArena) {
-            return new ItemBuilder(arena.isEnabled() ? XMaterial.GREEN_WOOL.parseMaterial() : XMaterial.RED_WOOL.parseMaterial())
+            return new ItemBuilder(arena.isEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
                     .name(arena.getDisplayName() + " &7( " + arena.getName() + "&7)")
                     .lore(Arrays.asList(
                             " ",
@@ -37,7 +37,7 @@ public class ArenaManagmentButton extends Button {
         } else {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
 
-            return new ItemBuilder(arena.isEnabled() ? XMaterial.GREEN_WOOL.parseMaterial() : XMaterial.RED_WOOL.parseMaterial())
+            return new ItemBuilder(arena.isEnabled() ? XMaterial.GREEN_WOOL : XMaterial.RED_WOOL)
                     .name(arena.getDisplayName() + " &7(" + arena.getName() + "&7)")
                     .lore(Arrays.asList(
                             " ",

@@ -75,7 +75,6 @@ public class PlayerUtil {
         }
     }
 
-
     public int getPing(UUID playerUUID) {
         return utils.getPing(playerUUID);
     }
@@ -83,7 +82,6 @@ public class PlayerUtil {
     public ItemStack getPlayerHead(UUID playerUUID) {
         return utils.getPlayerHead(playerUUID);
     }
-
 
     public void sendMessage(UUID playerUUID, List<Object> content) {
         utils.sendMessage(playerUUID, ColorUtil.addColors(content));
@@ -97,13 +95,11 @@ public class PlayerUtil {
         return utils.getItemInHand(playerUUID);
     }
 
-
     public void sendMessage(UUID playerUUID, String message) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        player.sendMessage(message);
+        player.sendMessage(CC.color(message));
     }
-
 
     public void denyMovement(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);

@@ -15,4 +15,6 @@ public class MatchHistory {
     private String kitName;
     @SerializedName("arena")
     private String arenaName;
+    @SerializedName("date")
+    private String date;
 }

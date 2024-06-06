@@ -27,7 +27,9 @@ public class MatchStartRunnable extends BukkitRunnable {
         }
         if (match.getMatchState().equals(MatchState.STARTING)) {
             match.playSound(Sound.UI_BUTTON_CLICK);
-            match.sendTitle(startTimer > 3 ? "&e" + startTimer : "&c" + startTimer, "", 100);
+            match.sendTitle(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(startTimer)),
+                    MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(startTimer)),
+                    100);
             match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));
         }
         startTimer--;

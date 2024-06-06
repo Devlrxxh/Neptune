@@ -6,7 +6,6 @@ import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -23,7 +22,7 @@ public class PageButton extends Button {
     public ItemStack getButtonItem(Player player) {
         if (this.mod > 0) {
             if (hasNext(player)) {
-                return new ItemBuilder(Material.LEVER)
+                return new ItemBuilder(XMaterial.LEVER)
                         .name(ChatColor.GREEN + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
@@ -31,7 +30,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(XMaterial.REDSTONE_TORCH.parseMaterial())
+                return new ItemBuilder(XMaterial.REDSTONE_TORCH)
                         .name(ChatColor.GRAY + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
@@ -41,7 +40,7 @@ public class PageButton extends Button {
             }
         } else {
             if (hasPrevious()) {
-                return new ItemBuilder(Material.LEVER)
+                return new ItemBuilder(XMaterial.LEVER)
                         .name(ChatColor.GREEN + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
@@ -49,7 +48,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(XMaterial.REDSTONE_TORCH.parseMaterial())
+                return new ItemBuilder(XMaterial.REDSTONE_TORCH)
                         .name(ChatColor.GRAY + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",

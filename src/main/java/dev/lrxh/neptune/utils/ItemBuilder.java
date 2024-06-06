@@ -13,11 +13,19 @@ import java.util.Objects;
 public class ItemBuilder {
     private final ItemStack item;
 
-    public ItemBuilder(Material material) {
+    public ItemBuilder(XMaterial material) {
         if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(XMaterial.matchXMaterial(material).parseMaterial()));
+            item = new ItemStack(Objects.requireNonNull(material.parseMaterial()));
         } else {
-            item = new ItemStack(Material.AIR);
+            item = new ItemStack(Material.BARRIER);
+        }
+    }
+
+    public ItemBuilder(String material) {
+        if (material != null) {
+            item = new ItemStack(Objects.requireNonNull(XMaterial.matchXMaterial(material).get().parseMaterial()));
+        } else {
+            item = new ItemStack(Material.BARRIER);
         }
     }
 
@@ -25,7 +33,7 @@ public class ItemBuilder {
         if (itemStack != null) {
             item = itemStack;
         } else {
-            item = new ItemStack(Material.AIR);
+            item = new ItemStack(Material.BARRIER);
         }
     }
 

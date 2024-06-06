@@ -80,7 +80,7 @@ public class Participant {
             }
         }
         Match match = Neptune.get().getProfileManager().getByUUID(playerUUID).getMatch();
-        if (match instanceof OneVersusOneMatch) {
+        if (match instanceof SoloFightMatch) {
             if (match.getKit().isBoxing()) {
                 if (hits >= 100) {
                     Participant opponent = getOpponent();

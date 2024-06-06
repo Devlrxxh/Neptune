@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.profile;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.party.Party;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -17,7 +18,13 @@ public class ProfileManager {
 
     public void removeProfile(UUID playerUUID) {
         plugin.getQueueManager().remove(playerUUID);
-        profiles.get(playerUUID).save();
+        Profile profile = profiles.get(playerUUID);
+        Party party = profile.getGameData().getParty();
+        profile.save();
+
+        if (party != null && party.getLeader().equals(playerUUID)) {
+            party.disband();
+        }
         profiles.remove(playerUUID);
     }
 

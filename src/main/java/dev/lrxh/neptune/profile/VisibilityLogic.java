@@ -9,6 +9,7 @@ import java.util.UUID;
 
 @UtilityClass
 public class VisibilityLogic {
+    private final Neptune plugin = Neptune.get();
 
     public void handle(UUID playerUUID) {
         for (Player players : Bukkit.getOnlinePlayers()) {
@@ -35,14 +36,15 @@ public class VisibilityLogic {
             }
         }
 
-        if (viewerProfile.getState().equals(ProfileState.LOBBY) || viewerProfile.getState().equals(ProfileState.IN_QUEUE) &&
-                (otherProfile.getState().equals(ProfileState.LOBBY) || otherProfile.getState().equals(ProfileState.IN_QUEUE))) {
+        if (viewerProfile.getState().equals(ProfileState.LOBBY) || viewerProfile.getState().equals(ProfileState.IN_QUEUE) ||
+                otherProfile.getState().equals(ProfileState.LOBBY) || otherProfile.getState().equals(ProfileState.IN_QUEUE) ||
+                viewerProfile.getState().equals(ProfileState.IN_PARTY) || otherProfile.getState().equals(ProfileState.IN_PARTY)) {
             viewerPlayer.showPlayer(otherPlayer);
             otherPlayer.showPlayer(viewerPlayer);
             return;
         }
 
-        viewerPlayer.hidePlayer(otherPlayer);
-        otherPlayer.hidePlayer(viewerPlayer);
+        viewerPlayer.showPlayer(otherPlayer);
+        otherPlayer.showPlayer(viewerPlayer);
     }
 }

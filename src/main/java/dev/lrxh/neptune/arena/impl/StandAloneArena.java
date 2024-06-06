@@ -18,7 +18,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 public class StandAloneArena extends Arena {
-    private transient LinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots = new LinkedHashMap<>();
+    private transient LinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots;
     private Location min;
     private Location max;
     private double deathY;
@@ -36,6 +36,7 @@ public class StandAloneArena extends Arena {
         this.deathY = deathY;
         this.used = false;
         this.duplicate = duplicate;
+        this.chunkSnapshots = new LinkedHashMap<>();
 
         takeSnapshot();
     }
@@ -53,7 +54,7 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         chunkSnapshots.clear();
-        chunkSnapshots = Neptune.get().getVersionHandler().getChunk().takeSnapshot(min, max);
+        chunkSnapshots = Neptune.get().getVersionHandler().getChunk().takeSnapshot(getBlueSpawn().getWorld(), min, max);
     }
 
     public void restoreSnapshot() {

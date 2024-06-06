@@ -34,7 +34,7 @@ public class MainCommand extends BaseCommand {
 
     @Subcommand("reload")
     public void reload(Player player) {
-        Neptune.get().loadConfigs();
+        Neptune.get().getConfigManager().load();
         player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 }

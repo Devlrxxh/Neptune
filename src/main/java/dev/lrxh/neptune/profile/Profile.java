@@ -5,16 +5,18 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.providers.duel.DuelRequest;
 import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.utils.chatComponent.ChatComponent;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -22,7 +24,8 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-@Data
+@Getter
+@Setter
 public class Profile {
     private final UUID playerUUID;
     private String username;
@@ -91,6 +94,7 @@ public class Profile {
             kitStatisticsDocument.put("kit", entry.getKit() == null || entry.getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getKit()));
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
+            gameData.getKitData().put(kit, entry);
         }
 
         document.put("kitData", kitStatsDoc);
@@ -98,33 +102,61 @@ public class Profile {
         collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
     }
 
-    public void sendDuel(DuelRequest duelRequest) {
+    public void sendDuel(DuelRequest duelRequest, UUID senderUUID) {
         Player sender = Bukkit.getPlayer(duelRequest.getSender());
         if (sender == null) return;
 
-        gameData.setDuelRequest(duelRequest);
+        gameData.addRequest(duelRequest, senderUUID);
 
         TextComponent accept =
                 Neptune.get().getVersionHandler().getChatComponent().create
                         (new ChatComponent(MessagesLocale.DUEL_ACCEPT.getString(),
-                                MessagesLocale.DUEL_ACCEPT_HOVER.getString(), "/duel accept"));
+                                MessagesLocale.DUEL_ACCEPT_HOVER.getString(), "/duel accept " + duelRequest.getSender().toString()));
 
         TextComponent deny =
                 Neptune.get().getVersionHandler().getChatComponent().create(
                         new ChatComponent(MessagesLocale.DUEL_DENY.getString(),
-                                MessagesLocale.DUEL_DENY_HOVER.getString(), "/duel deny"));
+                                MessagesLocale.DUEL_DENY_HOVER.getString(), "/duel deny " + duelRequest.getSender().toString()));
 
         MessagesLocale.DUEL_REQUEST_RECEIVER.send(playerUUID,
                 new Replacement("<accept>", accept),
                 new Replacement("<deny>", deny),
                 new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
                 new Replacement("<arena>", duelRequest.getArena().getDisplayName()),
+                new Replacement("<rounds>", String.valueOf(duelRequest.getRounds())),
                 new Replacement("<sender>", sender.getName()));
     }
 
-    public void acceptDuel() {
+    public void createParty() {
+        if (gameData.getParty() != null) {
+            MessagesLocale.PARTY_ALREADY_IN.send(playerUUID);
+            return;
+        }
+
+        Neptune.get().getProfileManager().getByUUID(playerUUID).getGameData().setParty(new Party(playerUUID));
+        MessagesLocale.PARTY_CREATE.send(playerUUID);
+    }
+
+    public void disband() {
+        Party party = gameData.getParty();
+
+        if (party == null) {
+            MessagesLocale.PARTY_NOT_IN.send(playerUUID);
+            return;
+        }
+
+        if (!party.getLeader().equals(playerUUID)) {
+            party.broadcast(MessagesLocale.PARTY_LEFT,
+                    new Replacement("<player>", username));
+            party.remove(playerUUID);
+        } else {
+            party.disband();
+        }
+    }
+
+    public void acceptDuel(UUID senderUUID) {
         Neptune.get().getQueueManager().remove(playerUUID);
-        DuelRequest duelRequest = gameData.getDuelRequest();
+        DuelRequest duelRequest = (DuelRequest) gameData.getRequests().get(senderUUID);
 
         Participant participant1 =
                 new Participant(duelRequest.getSender());
@@ -137,7 +169,7 @@ public class Profile {
         Neptune.get().getMatchManager().startMatch(participants, duelRequest.getKit(),
                 duelRequest.getArena(), true, duelRequest.getRounds());
 
-        gameData.setDuelRequest(null);
+        gameData.removeRequest(senderUUID);
     }
 
     public Match getMatch() {

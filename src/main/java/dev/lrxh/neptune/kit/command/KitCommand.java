@@ -9,8 +9,8 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.Console;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -159,7 +159,7 @@ public class KitCommand extends BaseCommand {
             kitStatistics.put("kitData", kitDocument);
             plugin.getMongoManager().collection.replaceOne(Filters.eq("uuid", document.get("uuid")), document, new ReplaceOptions().upsert(true));
         }
-        Console.sendMessage("&aUpdated kit for " + i + " players!");
+        ServerUtils.sendMessage("&aUpdated kit for " + i + " players!");
     }
 
     @Subcommand("seticon")

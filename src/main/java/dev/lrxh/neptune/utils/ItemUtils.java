@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.utils;
 
 import com.cryptomorin.xseries.XMaterial;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -38,7 +39,8 @@ public class ItemUtils {
             } else {
                 itemStack.getType();
             }
-            if (itemStack.getType() == Material.LEATHER_BOOTS || itemStack.getType() == Material.LEATHER_CHESTPLATE || itemStack.getType() == Material.LEATHER_HELMET
+            if (itemStack.getType() == Material.LEATHER_BOOTS || itemStack.getType() == Material.LEATHER_CHESTPLATE
+                    || itemStack.getType() == Material.LEATHER_HELMET
                     || itemStack.getType() == Material.LEATHER_LEGGINGS) {
                 LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
                 meta.setColor(color);
@@ -75,7 +77,7 @@ public class ItemUtils {
 
             dataOutput.close();
         } catch (IOException e) {
-            Console.error("Occurred while saving items " + e.getMessage());
+            ServerUtils.error("Occurred while saving items " + e.getMessage());
             return null;
         }
 
@@ -90,7 +92,7 @@ public class ItemUtils {
 
             dataOutput.close();
         } catch (IOException e) {
-            Console.error("Occurred while saving item " + e.getMessage());
+            ServerUtils.error("Occurred while saving item " + e.getMessage());
             return null;
         }
 
@@ -113,10 +115,22 @@ public class ItemUtils {
 
             dataInput.close();
         } catch (IOException | ClassNotFoundException e) {
-            Console.error("Occurred while loading items " + e.getMessage());
+            ServerUtils.error("Occurred while loading items " + e.getMessage());
             return null;
         }
         return items;
+    }
+
+    public List<String> getLore(List<String> lore, Replacement... replacements) {
+        List<String> newLore = new ArrayList<>();
+
+        lore.forEach(line -> {
+            for (Replacement replacement : replacements) {
+                line = line.replaceAll(replacement.getPlaceholder(), (String) replacement.getReplacement());
+            }
+            newLore.add(line);
+        });
+        return newLore;
     }
 
     public ItemStack deserializeItem(String base64) {
@@ -128,7 +142,7 @@ public class ItemUtils {
             item = (ItemStack) dataInput.readObject();
             dataInput.close();
         } catch (IOException | ClassNotFoundException e) {
-            Console.error("Occurred while loading item!");
+            ServerUtils.error("Occurred while loading item!");
         }
         return item;
     }

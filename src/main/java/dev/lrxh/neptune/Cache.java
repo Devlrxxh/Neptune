@@ -12,6 +12,10 @@ import org.bukkit.Location;
 public class Cache {
     private Location spawn;
 
+    public Cache() {
+        load();
+    }
+
     public void load() {
         if (SettingsLocale.SPAWN_LOCATION.getString().equalsIgnoreCase("none")) {
             spawn = null;

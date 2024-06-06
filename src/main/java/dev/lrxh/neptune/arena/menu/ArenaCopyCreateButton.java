@@ -19,7 +19,7 @@ public class ArenaCopyCreateButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE.parseMaterial())
+        return new ItemBuilder(XMaterial.GREEN_STAINED_GLASS_PANE)
                 .name("&aCreate Copy")
                 .lore(Arrays.asList(
                         " ",
