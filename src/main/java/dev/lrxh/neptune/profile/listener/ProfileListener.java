@@ -24,7 +24,6 @@ public class ProfileListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         PlayerUtil.reset(player.getUniqueId());
-        PlayerUtil.teleportToSpawn(player.getUniqueId());
         plugin.getProfileManager().createProfile(player.getUniqueId());
         plugin.getHotbarManager().giveItems(player.getUniqueId());
         VisibilityLogic.handle(player.getUniqueId());
@@ -33,6 +32,7 @@ public class ProfileListener implements Listener {
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
             ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE.getString().replace("<player>", player.getName()));
         }
+        PlayerUtil.teleportToSpawn(player.getUniqueId());
     }
 
     @EventHandler

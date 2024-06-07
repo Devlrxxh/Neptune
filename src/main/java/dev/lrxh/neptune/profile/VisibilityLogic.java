@@ -17,34 +17,38 @@ public class VisibilityLogic {
         }
     }
 
-    public void handle(UUID viewerUUID, UUID otherUUID) {
-        Player viewerPlayer = Bukkit.getPlayer(viewerUUID);
+    public void handle(UUID playerUUID, UUID otherUUID){
+        Player viewerPlayer = Bukkit.getPlayer(playerUUID);
         Player otherPlayer = Bukkit.getPlayer(otherUUID);
         if (viewerPlayer == null || otherPlayer == null || viewerPlayer.equals(otherPlayer)) {
             return;
         }
 
-        Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(viewerUUID);
+        Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(playerUUID);
         Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
 
-        if (viewerProfile.getState().equals(ProfileState.IN_GAME)) {
-            if (viewerProfile.getMatch() != null && otherProfile.getMatch() != null &&
-                    viewerProfile.getMatch().equals(otherProfile.getMatch())) {
-                viewerPlayer.showPlayer(otherPlayer);
-                otherPlayer.showPlayer(viewerPlayer);
-                return;
-            }
-        }
-
-        if (viewerProfile.getState().equals(ProfileState.LOBBY) || viewerProfile.getState().equals(ProfileState.IN_QUEUE) ||
-                otherProfile.getState().equals(ProfileState.LOBBY) || otherProfile.getState().equals(ProfileState.IN_QUEUE) ||
-                viewerProfile.getState().equals(ProfileState.IN_PARTY) || otherProfile.getState().equals(ProfileState.IN_PARTY)) {
-            viewerPlayer.showPlayer(otherPlayer);
-            otherPlayer.showPlayer(viewerPlayer);
+        if(has(playerUUID, otherUUID, ProfileState.IN_GAME)
+                && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())){
+            viewerPlayer.showPlayer(plugin, otherPlayer);
+            otherPlayer.showPlayer(plugin, viewerPlayer);
             return;
         }
 
-        viewerPlayer.hidePlayer(otherPlayer);
-        otherPlayer.hidePlayer(viewerPlayer);
+        if(has(playerUUID, otherUUID, ProfileState.LOBBY) || has(playerUUID, otherUUID, ProfileState.IN_QUEUE)
+                || has(playerUUID, otherUUID, ProfileState.IN_PARTY)){
+            viewerPlayer.showPlayer(plugin, otherPlayer);
+            otherPlayer.showPlayer(plugin, viewerPlayer);
+            return;
+        }
+
+        viewerPlayer.hidePlayer(plugin, otherPlayer);
+        otherPlayer.hidePlayer(plugin, viewerPlayer);
+
+    }
+
+    public boolean has(UUID playerUUID, UUID otherUUID, ProfileState state){
+        Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+        Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
+        return viewerProfile.getState().equals(state) && otherProfile.getState().equals(state);
     }
 }

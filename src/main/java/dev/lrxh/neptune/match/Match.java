@@ -90,7 +90,7 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
             if (participiantPlayer == null) return;
-            player.showPlayer(participiantPlayer);
+            player.showPlayer(plugin, participiantPlayer);
         }
 
         if (sendMessage) {
@@ -193,25 +193,25 @@ public abstract class Match {
         }
     }
 
-    public void hidePlayer(Participant targetParticipant) {
-        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
-        if (targetPlayer == null) return;
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) return;
-            player.hidePlayer(targetPlayer);
-        }
-    }
-
-    public void showPlayer(Participant targetParticipant) {
-        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
-        if (targetPlayer == null) return;
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) return;
-            player.showPlayer(targetPlayer);
-        }
-    }
+//    public void hidePlayer(Participant targetParticipant) {
+//        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
+//        if (targetPlayer == null) return;
+//        for (Participant participant : participants) {
+//            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+//            if (player == null) return;
+//            player.hidePlayer(plugin, targetPlayer);
+//        }
+//    }
+//
+//    public void showPlayer(Participant targetParticipant) {
+//        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
+//        if (targetPlayer == null) return;
+//        for (Participant participant : participants) {
+//            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+//            if (player == null) return;
+//            player.showPlayer(plugin, targetPlayer);
+//        }
+//    }
 
 //    public void runForAll(Runnable runnable){
 //        for(Participant participant : participants){
