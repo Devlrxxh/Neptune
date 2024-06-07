@@ -156,10 +156,10 @@ public class ArenaCommand extends BaseCommand {
         new ArenaManagmentMenu().openMenu(player);
     }
 
-    @Subcommand("deathY")
+    @Subcommand("setDeathY")
     @Syntax("<arena>")
     @CommandCompletion("@arenas")
-    public void deathY(Player player, String arenaName) {
+    public void setDeathY(Player player, String arenaName) {
         if (player == null) return;
         if (!checkArena(arenaName)) {
             player.sendMessage(CC.error("Arena doesn't exist!"));
@@ -196,10 +196,10 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
-    @Subcommand("limit")
+    @Subcommand("setlimit")
     @Syntax("<arena>")
     @CommandCompletion("@arenas")
-    public void limit(Player player, String arenaName) {
+    public void setlimit(Player player, String arenaName) {
         if (player == null) return;
         if (!checkArena(arenaName)) {
             player.sendMessage(CC.error("Arena doesn't exist!"));

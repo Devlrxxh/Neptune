@@ -6,6 +6,7 @@ dev\lrxh\neptune\utils\PlayerUtil.class
 dev\lrxh\neptune\duel\menu\KitSelectButton.class
 dev\lrxh\neptune\kit\impl\Rules$9.class
 dev\lrxh\neptune\match\listener\MatchListener$1.class
+dev\lrxh\neptune\arena\menu\button\ArenaCopyButton.class
 dev\lrxh\neptune\match\tasks\MatchEndRunnable.class
 dev\lrxh\neptune\providers\menus\kitEditor\KitEditorSelectButton.class
 dev\lrxh\neptune\providers\scoreboard\ScoreboardAdapter.class
@@ -13,6 +14,7 @@ dev\lrxh\neptune\hotbar\ItemAction$3.class
 dev\lrxh\neptune\match\menu\MatchListMenu.class
 dev\lrxh\neptune\utils\menu\Button.class
 dev\lrxh\neptune\arena\impl\SharedArena$SharedArenaBuilderImpl.class
+dev\lrxh\neptune\arena\menu\button\ArenaManagmentButton.class
 dev\lrxh\neptune\match\menu\button\HealthButton.class
 dev\lrxh\neptune\duel\DuelRequest.class
 dev\lrxh\neptune\utils\assemble\AssembleBoard.class
@@ -90,9 +92,7 @@ dev\lrxh\neptune\match\tasks\MatchStartRunnable.class
 dev\lrxh\neptune\hotbar\HotbarManager.class
 dev\lrxh\neptune\match\impl\MatchSnapshot.class
 dev\lrxh\neptune\party\menu\buttons\PartyLimitButton.class
-dev\lrxh\neptune\arena\menu\ArenaCopyButton.class
 dev\lrxh\neptune\match\menu\MatchHistoryMenu.class
-dev\lrxh\neptune\arena\menu\ArenaManagmentButton$1.class
 dev\lrxh\neptune\utils\menu\Menu.class
 dev\lrxh\neptune\kit\menu\KitManagementMenu.class
 dev\lrxh\neptune\hotbar\ItemAction$9.class
@@ -102,11 +102,12 @@ dev\lrxh\neptune\kit\impl\Rules$2.class
 dev\lrxh\neptune\commands\MainCommand.class
 dev\lrxh\neptune\leaderboard\impl\LeaderboardType$1.class
 dev\lrxh\neptune\leaderboard\menu\LeaderboardMenu.class
-dev\lrxh\neptune\arena\menu\ArenaCopyCreateButton.class
 dev\lrxh\neptune\arena\Arena$ArenaBuilderImpl.class
 dev\lrxh\neptune\hotbar\ItemListener.class
 dev\lrxh\neptune\arena\listener\LobbyListener.class
+dev\lrxh\neptune\arena\menu\button\ArenaCopyCreateButton.class
 dev\lrxh\neptune\utils\LocationUtil.class
+dev\lrxh\neptune\arena\menu\button\ArenaManagmentButton$1.class
 dev\lrxh\neptune\hotbar\ItemAction$7.class
 dev\lrxh\neptune\utils\menu\PaginatedMenu.class
 dev\lrxh\neptune\leaderboard\impl\LeaderboardEntry.class
@@ -157,7 +158,6 @@ dev\lrxh\neptune\utils\assemble\AssembleException.class
 dev\lrxh\neptune\configs\impl\MessagesLocale.class
 dev\lrxh\neptune\party\menu\buttons\PartyTeamKitButton.class
 dev\lrxh\neptune\profile\ProfileState.class
-dev\lrxh\neptune\arena\menu\ArenaManagmentButton.class
 dev\lrxh\neptune\utils\assemble\Assemble.class
 dev\lrxh\neptune\commands\QueueCommand.class
 dev\lrxh\neptune\hotbar\ItemAction$10.class
