@@ -86,8 +86,6 @@ public abstract class Match {
         profile.setState(ProfileState.IN_SPECTATOR);
         spectators.add(playerUUID);
 
-        player.setAllowFlight(true);
-        player.setFlying(true);
         player.setGameMode(GameMode.SPECTATOR);
 
         for (Participant participant : participants) {
@@ -201,7 +199,7 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) return;
-            player.showPlayer(targetPlayer);
+            player.hidePlayer(targetPlayer);
         }
     }
 
@@ -214,6 +212,12 @@ public abstract class Match {
             player.showPlayer(targetPlayer);
         }
     }
+
+//    public void runForAll(Runnable runnable){
+//        for(Participant participant : participants){
+//            runnable.run();
+//        }
+//    }
 
     public void setupParticipants() {
         //Setup participants

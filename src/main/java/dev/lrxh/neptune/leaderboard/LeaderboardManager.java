@@ -22,6 +22,8 @@ public class LeaderboardManager {
     private final Neptune plugin = Neptune.get();
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
+    //TODO: MAKE MENUS AND FIX BUG WHEN CREATING NEW KIT
+
     public LeaderboardManager() {
         for (Kit kit : plugin.getKitManager().kits) {
             leaderboards.put(kit, new ArrayList<>());

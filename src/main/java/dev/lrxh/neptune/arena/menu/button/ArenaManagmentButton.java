@@ -1,9 +1,10 @@
-package dev.lrxh.neptune.arena.menu;
+package dev.lrxh.neptune.arena.menu.button;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.arena.menu.ArenaCopyMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.GenerationUtils;
 import dev.lrxh.neptune.utils.ItemBuilder;

@@ -20,6 +20,10 @@ public class LocationUtil {
     }
 
     public Location deserialize(String source) {
+        if(source.equalsIgnoreCase("NONE")){
+            return null;
+        }
+
         String[] split = source.split(":");
 
         return new Location(Neptune.get().getServer().getWorld(String.valueOf(split[0])),

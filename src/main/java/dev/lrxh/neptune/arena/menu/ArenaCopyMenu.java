@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.arena.menu;
 
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.arena.menu.button.ArenaCopyButton;
+import dev.lrxh.neptune.arena.menu.button.ArenaCopyCreateButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import lombok.AllArgsConstructor;

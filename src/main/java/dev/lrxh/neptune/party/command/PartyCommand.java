@@ -31,6 +31,38 @@ public class PartyCommand extends BaseCommand {
         profile.createParty();
     }
 
+    @Subcommand("join")
+    @Syntax("<player>")
+    @CommandCompletion("@names")
+    public void join(Player player, String otherPlayer){
+        Player target = Bukkit.getPlayer(otherPlayer);
+        if (target == null) {
+            player.sendMessage(CC.error("Player isn't online!"));
+            return;
+        }
+
+        Party party = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
+        if(party == null){
+            player.sendMessage(CC.error("Player isn't in any party"));
+            return;
+        }
+        if(!party.getLeader().equals(target.getUniqueId())){
+            player.sendMessage(CC.error("Player isn't a leader of a party."));
+            return;
+        }
+        if(!party.isOpen()){
+            player.sendMessage(CC.error("Party is private"));
+            return;
+
+        }
+        if(Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty() != null){
+            MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
+            return;
+        }
+
+        party.accept(player.getUniqueId());
+    }
+
     @Subcommand("disband")
     public void disband(Player player) {
         Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).disband();
@@ -95,6 +127,10 @@ public class PartyCommand extends BaseCommand {
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
         if (!profile.getState().equals(ProfileState.LOBBY)) return;
         try {
+            if(profile.getGameData().getParty() != null){
+                MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
+                return;
+            }
             UUID otherUUID = UUID.fromString(otherString);
             PartyRequest request = (PartyRequest) profile.getGameData().getRequests().get(otherUUID);
             if (request != null) {

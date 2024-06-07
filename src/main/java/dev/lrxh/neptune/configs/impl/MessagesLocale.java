@@ -118,6 +118,7 @@ public enum MessagesLocale implements IDataAccessor {
             "&b/party disband",
             "&b/party leave",
             "&b/party kick <player>",
+            "&b/party join <player>",
             " ");
 
 

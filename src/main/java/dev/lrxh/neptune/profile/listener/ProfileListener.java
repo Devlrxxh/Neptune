@@ -33,9 +33,6 @@ public class ProfileListener implements Listener {
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
             ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE.getString().replace("<player>", player.getName()));
         }
-
-
-        System.out.println(plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getKitData());
     }
 
     @EventHandler

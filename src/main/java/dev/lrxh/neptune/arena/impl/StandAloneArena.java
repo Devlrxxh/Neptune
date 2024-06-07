@@ -53,8 +53,9 @@ public class StandAloneArena extends Arena {
     }
 
     public void takeSnapshot() {
-        chunkSnapshots.clear();
-        chunkSnapshots = Neptune.get().getVersionHandler().getChunk().takeSnapshot(getBlueSpawn().getWorld(), min, max);
+        if(min != null && max != null){
+            chunkSnapshots = Neptune.get().getVersionHandler().getChunk().takeSnapshot(getMin().getWorld(), min, max);
+        }
     }
 
     public void restoreSnapshot() {

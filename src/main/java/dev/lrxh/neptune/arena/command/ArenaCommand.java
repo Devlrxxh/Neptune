@@ -101,7 +101,16 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        player.teleport(Neptune.get().getArenaManager().getArenaByName(arenaName).getRedSpawn());
+        Arena arena = Neptune.get().getArenaManager().getArenaByName(arenaName);
+        if(arena.getRedSpawn() != null){
+            player.teleport(arena.getRedSpawn());
+        } else if (arena.getBlueSpawn() != null) {
+            player.teleport(arena.getBlueSpawn());
+        }else{
+            player.sendMessage(CC.error("Arena isn't setup completely, can't teleport."));
+            return;
+        }
+
         player.sendMessage(CC.color("&aThere you go!"));
     }
 

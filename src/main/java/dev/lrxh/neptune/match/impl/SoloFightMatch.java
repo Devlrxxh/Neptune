@@ -81,8 +81,8 @@ public class SoloFightMatch extends Match {
 
         loserProfile.getGameData().addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
-        Neptune.get().getLeaderboardManager().addChange(winner.getNameUnColored(), kit);
-        Neptune.get().getLeaderboardManager().addChange(loser.getNameUnColored(), kit);
+//        Neptune.get().getLeaderboardManager().addChange(winner.getNameUnColored(), kit);
+//        Neptune.get().getLeaderboardManager().addChange(loser.getNameUnColored(), kit);
     }
 
     @Override

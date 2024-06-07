@@ -44,7 +44,7 @@ public class VisibilityLogic {
             return;
         }
 
-        viewerPlayer.showPlayer(otherPlayer);
-        otherPlayer.showPlayer(viewerPlayer);
+        viewerPlayer.hidePlayer(otherPlayer);
+        otherPlayer.hidePlayer(viewerPlayer);
     }
 }
