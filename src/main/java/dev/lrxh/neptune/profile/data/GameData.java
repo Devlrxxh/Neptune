@@ -39,18 +39,11 @@ public class GameData {
     }
 
     public void run(Kit kit, boolean won) {
-        createIfNull(kit);
         if (won) {
             addWin(kit);
         } else {
             addLoss(kit);
             kitData.get(kit).setCurrentStreak(0);
-        }
-    }
-
-    private void createIfNull(Kit kit) {
-        if (kitData.get(kit) == null) {
-            kitData.put(kit, new KitData());
         }
     }
 

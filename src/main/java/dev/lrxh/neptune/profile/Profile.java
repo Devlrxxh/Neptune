@@ -40,6 +40,11 @@ public class Profile {
         this.username = Bukkit.getPlayer(playerUUID).getName();
         this.gameData = new GameData();
 
+        for (Kit kit : Neptune.get().getKitManager().kits) {
+            KitData kitData = new KitData();
+            gameData.getKitData().put(kit, kitData);
+        }
+
         load();
     }
 
@@ -64,14 +69,12 @@ public class Profile {
         for (Kit kit : Neptune.get().getKitManager().kits) {
             Document kitDocument = (Document) kitStatistics.get(kit.getName());
             if (kitDocument == null) return;
-            KitData profileKitData = new KitData();
+            KitData profileKitData = gameData.getKitData().get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
             profileKitData.setKit(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
-
-            gameData.getKitData().put(kit, profileKitData);
         }
     }
 
@@ -85,7 +88,7 @@ public class Profile {
         document.put("history", gameData.serializeHistory());
 
         for (Kit kit : Neptune.get().getKitManager().kits) {
-            KitData entry = new KitData();
+            KitData entry = gameData.getKitData().get(kit);
             Document kitStatisticsDocument = new Document();
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
             kitStatisticsDocument.put("WINS", entry.getWins());
@@ -94,7 +97,6 @@ public class Profile {
             kitStatisticsDocument.put("kit", entry.getKit() == null || entry.getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getKit()));
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
-            gameData.getKitData().put(kit, entry);
         }
 
         document.put("kitData", kitStatsDoc);
