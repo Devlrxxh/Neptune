@@ -6,6 +6,8 @@ import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.utils.IPlayerUtils;
 import lombok.experimental.UtilityClass;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;

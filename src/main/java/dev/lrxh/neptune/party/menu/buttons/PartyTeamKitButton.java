@@ -64,6 +64,10 @@ public class PartyTeamKitButton extends Button {
             return;
         }
 
+        if (arena instanceof StandAloneArena) {
+            ((StandAloneArena) arena).setUsed(true);
+        }
+
         plugin.getMatchManager().startMatch(teamA, teamB, kit, arena);
     }
 }
