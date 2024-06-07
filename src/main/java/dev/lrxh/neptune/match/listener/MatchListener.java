@@ -6,6 +6,7 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.DeathCause;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.utils.CC;
@@ -87,6 +88,13 @@ public class MatchListener implements Listener {
                 return;
             }
             Match match = profile.getMatch();
+
+            if (match instanceof TeamFightMatch) {
+                TeamFightMatch teamFightMatch = (TeamFightMatch) match;
+                if (teamFightMatch.onSameTeam(player.getUniqueId(), attacker.getUniqueId())) {
+                    event.setCancelled(true);
+                }
+            }
 
             if (!match.matchState.equals(MatchState.IN_ROUND)) {
                 event.setCancelled(true);

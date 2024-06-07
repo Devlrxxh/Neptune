@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 
 import java.util.Map;
@@ -13,8 +14,10 @@ public class QueueManager {
 
     public void addToQueue(UUID playerUUID, Queue queue) {
         if (queues.containsKey(playerUUID)) return;
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        if(profile.getGameData().getParty() != null) return;
         queues.put(playerUUID, queue);
-        plugin.getProfileManager().getByUUID(playerUUID).setState(ProfileState.IN_QUEUE);
+        profile.setState(ProfileState.IN_QUEUE);
         queue.getKit().addQueue();
     }
 

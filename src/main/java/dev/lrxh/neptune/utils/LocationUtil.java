@@ -20,7 +20,7 @@ public class LocationUtil {
     }
 
     public Location deserialize(String source) {
-        if(source.equalsIgnoreCase("NONE")){
+        if (source.equalsIgnoreCase("NONE")) {
             return null;
         }
 

@@ -102,11 +102,11 @@ public class ArenaCommand extends BaseCommand {
             return;
         }
         Arena arena = Neptune.get().getArenaManager().getArenaByName(arenaName);
-        if(arena.getRedSpawn() != null){
+        if (arena.getRedSpawn() != null) {
             player.teleport(arena.getRedSpawn());
         } else if (arena.getBlueSpawn() != null) {
             player.teleport(arena.getBlueSpawn());
-        }else{
+        } else {
             player.sendMessage(CC.error("Arena isn't setup completely, can't teleport."));
             return;
         }

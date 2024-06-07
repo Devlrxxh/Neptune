@@ -2,12 +2,9 @@ package dev.lrxh.neptune.match.impl;
 
 
 import lombok.Data;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @Data
 public class MatchTeam {
@@ -38,10 +35,10 @@ public class MatchTeam {
     public String getTeamNames() {
         StringBuilder playerNames = new StringBuilder();
         for (Participant participant : participants) {
-                if (playerNames.length() > 0) {
-                    playerNames.append(", ");
-                }
-                playerNames.append(participant.getNameUnColored());
+            if (playerNames.length() > 0) {
+                playerNames.append(", ");
+            }
+            playerNames.append(participant.getNameUnColored());
         }
         return playerNames.toString();
     }

@@ -53,7 +53,7 @@ public class StandAloneArena extends Arena {
     }
 
     public void takeSnapshot() {
-        if(min != null && max != null){
+        if (min != null && max != null) {
             chunkSnapshots = Neptune.get().getVersionHandler().getChunk().takeSnapshot(getMin().getWorld(), min, max);
         }
     }

@@ -21,7 +21,7 @@ public class PartyCommand extends BaseCommand {
 
     @Default
     @Subcommand("help")
-    public void help(Player player){
+    public void help(Player player) {
         MessagesLocale.PARTY_HELP.send(player.getUniqueId());
     }
 
@@ -34,7 +34,7 @@ public class PartyCommand extends BaseCommand {
     @Subcommand("join")
     @Syntax("<player>")
     @CommandCompletion("@names")
-    public void join(Player player, String otherPlayer){
+    public void join(Player player, String otherPlayer) {
         Player target = Bukkit.getPlayer(otherPlayer);
         if (target == null) {
             player.sendMessage(CC.error("Player isn't online!"));
@@ -42,20 +42,20 @@ public class PartyCommand extends BaseCommand {
         }
 
         Party party = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
-        if(party == null){
+        if (party == null) {
             player.sendMessage(CC.error("Player isn't in any party"));
             return;
         }
-        if(!party.getLeader().equals(target.getUniqueId())){
+        if (!party.getLeader().equals(target.getUniqueId())) {
             player.sendMessage(CC.error("Player isn't a leader of a party."));
             return;
         }
-        if(!party.isOpen()){
+        if (!party.isOpen()) {
             player.sendMessage(CC.error("Party is private"));
             return;
 
         }
-        if(Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty() != null){
+        if (Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;
         }
@@ -127,7 +127,7 @@ public class PartyCommand extends BaseCommand {
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
         if (!profile.getState().equals(ProfileState.LOBBY)) return;
         try {
-            if(profile.getGameData().getParty() != null){
+            if (profile.getGameData().getParty() != null) {
                 MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
                 return;
             }

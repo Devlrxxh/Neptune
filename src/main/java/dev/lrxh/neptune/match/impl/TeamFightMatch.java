@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -84,6 +85,10 @@ public class TeamFightMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
 
+        PlayerUtil.reset(participant.getPlayerUUID());
+
+        addSpectator(participant.getPlayerUUID(), false);
+
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(dev.lrxh.sounds.Sound.UI_BUTTON_CLICK);
         }
@@ -93,19 +98,24 @@ public class TeamFightMatch extends Match {
         MatchTeam team = getPlayerTeam(participant);
         team.getDeadParticipants().add(participant);
 
-        addSpectator(participant.getPlayerUUID(), false);
 
         if (!team.isLoser()) return;
 
         takeSnapshots();
 
-        PlayerUtil.reset(participant.getPlayerUUID());
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         addStats();
 
         end();
+    }
+
+    public boolean onSameTeam(UUID playerUUID, UUID otherUUID) {
+        Participant participant = getParticipant(playerUUID);
+        Participant other = getParticipant(otherUUID);
+
+        return getPlayerTeam(participant).equals(getPlayerTeam(other));
     }
 
     @Override

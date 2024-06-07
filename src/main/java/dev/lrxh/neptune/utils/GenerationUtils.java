@@ -15,6 +15,7 @@ import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
@@ -24,7 +25,7 @@ import java.util.HashSet;
 @UtilityClass
 public class GenerationUtils {
     public synchronized void generateCopies(StandAloneArena arena) {
-        int xCurrent = 350 * (arena.getCopies().size() + 1);
+        int xCurrent = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (arena.getCopies().size() + 1);
 
         if (Neptune.get().getArenaManager().getArenaByName(arena + "#" + (arena.getCopies().size() + 1)) != null) {
             return;

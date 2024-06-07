@@ -19,12 +19,9 @@ public class ProfileManager {
     public void removeProfile(UUID playerUUID) {
         plugin.getQueueManager().remove(playerUUID);
         Profile profile = profiles.get(playerUUID);
-        Party party = profile.getGameData().getParty();
         profile.save();
+        profile.disband();
 
-        if (party != null && party.getLeader().equals(playerUUID)) {
-            party.disband();
-        }
         profiles.remove(playerUUID);
     }
 
