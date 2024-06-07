@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.profile;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.party.Party;
 
 import java.util.HashMap;
 import java.util.UUID;

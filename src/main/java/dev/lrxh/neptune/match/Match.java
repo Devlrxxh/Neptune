@@ -132,6 +132,7 @@ public abstract class Match {
         }
 
         for (UUID spectator : spectators) {
+            if(participants.contains(getParticipant(spectator))) continue;
             messagesLocale.send(spectator, replacements);
         }
     }
