@@ -22,7 +22,7 @@ public class Assemble {
     private AssembleAdapter adapter;
     private AssembleThread thread;
     private AssembleListener listeners;
-    private AssembleStyle assembleStyle = AssembleStyle.VIPER;
+    private AssembleStyle assembleStyle = AssembleStyle.MODERN;
     private Map<UUID, AssembleBoard> boards;
     private long ticks = 2;
     private boolean hook = false, debugMode = true, callEvents = true;

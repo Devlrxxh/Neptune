@@ -84,9 +84,8 @@ public abstract class Match {
 
         profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
-        spectators.add(playerUUID);
-
         player.setGameMode(GameMode.SPECTATOR);
+        spectators.add(playerUUID);
 
         for (Participant participant : participants) {
             Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());

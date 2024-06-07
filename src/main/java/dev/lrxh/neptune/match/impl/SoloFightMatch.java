@@ -143,7 +143,7 @@ public class SoloFightMatch extends Match {
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
-        hidePlayer(participant);
+        addSpectator(participant.getPlayerUUID(), false);
 
         end();
     }

@@ -76,8 +76,8 @@ public class TeamFightMatch extends Match {
 
         for (Participant participant : participants) {
             MessagesLocale.MATCH_END_DETAILS_TEAM.send(participant.getPlayerUUID(),
-                    new Replacement("<losers>", winnerTeam.getTeamNames()),
-                    new Replacement("<winners>", loserTeam.getTeamNames()));
+                    new Replacement("<losers>", loserTeam.getTeamNames()),
+                    new Replacement("<winners>", winnerTeam.getTeamNames()));
         }
     }
 
@@ -88,10 +88,13 @@ public class TeamFightMatch extends Match {
             participant.getLastAttacker().playSound(dev.lrxh.sounds.Sound.UI_BUTTON_CLICK);
         }
 
-        addSpectator(participant.getPlayerUUID(), false);
+        sendDeathMessage(participant);
 
         MatchTeam team = getPlayerTeam(participant);
         team.getDeadParticipants().add(participant);
+
+        addSpectator(participant.getPlayerUUID(), false);
+
         if (!team.isLoser()) return;
 
         takeSnapshots();
@@ -100,8 +103,6 @@ public class TeamFightMatch extends Match {
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
-        hidePlayer(participant);
-        sendDeathMessage(participant);
         addStats();
 
         end();

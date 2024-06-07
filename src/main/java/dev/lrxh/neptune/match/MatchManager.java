@@ -37,14 +37,14 @@ public class MatchManager {
 
         matches.add(match);
 
+        //Apply kit rules for players
+        match.checkRules();
+
         //Teleport the Players to their spawn
         match.teleportToPositions();
 
         //Setup players
         match.setupParticipants();
-
-        //Apply kit rules for players
-        match.checkRules();
 
         //Start match start runnable
         Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
@@ -69,14 +69,14 @@ public class MatchManager {
 
         matches.add(match);
 
+        //Apply kit rules for players
+        match.checkRules();
+
         //Teleport the Players to their spawn
         match.teleportToPositions();
 
         //Setup players
         match.setupParticipants();
-
-        //Apply kit rules for players
-        match.checkRules();
 
         //Start match start runnable
         Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
