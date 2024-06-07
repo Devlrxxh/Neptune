@@ -5,6 +5,9 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @UtilityClass
@@ -34,8 +37,7 @@ public class VisibilityLogic {
             return;
         }
 
-        if(has(playerUUID, otherUUID, ProfileState.LOBBY) || has(playerUUID, otherUUID, ProfileState.IN_QUEUE)
-                || has(playerUUID, otherUUID, ProfileState.IN_PARTY)){
+        if(has(playerUUID, otherUUID, ProfileState.LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
             return;
@@ -46,9 +48,11 @@ public class VisibilityLogic {
 
     }
 
-    public boolean has(UUID playerUUID, UUID otherUUID, ProfileState state){
+    public boolean has(UUID playerUUID, UUID otherUUID, ProfileState... states) {
         Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(playerUUID);
         Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
-        return viewerProfile.getState().equals(state) && otherProfile.getState().equals(state);
+
+        Set<ProfileState> stateSet = new HashSet<>(Arrays.asList(states));
+        return stateSet.contains(viewerProfile.getState()) && stateSet.contains(otherProfile.getState());
     }
 }
