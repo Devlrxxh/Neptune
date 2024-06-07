@@ -17,7 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 @Setter
 public class Assemble {
 
-    private final Neptune plugin;
     private final ChatColor[] chatColorCache = ChatColor.values();
     private AssembleAdapter adapter;
     private AssembleThread thread;
@@ -26,19 +25,18 @@ public class Assemble {
     private Map<UUID, AssembleBoard> boards;
     private long ticks = 2;
     private boolean hook = false, debugMode = true, callEvents = true;
+    private Neptune plugin = Neptune.get();
 
     /**
      * Assemble.
      *
-     * @param plugin  instance.
      * @param adapter that is being provided.
      */
-    public Assemble(Neptune plugin, AssembleAdapter adapter) {
+    public Assemble(AssembleAdapter adapter) {
         if (plugin == null) {
             throw new RuntimeException("Assemble can not be instantiated without a plugin instance!");
         }
 
-        this.plugin = plugin;
         this.adapter = adapter;
         this.boards = new ConcurrentHashMap<>();
 

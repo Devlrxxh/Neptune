@@ -26,6 +26,7 @@ import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
+import dev.lrxh.neptune.providers.service.ServiceHandler;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.TaskScheduler;
@@ -41,8 +42,6 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
-import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Getter
@@ -65,6 +64,7 @@ public final class Neptune extends JavaPlugin {
     private MongoManager mongoManager;
     private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
+    private ServiceHandler serviceHandler;
 
     public static Neptune get() {
         return instance == null ? new Neptune() : instance;
@@ -82,18 +82,23 @@ public final class Neptune extends JavaPlugin {
             return;
         }
 
-        this.configManager = new ConfigManager();
-        this.configManager.load();
-        this.queueManager = new QueueManager();
-        this.matchManager = new MatchManager();
-        this.arenaManager = new ArenaManager();
-        this.kitManager = new KitManager();
-        this.cache = new Cache();
-        this.hotbarManager = new HotbarManager();
-        this.assemble = new Assemble(this, new ScoreboardAdapter());
-        this.mongoManager = new MongoManager();
-        this.profileManager = new ProfileManager();
-        this.leaderboardManager = new LeaderboardManager();
+        this.serviceHandler = new ServiceHandler();
+
+        this.configManager = serviceHandler.startService(ConfigManager::new);
+        if(configManager != null){
+            configManager.load();
+        }
+
+        this.mongoManager = serviceHandler.startService(MongoManager::new);
+        this.queueManager = serviceHandler.startService(QueueManager::new);
+        this.matchManager = serviceHandler.startService(MatchManager::new);
+        this.arenaManager = serviceHandler.startService(ArenaManager::new);
+        this.kitManager = serviceHandler.startService(KitManager::new);
+        this.cache = serviceHandler.startService(Cache::new);
+        this.hotbarManager = serviceHandler.startService(HotbarManager::new);
+        this.assemble = serviceHandler.startService(() -> new Assemble(new ScoreboardAdapter()));
+        this.profileManager = serviceHandler.startService(ProfileManager::new);
+        this.leaderboardManager = serviceHandler.startService(LeaderboardManager::new);
 
         registerListeners();
         loadCommandManager();
@@ -175,14 +180,10 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void disableManagers() {
-        stopService(kitManager, KitManager::saveKits);
-        stopService(arenaManager, ArenaManager::saveArenas);
-        stopService(matchManager, MatchManager::stopAllGames);
-        stopService(taskScheduler, TaskScheduler::stopAllTasks);
-        stopService(cache, Cache::save);
-    }
-
-    private <T> void stopService(T service, Consumer<T> consumer) {
-        Optional.ofNullable(service).ifPresent(consumer);
+        serviceHandler.stopService(kitManager, KitManager::saveKits);
+        serviceHandler.stopService(arenaManager, ArenaManager::saveArenas);
+        serviceHandler.stopService(matchManager, MatchManager::stopAllGames);
+        serviceHandler.stopService(taskScheduler, TaskScheduler::stopAllTasks);
+        serviceHandler.stopService(cache, Cache::save);
     }
 }
