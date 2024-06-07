@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandAlias("party")
+@CommandAlias("party|p")
 @Description("Party Command.")
 public class PartyCommand extends BaseCommand {
 
