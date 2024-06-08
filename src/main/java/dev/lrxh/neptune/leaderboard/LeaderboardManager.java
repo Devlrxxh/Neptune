@@ -108,7 +108,7 @@ public class LeaderboardManager {
     }
 
     private KitData getKitData(UUID playerUUID, Kit kit) {
-        Document document = plugin.getMongoManager().collection.find(Filters.eq("uuid", playerUUID)).first();
+        Document document = plugin.getMongoManager().collection.find(Filters.eq("uuid", playerUUID.toString())).first();
         if (document == null) return null;
 
         Document kitStatistics = (Document) document.get("kitData");
