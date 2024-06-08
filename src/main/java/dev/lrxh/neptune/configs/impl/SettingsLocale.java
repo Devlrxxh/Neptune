@@ -12,7 +12,7 @@ import java.util.List;
 public enum SettingsLocale implements IDataAccessor {
     SPAWN_LOCATION("SPAWN.LOCATION", null, DataType.STRING, "NONE"),
     QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "20"),
-    LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "300"),
+    LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "20"),
     MONGO_URI("MONGO.URI", "MongoDB URI.", DataType.STRING, "NONE"),
     MONGO_DATABASE("MONGO.DATABASE", "MongoDB Database.", DataType.STRING, "neptune"),
     DUEL_EXPIRY_TIME("DUEL.EXPIRY_TIME", "How long a duel request should last in seconds.", DataType.INT, "30"),

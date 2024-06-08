@@ -31,6 +31,7 @@ public class Profile {
     private String username;
     private ProfileState state;
     private GameData gameData;
+    public boolean cooldown;
 
     private MongoCollection<Document> collection = Neptune.get().getMongoManager().getCollection();
 

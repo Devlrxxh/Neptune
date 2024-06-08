@@ -6,7 +6,7 @@
 
     <groupId>dev.me.lrxh</groupId>
     <artifactId>Neptune</artifactId>
-    <version>1.1-SNAPSHOT</version>
+    <version>RELEASE</version>
     <packaging>jar</packaging>
 
     <name>Neptune</name>
@@ -88,7 +88,8 @@
     </dependencies>
 
     <build>
-        <defaultGoal>clean install</defaultGoal>
+        <defaultGoal>clean package</defaultGoal>
+        <finalName>Neptune</finalName>
 
         <resources>
             <resource>
