@@ -6,7 +6,6 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
-import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.sounds.Sound;
 import org.bukkit.Bukkit;
@@ -53,8 +52,7 @@ public class MatchRespawnRunnable extends BukkitRunnable {
                 match.setupPlayer(p.getPlayerUUID());
             }
 
-            SoloFightMatch soloFightMatch = (SoloFightMatch) match;
-            soloFightMatch.teleportToPositions();
+            match.teleportToPositions();
 
             if (match.arena instanceof StandAloneArena) {
                 ((StandAloneArena) match.arena).restoreSnapshot();

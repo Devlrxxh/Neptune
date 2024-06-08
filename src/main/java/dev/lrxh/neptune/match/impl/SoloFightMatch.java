@@ -83,8 +83,11 @@ public class SoloFightMatch extends Match {
         loserProfile.getGameData().addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
 
-        Neptune.get().getLeaderboardManager().addChange(new LeaderboardPlayerEntry(winner.getNameUnColored(), winner.getPlayerUUID(), kit));
-        Neptune.get().getLeaderboardManager().addChange(new LeaderboardPlayerEntry(loser.getNameUnColored(), loser.getPlayerUUID(), kit));
+        Neptune.get().getLeaderboardManager().addChange
+                (new LeaderboardPlayerEntry(winner.getNameUnColored(), winner.getPlayerUUID(), kit));
+
+        Neptune.get().getLeaderboardManager().addChange
+                (new LeaderboardPlayerEntry(loser.getNameUnColored(), loser.getPlayerUUID(), kit));
     }
 
     @Override
@@ -145,7 +148,7 @@ public class SoloFightMatch extends Match {
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
-        addSpectator(participant.getPlayerUUID(), false);
+        addSpectator(participant.getPlayerUUID());
 
         end();
     }
@@ -161,6 +164,7 @@ public class SoloFightMatch extends Match {
         matchState = MatchState.IN_ROUND;
         checkRules();
 
+        showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 10);
     }

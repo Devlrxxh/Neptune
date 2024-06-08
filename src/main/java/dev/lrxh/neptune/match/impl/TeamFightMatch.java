@@ -87,7 +87,7 @@ public class TeamFightMatch extends Match {
 
         PlayerUtil.reset(participant.getPlayerUUID());
 
-        addSpectator(participant.getPlayerUUID(), false);
+        addSpectator(participant.getPlayerUUID());
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(dev.lrxh.sounds.Sound.UI_BUTTON_CLICK);
@@ -102,7 +102,6 @@ public class TeamFightMatch extends Match {
         if (!team.isLoser()) return;
 
         takeSnapshots();
-
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
@@ -130,6 +129,7 @@ public class TeamFightMatch extends Match {
         matchState = MatchState.IN_ROUND;
         checkRules();
 
+        showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 10);
     }

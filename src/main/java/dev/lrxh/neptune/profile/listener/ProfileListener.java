@@ -3,6 +3,7 @@ package dev.lrxh.neptune.profile.listener;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.profile.VisibilityLogic;
@@ -42,6 +43,8 @@ public class ProfileListener implements Listener {
         if (profile == null) return;
         Match match = profile.getMatch();
         if (match != null) {
+            Participant participant = match.getParticipant(player.getUniqueId());
+            if (participant == null) return;
             match.onLeave(match.getParticipant(player.getUniqueId()));
         }
 

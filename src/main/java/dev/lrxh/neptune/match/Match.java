@@ -98,6 +98,24 @@ public abstract class Match {
         }
     }
 
+    public void showPlayerForSpectators(){
+        for(UUID spectator : spectators){
+            for (Participant participant : participants) {
+                Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
+                if (participiantPlayer == null) continue;
+                Player player = Bukkit.getPlayer(spectator);
+                if (player == null) continue;
+                player.showPlayer(plugin, participiantPlayer);
+            }
+        }
+    }
+
+    public void addSpectator(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        player.setGameMode(GameMode.SPECTATOR);
+    }
+
     public void removeSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;

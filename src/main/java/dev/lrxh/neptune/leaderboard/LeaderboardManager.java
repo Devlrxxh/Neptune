@@ -19,7 +19,7 @@ import java.util.*;
 
 @Getter
 public class LeaderboardManager {
-    private final WeakHashMap<LeaderboardPlayerEntry, List<Kit>> changes = new WeakHashMap<>();
+    private final List<LeaderboardPlayerEntry> changes = new ArrayList<>();
     private final Neptune plugin = Neptune.get();
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
@@ -61,6 +61,7 @@ public class LeaderboardManager {
         for (LeaderboardType leaderboardType : LeaderboardType.values()) {
             loadLB(leaderboardType);
         }
+        changes.clear();
     }
 
     private void loadType(LeaderboardType leaderboardType) {
@@ -85,19 +86,16 @@ public class LeaderboardManager {
     }
 
     public void addChange(LeaderboardPlayerEntry playerEntry) {
-        List<Kit> kits = changes.computeIfAbsent(playerEntry, k -> new ArrayList<>());
-        kits.add(playerEntry.getKit());
+        changes.add(playerEntry);
     }
 
     private void loadLB(LeaderboardType leaderboardType) {
-        for (LeaderboardPlayerEntry leaderboardPlayerEntry : changes.keySet()) {
-            for (Kit kit : changes.get(leaderboardPlayerEntry)) {
+        for (LeaderboardPlayerEntry leaderboardPlayerEntry : changes) {
+            Kit kit = leaderboardPlayerEntry.getKit();
                 PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
                         leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getUsername(), kit)));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
-            }
         }
-        changes.clear();
     }
 
     private KitData getPlayerStats(String playerName, Kit kit) {
