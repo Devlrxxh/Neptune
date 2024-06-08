@@ -58,10 +58,12 @@ public class LeaderboardManager {
 
     public void update() {
         if (changes.isEmpty()) return;
-        for (LeaderboardType leaderboardType : LeaderboardType.values()) {
-            loadLB(leaderboardType);
+        for (LeaderboardPlayerEntry leaderboardPlayerEntry : new ArrayList<>(changes)) {
+            for (LeaderboardType leaderboardType : LeaderboardType.values()) {
+                loadLB(leaderboardType, leaderboardPlayerEntry);
+            }
+            changes.remove(leaderboardPlayerEntry);
         }
-        changes.clear();
     }
 
     private void loadType(LeaderboardType leaderboardType) {
@@ -89,13 +91,11 @@ public class LeaderboardManager {
         changes.add(playerEntry);
     }
 
-    private void loadLB(LeaderboardType leaderboardType) {
-        for (LeaderboardPlayerEntry leaderboardPlayerEntry : changes) {
+    private void loadLB(LeaderboardType leaderboardType, LeaderboardPlayerEntry leaderboardPlayerEntry) {
             Kit kit = leaderboardPlayerEntry.getKit();
                 PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
                         leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getUsername(), kit)));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
-        }
     }
 
     private KitData getPlayerStats(String playerName, Kit kit) {
