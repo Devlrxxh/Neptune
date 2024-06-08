@@ -71,7 +71,7 @@ public class LeaderboardManager {
             for (Document document : plugin.getMongoManager().collection.find()) {
                 String username = document.getString("username");
                 UUID uuid = UUID.fromString(document.getString("uuid"));
-                KitData kitData = getPlayerStats(username, kit);
+                KitData kitData = getPlayerStats(uuid, kit);
                 if (kitData == null) continue;
                 PlayerEntry playerEntry = new PlayerEntry(username, uuid, leaderboardType.get(kitData));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
@@ -94,21 +94,21 @@ public class LeaderboardManager {
     private void loadLB(LeaderboardType leaderboardType, LeaderboardPlayerEntry leaderboardPlayerEntry) {
             Kit kit = leaderboardPlayerEntry.getKit();
                 PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
-                        leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getUsername(), kit)));
+                        leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getPlayerUUID(), kit)));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
     }
 
-    private KitData getPlayerStats(String playerName, Kit kit) {
-        Player player = Bukkit.getPlayer(playerName);
+    private KitData getPlayerStats(UUID playerUUID, Kit kit) {
+        Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
             return plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getKitData().get(kit);
         } else {
-            return getKitData(playerName, kit);
+            return getKitData(playerUUID, kit);
         }
     }
 
-    private KitData getKitData(String playerName, Kit kit) {
-        Document document = plugin.getMongoManager().collection.find(Filters.eq("username", playerName)).first();
+    private KitData getKitData(UUID playerUUID, Kit kit) {
+        Document document = plugin.getMongoManager().collection.find(Filters.eq("uuid", playerUUID)).first();
         if (document == null) return null;
 
         Document kitStatistics = (Document) document.get("kitData");

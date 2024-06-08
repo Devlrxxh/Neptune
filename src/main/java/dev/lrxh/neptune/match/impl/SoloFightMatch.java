@@ -166,7 +166,7 @@ public class SoloFightMatch extends Match {
 
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 10);
+        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 20);
     }
 
     @Override
