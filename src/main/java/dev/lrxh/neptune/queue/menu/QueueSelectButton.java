@@ -21,12 +21,12 @@ public class QueueSelectButton extends Button {
     public ItemStack getButtonItem(Player player) {
 
         return new ItemBuilder(kit.getIcon()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
-                .amount(kit.getPlaying())
                 .lore(ItemUtils.getLore(MenusLocale.QUEUE_SELECT_LORE.getStringList(),
                         new Replacement("<kit>", kit.getDisplayName()),
                         new Replacement("<playing>", String.valueOf(kit.getPlaying())),
                         new Replacement("<queue>", String.valueOf(kit.getQueue()))))
                 .clearFlags()
+                .amount(kit.getPlaying())
                 .build();
     }
 

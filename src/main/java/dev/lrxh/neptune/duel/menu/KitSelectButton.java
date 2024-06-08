@@ -20,7 +20,6 @@ public class KitSelectButton extends Button {
     @Override
     public ItemStack getButtonItem(Player player) {
         return new ItemBuilder(kit.getIcon()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
-                .amount(kit.getPlaying())
                 .lore(MenusLocale.DUEL_LORE.getStringList())
                 .clearFlags()
                 .build();

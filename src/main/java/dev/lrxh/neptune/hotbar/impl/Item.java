@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.hotbar;
+package dev.lrxh.neptune.hotbar.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.ProfileState;
@@ -41,7 +41,7 @@ public class Item {
         return null;
     }
 
-    ItemStack constructItem() {
+    public ItemStack constructItem() {
         return new ItemBuilder(material).name(displayName).clearFlags().makeUnbreakable().build();
     }
 }

@@ -1,7 +1,9 @@
-package dev.lrxh.neptune.hotbar;
+package dev.lrxh.neptune.hotbar.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.match.menu.MatchListMenu;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.menu.PartyEventsMenu;
@@ -54,6 +56,12 @@ public enum ItemAction {
             }
 
             new MatchListMenu().openMenu(player);
+        }
+    },
+    LEADERBOARDS() {
+        @Override
+        public void execute(Player player) {
+            new LeaderboardMenu(LeaderboardType.WINS).openMenu(player);
         }
     },
     PARTY_CREATE() {

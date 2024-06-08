@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.hotbar;
+package dev.lrxh.neptune.hotbar.impl;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;

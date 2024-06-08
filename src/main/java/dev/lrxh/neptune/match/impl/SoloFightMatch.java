@@ -1,8 +1,10 @@
 package dev.lrxh.neptune.match.impl;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
@@ -80,8 +82,9 @@ public class SoloFightMatch extends Match {
 
         loserProfile.getGameData().addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
-//        Neptune.get().getLeaderboardManager().addChange(winner.getNameUnColored(), kit);
-//        Neptune.get().getLeaderboardManager().addChange(loser.getNameUnColored(), kit);
+
+        Neptune.get().getLeaderboardManager().addChange(new LeaderboardPlayerEntry(winner.getNameUnColored(), winner.getPlayerUUID(), kit));
+        Neptune.get().getLeaderboardManager().addChange(new LeaderboardPlayerEntry(loser.getNameUnColored(), loser.getPlayerUUID(), kit));
     }
 
     @Override

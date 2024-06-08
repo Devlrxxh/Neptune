@@ -11,7 +11,11 @@ ITEMS:
     PARTY_CREATE:
       NAME: "&9Create Party &7(Right Click)"
       MATERIAL: NAME_TAG
-      SLOT: 4
+      SLOT: 3
+    LEADERBOARDS:
+      NAME: "&cLeaderboards &7(Right Click)"
+      MATERIAL: NETHER_STAR
+      SLOT: 5
     STATS:
       NAME: "&eStats &7(Right Click)"
       MATERIAL: COMPASS

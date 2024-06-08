@@ -1,6 +1,8 @@
-package dev.lrxh.neptune.hotbar;
+package dev.lrxh.neptune.hotbar.listener;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.hotbar.impl.Item;
+import dev.lrxh.neptune.hotbar.impl.ItemAction;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import org.bukkit.Material;
@@ -26,7 +28,9 @@ public class ItemListener implements Listener {
         if (!profile.getState().equals(ProfileState.IN_GAME)) {
             Item clickedItem = Item.getByItemStack(event.getItem());
             if (clickedItem == null) return;
-            if(cooldown) return;
+            if (cooldown) return;
+
+            ItemAction.valueOf(clickedItem.getName()).execute(player);
 
             cooldown = true;
             Neptune.get().getTaskScheduler().startTaskLater(new BukkitRunnable() {
@@ -35,8 +39,6 @@ public class ItemListener implements Listener {
                     cooldown = false;
                 }
             }, 10);
-
-            ItemAction.valueOf(clickedItem.getName()).execute(player);
         }
     }
 }

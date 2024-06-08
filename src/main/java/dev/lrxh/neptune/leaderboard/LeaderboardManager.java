@@ -5,6 +5,7 @@ import com.mongodb.client.model.Filters;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardEntry;
+import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.profile.data.KitData;
@@ -18,18 +19,35 @@ import java.util.*;
 
 @Getter
 public class LeaderboardManager {
-    private final WeakHashMap<String, List<Kit>> changes = new WeakHashMap<>();
+    private final WeakHashMap<LeaderboardPlayerEntry, List<Kit>> changes = new WeakHashMap<>();
     private final Neptune plugin = Neptune.get();
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
-    //TODO: MAKE MENUS AND FIX BUG WHEN CREATING NEW KIT
-
     public LeaderboardManager() {
         for (Kit kit : plugin.getKitManager().kits) {
-            leaderboards.put(kit, new ArrayList<>());
+            List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
+
+            for (LeaderboardType leaderboardType : LeaderboardType.values()) {
+                leaderboardEntries.add(new LeaderboardEntry(leaderboardType, new ArrayList<>()));
+            }
+
+            leaderboards.put(kit, leaderboardEntries);
         }
 
         load();
+    }
+
+    public PlayerEntry getLeaderboardSlot(Kit kit, LeaderboardType leaderboardType, int i) {
+        return getLeaderboard(kit, leaderboardType).get(i);
+    }
+
+    public List<PlayerEntry> getLeaderboard(Kit kit, LeaderboardType leaderboardType) {
+        for (LeaderboardEntry leaderboardEntry : leaderboards.get(kit)) {
+            if (leaderboardEntry.getType().equals(leaderboardType)) {
+                return leaderboardEntry.getPlayerEntries();
+            }
+        }
+        return null;
     }
 
     private void load() {
@@ -49,9 +67,10 @@ public class LeaderboardManager {
         for (Kit kit : plugin.getKitManager().kits) {
             for (Document document : plugin.getMongoManager().collection.find()) {
                 String username = document.getString("username");
+                UUID uuid = UUID.fromString(document.getString("uuid"));
                 KitData kitData = getPlayerStats(username, kit);
                 if (kitData == null) continue;
-                PlayerEntry playerEntry = new PlayerEntry(username, leaderboardType.get(kitData));
+                PlayerEntry playerEntry = new PlayerEntry(username, uuid, leaderboardType.get(kitData));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
             }
         }
@@ -65,15 +84,16 @@ public class LeaderboardManager {
         }
     }
 
-    public void addChange(String playerName, Kit kit) {
-        List<Kit> kits = changes.computeIfAbsent(playerName, k -> new ArrayList<>());
-        kits.add(kit);
+    public void addChange(LeaderboardPlayerEntry playerEntry) {
+        List<Kit> kits = changes.computeIfAbsent(playerEntry, k -> new ArrayList<>());
+        kits.add(playerEntry.getKit());
     }
 
     private void loadLB(LeaderboardType leaderboardType) {
-        for (String playerName : changes.keySet()) {
-            for (Kit kit : changes.get(playerName)) {
-                PlayerEntry playerEntry = new PlayerEntry(playerName, leaderboardType.get(getPlayerStats(playerName, kit)));
+        for (LeaderboardPlayerEntry leaderboardPlayerEntry : changes.keySet()) {
+            for (Kit kit : changes.get(leaderboardPlayerEntry)) {
+                PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
+                        leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getUsername(), kit)));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
             }
         }

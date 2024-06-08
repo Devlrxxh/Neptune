@@ -54,20 +54,21 @@ public class ItemBuilder {
             }
             item.setItemMeta(meta);
         }
+        resetAmount();
         return this;
     }
 
     public ItemBuilder makeUnbreakable() {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-//            meta.setUnbreakable(true);
+            meta.setUnbreakable(true);
             item.setItemMeta(meta);
         }
         return this;
     }
 
-    public ItemBuilder durability(int durability) {
-        item.setDurability((short) durability);
+    public ItemBuilder resetAmount() {
+        item.setAmount(1);
         return this;
     }
 

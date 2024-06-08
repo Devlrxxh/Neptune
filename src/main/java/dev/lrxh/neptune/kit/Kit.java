@@ -16,6 +16,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 public class Kit {
+    private final Neptune plugin = Neptune.get();
     private String name;
     private String displayName;
     private List<ItemStack> items;
@@ -33,7 +34,6 @@ public class Kit {
     private boolean bestOfThree;
     private boolean saturationHeal;
     private boolean showHP;
-
     //VALUES
     private int queue, playing;
 
@@ -56,6 +56,10 @@ public class Kit {
         this.showHP = showHP;
         this.queue = 0;
         this.playing = 0;
+
+        if (plugin.getLeaderboardManager() != null) {
+            plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
+        }
     }
 
     public Kit(String name, List<ItemStack> items, ItemStack icon) {
@@ -77,6 +81,10 @@ public class Kit {
         this.showHP = false;
         this.queue = 0;
         this.playing = 0;
+
+        if (plugin.getLeaderboardManager() != null) {
+            plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
+        }
     }
 
     public List<String> getArenasAsString() {

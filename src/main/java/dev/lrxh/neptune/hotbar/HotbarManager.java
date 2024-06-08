@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.hotbar;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.hotbar.impl.Hotbar;
+import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.profile.ProfileState;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -51,7 +53,7 @@ public class HotbarManager {
         }
     }
 
-    Item getItemForSlot(Hotbar inventory, int slot) {
+    public Item getItemForSlot(Hotbar inventory, int slot) {
         return getItem(inventory, slot);
     }
 
