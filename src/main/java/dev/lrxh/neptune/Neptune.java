@@ -96,6 +96,7 @@ public final class Neptune extends JavaPlugin {
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
 
+
         registerListeners();
         loadCommandManager();
         loadTasks();
