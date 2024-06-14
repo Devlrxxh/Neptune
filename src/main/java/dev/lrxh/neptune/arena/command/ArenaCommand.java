@@ -178,7 +178,7 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
-    @Subcommand("displayName")
+    @Subcommand("setdisplayName")
     @Syntax("<arena>")
     @CommandCompletion("@arenas")
     public void displayName(Player player, String arenaName, String displayName) {
