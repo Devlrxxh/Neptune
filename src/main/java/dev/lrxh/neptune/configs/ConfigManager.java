@@ -1,10 +1,7 @@
 package dev.lrxh.neptune.configs;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
-import dev.lrxh.neptune.configs.impl.SettingsLocale;
+import dev.lrxh.neptune.configs.impl.*;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 
@@ -29,6 +26,7 @@ public class ConfigManager {
         hotbarConfig = new ConfigFile("hotbar");
         menusConfig = new ConfigFile("menus");
 
+        HotbarLocale.LOBBY_PARTY_CREATE_NAME.load();
         MessagesLocale.MATCH_FOUND.load();
         SettingsLocale.SPAWN_LOCATION.load();
         MenusLocale.FILTER_NAME.load();

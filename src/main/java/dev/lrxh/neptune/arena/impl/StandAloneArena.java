@@ -59,6 +59,8 @@ public class StandAloneArena extends Arena {
     }
 
     public void restoreSnapshot() {
-        Neptune.get().getVersionHandler().getChunk().restoreSnapshot(chunkSnapshots);
+        if (min != null && max != null) {
+            Neptune.get().getVersionHandler().getChunk().restoreSnapshot(chunkSnapshots, getMin().getWorld());
+        }
     }
 }
