@@ -44,8 +44,6 @@ public class SoloFightMatch extends Match {
     public void end() {
         matchState = MatchState.ENDING;
 
-        removePlaying();
-
         if (!isDuel()) {
             addStats();
         }
@@ -58,6 +56,8 @@ public class SoloFightMatch extends Match {
 
         loser.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
+
+        removePlaying();
 
         plugin.getTaskScheduler().startTask(new MatchEndRunnable(this), 0L, 20L);
     }

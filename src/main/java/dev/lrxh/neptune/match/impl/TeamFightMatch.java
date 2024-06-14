@@ -40,11 +40,6 @@ public class TeamFightMatch extends Match {
     @Override
     public void end() {
         matchState = MatchState.ENDING;
-
-        if (!isDuel()) {
-            addStats();
-        }
-
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
 
@@ -57,18 +52,6 @@ public class TeamFightMatch extends Match {
         Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
     }
 
-    public void addStats() {
-        MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
-        MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
-
-        for (Participant participant : winnerTeam.getParticipants()) {
-            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getGameData().run(kit, true);
-        }
-
-        for (Participant participant : loserTeam.getParticipants()) {
-            Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID()).getGameData().run(kit, false);
-        }
-    }
 
     @Override
     public void sendEndMessage() {
@@ -104,8 +87,6 @@ public class TeamFightMatch extends Match {
         takeSnapshots();
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
-
-        addStats();
 
         end();
     }
