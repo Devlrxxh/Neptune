@@ -28,11 +28,10 @@ import java.util.*;
 @Setter
 public class Profile {
     private final UUID playerUUID;
+    public boolean cooldown;
     private String username;
     private ProfileState state;
     private GameData gameData;
-    public boolean cooldown;
-
     private MongoCollection<Document> collection = Neptune.get().getMongoManager().getCollection();
 
     public Profile(UUID playerUUID, ProfileState state) {

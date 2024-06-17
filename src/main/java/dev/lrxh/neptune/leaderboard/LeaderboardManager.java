@@ -24,7 +24,14 @@ public class LeaderboardManager {
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
     public LeaderboardManager() {
+        checkIfMissing();
+        load();
+    }
+
+    private void checkIfMissing(){
         for (Kit kit : plugin.getKitManager().kits) {
+            if(leaderboards.containsKey(kit)) continue;
+
             List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
 
             for (LeaderboardType leaderboardType : LeaderboardType.values()) {
@@ -33,8 +40,6 @@ public class LeaderboardManager {
 
             leaderboards.put(kit, leaderboardEntries);
         }
-
-        load();
     }
 
     public PlayerEntry getLeaderboardSlot(Kit kit, LeaderboardType leaderboardType, int i) {
@@ -58,6 +63,7 @@ public class LeaderboardManager {
 
     public void update() {
         if (changes.isEmpty()) return;
+        checkIfMissing();
         for (LeaderboardPlayerEntry leaderboardPlayerEntry : new ArrayList<>(changes)) {
             for (LeaderboardType leaderboardType : LeaderboardType.values()) {
                 loadLB(leaderboardType, leaderboardPlayerEntry);
@@ -92,10 +98,10 @@ public class LeaderboardManager {
     }
 
     private void loadLB(LeaderboardType leaderboardType, LeaderboardPlayerEntry leaderboardPlayerEntry) {
-            Kit kit = leaderboardPlayerEntry.getKit();
-                PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
-                        leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getPlayerUUID(), kit)));
-                addPlayerEntry(kit, playerEntry, leaderboardType);
+        Kit kit = leaderboardPlayerEntry.getKit();
+        PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
+                leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getPlayerUUID(), kit)));
+        addPlayerEntry(kit, playerEntry, leaderboardType);
     }
 
     private KitData getPlayerStats(UUID playerUUID, Kit kit) {

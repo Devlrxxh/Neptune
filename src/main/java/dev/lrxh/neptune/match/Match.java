@@ -98,8 +98,8 @@ public abstract class Match {
         }
     }
 
-    public void showPlayerForSpectators(){
-        for(UUID spectator : spectators){
+    public void showPlayerForSpectators() {
+        for (UUID spectator : spectators) {
             for (Participant participant : participants) {
                 Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
                 if (participiantPlayer == null) continue;
