@@ -1,9 +1,8 @@
-package dev.lrxh.neptune.party.menu;
+package dev.lrxh.neptune.party.menu.buttons.events;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.impl.EventType;
-import dev.lrxh.neptune.party.menu.buttons.events.PartyFightButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import dev.lrxh.neptune.utils.menu.filters.Filters;

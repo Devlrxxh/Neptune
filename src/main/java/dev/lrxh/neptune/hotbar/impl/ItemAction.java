@@ -6,7 +6,7 @@ import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.match.menu.MatchListMenu;
 import dev.lrxh.neptune.party.Party;
-import dev.lrxh.neptune.party.menu.PartyEventsMenu;
+import dev.lrxh.neptune.party.menu.buttons.events.PartyEventsMenu;
 import dev.lrxh.neptune.party.menu.PartySettingsMenu;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;

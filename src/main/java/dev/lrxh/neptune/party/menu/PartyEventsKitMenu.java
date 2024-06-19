@@ -3,6 +3,7 @@ package dev.lrxh.neptune.party.menu;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.party.Party;
+import dev.lrxh.neptune.party.impl.EventType;
 import dev.lrxh.neptune.party.menu.buttons.events.PartyTeamKitButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
@@ -16,6 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class PartyEventsKitMenu extends Menu {
     private final Party party;
+    private final EventType eventType;
 
     @Override
     public String getTitle(Player player) {
@@ -39,7 +41,7 @@ public class PartyEventsKitMenu extends Menu {
         int slot = MenusLocale.PARTY_EVENTS_KIT_SELECT_SLOT.getInt();
 
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(slot++, new PartyTeamKitButton(party, kit));
+            buttons.put(slot++, new PartyTeamKitButton(party, kit, eventType));
         }
 
         return buttons;
