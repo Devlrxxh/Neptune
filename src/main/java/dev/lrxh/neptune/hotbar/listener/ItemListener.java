@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class ItemListener implements Listener {
+    private final Neptune plugin = Neptune.get();
 
     @EventHandler()
     public void onPlayerInteract(PlayerInteractEvent event) {
@@ -33,10 +34,11 @@ public class ItemListener implements Listener {
             ItemAction.valueOf(clickedItem.getName()).execute(player);
 
             profile.cooldown = true;
-            Neptune.get().getTaskScheduler().startTaskLater(new BukkitRunnable() {
+            plugin.getTaskScheduler().startTaskLater(new BukkitRunnable() {
                 @Override
                 public void run() {
                     profile.cooldown = false;
+                    plugin.getTaskScheduler().stopTask(this);
                 }
             }, 10);
         }

@@ -27,6 +27,7 @@ public class MatchEndRunnable extends BukkitRunnable {
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
             cancel();
+            plugin.getTaskScheduler().stopTask(this);
             return;
         }
         if (endTimer == 0) {

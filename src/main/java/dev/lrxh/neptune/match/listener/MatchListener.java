@@ -274,6 +274,7 @@ public class MatchListener implements Listener {
                 @Override
                 public void run() {
                     profile.getMatch().getEntities().add(EntityUtils.getEntityById(player.getWorld(), event.getItemDrop().getEntityId()));
+                    plugin.getTaskScheduler().stopTask(this);
                 }
             }, 20);
         }

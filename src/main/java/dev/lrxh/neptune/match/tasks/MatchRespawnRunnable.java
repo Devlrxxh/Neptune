@@ -27,6 +27,7 @@ public class MatchRespawnRunnable extends BukkitRunnable {
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
             cancel();
+            plugin.getTaskScheduler().stopTask(this);
             return;
         }
         if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;

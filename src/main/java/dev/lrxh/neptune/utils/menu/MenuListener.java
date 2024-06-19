@@ -64,6 +64,7 @@ public class MenuListener implements Listener {
                         @Override
                         public void run() {
                             player.updateInventory();
+                            Neptune.get().getTaskScheduler().stopTask(this);
                         }
                     }, 1L);
                 }

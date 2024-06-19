@@ -66,9 +66,7 @@ public abstract class Match {
     }
 
     public void sendMessage(MessagesLocale message, Replacement... replacements) {
-        forEachParticipant(participant -> {
-            message.send(participant.getPlayerUUID(), replacements);
-        });
+        forEachParticipant(participant -> message.send(participant.getPlayerUUID(), replacements));
     }
 
     public void addSpectator(UUID playerUUID, boolean sendMessage) {
@@ -92,9 +90,7 @@ public abstract class Match {
 
     public void showPlayerForSpectators() {
         forEachSpectator(player -> {
-            forEachPlayer(participiantPlayer -> {
-                player.showPlayer(plugin, participiantPlayer);
-            });
+            forEachPlayer(participiantPlayer -> player.showPlayer(plugin, participiantPlayer));
         });
     }
 
@@ -240,14 +236,12 @@ public abstract class Match {
 
     public void removeEntities() {
         for (Entity entity : entities) {
-            if (entity != null) {
-                entity.remove();
-            }
+            if (entity == null) continue;
+            entity.remove();
         }
     }
 
     public void setupParticipants() {
-        //Setup participants
         forEachPlayer(player -> setupPlayer(player.getUniqueId()));
     }
 

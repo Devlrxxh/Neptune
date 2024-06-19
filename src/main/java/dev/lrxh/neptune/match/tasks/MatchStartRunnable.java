@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.tasks;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
@@ -23,6 +24,7 @@ public class MatchStartRunnable extends BukkitRunnable {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.startMatch();
             cancel();
+            Neptune.get().getTaskScheduler().stopTask(this);
             return;
         }
         if (match.getMatchState().equals(MatchState.STARTING)) {
