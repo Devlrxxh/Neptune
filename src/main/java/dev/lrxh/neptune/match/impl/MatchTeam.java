@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.match.impl;
 
 
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class MatchTeam {
         StringBuilder playerNames = new StringBuilder();
         for (Participant participant : participants) {
             if (playerNames.length() > 0) {
-                playerNames.append(", ");
+                playerNames.append(MessagesLocale.MATCH_COMMA.getString());
             }
             playerNames.append(participant.getNameUnColored());
         }

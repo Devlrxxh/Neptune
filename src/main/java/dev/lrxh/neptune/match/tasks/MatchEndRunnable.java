@@ -6,14 +6,15 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.HashSet;
 import java.util.UUID;
 
-public class MatchEndRunnable extends BukkitRunnable {
+public class MatchEndRunnable extends NeptuneRunnable {
     private final Neptune plugin = Neptune.get();
 
     private final Match match;
@@ -26,8 +27,8 @@ public class MatchEndRunnable extends BukkitRunnable {
     @Override
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
-            cancel();
-            plugin.getTaskScheduler().stopTask(this);
+            stop();
+            
             return;
         }
         if (endTimer == 0) {
@@ -54,7 +55,7 @@ public class MatchEndRunnable extends BukkitRunnable {
             if (match.arena instanceof StandAloneArena) {
                 ((StandAloneArena) match.arena).setUsed(false);
                 ((StandAloneArena) match.arena).restoreSnapshot();
-                cancel();
+                stop();
             }
             match.removeEntities();
             plugin.getMatchManager().matches.remove(match);

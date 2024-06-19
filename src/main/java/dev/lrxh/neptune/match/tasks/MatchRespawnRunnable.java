@@ -7,11 +7,12 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.sounds.Sound;
 import org.bukkit.Bukkit;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class MatchRespawnRunnable extends BukkitRunnable {
+
+public class MatchRespawnRunnable extends NeptuneRunnable {
     private final Neptune plugin = Neptune.get();
 
     private final Match match;
@@ -26,8 +27,8 @@ public class MatchRespawnRunnable extends BukkitRunnable {
     @Override
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
-            cancel();
-            plugin.getTaskScheduler().stopTask(this);
+            stop();
+            
             return;
         }
         if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;
@@ -35,7 +36,7 @@ public class MatchRespawnRunnable extends BukkitRunnable {
 
             MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
             match.startMatch();
-            cancel();
+            stop();
             return;
         }
 

@@ -29,7 +29,7 @@ import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
-import dev.lrxh.neptune.utils.TaskScheduler;
+import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuListener;
 import dev.lrxh.versioncontroll.VersionControll;

@@ -32,17 +32,24 @@ public class MatchSnapshotMenu extends Menu {
         return Filters.FILL;
     }
 
+    @Override
     public boolean getFixedPositions() {
         return false;
     }
 
     @Override
+    public int getSize() {
+        return 54;
+    }
+
+
+    @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        ItemStack[] fixedContents = ItemUtils.fixInventoryOrder(snapshot.getContents());
+        ItemStack[] items = snapshot.getContents();
 
-        for (int i = 0; i < fixedContents.length; i++) {
-            ItemStack itemStack = fixedContents[i];
+        for (int i = 0; i < items.length; i++) {
+            ItemStack itemStack = items[i];
 
             if (itemStack != null && itemStack.getType() != Material.AIR) {
                 buttons.put(i, new DisplayButton(itemStack, true));

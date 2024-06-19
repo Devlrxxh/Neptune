@@ -42,7 +42,7 @@ public enum MessagesLocale implements IDataAccessor {
             " "),
     MATCH_END_DETAILS_TEAM("MATCH.END_DETAILS_MESSAGE.TEAM", null, DataType.STRING_LIST,
             " ",
-            "&bMatch Inventories &o&7(Click name to view)",
+            "&bMatch Results:",
             "&aWinners: &e<winners>",
             "&cLosers: &e<losers>",
             " "),

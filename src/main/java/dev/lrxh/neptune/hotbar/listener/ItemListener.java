@@ -5,13 +5,14 @@ import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.hotbar.impl.ItemAction;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 public class ItemListener implements Listener {
     private final Neptune plugin = Neptune.get();
@@ -34,11 +35,11 @@ public class ItemListener implements Listener {
             ItemAction.valueOf(clickedItem.getName()).execute(player);
 
             profile.cooldown = true;
-            plugin.getTaskScheduler().startTaskLater(new BukkitRunnable() {
+            plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
                 @Override
                 public void run() {
                     profile.cooldown = false;
-                    plugin.getTaskScheduler().stopTask(this);
+                    
                 }
             }, 10);
         }

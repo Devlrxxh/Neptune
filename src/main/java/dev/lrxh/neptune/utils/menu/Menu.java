@@ -125,14 +125,13 @@ public abstract class Menu {
                 }
 
                 modifiedButtons.put(slot, buttonEntry.getValue());
-                setItem(inventory, slot, createItemStack(player, buttonEntry.getValue()));
-//                inventory.setItem(slot, createItemStack(player, buttonEntry.getValue()));
+                inventory.setItem(slot, createItemStack(player, buttonEntry.getValue()));
             }
             this.buttons = modifiedButtons;
         } else {
             for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
-                setItem(inventory, buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
-//                inventory.setItem(buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
+//                setItem(inventory, buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
+                inventory.setItem(buttonEntry.getKey(), createItemStack(player, buttonEntry.getValue()));
             }
             this.buttons = getButtons();
         }
@@ -144,7 +143,7 @@ public abstract class Menu {
     }
 
     private void setItem(Inventory inventory, int slot, ItemStack item) {
-        if (slot < inventory.getSize()) {
+        if (slot < inventory.getSize() - 1) {
             inventory.setItem(slot, item);
         }
     }

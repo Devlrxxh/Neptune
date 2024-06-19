@@ -1,9 +1,10 @@
 package dev.lrxh.neptune.leaderboard.task;
 
 import dev.lrxh.neptune.Neptune;
-import org.bukkit.scheduler.BukkitRunnable;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 
-public class LeaderboardTask extends BukkitRunnable {
+
+public class LeaderboardTask extends NeptuneRunnable {
     @Override
     public void run() {
         Neptune.get().getLeaderboardManager().update();

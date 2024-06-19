@@ -7,17 +7,18 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class QueueCheckTask extends BukkitRunnable {
+public class QueueCheckTask extends NeptuneRunnable {
     private final Neptune plugin = Neptune.get();
 
     @Override

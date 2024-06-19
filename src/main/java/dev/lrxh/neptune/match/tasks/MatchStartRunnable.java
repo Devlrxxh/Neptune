@@ -6,10 +6,11 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.sounds.Sound;
-import org.bukkit.scheduler.BukkitRunnable;
 
-public class MatchStartRunnable extends BukkitRunnable {
+
+public class MatchStartRunnable extends NeptuneRunnable {
 
     private final Match match;
     private int startTimer;
@@ -24,8 +25,8 @@ public class MatchStartRunnable extends BukkitRunnable {
         if (startTimer == 0) {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.startMatch();
-            cancel();
-            Neptune.get().getTaskScheduler().stopTask(this);
+            stop();
+            
             return;
         }
         if (match.getMatchState().equals(MatchState.STARTING)) {

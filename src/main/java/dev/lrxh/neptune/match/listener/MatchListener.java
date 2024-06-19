@@ -9,6 +9,7 @@ import dev.lrxh.neptune.match.impl.Participant;
 import dev.lrxh.neptune.match.impl.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.EntityUtils;
 import org.bukkit.GameMode;
@@ -25,7 +26,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.scheduler.BukkitRunnable;
+
 
 public class MatchListener implements Listener {
     private final Neptune plugin = Neptune.get();
@@ -271,11 +272,10 @@ public class MatchListener implements Listener {
         if (!profile.getState().equals(ProfileState.IN_GAME)) {
             event.setCancelled(true);
         } else {
-            plugin.getTaskScheduler().startTaskLater(new BukkitRunnable() {
+            plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
                 @Override
                 public void run() {
                     profile.getMatch().getEntities().add(EntityUtils.getEntityById(player.getWorld(), event.getItemDrop().getEntityId()));
-                    plugin.getTaskScheduler().stopTask(this);
                 }
             }, 20);
         }
