@@ -3,7 +3,7 @@ package dev.lrxh.neptune.party.menu;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.party.Party;
-import dev.lrxh.neptune.party.menu.buttons.PartyTeamKitButton;
+import dev.lrxh.neptune.party.menu.buttons.events.PartyTeamKitButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import dev.lrxh.neptune.utils.menu.filters.Filters;

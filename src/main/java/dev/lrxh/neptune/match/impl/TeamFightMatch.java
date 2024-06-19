@@ -32,7 +32,6 @@ public class TeamFightMatch extends Match {
         this.teamB = teamB;
     }
 
-
     public MatchTeam getPlayerTeam(Participant participant) {
         return teamA.getParticipants().contains(participant) ? teamA : teamB;
     }
@@ -58,11 +57,9 @@ public class TeamFightMatch extends Match {
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
 
-        for (Participant participant : participants) {
-            MessagesLocale.MATCH_END_DETAILS_TEAM.send(participant.getPlayerUUID(),
-                    new Replacement("<losers>", loserTeam.getTeamNames()),
-                    new Replacement("<winners>", winnerTeam.getTeamNames()));
-        }
+        forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_TEAM.send(participant.getPlayerUUID(),
+                new Replacement("<losers>", loserTeam.getTeamNames()),
+                new Replacement("<winners>", winnerTeam.getTeamNames())));
     }
 
     @Override
@@ -83,8 +80,6 @@ public class TeamFightMatch extends Match {
 
 
         if (!team.isLoser()) return;
-
-        takeSnapshots();
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
@@ -129,14 +124,6 @@ public class TeamFightMatch extends Match {
             if (player == null) continue;
 
             player.teleport(arena.getBlueSpawn());
-        }
-    }
-
-    private void sendDeathMessage(Participant deadParticipant) {
-        for (Participant participant : participants) {
-            deadParticipant.getDeathCause().getMessagesLocale().send(participant.getPlayerUUID(),
-                    new Replacement("<player>", deadParticipant.getName()),
-                    new Replacement("<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : ""));
         }
     }
 }

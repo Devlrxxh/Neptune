@@ -160,6 +160,7 @@ public class SoloFightMatch extends Match {
         onDeath(participant);
     }
 
+    @Override
     public void startMatch() {
         matchState = MatchState.IN_ROUND;
         checkRules();
@@ -172,22 +173,12 @@ public class SoloFightMatch extends Match {
     @Override
     public void teleportToPositions() {
         Player playerA = Bukkit.getPlayer(participantA.getPlayerUUID());
-        if (playerA == null) {
-            return;
-        }
+        if (playerA == null) return;
         playerA.teleport(arena.getRedSpawn());
 
         Player playerB = Bukkit.getPlayer(participantB.getPlayerUUID());
-        if (playerB == null) {
-            return;
-        }
+        if (playerB == null) return;
+
         playerB.teleport(arena.getBlueSpawn());
-    }
-
-    private void sendDeathMessage(Participant deadParticipant) {
-
-        broadcast(deadParticipant.getDeathCause().getMessagesLocale(),
-                new Replacement("<player>", deadParticipant.getName()),
-                new Replacement("<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : ""));
     }
 }

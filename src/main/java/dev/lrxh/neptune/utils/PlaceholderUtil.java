@@ -2,17 +2,13 @@ package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.MatchTeam;
-import dev.lrxh.neptune.match.impl.Participant;
-import dev.lrxh.neptune.match.impl.SoloFightMatch;
-import dev.lrxh.neptune.match.impl.TeamFightMatch;
+import dev.lrxh.neptune.match.impl.*;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.queue.Queue;
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -105,11 +101,17 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<max-blue>", String.valueOf(blueTeam.getParticipants().size()));
                     }
                 }
+
+                if (match instanceof FfaFightMatch) {
+                    FfaFightMatch ffaFightMatch = (FfaFightMatch) match;
+                    line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.participants.size() - ffaFightMatch.deadParticipants.size()));
+                }
+
                 line = line.replaceAll("<kit>", match.getKit().getDisplayName());
                 line = line.replaceAll("<arena>", match.getArena().getDisplayName());
             }
 
-            if (Neptune.get().isPlaceholder() && PlaceholderAPIPlugin.getInstance() != null) {
+            if (Neptune.get().isPlaceholder()) {
                 formattedLines.add(PlaceholderAPI.setPlaceholders(player, line));
             } else {
                 formattedLines.add(line);

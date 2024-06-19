@@ -2,7 +2,8 @@ package dev.lrxh.neptune.party.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.party.Party;
-import dev.lrxh.neptune.party.menu.buttons.PartyTeamFightButton;
+import dev.lrxh.neptune.party.impl.EventType;
+import dev.lrxh.neptune.party.menu.buttons.events.PartyFightButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import dev.lrxh.neptune.utils.menu.filters.Filters;
@@ -34,7 +35,10 @@ public class PartyEventsMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        buttons.put(MenusLocale.PARTY_EVENTS_SPLIT_SLOT.getInt(), new PartyTeamFightButton(party));
+
+        for (EventType eventType : EventType.values()) {
+            buttons.put(eventType.getSlot(), new PartyFightButton(party, eventType));
+        }
 
         return buttons;
     }

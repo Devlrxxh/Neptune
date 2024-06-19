@@ -3,14 +3,14 @@ package dev.lrxh.neptune.match;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.impl.MatchSnapshot;
-import dev.lrxh.neptune.match.impl.MatchState;
-import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.match.impl.*;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.PlaceholderUtil;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.AllArgsConstructor;
@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @AllArgsConstructor
 @Getter
@@ -110,10 +111,57 @@ public abstract class Match {
         }
     }
 
+    public void forEachPlayer(Consumer<Player> action) {
+        for (Participant participant : participants) {
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player != null) {
+                action.accept(player);
+            }
+        }
+    }
+
+    public void forEachParticipant(Consumer<Participant> action) {
+        for (Participant participant : participants) {
+            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player != null) {
+                action.accept(participant);
+            }
+        }
+    }
+
     public void addSpectator(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         player.setGameMode(GameMode.SPECTATOR);
+    }
+
+    public List<String> getScoreboard(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return new ArrayList<>();
+
+        if (this instanceof SoloFightMatch) {
+            if (this.getMatchState().equals(MatchState.STARTING)) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
+            } else if (this.getMatchState().equals(MatchState.IN_ROUND)) {
+                if (this.getRounds() > 1) {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
+                }
+                if (this.getKit().isBoxing()) {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
+                }
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
+            } else {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
+            }
+        }
+        if (this instanceof TeamFightMatch) {
+            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
+        }
+        if (this instanceof FfaFightMatch) {
+            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_FFA.getStringList()), player);
+        }
+
+        return null;
     }
 
     public void removeSpectator(UUID playerUUID, boolean sendMessage) {
@@ -259,6 +307,12 @@ public abstract class Match {
 
             plugin.getProfileManager().getByUUID(participant.getPlayerUUID()).getGameData().setMatchSnapshot(snapshot);
         }
+    }
+
+    public void sendDeathMessage(Participant deadParticipant) {
+        broadcast(deadParticipant.getDeathCause().getMessagesLocale(),
+                new Replacement("<player>", deadParticipant.getName()),
+                new Replacement("<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : ""));
     }
 
     public abstract void end();

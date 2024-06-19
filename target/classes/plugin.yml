@@ -1,7 +1,7 @@
 name: Neptune
 version: '1.3'
 main: dev.lrxh.neptune.Neptune
-api-version: 1.17
+api-version: 1.16
 load: POSTWORLD
 softdepend:
   - PlaceholderAPI

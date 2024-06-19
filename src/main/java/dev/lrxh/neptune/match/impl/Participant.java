@@ -55,6 +55,10 @@ public class Participant {
         PlayerUtil.sendTitle(playerUUID, header, footer, duration);
     }
 
+    public void sendMessage(String message) {
+        PlayerUtil.sendMessage(playerUUID, message);
+    }
+
     public void resetCombo() {
         combo = 0;
     }

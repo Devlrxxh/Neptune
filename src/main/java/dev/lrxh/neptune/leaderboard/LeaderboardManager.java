@@ -9,13 +9,15 @@ import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.profile.data.KitData;
-import dev.lrxh.neptune.utils.ItemUtils;
 import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.UUID;
 
 @Getter
 public class LeaderboardManager {
@@ -28,9 +30,9 @@ public class LeaderboardManager {
         load();
     }
 
-    private void checkIfMissing(){
+    private void checkIfMissing() {
         for (Kit kit : plugin.getKitManager().kits) {
-            if(leaderboards.containsKey(kit)) continue;
+            if (leaderboards.containsKey(kit)) continue;
 
             List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
 
@@ -126,7 +128,6 @@ public class LeaderboardManager {
         profileKitData.setWins(kitDocument.getInteger("WINS", 0));
         profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
         profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
-        profileKitData.setKit(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
 
         return profileKitData;
     }

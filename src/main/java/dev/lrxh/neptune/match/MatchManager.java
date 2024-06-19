@@ -82,6 +82,25 @@ public class MatchManager {
         Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
     }
 
+    public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
+        //Create match
+        FfaFightMatch match = new FfaFightMatch(arena, kit, participants);
+
+        matches.add(match);
+
+        //Setup players
+        match.setupParticipants();
+
+        //Apply kit rules for players
+        match.checkRules();
+
+        //Teleport the Players to their spawn
+        match.teleportToPositions();
+
+        //Start match start runnable
+        Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
+    }
+
     public void stopAllGames() {
         for (Match match : matches) {
             if (match.getArena() instanceof StandAloneArena) {
