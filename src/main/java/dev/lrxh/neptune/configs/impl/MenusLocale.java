@@ -183,7 +183,7 @@ public enum MenusLocale implements IDataAccessor {
             "&7two teams and fight.",
             " ",
             "&a&lClick to start event!"),
-    PARTY_EVENTS_FFA_MATERIAL("PARTY.EVENTS.FFA.MATERIAL", null, DataType.STRING, "GOLD_AXE"),
+    PARTY_EVENTS_FFA_MATERIAL("PARTY.EVENTS.FFA.MATERIAL", null, DataType.STRING, "GOLDEN_AXE"),
     PARTY_EVENTS_FFA_SLOT("PARTY.EVENTS.FFA.SLOT", null, DataType.INT, "12"),
     PARTY_EVENTS_FFA_TITLE("PARTY.EVENTS.FFA.TITLE", null, DataType.STRING, "&eParty FFA"),
     PARTY_EVENTS_FFA_LORE("PARTY.EVENTS.FFA.LORE", null, DataType.STRING_LIST,

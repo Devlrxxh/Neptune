@@ -83,6 +83,10 @@ public class MatchManager {
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
+        for(Participant participant : participants){
+            participant.setColor(ParticipantColor.RED);
+        }
+
         //Create match
         FfaFightMatch match = new FfaFightMatch(arena, kit, participants);
 

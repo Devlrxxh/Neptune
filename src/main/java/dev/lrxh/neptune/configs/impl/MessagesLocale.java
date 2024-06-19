@@ -99,10 +99,10 @@ public enum MessagesLocale implements IDataAccessor {
     PARTY_INVITATION("PARTY.INVITATION", null, DataType.STRING_LIST, "&bYou have been invited to &f<leader> &bparty <accept>"),
     PARTY_ACCEPT("PARTY.ACCEPT", null, DataType.STRING, "&a&l(ACCEPT)"),
     PARTY_ACCEPT_HOVER("PARTY.ACCEPT_HOVER", null, DataType.STRING, "&aClick to accept party request"),
-    PARTY_NO_PERMISSION("PARTY.NO_PERMISSION", null, DataType.STRING, "&cYou do not have permission to do this."),
-    PARTY_ALREADY_IN("PARTY.ALREADY_IN", null, DataType.STRING, "&cYou are already in a party."),
-    PARTY_ALREADY_SENT("PARTY.ALREADY_SENT", null, DataType.STRING, "&cYou have already sent <player> a party request."),
-    PARTY_ALREADY_PARTY("PARTY.ALREADY_IN_PARTY", null, DataType.STRING, "&c<player> is already in a party."),
+    PARTY_NO_PERMISSION("PARTY.NO_PERMISSION", null, DataType.STRING_LIST, "&cYou do not have permission to do this."),
+    PARTY_ALREADY_IN("PARTY.ALREADY_IN", null, DataType.STRING_LIST, "&cYou are already in a party."),
+    PARTY_ALREADY_SENT("PARTY.ALREADY_SENT", null, DataType.STRING_LIST, "&cYou have already sent <player> a party request."),
+    PARTY_ALREADY_PARTY("PARTY.ALREADY_IN_PARTY", null, DataType.STRING_LIST, "&c<player> is already in a party."),
     PARTY_KICK("PARTY.KICK", null, DataType.STRING_LIST, "&f<player> &bhas been kicked from the party."),
     PARTY_LEFT("PARTY.LEFT", null, DataType.STRING_LIST, "&f<player> &bhas left the party."),
     PARTY_INFO("PARTY.INFO", null, DataType.STRING_LIST,
@@ -144,8 +144,13 @@ public enum MessagesLocale implements IDataAccessor {
     }
 
     public void send(UUID playerUUID, Replacement... replacements) {
-        for (String message : getStringList()) {
-            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
+        if (dataType.equals(DataType.STRING_LIST)) {
+            for (String message : getStringList()) {
+                PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
+            }
+        } else if (dataType.equals(DataType.STRING)) {
+            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
         }
+
     }
 }

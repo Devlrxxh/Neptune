@@ -192,11 +192,13 @@ public abstract class Match {
 
     public void checkRules() {
         forEachParticipant(participant -> {
-            if (kit.isDenyMovement()) {
-                if (matchState.equals(MatchState.STARTING)) {
-                    PlayerUtil.denyMovement(participant.getPlayerUUID());
-                } else {
-                    PlayerUtil.allowMovement(participant.getPlayerUUID());
+            if(!(this instanceof FfaFightMatch)){
+                if (kit.isDenyMovement()) {
+                    if (matchState.equals(MatchState.STARTING)) {
+                        PlayerUtil.denyMovement(participant.getPlayerUUID());
+                    } else {
+                        PlayerUtil.allowMovement(participant.getPlayerUUID());
+                    }
                 }
             }
             if (kit.isShowHP()) {

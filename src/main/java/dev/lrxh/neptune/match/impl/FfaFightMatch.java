@@ -101,7 +101,7 @@ public class FfaFightMatch extends Match {
     @Override
     public void sendEndMessage() {
         if (winner == null) return;
-        forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_TEAM.send(participant.getPlayerUUID(),
+        forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_FFA.send(participant.getPlayerUUID(),
                 new Replacement("<winner>", winner.getNameUnColored())));
     }
 }
