@@ -48,13 +48,8 @@ public abstract class Match {
     private boolean duel;
 
     public void playSound(Sound sound) {
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
-
-            player.playSound(player.getLocation(),
-                    (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
-        }
+        forEachPlayer(player -> player.playSound(player.getLocation(),
+                (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f));
     }
 
     public Participant getParticipant(UUID playerUUID) {
@@ -67,15 +62,13 @@ public abstract class Match {
     }
 
     public void sendTitle(String header, String footer, int duration) {
-        for (Participant participant : participants) {
-            PlayerUtil.sendTitle(participant.getPlayerUUID(), header, footer, duration);
-        }
+        forEachParticipant(participant -> PlayerUtil.sendTitle(participant.getPlayerUUID(), header, footer, duration));
     }
 
     public void sendMessage(MessagesLocale message, Replacement... replacements) {
-        for (Participant participant : participants) {
+        forEachParticipant(participant -> {
             message.send(participant.getPlayerUUID(), replacements);
-        }
+        });
     }
 
     public void addSpectator(UUID playerUUID, boolean sendMessage) {
@@ -88,11 +81,9 @@ public abstract class Match {
         player.setGameMode(GameMode.SPECTATOR);
         spectators.add(playerUUID);
 
-        for (Participant participant : participants) {
-            Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (participiantPlayer == null) return;
+        forEachPlayer(participiantPlayer -> {
             player.showPlayer(plugin, participiantPlayer);
-        }
+        });
 
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
@@ -100,20 +91,25 @@ public abstract class Match {
     }
 
     public void showPlayerForSpectators() {
-        for (UUID spectator : spectators) {
-            for (Participant participant : participants) {
-                Player participiantPlayer = Bukkit.getPlayer(participant.getPlayerUUID());
-                if (participiantPlayer == null) continue;
-                Player player = Bukkit.getPlayer(spectator);
-                if (player == null) continue;
+        forEachSpectator(player -> {
+            forEachPlayer(participiantPlayer -> {
                 player.showPlayer(plugin, participiantPlayer);
-            }
-        }
+            });
+        });
     }
 
     public void forEachPlayer(Consumer<Player> action) {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            if (player != null) {
+                action.accept(player);
+            }
+        }
+    }
+
+    public void forEachSpectator(Consumer<Player> action) {
+        for (UUID spectatorUUID : spectators) {
+            Player player = Bukkit.getPlayer(spectatorUUID);
             if (player != null) {
                 action.accept(player);
             }
@@ -193,20 +189,13 @@ public abstract class Match {
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
-        for (Participant participant : participants) {
-            messagesLocale.send(participant.getPlayerUUID(), replacements);
-        }
+        forEachParticipant(participant -> messagesLocale.send(participant.getPlayerUUID(), replacements));
 
-        for (UUID spectator : spectators) {
-            if (participants.contains(getParticipant(spectator))) continue;
-            messagesLocale.send(spectator, replacements);
-        }
+        forEachSpectator(player -> messagesLocale.send(player.getUniqueId(), replacements));
     }
 
     public void checkRules() {
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
+        forEachParticipant(participant -> {
             if (kit.isDenyMovement()) {
                 if (matchState.equals(MatchState.STARTING)) {
                     PlayerUtil.denyMovement(participant.getPlayerUUID());
@@ -219,25 +208,23 @@ public abstract class Match {
                     showHealth(participant.getPlayerUUID());
                 }
             }
-        }
+        });
     }
 
     public void hideHealth() {
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) return;
+        forEachPlayer(player -> {
             Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
             if (objective != null) {
                 objective.unregister();
             }
-        }
+        });
     }
 
 
     private void showHealth(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        for (Participant participant : participants) {
+        forEachParticipant(participant -> {
             Player viewer = Bukkit.getPlayer(participant.getPlayerUUID());
             if (viewer == null) return;
 
@@ -248,7 +235,7 @@ public abstract class Match {
             objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
             objective.displayName(Component.text(CC.color("&c") + "❤"));
             objective.getScore(player.getName()).setScore((int) Math.floor(player.getHealth() / 2));
-        }
+        });
     }
 
     public void removeEntities() {
@@ -259,41 +246,9 @@ public abstract class Match {
         }
     }
 
-//    public void hidePlayer(Participant targetParticipant) {
-//        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
-//        if (targetPlayer == null) return;
-//        for (Participant participant : participants) {
-//            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-//            if (player == null) return;
-//            player.hidePlayer(plugin, targetPlayer);
-//        }
-//    }
-//
-//    public void showPlayer(Participant targetParticipant) {
-//        Player targetPlayer = Bukkit.getPlayer(targetParticipant.getPlayerUUID());
-//        if (targetPlayer == null) return;
-//        for (Participant participant : participants) {
-//            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-//            if (player == null) return;
-//            player.showPlayer(plugin, targetPlayer);
-//        }
-//    }
-
-//    public void runForAll(Runnable runnable){
-//        for(Participant participant : participants){
-//            runnable.run();
-//        }
-//    }
-
     public void setupParticipants() {
         //Setup participants
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) {
-                continue;
-            }
-            setupPlayer(participant.getPlayerUUID());
-        }
+        forEachPlayer(player -> setupPlayer(player.getUniqueId()));
     }
 
     public void takeSnapshots() {
