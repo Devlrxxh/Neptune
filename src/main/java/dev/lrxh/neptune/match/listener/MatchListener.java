@@ -118,8 +118,9 @@ public class MatchListener implements Listener {
 
             if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME)) {
                 Match match = targetProfile.getMatch();
-                match.getParticipant(damager.getUniqueId()).handleHit();
-                match.getParticipant(target.getUniqueId()).resetCombo();
+                Participant opponent = match.getParticipant(target.getUniqueId());
+                match.getParticipant(damager.getUniqueId()).handleHit(opponent);
+                opponent.resetCombo();
             }
         }
     }

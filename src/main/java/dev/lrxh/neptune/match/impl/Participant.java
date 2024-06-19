@@ -63,7 +63,11 @@ public class Participant {
         combo = 0;
     }
 
-    public void handleHit() {
+    public void handleHit(Participant opponent) {
+        if(!opponent.getLastAttacker().equals(this)) {
+            resetCombo();
+        }
+
         hits++;
         combo++;
         if (combo > longestCombo) {
@@ -87,8 +91,6 @@ public class Participant {
         if (match instanceof SoloFightMatch) {
             if (match.getKit().isBoxing()) {
                 if (hits >= 100) {
-                    Participant opponent = getOpponent();
-
                     opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(opponent);
                 }
