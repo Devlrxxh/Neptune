@@ -60,7 +60,7 @@ public enum ScoreboardLocale implements IDataAccessor {
             " ",
             "&bserver.net",
             "&7&m--------------------"),
-    IN_GAME_FFA("SCOREBOARDS.IN_GAME.IN-MATCH-TEAM", null, DataType.STRING_LIST,
+    IN_GAME_FFA("SCOREBOARDS.IN_GAME.IN-FFA", null, DataType.STRING_LIST,
             "&7&m--------------------",
             "&bAlive: &f<alive>",
             "&bYour Ping: &f<ping>ms",
