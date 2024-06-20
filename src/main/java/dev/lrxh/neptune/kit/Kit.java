@@ -2,15 +2,15 @@ package dev.lrxh.neptune.kit;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.data.KitData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 @Getter
 @Setter
@@ -60,6 +60,10 @@ public class Kit {
         if (plugin.getLeaderboardManager() != null) {
             plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
         }
+
+        if(plugin.getProfileManager() != null) {
+            addToProfiles();
+        }
     }
 
     public Kit(String name, List<ItemStack> items, ItemStack icon) {
@@ -84,6 +88,16 @@ public class Kit {
 
         if (plugin.getLeaderboardManager() != null) {
             plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
+        }
+
+        if(plugin.getProfileManager() != null) {
+            addToProfiles();
+        }
+    }
+
+    private void addToProfiles(){
+        for(Map.Entry<UUID, Profile> profile : plugin.getProfileManager().profiles.entrySet()){
+            profile.getValue().getGameData().getKitData().put(this, new KitData());
         }
     }
 

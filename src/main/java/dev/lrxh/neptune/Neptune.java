@@ -68,7 +68,7 @@ public final class Neptune extends JavaPlugin {
     private VersionHandler versionHandler;
 
     public static Neptune get() {
-        return instance == null ? new Neptune() : instance;
+        return instance;
     }
 
     @Override

@@ -23,12 +23,13 @@ public class TaskScheduler {
     }
 
     public void stopAllTasks() {
-        for (NeptuneRunnable NeptuneRunnable : tasks) {
-            NeptuneRunnable.stop();
+        for (NeptuneRunnable task : tasks) {
+            task.stop();
         }
     }
 
-    public void stopTask(NeptuneRunnable task) {
-        task.stop();
+    public void removeTask(NeptuneRunnable task) {
+        task.cancel();
+        tasks.remove(task);
     }
 }

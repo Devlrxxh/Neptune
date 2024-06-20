@@ -49,13 +49,21 @@ public class LeaderboardManager {
     }
 
     public List<PlayerEntry> getLeaderboard(Kit kit, LeaderboardType leaderboardType) {
-        for (LeaderboardEntry leaderboardEntry : leaderboards.get(kit)) {
+        List<LeaderboardEntry> leaderboardEntries = leaderboards.get(kit);
+        for (LeaderboardEntry leaderboardEntry : leaderboardEntries) {
             if (leaderboardEntry.getType().equals(leaderboardType)) {
                 return leaderboardEntry.getPlayerEntries();
             }
         }
-        return null;
+
+        List<PlayerEntry> newLeaderboard = new ArrayList<>();
+        LeaderboardEntry newEntry = new LeaderboardEntry(leaderboardType, newLeaderboard);
+        leaderboardEntries.add(newEntry);
+        leaderboards.put(kit, leaderboardEntries);
+
+        return newLeaderboard;
     }
+
 
     private void load() {
         for (LeaderboardType leaderboardType : LeaderboardType.values()) {
