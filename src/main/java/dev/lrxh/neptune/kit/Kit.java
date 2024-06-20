@@ -71,7 +71,7 @@ public class Kit {
         this.displayName = name;
         this.items = items;
         this.arenas = new HashSet<>();
-        this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : icon;
+        this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : new ItemStack(icon);
         this.build = false;
         this.arenaBreak = false;
         this.hunger = false;
