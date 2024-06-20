@@ -1,10 +1,13 @@
-package dev.lrxh.neptune.match.impl;
+package dev.lrxh.neptune.match.impl.team;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.participant.DeathCause;
+import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;

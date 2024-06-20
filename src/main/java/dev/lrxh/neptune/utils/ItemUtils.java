@@ -26,27 +26,18 @@ import java.util.zip.GZIPOutputStream;
 @UtilityClass
 public class ItemUtils {
 
-    public ItemStack[] fixInventoryOrder(ItemStack[] source) {
-        ItemStack[] fixed = new ItemStack[36];
-
-        System.arraycopy(source, 0, fixed, 27, 9);
-        System.arraycopy(source, 9, fixed, 0, 27);
-
-        return fixed;
-    }
-
     public static ItemStack[] getContents(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if(player == null) return new ItemStack[0];
 
         PlayerInventory inventory = player.getInventory();
-        ItemStack[] mainInventoryContents = new ItemStack[36];  // 36 is the size of the main inventory (excluding armor and off-hand)
+        ItemStack[] mainInventoryContents = new ItemStack[36];
 
         for (int i = 0; i < 36; i++) {
             mainInventoryContents[i] = inventory.getItem(i);
         }
 
-        return fixInventoryOrder(mainInventoryContents);
+        return mainInventoryContents;
     }
 
     public List<ItemStack> color(List<ItemStack> itemStackList, Color color) {

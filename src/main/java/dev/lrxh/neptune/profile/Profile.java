@@ -8,7 +8,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.Participant;
+import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
@@ -108,7 +108,10 @@ public class Profile {
         Player sender = Bukkit.getPlayer(duelRequest.getSender());
         if (sender == null) return;
 
-        gameData.addRequest(duelRequest, senderUUID);
+        Player player = Bukkit.getPlayer(playerUUID);
+        if(player == null) return;
+
+        gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.DUEL_EXPIRED.send(sender.getUniqueId(), new Replacement("<player>", player.getName())));
 
         TextComponent accept =
                 Neptune.get().getVersionHandler().getChatComponent().create

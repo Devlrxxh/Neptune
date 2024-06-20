@@ -1,7 +1,8 @@
-package dev.lrxh.neptune.match.impl;
+package dev.lrxh.neptune.match.impl.team;
 
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.match.impl.participant.Participant;
 import lombok.Data;
 
 import java.util.ArrayList;

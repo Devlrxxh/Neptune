@@ -2,6 +2,7 @@ package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
@@ -11,14 +12,13 @@ import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 
 @Getter
 @Setter
 @SuperBuilder
 public class StandAloneArena extends Arena {
-    private transient LinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots;
+    private transient ConcurrentLinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots;
     private Location min;
     private Location max;
     private double deathY;
@@ -36,7 +36,7 @@ public class StandAloneArena extends Arena {
         this.deathY = deathY;
         this.used = false;
         this.duplicate = duplicate;
-        this.chunkSnapshots = new LinkedHashMap<>();
+        this.chunkSnapshots = new ConcurrentLinkedHashMap<>();
 
         takeSnapshot();
     }

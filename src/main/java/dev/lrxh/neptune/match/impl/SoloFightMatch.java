@@ -6,6 +6,8 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.impl.participant.DeathCause;
+import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.profile.Profile;

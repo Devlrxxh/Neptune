@@ -9,7 +9,7 @@ import dev.lrxh.neptune.arena.impl.EdgeType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.menu.ArenaManagmentMenu;
-import dev.lrxh.neptune.match.impl.ParticipantColor;
+import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 

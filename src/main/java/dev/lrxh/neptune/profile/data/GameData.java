@@ -11,11 +11,13 @@ import dev.lrxh.neptune.providers.request.Request;
 import dev.lrxh.neptune.utils.TtlHashMap;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Getter
 @Setter
@@ -64,8 +66,9 @@ public class GameData {
         }
     }
 
-    public void addRequest(Request duelRequest, UUID name) {
+    public void addRequest(Request duelRequest, UUID name, Consumer<Player> action) {
         requests.put(name, duelRequest);
+        requests.setExpireAction(name, name, action);
     }
 
     public void removeRequest(UUID playerUUID) {
