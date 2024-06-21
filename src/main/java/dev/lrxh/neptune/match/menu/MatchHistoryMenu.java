@@ -5,8 +5,8 @@ import dev.lrxh.neptune.match.menu.button.MatchHistoryButton;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Menu;
 import dev.lrxh.neptune.utils.menu.Filter;
+import dev.lrxh.neptune.utils.menu.Menu;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

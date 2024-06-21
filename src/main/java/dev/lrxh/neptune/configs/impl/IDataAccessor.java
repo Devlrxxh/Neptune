@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.configs.impl;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 
 import java.util.Collections;

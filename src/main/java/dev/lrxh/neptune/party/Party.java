@@ -5,13 +5,11 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.party.impl.PartyRequest;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -42,9 +40,9 @@ public class Party {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
 
-        TextComponent accept = Component.text(MessagesLocale.DUEL_ACCEPT.getString().replace("<leader>", Bukkit.getPlayer(leader).getName()))
-                .clickEvent(ClickEvent.runCommand("/party accept " + leader))
-                .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.PARTY_ACCEPT_HOVER.getString())));
+        TextComponent accept =
+                new ClickableComponent(MessagesLocale.DUEL_ACCEPT.getString().replace("<leader>", Bukkit.getPlayer(leader).getName()),
+                        "/party accept " + leader, MessagesLocale.PARTY_ACCEPT_HOVER.getString()).build();
 
         MessagesLocale.PARTY_INVITATION.send(playerUUID,
                 new Replacement("<accept>", accept),

@@ -2,8 +2,6 @@ package dev.lrxh.neptune.utils.menu;
 
 import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.utils.ItemBuilder;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.PaginatedMenu;
 import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

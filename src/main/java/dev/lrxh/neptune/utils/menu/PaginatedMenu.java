@@ -12,7 +12,7 @@ public abstract class PaginatedMenu extends Menu {
     private int page = 1;
 
     @Override
-    public boolean isUpdateOnClick(){
+    public boolean isUpdateOnClick() {
         return true;
     }
 

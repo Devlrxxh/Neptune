@@ -12,9 +12,9 @@ import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
+import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemUtils;
-import dev.lrxh.utils.chatComponent.ChatComponent;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
@@ -114,14 +114,10 @@ public class Profile {
         gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.DUEL_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));
 
         TextComponent accept =
-                Neptune.get().getVersionHandler().getChatComponent().create
-                        (new ChatComponent(MessagesLocale.DUEL_ACCEPT.getString(),
-                                MessagesLocale.DUEL_ACCEPT_HOVER.getString(), "/duel accept " + duelRequest.getSender().toString()));
+                new ClickableComponent(MessagesLocale.DUEL_ACCEPT.getString(), "/duel accept " + duelRequest.getSender().toString(), MessagesLocale.DUEL_ACCEPT_HOVER.getString()).build();
 
         TextComponent deny =
-                Neptune.get().getVersionHandler().getChatComponent().create(
-                        new ChatComponent(MessagesLocale.DUEL_DENY.getString(),
-                                MessagesLocale.DUEL_DENY_HOVER.getString(), "/duel deny " + duelRequest.getSender().toString()));
+                new ClickableComponent(MessagesLocale.DUEL_DENY.getString(), "/duel deny " + duelRequest.getSender().toString(), MessagesLocale.DUEL_DENY_HOVER.getString()).build();
 
         MessagesLocale.DUEL_REQUEST_RECEIVER.send(playerUUID,
                 new Replacement("<accept>", accept),

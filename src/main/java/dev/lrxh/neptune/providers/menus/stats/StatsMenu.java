@@ -4,8 +4,8 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Menu;
 import dev.lrxh.neptune.utils.menu.Filter;
+import dev.lrxh.neptune.utils.menu.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

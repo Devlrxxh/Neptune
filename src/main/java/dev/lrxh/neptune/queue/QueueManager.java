@@ -3,7 +3,6 @@ package dev.lrxh.neptune.queue;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
-import dev.lrxh.neptune.queue.menu.QueueMenu;
 
 import java.util.Map;
 import java.util.UUID;

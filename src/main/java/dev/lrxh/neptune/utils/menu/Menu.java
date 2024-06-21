@@ -11,7 +11,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
+import java.util.WeakHashMap;
 
 public abstract class Menu {
     public static Neptune plugin = Neptune.get();
@@ -21,7 +23,7 @@ public abstract class Menu {
         plugin.getMenuManager().openedMenus.remove(playerUUID);
     }
 
-    public String getUUID(){
+    public String getUUID() {
         return buttons.keySet().toString();
     }
 
@@ -125,7 +127,7 @@ public abstract class Menu {
 
     public void update() {
         for (Map.Entry<UUID, Menu> entry : plugin.getMenuManager().openedMenus.entrySet()) {
-            if(entry.getValue().getUUID().equals(getUUID())){
+            if (entry.getValue().getUUID().equals(getUUID())) {
                 UUID uuid = entry.getKey();
                 openMenu(uuid);
             }

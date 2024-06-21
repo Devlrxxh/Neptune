@@ -12,6 +12,7 @@ import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.data.MatchHistory;
+import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.DateUtils;
@@ -19,10 +20,7 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.text.event.ClickEvent;
-import net.kyori.adventure.text.event.HoverEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -103,9 +101,8 @@ public class SoloFightMatch extends Match {
 
         for (Participant participant : participants) {
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
-                TextComponent playMessage = Component.text(CC.color(MessagesLocale.MATCH_PLAY_AGAIN.getString()))
-                        .clickEvent(ClickEvent.runCommand("/queue " + kit.getName()))
-                        .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));
+                TextComponent playMessage = new ClickableComponent(MessagesLocale.MATCH_PLAY_AGAIN.getString()
+                        , "/queue " + kit.getName(), MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString()).build();
 
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
             }
