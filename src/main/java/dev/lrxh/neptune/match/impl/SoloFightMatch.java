@@ -103,7 +103,7 @@ public class SoloFightMatch extends Match {
 
         for (Participant participant : participants) {
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
-                TextComponent playMessage = Component.text(MessagesLocale.MATCH_PLAY_AGAIN.getString())
+                TextComponent playMessage = Component.text(CC.color(MessagesLocale.MATCH_PLAY_AGAIN.getString()))
                         .clickEvent(ClickEvent.runCommand("/queue " + kit.getName()))
                         .hoverEvent(HoverEvent.showText(Component.text(MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString())));
 
