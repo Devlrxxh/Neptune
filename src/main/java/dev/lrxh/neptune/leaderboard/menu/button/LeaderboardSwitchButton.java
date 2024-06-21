@@ -29,7 +29,7 @@ public class LeaderboardSwitchButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
-        new LeaderboardMenu(leaderboardType).openMenu(player);
+    public void onClick(Player player, ClickType clickType) {
+        new LeaderboardMenu(leaderboardType).openMenu(player.getUniqueId());
     }
 }

@@ -32,7 +32,7 @@ public class PartyTeamKitButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         List<Participant> participants = new ArrayList<>();
         for (UUID uuid : party.getUsers()) {
             participants.add(new Participant(uuid));

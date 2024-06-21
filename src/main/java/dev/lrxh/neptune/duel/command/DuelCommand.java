@@ -51,7 +51,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        new KitSelectMenu(target.getUniqueId(), false).openMenu(player);
+        new KitSelectMenu(target.getUniqueId(), false).openMenu(player.getUniqueId());
     }
 
     @Subcommand("accept")

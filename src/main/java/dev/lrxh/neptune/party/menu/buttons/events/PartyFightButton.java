@@ -36,7 +36,7 @@ public class PartyFightButton extends Button {
         }
     }
 
-    public void clicked(Player player, ClickType clickType) {
-        new PartyEventsKitMenu(party, eventType).openMenu(player);
+    public void onClick(Player player, ClickType clickType) {
+        new PartyEventsKitMenu(party, eventType).openMenu(player.getUniqueId());
     }
 }

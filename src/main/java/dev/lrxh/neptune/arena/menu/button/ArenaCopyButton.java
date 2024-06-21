@@ -30,7 +30,7 @@ public class ArenaCopyButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         if (clickType.equals(ClickType.RIGHT)) {
             player.teleport(arena.getRedSpawn());
         } else if (clickType.equals(ClickType.SHIFT_LEFT)) {

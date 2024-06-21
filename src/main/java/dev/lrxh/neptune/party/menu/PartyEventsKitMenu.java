@@ -7,7 +7,7 @@ import dev.lrxh.neptune.party.impl.EventType;
 import dev.lrxh.neptune.party.menu.buttons.events.PartyTeamKitButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
-import dev.lrxh.neptune.utils.menu.filters.Filters;
+import dev.lrxh.neptune.utils.menu.Filter;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 
@@ -30,8 +30,8 @@ public class PartyEventsKitMenu extends Menu {
     }
 
     @Override
-    public Filters getFilter() {
-        return Filters.valueOf(MenusLocale.PARTY_EVENTS_FILTER.getString());
+    public Filter getFilter() {
+        return Filter.valueOf(MenusLocale.PARTY_EVENTS_FILTER.getString());
     }
 
     @Override

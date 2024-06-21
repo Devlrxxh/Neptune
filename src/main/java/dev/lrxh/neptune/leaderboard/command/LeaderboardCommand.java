@@ -14,21 +14,21 @@ import org.bukkit.entity.Player;
 public class LeaderboardCommand extends BaseCommand {
     @Default
     public void open(Player player) {
-        new LeaderboardMenu(LeaderboardType.WINS).openMenu(player);
+        new LeaderboardMenu(LeaderboardType.WINS).openMenu(player.getUniqueId());
     }
 
     @Subcommand("wins")
     public void wins(Player player) {
-        new LeaderboardMenu(LeaderboardType.WINS).openMenu(player);
+        new LeaderboardMenu(LeaderboardType.WINS).openMenu(player.getUniqueId());
     }
 
     @Subcommand("winStreak")
     public void winStreak(Player player) {
-        new LeaderboardMenu(LeaderboardType.BEST_WIN_STREAK).openMenu(player);
+        new LeaderboardMenu(LeaderboardType.BEST_WIN_STREAK).openMenu(player.getUniqueId());
     }
 
     @Subcommand("losses")
     public void losses(Player player) {
-        new LeaderboardMenu(LeaderboardType.DEATHS).openMenu(player);
+        new LeaderboardMenu(LeaderboardType.DEATHS).openMenu(player.getUniqueId());
     }
 }

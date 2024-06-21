@@ -26,8 +26,8 @@ public class KitSelectButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
 
-        new RoundsSelectMenu(kit, receiver, test).openMenu(player);
+        new RoundsSelectMenu(kit, receiver, test).openMenu(player.getUniqueId());
     }
 }

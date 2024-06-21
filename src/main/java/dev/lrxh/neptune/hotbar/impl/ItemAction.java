@@ -24,7 +24,7 @@ public enum ItemAction {
     UNRANKED() {
         @Override
         public void execute(Player player) {
-            new QueueMenu().openMenu(player);
+            new QueueMenu().openMenu(player.getUniqueId());
         }
     },
     QUEUE_LEAVE() {
@@ -38,13 +38,13 @@ public enum ItemAction {
     KIT_EDITOR() {
         @Override
         public void execute(Player player) {
-            new KitEditorMenu().openMenu(player);
+            new KitEditorMenu().openMenu(player.getUniqueId());
         }
     },
     STATS() {
         @Override
         public void execute(Player player) {
-            new StatsMenu(player.getName()).openMenu(player);
+            new StatsMenu(player.getName()).openMenu(player.getUniqueId());
         }
     },
     SPECTATE_MENU {
@@ -55,13 +55,13 @@ public enum ItemAction {
                 return;
             }
 
-            new MatchListMenu().openMenu(player);
+            new MatchListMenu().openMenu(player.getUniqueId());
         }
     },
     LEADERBOARDS() {
         @Override
         public void execute(Player player) {
-            new LeaderboardMenu(LeaderboardType.WINS).openMenu(player);
+            new LeaderboardMenu(LeaderboardType.WINS).openMenu(player.getUniqueId());
         }
     },
     PARTY_CREATE() {
@@ -104,7 +104,7 @@ public enum ItemAction {
                 MessagesLocale.PARTY_NOT_ENOUGH_MEMBERS.send(player.getUniqueId());
                 return;
             }
-            new PartyEventsMenu(Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty()).openMenu(player);
+            new PartyEventsMenu(Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty()).openMenu(player.getUniqueId());
         }
     },
     PARTY_SETTINGS() {
@@ -115,7 +115,7 @@ public enum ItemAction {
                 MessagesLocale.PARTY_NO_PERMISSION.send(player.getUniqueId());
                 return;
             }
-            new PartySettingsMenu(party).openMenu(player);
+            new PartySettingsMenu(party).openMenu(player.getUniqueId());
         }
     };
 

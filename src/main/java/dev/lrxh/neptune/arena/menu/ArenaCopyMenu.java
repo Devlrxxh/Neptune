@@ -26,7 +26,7 @@ public class ArenaCopyMenu extends Menu {
     }
 
     @Override
-    public boolean updateOnClick() {
+    public boolean isUpdateOnClick() {
         return true;
     }
 

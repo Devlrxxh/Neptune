@@ -27,11 +27,11 @@ public class KitManagementButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         rule.execute(kit, !rule.enabled(kit));
         plugin.getKitManager().kits.add(kit);
         plugin.getKitManager().saveKits();
-        new KitManagementMenu(kit).openMenu(player);
+        new KitManagementMenu(kit).openMenu(player.getUniqueId());
 
         player.sendMessage(CC.color("&7" + rule.getName() + " has been set to " + (rule.enabled(kit) ? "&aenabled" : "&cdisabled")));
     }

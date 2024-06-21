@@ -54,15 +54,15 @@ public class ArenaManagmentButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         switch (clickType) {
             case SHIFT_RIGHT:
                 arena.setEnabled(!arena.isEnabled());
-                menu.openMenu(player);
+                menu.openMenu(player.getUniqueId());
                 break;
             case LEFT:
                 if (arena instanceof StandAloneArena) {
-                    new ArenaCopyMenu((StandAloneArena) arena).openMenu(player);
+                    new ArenaCopyMenu((StandAloneArena) arena).openMenu(player.getUniqueId());
                 }
                 break;
             case SHIFT_LEFT:

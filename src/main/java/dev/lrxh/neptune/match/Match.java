@@ -6,7 +6,6 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
-import dev.lrxh.neptune.match.impl.MatchSnapshot;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.participant.Participant;
@@ -250,19 +249,6 @@ public abstract class Match {
 
     public void setupParticipants() {
         forEachPlayer(player -> setupPlayer(player.getUniqueId()));
-    }
-
-    public void takeSnapshots() {
-        for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
-            MatchSnapshot snapshot = new MatchSnapshot(player, player.getName());
-            snapshot.setLongestCombo(participant.getLongestCombo());
-            snapshot.setTotalHits(participant.getHits());
-            snapshot.setOpponent(participant.getOpponent().getNameUnColored());
-
-            plugin.getProfileManager().getByUUID(participant.getPlayerUUID()).getGameData().setMatchSnapshot(snapshot);
-        }
     }
 
     public void sendDeathMessage(Participant deadParticipant) {

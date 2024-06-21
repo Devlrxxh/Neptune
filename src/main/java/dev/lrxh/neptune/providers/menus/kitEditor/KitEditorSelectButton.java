@@ -28,7 +28,7 @@ public class KitEditorSelectButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
 
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
 

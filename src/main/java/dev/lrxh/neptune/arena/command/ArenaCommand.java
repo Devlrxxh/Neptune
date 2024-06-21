@@ -153,7 +153,7 @@ public class ArenaCommand extends BaseCommand {
             return;
         }
 
-        new ArenaManagmentMenu().openMenu(player);
+        new ArenaManagmentMenu().openMenu(player.getUniqueId());
     }
 
     @Subcommand("setDeathY")

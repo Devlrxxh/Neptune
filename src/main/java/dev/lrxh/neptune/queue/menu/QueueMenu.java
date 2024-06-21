@@ -5,7 +5,7 @@ import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
-import dev.lrxh.neptune.utils.menu.filters.Filters;
+import dev.lrxh.neptune.utils.menu.Filter;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 
@@ -21,7 +21,7 @@ public class QueueMenu extends Menu {
     }
 
     @Override
-    public boolean updateOnClick() {
+    public boolean isUpdateOnClick() {
         return true;
     }
 
@@ -31,8 +31,8 @@ public class QueueMenu extends Menu {
     }
 
     @Override
-    public Filters getFilter() {
-        return Filters.valueOf(MenusLocale.QUEUE_SELECT_FILTER.getString());
+    public Filter getFilter() {
+        return Filter.valueOf(MenusLocale.QUEUE_SELECT_FILTER.getString());
     }
 
     @Override

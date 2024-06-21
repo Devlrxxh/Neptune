@@ -8,21 +8,12 @@ import org.bukkit.inventory.ItemStack;
 public abstract class Button {
     public Neptune plugin = Neptune.get();
 
+    public void onClick(Player player, ClickType clickType) {
+    }
 
     public abstract ItemStack getButtonItem(Player player);
 
-    public void clicked(Player player, ClickType clickType) {
-    }
-
-    public void clicked(Player player, int slot, ClickType clickType, int hotbarSlot) {
-    }
-
-    public boolean shouldCancel(Player player, ClickType clickType) {
-        return true;
-    }
-
-    public boolean shouldUpdate(Player player, ClickType clickType) {
+    public boolean isDisplay() {
         return false;
     }
-
 }

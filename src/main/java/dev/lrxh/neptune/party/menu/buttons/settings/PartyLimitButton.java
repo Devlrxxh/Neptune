@@ -28,7 +28,7 @@ public class PartyLimitButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         if (clickType.equals(ClickType.LEFT)) {
             party.setMaxUsers(party.getMaxUsers() + 1);
         } else if (clickType.equals(ClickType.RIGHT)) {

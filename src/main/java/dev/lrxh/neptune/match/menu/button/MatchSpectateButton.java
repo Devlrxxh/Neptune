@@ -30,7 +30,7 @@ public class MatchSpectateButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         player.chat("/spec " + match.getParticipantA().getNameUnColored());
     }
 }

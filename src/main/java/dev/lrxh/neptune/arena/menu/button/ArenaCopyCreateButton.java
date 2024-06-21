@@ -28,7 +28,7 @@ public class ArenaCopyCreateButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         player.sendMessage(CC.color("&aGenerating copy..."));
         GenerationUtils.generateCopies(arena);
         player.sendMessage(CC.color("&aGenerated arena copy!"));

@@ -13,7 +13,7 @@ public class StatsCommand extends BaseCommand {
 
     @Default
     public void open(Player player) {
-        new StatsMenu(player.getName()).openMenu(player);
+        new StatsMenu(player.getName()).openMenu(player.getUniqueId());
 
     }
 
@@ -25,6 +25,6 @@ public class StatsCommand extends BaseCommand {
             player.sendMessage(CC.error("Player isn't online!"));
             return;
         }
-        new StatsMenu(otherPlayer).openMenu(player);
+        new StatsMenu(otherPlayer).openMenu(player.getUniqueId());
     }
 }

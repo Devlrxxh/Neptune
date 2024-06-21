@@ -5,7 +5,6 @@ import com.google.gson.GsonBuilder;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.MatchSnapshot;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.providers.request.Request;
 import dev.lrxh.neptune.utils.TtlHashMap;
@@ -24,7 +23,6 @@ import java.util.function.Consumer;
 public class GameData {
     private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.REQUEST_EXPIRY_TIME.getInt());
     private Match match;
-    private MatchSnapshot matchSnapshot;
     private HashMap<Kit, KitData> kitData;
     private ArrayList<MatchHistory> matchHistories;
     private Gson gson;
@@ -33,7 +31,6 @@ public class GameData {
 
     public GameData() {
         this.match = null;
-        this.matchSnapshot = null;
         this.kitEditor = null;
         this.kitData = new HashMap<>();
         this.matchHistories = new ArrayList<>();

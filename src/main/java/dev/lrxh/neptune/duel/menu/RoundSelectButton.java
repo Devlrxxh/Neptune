@@ -34,7 +34,7 @@ public class RoundSelectButton extends Button {
     }
 
     @Override
-    public void clicked(Player player, ClickType clickType) {
+    public void onClick(Player player, ClickType clickType) {
         Profile profile = plugin.getProfileManager().getByUUID(receiver);
         if (profile == null) return;
         Player receiverPlayer = Bukkit.getPlayer(receiver);

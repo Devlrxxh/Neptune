@@ -12,6 +12,6 @@ import org.bukkit.entity.Player;
 public class MatchHistoryCommand extends BaseCommand {
     @Default
     public void open(Player player) {
-        new MatchHistoryMenu().openMenu(player);
+        new MatchHistoryMenu().openMenu(player.getUniqueId());
     }
 }

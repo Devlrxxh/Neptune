@@ -4,7 +4,7 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.Rules;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
-import dev.lrxh.neptune.utils.menu.filters.Filters;
+import dev.lrxh.neptune.utils.menu.Filter;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 
@@ -16,8 +16,8 @@ public class KitManagementMenu extends Menu {
     private Kit kit;
 
     @Override
-    public Filters getFilter() {
-        return Filters.FILL;
+    public Filter getFilter() {
+        return Filter.FILL;
     }
 
     @Override

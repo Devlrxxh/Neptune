@@ -31,7 +31,8 @@ import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.assemble.Assemble;
-import dev.lrxh.neptune.utils.menu.MenuListener;
+import dev.lrxh.neptune.utils.menu.MenuManager;
+import dev.lrxh.neptune.utils.menu.listener.MenuListener;
 import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -66,6 +67,7 @@ public final class Neptune extends JavaPlugin {
     private MongoManager mongoManager;
     private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
+    private MenuManager menuManager;
 
     public static Neptune get() {
         return instance;
@@ -95,7 +97,7 @@ public final class Neptune extends JavaPlugin {
         this.mongoManager = new MongoManager();
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
-
+        this.menuManager = new MenuManager();
 
         registerListeners();
         loadCommandManager();
@@ -153,7 +155,6 @@ public final class Neptune extends JavaPlugin {
                 new ArenaCommand(),
                 new QueueCommand(),
                 new MainCommand(),
-                new ViewInventoryCommand(),
                 new StatsCommand(),
                 new DuelCommand(),
                 new SpectateCommand(),

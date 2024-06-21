@@ -13,7 +13,7 @@ import java.util.Map;
 public class ArenaManagmentMenu extends PaginatedMenu {
 
     @Override
-    public String getPrePaginatedTitle(Player player) {
+    public String getPaginatedTitle(Player player) {
         return "&7Arena Management";
     }
 
@@ -23,17 +23,12 @@ public class ArenaManagmentMenu extends PaginatedMenu {
     }
 
     @Override
-    public boolean updateOnClick() {
+    public boolean isUpdateOnClick() {
         return true;
     }
-//
-//    @Override
-//    public Filters getFilter() {
-//        return Filters.FILL;
-//    }
 
     @Override
-    public Map<Integer, Button> getAllPagesButtons(Player player) {
+    public Map<Integer, Button> getAllButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = 0;
         for (Arena arena : Neptune.get().getArenaManager().arenas) {

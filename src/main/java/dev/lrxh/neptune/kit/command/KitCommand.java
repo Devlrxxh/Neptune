@@ -52,7 +52,7 @@ public class KitCommand extends BaseCommand {
         }
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
-        new KitManagementMenu(kit).openMenu(player);
+        new KitManagementMenu(kit).openMenu(player.getUniqueId());
     }
 
     @Subcommand("create")
