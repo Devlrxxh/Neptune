@@ -5,7 +5,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
-import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -14,12 +13,10 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-@Getter
 public abstract class Menu {
     private static final List<UUID> viewers = new ArrayList<>();
     public static Neptune plugin = Neptune.get();
     public WeakHashMap<Integer, Button> buttons = new WeakHashMap<>();
-    private Inventory inventory;
 
     public static void remove(UUID playerUUID) {
         plugin.getMenuManager().openedMenus.remove(playerUUID);
@@ -38,7 +35,7 @@ public abstract class Menu {
         buttons.putAll(getButtons(player));
 
         switch (getFilter()) {
-            case BRODER:
+            case BORDER:
                 addBorder(inventory);
                 break;
             case FILL:
@@ -51,7 +48,6 @@ public abstract class Menu {
         for (Map.Entry<Integer, Button> button : buttons.entrySet()) {
             inventory.setItem(button.getKey(), button.getValue().getButtonItem(player));
         }
-        this.inventory = inventory;
 
         player.openInventory(inventory);
         player.updateInventory();
@@ -130,7 +126,6 @@ public abstract class Menu {
     public void update() {
         for (UUID uuid : viewers) {
             openMenu(uuid);
-            changeMenu(uuid);
         }
     }
 
@@ -149,7 +144,7 @@ public abstract class Menu {
     }
 
     public Filter getFilter() {
-        return Filter.BRODER;
+        return Filter.NONE;
     }
 
     public boolean isUpdateOnClick() {
