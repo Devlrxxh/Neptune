@@ -51,7 +51,7 @@ public class Party {
                 new Replacement("<leader>", Bukkit.getPlayer(leader).getName()));
 
         Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
-        profile.getGameData().addRequest(new PartyRequest(leader, this), leader);
+        profile.getGameData().addRequest(new PartyRequest(leader, this), leader, ignore -> MessagesLocale.PARTY_EXPIRED.send(leader, new Replacement("<player>", player.getName())));
     }
 
     public void accept(UUID playerUUID) {

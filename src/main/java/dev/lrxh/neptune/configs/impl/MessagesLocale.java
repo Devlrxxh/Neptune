@@ -88,6 +88,7 @@ public enum MessagesLocale implements IDataAccessor {
     DUEL_DENY("DUEL.DENY", null, DataType.STRING, "&c&l(DENY)"),
     DUEL_DENY_HOVER("DUEL.DENY_HOVER", null, DataType.STRING, "&cClick to deny duel request"),
     DUEL_ALREADY_SENT("DUEL.ALREADY_SENT", null, DataType.STRING, "&cYou have already sent <player> a duel request."),
+    DUEL_EXPIRED("DUEL.EXPIRED", null, DataType.STRING_LIST, "&cYour duel request to <player> has expired."),
     SPECTATE_START("MATCH.SPECTATE.START", null, DataType.STRING_LIST, "&b<player> &fstarted spectating match."),
     SPECTATE_STOP("MATCH.SPECTATE.STOP", null, DataType.STRING_LIST, "&b<player> &fstopped spectating match."),
     ERROR_MESSAGE("ERROR_MESSAGE", null, DataType.STRING, "&c<error>"),
@@ -126,7 +127,8 @@ public enum MessagesLocale implements IDataAccessor {
             "&b/party leave",
             "&b/party kick <player>",
             "&b/party join <player>",
-            " ");
+            " "),
+    PARTY_EXPIRED("PARTY.EXPIRED", null, DataType.STRING_LIST, "&cYour party request to &c<player> &chas expired.");
 
     private final String path;
     private final String comment;

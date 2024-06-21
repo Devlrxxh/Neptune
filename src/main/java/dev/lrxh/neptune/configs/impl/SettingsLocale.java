@@ -15,7 +15,7 @@ public enum SettingsLocale implements IDataAccessor {
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "20"),
     MONGO_URI("MONGO.URI", "MongoDB URI.", DataType.STRING, "NONE"),
     MONGO_DATABASE("MONGO.DATABASE", "MongoDB Database.", DataType.STRING, "neptune"),
-    DUEL_EXPIRY_TIME("DUEL.EXPIRY_TIME", "How long a duel request should last in seconds.", DataType.INT, "30"),
+    REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30"),
     ARENA_COPY_DISTANCE("ARENA_COPY_DISTANCE", "Distance between each standalone arena copy", DataType.INT, "300");
 
     private final String path;

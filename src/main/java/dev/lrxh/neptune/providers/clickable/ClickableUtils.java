@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.providers.clickable;
 
+import dev.lrxh.neptune.utils.ColorUtil;
 import lombok.experimental.UtilityClass;
 
 import java.util.ArrayList;
@@ -44,6 +45,6 @@ public class ClickableUtils {
             objects.addAll(tempObjects);
         }
 
-        return objects;
+        return ColorUtil.addColors(objects);
     }
 }

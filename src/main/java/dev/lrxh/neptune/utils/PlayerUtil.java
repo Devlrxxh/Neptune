@@ -84,7 +84,7 @@ public class PlayerUtil {
     }
 
     public void sendMessage(UUID playerUUID, List<Object> content) {
-        utils.sendMessage(playerUUID, ColorUtil.addColors(content));
+        utils.sendMessage(playerUUID, content);
     }
 
     public void sendMessage(UUID playerUUID, Object content) {

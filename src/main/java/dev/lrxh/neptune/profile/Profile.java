@@ -111,7 +111,7 @@ public class Profile {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
 
-        gameData.addRequest(duelRequest, senderUUID);
+        gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.DUEL_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));
 
         TextComponent accept =
                 Neptune.get().getVersionHandler().getChatComponent().create
