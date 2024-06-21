@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 @Getter
 @Setter
 public class GameData {
-    private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.DUEL_EXPIRY_TIME.getInt());
+    private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.REQUEST_EXPIRY_TIME.getInt());
     private Match match;
     private MatchSnapshot matchSnapshot;
     private HashMap<Kit, KitData> kitData;

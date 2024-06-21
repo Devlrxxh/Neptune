@@ -12,7 +12,7 @@ public interface IDataAccessor {
     Neptune plugin = Neptune.get();
 
     default String getString() {
-        return CC.color(getConfigFile().getConfiguration().getString(getPath()));
+        return getConfigFile().getConfiguration().getString(getPath());
     }
 
     default List<String> getStringList() {
