@@ -56,10 +56,10 @@ public class PlayerUtil {
         Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         GameData gameData = profile.getGameData();
         if (gameData.getKitData() == null || gameData.getKitData().get(kit) == null ||
-                gameData.getKitData().get(kit).getKit().isEmpty()) {
+                gameData.getKitData().get(kit).getKitLoadout().isEmpty()) {
             player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
         } else {
-            player.getInventory().setContents(gameData.getKitData().get(kit).getKit().toArray(new ItemStack[0]));
+            player.getInventory().setContents(gameData.getKitData().get(kit).getKitLoadout().toArray(new ItemStack[0]));
         }
 
         player.updateInventory();

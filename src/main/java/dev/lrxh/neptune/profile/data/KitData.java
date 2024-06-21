@@ -16,7 +16,7 @@ public class KitData {
     private int losses = 0;
     private int bestStreak = 0;
     private int currentStreak = 0;
-    private List<ItemStack> kit = new ArrayList<>();
+    private List<ItemStack> kitLoadout = new ArrayList<>();
 
     public double getKdr() {
         double kd = wins;

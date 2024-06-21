@@ -161,7 +161,8 @@ public final class Neptune extends JavaPlugin {
                 new LeaveCommand(),
                 new MatchHistoryCommand(),
                 new PartyCommand(),
-                new LeaderboardCommand()
+                new LeaderboardCommand(),
+                new KitEditorCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

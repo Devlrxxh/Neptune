@@ -62,7 +62,7 @@ public class ProfileListener implements Listener {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
         if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
-            profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKit
+            profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKitLoadout
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());

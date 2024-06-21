@@ -6,6 +6,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -31,7 +32,7 @@ public class KitEditorSelectButton extends Button {
 
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
 
-        MessagesLocale.KIT_EDITOR_START.send(player.getUniqueId());
+        MessagesLocale.KIT_EDITOR_START.send(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName()));
         player.closeInventory();
 
         profile.getGameData().setKitEditor(kit);

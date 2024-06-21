@@ -74,7 +74,7 @@ public class Profile {
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
-            profileKitData.setKit(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
+            profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
         }
     }
 
@@ -94,7 +94,7 @@ public class Profile {
             kitStatisticsDocument.put("WINS", entry.getWins());
             kitStatisticsDocument.put("LOSSES", entry.getLosses());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
-            kitStatisticsDocument.put("kit", entry.getKit() == null || entry.getKit().isEmpty() ? "" : ItemUtils.serialize(entry.getKit()));
+            kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
         }
