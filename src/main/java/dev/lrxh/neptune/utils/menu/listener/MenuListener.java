@@ -40,11 +40,12 @@ public class MenuListener implements Listener {
             return;
         }
 
+        button.onClick(player, event.getClick());
+
         if (menu.isUpdateOnClick()) {
             menu.update();
         }
 
-        button.onClick(player, event.getClick());
         event.setCancelled(true);
     }
 }

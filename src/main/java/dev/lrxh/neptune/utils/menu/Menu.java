@@ -14,13 +14,15 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 public abstract class Menu {
-    private static final List<UUID> viewers = new ArrayList<>();
     public static Neptune plugin = Neptune.get();
     public WeakHashMap<Integer, Button> buttons = new WeakHashMap<>();
 
     public static void remove(UUID playerUUID) {
         plugin.getMenuManager().openedMenus.remove(playerUUID);
-        viewers.remove(playerUUID);
+    }
+
+    public String getUUID(){
+        return buttons.keySet().toString();
     }
 
     public void openMenu(UUID playerUUID) {
@@ -55,10 +57,8 @@ public abstract class Menu {
     }
 
     public void changeMenu(UUID playerUUID) {
-        viewers.remove(playerUUID);
         plugin.getMenuManager().openedMenus.remove(playerUUID);
         plugin.getMenuManager().openedMenus.put(playerUUID, this);
-        viewers.add(playerUUID);
     }
 
     private void addBorder(Inventory inventory) {
@@ -124,8 +124,11 @@ public abstract class Menu {
     }
 
     public void update() {
-        for (UUID uuid : viewers) {
-            openMenu(uuid);
+        for (Map.Entry<UUID, Menu> entry : plugin.getMenuManager().openedMenus.entrySet()) {
+            if(entry.getValue().getUUID().equals(getUUID())){
+                UUID uuid = entry.getKey();
+                openMenu(uuid);
+            }
         }
     }
 
