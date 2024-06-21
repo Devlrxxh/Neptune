@@ -5,7 +5,10 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.impl.*;
+import dev.lrxh.neptune.match.impl.FfaFightMatch;
+import dev.lrxh.neptune.match.impl.MatchSnapshot;
+import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
@@ -194,7 +197,7 @@ public abstract class Match {
 
     public void checkRules() {
         forEachParticipant(participant -> {
-            if(!(this instanceof FfaFightMatch)){
+            if (!(this instanceof FfaFightMatch)) {
                 if (kit.isDenyMovement()) {
                     if (matchState.equals(MatchState.STARTING)) {
                         PlayerUtil.denyMovement(participant.getPlayerUUID());

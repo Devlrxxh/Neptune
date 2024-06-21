@@ -2,7 +2,8 @@ package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.*;
+import dev.lrxh.neptune.match.impl.FfaFightMatch;
+import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;

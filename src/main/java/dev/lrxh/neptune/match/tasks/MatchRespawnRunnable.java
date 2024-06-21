@@ -28,7 +28,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
             stop();
-            
+
             return;
         }
         if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;

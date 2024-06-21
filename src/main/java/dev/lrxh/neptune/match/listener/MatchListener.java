@@ -3,8 +3,8 @@ package dev.lrxh.neptune.match.listener;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
@@ -23,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.projectiles.ProjectileSource;
@@ -59,16 +60,47 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        if (!(event.getEntityType() == EntityType.ENDER_PEARL)) return;
+    public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
+        Player player = event.getPlayer();
+        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile == null) return;
+        Match match = profile.getMatch();
+        Location blockLocation = event.getBlock().getLocation();
+        if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+            event.setCancelled(true);
+            player.sendMessage(CC.color("&cYou can't place blocks here!"));
+            return;
+        }
+        if (match != null && match.getKit().isBuild()) {
+            if (match.getMatchState().equals(MatchState.STARTING)) {
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou can't place blocks yet!"));
+                return;
+            }
+            if (blockLocation.getY() >= ((StandAloneArena) match.arena).getLimit()) {
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou have reached build limit!"));
+                return;
+            }
+            match.getPlacedBlocks().add(blockLocation);
+        } else {
+            event.setCancelled(true);
+        }
+    }
 
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
         ProjectileSource shooter = event.getEntity().getShooter();
         if (!(shooter instanceof Player)) return;
 
         Player player = (Player) shooter;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         Match match = profile.getMatch();
-        if (match == null) return;
+        if (match == null) {
+            event.setCancelled(true);
+            return;
+        }
         if (match.getMatchState().equals(MatchState.STARTING)) {
             event.setCancelled(true);
         }

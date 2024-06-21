@@ -5,7 +5,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 public abstract class NeptuneRunnable extends BukkitRunnable {
 
-    public void stop(){
+    public void stop() {
         Neptune.get().getTaskScheduler().removeTask(this);
     }
 }

@@ -4,7 +4,8 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.impl.*;
+import dev.lrxh.neptune.match.impl.FfaFightMatch;
+import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
@@ -87,7 +88,7 @@ public class MatchManager {
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
-        for(Participant participant : participants){
+        for (Participant participant : participants) {
             participant.setColor(ParticipantColor.RED);
         }
 

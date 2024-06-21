@@ -71,6 +71,10 @@ public class GameData {
         requests.setExpireAction(name, name, action);
     }
 
+    public void addRequest(Request duelRequest, UUID name) {
+        requests.put(name, duelRequest);
+    }
+
     public void removeRequest(UUID playerUUID) {
         this.requests.remove(playerUUID);
     }

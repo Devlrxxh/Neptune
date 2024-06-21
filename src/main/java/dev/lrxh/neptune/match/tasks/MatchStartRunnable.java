@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.tasks;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
@@ -26,7 +25,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.startMatch();
             stop();
-            
+
             return;
         }
         if (match.getMatchState().equals(MatchState.STARTING)) {

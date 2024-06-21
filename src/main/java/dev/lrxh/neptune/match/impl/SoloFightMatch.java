@@ -127,7 +127,6 @@ public class SoloFightMatch extends Match {
 
         if (rounds > 1 && !participant.isDisconnected()) {
             Participant participantKiller = participantA.getName().equals(participant.getName()) ? participantB : participantA;
-
             participantKiller.addWin();
             if (participantKiller.getRoundsWon() < rounds) {
                 participantKiller.setCombo(0);

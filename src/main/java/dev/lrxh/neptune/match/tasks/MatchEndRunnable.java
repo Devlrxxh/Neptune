@@ -10,7 +10,6 @@ import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 
-
 import java.util.HashSet;
 import java.util.UUID;
 
@@ -28,7 +27,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
             stop();
-            
+
             return;
         }
         if (endTimer == 0) {

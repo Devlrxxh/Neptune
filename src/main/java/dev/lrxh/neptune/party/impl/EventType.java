@@ -5,8 +5,8 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.match.impl.participant.Participant;
+import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.utils.CC;
 import lombok.Getter;
 

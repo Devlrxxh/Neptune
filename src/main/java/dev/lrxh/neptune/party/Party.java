@@ -40,7 +40,7 @@ public class Party {
 
     public void invite(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if(player == null) return;
+        if (player == null) return;
 
         TextComponent accept = Component.text(MessagesLocale.DUEL_ACCEPT.getString().replace("<leader>", Bukkit.getPlayer(leader).getName()))
                 .clickEvent(ClickEvent.runCommand("/party accept " + leader))
@@ -51,8 +51,7 @@ public class Party {
                 new Replacement("<leader>", Bukkit.getPlayer(leader).getName()));
 
         Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
-        profile.getGameData().addRequest(new PartyRequest(leader, this), leader,
-                sender -> MessagesLocale.PARTY_EXPIRED.send(sender.getUniqueId(), new Replacement("<player>", player.getName())));
+        profile.getGameData().addRequest(new PartyRequest(leader, this), leader);
     }
 
     public void accept(UUID playerUUID) {

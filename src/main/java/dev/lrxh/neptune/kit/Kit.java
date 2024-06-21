@@ -61,7 +61,7 @@ public class Kit {
             plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
         }
 
-        if(plugin.getProfileManager() != null) {
+        if (plugin.getProfileManager() != null) {
             addToProfiles();
         }
     }
@@ -90,13 +90,13 @@ public class Kit {
             plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
         }
 
-        if(plugin.getProfileManager() != null) {
+        if (plugin.getProfileManager() != null) {
             addToProfiles();
         }
     }
 
-    private void addToProfiles(){
-        for(Map.Entry<UUID, Profile> profile : plugin.getProfileManager().profiles.entrySet()){
+    private void addToProfiles() {
+        for (Map.Entry<UUID, Profile> profile : plugin.getProfileManager().profiles.entrySet()) {
             profile.getValue().getGameData().getKitData().put(this, new KitData());
         }
     }

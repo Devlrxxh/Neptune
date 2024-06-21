@@ -28,7 +28,7 @@ public class ItemUtils {
 
     public static ItemStack[] getContents(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if(player == null) return new ItemStack[0];
+        if (player == null) return new ItemStack[0];
 
         PlayerInventory inventory = player.getInventory();
         ItemStack[] mainInventoryContents = new ItemStack[36];

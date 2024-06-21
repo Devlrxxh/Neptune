@@ -66,7 +66,7 @@ public class Participant {
 
     public void handleHit(Participant opponent) {
         Participant lastAttacker = opponent.getLastAttacker();
-        if(lastAttacker != null && !lastAttacker.equals(this)) {
+        if (lastAttacker != null && !lastAttacker.equals(this)) {
             resetCombo();
         }
 

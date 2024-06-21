@@ -65,7 +65,7 @@ public class MenuListener implements Listener {
                         @Override
                         public void run() {
                             player.updateInventory();
-                            
+
                         }
                     }, 1L);
                 }

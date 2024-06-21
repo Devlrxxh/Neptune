@@ -117,7 +117,7 @@ public class ArenaManager implements IManager {
     public Arena getRandomArena(Kit kit) {
         List<Arena> kitArenas = new ArrayList<>();
         for (Arena arena : kit.getArenas()) {
-            if(arena == null){
+            if (arena == null) {
                 arenas.remove(arena);
                 continue;
             }

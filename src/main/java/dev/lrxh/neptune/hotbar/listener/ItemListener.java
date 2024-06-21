@@ -39,7 +39,7 @@ public class ItemListener implements Listener {
                 @Override
                 public void run() {
                     profile.cooldown = false;
-                    
+
                 }
             }, 10);
         }

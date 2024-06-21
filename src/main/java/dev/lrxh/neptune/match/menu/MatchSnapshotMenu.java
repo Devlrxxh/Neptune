@@ -4,7 +4,6 @@ import dev.lrxh.neptune.match.impl.MatchSnapshot;
 import dev.lrxh.neptune.match.menu.button.HealthButton;
 import dev.lrxh.neptune.match.menu.button.StatisticsButton;
 import dev.lrxh.neptune.match.menu.button.SwitchInventoryButton;
-import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.DisplayButton;
 import dev.lrxh.neptune.utils.menu.Menu;
