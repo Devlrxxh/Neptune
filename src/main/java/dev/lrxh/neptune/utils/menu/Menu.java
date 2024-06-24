@@ -12,12 +12,12 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.UUID;
-import java.util.WeakHashMap;
 
 public abstract class Menu {
     public static Neptune plugin = Neptune.get();
-    public WeakHashMap<Integer, Button> buttons = new WeakHashMap<>();
+    public Map<Integer, Button> buttons = new TreeMap<>();
 
     public static void remove(UUID playerUUID) {
         plugin.getMenuManager().openedMenus.remove(playerUUID);
@@ -31,12 +31,28 @@ public abstract class Menu {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
 
-        //Create the inventory
+        // Create the inventory
         Inventory inventory = Bukkit.createInventory(player, getSize(), Component.text(CC.color(getTitle(player))));
         inventory.setContents(new ItemStack[inventory.getSize()]);
 
-        //Put all the buttons into a list
+        // Put all the buttons into a list
         buttons.putAll(getButtons(player));
+
+        if (getFilter() != Filter.NONE) {
+            TreeMap<Integer, Button> modifiedButtons = new TreeMap<>();
+            for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
+                int slot = buttonEntry.getKey();
+                if ((slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton && buttonEntry.getValue().isDisplay())) {
+                    while (buttons.get(slot) != null) {
+                        System.out.println("Slot");
+                        slot += 2;
+                    }
+                }
+
+                modifiedButtons.put(slot, buttonEntry.getValue());
+            }
+            this.buttons = modifiedButtons;
+        }
 
         switch (getFilter()) {
             case BORDER:
@@ -44,19 +60,20 @@ public abstract class Menu {
                 break;
             case FILL:
                 addFilling(inventory);
+                break;
             case NONE:
                 break;
         }
 
-        //Create the buttons in the menu
-        for (Map.Entry<Integer, Button> button : buttons.entrySet()) {
-            inventory.setItem(button.getKey(), button.getValue().getButtonItem(player));
+        for(Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
+            inventory.setItem(buttonEntry.getKey(), buttonEntry.getValue().getButtonItem(player));
         }
 
         player.openInventory(inventory);
         player.updateInventory();
         changeMenu(playerUUID);
     }
+
 
     public void changeMenu(UUID playerUUID) {
         plugin.getMenuManager().openedMenus.remove(playerUUID);
@@ -67,8 +84,6 @@ public abstract class Menu {
         int size = inventory.getSize();
 
         if (size < 9) return;
-
-        ItemStack fillerItem = getFilterItem();
 
         for (int i = 1; i <= 7 && size >= 18; i++) {
             Button button = new Button() {
@@ -84,30 +99,12 @@ public abstract class Menu {
             };
 
             buttons.put(i, button);
-
-
-            if (inventory.getItem(i) == null) {
-                inventory.setItem(i, fillerItem);
-                inventory.setItem(size - i - 1, fillerItem);
-            }
         }
-
-        for (int i = 1; i <= 2 && size >= 18; i++) {
-            if (inventory.getItem(i) == null) {
-                inventory.setItem(i * 9, fillerItem);
-                inventory.setItem(i * 9 + 8, fillerItem);
-            }
-        }
-        inventory.setItem(0, fillerItem);
-        inventory.setItem(8, fillerItem);
-        inventory.setItem(size - 9, fillerItem);
-        inventory.setItem(size - 1, fillerItem);
     }
 
     private void addFilling(Inventory inventory) {
-        int size = inventory.getSize();
-        for (int pos = 0; pos < size; pos++) {
-            if (buttons.get(pos) == null) {
+        for (int i = 0; i < inventory.getSize(); i++) {
+            if (buttons.get(i) == null) {
                 Button button = new Button() {
                     @Override
                     public boolean isDisplay() {
@@ -120,7 +117,7 @@ public abstract class Menu {
                     }
                 };
 
-                buttons.put(pos, button);
+                buttons.put(i, button);
             }
         }
     }

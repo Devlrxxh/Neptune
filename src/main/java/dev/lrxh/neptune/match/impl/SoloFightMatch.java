@@ -101,8 +101,9 @@ public class SoloFightMatch extends Match {
 
         for (Participant participant : participants) {
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
-                TextComponent playMessage = new ClickableComponent(MessagesLocale.MATCH_PLAY_AGAIN.getString()
-                        , "/queue " + kit.getName(), MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString()).build();
+                TextComponent playMessage = new ClickableComponent(MessagesLocale.MATCH_PLAY_AGAIN.getString(),
+                        "/queue " + kit.getName(),
+                        MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString()).build();
 
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
             }

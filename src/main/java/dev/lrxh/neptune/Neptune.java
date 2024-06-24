@@ -4,6 +4,7 @@ import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
 import dev.lrxh.VersionHandler;
+import dev.lrxh.gameRule.GameRule;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
@@ -95,6 +96,9 @@ public final class Neptune extends JavaPlugin {
         this.hotbarManager = new HotbarManager();
         this.assemble = new Assemble(new ScoreboardAdapter());
         this.mongoManager = new MongoManager();
+        if (!isEnabled()) {
+            return;
+        }
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
@@ -130,9 +134,9 @@ public final class Neptune extends JavaPlugin {
 
     private void loadWorlds() {
         for (World world : getServer().getWorlds()) {
-            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_WEATHER_CYCLE, false);
-            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_DAYLIGHT_CYCLE, false);
-            versionHandler.getGameRule().setGameRule(world, dev.lrxh.gameRule.GameRule.DO_IMMEDIATE_RESPAWN, true);
+            versionHandler.getGameRule().setGameRule(world, GameRule.DO_WEATHER_CYCLE, false);
+            versionHandler.getGameRule().setGameRule(world, GameRule.DO_DAYLIGHT_CYCLE, false);
+            versionHandler.getGameRule().setGameRule(world, GameRule.DO_IMMEDIATE_RESPAWN, true);
             world.setDifficulty(Difficulty.HARD);
         }
     }
