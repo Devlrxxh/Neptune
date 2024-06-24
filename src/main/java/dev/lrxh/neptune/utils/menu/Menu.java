@@ -63,12 +63,18 @@ public abstract class Menu {
         }
 
         for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
-            inventory.setItem(buttonEntry.getKey(), buttonEntry.getValue().getButtonItem(player));
+            set(inventory, buttonEntry.getKey(), buttonEntry.getValue().getButtonItem(player));
         }
 
         player.openInventory(inventory);
         player.updateInventory();
         changeMenu(playerUUID);
+    }
+
+    private void set(Inventory inventory, int slot, ItemStack itemStack){
+        if(slot < inventory.getSize()){
+            inventory.setItem(slot, itemStack);
+        }
     }
 
 
