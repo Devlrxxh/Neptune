@@ -3,12 +3,9 @@ package dev.lrxh.neptune.utils;
 import com.cryptomorin.xseries.XMaterial;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.util.io.BukkitObjectInputStream;
 import org.bukkit.util.io.BukkitObjectOutputStream;
@@ -19,26 +16,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
-import java.util.UUID;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 @UtilityClass
 public class ItemUtils {
-
-    public static ItemStack[] getContents(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return new ItemStack[0];
-
-        PlayerInventory inventory = player.getInventory();
-        ItemStack[] mainInventoryContents = new ItemStack[36];
-
-        for (int i = 0; i < 36; i++) {
-            mainInventoryContents[i] = inventory.getItem(i);
-        }
-
-        return mainInventoryContents;
-    }
 
     public List<ItemStack> color(List<ItemStack> itemStackList, Color color) {
         List<ItemStack> items = new ArrayList<>();

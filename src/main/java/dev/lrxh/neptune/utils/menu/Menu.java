@@ -31,11 +31,9 @@ public abstract class Menu {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
 
-        // Create the inventory
         Inventory inventory = Bukkit.createInventory(player, getSize(), Component.text(CC.color(getTitle(player))));
         inventory.setContents(new ItemStack[inventory.getSize()]);
 
-        // Put all the buttons into a list
         buttons.putAll(getButtons(player));
 
         if (getFilter() != Filter.NONE) {
@@ -44,7 +42,6 @@ public abstract class Menu {
                 int slot = buttonEntry.getKey();
                 if ((slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton && buttonEntry.getValue().isDisplay())) {
                     while (buttons.get(slot) != null) {
-                        System.out.println("Slot");
                         slot += 2;
                     }
                 }
@@ -65,7 +62,7 @@ public abstract class Menu {
                 break;
         }
 
-        for(Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
+        for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
             inventory.setItem(buttonEntry.getKey(), buttonEntry.getValue().getButtonItem(player));
         }
 

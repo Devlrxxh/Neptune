@@ -47,7 +47,7 @@ public class HotbarManager {
                 Item item = getItemForSlot(inventory, slot);
 
                 if (item != null) {
-                    player.getInventory().setItem(item.getSlot(), item.constructItem());
+                    player.getInventory().setItem(item.getSlot(), item.constructItem(playerUUID));
                 }
             }
         }

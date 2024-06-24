@@ -1,7 +1,10 @@
 package dev.lrxh.neptune.utils;
 
 import com.cryptomorin.xseries.XMaterial;
+import dev.lrxh.neptune.providers.material.NMaterial;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -9,6 +12,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class ItemBuilder {
     private final ItemStack item;
@@ -23,6 +27,24 @@ public class ItemBuilder {
 
     public ItemBuilder(String material) {
         if (material != null) {
+            item = new ItemStack(Objects.requireNonNull(XMaterial.matchXMaterial(material).get().parseMaterial()));
+        } else {
+            item = new ItemStack(Material.BARRIER);
+        }
+    }
+
+    public ItemBuilder(String material, UUID playerUUID) {
+        NMaterial nMaterial = null;
+        try {
+            nMaterial = NMaterial.valueOf(material);
+        } catch (IllegalArgumentException ignored) {
+        }
+
+        Player player = Bukkit.getPlayer(playerUUID);
+
+        if (nMaterial != null && player != null) {
+            item = nMaterial.getItem(player);
+        } else if (material != null) {
             item = new ItemStack(Objects.requireNonNull(XMaterial.matchXMaterial(material).get().parseMaterial()));
         } else {
             item = new ItemStack(Material.BARRIER);
