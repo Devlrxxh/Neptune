@@ -46,7 +46,7 @@ public class HotbarManager {
             for (int slot = 0; slot <= 8; slot++) {
                 Item item = getItemForSlot(inventory, slot);
 
-                if (item != null) {
+                if (item != null && item.isEnabled()) {
                     player.getInventory().setItem(item.getSlot(), item.constructItem(playerUUID));
                 }
             }
@@ -68,9 +68,10 @@ public class HotbarManager {
 
                     String displayName = config.getString(path + "NAME");
                     String material = config.getString(path + "MATERIAL");
+                    boolean enabled = config.getBoolean(path + "ENABLED");
                     byte slot = (byte) config.getInt(path + "SLOT");
 
-                    Item item = new Item(itemName, displayName, material, slot);
+                    Item item = new Item(itemName, displayName, material, enabled, slot);
 
                     if (slot >= 0 && slot < inventory.getSlots().length) {
                         inventory.setSlot(slot, item);

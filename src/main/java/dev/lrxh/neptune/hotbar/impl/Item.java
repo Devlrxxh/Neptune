@@ -20,6 +20,7 @@ public class Item {
     private String name;
     private String displayName;
     private String material;
+    private boolean enabled;
     private byte slot;
 
     public static Item getByItemStack(ItemStack itemStack, UUID playerUUID) {

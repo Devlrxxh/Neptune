@@ -13,5 +13,4 @@ public enum NMaterial {
     };
 
     public abstract ItemStack getItem(Player player);
-
 }
