@@ -14,7 +14,6 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.List;
 import java.util.UUID;
 
 @UtilityClass
@@ -83,11 +82,7 @@ public class PlayerUtil {
         return utils.getPlayerHead(playerUUID);
     }
 
-    public void sendMessage(UUID playerUUID, List<Object> content) {
-        utils.sendMessage(playerUUID, content);
-    }
-
-    public void sendMessage(UUID playerUUID, Object content) {
+    public void sendMessage(UUID playerUUID, Object... content) {
         utils.sendMessage(playerUUID, content);
     }
 
