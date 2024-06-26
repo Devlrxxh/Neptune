@@ -25,7 +25,7 @@ public class ScoreboardAdapter implements AssembleAdapter {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return new ArrayList<>();
         ProfileState state = profile.getState();
-        if (state.equals(ProfileState.LOBBY) || state.equals(ProfileState.IN_KIT_EDITOR)) {
+        if (state.equals(ProfileState.IN_LOBBY) || state.equals(ProfileState.IN_KIT_EDITOR)) {
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.LOBBY.getStringList()), player);
         }
         if (state.equals(ProfileState.IN_PARTY)) {

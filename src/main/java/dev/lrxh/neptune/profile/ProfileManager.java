@@ -10,7 +10,7 @@ public class ProfileManager {
     private final Neptune plugin = Neptune.get();
 
     public Profile createProfile(UUID playerUUID) {
-        Profile profile = new Profile(playerUUID, ProfileState.LOBBY);
+        Profile profile = new Profile(playerUUID);
         profiles.put(playerUUID, profile);
         return profile;
     }

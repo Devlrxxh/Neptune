@@ -37,7 +37,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 if (profile.getMatch() == null) continue;
                 PlayerUtil.reset(participant.getPlayerUUID());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
-                profile.setState(profile.getGameData().getParty() == null ? ProfileState.LOBBY : ProfileState.IN_PARTY);
+                profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
                 profile.setMatch(null);
             }
 

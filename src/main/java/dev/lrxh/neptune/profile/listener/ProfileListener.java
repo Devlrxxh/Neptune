@@ -7,6 +7,7 @@ import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.profile.VisibilityLogic;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.entity.Player;
@@ -28,7 +29,7 @@ public class ProfileListener implements Listener {
 
         event.setJoinMessage(null);
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
-            ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE.getString().replace("<player>", player.getName()));
+            ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE, new Replacement("<player>", player.getName()));
         }
         VisibilityLogic.handle(player.getUniqueId());
         PlayerUtil.reset(player.getUniqueId());
@@ -50,7 +51,7 @@ public class ProfileListener implements Listener {
 
         event.setQuitMessage(null);
         if (!MessagesLocale.LEAVE_MESSAGE.getString().equals("NONE")) {
-            ServerUtils.broadcast(MessagesLocale.LEAVE_MESSAGE.getString().replace("<player>", player.getName()));
+            ServerUtils.broadcast(MessagesLocale.LEAVE_MESSAGE, new Replacement("<player>", player.getName()));
         }
 
         plugin.getProfileManager().removeProfile(player.getUniqueId());
@@ -66,7 +67,7 @@ public class ProfileListener implements Listener {
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());
-            profile.setState(ProfileState.LOBBY);
+            profile.setState(ProfileState.IN_LOBBY);
         }
     }
 }

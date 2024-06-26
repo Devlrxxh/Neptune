@@ -73,15 +73,10 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/libs/fawe.jar</systemPath>
         </dependency>
-        <dependency>
-            <groupId>dev.lrxh</groupId>
-            <artifactId>Build</artifactId>
-            <version>1.0</version>
-        </dependency>
 
         <dependency>
             <groupId>dev.lrxh</groupId>
-            <artifactId>Shared</artifactId>
+            <artifactId>Build</artifactId>
             <version>1.0</version>
         </dependency>
 

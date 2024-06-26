@@ -168,7 +168,7 @@ public abstract class Match {
         if (profile.getMatch() == null) return;
         PlayerUtil.reset(playerUUID);
         PlayerUtil.teleportToSpawn(playerUUID);
-        profile.setState(ProfileState.LOBBY);
+        profile.setState(ProfileState.IN_LOBBY);
         profile.setMatch(null);
 
         spectators.remove(playerUUID);

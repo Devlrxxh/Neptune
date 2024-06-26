@@ -77,7 +77,7 @@ public class Party {
         Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
         users.remove(playerUUID);
         profile.getGameData().setParty(null);
-        profile.setState(ProfileState.LOBBY);
+        profile.setState(ProfileState.IN_LOBBY);
     }
 
     public void disband() {
@@ -85,7 +85,7 @@ public class Party {
         for (UUID user : users) {
             Profile profile = Neptune.get().getProfileManager().getByUUID(user);
             profile.getGameData().setParty(null);
-            profile.setState(ProfileState.LOBBY);
+            profile.setState(ProfileState.IN_LOBBY);
         }
     }
 

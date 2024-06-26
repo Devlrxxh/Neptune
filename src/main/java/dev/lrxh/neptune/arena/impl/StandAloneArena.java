@@ -7,18 +7,19 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.bukkit.Chunk;
-import org.bukkit.ChunkSnapshot;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+
+
 @Getter
 @Setter
 @SuperBuilder
 public class StandAloneArena extends Arena {
-    private transient ConcurrentLinkedHashMap<Chunk, ChunkSnapshot> chunkSnapshots;
+    private transient ConcurrentLinkedHashMap<Chunk, Object[]> chunkSnapshots;
     private Location min;
     private Location max;
     private double deathY;

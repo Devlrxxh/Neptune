@@ -274,7 +274,7 @@ public class MatchListener implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return;
-        if (profile.getState().equals(ProfileState.LOBBY)) {
+        if (profile.getState().equals(ProfileState.IN_LOBBY)) {
             event.setCancelled(true);
             return;
         }

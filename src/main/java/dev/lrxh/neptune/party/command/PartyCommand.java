@@ -125,7 +125,7 @@ public class PartyCommand extends BaseCommand {
     @Syntax("<uuid>")
     public void accept(Player player, String otherString) {
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
-        if (!profile.getState().equals(ProfileState.LOBBY)) return;
+        if (!profile.getState().equals(ProfileState.IN_LOBBY)) return;
         try {
             if (profile.getGameData().getParty() != null) {
                 MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());

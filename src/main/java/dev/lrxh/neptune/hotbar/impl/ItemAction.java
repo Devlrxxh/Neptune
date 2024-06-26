@@ -30,7 +30,7 @@ public enum ItemAction {
     QUEUE_LEAVE() {
         @Override
         public void execute(Player player) {
-            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).setState(ProfileState.LOBBY);
+            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).setState(ProfileState.IN_LOBBY);
             Neptune.get().getQueueManager().remove(player.getUniqueId());
             MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId());
         }

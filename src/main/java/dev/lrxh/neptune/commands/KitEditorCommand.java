@@ -38,7 +38,7 @@ public class KitEditorCommand extends BaseCommand {
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());
-            profile.setState(ProfileState.LOBBY);
+            profile.setState(ProfileState.IN_LOBBY);
         }
 
         MessagesLocale.KIT_EDITOR_RESET.send(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName()));

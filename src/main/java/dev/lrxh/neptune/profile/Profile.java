@@ -34,10 +34,14 @@ public class Profile {
     private GameData gameData;
     private MongoCollection<Document> collection = Neptune.get().getMongoManager().getCollection();
 
-    public Profile(UUID playerUUID, ProfileState state) {
+    public Profile(UUID playerUUID) {
         this.playerUUID = playerUUID;
-        this.state = state;
-        this.username = Bukkit.getPlayer(playerUUID).getName();
+        this.state = ProfileState.IN_LOBBY;
+
+        Player player = Bukkit.getPlayer(playerUUID);
+        if(player == null) return;
+
+        this.username = player.getName();
         this.gameData = new GameData();
 
         for (Kit kit : Neptune.get().getKitManager().kits) {
