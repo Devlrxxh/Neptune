@@ -2,6 +2,7 @@ package dev.lrxh.neptune.providers.tasks;
 
 import dev.lrxh.neptune.Neptune;
 
+import java.util.Iterator;
 import java.util.Vector;
 
 public class TaskScheduler {
@@ -23,9 +24,13 @@ public class TaskScheduler {
     }
 
     public void stopAllTasks() {
-        for (NeptuneRunnable task : tasks) {
-            task.stop();
-            tasks.remove(task);
+        synchronized (tasks) {
+            Iterator<NeptuneRunnable> iterator = tasks.iterator();
+            while (iterator.hasNext()) {
+                NeptuneRunnable task = iterator.next();
+                task.stop();
+                iterator.remove();
+            }
         }
     }
 
