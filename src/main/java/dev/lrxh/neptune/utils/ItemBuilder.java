@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.utils;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.providers.material.NMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -17,9 +17,9 @@ import java.util.UUID;
 public class ItemBuilder {
     private final ItemStack item;
 
-    public ItemBuilder(XMaterial material) {
+    public ItemBuilder(Material material) {
         if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(material.parseMaterial()));
+            item = new ItemStack(Objects.requireNonNull(material));
         } else {
             item = new ItemStack(Material.BARRIER);
         }
@@ -27,7 +27,7 @@ public class ItemBuilder {
 
     public ItemBuilder(String material) {
         if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(XMaterial.matchXMaterial(material).get().parseMaterial()));
+            item = new ItemStack(Objects.requireNonNull(Material.valueOf(material)));
         } else {
             item = new ItemStack(Material.BARRIER);
         }
@@ -45,7 +45,7 @@ public class ItemBuilder {
         if (nMaterial != null && player != null) {
             item = nMaterial.getItem(player);
         } else if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(XMaterial.matchXMaterial(material).get().parseMaterial()));
+            item = new ItemStack(Objects.requireNonNull(Material.valueOf(material)));
         } else {
             item = new ItemStack(Material.BARRIER);
         }

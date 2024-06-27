@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.utils;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Color;
@@ -36,11 +36,11 @@ public class ItemUtils {
                 LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
                 meta.setColor(color);
                 itemStack.setItemMeta(meta);
-            } else if (itemStack.getType() == XMaterial.WHITE_WOOL.parseMaterial()) {
+            } else if (itemStack.getType() == Material.WHITE_WOOL) {
                 if (color.equals(Color.BLUE)) {
-                    itemStack.setType(XMaterial.BLUE_WOOL.parseMaterial());
+                    itemStack.setType(Material.BLUE_WOOL);
                 } else {
-                    itemStack.setType(XMaterial.RED_WOOL.parseMaterial());
+                    itemStack.setType(Material.RED_WOOL);
                 }
             }
             items.add(itemStack);

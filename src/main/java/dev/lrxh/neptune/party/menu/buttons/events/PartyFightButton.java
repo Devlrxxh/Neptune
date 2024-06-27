@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.party.menu.buttons.events;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.impl.EventType;
@@ -22,13 +22,13 @@ public class PartyFightButton extends Button {
     public ItemStack getButtonItem(Player player) {
 
         if (eventType.equals(EventType.TEAM)) {
-            return new ItemBuilder(XMaterial.valueOf(MenusLocale.PARTY_EVENTS_SPLIT_MATERIAL.getString()))
+            return new ItemBuilder(Material.valueOf(MenusLocale.PARTY_EVENTS_SPLIT_MATERIAL.getString()))
                     .name(MenusLocale.PARTY_EVENTS_SPLIT_TITLE.getString())
                     .lore(MenusLocale.PARTY_EVENTS_SPLIT_LORE.getStringList())
                     .clearFlags()
                     .build();
         } else {
-            return new ItemBuilder(XMaterial.valueOf(MenusLocale.PARTY_EVENTS_FFA_MATERIAL.getString()))
+            return new ItemBuilder(Material.valueOf(MenusLocale.PARTY_EVENTS_FFA_MATERIAL.getString()))
                     .name(MenusLocale.PARTY_EVENTS_FFA_TITLE.getString())
                     .lore(MenusLocale.PARTY_EVENTS_FFA_LORE.getStringList())
                     .clearFlags()

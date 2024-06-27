@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.match.menu.button;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.data.MatchHistory;
@@ -21,7 +21,7 @@ public class MatchHistoryButton extends Button {
     public ItemStack getButtonItem(Player player) {
         Kit kit = plugin.getKitManager().getKitByDisplay(matchHistory.getKitName());
         if (kit == null) {
-            return new ItemBuilder(XMaterial.COMPASS)
+            return new ItemBuilder(Material.COMPASS)
                     .name(MenusLocale.MATCH_HISTORY_ITEM_NAME.getString()
                             .replace("<kit>", matchHistory.getKitName())
                             .replace("<won>", matchHistory.isWon() ? "&aWon" : "&cLost")

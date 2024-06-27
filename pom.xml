@@ -42,12 +42,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.cryptomorin</groupId>
-            <artifactId>XSeries</artifactId>
-            <version>8.8.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>co.aikar</groupId>
             <artifactId>acf-paper</artifactId>
             <version>0.5.1-SNAPSHOT</version>

@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.utils.menu;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.CC;
@@ -144,7 +144,7 @@ public abstract class Menu {
 
     public ItemStack getFilterItem() {
         return new ItemBuilder(
-                XMaterial.matchXMaterial(MenusLocale.FILTER_MATERIAL.getString()).get().parseItem())
+                Material.valueOf(MenusLocale.FILTER_MATERIAL.getString()))
                 .name(MenusLocale.FILTER_NAME.getString()).amount(1).build();
     }
 

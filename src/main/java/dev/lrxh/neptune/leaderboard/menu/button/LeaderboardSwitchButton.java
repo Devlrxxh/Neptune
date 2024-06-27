@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.leaderboard.menu.button;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
@@ -17,7 +17,7 @@ public class LeaderboardSwitchButton extends Button {
     public final LeaderboardType leaderboardType;
     public final String title;
     public final List<String> lore;
-    public final XMaterial material;
+    public final Material material;
 
     @Override
     public ItemStack getButtonItem(Player player) {

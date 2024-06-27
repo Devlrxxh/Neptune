@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.duel.menu;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
@@ -26,7 +26,7 @@ public class RoundSelectButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(XMaterial.MAP)
+        return new ItemBuilder(Material.MAP)
                 .name(MenusLocale.ROUNDS_ITEM_NAME.getString().replace("<rounds>", String.valueOf(round)))
                 .lore(MenusLocale.ROUNDS_LORE.getStringList())
                 .clearFlags()

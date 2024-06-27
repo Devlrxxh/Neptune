@@ -68,12 +68,8 @@ public class GameData {
         requests.setExpireAction(name, name, action);
     }
 
-    public void addRequest(Request duelRequest, UUID name) {
-        requests.put(name, duelRequest);
-    }
-
     public void removeRequest(UUID playerUUID) {
-        this.requests.remove(playerUUID);
+        requests.remove(playerUUID);
     }
 
     public List<String> serializeHistory() {
@@ -103,10 +99,8 @@ public class GameData {
     public void addHistory(MatchHistory matchHistory) {
         if (matchHistories.size() >= 7) {
             matchHistories.remove(0);
-            matchHistories.add(matchHistory);
-        } else {
-            matchHistories.add(matchHistory);
         }
+        matchHistories.add(matchHistory);
     }
 
     private String serialize(MatchHistory matchHistory) {

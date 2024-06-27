@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.leaderboard.menu;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
@@ -47,49 +47,49 @@ public class LeaderboardMenu extends Menu {
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_KILLS_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.WINS,
                         MenusLocale.LEADERBOARD_TYPES_KILLS_ENABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_KILLS_ENABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_KILLS_ENABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_KILLS_ENABLED_MATERIAL.getString())));
 
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.BEST_WIN_STREAK,
                         MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_MATERIAL.getString())));
 
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_DEATHS_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.DEATHS,
                         MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_MATERIAL.getString())));
                 break;
             case BEST_WIN_STREAK:
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_KILLS_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.WINS,
                         MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_MATERIAL.getString())));
 
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.BEST_WIN_STREAK,
                         MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_ENABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_ENABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_ENABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_ENABLED_MATERIAL.getString())));
 
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_DEATHS_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.DEATHS,
                         MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_DEATHS_DISABLED_MATERIAL.getString())));
                 break;
             case DEATHS:
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_KILLS_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.WINS,
                         MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_KILLS_DISABLED_MATERIAL.getString())));
 
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.BEST_WIN_STREAK,
                         MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_WIN_STREAK_DISABLED_MATERIAL.getString())));
 
                 buttons.put(MenusLocale.LEADERBOARD_TYPES_DEATHS_SLOT.getInt(), new LeaderboardSwitchButton(LeaderboardType.DEATHS,
                         MenusLocale.LEADERBOARD_TYPES_DEATHS_ENABLED_TITLE.getString(),
                         MenusLocale.LEADERBOARD_TYPES_DEATHS_ENABLED_LORE.getStringList(),
-                        XMaterial.matchXMaterial(Material.valueOf(MenusLocale.LEADERBOARD_TYPES_DEATHS_ENABLED_MATERIAL.getString()))));
+                        Material.valueOf(MenusLocale.LEADERBOARD_TYPES_DEATHS_ENABLED_MATERIAL.getString())));
                 break;
         }
 

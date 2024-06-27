@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.utils.menu;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
@@ -20,7 +20,7 @@ public class PageButton extends Button {
     public ItemStack getButtonItem(Player player) {
         if (this.mod > 0) {
             if (hasNext(player)) {
-                return new ItemBuilder(XMaterial.LEVER)
+                return new ItemBuilder(Material.LEVER)
                         .name(ChatColor.GREEN + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
@@ -28,7 +28,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(XMaterial.REDSTONE_TORCH)
+                return new ItemBuilder(Material.REDSTONE_TORCH)
                         .name(ChatColor.GRAY + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
@@ -38,7 +38,7 @@ public class PageButton extends Button {
             }
         } else {
             if (hasPrevious()) {
-                return new ItemBuilder(XMaterial.LEVER)
+                return new ItemBuilder(Material.LEVER)
                         .name(ChatColor.GREEN + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
@@ -46,7 +46,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(XMaterial.REDSTONE_TORCH)
+                return new ItemBuilder(Material.REDSTONE_TORCH)
                         .name(ChatColor.GRAY + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",

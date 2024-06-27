@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.arena.menu.button;
 
-import com.cryptomorin.xseries.XMaterial;
+import org.bukkit.Material;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.GenerationUtils;
@@ -20,7 +20,7 @@ public class ArenaCopyButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(XMaterial.PAPER)
+        return new ItemBuilder(Material.PAPER)
                 .name("&7Copy: " + copyCount)
                 .lore(Arrays.asList(
                         " ",
