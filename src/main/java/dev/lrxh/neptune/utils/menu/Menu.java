@@ -71,8 +71,8 @@ public abstract class Menu {
         changeMenu(playerUUID);
     }
 
-    private void set(Inventory inventory, int slot, ItemStack itemStack){
-        if(slot < inventory.getSize()){
+    private void set(Inventory inventory, int slot, ItemStack itemStack) {
+        if (slot < inventory.getSize()) {
             inventory.setItem(slot, itemStack);
         }
     }

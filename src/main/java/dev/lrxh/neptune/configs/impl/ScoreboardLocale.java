@@ -2,8 +2,8 @@ package dev.lrxh.neptune.configs.impl;
 
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
-
 import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

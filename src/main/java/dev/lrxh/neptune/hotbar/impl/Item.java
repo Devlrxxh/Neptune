@@ -36,7 +36,7 @@ public class Item {
 
     private static Item getItemFromInventory(ItemStack itemStack, Hotbar inventory, UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if(player == null) return null;
+        if (player == null) return null;
 
         if (inventory != null) {
             for (int slot = 0; slot <= 8; slot++) {
@@ -51,7 +51,7 @@ public class Item {
 
     public ItemStack constructItem(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if(player == null) return new ItemStack(Material.BARRIER);
+        if (player == null) return new ItemStack(Material.BARRIER);
 
         return new ItemBuilder(material, playerUUID).name(displayName).clearFlags().makeUnbreakable().build();
     }

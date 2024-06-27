@@ -1,13 +1,12 @@
 package dev.lrxh.neptune.utils;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class TtlHashMap<K, V> {
@@ -33,20 +32,22 @@ public class TtlHashMap<K, V> {
     }
 
     public void setExpireAction(K key, UUID playerUUID, Consumer<Player> action) {
-        actions.put(key, new TtlAction(playerUUID, action));
+        actions.put(key, new TtlAction(playerUUID, action, null));
     }
 
-    public void onExpire(K element) {
-        TtlAction action = actions.get(element);
+    public void onExpire(K key) {
+        TtlAction action = actions.get(key);
         Player player = Bukkit.getPlayer(action.getPlayerUUID());
         if (player != null) {
             action.getConsumer().accept(player);
         }
-        actions.remove(element);
+        actions.remove(key);
     }
 
     public void remove(K key) {
         map.remove(key);
+        actions.get(key).getRunnable().stop();
+        actions.remove(key);
     }
 
     public boolean contains(K key) {
@@ -54,12 +55,12 @@ public class TtlHashMap<K, V> {
     }
 
     private void scheduleRemoval(K key) {
-        Neptune.get().getTaskScheduler().startTaskLater(new NeptuneRunnable() {
+        actions.get(key).setRunnable(new NeptuneRunnable() {
             @Override
             public void run() {
                 map.remove(key);
                 onExpire(key);
             }
-        }, leaveTime * 20L);
+        }, leaveTime);
     }
 }

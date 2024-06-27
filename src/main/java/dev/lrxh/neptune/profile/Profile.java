@@ -39,7 +39,7 @@ public class Profile {
         this.state = ProfileState.IN_LOBBY;
 
         Player player = Bukkit.getPlayer(playerUUID);
-        if(player == null) return;
+        if (player == null) return;
 
         this.username = player.getName();
         this.gameData = new GameData();
