@@ -1,12 +1,12 @@
 package dev.lrxh.neptune.utils.menu;
 
-import org.bukkit.Material;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;

@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.party.menu.buttons.events;
 
-import org.bukkit.Material;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.impl.EventType;
@@ -8,6 +7,7 @@ import dev.lrxh.neptune.party.menu.PartyEventsKitMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;

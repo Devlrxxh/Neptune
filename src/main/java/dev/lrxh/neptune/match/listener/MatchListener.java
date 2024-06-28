@@ -188,6 +188,7 @@ public class MatchListener implements Listener {
             if (profile == null) return;
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
+
             if (!profile.getState().equals(ProfileState.IN_GAME) ||
                     (match != null && !match.getKit().isFallDamage() && event.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
                 event.setCancelled(true);
@@ -202,10 +203,9 @@ public class MatchListener implements Listener {
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (profile == null) return;
             Match match = profile.getMatch();
-            if (!profile.getState().equals(ProfileState.IN_GAME)) {
-                event.setCancelled(true);
-            }
-            if (match != null && !match.getKit().isHunger()) {
+
+            if (!profile.getState().equals(ProfileState.IN_GAME) ||
+                    (match != null && !match.getKit().isFallDamage() && !match.getKit().isHunger())) {
                 event.setCancelled(true);
             }
         }

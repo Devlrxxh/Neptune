@@ -46,7 +46,7 @@ public class ScoreboardAdapter implements AssembleAdapter {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
             }
         }
-        return null;
+        return new ArrayList<>();
     }
 
     private String getAnimatedText() {

@@ -46,7 +46,10 @@ public class TtlHashMap<K, V> {
 
     public void remove(K key) {
         map.remove(key);
-        actions.get(key).getRunnable().stop();
+        NeptuneRunnable runnable = actions.get(key).getRunnable();
+        if(runnable != null){
+            runnable.stop();
+        }
         actions.remove(key);
     }
 

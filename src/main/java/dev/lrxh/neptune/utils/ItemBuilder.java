@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.utils;
 
-import org.bukkit.Material;
 import dev.lrxh.neptune.providers.material.NMaterial;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

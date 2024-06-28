@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.leaderboard.menu;
 
-import org.bukkit.Material;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;

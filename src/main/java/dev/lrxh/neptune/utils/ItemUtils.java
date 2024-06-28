@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.utils;
 
-import org.bukkit.Material;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Color;

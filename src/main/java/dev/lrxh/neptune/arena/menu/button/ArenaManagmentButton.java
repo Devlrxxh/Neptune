@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.arena.menu.button;
 
-import org.bukkit.Material;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
@@ -11,6 +10,7 @@ import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import lombok.AllArgsConstructor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;

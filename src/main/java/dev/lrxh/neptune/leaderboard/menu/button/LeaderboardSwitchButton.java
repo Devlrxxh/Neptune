@@ -1,11 +1,11 @@
 package dev.lrxh.neptune.leaderboard.menu.button;
 
-import org.bukkit.Material;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
