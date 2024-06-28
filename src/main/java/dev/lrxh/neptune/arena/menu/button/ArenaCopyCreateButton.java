@@ -2,7 +2,6 @@ package dev.lrxh.neptune.arena.menu.button;
 
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.GenerationUtils;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
@@ -30,7 +29,7 @@ public class ArenaCopyCreateButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
         player.sendMessage(CC.color("&aGenerating copy..."));
-        GenerationUtils.generateCopies(arena);
+        arena.createCopy(player.getUniqueId());
         player.sendMessage(CC.color("&aGenerated arena copy!"));
     }
 }

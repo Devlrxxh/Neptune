@@ -137,6 +137,11 @@ public enum ScoreboardLocale implements IDataAccessor {
     }
 
     @Override
+    public String getHeader() {
+        return "";
+    }
+
+    @Override
     public ConfigFile getConfigFile() {
         return plugin.getConfigManager().getScoreboardConfig();
     }

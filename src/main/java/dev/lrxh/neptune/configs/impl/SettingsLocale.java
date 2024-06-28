@@ -31,7 +31,13 @@ public enum SettingsLocale implements IDataAccessor {
     }
 
     @Override
+    public String getHeader() {
+        return "";
+    }
+
+    @Override
     public ConfigFile getConfigFile() {
         return plugin.getConfigManager().getMainConfig();
     }
+
 }

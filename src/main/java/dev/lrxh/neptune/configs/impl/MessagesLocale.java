@@ -145,12 +145,19 @@ public enum MessagesLocale implements IDataAccessor {
         return plugin.getConfigManager().getMessagesConfig();
     }
 
+    @Override
+    public String getHeader() {
+        return "Replace with NONE to disable";
+    }
+
     public void send(UUID playerUUID, Replacement... replacements) {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
+                if (message.equalsIgnoreCase("NONE")) continue;
                 PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
+            if (getString().equalsIgnoreCase("NONE")) return;
             PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
         }
 

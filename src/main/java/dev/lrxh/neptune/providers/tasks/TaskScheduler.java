@@ -2,11 +2,11 @@ package dev.lrxh.neptune.providers.tasks;
 
 import dev.lrxh.neptune.Neptune;
 
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TaskScheduler {
-    private final Vector<NeptuneRunnable> tasks = new Vector<>();
+    private final List<NeptuneRunnable> tasks = new CopyOnWriteArrayList<>();
 
     public void startTask(NeptuneRunnable task, long delay) {
         tasks.add(task);
@@ -24,13 +24,9 @@ public class TaskScheduler {
     }
 
     public void stopAllTasks() {
-        synchronized (tasks) {
-            Iterator<NeptuneRunnable> iterator = tasks.iterator();
-            while (iterator.hasNext()) {
-                NeptuneRunnable task = iterator.next();
-                task.stop();
-                iterator.remove();
-            }
+        for (NeptuneRunnable task : tasks) {
+            task.stop();
+            tasks.remove(task);
         }
     }
 

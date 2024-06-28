@@ -34,6 +34,7 @@ public abstract class Menu {
         Inventory inventory = Bukkit.createInventory(player, getSize(), Component.text(CC.color(getTitle(player))));
         inventory.setContents(new ItemStack[inventory.getSize()]);
 
+        buttons.clear();
         buttons.putAll(getButtons(player));
 
         if (getFilter() != Filter.NONE) {

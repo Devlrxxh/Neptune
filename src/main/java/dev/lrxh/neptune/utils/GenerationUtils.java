@@ -1,8 +1,10 @@
 package dev.lrxh.neptune.utils;
 
 import com.sk89q.worldedit.EditSession;
+import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.WorldEditException;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitWorld;
 import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
 import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
@@ -12,18 +14,73 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
+import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.HashSet;
+import java.util.UUID;
 
 @UtilityClass
 public class GenerationUtils {
+
+    public synchronized void createRegion(UUID playerUUID, Location min, Location max) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+
+        WorldEdit worldEdit = WorldEdit.getInstance();
+        LocalSession localSession = worldEdit.getSessionManager().get(BukkitAdapter.adapt(player));
+        World world = new BukkitWorld(player.getWorld());
+
+        // Define the region using loc1 and loc2
+        BlockVector3 pt1 = BlockVector3.at(min.getBlockX(), min.getBlockY(), min.getBlockZ());
+        BlockVector3 pt2 = BlockVector3.at(max.getBlockX(), max.getBlockY(), max.getBlockZ());
+        CuboidRegion region = new CuboidRegion(world, pt1, pt2);
+
+        // Copy the region
+        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
+        try (EditSession editSession = worldEdit.newEditSession(world)) {
+            ForwardExtentCopy copy = new ForwardExtentCopy(editSession, region, clipboard, region.getMinimumPoint());
+            copy.setCopyingEntities(true);
+            Operations.complete(copy);
+
+            ClipboardHolder clipboardHolder = new ClipboardHolder(clipboard);
+            localSession.setClipboard(clipboardHolder);
+        } catch (Exception e) {
+            ServerUtils.error("Failed to create a copy of the arena.");
+        }
+    }
+
+    public synchronized void pasteRegion(UUID playerUUID, Location pasteLocation) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+
+        WorldEdit worldEdit = WorldEdit.getInstance();
+        LocalSession localSession = worldEdit.getSessionManager().get(BukkitAdapter.adapt(player));
+        World world = new BukkitWorld(player.getWorld());
+
+        // Paste the region at the given location
+        try (EditSession editSession = worldEdit.newEditSession(world)) {
+            ClipboardHolder clipboardHolder = localSession.getClipboard();
+            Operation operation = clipboardHolder
+                    .createPaste(editSession)
+                    .to(BlockVector3.at(pasteLocation.getBlockX(), pasteLocation.getBlockY(), pasteLocation.getBlockZ()))
+                    .ignoreAirBlocks(false)
+                    .build();
+
+            Operations.complete(operation);
+        } catch (Exception e) {
+            ServerUtils.error("Failed to paste arena.");
+        }
+    }
+
     public synchronized void generateCopies(StandAloneArena arena) {
         int xCurrent = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (arena.getCopies().size() + 1);
 
@@ -68,8 +125,7 @@ public class GenerationUtils {
         }
 
         Neptune.get().getArenaManager().arenas.add(copy);
-        Neptune.get().getArenaManager().saveArenas();
-        Neptune.get().getKitManager().saveKits();
+
 
     }
 

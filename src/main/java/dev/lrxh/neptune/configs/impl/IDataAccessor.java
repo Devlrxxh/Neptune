@@ -26,6 +26,14 @@ public interface IDataAccessor {
         return getConfigFile().getConfiguration().getBoolean(getPath());
     }
 
+    String getHeader();
+
+    default void setHeader() {
+        if (!getHeader().isEmpty()) {
+            getConfigFile().getConfiguration().options().header(getHeader());
+        }
+    }
+
     String getPath();
 
     String getComment();
@@ -66,7 +74,7 @@ public interface IDataAccessor {
     }
 
     default void load() {
-
+        setHeader();
         for (IDataAccessor accessor : this.getClass().getEnumConstants()) {
             if (accessor.getConfigFile().getConfiguration().get(accessor.getPath()) == null) {
                 setValue(accessor.getPath(), accessor.getDefaultValue(), accessor.getDataType());

@@ -68,6 +68,11 @@ public enum HotbarLocale implements IDataAccessor {
     }
 
     @Override
+    public String getHeader() {
+        return "";
+    }
+
+    @Override
     public ConfigFile getConfigFile() {
         return plugin.getConfigManager().getHotbarConfig();
     }

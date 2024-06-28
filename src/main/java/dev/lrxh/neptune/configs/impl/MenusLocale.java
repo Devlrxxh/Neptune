@@ -210,6 +210,10 @@ public enum MenusLocale implements IDataAccessor {
         this.dataType = dataType;
     }
 
+    @Override
+    public String getHeader() {
+        return "";
+    }
 
     @Override
     public ConfigFile getConfigFile() {

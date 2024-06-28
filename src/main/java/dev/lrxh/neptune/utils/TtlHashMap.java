@@ -46,11 +46,13 @@ public class TtlHashMap<K, V> {
 
     public void remove(K key) {
         map.remove(key);
-        NeptuneRunnable runnable = actions.get(key).getRunnable();
-        if(runnable != null){
-            runnable.stop();
+        if (actions.containsKey(key)) {
+            NeptuneRunnable runnable = actions.get(key).getRunnable();
+            if (runnable != null) {
+                runnable.stop();
+            }
+            actions.remove(key);
         }
-        actions.remove(key);
     }
 
     public boolean contains(K key) {
