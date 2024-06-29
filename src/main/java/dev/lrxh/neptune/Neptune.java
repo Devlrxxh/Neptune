@@ -8,7 +8,7 @@ import dev.lrxh.gameRule.GameRule;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
-import dev.lrxh.neptune.arena.listener.LobbyListener;
+import dev.lrxh.neptune.listeners.LobbyListener;
 import dev.lrxh.neptune.commands.*;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;

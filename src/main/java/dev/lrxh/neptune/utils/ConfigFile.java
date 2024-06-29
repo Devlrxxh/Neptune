@@ -15,9 +15,12 @@ public class ConfigFile {
 
     public ConfigFile(String name) {
         this.file = new File(plugin.getDataFolder(), name + ".yml");
-        plugin.saveResource(name + ".yml", false);
-        this.configuration = YamlConfiguration.loadConfiguration(this.file);
 
+        if (!file.exists()) {
+            plugin.saveResource(name + ".yml", false);
+        }
+
+        this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 
     public void save() {

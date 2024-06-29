@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.arena.listener;
+package dev.lrxh.neptune.listeners;
 
 import org.bukkit.Difficulty;
 import org.bukkit.Material;
@@ -37,24 +37,12 @@ public class LobbyListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockIgnite(BlockIgniteEvent event) {
-        if (event.getCause() == BlockIgniteEvent.IgniteCause.LIGHTNING || event.getCause() == BlockIgniteEvent.IgniteCause.FIREBALL || event.getCause() == BlockIgniteEvent.IgniteCause.EXPLOSION) {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
     public void onLeavesDecay(LeavesDecayEvent event) {
         event.setCancelled(true);
     }
 
     @EventHandler
     public void onHangingBreak(HangingBreakEvent event) {
-        event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onBlockBurn(BlockBurnEvent event) {
         event.setCancelled(true);
     }
 
@@ -75,5 +63,4 @@ public class LobbyListener implements Listener {
         if (event.getAction() == Action.PHYSICAL && Objects.requireNonNull(event.getClickedBlock()).getType() == Material.FARMLAND)
             event.setCancelled(true);
     }
-
 }
