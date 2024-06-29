@@ -69,7 +69,7 @@ public enum HotbarLocale implements IDataAccessor {
 
     @Override
     public String getHeader() {
-        return "";
+        return "PLAYER_HEAD supported";
     }
 
     @Override

@@ -3,6 +3,7 @@ package dev.lrxh.neptune.utils;
 import dev.lrxh.neptune.Neptune;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 
 @UtilityClass
@@ -26,7 +27,13 @@ public class LocationUtil {
 
         String[] split = source.split(":");
 
-        return new Location(Neptune.get().getServer().getWorld(String.valueOf(split[0])),
+        World world = Neptune.get().getServer().getWorld(split[0]);
+        if(world == null) {
+            ServerUtils.error("World: " + split[0] + " not found!");
+            return null;
+        }
+
+        return new Location(world,
                 Double.parseDouble(split[1]),
                 Double.parseDouble(split[2]),
                 Double.parseDouble(split[3]),

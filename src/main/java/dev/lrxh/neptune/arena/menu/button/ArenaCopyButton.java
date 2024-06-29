@@ -32,7 +32,13 @@ public class ArenaCopyButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
         if (clickType.equals(ClickType.RIGHT)) {
-            player.teleport(arena.getRedSpawn());
+            if (arena.getRedSpawn() != null) {
+                player.teleport(arena.getRedSpawn());
+            } else if (arena.getBlueSpawn() != null) {
+                player.teleport(arena.getBlueSpawn());
+            } else {
+                player.sendMessage(CC.error("Arena isn't setup completely, can't teleport."));
+            }
         } else if (clickType.equals(ClickType.SHIFT_LEFT)) {
             player.sendMessage(CC.color("&cDeleting copy..."));
             GenerationUtils.removeCopy(arena);

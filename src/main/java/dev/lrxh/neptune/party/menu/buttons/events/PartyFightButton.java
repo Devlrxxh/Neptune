@@ -7,7 +7,6 @@ import dev.lrxh.neptune.party.menu.PartyEventsKitMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -22,13 +21,13 @@ public class PartyFightButton extends Button {
     public ItemStack getButtonItem(Player player) {
 
         if (eventType.equals(EventType.TEAM)) {
-            return new ItemBuilder(Material.valueOf(MenusLocale.PARTY_EVENTS_SPLIT_MATERIAL.getString()))
+            return new ItemBuilder(MenusLocale.PARTY_EVENTS_SPLIT_MATERIAL.getString())
                     .name(MenusLocale.PARTY_EVENTS_SPLIT_TITLE.getString())
                     .lore(MenusLocale.PARTY_EVENTS_SPLIT_LORE.getStringList())
                     .clearFlags()
                     .build();
         } else {
-            return new ItemBuilder(Material.valueOf(MenusLocale.PARTY_EVENTS_FFA_MATERIAL.getString()))
+            return new ItemBuilder(MenusLocale.PARTY_EVENTS_FFA_MATERIAL.getString())
                     .name(MenusLocale.PARTY_EVENTS_FFA_TITLE.getString())
                     .lore(MenusLocale.PARTY_EVENTS_FFA_LORE.getStringList())
                     .clearFlags()

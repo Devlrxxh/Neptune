@@ -13,6 +13,7 @@ import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.queue.Queue;
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
+import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -115,7 +116,7 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<arena>", match.getArena().getDisplayName());
             }
 
-            if (Neptune.get().isPlaceholder()) {
+            if (Neptune.get().isPlaceholder() && PlaceholderAPIPlugin.getInstance() != null) {
                 formattedLines.add(PlaceholderAPI.setPlaceholders(player, line));
             } else {
                 formattedLines.add(line);

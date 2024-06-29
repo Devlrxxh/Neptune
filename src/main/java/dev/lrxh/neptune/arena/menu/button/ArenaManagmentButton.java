@@ -82,7 +82,14 @@ public class ArenaManagmentButton extends Button {
                 player.closeInventory();
                 break;
             case RIGHT:
-                player.teleport(arena.getRedSpawn());
+                if (arena.getRedSpawn() != null) {
+                    player.teleport(arena.getRedSpawn());
+                } else if (arena.getBlueSpawn() != null) {
+                    player.teleport(arena.getBlueSpawn());
+                } else {
+                    player.sendMessage(CC.error("Arena isn't setup completely, can't teleport."));
+                }
+
                 break;
         }
     }

@@ -6,11 +6,11 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -78,7 +78,6 @@ public abstract class Menu {
         }
     }
 
-
     public void changeMenu(UUID playerUUID) {
         plugin.getMenuManager().openedMenus.remove(playerUUID);
         plugin.getMenuManager().openedMenus.put(playerUUID, this);
@@ -127,7 +126,8 @@ public abstract class Menu {
     }
 
     public void update() {
-        for (Map.Entry<UUID, Menu> entry : plugin.getMenuManager().openedMenus.entrySet()) {
+        Map<UUID, Menu> openedMenusCopy = new HashMap<>(plugin.getMenuManager().openedMenus);
+        for (Map.Entry<UUID, Menu> entry : openedMenusCopy.entrySet()) {
             if (entry.getValue().getUUID().equals(getUUID())) {
                 UUID uuid = entry.getKey();
                 openMenu(uuid);
@@ -144,8 +144,7 @@ public abstract class Menu {
     }
 
     public ItemStack getFilterItem() {
-        return new ItemBuilder(
-                Material.valueOf(MenusLocale.FILTER_MATERIAL.getString()))
+        return new ItemBuilder(MenusLocale.FILTER_MATERIAL.getString())
                 .name(MenusLocale.FILTER_NAME.getString()).amount(1).build();
     }
 

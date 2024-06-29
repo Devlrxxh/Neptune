@@ -178,6 +178,23 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
+    @Subcommand("delete")
+    @Syntax("<arena>")
+    @CommandCompletion("@arenas")
+    public void delete(Player player, String arenaName) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+
+        arena.delete();
+        player.sendMessage(CC.color("&aSuccessfully delete arena " + arena.getDisplayName()));
+
+        plugin.getArenaManager().saveArenas();
+    }
+
     @Subcommand("setdisplayName")
     @Syntax("<arena>")
     @CommandCompletion("@arenas")
