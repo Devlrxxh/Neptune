@@ -80,7 +80,6 @@ public abstract class Match {
 
         profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
-        player.setGameMode(GameMode.SPECTATOR);
         spectators.add(playerUUID);
 
         forEachPlayer(participiantPlayer -> {
@@ -90,6 +89,8 @@ public abstract class Match {
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
         }
+
+        player.setGameMode(GameMode.SPECTATOR);
     }
 
     public void showPlayerForSpectators() {

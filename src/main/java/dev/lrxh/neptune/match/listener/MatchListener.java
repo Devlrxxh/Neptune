@@ -122,6 +122,11 @@ public class MatchListener implements Listener {
             }
             Match match = profile.getMatch();
 
+            if(!attackerProfile.getMatch().getUuid().equals(match.getUuid())){
+                event.setCancelled(true);
+                return;
+            }
+
             if (match instanceof TeamFightMatch) {
                 TeamFightMatch teamFightMatch = (TeamFightMatch) match;
                 if (teamFightMatch.onSameTeam(player.getUniqueId(), attacker.getUniqueId())) {

@@ -24,6 +24,7 @@ public class TtlHashMap<K, V> {
 
     public void put(K key, V value) {
         map.put(key, value);
+        actions.put(key, new TtlAction(null, null, null));
         scheduleRemoval(key);
     }
 
