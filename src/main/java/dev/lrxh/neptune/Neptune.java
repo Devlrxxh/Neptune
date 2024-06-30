@@ -27,6 +27,7 @@ import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
+import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
@@ -69,6 +70,7 @@ public final class Neptune extends JavaPlugin {
     private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
     private MenuManager menuManager;
+    private GenerationManager generationManager;
 
     public static Neptune get() {
         return instance;
@@ -102,6 +104,7 @@ public final class Neptune extends JavaPlugin {
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
+        this.generationManager = new GenerationManager();
 
         registerListeners();
         loadCommandManager();

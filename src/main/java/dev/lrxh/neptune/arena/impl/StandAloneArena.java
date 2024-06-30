@@ -4,7 +4,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.utils.GenerationUtils;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
@@ -73,7 +72,7 @@ public class StandAloneArena extends Arena {
     public void createCopy() {
         int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 
-        GenerationUtils.pasteRegion(GenerationUtils.copyRegion(min, max), min, max, offset);
+        plugin.getGenerationManager().pasteRegion(plugin.getGenerationManager().copyRegion(min, max), min, max, offset);
 
         StandAloneArena copy = getArenaCopy(this, LocationUtil.addOffsetToLocation(min, offset), LocationUtil.addOffsetToLocation(max, offset));
 
@@ -91,9 +90,9 @@ public class StandAloneArena extends Arena {
         plugin.getKitManager().removeArenasFromKits(copy);
         copies.remove(copy);
 
-        GenerationUtils.deleteRegion(copy.getMin(), copy.getMax());
-        Neptune.get().getArenaManager().saveArenas();
-        Neptune.get().getKitManager().saveKits();
+        plugin.getGenerationManager().deleteRegion(copy.getMin(), copy.getMax());
+        plugin.getArenaManager().saveArenas();
+        plugin.getKitManager().saveKits();
     }
 
     private @NotNull StandAloneArena getArenaCopy(StandAloneArena arena, Location min, Location max) {

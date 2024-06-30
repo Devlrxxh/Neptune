@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.utils;
+package dev.lrxh.neptune.providers.generation;
 
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
@@ -13,14 +13,11 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.block.BlockTypes;
-import dev.lrxh.neptune.providers.generation.Direction;
-import dev.lrxh.neptune.providers.generation.RelativePosition;
-import lombok.experimental.UtilityClass;
+import dev.lrxh.neptune.utils.LocationUtil;
+import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.Location;
 
-@UtilityClass
-public class GenerationUtils {
-
+public class GenerationManager {
     public BlockArrayClipboard copyRegion(Location min, Location max) {
         BlockVector3 maxV = BlockVector3.at(max.getX(), max.getY(), max.getZ());
         BlockVector3 minV = BlockVector3.at(min.getX(), min.getY(), min.getZ());
@@ -94,7 +91,7 @@ public class GenerationUtils {
                 .build()) {
             editSession.setBlocks(region, BlockTypes.AIR);
         } catch (WorldEditException e) {
-            CC.error("Failed to remove region: " + e.getMessage());
+            ServerUtils.error("Failed to delete region: " + e.getMessage());
         }
     }
 }
