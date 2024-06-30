@@ -43,8 +43,8 @@ public class GenerationUtils {
                 .allowedRegionsEverywhere()
                 .build()) {
 
-            Location min = addOffsetToLocation(loc1, offset);
-            Location max = addOffsetToLocation(loc2, offset);
+            Location min = LocationUtil.addOffsetToLocation(loc1, offset);
+            Location max = LocationUtil.addOffsetToLocation(loc2, offset);
 
             BlockVector3 blockVector3 = null;
             switch (Direction.getDirection(loc1)) {
@@ -75,14 +75,10 @@ public class GenerationUtils {
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)
                     .to(blockVector3)
-                    .ignoreAirBlocks(false)
+                    .ignoreAirBlocks(true)
                     .build();
             Operations.complete(operation);
         }
-    }
-
-    public Location addOffsetToLocation(Location oldLoc, int offset) {
-        return new Location(oldLoc.getWorld(), oldLoc.getX() + offset, oldLoc.getY(), oldLoc.getZ() + offset, oldLoc.getYaw(), oldLoc.getPitch());
     }
 
     public synchronized void deleteRegion(Location min, Location max) {

@@ -6,6 +6,7 @@ import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
@@ -204,6 +205,14 @@ public class KitCommand extends BaseCommand {
         }
 
         kit.getArenas().add(arena);
+
+        if(arena instanceof StandAloneArena) {
+            StandAloneArena standAloneArena = (StandAloneArena) arena;
+            for(StandAloneArena copy : standAloneArena.getCopies()) {
+                standAloneArena.addCopyToKits(copy);
+            }
+        }
+
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7)!"));
     }
@@ -228,6 +237,13 @@ public class KitCommand extends BaseCommand {
         if (!kit.getArenas().contains(arena)) {
             player.sendMessage(CC.error("Arena isn't added to the kit!"));
             return;
+        }
+
+        if(arena instanceof StandAloneArena) {
+            StandAloneArena standAloneArena = (StandAloneArena) arena;
+            for(StandAloneArena copy : standAloneArena.getCopies()) {
+                standAloneArena.removeCopyFromKits(copy);
+            }
         }
 
         kit.getArenas().remove(arena);

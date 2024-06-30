@@ -5,6 +5,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.utils.GenerationUtils;
+import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -74,7 +75,7 @@ public class StandAloneArena extends Arena {
 
         GenerationUtils.pasteRegion(GenerationUtils.copyRegion(min, max), min, max, offset);
 
-        StandAloneArena copy = getArenaCopy(this, GenerationUtils.addOffsetToLocation(min, offset), GenerationUtils.addOffsetToLocation(max, offset));
+        StandAloneArena copy = getArenaCopy(this, LocationUtil.addOffsetToLocation(min, offset), LocationUtil.addOffsetToLocation(max, offset));
 
         copies.add(copy);
 
@@ -114,7 +115,7 @@ public class StandAloneArena extends Arena {
         );
     }
 
-    private void addCopyToKits(Arena copy) {
+    public void addCopyToKits(Arena copy) {
         for (Kit kit : plugin.getKitManager().kits) {
             if (kit.getArenas().contains(this)) {
                 kit.getArenas().add(copy);
@@ -122,5 +123,11 @@ public class StandAloneArena extends Arena {
         }
     }
 
-
+    public void removeCopyFromKits(Arena copy) {
+        for (Kit kit : plugin.getKitManager().kits) {
+            if (kit.getArenas().contains(this)) {
+                kit.getArenas().remove(copy);
+            }
+        }
+    }
 }

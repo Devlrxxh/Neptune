@@ -20,17 +20,9 @@ public class LocationUtil {
         return "NONE";
     }
 
-    public Location calculatePointB(Location pointA, Location pointC) {
-        double ay = pointA.getY();
-        double az = pointA.getZ();
-
-        double cx = pointC.getX();
-
-
-        World world = pointA.getWorld();
-        return new Location(world, cx, ay, az);
+    public Location addOffsetToLocation(Location oldLoc, int offset) {
+        return new Location(oldLoc.getWorld(), oldLoc.getX() + offset, oldLoc.getY(), oldLoc.getZ() + offset, oldLoc.getYaw(), oldLoc.getPitch());
     }
-
 
     public Location deserialize(String source) {
         if (source.equalsIgnoreCase("NONE")) {
