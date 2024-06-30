@@ -27,7 +27,7 @@ public class ArenaManagmentButton extends Button {
 
         if (arena instanceof SharedArena) {
             return new ItemBuilder(arena.isEnabled() ? Material.GREEN_WOOL : Material.RED_WOOL)
-                    .name(arena.getDisplayName() + " &7( " + arena.getName() + "&7)")
+                    .name(arena.getDisplayName() + " &7(" + arena.getName() + "&7)")
                     .lore(Arrays.asList(
                             " ",
                             "&b&lRIGHT | TELEPORT",
@@ -76,9 +76,9 @@ public class ArenaManagmentButton extends Button {
                     }
 
                 }
+                player.closeInventory();
                 arena.delete();
                 player.sendMessage(CC.color("&aDeleted arena!"));
-                player.closeInventory();
                 break;
             case RIGHT:
                 if (arena.getRedSpawn() != null) {

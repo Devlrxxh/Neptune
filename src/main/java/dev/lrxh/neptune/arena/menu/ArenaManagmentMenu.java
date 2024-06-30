@@ -13,18 +13,13 @@ import java.util.Map;
 public class ArenaManagmentMenu extends PaginatedMenu {
 
     @Override
-    public String getPaginatedTitle(Player player) {
+    public String getTitle(Player player) {
         return "&7Arena Management";
     }
 
     @Override
-    public int getMaxItemsPerPage(Player player) {
-        return 36;
-    }
-
-    @Override
-    public boolean isUpdateOnClick() {
-        return true;
+    public int maxItemsPerPage() {
+        return 27;
     }
 
     @Override

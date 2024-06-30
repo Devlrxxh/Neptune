@@ -20,7 +20,7 @@ public class PageButton extends Button {
     public ItemStack getButtonItem(Player player) {
         if (this.mod > 0) {
             if (hasNext(player)) {
-                return new ItemBuilder(Material.LEVER)
+                return new ItemBuilder(Material.PAPER)
                         .name(ChatColor.GREEN + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
@@ -28,7 +28,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(Material.REDSTONE_TORCH)
+                return new ItemBuilder(Material.REDSTONE)
                         .name(ChatColor.GRAY + "Next Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
@@ -38,7 +38,7 @@ public class PageButton extends Button {
             }
         } else {
             if (hasPrevious()) {
-                return new ItemBuilder(Material.LEVER)
+                return new ItemBuilder(Material.PAPER)
                         .name(ChatColor.GREEN + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
@@ -46,7 +46,7 @@ public class PageButton extends Button {
                         ))
                         .build();
             } else {
-                return new ItemBuilder(Material.REDSTONE_TORCH)
+                return new ItemBuilder(Material.REDSTONE)
                         .name(ChatColor.GRAY + "Previous Page")
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
@@ -71,13 +71,12 @@ public class PageButton extends Button {
     }
 
     private boolean hasNext(Player player) {
-        int pg = this.menu.getPage() + this.mod;
-        return this.menu.getPages(player) >= pg;
+        int nextPage = this.menu.getPage() + this.mod;
+        return nextPage <= this.menu.getPages(player);
     }
 
     private boolean hasPrevious() {
-        int pg = this.menu.getPage() + this.mod;
-        return pg > 0;
+        int previousPage = this.menu.getPage() + this.mod;
+        return previousPage > 0;
     }
-
 }

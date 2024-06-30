@@ -8,7 +8,6 @@ import java.util.Map;
 
 @Getter
 public abstract class PaginatedMenu extends Menu {
-
     private int page = 1;
 
     @Override
@@ -17,66 +16,53 @@ public abstract class PaginatedMenu extends Menu {
     }
 
     @Override
-    public String getTitle(Player player) {
-        return getPaginatedTitle(player);
+    public int getSize() {
+        return maxItemsPerPage() + 9;
     }
 
-    public final void modPage(Player player, int mod) {
-        page += mod;
-        buttons.clear();
-        openMenu(player.getUniqueId());
+    public abstract int maxItemsPerPage();
+    public abstract Map<Integer, Button> getAllButtons(Player player);
+
+    public int getPages(Player player) {
+        int totalItems = getAllButtons(player).size();
+        return (int) Math.ceil((double) totalItems / maxItemsPerPage());
     }
 
-    public final int getPages(Player player) {
-        int buttonAmount = getAllButtons(player).size();
-
-        if (buttonAmount == 0) {
-            return 1;
+    public void modPage(Player player, int mod) {
+        int newPage = page + mod;
+        int totalPages = getPages(player);
+        if (newPage > 0 && newPage <= totalPages) {
+            page = newPage;
+            openMenu(player.getUniqueId());
         }
-
-        return (int) Math.ceil(buttonAmount / (double) getMaxItemsPerPage(player));
     }
 
     @Override
-    public final Map<Integer, Button> getButtons(Player player) {
-        int minIndex = (int) ((double) (page - 1) * getMaxItemsPerPage(player));
-        int maxIndex = (int) ((double) (page) * getMaxItemsPerPage(player));
-        int topIndex = 0;
+    public Map<Integer, Button> getButtons(Player player) {
+        Map<Integer, Button> allButtons = getAllButtons(player);
+        int maxItems = maxItemsPerPage();
+        int totalItems = allButtons.size();
+        int totalPages = getPages(player);
 
-        HashMap<Integer, Button> buttons = new HashMap<>();
+        Map<Integer, Button> pageButtons = new HashMap<>();
 
-        for (Map.Entry<Integer, Button> entry : getAllButtons(player).entrySet()) {
-            int ind = entry.getKey();
+        int start = (page - 1) * maxItems;
+        int end = Math.min(start + maxItems, totalItems);
 
-            if (ind >= minIndex && ind < maxIndex) {
-                ind -= (int) ((double) (getMaxItemsPerPage(player)) * (page - 1)) - 9;
-                buttons.put(ind, entry.getValue());
+        int index = 0;
+        int buttonSlot = 9;
 
-                if (ind > topIndex) {
-                    topIndex = ind;
-                }
+        for (Map.Entry<Integer, Button> entry : allButtons.entrySet()) {
+            if (index >= start && index < end) {
+                pageButtons.put(buttonSlot, entry.getValue());
+                buttonSlot++;
             }
+            index++;
         }
 
-        buttons.put(0, new PageButton(-1, this));
-        buttons.put(8, new PageButton(1, this));
+                pageButtons.put(0, new PageButton(-1, this));
+                pageButtons.put(8, new PageButton(1, this));
 
-        Map<Integer, Button> global = getGlobalButtons();
-
-        if (global != null) {
-            buttons.putAll(global);
-        }
-
-        return buttons;
+        return pageButtons;
     }
-
-    public Map<Integer, Button> getGlobalButtons() {
-        return null;
-    }
-
-    public abstract String getPaginatedTitle(Player player);
-
-    public abstract Map<Integer, Button> getAllButtons(Player player);
-
-    public abstract int getMaxItemsPerPage(Player player);
 }
