@@ -1,16 +1,16 @@
 package dev.lrxh.neptune.listeners;
 
-import org.bukkit.Difficulty;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.*;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockSpreadEvent;
+import org.bukkit.event.block.LeavesDecayEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
-import org.bukkit.event.world.WorldLoadEvent;
 
 import java.util.Objects;
 
@@ -18,12 +18,6 @@ public class LobbyListener implements Listener {
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
         event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onWorldLoad(WorldLoadEvent event) {
-        event.getWorld().getEntities().clear();
-        event.getWorld().setDifficulty(Difficulty.HARD);
     }
 
     @EventHandler

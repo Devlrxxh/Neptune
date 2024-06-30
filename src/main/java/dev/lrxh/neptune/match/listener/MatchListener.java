@@ -122,7 +122,7 @@ public class MatchListener implements Listener {
             }
             Match match = profile.getMatch();
 
-            if(!attackerProfile.getMatch().getUuid().equals(match.getUuid())){
+            if (!attackerProfile.getMatch().getUuid().equals(match.getUuid())) {
                 event.setCancelled(true);
                 return;
             }

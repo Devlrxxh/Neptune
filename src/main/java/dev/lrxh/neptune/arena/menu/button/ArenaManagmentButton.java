@@ -5,7 +5,6 @@ import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.menu.ArenaCopyMenu;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.GenerationUtils;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
@@ -72,7 +71,7 @@ public class ArenaManagmentButton extends Button {
                     if (!((StandAloneArena) arena).getCopies().isEmpty()) {
                         HashSet<StandAloneArena> copies = new HashSet<>(standAloneArena.getCopies());
                         for (StandAloneArena copy : copies) {
-                            GenerationUtils.removeCopy(copy);
+                            plugin.getArenaManager().getOriginalArena(copy).removeCopy(copy);
                         }
                     }
 

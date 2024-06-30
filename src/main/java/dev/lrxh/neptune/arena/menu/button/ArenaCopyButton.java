@@ -2,7 +2,6 @@ package dev.lrxh.neptune.arena.menu.button;
 
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.GenerationUtils;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
@@ -41,7 +40,7 @@ public class ArenaCopyButton extends Button {
             }
         } else if (clickType.equals(ClickType.SHIFT_LEFT)) {
             player.sendMessage(CC.color("&cDeleting copy..."));
-            GenerationUtils.removeCopy(arena);
+            plugin.getArenaManager().getOriginalArena(arena).removeCopy(arena);
             player.sendMessage(CC.color("&aSuccessfully deleted copy!"));
         }
     }

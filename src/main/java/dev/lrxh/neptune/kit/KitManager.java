@@ -5,11 +5,13 @@ import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.ItemUtils;
+import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
+@Getter
 public class KitManager implements IManager {
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
 

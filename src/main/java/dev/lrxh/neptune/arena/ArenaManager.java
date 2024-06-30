@@ -9,14 +9,14 @@ import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.LocationUtil;
-import org.bukkit.Bukkit;
+import lombok.Getter;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+@Getter
 public class ArenaManager implements IManager {
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
 

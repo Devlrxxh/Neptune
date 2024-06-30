@@ -20,6 +20,18 @@ public class LocationUtil {
         return "NONE";
     }
 
+    public Location calculatePointB(Location pointA, Location pointC) {
+        double ay = pointA.getY();
+        double az = pointA.getZ();
+
+        double cx = pointC.getX();
+
+
+        World world = pointA.getWorld();
+        return new Location(world, cx, ay, az);
+    }
+
+
     public Location deserialize(String source) {
         if (source.equalsIgnoreCase("NONE")) {
             return null;
@@ -28,7 +40,7 @@ public class LocationUtil {
         String[] split = source.split(":");
 
         World world = Neptune.get().getServer().getWorld(split[0]);
-        if(world == null) {
+        if (world == null) {
             ServerUtils.error("World: " + split[0] + " not found!");
             return null;
         }

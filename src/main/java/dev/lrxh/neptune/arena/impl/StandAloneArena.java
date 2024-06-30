@@ -9,21 +9,20 @@ import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.UUID;
 
 
 @Getter
 @Setter
 @SuperBuilder
 public class StandAloneArena extends Arena {
+    private final Neptune plugin = Neptune.get();
     private transient ConcurrentLinkedHashMap<Chunk, Object[]> chunkSnapshots;
     private Location min;
     private Location max;
@@ -60,45 +59,68 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         if (min != null && max != null) {
-            chunkSnapshots = Neptune.get().getVersionHandler().getChunk().takeSnapshot(getMin().getWorld(), min, max);
+            chunkSnapshots = plugin.getVersionHandler().getChunk().takeSnapshot(getMin().getWorld(), min, max);
         }
     }
 
     public void restoreSnapshot() {
         if (min != null && max != null) {
-            Neptune.get().getVersionHandler().getChunk().restoreSnapshot(chunkSnapshots, getMin().getWorld());
+            plugin.getVersionHandler().getChunk().restoreSnapshot(chunkSnapshots, getMin().getWorld());
         }
     }
 
-    public void createCopy(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        int space = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
+    public void createCopy() {
+        int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 
+        GenerationUtils.pasteRegion(GenerationUtils.copyRegion(min, max), min, max, offset);
 
-        GenerationUtils.createRegion(playerUUID, min, max);
-        GenerationUtils.pasteRegion(playerUUID, max.add(space, 0, 0));
+        StandAloneArena copy = getArenaCopy(this, GenerationUtils.addOffsetToLocation(min, offset), GenerationUtils.addOffsetToLocation(max, offset));
 
-        StandAloneArena copy
-                = new StandAloneArena(getName() + "#" + (copies.size() + 1), getDisplayName(),
-                getRedSpawn().add(space, 0, 0),
-                getBlueSpawn().add(space, 0, 0),
-                min.add(space, 0, 0),
-                max.add(space, 0, 0), new HashSet<>(), getDeathY(), getLimit(), isEnabled(), true);
-
-        Neptune.get().getArenaManager().arenas.add(copy);
         copies.add(copy);
+
         addCopyToKits(copy);
 
+        plugin.getArenaManager().arenas.add(copy);
+        plugin.getArenaManager().saveArenas();
+        plugin.getKitManager().saveKits();
+    }
+
+    public void removeCopy(StandAloneArena copy) {
+        plugin.getArenaManager().arenas.remove(copy);
+        plugin.getKitManager().removeArenasFromKits(copy);
+        copies.remove(copy);
+
+        GenerationUtils.deleteRegion(copy.getMin(), copy.getMax());
         Neptune.get().getArenaManager().saveArenas();
         Neptune.get().getKitManager().saveKits();
     }
 
+    private @NotNull StandAloneArena getArenaCopy(StandAloneArena arena, Location min, Location max) {
+        Location redSpawn = new Location(min.getWorld(), arena.getRedSpawn().getX() - arena.getMin().getX() + min.getX(), arena.getRedSpawn().getY(), arena.getRedSpawn().getZ() - arena.getMin().getZ() + min.getZ(), arena.getRedSpawn().getYaw(), arena.getRedSpawn().getPitch());
+        Location blueSpawn = new Location(max.getWorld(), arena.getBlueSpawn().getX() - arena.getMin().getX() + min.getX(), arena.getBlueSpawn().getY(), arena.getBlueSpawn().getZ() - arena.getMin().getZ() + min.getZ(), arena.getBlueSpawn().getYaw(), arena.getBlueSpawn().getPitch());
+
+        return new StandAloneArena(
+                arena.getName() + "#" + (arena.getCopies().size() + 1),
+                arena.getDisplayName(),
+                redSpawn,
+                blueSpawn,
+                min,
+                max,
+                new HashSet<>(),
+                arena.getDeathY(),
+                arena.getLimit(),
+                arena.isEnabled(),
+                true
+        );
+    }
+
     private void addCopyToKits(Arena copy) {
-        for (Kit kit : Neptune.get().getKitManager().kits) {
+        for (Kit kit : plugin.getKitManager().kits) {
             if (kit.getArenas().contains(this)) {
                 kit.getArenas().add(copy);
             }
         }
     }
+
+
 }
