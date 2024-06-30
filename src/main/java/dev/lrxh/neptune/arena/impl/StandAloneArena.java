@@ -11,7 +11,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -96,7 +95,7 @@ public class StandAloneArena extends Arena {
         plugin.getKitManager().saveKits();
     }
 
-    private @NotNull StandAloneArena getArenaCopy(StandAloneArena arena, Location min, Location max) {
+    private StandAloneArena getArenaCopy(StandAloneArena arena, Location min, Location max) {
         Location redSpawn = new Location(min.getWorld(), arena.getRedSpawn().getX() - arena.getMin().getX() + min.getX(), arena.getRedSpawn().getY(), arena.getRedSpawn().getZ() - arena.getMin().getZ() + min.getZ(), arena.getRedSpawn().getYaw(), arena.getRedSpawn().getPitch());
         Location blueSpawn = new Location(max.getWorld(), arena.getBlueSpawn().getX() - arena.getMin().getX() + min.getX(), arena.getBlueSpawn().getY(), arena.getBlueSpawn().getZ() - arena.getMin().getZ() + min.getZ(), arena.getBlueSpawn().getYaw(), arena.getBlueSpawn().getPitch());
 
@@ -114,6 +113,12 @@ public class StandAloneArena extends Arena {
                 true,
                 plugin
         );
+    }
+
+    public void addCopiesToKits(){
+        for(StandAloneArena copy : copies) {
+            addCopyToKits(copy);
+        }
     }
 
     public void addCopyToKits(Arena copy) {

@@ -208,9 +208,7 @@ public class KitCommand extends BaseCommand {
 
         if(arena instanceof StandAloneArena) {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
-            for(StandAloneArena copy : standAloneArena.getCopies()) {
-                standAloneArena.addCopyToKits(copy);
-            }
+            standAloneArena.addCopiesToKits();
         }
 
         plugin.getKitManager().saveKits();

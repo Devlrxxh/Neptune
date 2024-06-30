@@ -58,6 +58,7 @@ public class ArenaCommand extends BaseCommand {
                     .displayName(arenaName)
                     .copies(new HashSet<>())
                     .enabled(true)
+                    .plugin(plugin)
                     .build();
         } else {
             arena = SharedArena.builder()

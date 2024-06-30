@@ -33,7 +33,7 @@ public class Profile {
     private ProfileState state;
     private Neptune plugin;
     private GameData gameData;
-    private MongoCollection<Document> collection = plugin.getMongoManager().getCollection();
+    private MongoCollection<Document> collection;
 
     public Profile(UUID playerUUID, Neptune plugin) {
         this.plugin = plugin;
@@ -45,6 +45,7 @@ public class Profile {
 
         this.username = player.getName();
         this.gameData = new GameData();
+        this.collection = plugin.getMongoManager().getCollection();
 
         for (Kit kit : plugin.getKitManager().kits) {
             KitData kitData = new KitData();

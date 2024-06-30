@@ -16,6 +16,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
 
 @Getter
 public class ArenaManager implements IManager {
@@ -68,6 +69,13 @@ public class ArenaManager implements IManager {
                 ((StandAloneArena) arena).setCopies(copies);
             }
         }
+    }
+
+    public List<Arena> getArenasWithoutDupes() {
+        return arenas.stream()
+                .filter(arena -> !(arena instanceof StandAloneArena) ||
+                        !((StandAloneArena) arena).isDuplicate())
+                .collect(Collectors.toList());
     }
 
     public void saveArenas() {

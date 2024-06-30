@@ -88,16 +88,16 @@ public final class Neptune extends JavaPlugin {
             return;
         }
 
-        this.configManager = new ConfigManager(this);
+        this.configManager = new ConfigManager(instance);
         this.configManager.load();
-        this.queueManager = new QueueManager(this);
-        this.matchManager = new MatchManager(this);
-        this.arenaManager = new ArenaManager(this);
-        this.kitManager = new KitManager(this);
+        this.queueManager = new QueueManager(instance);
+        this.matchManager = new MatchManager(instance);
+        this.arenaManager = new ArenaManager(instance);
+        this.kitManager = new KitManager(instance);
         this.cache = new Cache();
-        this.hotbarManager = new HotbarManager(this);
-        this.assemble = new Assemble(new ScoreboardAdapter(this));
-        this.mongoManager = new MongoManager(this);
+        this.hotbarManager = new HotbarManager(instance);
+        this.assemble = new Assemble(new ScoreboardAdapter(instance));
+        this.mongoManager = new MongoManager(instance);
         if (!isEnabled()) {
             return;
         }
@@ -177,7 +177,7 @@ public final class Neptune extends JavaPlugin {
     private void loadCommandCompletions() {
         CommandCompletions<BukkitCommandCompletionContext> commandCompletions = getPaperCommandManager().getCommandCompletions();
         commandCompletions.registerCompletion("names", c -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
-        commandCompletions.registerCompletion("arenas", c -> arenaManager.arenas.stream().map(Arena::getName).collect(Collectors.toList()));
+        commandCompletions.registerCompletion("arenas", c -> arenaManager.getArenasWithoutDupes().stream().map(Arena::getName).collect(Collectors.toList()));
         commandCompletions.registerCompletion("kits", c -> kitManager.kits.stream().map(Kit::getName).collect(Collectors.toList()));
     }
 

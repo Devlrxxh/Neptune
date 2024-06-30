@@ -9,8 +9,7 @@ public enum Direction {
     NORTH,
     EAST;
 
-    public @NotNull
-    static Direction getDirection(Location location) {
+    public @NotNull static Direction getDirection(Location location) {
         float yaw = location.getYaw();
 
         yaw = (yaw % 360 + 360) % 360;

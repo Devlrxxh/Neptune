@@ -46,7 +46,7 @@ public class GenerationManager {
             BlockVector3 blockVector3 = null;
             switch (Direction.getDirection(loc1)) {
                 case SOUTH:
-                case EAST:
+                case WEST:
                     switch (RelativePosition.getRelativePosition(loc1, loc2)) {
                         case RIGHT:
                             blockVector3 = BlockVector3.at(max.getX(), min.getY(), min.getZ());
@@ -57,7 +57,7 @@ public class GenerationManager {
                     }
                     break;
                 case NORTH:
-                case WEST:
+                case EAST:
                     switch (RelativePosition.getRelativePosition(loc1, loc2)) {
                         case RIGHT:
                             blockVector3 = BlockVector3.at(max.getX(), min.getY(), max.getZ());
