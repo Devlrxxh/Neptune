@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.kit;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
@@ -14,8 +15,10 @@ import java.util.*;
 @Getter
 public class KitManager implements IManager {
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
+    private final Neptune plugin;
 
-    public KitManager() {
+    public KitManager(Neptune plugin) {
+        this.plugin = plugin;
         loadKits();
     }
 

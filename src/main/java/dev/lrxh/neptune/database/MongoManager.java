@@ -16,8 +16,10 @@ import org.bukkit.Bukkit;
 @Getter
 public class MongoManager {
     public MongoCollection<Document> collection;
+    private final Neptune plugin;
 
-    public MongoManager() {
+    public MongoManager(Neptune plugin) {
+        this.plugin = plugin;
         connect();
     }
 
@@ -33,7 +35,7 @@ public class MongoManager {
             }
         } else {
             ServerUtils.error("MongoDB URI is missing or empty in the config.yml");
-            Bukkit.getPluginManager().disablePlugin(Neptune.get());
+            Bukkit.getPluginManager().disablePlugin(plugin);
         }
     }
 }

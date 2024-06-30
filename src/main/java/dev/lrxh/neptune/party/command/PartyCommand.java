@@ -18,6 +18,7 @@ import java.util.UUID;
 @CommandAlias("party|p")
 @Description("Party Command.")
 public class PartyCommand extends BaseCommand {
+    private final Neptune plugin = Neptune.get();
 
     @Default
     @Subcommand("help")
@@ -27,7 +28,7 @@ public class PartyCommand extends BaseCommand {
 
     @Subcommand("create")
     public void create(Player player) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         profile.createParty();
     }
 
@@ -41,7 +42,7 @@ public class PartyCommand extends BaseCommand {
             return;
         }
 
-        Party party = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
+        Party party = plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
         if (party == null) {
             player.sendMessage(CC.error("Player isn't in any party"));
             return;
@@ -55,7 +56,7 @@ public class PartyCommand extends BaseCommand {
             return;
 
         }
-        if (Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty() != null) {
+        if (plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;
         }
@@ -65,12 +66,12 @@ public class PartyCommand extends BaseCommand {
 
     @Subcommand("disband")
     public void disband(Player player) {
-        Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).disband();
+        plugin.getProfileManager().getByUUID(player.getUniqueId()).disband();
     }
 
     @Subcommand("leave")
     public void leave(Player player) {
-        Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).disband();
+        plugin.getProfileManager().getByUUID(player.getUniqueId()).disband();
     }
 
     @Subcommand("invite")
@@ -82,8 +83,8 @@ public class PartyCommand extends BaseCommand {
             player.sendMessage(CC.error("Player isn't online!"));
             return;
         }
-        Profile targetProfile = Neptune.get().getProfileManager().getByUUID(target.getUniqueId());
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         Party party = profile.getGameData().getParty();
 
         if (party == null) {
@@ -96,7 +97,7 @@ public class PartyCommand extends BaseCommand {
             return;
         }
 
-        if (Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty() != null) {
+        if (plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;
         }
@@ -124,7 +125,7 @@ public class PartyCommand extends BaseCommand {
     @Subcommand("accept")
     @Syntax("<uuid>")
     public void accept(Player player, String otherString) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (!profile.getState().equals(ProfileState.IN_LOBBY)) return;
         try {
             if (profile.getGameData().getParty() != null) {
@@ -150,7 +151,7 @@ public class PartyCommand extends BaseCommand {
             player.sendMessage(CC.error("Player isn't online!"));
             return;
         }
-        Party party = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
+        Party party = plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
         if (party == null || !party.getLeader().equals(player.getUniqueId())) {
             MessagesLocale.PARTY_NOT_IN_PARTY.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
             return;

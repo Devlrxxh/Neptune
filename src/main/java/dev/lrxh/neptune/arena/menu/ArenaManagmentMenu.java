@@ -31,7 +31,7 @@ public class ArenaManagmentMenu extends PaginatedMenu {
     public Map<Integer, Button> getAllButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = 0;
-        for (Arena arena : Neptune.get().getArenaManager().arenas) {
+        for (Arena arena : plugin.getArenaManager().arenas) {
             if (arena.getName().contains("#")) continue;
             buttons.put(i++, new ArenaManagmentButton(arena, this));
         }

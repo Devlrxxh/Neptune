@@ -31,8 +31,8 @@ public class PlaceholderUtil {
         ProfileState state = profile.getState();
         for (String line : lines) {
             line = line.replaceAll("<online>", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
-            line = line.replaceAll("<queued>", String.valueOf(Neptune.get().getQueueManager().queues.size()));
-            line = line.replaceAll("<in-match>", String.valueOf(Neptune.get().getMatchManager().matches.size()));
+            line = line.replaceAll("<queued>", String.valueOf(plugin.getQueueManager().queues.size()));
+            line = line.replaceAll("<in-match>", String.valueOf(plugin.getMatchManager().matches.size()));
             line = line.replaceAll("<player>", player.getName());
             line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player.getUniqueId()))));
 
@@ -116,7 +116,7 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<arena>", match.getArena().getDisplayName());
             }
 
-            if (Neptune.get().isPlaceholder() && PlaceholderAPIPlugin.getInstance() != null) {
+            if (plugin.isPlaceholder() && PlaceholderAPIPlugin.getInstance() != null) {
                 formattedLines.add(PlaceholderAPI.setPlaceholders(player, line));
             } else {
                 formattedLines.add(line);

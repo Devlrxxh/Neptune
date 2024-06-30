@@ -7,10 +7,14 @@ import java.util.UUID;
 
 public class ProfileManager {
     public final HashMap<UUID, Profile> profiles = new HashMap<>();
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
+
+    public ProfileManager(Neptune plugin) {
+        this.plugin = plugin;
+    }
 
     public Profile createProfile(UUID playerUUID) {
-        Profile profile = new Profile(playerUUID);
+        Profile profile = new Profile(playerUUID, plugin);
         profiles.put(playerUUID, profile);
         return profile;
     }

@@ -51,7 +51,7 @@ public class TeamFightMatch extends Match {
         loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "Opponent Team"), 100);
 
-        Neptune.get().getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
+        plugin.getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
     }
 
 

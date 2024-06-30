@@ -19,7 +19,7 @@ public class StatButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        KitData data = Neptune.get().getProfileManager().getByUUID(target.getUniqueId()).getGameData().getKitData().get(kit);
+        KitData data = plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getKitData().get(kit);
 
 
         return new ItemBuilder(kit.getIcon())

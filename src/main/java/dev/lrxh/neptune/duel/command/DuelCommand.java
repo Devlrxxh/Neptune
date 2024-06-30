@@ -19,6 +19,7 @@ import java.util.UUID;
 @CommandAlias("duel|1v1")
 @Description("Duel other players.")
 public class DuelCommand extends BaseCommand {
+    private final Neptune plugin = Neptune.get();
 
     @Default
     @Syntax("<name>")
@@ -30,7 +31,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        if (Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch() != null) {
+        if (plugin.getProfileManager().getByUUID(player.getUniqueId()).getMatch() != null) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
             return;
         }
@@ -39,7 +40,7 @@ public class DuelCommand extends BaseCommand {
             player.sendMessage(CC.error("You can't duel yourself!"));
             return;
         }
-        Profile targetProfile = Neptune.get().getProfileManager().getByUUID(target.getUniqueId());
+        Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
 
         if (targetProfile.getMatch() != null || targetProfile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
             player.sendMessage(CC.error("Player can't accept duel requests!"));
@@ -57,8 +58,8 @@ public class DuelCommand extends BaseCommand {
     @Subcommand("accept")
     @Syntax("<uuid>")
     public void accept(Player player, String otherString) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
-        GameData playerGameData = Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getGameData();
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        GameData playerGameData = plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData();
 
         if (profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
             player.sendMessage(CC.error("You can't accept duel requests right now!"));
@@ -79,7 +80,7 @@ public class DuelCommand extends BaseCommand {
     @Subcommand("deny")
     @Syntax("<uuid>")
     public void deny(Player player, String otherString) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         GameData playerGameData = profile.getGameData();
 
         UUID otherUUID = UUID.fromString(otherString);

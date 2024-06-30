@@ -101,7 +101,7 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        Arena arena = Neptune.get().getArenaManager().getArenaByName(arenaName);
+        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
         if (arena.getRedSpawn() != null) {
             player.teleport(arena.getRedSpawn());
         } else if (arena.getBlueSpawn() != null) {

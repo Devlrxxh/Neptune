@@ -12,6 +12,7 @@ import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
@@ -19,8 +20,10 @@ import java.util.concurrent.ThreadLocalRandom;
 @Getter
 public class ArenaManager implements IManager {
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
+    private final Neptune plugin;
 
-    public ArenaManager() {
+    public ArenaManager(Neptune plugin) {
+        this.plugin = plugin;
         loadArenas();
     }
 
@@ -44,10 +47,10 @@ public class ArenaManager implements IManager {
                     double limit = config.getDouble(path + "limit");
                     boolean duplicate = config.getBoolean(path + "duplicate", false);
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, null, deathZone, limit, enabled, duplicate);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, null, deathZone, limit, enabled, duplicate, plugin);
                     arenas.add(arena);
                 } else {
-                    SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
+                    SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled, plugin);
                     arenas.add(arena);
                 }
             }
@@ -106,7 +109,7 @@ public class ArenaManager implements IManager {
     }
 
     public StandAloneArena getOriginalArena(StandAloneArena copy) {
-        for (Arena arena : Neptune.get().getArenaManager().arenas) {
+        for (Arena arena : arenas) {
             if (!(arena instanceof StandAloneArena)) continue;
             if (((StandAloneArena) arena).getCopies().contains(copy)) {
                 return (StandAloneArena) arena;

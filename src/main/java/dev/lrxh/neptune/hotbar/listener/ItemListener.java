@@ -25,7 +25,7 @@ public class ItemListener implements Listener {
             return;
 
         Player player = event.getPlayer();
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (!profile.getState().equals(ProfileState.IN_GAME)) {
             Item clickedItem = Item.getByItemStack(event.getItem(), player.getUniqueId());
             if (clickedItem == null) return;

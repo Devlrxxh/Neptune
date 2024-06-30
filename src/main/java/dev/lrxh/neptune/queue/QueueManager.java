@@ -10,7 +10,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class QueueManager {
     public final Map<UUID, Queue> queues = new ConcurrentHashMap<>();
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
+
+    public QueueManager(Neptune plugin) {
+        this.plugin = plugin;
+    }
 
     public void addToQueue(UUID playerUUID, Queue queue) {
         if (queues.containsKey(playerUUID)) return;

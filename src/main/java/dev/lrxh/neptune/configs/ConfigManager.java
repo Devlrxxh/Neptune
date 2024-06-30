@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 public class ConfigManager {
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
     private ConfigFile messagesConfig;
     private ConfigFile arenasConfig;
     private ConfigFile kitsConfig;
@@ -16,6 +16,10 @@ public class ConfigManager {
     private ConfigFile scoreboardConfig;
     private ConfigFile hotbarConfig;
     private ConfigFile menusConfig;
+
+    public ConfigManager(Neptune plugin){
+        this.plugin = plugin;
+    }
 
     public void load() {
         messagesConfig = new ConfigFile("messages");

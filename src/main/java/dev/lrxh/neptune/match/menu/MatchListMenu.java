@@ -34,7 +34,7 @@ public class MatchListMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.MATCH_LIST_STARTING_SLOT.getInt();
 
-        for (Match match : Neptune.get().getMatchManager().matches) {
+        for (Match match : plugin.getMatchManager().matches) {
             if (match instanceof SoloFightMatch) {
                 buttons.put(i++, new MatchSpectateButton((SoloFightMatch) match));
             }

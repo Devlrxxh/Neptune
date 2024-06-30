@@ -39,7 +39,7 @@ public class QueueMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.QUEUE_SELECT_STARTING_SLOT.getInt();
-        for (Kit kit : Neptune.get().getKitManager().kits) {
+        for (Kit kit : plugin.getKitManager().kits) {
             buttons.put(i++, new QueueSelectButton(kit));
         }
         return buttons;

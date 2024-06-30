@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("spectate|spec")
 @Description("Spectate a match.")
 public class SpectateCommand extends BaseCommand {
+    private final Neptune plugin = Neptune.get();
 
     @Default
     @Syntax("<name>")
@@ -28,14 +29,14 @@ public class SpectateCommand extends BaseCommand {
             return;
         }
 
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
 
         if (profile.getMatch() != null) {
             player.sendMessage(CC.error("You can't spectate while in a match!"));
             return;
         }
 
-        Profile targetProfile = Neptune.get().getProfileManager().getByUUID(target.getUniqueId());
+        Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
         if (targetProfile.getMatch() == null) {
             player.sendMessage(CC.error("Player isn't in a match!"));
             return;
@@ -47,19 +48,19 @@ public class SpectateCommand extends BaseCommand {
 
     @Subcommand("leave")
     public void leave(Player player) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
 
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
+            plugin.getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
         }
     }
 
     @Subcommand("quit")
     public void quit(Player player) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
 
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
+            plugin.getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
         }
     }
 }

@@ -30,7 +30,7 @@ public class KitEditorSelectButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
 
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
 
         MessagesLocale.KIT_EDITOR_START.send(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName()));
         player.closeInventory();

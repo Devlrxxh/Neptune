@@ -22,7 +22,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 public class StandAloneArena extends Arena {
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
     private transient ConcurrentLinkedHashMap<Chunk, Object[]> chunkSnapshots;
     private Location min;
     private Location max;
@@ -32,8 +32,8 @@ public class StandAloneArena extends Arena {
     private HashSet<StandAloneArena> copies;
     private boolean duplicate;
 
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, HashSet<StandAloneArena> copies, double deathY, double limit, boolean enabled, boolean duplicate) {
-        super(name, displayName, redSpawn, blueSpawn, enabled);
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, HashSet<StandAloneArena> copies, double deathY, double limit, boolean enabled, boolean duplicate, Neptune plugin) {
+        super(name, displayName, redSpawn, blueSpawn, enabled, plugin);
         this.min = min;
         this.max = max;
         this.copies = copies;
@@ -42,6 +42,7 @@ public class StandAloneArena extends Arena {
         this.used = false;
         this.duplicate = duplicate;
         this.chunkSnapshots = new ConcurrentLinkedHashMap<>();
+        this.plugin = plugin;
 
         takeSnapshot();
     }
@@ -110,7 +111,8 @@ public class StandAloneArena extends Arena {
                 arena.getDeathY(),
                 arena.getLimit(),
                 arena.isEnabled(),
-                true
+                true,
+                plugin
         );
     }
 

@@ -31,10 +31,12 @@ public class Profile {
     public boolean cooldown;
     private String username;
     private ProfileState state;
+    private Neptune plugin;
     private GameData gameData;
-    private MongoCollection<Document> collection = Neptune.get().getMongoManager().getCollection();
+    private MongoCollection<Document> collection = plugin.getMongoManager().getCollection();
 
-    public Profile(UUID playerUUID) {
+    public Profile(UUID playerUUID, Neptune plugin) {
+        this.plugin = plugin;
         this.playerUUID = playerUUID;
         this.state = ProfileState.IN_LOBBY;
 
@@ -44,7 +46,7 @@ public class Profile {
         this.username = player.getName();
         this.gameData = new GameData();
 
-        for (Kit kit : Neptune.get().getKitManager().kits) {
+        for (Kit kit : plugin.getKitManager().kits) {
             KitData kitData = new KitData();
             gameData.getKitData().put(kit, kitData);
         }
@@ -55,7 +57,7 @@ public class Profile {
     public void setState(ProfileState profileState) {
         state = profileState;
         VisibilityLogic.handle(playerUUID);
-        Neptune.get().getHotbarManager().giveItems(playerUUID);
+        plugin.getHotbarManager().giveItems(playerUUID);
     }
 
     public void load() {
@@ -70,7 +72,7 @@ public class Profile {
 
         Document kitStatistics = (Document) document.get("kitData");
 
-        for (Kit kit : Neptune.get().getKitManager().kits) {
+        for (Kit kit : plugin.getKitManager().kits) {
             Document kitDocument = (Document) kitStatistics.get(kit.getName());
             if (kitDocument == null) return;
             KitData profileKitData = gameData.getKitData().get(kit);
@@ -91,7 +93,7 @@ public class Profile {
 
         document.put("history", gameData.serializeHistory());
 
-        for (Kit kit : Neptune.get().getKitManager().kits) {
+        for (Kit kit : plugin.getKitManager().kits) {
             KitData entry = gameData.getKitData().get(kit);
             Document kitStatisticsDocument = new Document();
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
@@ -138,7 +140,7 @@ public class Profile {
             return;
         }
 
-        Neptune.get().getProfileManager().getByUUID(playerUUID).getGameData().setParty(new Party(playerUUID));
+        plugin.getProfileManager().getByUUID(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
         MessagesLocale.PARTY_CREATE.send(playerUUID);
     }
 
@@ -160,7 +162,7 @@ public class Profile {
     }
 
     public void acceptDuel(UUID senderUUID) {
-        Neptune.get().getQueueManager().remove(playerUUID);
+        plugin.getQueueManager().remove(playerUUID);
         DuelRequest duelRequest = (DuelRequest) gameData.getRequests().get(senderUUID);
 
         Participant participant1 =
@@ -171,7 +173,7 @@ public class Profile {
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 
-        Neptune.get().getMatchManager().startMatch(participants, duelRequest.getKit(),
+        plugin.getMatchManager().startMatch(participants, duelRequest.getKit(),
                 duelRequest.getArena(), true, duelRequest.getRounds());
 
         gameData.removeRequest(senderUUID);

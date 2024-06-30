@@ -38,7 +38,7 @@ public class KitSelectMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.DUEL_STARTING_SLOT.getInt();
 
-        for (Kit kit : Neptune.get().getKitManager().kits) {
+        for (Kit kit : plugin.getKitManager().kits) {
             buttons.put(i++, new KitSelectButton(kit, receiver, test));
         }
 

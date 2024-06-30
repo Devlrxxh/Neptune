@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ScoreboardAdapter implements AssembleAdapter {
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
+
+    public ScoreboardAdapter(Neptune plugin) {
+        this.plugin = plugin;
+    }
 
     public String getTitle(Player player) {
         return getAnimatedText();

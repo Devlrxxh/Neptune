@@ -16,9 +16,10 @@ import java.util.UUID;
 @Getter
 public class HotbarManager {
     private final Map<ProfileState, Hotbar> items = new HashMap<>();
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
 
-    public HotbarManager() {
+    public HotbarManager(Neptune plugin) {
+        this.plugin = plugin;
         loadItems();
     }
 
@@ -58,7 +59,7 @@ public class HotbarManager {
     }
 
     public void loadItems() {
-        FileConfiguration config = Neptune.get().getConfigManager().getHotbarConfig().getConfiguration();
+        FileConfiguration config = plugin.getConfigManager().getHotbarConfig().getConfiguration();
         if (config.getConfigurationSection("ITEMS") != null) {
             for (String section : config.getConfigurationSection("ITEMS").getKeys(false)) {
                 Hotbar inventory = new Hotbar();

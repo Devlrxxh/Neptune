@@ -34,7 +34,7 @@ public class KitEditorMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.KIT_EDITOR_SELECT_STARTING_SLOT.getInt();
-        for (Kit kit : Neptune.get().getKitManager().kits) {
+        for (Kit kit : plugin.getKitManager().kits) {
             buttons.put(i++, new KitEditorSelectButton(kit));
         }
         return buttons;

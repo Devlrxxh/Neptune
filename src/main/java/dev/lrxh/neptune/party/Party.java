@@ -24,14 +24,16 @@ public class Party {
     private final boolean duelRequest;
     private boolean open;
     private int maxUsers;
+    private final Neptune plugin;
 
-    public Party(UUID leader) {
+    public Party(UUID leader, Neptune plugin) {
         this.leader = leader;
         this.users = new HashSet<>();
         this.users.add(leader);
         this.open = false;
         this.maxUsers = 10;
         this.duelRequest = true;
+        this.plugin = plugin;
 
         setupPlayer(leader);
     }
@@ -48,7 +50,7 @@ public class Party {
                 new Replacement("<accept>", accept),
                 new Replacement("<leader>", Bukkit.getPlayer(leader).getName()));
 
-        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         profile.getGameData().addRequest(new PartyRequest(leader, this), leader, ignore -> MessagesLocale.PARTY_EXPIRED.send(leader, new Replacement("<player>", player.getName())));
     }
 
@@ -61,11 +63,11 @@ public class Party {
         Player invitedPlayer = Bukkit.getPlayer(playerUUID);
         if (invitedPlayer == null) return;
         users.add(playerUUID);
-        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         profile.getGameData().setParty(this);
         profile.setState(ProfileState.IN_PARTY);
         broadcast(MessagesLocale.PARTY_JOINED, new Replacement("<player>", invitedPlayer.getName()));
-        Neptune.get().getProfileManager().getByUUID(playerUUID).getGameData().removeRequest(leader);
+        plugin.getProfileManager().getByUUID(playerUUID).getGameData().removeRequest(leader);
     }
 
     public void kick(UUID playerUUID) {
@@ -74,7 +76,7 @@ public class Party {
     }
 
     public void remove(UUID playerUUID) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         users.remove(playerUUID);
         profile.getGameData().setParty(null);
         profile.setState(ProfileState.IN_LOBBY);
@@ -83,7 +85,7 @@ public class Party {
     public void disband() {
         broadcast(MessagesLocale.PARTY_DISBANDED);
         for (UUID user : users) {
-            Profile profile = Neptune.get().getProfileManager().getByUUID(user);
+            Profile profile = plugin.getProfileManager().getByUUID(user);
             profile.getGameData().setParty(null);
             profile.setState(ProfileState.IN_LOBBY);
         }

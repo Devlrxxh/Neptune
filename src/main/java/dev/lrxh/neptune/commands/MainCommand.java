@@ -11,6 +11,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("neptune.admin.main")
 @Description("Main Command for Neptune Practice Core.")
 public class MainCommand extends BaseCommand {
+    private final Neptune plugin = Neptune.get();
 
     @Default
     @Subcommand("help")
@@ -26,15 +27,15 @@ public class MainCommand extends BaseCommand {
 
     @Subcommand("setspawn")
     public void setspawn(Player player) {
-        Neptune.get().getCache().setSpawn(player.getLocation());
-        Neptune.get().getCache().save();
+        plugin.getCache().setSpawn(player.getLocation());
+        plugin.getCache().save();
         player.sendMessage(CC.color("&aSuccessfully set spawn!"));
     }
 
 
     @Subcommand("reload")
     public void reload(Player player) {
-        Neptune.get().getConfigManager().load();
+        plugin.getConfigManager().load();
         player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 }

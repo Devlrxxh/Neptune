@@ -22,10 +22,11 @@ import java.util.UUID;
 @Getter
 public class LeaderboardManager {
     private final List<LeaderboardPlayerEntry> changes = new ArrayList<>();
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
-    public LeaderboardManager() {
+    public LeaderboardManager(Neptune plugin) {
+        this.plugin = plugin;
         checkIfMissing();
         load();
     }

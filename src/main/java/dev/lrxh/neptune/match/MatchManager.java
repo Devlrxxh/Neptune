@@ -21,6 +21,11 @@ import java.util.List;
 
 public class MatchManager {
     public final HashSet<Match> matches = new HashSet<>();
+    private final Neptune plugin;
+    
+    public MatchManager(Neptune plugin) {
+        this.plugin = plugin;
+    }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {
         for (Participant ignored : participants) {
@@ -52,7 +57,7 @@ public class MatchManager {
         match.teleportToPositions();
 
         //Start match start runnable
-        Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
+        plugin.getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
     }
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {
@@ -84,7 +89,7 @@ public class MatchManager {
         match.teleportToPositions();
 
         //Start match start runnable
-        Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
+        plugin.getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
@@ -107,7 +112,7 @@ public class MatchManager {
         match.teleportToPositions();
 
         //Start match start runnable
-        Neptune.get().getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
+        plugin.getTaskScheduler().startTask(new MatchStartRunnable(match), 0L, 20L);
     }
 
     public void stopAllGames() {

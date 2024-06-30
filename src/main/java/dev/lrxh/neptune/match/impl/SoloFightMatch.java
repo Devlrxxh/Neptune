@@ -83,10 +83,10 @@ public class SoloFightMatch extends Match {
         loserProfile.getGameData().addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
 
-        Neptune.get().getLeaderboardManager().addChange
+        plugin.getLeaderboardManager().addChange
                 (new LeaderboardPlayerEntry(winner.getNameUnColored(), winner.getPlayerUUID(), kit));
 
-        Neptune.get().getLeaderboardManager().addChange
+        plugin.getLeaderboardManager().addChange
                 (new LeaderboardPlayerEntry(loser.getNameUnColored(), loser.getPlayerUUID(), kit));
     }
 
