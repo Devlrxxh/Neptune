@@ -23,8 +23,8 @@ public class MatchManager {
     public final HashSet<Match> matches = new HashSet<>();
     private final Neptune plugin;
     
-    public MatchManager(Neptune plugin) {
-        this.plugin = plugin;
+    public MatchManager() {
+        this.plugin = Neptune.get();
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {

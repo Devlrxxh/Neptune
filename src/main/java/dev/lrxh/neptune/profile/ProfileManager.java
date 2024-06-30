@@ -9,8 +9,8 @@ public class ProfileManager {
     public final HashMap<UUID, Profile> profiles = new HashMap<>();
     private final Neptune plugin;
 
-    public ProfileManager(Neptune plugin) {
-        this.plugin = plugin;
+    public ProfileManager() {
+        this.plugin = Neptune.get();
     }
 
     public Profile createProfile(UUID playerUUID) {

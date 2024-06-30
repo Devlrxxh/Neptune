@@ -36,7 +36,7 @@ public class Profile {
     private MongoCollection<Document> collection;
 
     public Profile(UUID playerUUID, Neptune plugin) {
-        this.plugin = plugin;
+        this.plugin = Neptune.get();
         this.playerUUID = playerUUID;
         this.state = ProfileState.IN_LOBBY;
 

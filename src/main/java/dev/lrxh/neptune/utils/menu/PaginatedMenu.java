@@ -42,7 +42,6 @@ public abstract class PaginatedMenu extends Menu {
         Map<Integer, Button> allButtons = getAllButtons(player);
         int maxItems = maxItemsPerPage();
         int totalItems = allButtons.size();
-        int totalPages = getPages(player);
 
         Map<Integer, Button> pageButtons = new HashMap<>();
 

@@ -18,8 +18,8 @@ public class MongoManager {
     public MongoCollection<Document> collection;
     private final Neptune plugin;
 
-    public MongoManager(Neptune plugin) {
-        this.plugin = plugin;
+    public MongoManager() {
+        this.plugin = Neptune.get();
         connect();
     }
 

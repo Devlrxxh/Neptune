@@ -88,21 +88,21 @@ public final class Neptune extends JavaPlugin {
             return;
         }
 
-        this.configManager = new ConfigManager(instance);
+        this.configManager = new ConfigManager();
         this.configManager.load();
-        this.queueManager = new QueueManager(instance);
-        this.matchManager = new MatchManager(instance);
-        this.arenaManager = new ArenaManager(instance);
-        this.kitManager = new KitManager(instance);
+        this.queueManager = new QueueManager();
+        this.matchManager = new MatchManager();
+        this.arenaManager = new ArenaManager();
+        this.kitManager = new KitManager();
         this.cache = new Cache();
-        this.hotbarManager = new HotbarManager(instance);
-        this.assemble = new Assemble(new ScoreboardAdapter(instance));
-        this.mongoManager = new MongoManager(instance);
+        this.hotbarManager = new HotbarManager();
+        this.assemble = new Assemble(new ScoreboardAdapter());
+        this.mongoManager = new MongoManager();
         if (!isEnabled()) {
             return;
         }
-        this.profileManager = new ProfileManager(this);
-        this.leaderboardManager = new LeaderboardManager(this);
+        this.profileManager = new ProfileManager();
+        this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
         this.generationManager = new GenerationManager();
 

@@ -25,8 +25,8 @@ public class LeaderboardManager {
     private final Neptune plugin;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
-    public LeaderboardManager(Neptune plugin) {
-        this.plugin = plugin;
+    public LeaderboardManager() {
+        this.plugin = Neptune.get();
         checkIfMissing();
         load();
     }

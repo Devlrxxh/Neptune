@@ -41,7 +41,7 @@ public class StandAloneArena extends Arena {
         this.used = false;
         this.duplicate = duplicate;
         this.chunkSnapshots = new ConcurrentLinkedHashMap<>();
-        this.plugin = plugin;
+        this.plugin = Neptune.get();
 
         takeSnapshot();
     }

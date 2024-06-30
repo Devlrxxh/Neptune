@@ -12,8 +12,8 @@ public class QueueManager {
     public final Map<UUID, Queue> queues = new ConcurrentHashMap<>();
     private final Neptune plugin;
 
-    public QueueManager(Neptune plugin) {
-        this.plugin = plugin;
+    public QueueManager() {
+        this.plugin = Neptune.get();
     }
 
     public void addToQueue(UUID playerUUID, Queue queue) {

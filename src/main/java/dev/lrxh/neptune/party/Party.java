@@ -33,7 +33,7 @@ public class Party {
         this.open = false;
         this.maxUsers = 10;
         this.duelRequest = true;
-        this.plugin = plugin;
+        this.plugin = Neptune.get();
 
         setupPlayer(leader);
     }

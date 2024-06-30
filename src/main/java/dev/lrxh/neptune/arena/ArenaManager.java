@@ -23,8 +23,8 @@ public class ArenaManager implements IManager {
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
     private final Neptune plugin;
 
-    public ArenaManager(Neptune plugin) {
-        this.plugin = plugin;
+    public ArenaManager() {
+        this.plugin = Neptune.get();
         loadArenas();
     }
 

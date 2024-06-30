@@ -18,8 +18,8 @@ public class HotbarManager {
     private final Map<ProfileState, Hotbar> items = new HashMap<>();
     private final Neptune plugin;
 
-    public HotbarManager(Neptune plugin) {
-        this.plugin = plugin;
+    public HotbarManager() {
+        this.plugin = Neptune.get();
         loadItems();
     }
 

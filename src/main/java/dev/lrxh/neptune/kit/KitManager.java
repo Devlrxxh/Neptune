@@ -17,8 +17,8 @@ public class KitManager implements IManager {
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
     private final Neptune plugin;
 
-    public KitManager(Neptune plugin) {
-        this.plugin = plugin;
+    public KitManager() {
+        this.plugin = Neptune.get();
         loadKits();
     }
 

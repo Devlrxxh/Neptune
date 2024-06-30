@@ -17,8 +17,8 @@ import java.util.List;
 public class ScoreboardAdapter implements AssembleAdapter {
     private final Neptune plugin;
 
-    public ScoreboardAdapter(Neptune plugin) {
-        this.plugin = plugin;
+    public ScoreboardAdapter() {
+        this.plugin = Neptune.get();
     }
 
     public String getTitle(Player player) {
