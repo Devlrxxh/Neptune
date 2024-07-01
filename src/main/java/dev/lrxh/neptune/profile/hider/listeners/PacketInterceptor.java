@@ -16,7 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
 /**
- * @Author: Athishh
+ * Author: Athishh
  * Package: me.athishh.lotus.core.user.hider.listeners
  * Created on: 1/20/2024
  */
@@ -48,7 +48,7 @@ public class PacketInterceptor extends PacketListenerAbstract {
                 if (receiver.canSee(shooter)) return;
                 event.setCancelled(true);
             } else if (entity instanceof Item item) {
-                Player dropper = ItemCache.getPlayerWhoDropped(item);
+                Player dropper = Bukkit.getPlayer(ItemCache.getPlayerWhoDropped(item));
                 if (dropper == null) return;
                 if (receiver.canSee(dropper)) return;
                 event.setCancelled(true);
@@ -57,7 +57,8 @@ public class PacketInterceptor extends PacketListenerAbstract {
             Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
             if (receiver == null) return;
             WrapperPlayServerEntitySoundEffect wrapper = new WrapperPlayServerEntitySoundEffect(event);
-            if (!receiver.canSee(EntityCache.getEntityById(wrapper.getEntityId()))) {
+            if(EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
+                if (receiver.canSee(player)) return;
                 event.setCancelled(true);
             }
         }

@@ -12,6 +12,11 @@
       <option name="url" value="https://repo.lunarclient.dev" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="codemc-releases" />
+      <option name="name" value="codemc-releases" />
+      <option name="url" value="https://repo.codemc.io/repository/maven-releases/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="sonatype" />
       <option name="name" value="sonatype" />
       <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
@@ -45,6 +50,11 @@
       <option name="id" value="jboss.community" />
       <option name="name" value="JBoss Community repository" />
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="mvnrepo" />
+      <option name="name" value="mvnrepo" />
+      <option name="url" value="https://mvnrepository.com/artifact/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="papermc" />

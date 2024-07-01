@@ -3,6 +3,8 @@ package dev.lrxh.neptune.utils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.inventory.ItemStack;
 
 
 @UtilityClass
@@ -15,5 +17,16 @@ public class EntityUtils {
             }
         }
         return null;
+    }
+
+    public int getIdByItemStack(World world, ItemStack itemStack) {
+        for (Entity entityEntry : world.getEntities()) {
+            if(entityEntry instanceof Item){
+                if (((Item) entityEntry).getItemStack().equals(itemStack)) {
+                    return entityEntry.getEntityId();
+                }
+            }
+        }
+        return 0;
     }
 }

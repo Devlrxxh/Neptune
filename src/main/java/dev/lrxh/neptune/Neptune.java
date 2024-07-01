@@ -38,6 +38,7 @@ import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
+import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuManager;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
@@ -118,6 +119,9 @@ public final class Neptune extends JavaPlugin {
         loadCommandManager();
         loadTasks();
         loadExtensions();
+        if (!isEnabled()) {
+            return;
+        }
         loadWorlds();
 
         System.gc();
@@ -145,6 +149,10 @@ public final class Neptune extends JavaPlugin {
     private void loadExtensions() {
         placeholder = loadExtension("PlaceholderAPI");
         fawe = loadExtension("FastAsyncWorldEdit");
+        if(!loadExtension("packetevents")){
+            ServerUtils.error("MAKE SURE TO ADD PACKETEVENTS TO YOUR PLUGINS");
+            getServer().getPluginManager().disablePlugin(this);
+        }
     }
 
     private boolean loadExtension(String pluginName) {

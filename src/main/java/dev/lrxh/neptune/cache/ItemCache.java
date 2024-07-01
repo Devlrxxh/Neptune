@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.cache;
 
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.utils.EntityUtils;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @Author: Athishh
@@ -19,9 +22,9 @@ import java.util.Map;
  */
 public class ItemCache implements Listener {
 
-    static Map<Integer, Player> droppedItemsMap = new HashMap<>();
+    static Map<Integer, UUID> droppedItemsMap = new HashMap<>();
 
-    public static Player getPlayerWhoDropped(Item droppedItem) {
+    public static UUID getPlayerWhoDropped(Item droppedItem) {
         return droppedItemsMap.get(droppedItem.getEntityId());
     }
 
@@ -29,14 +32,14 @@ public class ItemCache implements Listener {
     public void onPlayerDropItem(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
         Item droppedItem = event.getItemDrop();
-        droppedItemsMap.put(droppedItem.getEntityId(), player);
+        droppedItemsMap.put(droppedItem.getEntityId(), player.getUniqueId());
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerDeath(PlayerDeathEvent event) {
         Player player = event.getEntity();
         for (ItemStack item : event.getDrops()) {
-            droppedItemsMap.put(((Item) item).getEntityId(), player);
+            droppedItemsMap.put(EntityUtils.getIdByItemStack(player.getWorld(), item), player.getUniqueId());
         }
     }
 }
