@@ -1,10 +1,10 @@
-package dev.lrxh.neptune.profile.hider.listeners;
+package dev.lrxh.neptune.providers.hider.listeners;
 
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;
 import dev.lrxh.neptune.cache.EntityCache;
-import dev.lrxh.neptune.profile.hider.EntityHider;
+import dev.lrxh.neptune.providers.hider.EntityHider;
 import org.bukkit.Material;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;

@@ -29,9 +29,9 @@ import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
-import dev.lrxh.neptune.profile.hider.EntityHider;
-import dev.lrxh.neptune.profile.hider.listeners.BukkitListener;
-import dev.lrxh.neptune.profile.hider.listeners.PacketInterceptor;
+import dev.lrxh.neptune.providers.hider.EntityHider;
+import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
+import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
@@ -96,6 +96,11 @@ public final class Neptune extends JavaPlugin {
             return;
         }
 
+        loadExtensions();
+        if (!isEnabled()) {
+            return;
+        }
+
         this.configManager = new ConfigManager();
         this.configManager.load();
         initAPIs();
@@ -118,10 +123,6 @@ public final class Neptune extends JavaPlugin {
         registerListeners();
         loadCommandManager();
         loadTasks();
-        loadExtensions();
-        if (!isEnabled()) {
-            return;
-        }
         loadWorlds();
 
         System.gc();

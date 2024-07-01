@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.profile.hider;
+package dev.lrxh.neptune.providers.hider;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerDestroyEntities;

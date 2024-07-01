@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.profile.hider.listeners;
+package dev.lrxh.neptune.providers.hider.listeners;
 
 
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;

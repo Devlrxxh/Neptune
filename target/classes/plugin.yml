@@ -6,3 +6,5 @@ softdepend:
   - PlaceholderAPI
   - FastAsyncWorldEdit
   - Multiverse-Core
+depend:
+  - packetevents
