@@ -26,7 +26,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
     @Override
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
-            stop();
+            stop(plugin);
 
             return;
         }
@@ -54,7 +54,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
             if (match.arena instanceof StandAloneArena) {
                 ((StandAloneArena) match.arena).setUsed(false);
                 ((StandAloneArena) match.arena).restoreSnapshot();
-                stop();
+                stop(plugin);
             }
             match.removeEntities();
             plugin.getMatchManager().matches.remove(match);

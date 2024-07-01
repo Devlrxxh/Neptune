@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.impl;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -37,8 +36,8 @@ public class FfaFightMatch extends Match {
             participant.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                     MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
         });
-        
-        plugin.getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
+
+        new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
 
     @Override

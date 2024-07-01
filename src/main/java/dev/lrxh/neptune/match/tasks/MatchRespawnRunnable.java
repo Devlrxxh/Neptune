@@ -27,7 +27,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
     @Override
     public void run() {
         if (!plugin.getMatchManager().matches.contains(match)) {
-            stop();
+            stop(plugin);
 
             return;
         }
@@ -36,7 +36,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
             MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
             match.startMatch();
-            stop();
+            stop(plugin);
             return;
         }
 

@@ -146,8 +146,8 @@ public final class Neptune extends JavaPlugin {
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler();
-        taskScheduler.startTask(new QueueCheckTask(), SettingsLocale.QUEUE_UPDATE_TIME.getInt());
-        taskScheduler.startTask(new LeaderboardTask(), SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
+        new QueueCheckTask().start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), 20L, this);
+        new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), 20L, this);
     }
 
     private void loadCommandManager() {
@@ -190,7 +190,7 @@ public final class Neptune extends JavaPlugin {
         stopService(kitManager, KitManager::saveKits);
         stopService(arenaManager, ArenaManager::saveArenas);
         stopService(matchManager, MatchManager::stopAllGames);
-        stopService(taskScheduler, TaskScheduler::stopAllTasks);
+        stopService(taskScheduler, ts -> ts.stopAllTasks(this));
         stopService(cache, Cache::save);
     }
 

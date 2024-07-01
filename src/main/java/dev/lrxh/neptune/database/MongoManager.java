@@ -15,8 +15,8 @@ import org.bukkit.Bukkit;
 
 @Getter
 public class MongoManager {
-    public MongoCollection<Document> collection;
     private final Neptune plugin;
+    public MongoCollection<Document> collection;
 
     public MongoManager() {
         this.plugin = Neptune.get();

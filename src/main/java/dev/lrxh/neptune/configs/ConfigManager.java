@@ -17,7 +17,7 @@ public class ConfigManager {
     private ConfigFile hotbarConfig;
     private ConfigFile menusConfig;
 
-    public ConfigManager(){
+    public ConfigManager() {
         this.plugin = Neptune.get();
     }
 

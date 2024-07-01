@@ -22,9 +22,9 @@ public class Party {
     private final UUID leader;
     private final HashSet<UUID> users;
     private final boolean duelRequest;
+    private final Neptune plugin;
     private boolean open;
     private int maxUsers;
-    private final Neptune plugin;
 
     public Party(UUID leader, Neptune plugin) {
         this.leader = leader;

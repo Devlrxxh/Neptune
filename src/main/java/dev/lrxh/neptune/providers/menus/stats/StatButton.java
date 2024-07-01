@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.providers.menus.stats;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.data.KitData;

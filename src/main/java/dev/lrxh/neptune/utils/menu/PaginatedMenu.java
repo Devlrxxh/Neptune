@@ -21,6 +21,7 @@ public abstract class PaginatedMenu extends Menu {
     }
 
     public abstract int maxItemsPerPage();
+
     public abstract Map<Integer, Button> getAllButtons(Player player);
 
     public int getPages(Player player) {
@@ -59,8 +60,8 @@ public abstract class PaginatedMenu extends Menu {
             index++;
         }
 
-                pageButtons.put(0, new PageButton(-1, this));
-                pageButtons.put(8, new PageButton(1, this));
+        pageButtons.put(0, new PageButton(-1, this));
+        pageButtons.put(8, new PageButton(1, this));
 
         return pageButtons;
     }

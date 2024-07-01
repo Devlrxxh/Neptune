@@ -206,7 +206,7 @@ public class KitCommand extends BaseCommand {
 
         kit.getArenas().add(arena);
 
-        if(arena instanceof StandAloneArena) {
+        if (arena instanceof StandAloneArena) {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
             standAloneArena.addCopiesToKits();
         }
@@ -237,9 +237,9 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        if(arena instanceof StandAloneArena) {
+        if (arena instanceof StandAloneArena) {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
-            for(StandAloneArena copy : standAloneArena.getCopies()) {
+            for (StandAloneArena copy : standAloneArena.getCopies()) {
                 standAloneArena.removeCopyFromKits(copy);
             }
         }

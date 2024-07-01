@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.utils;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -50,7 +51,7 @@ public class TtlHashMap<K, V> {
         if (actions.containsKey(key)) {
             NeptuneRunnable runnable = actions.get(key).getRunnable();
             if (runnable != null) {
-                runnable.stop();
+                runnable.stop(Neptune.get());
             }
             actions.remove(key);
         }

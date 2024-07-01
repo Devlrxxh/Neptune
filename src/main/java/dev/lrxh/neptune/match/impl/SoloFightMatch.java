@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.impl;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -39,7 +38,6 @@ public class SoloFightMatch extends Match {
         this.participantB = participantB;
     }
 
-
     @Override
     public void end() {
         matchState = MatchState.ENDING;
@@ -59,7 +57,7 @@ public class SoloFightMatch extends Match {
 
         removePlaying();
 
-        plugin.getTaskScheduler().startTask(new MatchEndRunnable(this), 0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
 
     private void removePlaying() {
@@ -77,17 +75,14 @@ public class SoloFightMatch extends Match {
         winnerProfile.getGameData().addHistory(
                 new MatchHistory(true, loserProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
 
-        winnerProfile.getGameData().run(kit, true);
-        loserProfile.getGameData().run(kit, false);
-
         loserProfile.getGameData().addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
 
-        plugin.getLeaderboardManager().addChange
-                (new LeaderboardPlayerEntry(winner.getNameUnColored(), winner.getPlayerUUID(), kit));
+        winnerProfile.getGameData().run(kit, true);
+        loserProfile.getGameData().run(kit, false);
 
-        plugin.getLeaderboardManager().addChange
-                (new LeaderboardPlayerEntry(loser.getNameUnColored(), loser.getPlayerUUID(), kit));
+        forEachParticipant(participant -> plugin.getLeaderboardManager().addChange
+                (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
     }
 
     @Override
@@ -122,7 +117,7 @@ public class SoloFightMatch extends Match {
                 participantKiller.setCombo(0);
 
                 matchState = MatchState.STARTING;
-                plugin.getTaskScheduler().startTask(new MatchRespawnRunnable(this, participant), 0L, 20L);
+                new MatchRespawnRunnable(this, participant).start(0L, 20L, plugin);
                 return;
             }
         }

@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.menu;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;

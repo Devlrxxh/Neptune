@@ -12,7 +12,6 @@ import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;

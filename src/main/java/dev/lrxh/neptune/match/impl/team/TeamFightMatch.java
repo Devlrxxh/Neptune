@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.impl.team;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -51,7 +50,7 @@ public class TeamFightMatch extends Match {
         loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "Opponent Team"), 100);
 
-        plugin.getTaskScheduler().startTask(new MatchEndRunnable(this), 0L);
+        new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
 
 

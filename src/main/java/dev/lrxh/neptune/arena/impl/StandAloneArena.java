@@ -115,8 +115,8 @@ public class StandAloneArena extends Arena {
         );
     }
 
-    public void addCopiesToKits(){
-        for(StandAloneArena copy : copies) {
+    public void addCopiesToKits() {
+        for (StandAloneArena copy : copies) {
             addCopyToKits(copy);
         }
     }
