@@ -3,11 +3,14 @@ package dev.lrxh.neptune;
 import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
+import com.github.retrooper.packetevents.PacketEvents;
 import dev.lrxh.VersionHandler;
 import dev.lrxh.gameRule.GameRule;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
+import dev.lrxh.neptune.cache.EntityCache;
+import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.*;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
@@ -26,6 +29,9 @@ import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.profile.hider.EntityHider;
+import dev.lrxh.neptune.profile.hider.listeners.BukkitListener;
+import dev.lrxh.neptune.profile.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
@@ -71,6 +77,7 @@ public final class Neptune extends JavaPlugin {
     private VersionHandler versionHandler;
     private MenuManager menuManager;
     private GenerationManager generationManager;
+    private EntityHider entityHider;
 
     public static Neptune get() {
         return instance;
@@ -90,6 +97,7 @@ public final class Neptune extends JavaPlugin {
 
         this.configManager = new ConfigManager();
         this.configManager.load();
+        initAPIs();
         this.queueManager = new QueueManager();
         this.matchManager = new MatchManager();
         this.arenaManager = new ArenaManager();
@@ -115,13 +123,22 @@ public final class Neptune extends JavaPlugin {
         System.gc();
     }
 
+    private void initAPIs() {
+        entityHider = new EntityHider(this, EntityHider.Policy.BLACKLIST);
+
+        Bukkit.getServer().getPluginManager().registerEvents(new BukkitListener(), this);
+        PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
+        PacketEvents.getAPI().init();
+    }
     private void registerListeners() {
         Arrays.asList(
                 new ProfileListener(),
                 new MatchListener(),
                 new LobbyListener(),
                 new ItemListener(),
-                new MenuListener()
+                new MenuListener(),
+                new EntityCache(),
+                new ItemCache()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
