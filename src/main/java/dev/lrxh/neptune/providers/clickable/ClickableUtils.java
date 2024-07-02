@@ -18,8 +18,7 @@ public class ClickableUtils {
             ArrayList<Object> tempObjects = new ArrayList<>();
 
             for (Object obj : objects) {
-                if (obj instanceof String) {
-                    String string = (String) obj;
+                if (obj instanceof String string) {
                     if (string.contains(placeholder)) {
                         int index = string.indexOf(placeholder);
 
@@ -34,8 +33,7 @@ public class ClickableUtils {
                     } else {
                         tempObjects.add(obj);
                     }
-                } else if (obj instanceof List) {
-                    List<?> list = (List<?>) obj;
+                } else if (obj instanceof List<?> list) {
                     tempObjects.addAll(list);
                 } else {
                     tempObjects.add(obj);

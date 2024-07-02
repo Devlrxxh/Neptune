@@ -19,8 +19,7 @@ public class ColorUtil {
         String lastColor = null;
 
         for (Object object : input) {
-            if (object instanceof String) {
-                String str = (String) object;
+            if (object instanceof String str) {
 
                 Matcher matcher = COLOR_PATTERN.matcher(str);
                 while (matcher.find()) {
@@ -32,8 +31,7 @@ public class ColorUtil {
                 } else {
                     result.add(CC.color(str));
                 }
-            } else if (object instanceof TextComponent) {
-                TextComponent textComponent = (TextComponent) object;
+            } else if (object instanceof TextComponent textComponent) {
                 String str = textComponent.content();
 
                 Matcher matcher = COLOR_PATTERN.matcher(str);

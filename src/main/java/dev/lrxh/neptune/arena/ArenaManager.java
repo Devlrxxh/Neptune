@@ -30,7 +30,7 @@ public class ArenaManager implements IManager {
     public void loadArenas() {
         FileConfiguration config = plugin.getConfigManager().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
-            for (String arenaName : Objects.requireNonNull(config.getConfigurationSection("arenas")).getKeys(false)) {
+            for (String arenaName : getKeys("arenas")) {
                 String path = "arenas." + arenaName + ".";
 
                 String displayName = config.getString(path + "displayName");
@@ -87,8 +87,7 @@ public class ArenaManager implements IManager {
                     new Value("blueSpawn", LocationUtil.serialize(arena.getBlueSpawn())),
                     new Value("enabled", arena.isEnabled())
             ));
-            if (arena instanceof StandAloneArena) {
-                StandAloneArena standAloneArena = (StandAloneArena) arena;
+            if (arena instanceof StandAloneArena standAloneArena) {
                 values.addAll(Arrays.asList(
                         new Value("type", "STANDALONE"),
                         new Value("min", LocationUtil.serialize(standAloneArena.getMin())),

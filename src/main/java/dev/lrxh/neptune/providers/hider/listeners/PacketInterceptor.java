@@ -57,7 +57,7 @@ public class PacketInterceptor extends PacketListenerAbstract {
             Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
             if (receiver == null) return;
             WrapperPlayServerEntitySoundEffect wrapper = new WrapperPlayServerEntitySoundEffect(event);
-            if(EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
+            if (EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
                 if (receiver.canSee(player)) return;
                 event.setCancelled(true);
             }

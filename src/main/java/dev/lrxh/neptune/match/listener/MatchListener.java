@@ -49,8 +49,7 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
 
             if (!profile.getState().equals(ProfileState.IN_GAME)) {
@@ -92,9 +91,8 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         ProjectileSource shooter = event.getEntity().getShooter();
-        if (!(shooter instanceof Player)) return;
+        if (!(shooter instanceof Player player)) return;
 
-        Player player = (Player) shooter;
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         Match match = profile.getMatch();
         if (match == null) {
@@ -108,10 +106,8 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player player) {
 
-            Player attacker = (Player) event.getDamager();
             Profile attackerProfile = plugin.getProfileManager().getByUUID(attacker.getUniqueId());
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (profile == null) return;
@@ -127,8 +123,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if (match instanceof TeamFightMatch) {
-                TeamFightMatch teamFightMatch = (TeamFightMatch) match;
+            if (match instanceof TeamFightMatch teamFightMatch) {
                 if (teamFightMatch.onSameTeam(player.getUniqueId(), attacker.getUniqueId())) {
                     event.setCancelled(true);
                 }
@@ -148,10 +143,8 @@ public class MatchListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onProjectileHitEvent(EntityDamageByEntityEvent event) {
-        if (event.getEntity() instanceof Player && event.getDamager() instanceof Player) {
-            Player target = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player target && event.getDamager() instanceof Player damager) {
             Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
-            Player damager = (Player) event.getDamager();
             Profile playerProfile = plugin.getProfileManager().getByUUID(damager.getUniqueId());
 
             if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME)) {
@@ -187,8 +180,7 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (profile == null) return;
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
@@ -203,8 +195,7 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (profile == null) return;
             Match match = profile.getMatch();
@@ -218,8 +209,7 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
-        if (event.getEntity() instanceof Player) {
-            Player player = (Player) event.getEntity();
+        if (event.getEntity() instanceof Player player) {
             Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
             if (profile == null) return;
             Match match = profile.getMatch();

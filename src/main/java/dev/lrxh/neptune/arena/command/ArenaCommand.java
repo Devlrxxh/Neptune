@@ -124,11 +124,10 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena)) {
+        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena arena)) {
             player.sendMessage(CC.error("Arena isn't standalone!"));
             return;
         }
-        StandAloneArena arena = (StandAloneArena) plugin.getArenaManager().getArenaByName(arenaName);
 
         if (edgeType.equals(EdgeType.MIN)) {
             arena.setMin(player.getLocation());

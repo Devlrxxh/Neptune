@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.profile.data;
 
+import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.divisions.Division;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +19,8 @@ public class KitData {
     private int bestStreak = 0;
     private int currentStreak = 0;
     private List<ItemStack> kitLoadout = new ArrayList<>();
+    private Division division;
+    private Neptune plugin;
 
     public double getKdr() {
         double kd = wins;
@@ -27,6 +31,10 @@ public class KitData {
             kd = bd2.doubleValue();
         }
         return kd;
+    }
+
+    public void updateDivision() {
+        plugin.getDivisionManager().getDivisionByWinCount(wins);
     }
 }
 

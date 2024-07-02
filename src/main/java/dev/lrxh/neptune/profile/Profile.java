@@ -50,6 +50,7 @@ public class Profile {
         for (Kit kit : plugin.getKitManager().kits) {
             KitData kitData = new KitData();
             gameData.getKitData().put(kit, kitData);
+            kitData.setPlugin(plugin);
         }
 
         load();
@@ -80,6 +81,7 @@ public class Profile {
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
+            profileKitData.setDivision(plugin.getDivisionManager().getDivisionByWinCount(profileKitData.getWins()));
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
         }

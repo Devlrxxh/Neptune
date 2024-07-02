@@ -65,8 +65,7 @@ public class ArenaManagmentButton extends Button {
                 }
                 break;
             case SHIFT_LEFT:
-                if (arena instanceof StandAloneArena) {
-                    StandAloneArena standAloneArena = (StandAloneArena) arena;
+                if (arena instanceof StandAloneArena standAloneArena) {
                     player.sendMessage(CC.color("&cDeleting all arenas copies..."));
                     if (!((StandAloneArena) arena).getCopies().isEmpty()) {
                         HashSet<StandAloneArena> copies = new HashSet<>(standAloneArena.getCopies());

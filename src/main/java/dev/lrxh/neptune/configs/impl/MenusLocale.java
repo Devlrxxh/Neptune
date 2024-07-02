@@ -39,6 +39,7 @@ public enum MenusLocale implements IDataAccessor {
             " &f&7* &fLosses: &b<losses>",
             " &f&7* &fCurrent Streak: &b<win_streak_current>",
             " &f&7* &fBest Streak: &b<win_streak_best>",
+            " &f&7* &fDivision: &b<division>",
             " &f&7* K/D &b<kill_death_ratio>"),
     MATCH_LIST_TITLE("MATCH.LIST.TITLE", null, DataType.STRING, "&7Select Match"),
     MATCH_LIST_SIZE("MATCH_LIST.SIZE", null, DataType.INT, "36"),

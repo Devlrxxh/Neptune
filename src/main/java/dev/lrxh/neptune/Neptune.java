@@ -15,6 +15,7 @@ import dev.lrxh.neptune.commands.*;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.database.MongoManager;
+import dev.lrxh.neptune.divisions.DivisionManager;
 import dev.lrxh.neptune.duel.command.DuelCommand;
 import dev.lrxh.neptune.hotbar.HotbarManager;
 import dev.lrxh.neptune.hotbar.listener.ItemListener;
@@ -29,11 +30,11 @@ import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.profile.listener.ProfileListener;
+import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
 import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
-import dev.lrxh.neptune.profile.listener.ProfileListener;
-import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
@@ -79,6 +80,7 @@ public final class Neptune extends JavaPlugin {
     private MenuManager menuManager;
     private GenerationManager generationManager;
     private EntityHider entityHider;
+    private DivisionManager divisionManager;
 
     public static Neptune get() {
         return instance;
@@ -115,6 +117,7 @@ public final class Neptune extends JavaPlugin {
         if (!isEnabled()) {
             return;
         }
+        this.divisionManager = new DivisionManager();
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
@@ -135,6 +138,7 @@ public final class Neptune extends JavaPlugin {
         PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
         PacketEvents.getAPI().init();
     }
+
     private void registerListeners() {
         Arrays.asList(
                 new ProfileListener(),
@@ -150,7 +154,7 @@ public final class Neptune extends JavaPlugin {
     private void loadExtensions() {
         placeholder = loadExtension("PlaceholderAPI");
         fawe = loadExtension("FastAsyncWorldEdit");
-        if(!loadExtension("packetevents")){
+        if (!loadExtension("packetevents")) {
             ServerUtils.error("MAKE SURE TO ADD PACKETEVENTS TO YOUR PLUGINS");
             getServer().getPluginManager().disablePlugin(this);
         }

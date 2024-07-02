@@ -44,11 +44,13 @@ public class GameData {
             addLoss(kit);
             kitData.get(kit).setCurrentStreak(0);
         }
+
     }
 
     private void addWin(Kit kit) {
         kitData.get(kit).setWins(kitData.get(kit).getWins() + 1);
         addWinStreak(kit);
+        kitData.get(kit).updateDivision();
     }
 
     private void addLoss(Kit kit) {

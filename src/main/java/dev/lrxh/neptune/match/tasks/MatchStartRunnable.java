@@ -13,8 +13,8 @@ import dev.lrxh.sounds.Sound;
 public class MatchStartRunnable extends NeptuneRunnable {
 
     private final Match match;
-    private int startTimer;
     private final Neptune plugin;
+    private int startTimer;
 
     public MatchStartRunnable(Match match, Neptune plugin) {
         this.match = match;

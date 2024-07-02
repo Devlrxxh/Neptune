@@ -21,7 +21,7 @@ public class EntityUtils {
 
     public int getIdByItemStack(World world, ItemStack itemStack) {
         for (Entity entityEntry : world.getEntities()) {
-            if(entityEntry instanceof Item){
+            if (entityEntry instanceof Item) {
                 if (((Item) entityEntry).getItemStack().equals(itemStack)) {
                     return entityEntry.getEntityId();
                 }

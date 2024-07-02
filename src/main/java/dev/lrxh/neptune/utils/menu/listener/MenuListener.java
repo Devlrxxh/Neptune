@@ -26,8 +26,7 @@ public class MenuListener implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
     public void onButtonPress(InventoryClickEvent event) {
-        if (!(event.getWhoClicked() instanceof Player)) return;
-        Player player = (Player) event.getWhoClicked();
+        if (!(event.getWhoClicked() instanceof Player player)) return;
 
         Menu menu = plugin.getMenuManager().openedMenus.get(player.getUniqueId());
         if (menu == null) return;

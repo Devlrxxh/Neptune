@@ -25,7 +25,7 @@ public class KitManager implements IManager {
     public void loadKits() {
         FileConfiguration config = plugin.getConfigManager().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {
-            for (String kitName : Objects.requireNonNull(config.getConfigurationSection("kits")).getKeys(false)) {
+            for (String kitName : getKeys("kits")) {
                 String path = "kits." + kitName + ".";
                 String displayName = config.getString(path + "displayName");
                 ItemStack icon = ItemUtils.deserializeItem(Objects.requireNonNull(config.getString(path + "icon")));

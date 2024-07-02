@@ -49,8 +49,7 @@ public class PlaceholderUtil {
 
             if (profile.getMatch() != null) {
                 Match match = profile.getMatch();
-                if (match instanceof SoloFightMatch) {
-                    SoloFightMatch soloFightMatch = (SoloFightMatch) match;
+                if (match instanceof SoloFightMatch soloFightMatch) {
 
                     Participant redPlayer = soloFightMatch.getParticipantA();
                     Participant bluePlayer = soloFightMatch.getParticipantB();
@@ -84,8 +83,7 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayerUUID())));
                     }
                 }
-                if (match instanceof TeamFightMatch) {
-                    TeamFightMatch teamFightMatch = (TeamFightMatch) match;
+                if (match instanceof TeamFightMatch teamFightMatch) {
                     MatchTeam matchTeam = teamFightMatch.getPlayerTeam(teamFightMatch.getParticipant(player.getUniqueId()));
                     MatchTeam opponentTeam = matchTeam.equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
 
@@ -107,8 +105,7 @@ public class PlaceholderUtil {
                     }
                 }
 
-                if (match instanceof FfaFightMatch) {
-                    FfaFightMatch ffaFightMatch = (FfaFightMatch) match;
+                if (match instanceof FfaFightMatch ffaFightMatch) {
                     line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.participants.size() - ffaFightMatch.deadParticipants.size()));
                 }
 

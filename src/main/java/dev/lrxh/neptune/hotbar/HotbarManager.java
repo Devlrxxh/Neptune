@@ -4,6 +4,8 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.impl.Hotbar;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -14,7 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Getter
-public class HotbarManager {
+public class HotbarManager implements IManager {
     private final Map<ProfileState, Hotbar> items = new HashMap<>();
     private final Neptune plugin;
 
@@ -61,10 +63,10 @@ public class HotbarManager {
     public void loadItems() {
         FileConfiguration config = plugin.getConfigManager().getHotbarConfig().getConfiguration();
         if (config.getConfigurationSection("ITEMS") != null) {
-            for (String section : config.getConfigurationSection("ITEMS").getKeys(false)) {
+            for (String section : getKeys("ITEMS")) {
                 Hotbar inventory = new Hotbar();
 
-                for (String itemName : config.getConfigurationSection("ITEMS." + section).getKeys(false)) {
+                for (String itemName : getKeys("ITEMS." + section)) {
                     String path = "ITEMS." + section + "." + itemName + ".";
 
                     String displayName = config.getString(path + "NAME");
@@ -82,5 +84,10 @@ public class HotbarManager {
                 }
             }
         }
+    }
+
+    @Override
+    public ConfigFile getConfigFile() {
+        return plugin.getConfigManager().getHotbarConfig();
     }
 }
