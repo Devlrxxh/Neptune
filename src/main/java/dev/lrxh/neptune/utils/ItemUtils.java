@@ -116,7 +116,11 @@ public class ItemUtils {
 
         lore.forEach(line -> {
             for (Replacement replacement : replacements) {
-                line = line.replaceAll(replacement.getPlaceholder(), (String) replacement.getReplacement());
+                if (replacement.getReplacement() instanceof String) {
+                    line = line.replaceAll(replacement.getPlaceholder(), (String) replacement.getReplacement());
+                } else if (replacement.getReplacement() instanceof Integer) {
+                    line = line.replaceAll(replacement.getPlaceholder(), String.valueOf(replacement.getReplacement()));
+                }
             }
             newLore.add(line);
         });

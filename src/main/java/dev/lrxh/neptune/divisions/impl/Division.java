@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.divisions;
+package dev.lrxh.neptune.divisions.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

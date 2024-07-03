@@ -2,6 +2,7 @@ package dev.lrxh.neptune.hotbar.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.divisions.menu.DivisionsMenu;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.match.menu.MatchListMenu;
@@ -116,6 +117,12 @@ public enum ItemAction {
                 return;
             }
             new PartySettingsMenu(party).openMenu(player.getUniqueId());
+        }
+    },
+    DIVISIONS() {
+        @Override
+        public void execute(Player player) {
+            new DivisionsMenu().openMenu(player.getUniqueId());
         }
     };
 

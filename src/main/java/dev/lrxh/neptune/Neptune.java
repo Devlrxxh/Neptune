@@ -112,7 +112,6 @@ public final class Neptune extends JavaPlugin {
         this.kitManager = new KitManager();
         this.cache = new Cache();
         this.hotbarManager = new HotbarManager();
-        this.assemble = new Assemble(new ScoreboardAdapter());
         this.mongoManager = new MongoManager();
         if (!isEnabled()) {
             return;
@@ -122,6 +121,7 @@ public final class Neptune extends JavaPlugin {
         this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
         this.generationManager = new GenerationManager();
+        this.assemble = new Assemble(new ScoreboardAdapter());
 
         registerListeners();
         loadCommandManager();

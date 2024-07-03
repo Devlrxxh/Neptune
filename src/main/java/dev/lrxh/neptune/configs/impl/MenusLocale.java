@@ -196,8 +196,13 @@ public enum MenusLocale implements IDataAccessor {
     PARTY_EVENTS_KIT_SELECT_SLOT("PARTY.EVENTS.KIT.SELECT.STARTING-SLOT", null, DataType.INT, "10"),
     PARTY_EVENTS_KIT_SELECT_NAME("PARTY.EVENTS.KIT.SELECT.ITEM-NAME", null, DataType.STRING, "&b<kit>"),
     PARTY_EVENTS_KIT_SELECT_LORE("PARTY.EVENTS.KIT.SELECT.LORE", null, DataType.STRING_LIST, " ", "&a&lClick to select kit"),
-    PARTY_EVENTS_KIT_SELECT_SIZE("PARTY.EVENTS.KIT.SELECT.SIZE", null, DataType.INT, "27");
-
+    PARTY_EVENTS_KIT_SELECT_SIZE("PARTY.EVENTS.KIT.SELECT.SIZE", null, DataType.INT, "27"),
+    DIVISIONS_TITLE("DIVISIONS.TITLE", null, DataType.STRING, "&7Divisions"),
+    DIVISIONS_SIZE("DIVISIONS.SIZE", null, DataType.INT, "36"),
+    DIVISIONS_STARTING_SLOT("DIVISIONS.STARTING-SLOT", null, DataType.INT, "10"),
+    DIVISIONS_FILTER("DIVISIONS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
+    DIVISIONS_ITEM_NAME("DIVISIONS.ITEM.NAME", null, DataType.STRING, "<division>"),
+    DIVISIONS_LORE("DIVISIONS.LORE", null, DataType.STRING_LIST, "&7To reach this this rank you", "&7need <wins> wins.");
 
     private final String path;
     private final String comment;

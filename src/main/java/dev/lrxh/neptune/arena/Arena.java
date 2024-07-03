@@ -17,7 +17,7 @@ public class Arena {
     private Location redSpawn;
     private Location blueSpawn;
     private boolean enabled;
-    private final Neptune plugin;
+    private Neptune plugin;
 
     public void delete() {
         plugin.getKitManager().removeArenasFromKits(this);

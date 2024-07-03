@@ -10,10 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.UUID;
+import java.util.*;
 
 public abstract class Menu {
     public static Neptune plugin = Neptune.get();
@@ -38,19 +35,28 @@ public abstract class Menu {
         buttons.putAll(getButtons(player));
 
         if (getFilter() != Filter.NONE) {
-            TreeMap<Integer, Button> modifiedButtons = new TreeMap<>();
-            for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
+            TreeSet<Map.Entry<Integer, Button>> sortedEntries = new TreeSet<>(Map.Entry.comparingByKey());
+            sortedEntries.addAll(buttons.entrySet());
+
+            TreeMap<Integer, Button> updatedButtons = new TreeMap<>();
+
+            for (Map.Entry<Integer, Button> buttonEntry : sortedEntries) {
                 int slot = buttonEntry.getKey();
+
                 if ((slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton && buttonEntry.getValue().isDisplay())) {
-                    while (buttons.get(slot) != null) {
-                        slot += 2;
-                    }
+                    slot += 2;
                 }
 
-                modifiedButtons.put(slot, buttonEntry.getValue());
+                while (updatedButtons.containsKey(slot)) {
+                    slot++;
+                }
+
+                updatedButtons.put(slot, buttonEntry.getValue());
             }
-            this.buttons = modifiedButtons;
+
+            this.buttons = updatedButtons;
         }
+
 
         switch (getFilter()) {
             case BORDER:

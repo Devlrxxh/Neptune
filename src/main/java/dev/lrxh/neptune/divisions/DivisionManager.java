@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.divisions;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.divisions.impl.Division;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.utils.ConfigFile;
 import org.bukkit.Material;

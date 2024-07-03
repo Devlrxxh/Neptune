@@ -14,9 +14,11 @@ public class TtlHashMap<K, V> {
     private final Map<K, V> map = new ConcurrentHashMap<>();
     private final Map<K, TtlAction> actions = new ConcurrentHashMap<>();
     private final long leaveTime;
+    private final Neptune plugin;
 
     public TtlHashMap(long delay) {
         this.leaveTime = delay;
+        this.plugin = Neptune.get();
     }
 
     public int size() {
@@ -25,7 +27,6 @@ public class TtlHashMap<K, V> {
 
     public void put(K key, V value) {
         map.put(key, value);
-        actions.put(key, new TtlAction(null, null, null));
         scheduleRemoval(key);
     }
 
@@ -62,12 +63,22 @@ public class TtlHashMap<K, V> {
     }
 
     private void scheduleRemoval(K key) {
-        actions.get(key).setRunnable(new NeptuneRunnable() {
-            @Override
-            public void run() {
-                map.remove(key);
-                onExpire(key);
-            }
-        }, leaveTime);
+        TtlAction action = actions.get(key);
+        if (action != null) {
+            actions.get(key).setRunnable(new NeptuneRunnable() {
+                @Override
+                public void run() {
+                    map.remove(key);
+                    onExpire(key);
+                }
+            }, leaveTime);
+        } else {
+            new NeptuneRunnable() {
+                @Override
+                public void run() {
+                    map.remove(key);
+                }
+            }.start(0, leaveTime, plugin);
+        }
     }
 }

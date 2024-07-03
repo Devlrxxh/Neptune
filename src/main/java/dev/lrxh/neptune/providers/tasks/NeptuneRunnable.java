@@ -9,6 +9,10 @@ public abstract class NeptuneRunnable extends BukkitRunnable {
         plugin.getTaskScheduler().startTask(this, delay, period);
     }
 
+    public void start(Neptune plugin) {
+        plugin.getTaskScheduler().startTask(this);
+    }
+
     public void stop(Neptune plugin) {
         plugin.getTaskScheduler().removeTask(this);
     }

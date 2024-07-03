@@ -13,6 +13,11 @@ public class TaskScheduler {
         task.runTaskTimer(Neptune.get(), delay, period);
     }
 
+    public void startTask(NeptuneRunnable task) {
+        tasks.add(task);
+        task.runTask(Neptune.get());
+    }
+
     public void startTaskLater(NeptuneRunnable task, long delay) {
         tasks.add(task);
         task.runTaskLater(Neptune.get(), delay);
