@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Sync" />
         <module name="Plugin" />
+        <module name="Common" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -16,6 +17,7 @@
       <module name="1_20_2" target="1.8" />
       <module name="1_8" target="1.8" />
       <module name="Build" target="1.8" />
+      <module name="Packets" target="18" />
     </bytecodeTargetLevel>
   </component>
 </project>
