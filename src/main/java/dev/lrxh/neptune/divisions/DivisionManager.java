@@ -32,13 +32,12 @@ public class DivisionManager implements IManager {
                 int winsRequired = config.getInt(path + "WINS");
                 Material material = Material.getMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL")));
 
-                System.out.println("Added");
                 divisions.add(new Division(divisionName, displayName, winsRequired, material));
             }
         }
 
         divisions = divisions.stream()
-                .sorted(Comparator.comparingInt(Division::getWinsRequired))
+                .sorted(Comparator.comparingInt(Division::getWinsRequired).reversed())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
@@ -48,7 +47,7 @@ public class DivisionManager implements IManager {
                 return division;
             }
         }
-        return !divisions.isEmpty() ? divisions.iterator().next() : null;
+        return divisions.iterator().next();
     }
 
     @Override

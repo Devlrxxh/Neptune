@@ -4,12 +4,10 @@ import dev.lrxh.neptune.Neptune;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.bukkit.Location;
 
 @Getter
 @Setter
-@SuperBuilder
 @AllArgsConstructor
 public class Arena {
     private String name;

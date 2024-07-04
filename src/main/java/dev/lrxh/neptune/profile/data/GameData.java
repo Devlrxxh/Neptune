@@ -7,6 +7,7 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.providers.request.Request;
+import dev.lrxh.neptune.utils.TtlAction;
 import dev.lrxh.neptune.utils.TtlHashMap;
 import lombok.Getter;
 import lombok.Setter;
@@ -66,8 +67,8 @@ public class GameData {
     }
 
     public void addRequest(Request duelRequest, UUID name, Consumer<Player> action) {
-        requests.put(name, duelRequest);
-        requests.setExpireAction(name, name, action);
+        requests.put(name, duelRequest, new TtlAction(name, action));
+
     }
 
     public void removeRequest(UUID playerUUID) {

@@ -39,7 +39,7 @@ public class AssembleThread extends Thread {
      * Tick logic for thread.
      */
     private void tick() {
-        if (assemble.getPlugin().getTaskScheduler() == null) {
+        if (assemble.getPlugin().getTaskScheduler() == null || !assemble.getPlugin().isEnabled()) {
             return;
         }
         new NeptuneRunnable() {

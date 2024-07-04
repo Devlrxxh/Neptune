@@ -8,7 +8,6 @@ import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.experimental.SuperBuilder;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
@@ -19,7 +18,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@SuperBuilder
 public class StandAloneArena extends Arena {
     private final Neptune plugin;
     private transient ConcurrentLinkedHashMap<Chunk, Object[]> chunkSnapshots;
@@ -41,7 +39,22 @@ public class StandAloneArena extends Arena {
         this.used = false;
         this.duplicate = duplicate;
         this.chunkSnapshots = new ConcurrentLinkedHashMap<>();
-        this.plugin = Neptune.get();
+        this.plugin = plugin;
+
+        takeSnapshot();
+    }
+
+    public StandAloneArena(String arenaName, Neptune plugin) {
+        super(arenaName, arenaName, null, null, false, plugin);
+        this.min = null;
+        this.max = null;
+        this.copies = new HashSet<>();
+        this.limit = 0;
+        this.deathY = 0;
+        this.used = false;
+        this.duplicate = false;
+        this.chunkSnapshots = new ConcurrentLinkedHashMap<>();
+        this.plugin = plugin;
 
         takeSnapshot();
     }

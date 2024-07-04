@@ -6,9 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Consumer;
 
 public class TtlHashMap<K, V> {
     private final Map<K, V> map = new ConcurrentHashMap<>();
@@ -25,17 +23,14 @@ public class TtlHashMap<K, V> {
         return map.size();
     }
 
-    public void put(K key, V value) {
+    public void put(K key, V value, TtlAction action) {
         map.put(key, value);
+        actions.put(key, action);
         scheduleRemoval(key);
     }
 
     public V get(K key) {
         return map.get(key);
-    }
-
-    public void setExpireAction(K key, UUID playerUUID, Consumer<Player> action) {
-        actions.put(key, new TtlAction(playerUUID, action, null));
     }
 
     public void onExpire(K key) {
@@ -52,7 +47,7 @@ public class TtlHashMap<K, V> {
         if (actions.containsKey(key)) {
             NeptuneRunnable runnable = actions.get(key).getRunnable();
             if (runnable != null) {
-                runnable.stop(Neptune.get());
+                runnable.stop(plugin);
             }
             actions.remove(key);
         }
@@ -63,22 +58,13 @@ public class TtlHashMap<K, V> {
     }
 
     private void scheduleRemoval(K key) {
-        TtlAction action = actions.get(key);
-        if (action != null) {
-            actions.get(key).setRunnable(new NeptuneRunnable() {
-                @Override
-                public void run() {
-                    map.remove(key);
-                    onExpire(key);
-                }
-            }, leaveTime);
-        } else {
-            new NeptuneRunnable() {
-                @Override
-                public void run() {
-                    map.remove(key);
-                }
-            }.start(0, leaveTime, plugin);
-        }
+        actions.get(key).setRunnable(new NeptuneRunnable() {
+            @Override
+            public void run() {
+                map.remove(key);
+                onExpire(key);
+            }
+        }, leaveTime);
+
     }
 }
