@@ -1,0 +1,4 @@
+name: Sync
+version: '${project.version}'
+main: me.dev.lrxh.sync.Sync
+api-version: '1.16'

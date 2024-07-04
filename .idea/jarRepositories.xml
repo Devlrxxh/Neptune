@@ -7,29 +7,9 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="lunarclient" />
-      <option name="name" value="lunarclient" />
-      <option name="url" value="https://repo.lunarclient.dev" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="codemc-releases" />
-      <option name="name" value="codemc-releases" />
-      <option name="url" value="https://repo.codemc.io/repository/maven-releases/" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="sonatype" />
       <option name="name" value="sonatype" />
       <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="aikar" />
-      <option name="name" value="aikar" />
-      <option name="url" value="https://repo.aikar.co/content/groups/aikar/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="dmulloy2-repo" />
-      <option name="name" value="dmulloy2-repo" />
-      <option name="url" value="https://repo.dmulloy2.net/repository/public/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="papermc-repo" />
@@ -47,11 +27,6 @@
       <option name="url" value="https://repo1.maven.org/maven2" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="jboss.community" />
-      <option name="name" value="JBoss Community repository" />
-      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="mvnrepo" />
       <option name="name" value="mvnrepo" />
       <option name="url" value="https://mvnrepository.com/artifact/" />
@@ -60,6 +35,36 @@
       <option name="id" value="papermc" />
       <option name="name" value="papermc" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="lunarclient" />
+      <option name="name" value="lunarclient" />
+      <option name="url" value="https://repo.lunarclient.dev" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="codemc-releases" />
+      <option name="name" value="codemc-releases" />
+      <option name="url" value="https://repo.codemc.io/repository/maven-releases/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="aikar" />
+      <option name="name" value="aikar" />
+      <option name="url" value="https://repo.aikar.co/content/groups/aikar/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="spigotmc-repo" />
+      <option name="name" value="spigotmc-repo" />
+      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="dmulloy2-repo" />
+      <option name="name" value="dmulloy2-repo" />
+      <option name="url" value="https://repo.dmulloy2.net/repository/public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="jboss.community" />
+      <option name="name" value="JBoss Community repository" />
+      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
   </component>
 </project>

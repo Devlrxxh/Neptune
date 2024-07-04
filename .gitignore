@@ -2,7 +2,6 @@
 .mtj.tmp/
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
@@ -25,9 +24,6 @@ hs_err_pid*
 # Maven
 log/
 target/
-
-# Inclusions
-!lib/**
 
 # Compiled Files
 *.class
