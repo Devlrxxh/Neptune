@@ -2,17 +2,15 @@ package dev.lrxh.neptune.kit.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.ReplaceOptions;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.database.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
-import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -148,9 +146,9 @@ public class KitCommand extends BaseCommand {
             PlayerUtil.kick(onlinePlayer.getUniqueId(), "&cUpdating player data...");
         }
 
-        for (Document document : plugin.getMongoManager().collection.find()) {
-            Document kitStatistics = (Document) document.get("kitData");
-            Document kitDocument = (Document) kitStatistics.get(kit.getName());
+        for (DataDocument document : plugin.getDatabaseManager().getIDatabase().getAll()) {
+            DataDocument kitStatistics = document.getDataDocument("kitData");
+            DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
 
             if (kitDocument != null && !Objects.equals(kitDocument.getString("kit"), "")) {
                 kitDocument.put("kit", "");
@@ -158,7 +156,8 @@ public class KitCommand extends BaseCommand {
             }
 
             kitStatistics.put("kitData", kitDocument);
-            plugin.getMongoManager().collection.replaceOne(Filters.eq("uuid", document.get("uuid")), document, new ReplaceOptions().upsert(true));
+
+            plugin.getDatabaseManager().getIDatabase().replace(document.getString("uuid"), document);
         }
         ServerUtils.sendMessage("&aUpdated kit for " + i + " players!");
     }

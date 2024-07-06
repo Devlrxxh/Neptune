@@ -238,15 +238,15 @@ public abstract class Match {
                 objective = viewer.getScoreboard().registerNewObjective("neptunePlayerHealth", "health", Component.text(CC.color("&c") + "❤"));
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
-            try {
-                int healthScore = (int) Math.floor(player.getHealth() / 2);
-                if (objective.getScore(player.getName()).getScore() != healthScore) {
-                    objective.getScore(player.getName()).setScore(healthScore);
+                try {
+                    int healthScore = (int) Math.floor(player.getHealth() / 2);
+                    if (objective.getScore(player.getName()).getScore() != healthScore) {
+                        objective.getScore(player.getName()).setScore(healthScore);
+                    }
+                } catch (IllegalStateException e) {
+                    ServerUtils.error(e.getMessage());
+                    objective.unregister();
                 }
-            } catch (IllegalStateException e) {
-                ServerUtils.error(e.getMessage());
-                objective.unregister();
-            }
             }
         });
     }

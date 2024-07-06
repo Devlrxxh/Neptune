@@ -80,7 +80,7 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.color("&aSuccessfully set &cRed &aspawn for arena " + arena.getDisplayName() + "&a!"));
         }
 
-        if(arena instanceof StandAloneArena && ((StandAloneArena) arena).getLimit() == 68321) {
+        if (arena instanceof StandAloneArena && ((StandAloneArena) arena).getLimit() == 68321) {
             ((StandAloneArena) arena).setLimit(player.getLocation().getY() + 10);
         }
 

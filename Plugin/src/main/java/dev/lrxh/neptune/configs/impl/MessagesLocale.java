@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.impl.handler.DataType;
+import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.providers.clickable.ClickableUtils;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ConfigFile;

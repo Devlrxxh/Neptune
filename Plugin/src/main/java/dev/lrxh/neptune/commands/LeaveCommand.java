@@ -18,7 +18,7 @@ public class LeaveCommand extends BaseCommand {
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
         ProfileState state = profile.getState();
 
-        switch (state){
+        switch (state) {
             case IN_SPECTATOR:
                 profile.getMatch().removeSpectator(player.getUniqueId(), true);
                 break;

@@ -1,10 +1,8 @@
 package dev.lrxh.neptune.profile;
 
-import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.ReplaceOptions;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.database.DataDocument;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
@@ -18,7 +16,6 @@ import dev.lrxh.neptune.utils.ItemUtils;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
-import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -33,7 +30,6 @@ public class Profile {
     private ProfileState state;
     private Neptune plugin;
     private GameData gameData;
-    private MongoCollection<Document> collection;
 
     public Profile(UUID playerUUID, Neptune plugin) {
         this.plugin = Neptune.get();
@@ -45,7 +41,6 @@ public class Profile {
 
         this.username = player.getName();
         this.gameData = new GameData();
-        this.collection = plugin.getMongoManager().getCollection();
 
         for (Kit kit : plugin.getKitManager().kits) {
             KitData kitData = new KitData();
@@ -63,19 +58,20 @@ public class Profile {
     }
 
     public void load() {
-        Document document = collection.find(Filters.eq("uuid", playerUUID.toString())).first();
+//        Document document = collection.find(Filters.eq("uuid", playerUUID.toString())).first();
+        DataDocument dataDocument = plugin.getDatabaseManager().getIDatabase().getUserData(playerUUID);
 
-        if (document == null) {
+        if (dataDocument == null) {
             save();
             return;
         }
 
-        gameData.setMatchHistories(gameData.deserializeHistory(document.getList("history", String.class, new ArrayList<>())));
+        gameData.setMatchHistories(gameData.deserializeHistory(dataDocument.getList("history", new ArrayList<>())));
 
-        Document kitStatistics = (Document) document.get("kitData");
+        DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
 
         for (Kit kit : plugin.getKitManager().kits) {
-            Document kitDocument = (Document) kitStatistics.get(kit.getName());
+            DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
             if (kitDocument == null) return;
             KitData profileKitData = gameData.getKitData().get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
@@ -83,35 +79,35 @@ public class Profile {
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
-            profileKitData.setDivision(plugin.getDivisionManager().getDivisionByWinCount(profileKitData.getWins()));
+            profileKitData.updateDivision();
         }
     }
 
     public void save() {
-        Document document = new Document();
-        document.put("uuid", playerUUID.toString());
-        document.put("username", username);
+        DataDocument dataDocument = new DataDocument();
+        dataDocument.put("uuid", playerUUID.toString());
+        dataDocument.put("username", username);
 
-        Document kitStatsDoc = new Document();
+        DataDocument kitStatsDoc = new DataDocument();
 
-        document.put("history", gameData.serializeHistory());
+        dataDocument.put("history", gameData.serializeHistory());
 
         for (Kit kit : plugin.getKitManager().kits) {
             KitData entry = gameData.getKitData().get(kit);
-            Document kitStatisticsDocument = new Document();
+            DataDocument kitStatisticsDocument = new DataDocument();
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
             kitStatisticsDocument.put("WINS", entry.getWins());
             kitStatisticsDocument.put("LOSSES", entry.getLosses());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
-            entry.setDivision(plugin.getDivisionManager().getDivisionByWinCount(entry.getWins()));
+            entry.updateDivision();
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
         }
 
-        document.put("kitData", kitStatsDoc);
+        dataDocument.put("kitData", kitStatsDoc);
 
-        collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
+        plugin.getDatabaseManager().getIDatabase().replace(playerUUID, dataDocument);
     }
 
     public void sendDuel(DuelRequest duelRequest, UUID senderUUID) {

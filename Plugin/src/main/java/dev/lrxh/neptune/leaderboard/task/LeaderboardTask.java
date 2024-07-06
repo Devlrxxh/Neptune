@@ -5,8 +5,14 @@ import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 
 
 public class LeaderboardTask extends NeptuneRunnable {
+    private final Neptune plugin;
+
+    public LeaderboardTask() {
+        plugin = Neptune.get();
+    }
+
     @Override
     public void run() {
-        Neptune.get().getLeaderboardManager().update();
+        plugin.getLeaderboardManager().update();
     }
 }

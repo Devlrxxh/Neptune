@@ -15,7 +15,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.menus.kitEditor.KitEditorMenu;
 import dev.lrxh.neptune.providers.menus.stats.StatsMenu;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
-import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

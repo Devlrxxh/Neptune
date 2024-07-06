@@ -4,7 +4,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
-import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -13,8 +12,10 @@ import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 
-import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Getter

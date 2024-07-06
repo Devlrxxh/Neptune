@@ -4,15 +4,12 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -101,7 +98,6 @@ public class StandAloneArena extends Arena {
         plugin.getArenaManager().saveArenas();
         plugin.getKitManager().saveKits();
     }
-
 
 
     public void removeCopy(StandAloneArena copy) {

@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.impl.handler.DataType;
+import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
@@ -13,8 +15,9 @@ public enum SettingsLocale implements IDataAccessor {
     SPAWN_LOCATION("SPAWN.LOCATION", null, DataType.STRING, "NONE"),
     QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "20"),
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "20"),
-    MONGO_URI("MONGO.URI", "MongoDB URI.", DataType.STRING, "NONE"),
-    MONGO_DATABASE("MONGO.DATABASE", "MongoDB Database.", DataType.STRING, "neptune"),
+    DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL", DataType.STRING, "MONGO"),
+    URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
+    DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
     REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30"),
     ARENA_COPY_DISTANCE("ARENA_COPY_DISTANCE", "Distance between each standalone arena copy", DataType.INT, "300");
 

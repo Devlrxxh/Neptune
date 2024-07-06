@@ -17,7 +17,7 @@ public class Cache {
     }
 
     public void load() {
-        if (SettingsLocale.SPAWN_LOCATION.getString().equalsIgnoreCase("none")) {
+        if (SettingsLocale.SPAWN_LOCATION.getString().equals("NONE")) {
             spawn = null;
         } else {
             spawn = LocationUtil.deserialize(SettingsLocale.SPAWN_LOCATION.getString());

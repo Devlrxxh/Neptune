@@ -16,8 +16,6 @@ public class DivisionManager implements IManager {
     private final Neptune plugin;
     public LinkedHashSet<Division> divisions = new LinkedHashSet<>();
 
-    //TODO: ADD MENU
-
     public DivisionManager() {
         this.plugin = Neptune.get();
         loadDivisions();

@@ -70,9 +70,7 @@ public class ItemBuilder {
     public ItemBuilder clearFlags() {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            for (ItemFlag itemFlag : ItemFlag.values()) {
-                meta.addItemFlags(itemFlag);
-            }
+            meta.addItemFlags(ItemFlag.values());
             item.setItemMeta(meta);
         }
         resetAmount();
@@ -88,9 +86,8 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder resetAmount() {
+    public void resetAmount() {
         item.setAmount(1);
-        return this;
     }
 
     public ItemBuilder lore(List<String> lore) {

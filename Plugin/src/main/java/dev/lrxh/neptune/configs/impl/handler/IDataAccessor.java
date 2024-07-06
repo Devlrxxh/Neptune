@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.configs.impl;
+package dev.lrxh.neptune.configs.impl.handler;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -28,12 +28,6 @@ public interface IDataAccessor {
 
     String getHeader();
 
-    default void setHeader() {
-        if (!getHeader().isEmpty()) {
-            getConfigFile().getConfiguration().options().header(getHeader());
-        }
-    }
-
     String getPath();
 
     String getComment();
@@ -43,6 +37,12 @@ public interface IDataAccessor {
     DataType getDataType();
 
     ConfigFile getConfigFile();
+
+    default void setHeader() {
+        if (!getHeader().isEmpty()) {
+            getConfigFile().getConfiguration().options().header(getHeader());
+        }
+    }
 
     default void setValue(String path, List<String> value, DataType dataType) {
         switch (dataType) {
@@ -60,7 +60,6 @@ public interface IDataAccessor {
                 break;
         }
     }
-
 
     default void set(Object value) {
         getConfigFile().getConfiguration().set(getPath(), value);

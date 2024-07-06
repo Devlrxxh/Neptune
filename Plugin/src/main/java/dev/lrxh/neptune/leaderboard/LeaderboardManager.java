@@ -1,8 +1,8 @@
 package dev.lrxh.neptune.leaderboard;
 
 
-import com.mongodb.client.model.Filters;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.database.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
@@ -10,7 +10,6 @@ import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.profile.data.KitData;
 import lombok.Getter;
-import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -85,7 +84,7 @@ public class LeaderboardManager {
 
     private void loadType(LeaderboardType leaderboardType) {
         for (Kit kit : plugin.getKitManager().kits) {
-            for (Document document : plugin.getMongoManager().collection.find()) {
+            for (DataDocument document : plugin.getDatabaseManager().getIDatabase().getAll()) {
                 String username = document.getString("username");
                 UUID uuid = UUID.fromString(document.getString("uuid"));
                 KitData kitData = getPlayerStats(uuid, kit);
@@ -125,11 +124,11 @@ public class LeaderboardManager {
     }
 
     private KitData getKitData(UUID playerUUID, Kit kit) {
-        Document document = plugin.getMongoManager().collection.find(Filters.eq("uuid", playerUUID.toString())).first();
-        if (document == null) return null;
+        DataDocument dataDocument = plugin.getDatabaseManager().getIDatabase().getUserData(playerUUID);
+        if (dataDocument == null) return null;
 
-        Document kitStatistics = (Document) document.get("kitData");
-        Document kitDocument = (Document) kitStatistics.get(kit.getName());
+        DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
+        DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
         if (kitDocument == null) return null;
 
         KitData profileKitData = new KitData();

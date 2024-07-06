@@ -14,7 +14,7 @@ import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.*;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
-import dev.lrxh.neptune.database.MongoManager;
+import dev.lrxh.neptune.database.DatabaseManager;
 import dev.lrxh.neptune.divisions.DivisionManager;
 import dev.lrxh.neptune.duel.command.DuelCommand;
 import dev.lrxh.neptune.hotbar.HotbarManager;
@@ -39,7 +39,6 @@ import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
-import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuManager;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
@@ -74,13 +73,13 @@ public final class Neptune extends JavaPlugin {
     private boolean placeholder = false;
     private boolean fawe = false;
     private HotbarManager hotbarManager;
-    private MongoManager mongoManager;
     private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
     private MenuManager menuManager;
     private GenerationManager generationManager;
     private EntityHider entityHider;
     private DivisionManager divisionManager;
+    private DatabaseManager databaseManager;
 
     public static Neptune get() {
         return instance;
@@ -108,7 +107,7 @@ public final class Neptune extends JavaPlugin {
         this.kitManager = new KitManager();
         this.cache = new Cache();
         this.hotbarManager = new HotbarManager();
-        this.mongoManager = new MongoManager();
+        this.databaseManager = new DatabaseManager();
         if (!isEnabled()) return;
 
         this.divisionManager = new DivisionManager();

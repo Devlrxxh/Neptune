@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.configs.impl;
+package dev.lrxh.neptune.configs.impl.handler;
 
 public enum DataType {
     BOOLEAN,
