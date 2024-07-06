@@ -34,7 +34,7 @@ public class KitData {
     }
 
     public void updateDivision() {
-        plugin.getDivisionManager().getDivisionByWinCount(wins);
+        division = plugin.getDivisionManager().getDivisionByWinCount(wins);
     }
 }
 

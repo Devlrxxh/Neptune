@@ -16,6 +16,7 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlaceholderUtil;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.sounds.Sound;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -234,11 +235,8 @@ public abstract class Match {
 
             Objective objective = viewer.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
             if (objective == null) {
-                // Register new objective if it doesn't exist
-                objective = viewer.getScoreboard().registerNewObjective("showhealth", "health");
+                objective = viewer.getScoreboard().registerNewObjective("neptunePlayerHealth", "health", Component.text(CC.color("&c") + "❤"));
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
-                objective.displayName(Component.text(CC.color("&c") + "❤"));
-            }
 
             try {
                 int healthScore = (int) Math.floor(player.getHealth() / 2);
@@ -246,7 +244,9 @@ public abstract class Match {
                     objective.getScore(player.getName()).setScore(healthScore);
                 }
             } catch (IllegalStateException e) {
+                ServerUtils.error(e.getMessage());
                 objective.unregister();
+            }
             }
         });
     }

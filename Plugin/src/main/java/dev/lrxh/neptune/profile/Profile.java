@@ -104,6 +104,7 @@ public class Profile {
             kitStatisticsDocument.put("LOSSES", entry.getLosses());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
+            entry.setDivision(plugin.getDivisionManager().getDivisionByWinCount(entry.getWins()));
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
         }
