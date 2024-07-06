@@ -79,6 +79,11 @@ public class ArenaCommand extends BaseCommand {
             arena.setRedSpawn(player.getLocation());
             player.sendMessage(CC.color("&aSuccessfully set &cRed &aspawn for arena " + arena.getDisplayName() + "&a!"));
         }
+
+        if(arena instanceof StandAloneArena && ((StandAloneArena) arena).getLimit() == 68321) {
+            ((StandAloneArena) arena).setLimit(player.getLocation().getY() + 10);
+        }
+
         plugin.getArenaManager().saveArenas();
     }
 

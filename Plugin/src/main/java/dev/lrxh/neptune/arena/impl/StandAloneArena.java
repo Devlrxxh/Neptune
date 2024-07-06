@@ -49,7 +49,7 @@ public class StandAloneArena extends Arena {
         this.min = null;
         this.max = null;
         this.copies = new HashSet<>();
-        this.limit = 0;
+        this.limit = 68321;
         this.deathY = 0;
         this.used = false;
         this.duplicate = false;
