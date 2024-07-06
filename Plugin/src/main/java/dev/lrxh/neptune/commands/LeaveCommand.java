@@ -16,9 +16,14 @@ public class LeaveCommand extends BaseCommand {
     @Default
     public void leave(Player player) {
         Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        ProfileState state = profile.getState();
 
-        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            Neptune.get().getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
+        switch (state){
+            case IN_SPECTATOR:
+                profile.getMatch().removeSpectator(player.getUniqueId(), true);
+                break;
+            case IN_GAME:
+                profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()));
         }
     }
 }

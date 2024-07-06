@@ -4,16 +4,20 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Consumer;
 
 
 @Getter
@@ -98,6 +102,8 @@ public class StandAloneArena extends Arena {
         plugin.getKitManager().saveKits();
     }
 
+
+
     public void removeCopy(StandAloneArena copy) {
         plugin.getArenaManager().arenas.remove(copy);
         plugin.getKitManager().removeArenasFromKits(copy);
@@ -129,9 +135,7 @@ public class StandAloneArena extends Arena {
     }
 
     public void addCopiesToKits() {
-        for (StandAloneArena copy : copies) {
-            addCopyToKits(copy);
-        }
+        forEachCopy(this::addCopyToKits);
     }
 
     public void addCopyToKits(Arena copy) {
@@ -147,6 +151,12 @@ public class StandAloneArena extends Arena {
             if (kit.getArenas().contains(this)) {
                 kit.getArenas().remove(copy);
             }
+        }
+    }
+
+    public void forEachCopy(Consumer<StandAloneArena> action) {
+        for (StandAloneArena copy : copies) {
+            action.accept(copy);
         }
     }
 }

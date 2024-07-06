@@ -167,6 +167,8 @@ public class ArenaCommand extends BaseCommand {
         }
 
         ((StandAloneArena) arena).setDeathY(player.getLocation().getY());
+        ((StandAloneArena) arena).forEachCopy(copy -> copy.setDeathY(player.getLocation().getY()));
+
         player.sendMessage(CC.color("&aSuccessfully set Death Y for arena " + arena.getDisplayName()));
 
         plugin.getArenaManager().saveArenas();
@@ -215,6 +217,7 @@ public class ArenaCommand extends BaseCommand {
         if (!checkArena(arenaName)) {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
+
         }
         Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
 
@@ -224,6 +227,7 @@ public class ArenaCommand extends BaseCommand {
         }
 
         ((StandAloneArena) arena).setLimit(player.getLocation().getY());
+        ((StandAloneArena) arena).forEachCopy(copy -> copy.setLimit(player.getLocation().getY()));
         player.sendMessage(CC.color("&aSuccessfully set Build limit for arena " + arena.getDisplayName()));
 
         plugin.getArenaManager().saveArenas();
