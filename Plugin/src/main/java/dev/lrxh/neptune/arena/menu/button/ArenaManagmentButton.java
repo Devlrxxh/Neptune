@@ -57,7 +57,10 @@ public class ArenaManagmentButton extends Button {
         switch (clickType) {
             case SHIFT_RIGHT:
                 arena.setEnabled(!arena.isEnabled());
-                menu.openMenu(player.getUniqueId());
+                if(arena instanceof StandAloneArena){
+                    ((StandAloneArena) arena).forEachCopy(copy -> copy.setEnabled(arena.isEnabled()));
+                }
+                menu.update();
                 break;
             case LEFT:
                 if (arena instanceof StandAloneArena) {
