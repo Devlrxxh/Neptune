@@ -45,15 +45,13 @@ public class QueueCheckTask extends NeptuneRunnable {
 
                             List<Participant> participants = Arrays.asList(participant1, participant2);
 
-                            Arena arena = plugin.getArenaManager().getRandomArena(queue1.getKit());
+                            Arena arena = queue1.getKit().getRandomArena();
 
                             //If no arenas were found
                             if (arena == null) {
-                                plugin.getQueueManager().remove(uuid1);
-                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.IN_LOBBY);
 
-                                plugin.getQueueManager().remove(uuid2);
-                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.IN_LOBBY);
+                                removeFromQueue(uuid1);
+                                removeFromQueue(uuid2);
 
                                 PlayerUtil.sendMessage(uuid1, CC.error("No arena was found!"));
                                 PlayerUtil.sendMessage(uuid2, CC.error("No arena was found!"));
@@ -67,11 +65,8 @@ public class QueueCheckTask extends NeptuneRunnable {
                                             (((StandAloneArena) arena).getMax() == null ||
                                                     ((StandAloneArena) arena).getMin() == null))) {
 
-                                plugin.getQueueManager().remove(uuid1);
-                                plugin.getProfileManager().getByUUID(uuid1).setState(ProfileState.IN_LOBBY);
-
-                                plugin.getQueueManager().remove(uuid2);
-                                plugin.getProfileManager().getByUUID(uuid2).setState(ProfileState.IN_LOBBY);
+                                removeFromQueue(uuid1);
+                                removeFromQueue(uuid2);
 
                                 PlayerUtil.sendMessage(uuid1, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                                 PlayerUtil.sendMessage(uuid2, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
@@ -110,5 +105,10 @@ public class QueueCheckTask extends NeptuneRunnable {
                 }
             }
         }
+    }
+
+    private void removeFromQueue(UUID uuid) {
+        plugin.getQueueManager().remove(uuid);
+        plugin.getProfileManager().getByUUID(uuid).setState(ProfileState.IN_LOBBY);
     }
 }

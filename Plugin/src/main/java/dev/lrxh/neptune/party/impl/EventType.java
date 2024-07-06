@@ -21,7 +21,7 @@ public enum EventType {
         public void start(List<Participant> participants, Kit kit) {
             Neptune plugin = Neptune.get();
 
-            Arena arena = plugin.getArenaManager().getRandomArena(kit);
+            Arena arena = kit.getRandomArena();
 
             if (arena == null || arena.getBlueSpawn() == null ||
                     arena.getRedSpawn() == null ||
@@ -57,7 +57,7 @@ public enum EventType {
             MatchTeam teamA = new MatchTeam(teamAList);
             MatchTeam teamB = new MatchTeam(teamBList);
 
-            Arena arena = plugin.getArenaManager().getRandomArena(kit);
+            Arena arena = kit.getRandomArena();
 
             if (arena == null || arena.getBlueSpawn() == null ||
                     arena.getRedSpawn() == null ||

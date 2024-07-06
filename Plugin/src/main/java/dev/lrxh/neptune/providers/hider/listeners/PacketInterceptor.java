@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.providers.hider.listeners;
 
-
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
@@ -15,6 +14,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
+import java.util.logging.Logger;
+
 /**
  * Author: Athishh
  * Package: me.athishh.lotus.core.user.hider.listeners
@@ -22,21 +23,27 @@ import org.bukkit.entity.Projectile;
  */
 public class PacketInterceptor extends PacketListenerAbstract {
 
+    private static final Logger logger = Logger.getLogger(PacketInterceptor.class.getName());
+
     public PacketInterceptor() {
         super(PacketListenerPriority.MONITOR);
     }
 
-    // make sure to implement your threading system.
     @Override
     public void onPacketSend(PacketSendEvent event) {
         if (event.getPacketType() == PacketType.Play.Server.SPAWN_ENTITY) {
             if (event.getUser() == null) {
                 return;
             }
+            if (event.getUser().getUUID() == null) {
+                return;
+            }
             Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
+            if (receiver == null) {
+                return;
+            }
             WrapperPlayServerSpawnEntity wrapper = new WrapperPlayServerSpawnEntity(event);
             int entityID = wrapper.getEntityId();
-            assert receiver != null;
             Entity entity = EntityCache.getEntityById(entityID);
             if (entity == null) return;
             if (entity instanceof Player player) {
@@ -54,14 +61,21 @@ public class PacketInterceptor extends PacketListenerAbstract {
                 event.setCancelled(true);
             }
         } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_SOUND_EFFECT) {
+            if (event.getUser() == null) {
+                return;
+            }
+            if (event.getUser().getUUID() == null) {
+                return;
+            }
             Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
-            if (receiver == null) return;
+            if (receiver == null) {
+                return;
+            }
             WrapperPlayServerEntitySoundEffect wrapper = new WrapperPlayServerEntitySoundEffect(event);
             if (EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
                 if (receiver.canSee(player)) return;
                 event.setCancelled(true);
             }
         }
-
     }
 }

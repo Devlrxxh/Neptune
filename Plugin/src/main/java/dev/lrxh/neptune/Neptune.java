@@ -94,14 +94,10 @@ public final class Neptune extends JavaPlugin {
 
     private void loadManager() {
         this.versionHandler = new VersionControll(this).getHandler();
-        if (!isEnabled()) {
-            return;
-        }
+        if (!isEnabled()) return;
 
         loadExtensions();
-        if (!isEnabled()) {
-            return;
-        }
+        if (!isEnabled()) return;
 
         this.configManager = new ConfigManager();
         this.configManager.load();
@@ -113,9 +109,8 @@ public final class Neptune extends JavaPlugin {
         this.cache = new Cache();
         this.hotbarManager = new HotbarManager();
         this.mongoManager = new MongoManager();
-        if (!isEnabled()) {
-            return;
-        }
+        if (!isEnabled()) return;
+
         this.divisionManager = new DivisionManager();
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
@@ -129,6 +124,7 @@ public final class Neptune extends JavaPlugin {
         loadWorlds();
 
         System.gc();
+        Runtime.getRuntime().freeMemory();
     }
 
     private void initAPIs() {

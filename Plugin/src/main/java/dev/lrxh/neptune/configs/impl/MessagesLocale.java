@@ -126,7 +126,8 @@ public enum MessagesLocale implements IDataAccessor {
             "&b/party kick <player>",
             "&b/party join <player>",
             " "),
-    PARTY_EXPIRED("PARTY.EXPIRED", null, DataType.STRING_LIST, "&cYour party request to &c<player> &chas expired.");
+    PARTY_EXPIRED("PARTY.EXPIRED", null, DataType.STRING_LIST, "&cYour party request to &c<player> &chas expired."),
+    SPECTATE_MENU_NO_MATCH("SPECTATE.MENU.NO_MATCH_ONGOING", null, DataType.STRING_LIST, "&cThere are no ongoing matches!");
 
     private final String path;
     private final String comment;
@@ -153,13 +154,12 @@ public enum MessagesLocale implements IDataAccessor {
     public void send(UUID playerUUID, Replacement... replacements) {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
-                if (message.equalsIgnoreCase("NONE")) continue;
+                if (message.equals("NONE")) continue;
                 PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
-            if (getString().equalsIgnoreCase("NONE")) return;
+            if (getString().equals("NONE")) return;
             PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
         }
-
     }
 }

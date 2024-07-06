@@ -125,26 +125,6 @@ public class ArenaManager implements IManager {
     }
 
 
-    public Arena getRandomArena(Kit kit) {
-        List<Arena> kitArenas = new ArrayList<>();
-        for (Arena arena : kit.getArenas()) {
-            if (arena == null) {
-                arenas.remove(arena);
-                continue;
-            }
-            if (!arena.isEnabled()) continue;
-            if (kit.isBuild()) {
-                if ((arena instanceof StandAloneArena && !((StandAloneArena) arena).isUsed())) {
-                    kitArenas.add(arena);
-                }
-            } else {
-                kitArenas.add(arena);
-            }
-        }
-        Collections.shuffle(kitArenas);
-        return kitArenas.isEmpty() ? null : kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
-    }
-
     @Override
     public ConfigFile getConfigFile() {
         return plugin.getConfigManager().getArenasConfig();

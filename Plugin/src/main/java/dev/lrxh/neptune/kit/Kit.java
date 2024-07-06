@@ -2,6 +2,7 @@ package dev.lrxh.neptune.kit;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.data.KitData;
 import lombok.AllArgsConstructor;
@@ -11,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
 @Setter
@@ -126,6 +128,22 @@ public class Kit {
         if (!(playing == 0)) {
             playing--;
         }
+    }
+
+    public Arena getRandomArena() {
+        List<Arena> kitArenas = new ArrayList<>();
+        for (Arena arena : arenas) {
+            if (!arena.isEnabled()) continue;
+            if (build) {
+                if ((arena instanceof StandAloneArena && !((StandAloneArena) arena).isUsed())) {
+                    kitArenas.add(arena);
+                }
+            } else {
+                kitArenas.add(arena);
+            }
+        }
+        Collections.shuffle(kitArenas);
+        return kitArenas.isEmpty() ? null : kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
     }
 
     public void addPlaying() {

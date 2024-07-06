@@ -52,7 +52,7 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             if (Neptune.get().getMatchManager().matches.isEmpty()) {
-                player.sendMessage(CC.error("&cThere are no ongoing matches!"));
+                MessagesLocale.SPECTATE_MENU_NO_MATCH.send(player.getUniqueId());
                 return;
             }
 

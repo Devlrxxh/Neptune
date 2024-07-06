@@ -43,7 +43,7 @@ public class RoundSelectButton extends Button {
             return;
         }
 
-        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, plugin.getArenaManager().getRandomArena(kit), test, round);
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), test, round);
         MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
                 new Replacement("<receiver>", receiverPlayer.getName()),
                 new Replacement("<kit>", kit.getDisplayName()),

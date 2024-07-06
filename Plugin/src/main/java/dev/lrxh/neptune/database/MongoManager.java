@@ -27,7 +27,7 @@ public class MongoManager {
         String mongoUri = SettingsLocale.MONGO_URI.getString();
         if (mongoUri != null && !mongoUri.isEmpty() && !mongoUri.equals("NONE")) {
             try {
-                MongoClient mongoClient = MongoClients.create(new ConnectionString(mongoUri));
+                MongoClient mongoClient = MongoClients.create(mongoUri);
                 MongoDatabase mongoDatabase = mongoClient.getDatabase(SettingsLocale.MONGO_DATABASE.getString());
                 collection = mongoDatabase.getCollection("playerData");
             } catch (Exception e) {
