@@ -78,11 +78,6 @@ public class MySQLDatabase implements IDatabase {
     }
 
     @Override
-    public Object toDocument(DataDocument dataDocument) {
-        return null;
-    }
-
-    @Override
     public List<DataDocument> getAll() {
         List<DataDocument> allDocuments = new ArrayList<>();
         String query = "SELECT * FROM playerData";

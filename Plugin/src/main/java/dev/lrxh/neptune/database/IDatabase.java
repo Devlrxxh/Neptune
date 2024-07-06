@@ -12,7 +12,5 @@ public interface IDatabase {
 
     void replace(String playerUUID, DataDocument newDocument);
 
-    Object toDocument(DataDocument dataDocument);
-
     List<DataDocument> getAll();
 }

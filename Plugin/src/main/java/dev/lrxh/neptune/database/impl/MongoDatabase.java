@@ -66,11 +66,6 @@ public class MongoDatabase implements IDatabase {
     }
 
     @Override
-    public Object toDocument(DataDocument dataDocument) {
-        return dataDocument.toDocument();
-    }
-
-    @Override
     public List<DataDocument> getAll() {
         List<DataDocument> allDocuments = new ArrayList<>();
         try (MongoCursor<Document> cursor = collection.find().iterator()) {
