@@ -15,23 +15,21 @@ import java.util.UUID;
 @Getter
 public class MySQLDatabase implements IDatabase {
     private final Neptune plugin;
-    private final String uri, database;
     private Connection connection;
 
-    public MySQLDatabase(String uri, String database) {
+    public MySQLDatabase() {
         this.plugin = Neptune.get();
-        this.uri = uri;
-        this.database = database;
     }
 
     @Override
-    public void load() {
+    public IDatabase load() {
         try {
-            connection = DriverManager.getConnection(uri);
+            connection = DriverManager.getConnection(getUri());
         } catch (SQLException e) {
             ServerUtils.error("Failed to connect to MySQL database: " + e.getMessage());
             Bukkit.getPluginManager().disablePlugin(plugin);
         }
+        return this;
     }
 
     @Override

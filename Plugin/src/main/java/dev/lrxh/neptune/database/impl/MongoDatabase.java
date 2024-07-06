@@ -21,21 +21,19 @@ import java.util.UUID;
 @Getter
 public class MongoDatabase implements IDatabase {
     private final Neptune plugin;
-    private final String uri, database;
     public MongoCollection<Document> collection;
 
-    public MongoDatabase(String uri, String database) {
+    public MongoDatabase() {
         this.plugin = Neptune.get();
-        this.uri = uri;
-        this.database = database;
     }
 
     @Override
-    public void load() {
+    public IDatabase load() {
+        String uri = getUri();
         if (uri != null && !uri.isEmpty() && !uri.equals("NONE")) {
             try {
                 MongoClient mongoClient = MongoClients.create(uri);
-                com.mongodb.client.MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
+                com.mongodb.client.MongoDatabase mongoDatabase = mongoClient.getDatabase(getDatabase());
                 collection = mongoDatabase.getCollection("playerData");
             } catch (Exception e) {
                 ServerUtils.error("Connecting to MongoDB:" + e.getMessage());
@@ -44,6 +42,7 @@ public class MongoDatabase implements IDatabase {
             ServerUtils.error("MongoDB URI is missing or empty in the config.yml");
             Bukkit.getPluginManager().disablePlugin(plugin);
         }
+        return this;
     }
 
     @Override
