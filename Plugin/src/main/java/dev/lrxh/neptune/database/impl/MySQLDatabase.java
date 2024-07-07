@@ -26,7 +26,7 @@ public class MySQLDatabase implements IDatabase {
     @Override
     public IDatabase load() {
         try {
-            connection = DriverManager.getConnection(getUri());
+            connection = DriverManager.getConnection(uri);
             createTableIfNotExists();
         } catch (SQLException e) {
             ServerUtils.error("Failed to connect to MySQL database: " + e.getMessage());

@@ -29,11 +29,10 @@ public class MongoDatabase implements IDatabase {
 
     @Override
     public IDatabase load() {
-        String uri = getUri();
         if (uri != null && !uri.isEmpty() && !uri.equals("NONE")) {
             try {
                 MongoClient mongoClient = MongoClients.create(uri);
-                com.mongodb.client.MongoDatabase mongoDatabase = mongoClient.getDatabase(getDatabase());
+                com.mongodb.client.MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
                 collection = mongoDatabase.getCollection("playerData");
             } catch (Exception e) {
                 ServerUtils.error("Connecting to MongoDB:" + e.getMessage());

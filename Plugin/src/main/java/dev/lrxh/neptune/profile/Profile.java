@@ -58,7 +58,6 @@ public class Profile {
     }
 
     public void load() {
-//        Document document = collection.find(Filters.eq("uuid", playerUUID.toString())).first();
         DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);
 
         if (dataDocument == null) {

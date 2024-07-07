@@ -11,11 +11,6 @@ public interface IDatabase {
     void replace(UUID playerUUID, DataDocument newDocument);
     void replace(String playerUUID, DataDocument newDocument);
     List<DataDocument> getAll();
-    default String getUri(){
-        return SettingsLocale.URI.getString();
-    }
-
-    default String getDatabase() {
-        return SettingsLocale.DATABASE.getString();
-    }
+    String uri = SettingsLocale.URI.getString();
+    String database = SettingsLocale.DATABASE.getString();
 }
