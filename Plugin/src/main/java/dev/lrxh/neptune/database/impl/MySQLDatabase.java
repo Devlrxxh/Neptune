@@ -5,7 +5,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.database.DataDocument;
 import dev.lrxh.neptune.database.IDatabase;
 import dev.lrxh.neptune.utils.ServerUtils;
-import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
 public class MySQLDatabase implements IDatabase {
     private final Neptune plugin;
     private Connection connection;
@@ -35,19 +33,7 @@ public class MySQLDatabase implements IDatabase {
         return this;
     }
 
-    private void createTableIfNotExists() {
-        String createTableQuery = "CREATE TABLE IF NOT EXISTS playerData (" +
-                "uuid VARCHAR(36) NOT NULL, " +
-                "data TEXT NOT NULL, " +
-                "PRIMARY KEY (uuid)" +
-                ")";
-        try (Statement statement = connection.createStatement()) {
-            statement.execute(createTableQuery);
-        } catch (SQLException e) {
-            ServerUtils.error("Error creating playerData table: " + e.getMessage());
-        }
-    }
-
+    @Override
     public DataDocument getUserData(UUID playerUUID) {
         String query = "SELECT * FROM playerData WHERE uuid=?";
         try (PreparedStatement statement = connection.prepareStatement(query)) {
@@ -65,15 +51,6 @@ public class MySQLDatabase implements IDatabase {
             ServerUtils.error("Error fetching user data from MySQL: " + e.getMessage());
         }
         return null;
-    }
-
-    public boolean isValidJSON(String jsonString) {
-        try {
-            Document.parse(jsonString);
-            return true;
-        } catch (JsonParseException e) {
-            return false;
-        }
     }
 
     @Override
@@ -118,5 +95,27 @@ public class MySQLDatabase implements IDatabase {
             ServerUtils.error("Error retrieving all documents from MySQL: " + e.getMessage());
         }
         return allDocuments;
+    }
+
+    public boolean isValidJSON(String jsonString) {
+        try {
+            Document.parse(jsonString);
+            return true;
+        } catch (JsonParseException e) {
+            return false;
+        }
+    }
+
+    private void createTableIfNotExists() {
+        String createTableQuery = "CREATE TABLE IF NOT EXISTS playerData (" +
+                "uuid VARCHAR(36) NOT NULL, " +
+                "data TEXT NOT NULL, " +
+                "PRIMARY KEY (uuid)" +
+                ")";
+        try (Statement statement = connection.createStatement()) {
+            statement.execute(createTableQuery);
+        } catch (SQLException e) {
+            ServerUtils.error("Error creating playerData table: " + e.getMessage());
+        }
     }
 }

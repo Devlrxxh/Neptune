@@ -10,7 +10,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.database.DataDocument;
 import dev.lrxh.neptune.database.IDatabase;
 import dev.lrxh.neptune.utils.ServerUtils;
-import lombok.Getter;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 
@@ -18,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Getter
 public class MongoDatabase implements IDatabase {
     private final Neptune plugin;
     public MongoCollection<Document> collection;

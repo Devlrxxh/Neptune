@@ -213,9 +213,9 @@ public abstract class Match {
                 }
             }
 
-            if(!kit.isSaturation()){
+            if (!kit.isSaturation()) {
                 Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-                if(player == null) return;
+                if (player == null) return;
                 player.setSaturation(0.0F);
             }
         });

@@ -41,7 +41,7 @@ public class DataDocument {
             }
         } catch (JsonParseException e) {
             ServerUtils.error("Invalid JSON string: " + jsonString);
-            throw e;  
+            throw e;
         }
     }
 
