@@ -16,7 +16,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlaceholderUtil;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.sounds.Sound;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,6 +26,7 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Criterias;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
@@ -234,25 +234,20 @@ public abstract class Match {
     private void showHealth(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-
         forEachParticipant(participant -> {
+            if (playerUUID.equals(participant.getPlayerUUID())) return;
+
             Player viewer = Bukkit.getPlayer(participant.getPlayerUUID());
             if (viewer == null) return;
 
             Objective objective = viewer.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
-            if (objective == null) {
-                objective = viewer.getScoreboard().registerNewObjective("neptunePlayerHealth", "health", Component.text(CC.color("&c") + "❤"));
-                objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
 
-                try {
-                    int healthScore = (int) Math.floor(player.getHealth() / 2);
-                    if (objective.getScore(player.getName()).getScore() != healthScore) {
-                        objective.getScore(player.getName()).setScore(healthScore);
-                    }
-                } catch (IllegalStateException e) {
-                    ServerUtils.error(e.getMessage());
-                    objective.unregister();
-                }
+            if (objective == null) {
+                objective = viewer.getScoreboard().registerNewObjective("neptune_health", Criterias.HEALTH, Component.text(CC.color("&c❤")));
+            }
+            try {
+                objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            } catch (IllegalStateException ignored) {
             }
         });
     }

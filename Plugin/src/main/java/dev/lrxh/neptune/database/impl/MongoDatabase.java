@@ -36,7 +36,7 @@ public class MongoDatabase implements IDatabase {
                 ServerUtils.error("Connecting to MongoDB:" + e.getMessage());
             }
         } else {
-            ServerUtils.error("MongoDB URI is missing or empty in the config.yml");
+            ServerUtils.error("MongoDB URI is missing or empty");
             Bukkit.getPluginManager().disablePlugin(plugin);
         }
         return this;

@@ -115,7 +115,7 @@ public enum ScoreboardLocale implements IDataAccessor {
             " ",
             "&bserver.net",
             "&7&m--------------------"),
-    PARTY_LOBBY("PARTY.LOBBY", null, DataType.STRING_LIST,
+    PARTY_LOBBY("SCOREBOARDS.PARTY.LOBBY", null, DataType.STRING_LIST,
             "&7&m--------------------",
             "&fOnline: &b<online>",
             "&fIn Fights: &b<in-match>",

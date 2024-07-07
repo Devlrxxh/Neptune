@@ -14,6 +14,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
+import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
@@ -55,7 +56,9 @@ public class PacketInterceptor extends PacketListenerAbstract {
                 if (receiver.canSee(shooter)) return;
                 event.setCancelled(true);
             } else if (entity instanceof Item item) {
-                Player dropper = Bukkit.getPlayer(ItemCache.getPlayerWhoDropped(item));
+                UUID uuid = ItemCache.getPlayerWhoDropped(item);
+                if (uuid == null) return;
+                Player dropper = Bukkit.getPlayer(uuid);
                 if (dropper == null) return;
                 if (receiver.canSee(dropper)) return;
                 event.setCancelled(true);

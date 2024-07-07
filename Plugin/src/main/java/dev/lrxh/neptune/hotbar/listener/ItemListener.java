@@ -17,31 +17,32 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class ItemListener implements Listener {
     private final Neptune plugin = Neptune.get();
 
-    @EventHandler()
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile.getState().equals(ProfileState.IN_GAME)) return;
+
+        event.setCancelled(true);
+
         if (event.getItem() == null) return;
         if (event.getItem().getType().equals(Material.AIR)) return;
         if (!(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)))
             return;
 
-        Player player = event.getPlayer();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if (!profile.getState().equals(ProfileState.IN_GAME)) {
-            Item clickedItem = Item.getByItemStack(event.getItem(), player.getUniqueId());
-            if (clickedItem == null) return;
+        Item clickedItem = Item.getByItemStack(event.getItem(), player.getUniqueId());
+        if (clickedItem == null) return;
 
-            if (profile.cooldown) return;
+        if (profile.cooldown) return;
 
-            ItemAction.valueOf(clickedItem.getName()).execute(player);
+        ItemAction.valueOf(clickedItem.getName()).execute(player);
 
-            profile.cooldown = true;
-            plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
-                @Override
-                public void run() {
-                    profile.cooldown = false;
-
-                }
-            }, 10);
-        }
+        profile.cooldown = true;
+        plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
+            @Override
+            public void run() {
+                profile.cooldown = false;
+            }
+        }, 10);
     }
 }

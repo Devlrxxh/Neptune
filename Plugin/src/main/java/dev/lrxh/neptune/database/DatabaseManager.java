@@ -6,13 +6,10 @@ import lombok.Getter;
 
 @Getter
 public class DatabaseManager {
-    private IDatabase database;
+    private final IDatabase database;
 
     public DatabaseManager() {
-        load();
-    }
-
-    public void load() {
         database = DatabaseType.valueOf(SettingsLocale.DATABASE_TYPE.getString()).getIDatabase().load();
+
     }
 }
