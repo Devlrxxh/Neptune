@@ -146,7 +146,7 @@ public class KitCommand extends BaseCommand {
             PlayerUtil.kick(onlinePlayer.getUniqueId(), "&cUpdating player data...");
         }
 
-        for (DataDocument document : plugin.getDatabaseManager().getIDatabase().getAll()) {
+        for (DataDocument document : plugin.getDatabaseManager().getDatabase().getAll()) {
             DataDocument kitStatistics = document.getDataDocument("kitData");
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
 
@@ -157,7 +157,7 @@ public class KitCommand extends BaseCommand {
 
             kitStatistics.put("kitData", kitDocument);
 
-            plugin.getDatabaseManager().getIDatabase().replace(document.getString("uuid"), document);
+            plugin.getDatabaseManager().getDatabase().replace(document.getString("uuid"), document);
         }
         ServerUtils.sendMessage("&aUpdated kit for " + i + " players!");
     }

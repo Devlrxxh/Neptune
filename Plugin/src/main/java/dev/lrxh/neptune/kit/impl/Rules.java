@@ -126,6 +126,17 @@ public enum Rules {
         public boolean enabled(Kit kit) {
             return kit.isShowHP();
         }
+    },
+    SATURATION("If Saturation should be disabled", "Saturation") {
+        @Override
+        public void execute(Kit kit, boolean value) {
+            kit.setSaturation(value);
+        }
+
+        @Override
+        public boolean enabled(Kit kit) {
+            return kit.isSaturation();
+        }
     };
 
     private final String description;

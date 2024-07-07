@@ -59,7 +59,7 @@ public class Profile {
 
     public void load() {
 //        Document document = collection.find(Filters.eq("uuid", playerUUID.toString())).first();
-        DataDocument dataDocument = plugin.getDatabaseManager().getIDatabase().getUserData(playerUUID);
+        DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);
 
         if (dataDocument == null) {
             save();
@@ -107,7 +107,7 @@ public class Profile {
 
         dataDocument.put("kitData", kitStatsDoc);
 
-        plugin.getDatabaseManager().getIDatabase().replace(playerUUID, dataDocument);
+        plugin.getDatabaseManager().getDatabase().replace(playerUUID, dataDocument);
     }
 
     public void sendDuel(DuelRequest duelRequest, UUID senderUUID) {

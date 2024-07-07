@@ -3,7 +3,6 @@ package dev.lrxh.neptune.database;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public interface IDatabase {

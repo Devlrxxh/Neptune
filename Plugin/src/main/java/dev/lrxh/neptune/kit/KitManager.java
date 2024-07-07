@@ -39,19 +39,20 @@ public class KitManager implements IManager {
                     }
                 }
 
-                boolean build = config.getBoolean(path + "build");
-                boolean arenaBreak = config.getBoolean(path + "arenaBreak");
-                boolean hunger = config.getBoolean(path + "hunger");
-                boolean sumo = config.getBoolean(path + "sumo");
-                boolean fallDamage = config.getBoolean(path + "fallDamage");
-                boolean denyMovement = config.getBoolean(path + "denyMovement");
-                boolean boxing = config.getBoolean(path + "boxing");
-                boolean damage = config.getBoolean(path + "damage");
-                boolean bestOfThree = config.getBoolean(path + "bestOfThree");
-                boolean saturationHeal = config.getBoolean(path + "saturationHeal");
-                boolean showHP = config.getBoolean(path + "showHP");
+                boolean build = config.getBoolean(path + "build", false);
+                boolean arenaBreak = config.getBoolean(path + "arenaBreak", false);
+                boolean hunger = config.getBoolean(path + "hunger", false);
+                boolean sumo = config.getBoolean(path + "sumo", false);
+                boolean fallDamage = config.getBoolean(path + "fallDamage", false);
+                boolean denyMovement = config.getBoolean(path + "denyMovement", false);
+                boolean boxing = config.getBoolean(path + "boxing", false);
+                boolean damage = config.getBoolean(path + "damage", false);
+                boolean bestOfThree = config.getBoolean(path + "bestOfThree", false);
+                boolean saturationHeal = config.getBoolean(path + "saturationHeal", false);
+                boolean showHP = config.getBoolean(path + "showHP", false);
+                boolean saturation = config.getBoolean(path + "saturation", false);
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, arenaBreak, hunger, sumo, fallDamage, denyMovement, boxing, damage, bestOfThree, saturationHeal, showHP));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, arenaBreak, hunger, sumo, fallDamage, denyMovement, boxing, damage, bestOfThree, saturationHeal, showHP, saturation));
             }
         }
     }
@@ -75,7 +76,8 @@ public class KitManager implements IManager {
                     new Value("damage", kit.isDamage()),
                     new Value("bestOfThree", kit.isBestOfThree()),
                     new Value("saturationHeal", kit.isSaturationHeal()),
-                    new Value("showHP", kit.isShowHP())
+                    new Value("showHP", kit.isShowHP()),
+                    new Value("saturation", kit.isSaturation())
             );
             save(values, path);
         });

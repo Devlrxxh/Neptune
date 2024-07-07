@@ -77,11 +77,10 @@ public interface IDataAccessor {
         for (IDataAccessor accessor : this.getClass().getEnumConstants()) {
             if (accessor.getConfigFile().getConfiguration().get(accessor.getPath()) == null) {
                 setValue(accessor.getPath(), accessor.getDefaultValue(), accessor.getDataType());
-                comment(accessor.getPath(), accessor.getComment());
             }
+            comment(accessor.getPath(), accessor.getComment());
         }
 
         getConfigFile().save();
-
     }
 }

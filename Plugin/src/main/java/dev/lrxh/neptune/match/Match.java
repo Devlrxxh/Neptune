@@ -212,6 +212,12 @@ public abstract class Match {
                     showHealth(participant.getPlayerUUID());
                 }
             }
+
+            if(!kit.isSaturation()){
+                Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+                if(player == null) return;
+                player.setSaturation(0.0F);
+            }
         });
     }
 

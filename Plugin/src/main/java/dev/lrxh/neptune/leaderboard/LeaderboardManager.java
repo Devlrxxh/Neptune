@@ -84,7 +84,7 @@ public class LeaderboardManager {
 
     private void loadType(LeaderboardType leaderboardType) {
         for (Kit kit : plugin.getKitManager().kits) {
-            for (DataDocument document : plugin.getDatabaseManager().getIDatabase().getAll()) {
+            for (DataDocument document : plugin.getDatabaseManager().getDatabase().getAll()) {
                 String username = document.getString("username");
                 UUID uuid = UUID.fromString(document.getString("uuid"));
                 KitData kitData = getPlayerStats(uuid, kit);
@@ -124,7 +124,7 @@ public class LeaderboardManager {
     }
 
     private KitData getKitData(UUID playerUUID, Kit kit) {
-        DataDocument dataDocument = plugin.getDatabaseManager().getIDatabase().getUserData(playerUUID);
+        DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);
         if (dataDocument == null) return null;
 
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");

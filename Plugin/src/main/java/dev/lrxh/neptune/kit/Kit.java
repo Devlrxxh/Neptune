@@ -36,10 +36,11 @@ public class Kit {
     private boolean bestOfThree;
     private boolean saturationHeal;
     private boolean showHP;
+    private boolean saturation;
     //VALUES
     private int queue, playing;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean arenaBreak, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean boxing, boolean damage, boolean bestOfThree, boolean saturationHeal, boolean showHP) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean arenaBreak, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean boxing, boolean damage, boolean bestOfThree, boolean saturationHeal, boolean showHP, boolean saturation) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -56,6 +57,7 @@ public class Kit {
         this.bestOfThree = bestOfThree;
         this.saturationHeal = saturationHeal;
         this.showHP = showHP;
+        this.saturation = saturation;
         this.queue = 0;
         this.playing = 0;
 
@@ -85,6 +87,7 @@ public class Kit {
         this.bestOfThree = false;
         this.saturationHeal = false;
         this.showHP = false;
+        this.saturation = false;
         this.queue = 0;
         this.playing = 0;
 
