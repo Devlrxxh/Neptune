@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.database;
 
+import com.google.gson.JsonParseException;
+import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;
 
 import java.util.HashMap;
@@ -27,14 +29,19 @@ public class DataDocument {
 
     public DataDocument(String jsonString) {
         this.data = new HashMap<>();
-        Document document = Document.parse(jsonString);
-        for (String key : document.keySet()) {
-            Object value = document.get(key);
-            if (value instanceof Document) {
-                this.data.put(key, new DataDocument((Document) value));
-            } else {
-                this.data.put(key, value);
+        try {
+            Document document = Document.parse(jsonString);
+            for (String key : document.keySet()) {
+                Object value = document.get(key);
+                if (value instanceof Document) {
+                    this.data.put(key, new DataDocument((Document) value));
+                } else {
+                    this.data.put(key, value);
+                }
             }
+        } catch (JsonParseException e) {
+            ServerUtils.error("Invalid JSON string: " + jsonString);
+            throw e;  // Optionally re-throw the exception
         }
     }
 
