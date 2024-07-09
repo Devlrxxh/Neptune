@@ -33,7 +33,6 @@ public class MenuListener implements Listener {
         Button button = menu.buttons.get(event.getSlot());
         if (button == null) return;
 
-
         if (button.isDisplay()) {
             event.setCancelled(true);
             return;

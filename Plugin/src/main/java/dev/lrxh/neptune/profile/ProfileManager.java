@@ -14,9 +14,7 @@ public class ProfileManager {
     }
 
     public Profile createProfile(UUID playerUUID) {
-        Profile profile = new Profile(playerUUID, plugin);
-        profiles.put(playerUUID, profile);
-        return profile;
+        return profiles.put(playerUUID, new Profile(playerUUID, plugin));
     }
 
     public void removeProfile(UUID playerUUID) {

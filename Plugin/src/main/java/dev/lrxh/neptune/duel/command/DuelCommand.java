@@ -42,7 +42,7 @@ public class DuelCommand extends BaseCommand {
         }
         Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
 
-        if (targetProfile.getMatch() != null || targetProfile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+        if (targetProfile.getMatch() != null || targetProfile.getState().equals(ProfileState.IN_KIT_EDITOR) || !targetProfile.getSettingData().isAllowDuels()) {
             player.sendMessage(CC.error("Player can't accept duel requests!"));
             return;
         }

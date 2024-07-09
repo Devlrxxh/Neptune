@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@SuppressWarnings("unchecked")
 public class DataDocument {
     public Map<String, Object> data;
 
@@ -64,6 +65,13 @@ public class DataDocument {
         return (int) value;
     }
 
+    public boolean getBoolean(String key, boolean defaultValue) {
+        Object value = data.get(key);
+        if (value == null) return defaultValue;
+
+        return (boolean) value;
+    }
+
     public String getString(String key, String defaultValue) {
         Object value = data.get(key);
         if (value == null) return defaultValue;
@@ -84,6 +92,11 @@ public class DataDocument {
     }
 
     public DataDocument getDataDocument(String key) {
+        DataDocument value = (DataDocument) data.get(key);
+        if (value == null) {
+            data.put(key, new DataDocument());
+        }
+
         return (DataDocument) data.get(key);
     }
 

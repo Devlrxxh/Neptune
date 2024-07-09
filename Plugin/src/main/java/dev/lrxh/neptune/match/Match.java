@@ -138,24 +138,27 @@ public abstract class Match {
         if (player == null) return new ArrayList<>();
 
         if (this instanceof SoloFightMatch) {
-            if (this.getMatchState().equals(MatchState.STARTING)) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
-            } else if (this.getMatchState().equals(MatchState.IN_ROUND)) {
-                if (this.getRounds() > 1) {
-                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
-                }
-                if (this.getKit().isBoxing()) {
-                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
-                }
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
-            } else {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
+            MatchState matchState = this.getMatchState();
+
+            switch (matchState) {
+                case STARTING:
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
+                case IN_ROUND:
+                    if (this.getRounds() > 1) {
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
+                    }
+                    if (this.getKit().isBoxing()) {
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
+                    }
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
+                case ENDING:
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
+                default:
+                    break;
             }
-        }
-        if (this instanceof TeamFightMatch) {
+        } else if (this instanceof TeamFightMatch) {
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
-        }
-        if (this instanceof FfaFightMatch) {
+        } else if (this instanceof FfaFightMatch) {
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_FFA.getStringList()), player);
         }
 

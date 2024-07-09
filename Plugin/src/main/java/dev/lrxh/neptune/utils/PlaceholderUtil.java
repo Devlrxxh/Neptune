@@ -43,7 +43,7 @@ public class PlaceholderUtil {
 
             if (state.equals(ProfileState.IN_PARTY)) {
                 Party party = profile.getGameData().getParty();
-                line = line.replaceAll("<leader>", Bukkit.getPlayer(party.getLeader()).getName());
+                line = line.replaceAll("<leader>", party.getLeaderName());
                 line = line.replaceAll("<size>", String.valueOf(party.getUsers().size()));
             }
 
@@ -113,7 +113,7 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<arena>", match.getArena().getDisplayName());
             }
 
-            if (plugin.isPlaceholder() && PlaceholderAPIPlugin.getInstance() != null) {
+            if (plugin.isPlaceholder() && PlaceholderAPIPlugin.getInstance().isEnabled()) {
                 formattedLines.add(PlaceholderAPI.setPlaceholders(player, line));
             } else {
                 formattedLines.add(line);

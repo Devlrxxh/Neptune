@@ -32,6 +32,10 @@ public class ConfigManager {
         menusConfig = new ConfigFile("menus");
         divisionsConfig = new ConfigFile("divisions");
 
+        initialize();
+    }
+
+    public void initialize() {
         HotbarLocale.LOBBY_PARTY_CREATE_NAME.load();
         MessagesLocale.MATCH_FOUND.load();
         SettingsLocale.SPAWN_LOCATION.load();

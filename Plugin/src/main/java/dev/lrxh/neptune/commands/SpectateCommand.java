@@ -3,8 +3,10 @@ package dev.lrxh.neptune.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -39,6 +41,11 @@ public class SpectateCommand extends BaseCommand {
         Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
         if (targetProfile.getMatch() == null) {
             player.sendMessage(CC.error("Player isn't in a match!"));
+            return;
+        }
+
+        if (!targetProfile.getSettingData().isAllowSpectators()) {
+            MessagesLocale.SPECTATE_NOT_ALLOWED.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
             return;
         }
 

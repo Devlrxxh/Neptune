@@ -97,6 +97,11 @@ public class PartyCommand extends BaseCommand {
             return;
         }
 
+        if (!targetProfile.getSettingData().isAllowParty()) {
+            MessagesLocale.PARTY_DISABLED.send(player.getUniqueId());
+            return;
+        }
+
         if (plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;

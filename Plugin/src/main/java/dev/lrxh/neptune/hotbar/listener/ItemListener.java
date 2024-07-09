@@ -6,6 +6,7 @@ import dev.lrxh.neptune.hotbar.impl.ItemAction;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,7 @@ public class ItemListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile.getState().equals(ProfileState.IN_GAME)) return;
+        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
 
         event.setCancelled(true);
 

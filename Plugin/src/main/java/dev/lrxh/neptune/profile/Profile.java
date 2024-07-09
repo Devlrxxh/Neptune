@@ -10,6 +10,7 @@ import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
+import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemUtils;
@@ -30,6 +31,7 @@ public class Profile {
     private ProfileState state;
     private Neptune plugin;
     private GameData gameData;
+    private SettingData settingData;
 
     public Profile(UUID playerUUID, Neptune plugin) {
         this.plugin = Neptune.get();
@@ -48,12 +50,18 @@ public class Profile {
             kitData.setPlugin(plugin);
         }
 
+        this.settingData = new SettingData();
+
         load();
+    }
+
+    public void handleVisibility() {
+        VisibilityLogic.handle(playerUUID);
     }
 
     public void setState(ProfileState profileState) {
         state = profileState;
-        VisibilityLogic.handle(playerUUID);
+        handleVisibility();
         plugin.getHotbarManager().giveItems(playerUUID);
     }
 
@@ -68,6 +76,7 @@ public class Profile {
         gameData.setMatchHistories(gameData.deserializeHistory(dataDocument.getList("history", new ArrayList<>())));
 
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
+        DataDocument settingsStatistics = dataDocument.getDataDocument("settings");
 
         for (Kit kit : plugin.getKitManager().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
@@ -80,6 +89,12 @@ public class Profile {
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
             profileKitData.updateDivision();
         }
+
+        settingData.setPlayerVisibility(settingsStatistics.getBoolean("showPlayers", true));
+        settingData.setAllowSpectators(settingsStatistics.getBoolean("allowSpectators", true));
+        settingData.setAllowDuels(settingsStatistics.getBoolean("allowDuels", true));
+        settingData.setAllowParty(settingsStatistics.getBoolean("allowParty", true));
+
     }
 
     public void save() {
@@ -103,8 +118,16 @@ public class Profile {
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
         }
-
         dataDocument.put("kitData", kitStatsDoc);
+
+        DataDocument settingsDoc = new DataDocument();
+
+        settingsDoc.put("showPlayers", settingData.isPlayerVisibility());
+        settingsDoc.put("allowSpectators", settingData.isAllowSpectators());
+        settingsDoc.put("allowDuels", settingData.isAllowDuels());
+        settingsDoc.put("allowParty", settingData.isAllowParty());
+
+        dataDocument.put("settings", settingsDoc);
 
         plugin.getDatabaseManager().getDatabase().replace(playerUUID, dataDocument);
     }

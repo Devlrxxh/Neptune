@@ -167,8 +167,8 @@ public final class Neptune extends JavaPlugin {
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler();
-        new QueueCheckTask().start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), 20L, this);
-        new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), 20L, this);
+        new QueueCheckTask().start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
+        new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
     }
 
     private void loadCommandManager() {

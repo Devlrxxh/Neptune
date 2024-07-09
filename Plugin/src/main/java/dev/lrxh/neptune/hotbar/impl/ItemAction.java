@@ -15,7 +15,7 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.menus.kitEditor.KitEditorMenu;
 import dev.lrxh.neptune.providers.menus.stats.StatsMenu;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
-import org.bukkit.Bukkit;
+import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
@@ -81,7 +81,7 @@ public enum ItemAction {
             }
             Party party = profile.getGameData().getParty();
             MessagesLocale.PARTY_INFO.send(player.getUniqueId(),
-                    new Replacement("<leader>", Bukkit.getPlayer(party.getLeader()).getName()),
+                    new Replacement("<leader>", party.getLeaderName()),
                     new Replacement("<privacy>", party.isOpen() ? "Open" : "Closed"),
                     new Replacement("<size>", String.valueOf(party.getUsers().size())));
         }
@@ -122,6 +122,12 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             new DivisionsMenu().openMenu(player.getUniqueId());
+        }
+    },
+    SETTINGS() {
+        @Override
+        public void execute(Player player) {
+            new SettingsMenu().openMenu(player.getUniqueId());
         }
     };
 

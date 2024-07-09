@@ -28,28 +28,33 @@ public class ScoreboardAdapter implements AssembleAdapter {
     public List<String> getLines(Player player) {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         if (profile == null) return new ArrayList<>();
+
         ProfileState state = profile.getState();
-        if (state.equals(ProfileState.IN_LOBBY) || state.equals(ProfileState.IN_KIT_EDITOR)) {
-            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.LOBBY.getStringList()), player);
+        Match match;
+
+        switch (state) {
+            case IN_LOBBY:
+            case IN_KIT_EDITOR:
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.LOBBY.getStringList()), player);
+            case IN_PARTY:
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.PARTY_LOBBY.getStringList()), player);
+            case IN_QUEUE:
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_QUEUE.getStringList()), player);
+            case IN_GAME:
+                match = profile.getMatch();
+                return match.getScoreboard(player.getUniqueId());
+            case IN_SPECTATOR:
+                match = profile.getMatch();
+                if (match instanceof SoloFightMatch) {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
+                } else if (match instanceof TeamFightMatch) {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
+                }
+                break;
+            default:
+                break;
         }
-        if (state.equals(ProfileState.IN_PARTY)) {
-            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.PARTY_LOBBY.getStringList()), player);
-        }
-        if (state.equals(ProfileState.IN_QUEUE)) {
-            return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_QUEUE.getStringList()), player);
-        }
-        if (state.equals(ProfileState.IN_GAME)) {
-            Match match = profile.getMatch();
-            return match.getScoreboard(player.getUniqueId());
-        }
-        if (state.equals(ProfileState.IN_SPECTATOR)) {
-            Match match = profile.getMatch();
-            if (match instanceof SoloFightMatch) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
-            } else if (match instanceof TeamFightMatch) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
-            }
-        }
+
         return new ArrayList<>();
     }
 

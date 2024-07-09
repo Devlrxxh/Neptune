@@ -18,7 +18,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
 
     public MatchStartRunnable(Match match, Neptune plugin) {
         this.match = match;
-        this.startTimer = match.getKit().isDenyMovement() && !(match instanceof FfaFightMatch) ? 3 : 5;
+        this.startTimer = match.getKit().isDenyMovement() || !(match instanceof FfaFightMatch) ? 3 : 5;
         this.plugin = plugin;
     }
 

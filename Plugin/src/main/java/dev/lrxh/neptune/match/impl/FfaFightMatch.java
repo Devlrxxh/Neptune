@@ -11,14 +11,12 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
-import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class FfaFightMatch extends Match {
     public final List<Participant> deadParticipants;
-    @Setter
     private Participant winner;
 
     public FfaFightMatch(Arena arena, Kit kit, List<Participant> participants) {
@@ -53,7 +51,7 @@ public class FfaFightMatch extends Match {
 
         if (!isLastPlayerStanding()) return;
 
-        setWinner(getLastPlayerStanding());
+        winner = getLastPlayerStanding();
 
         PlayerUtil.reset(participant.getPlayerUUID());
 

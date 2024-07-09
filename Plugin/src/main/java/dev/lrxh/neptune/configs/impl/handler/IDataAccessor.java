@@ -77,6 +77,7 @@ public interface IDataAccessor {
         for (IDataAccessor accessor : this.getClass().getEnumConstants()) {
             if (accessor.getConfigFile().getConfiguration().get(accessor.getPath()) == null) {
                 setValue(accessor.getPath(), accessor.getDefaultValue(), accessor.getDataType());
+                System.out.println(accessor.getPath() + " has been set to default value: " + accessor.getDefaultValue());
             }
             comment(accessor.getPath(), accessor.getComment());
         }

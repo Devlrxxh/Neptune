@@ -33,9 +33,15 @@ public class Party {
         this.open = false;
         this.maxUsers = 10;
         this.duelRequest = true;
-        this.plugin = Neptune.get();
+        this.plugin = plugin;
 
         setupPlayer(leader);
+    }
+
+    public String getLeaderName() {
+        Player player = Bukkit.getPlayer(leader);
+        if (player == null) return "Leader";
+        return player.getName();
     }
 
     public void invite(UUID playerUUID) {
@@ -43,12 +49,12 @@ public class Party {
         if (player == null) return;
 
         TextComponent accept =
-                new ClickableComponent(MessagesLocale.DUEL_ACCEPT.getString().replace("<leader>", Bukkit.getPlayer(leader).getName()),
+                new ClickableComponent(MessagesLocale.DUEL_ACCEPT.getString().replace("<leader>", getLeaderName()),
                         "/party accept " + leader, MessagesLocale.PARTY_ACCEPT_HOVER.getString()).build();
 
         MessagesLocale.PARTY_INVITATION.send(playerUUID,
                 new Replacement("<accept>", accept),
-                new Replacement("<leader>", Bukkit.getPlayer(leader).getName()));
+                new Replacement("<leader>", getLeaderName()));
 
         Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         profile.getGameData().addRequest(new PartyRequest(leader, this), leader, ignore -> MessagesLocale.PARTY_EXPIRED.send(leader, new Replacement("<player>", player.getName())));
@@ -71,7 +77,7 @@ public class Party {
     }
 
     public void kick(UUID playerUUID) {
-        broadcast(MessagesLocale.PARTY_KICK, new Replacement("<player>", Bukkit.getPlayer(playerUUID).getName()));
+        broadcast(MessagesLocale.PARTY_KICK, new Replacement("<player>", getLeaderName()));
         remove(playerUUID);
     }
 
