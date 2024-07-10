@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.Profile;
@@ -43,7 +44,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
             match.sendEndMessage();
 
-            if (match.getKit().isShowHP()) {
+            if (match.getKit().is(KitRule.SHOW_HP)) {
                 match.hideHealth();
             }
 

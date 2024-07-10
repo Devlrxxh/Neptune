@@ -3,6 +3,7 @@ package dev.lrxh.neptune.kit;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.data.KitData;
 import lombok.AllArgsConstructor;
@@ -24,40 +25,16 @@ public class Kit {
     private List<ItemStack> items;
     private HashSet<Arena> arenas;
     private ItemStack icon;
-    //RULES
-    private boolean build;
-    private boolean hunger;
-    private boolean sumo;
-    private boolean fallDamage;
-    private boolean denyMovement;
-    private boolean boxing;
-    private boolean damage;
-    private boolean arenaBreak;
-    private boolean bestOfThree;
-    private boolean saturationHeal;
-    private boolean showHP;
-    private boolean saturation;
-    //VALUES
+    private HashMap<KitRule, Boolean> rules;
     private int queue, playing;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, boolean build, boolean arenaBreak, boolean hunger, boolean sumo, boolean fallDamage, boolean denyMovement, boolean boxing, boolean damage, boolean bestOfThree, boolean saturationHeal, boolean showHP, boolean saturation) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
         this.arenas = arenas;
         this.icon = icon;
-        this.build = build;
-        this.arenaBreak = arenaBreak;
-        this.hunger = hunger;
-        this.sumo = sumo;
-        this.fallDamage = fallDamage;
-        this.denyMovement = denyMovement;
-        this.boxing = boxing;
-        this.damage = damage;
-        this.bestOfThree = bestOfThree;
-        this.saturationHeal = saturationHeal;
-        this.showHP = showHP;
-        this.saturation = saturation;
+        this.rules = rules;
         this.queue = 0;
         this.playing = 0;
 
@@ -75,19 +52,8 @@ public class Kit {
         this.displayName = name;
         this.items = items;
         this.arenas = new HashSet<>();
+        this.rules = new HashMap<>();
         this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : new ItemStack(icon);
-        this.build = false;
-        this.arenaBreak = false;
-        this.hunger = false;
-        this.sumo = false;
-        this.fallDamage = false;
-        this.denyMovement = false;
-        this.boxing = false;
-        this.damage = false;
-        this.bestOfThree = false;
-        this.saturationHeal = false;
-        this.showHP = false;
-        this.saturation = false;
         this.queue = 0;
         this.playing = 0;
 
@@ -117,6 +83,14 @@ public class Kit {
         return arenasString;
     }
 
+    public boolean is(KitRule kitRule) {
+        return rules.get(kitRule);
+    }
+
+    public void set(KitRule kitRule) {
+        rules.put(kitRule, !rules.get(kitRule));
+    }
+
     public void removeQueue() {
         if (!(queue == 0)) {
             queue--;
@@ -137,7 +111,7 @@ public class Kit {
         List<Arena> kitArenas = new ArrayList<>();
         for (Arena arena : arenas) {
             if (!arena.isEnabled()) continue;
-            if (build) {
+            if (is(KitRule.BUILD)) {
                 if ((arena instanceof StandAloneArena && !((StandAloneArena) arena).isUsed())) {
                     kitArenas.add(arena);
                 }

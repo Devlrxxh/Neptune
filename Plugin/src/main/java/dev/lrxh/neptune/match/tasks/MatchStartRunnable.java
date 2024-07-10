@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.MatchState;
@@ -18,7 +19,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
 
     public MatchStartRunnable(Match match, Neptune plugin) {
         this.match = match;
-        this.startTimer = match.getKit().isDenyMovement() || !(match instanceof FfaFightMatch) ? 3 : 5;
+        this.startTimer = match.getKit().is(KitRule.DENY_MOVEMENT) || !(match instanceof FfaFightMatch) ? 3 : 5;
         this.plugin = plugin;
     }
 

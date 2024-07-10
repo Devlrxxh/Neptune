@@ -5,6 +5,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
@@ -147,7 +148,7 @@ public abstract class Match {
                     if (this.getRounds() > 1) {
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
                     }
-                    if (this.getKit().isBoxing()) {
+                    if (this.getKit().is(KitRule.BOXING)) {
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
                     }
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
@@ -202,7 +203,7 @@ public abstract class Match {
     public void checkRules() {
         forEachParticipant(participant -> {
             if (!(this instanceof FfaFightMatch)) {
-                if (kit.isDenyMovement()) {
+                if (kit.is(KitRule.DENY_MOVEMENT)) {
                     if (matchState.equals(MatchState.STARTING)) {
                         PlayerUtil.denyMovement(participant.getPlayerUUID());
                     } else {
@@ -210,13 +211,13 @@ public abstract class Match {
                     }
                 }
             }
-            if (kit.isShowHP()) {
+            if (kit.is(KitRule.SHOW_HP)) {
                 if (matchState.equals(MatchState.STARTING)) {
                     showHealth(participant.getPlayerUUID());
                 }
             }
 
-            if (!kit.isSaturation()) {
+            if (!kit.is(KitRule.SATURATION)) {
                 Player player = Bukkit.getPlayer(participant.getPlayerUUID());
                 if (player == null) return;
                 player.setSaturation(0.0F);

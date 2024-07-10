@@ -2,6 +2,7 @@ package dev.lrxh.neptune.kit;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -39,20 +40,12 @@ public class KitManager implements IManager {
                     }
                 }
 
-                boolean build = config.getBoolean(path + "build", false);
-                boolean arenaBreak = config.getBoolean(path + "arenaBreak", false);
-                boolean hunger = config.getBoolean(path + "hunger", false);
-                boolean sumo = config.getBoolean(path + "sumo", false);
-                boolean fallDamage = config.getBoolean(path + "fallDamage", false);
-                boolean denyMovement = config.getBoolean(path + "denyMovement", false);
-                boolean boxing = config.getBoolean(path + "boxing", false);
-                boolean damage = config.getBoolean(path + "damage", false);
-                boolean bestOfThree = config.getBoolean(path + "bestOfThree", false);
-                boolean saturationHeal = config.getBoolean(path + "saturationHeal", false);
-                boolean showHP = config.getBoolean(path + "showHP", false);
-                boolean saturation = config.getBoolean(path + "saturation", false);
+                HashMap<KitRule, Boolean> rules = new HashMap<>();
+                for (KitRule kitRule : KitRule.values()) {
+                    rules.put(kitRule, config.getBoolean(path + kitRule.getSaveName(), false));
+                }
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, build, arenaBreak, hunger, sumo, fallDamage, denyMovement, boxing, damage, bestOfThree, saturationHeal, showHP, saturation));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules));
             }
         }
     }
@@ -61,24 +54,17 @@ public class KitManager implements IManager {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         kits.forEach(kit -> {
             String path = "kits." + kit.getName() + ".";
-            List<Value> values = Arrays.asList(
-                    new Value("displayName", kit.getDisplayName()),
-                    new Value("items", ItemUtils.serialize(kit.getItems())),
-                    new Value("build", kit.isBuild()),
-                    new Value("arenaBreak", kit.isArenaBreak()),
-                    new Value("hunger", kit.isHunger()),
-                    new Value("sumo", kit.isSumo()),
-                    new Value("fallDamage", kit.isFallDamage()),
-                    new Value("denyMovement", kit.isDenyMovement()),
-                    new Value("arenas", kit.getArenasAsString()),
-                    new Value("icon", ItemUtils.serialize(kit.getIcon())),
-                    new Value("boxing", kit.isBoxing()),
-                    new Value("damage", kit.isDamage()),
-                    new Value("bestOfThree", kit.isBestOfThree()),
-                    new Value("saturationHeal", kit.isSaturationHeal()),
-                    new Value("showHP", kit.isShowHP()),
-                    new Value("saturation", kit.isSaturation())
-            );
+            List<Value> values = new ArrayList<>();
+
+            values.add(new Value("displayName", kit.getDisplayName()));
+            values.add(new Value("items", ItemUtils.serialize(kit.getItems())));
+            values.add(new Value("arenas", kit.getArenasAsString()));
+            values.add(new Value("icon", ItemUtils.serialize(kit.getIcon())));
+
+            for (Map.Entry<KitRule, Boolean> kitRuleEntry : kit.getRules().entrySet()) {
+                values.add(new Value(kitRuleEntry.getKey().getSaveName(), kit.is(kitRuleEntry.getKey())));
+            }
+
             save(values, path);
         });
     }

@@ -174,13 +174,13 @@ public class Profile {
             return;
         }
 
-        if (!party.getLeader().equals(playerUUID)) {
-            party.broadcast(MessagesLocale.PARTY_LEFT,
-                    new Replacement("<player>", username));
-            party.remove(playerUUID);
-        } else {
+        if (party.getLeader().equals(playerUUID)) {
             party.disband();
+            return;
         }
+        party.broadcast(MessagesLocale.PARTY_LEFT,
+                new Replacement("<player>", username));
+        party.remove(playerUUID);
     }
 
     public void acceptDuel(UUID senderUUID) {

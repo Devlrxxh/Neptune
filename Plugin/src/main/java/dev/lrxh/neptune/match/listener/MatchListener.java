@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.listener;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
@@ -71,7 +72,7 @@ public class MatchListener implements Listener {
             player.sendMessage(CC.color("&cYou can't place blocks here!"));
             return;
         }
-        if (match != null && match.getKit().isBuild()) {
+        if (match != null && match.getKit().is(KitRule.BUILD)) {
             if (match.getMatchState().equals(MatchState.STARTING)) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou can't place blocks yet!"));
@@ -132,7 +133,7 @@ public class MatchListener implements Listener {
             if (!match.matchState.equals(MatchState.IN_ROUND)) {
                 event.setCancelled(true);
             } else {
-                if (!match.getKit().isDamage()) {
+                if (!match.getKit().is(KitRule.DAMAGE)) {
                     event.setDamage(0);
                 }
             }
@@ -167,7 +168,7 @@ public class MatchListener implements Listener {
             Participant participant = match.getParticipant(player.getUniqueId());
             Location playerLocation = player.getLocation();
 
-            if (match.getKit().isSumo()) {
+            if (match.getKit().is(KitRule.SUMO)) {
                 Block block = playerLocation.getBlock();
 
                 if (block.getType() == Material.WATER) {
@@ -187,7 +188,7 @@ public class MatchListener implements Listener {
             Match match = profile.getMatch();
 
             if (!profile.getState().equals(ProfileState.IN_GAME) ||
-                    (match != null && !match.getKit().isFallDamage() && event.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
+                    (match != null && !match.getKit().is(KitRule.FALL_DAMAGE) && event.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
                 event.setCancelled(true);
             }
         }
@@ -201,7 +202,7 @@ public class MatchListener implements Listener {
             Match match = profile.getMatch();
 
             if (!profile.getState().equals(ProfileState.IN_GAME) ||
-                    (match != null && !match.getKit().isFallDamage() && !match.getKit().isHunger())) {
+                    (match != null && !match.getKit().is(KitRule.FALL_DAMAGE) && !match.getKit().is(KitRule.HUNGER))) {
                 event.setCancelled(true);
             }
         }
@@ -214,7 +215,7 @@ public class MatchListener implements Listener {
             if (profile == null) return;
             Match match = profile.getMatch();
             if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
-                if (match != null && !match.getKit().isSaturationHeal()) {
+                if (match != null && !match.getKit().is(KitRule.SATURATION_HEAL)) {
                     event.setCancelled(true);
                 }
             }
@@ -234,7 +235,7 @@ public class MatchListener implements Listener {
             player.sendMessage(CC.color("&cYou can't place blocks here!"));
             return;
         }
-        if (match != null && match.getKit().isBuild()) {
+        if (match != null && match.getKit().is(KitRule.BUILD)) {
             if (match.getMatchState().equals(MatchState.STARTING)) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou can't place blocks yet!"));
@@ -279,12 +280,12 @@ public class MatchListener implements Listener {
         }
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
-        if (!(match != null && match.getKit().isBuild() && match.getPlacedBlocks().contains(blockLocation))) {
+        if (!(match != null && match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation))) {
             event.setCancelled(true);
         } else {
             match.getPlacedBlocks().remove(blockLocation);
         }
-        if (match != null && match.getKit().isArenaBreak()) {
+        if (match != null && match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
             event.setCancelled(false);
         }
     }

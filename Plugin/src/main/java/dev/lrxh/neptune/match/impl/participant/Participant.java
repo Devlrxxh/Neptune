@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.impl.participant;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -91,7 +92,7 @@ public class Participant {
         }
         Match match = Neptune.get().getProfileManager().getByUUID(playerUUID).getMatch();
         if (match instanceof SoloFightMatch) {
-            if (match.getKit().isBoxing()) {
+            if (match.getKit().is(KitRule.BOXING)) {
                 if (hits >= 100) {
                     opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(opponent);

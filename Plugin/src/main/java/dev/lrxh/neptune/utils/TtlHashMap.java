@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 public class TtlHashMap<K, V> extends HashMap<K, V> {
     private final Map<K, TtlAction> actions = new HashMap<>();
@@ -39,6 +38,10 @@ public class TtlHashMap<K, V> extends HashMap<K, V> {
             }
             actions.remove(key);
         }
+    }
+
+    public boolean contains(K key) {
+        return containsKey(key);
     }
 
     @Override

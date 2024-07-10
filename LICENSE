@@ -331,7 +331,7 @@ requirement to continue to provide support service, warranty, or updates
 for a work that has been modified or installed by the recipient, or for
 the User Product in which it has been modified or installed.  Access to a
 network may be denied when the modification itself materially and
-adversely affects the operation of the network or violates the rules and
+adversely affects the operation of the network or violates the kitRule and
 protocols for communication across the network.
 
   Corresponding Source conveyed, and Installation Information provided,

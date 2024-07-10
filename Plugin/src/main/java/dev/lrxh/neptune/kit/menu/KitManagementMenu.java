@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.kit.menu;
 
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.impl.Rules;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
 import dev.lrxh.neptune.utils.menu.Menu;
@@ -34,8 +34,8 @@ public class KitManagementMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = 10;
-        for (Rules rules : Rules.values()) {
-            buttons.put(i++, new KitManagementButton(rules, kit));
+        for (KitRule kitRule : KitRule.values()) {
+            buttons.put(i++, new KitManagementButton(kitRule, kit));
         }
 
         return buttons;
