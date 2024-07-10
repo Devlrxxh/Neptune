@@ -38,19 +38,16 @@ public class Profile {
         this.playerUUID = playerUUID;
         this.state = ProfileState.IN_LOBBY;
 
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-
-        this.username = player.getName();
-        this.gameData = new GameData();
-
-        for (Kit kit : plugin.getKitManager().kits) {
-            KitData kitData = new KitData();
-            gameData.getKitData().put(kit, kitData);
-            kitData.setPlugin(plugin);
-        }
+        this.gameData = new GameData(plugin);
 
         this.settingData = new SettingData();
+
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            this.username = player.getName();
+        }else{
+            this.username = "???";
+        }
 
         load();
     }
@@ -70,8 +67,9 @@ public class Profile {
 
         if (dataDocument == null) {
             save();
-            return;
         }
+
+        if(dataDocument == null) return;
 
         gameData.setMatchHistories(gameData.deserializeHistory(dataDocument.getList("history", new ArrayList<>())));
 
@@ -100,7 +98,13 @@ public class Profile {
     public void save() {
         DataDocument dataDocument = new DataDocument();
         dataDocument.put("uuid", playerUUID.toString());
-        dataDocument.put("username", username);
+
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player != null) {
+            dataDocument.put("username", player.getName());
+        }else{
+            dataDocument.put("username", "???");
+        }
 
         DataDocument kitStatsDoc = new DataDocument();
 
@@ -204,6 +208,7 @@ public class Profile {
     public Match getMatch() {
         return gameData.getMatch();
     }
+
 
     public void setMatch(Match match) {
         gameData.setMatch(match);

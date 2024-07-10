@@ -68,7 +68,7 @@ public class Kit {
 
     private void addToProfiles() {
         for (Map.Entry<UUID, Profile> profile : plugin.getProfileManager().profiles.entrySet()) {
-            profile.getValue().getGameData().getKitData().put(this, new KitData());
+            profile.getValue().getGameData().getKitData().put(this, new KitData(plugin));
         }
     }
 

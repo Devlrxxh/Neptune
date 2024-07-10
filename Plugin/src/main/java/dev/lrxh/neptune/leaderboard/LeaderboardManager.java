@@ -131,7 +131,7 @@ public class LeaderboardManager {
         DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
         if (kitDocument == null) return null;
 
-        KitData profileKitData = new KitData();
+        KitData profileKitData = new KitData(plugin);
         profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
         profileKitData.setWins(kitDocument.getInteger("WINS", 0));
         profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));

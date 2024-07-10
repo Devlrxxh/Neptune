@@ -22,6 +22,10 @@ public class KitData {
     private Division division;
     private Neptune plugin;
 
+    public KitData(Neptune plugin){
+        this.plugin = plugin;
+    }
+
     public double getKdr() {
         double kd = wins;
         if (losses > 0) {

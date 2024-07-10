@@ -35,7 +35,7 @@ public class DivisionManager implements IManager {
         }
 
         divisions = divisions.stream()
-                .sorted(Comparator.comparingInt(Division::getWinsRequired))
+                .sorted(Comparator.comparingInt(Division::getWinsRequired).reversed())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 

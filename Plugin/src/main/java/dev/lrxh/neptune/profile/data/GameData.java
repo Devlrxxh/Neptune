@@ -2,6 +2,7 @@ package dev.lrxh.neptune.profile.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
@@ -30,12 +31,16 @@ public class GameData {
     private Kit kitEditor;
     private Party party;
 
-    public GameData() {
+    public GameData(Neptune plugin) {
         this.match = null;
         this.kitEditor = null;
         this.kitData = new HashMap<>();
         this.matchHistories = new ArrayList<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
+
+        for (Kit kit : plugin.getKitManager().kits) {
+            kitData.put(kit, new KitData(plugin));
+        }
     }
 
     public void run(Kit kit, boolean won) {
