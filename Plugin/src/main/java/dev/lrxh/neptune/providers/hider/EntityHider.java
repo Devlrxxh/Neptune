@@ -44,15 +44,12 @@ public class EntityHider {
     }
 
     public static boolean setVisibility(Player observer, int entityID, boolean visible) {
-        switch (policy) {
-            case BLACKLIST:
+        return switch (policy) {
+            case BLACKLIST ->
                 // Non-membership means they are visible
-                return !setMembership(observer, entityID, !visible);
-            case WHITELIST:
-                return setMembership(observer, entityID, visible);
-            default:
-                throw new IllegalArgumentException("Unknown policy: " + policy);
-        }
+                    !setMembership(observer, entityID, !visible);
+            case WHITELIST -> setMembership(observer, entityID, visible);
+        };
     }
 
     /**

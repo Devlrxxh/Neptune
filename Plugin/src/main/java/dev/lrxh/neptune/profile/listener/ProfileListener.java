@@ -27,7 +27,7 @@ public class ProfileListener implements Listener {
         Player player = event.getPlayer();
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
-        plugin.getProfileManager().createProfile(player.getUniqueId());
+        plugin.getProfileManager().createProfile(player);
 
         event.setJoinMessage(null);
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {

@@ -28,7 +28,7 @@ public class LeaderboardButton extends Button {
             for (int i = 1; i <= 10; i++) {
                 PlayerEntry playerEntry = null;
                 if (i <= leaderboard.size()) {
-                    playerEntry = plugin.getLeaderboardManager().getLeaderboardSlot(kit, leaderboardType, i - 1);
+                    playerEntry = plugin.getLeaderboardManager().getLeaderboardSlot(kit, leaderboardType, i);
                 }
 
                 if (playerEntry == null) {

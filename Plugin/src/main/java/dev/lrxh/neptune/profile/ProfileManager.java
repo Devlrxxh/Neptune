@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.profile;
 
 import dev.lrxh.neptune.Neptune;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
@@ -13,8 +15,14 @@ public class ProfileManager {
         this.plugin = Neptune.get();
     }
 
+    public void createProfile(Player player) {
+        profiles.put(player.getUniqueId(), new Profile(player, plugin));
+    }
+
     public Profile createProfile(UUID playerUUID) {
-        return profiles.put(playerUUID, new Profile(playerUUID, plugin));
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return null;
+        return profiles.put(playerUUID, new Profile(player, plugin));
     }
 
     public void removeProfile(UUID playerUUID) {

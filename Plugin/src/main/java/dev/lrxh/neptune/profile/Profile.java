@@ -33,21 +33,13 @@ public class Profile {
     private GameData gameData;
     private SettingData settingData;
 
-    public Profile(UUID playerUUID, Neptune plugin) {
+    public Profile(Player player, Neptune plugin) {
         this.plugin = Neptune.get();
-        this.playerUUID = playerUUID;
+        this.playerUUID = player.getUniqueId();
         this.state = ProfileState.IN_LOBBY;
-
         this.gameData = new GameData(plugin);
-
         this.settingData = new SettingData();
-
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player != null) {
-            this.username = player.getName();
-        }else{
-            this.username = "???";
-        }
+        this.username = player.getName();
 
         load();
     }
@@ -69,7 +61,7 @@ public class Profile {
             save();
         }
 
-        if(dataDocument == null) return;
+        if (dataDocument == null) return;
 
         gameData.setMatchHistories(gameData.deserializeHistory(dataDocument.getList("history", new ArrayList<>())));
 
@@ -92,6 +84,7 @@ public class Profile {
         settingData.setAllowSpectators(settingsStatistics.getBoolean("allowSpectators", true));
         settingData.setAllowDuels(settingsStatistics.getBoolean("allowDuels", true));
         settingData.setAllowParty(settingsStatistics.getBoolean("allowParty", true));
+        settingData.setMaxPing(settingsStatistics.getInteger("maxPing", 350));
 
     }
 
@@ -102,7 +95,7 @@ public class Profile {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
             dataDocument.put("username", player.getName());
-        }else{
+        } else {
             dataDocument.put("username", "???");
         }
 
@@ -130,6 +123,7 @@ public class Profile {
         settingsDoc.put("allowSpectators", settingData.isAllowSpectators());
         settingsDoc.put("allowDuels", settingData.isAllowDuels());
         settingsDoc.put("allowParty", settingData.isAllowParty());
+        settingsDoc.put("maxPing", settingData.getMaxPing());
 
         dataDocument.put("settings", settingsDoc);
 

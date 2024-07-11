@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 public enum SettingsLocale implements IDataAccessor {
-    SPAWN_LOCATION("SPAWN.LOCATION", null, DataType.STRING, "NONE"),
+    SPAWN_LOCATION("SPAWN.LOCATION", DataType.STRING, "NONE"),
     QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "20"),
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "20"),
     DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL", DataType.STRING, "MONGO"),
@@ -29,6 +29,13 @@ public enum SettingsLocale implements IDataAccessor {
     SettingsLocale(String path, @Nullable String comment, DataType dataType, String... defaultValue) {
         this.path = path;
         this.comment = comment;
+        this.defaultValue.addAll(Arrays.asList(defaultValue));
+        this.dataType = dataType;
+    }
+
+    SettingsLocale(String path, DataType dataType, String... defaultValue) {
+        this.path = path;
+        this.comment = null;
         this.defaultValue.addAll(Arrays.asList(defaultValue));
         this.dataType = dataType;
     }

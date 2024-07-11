@@ -45,7 +45,7 @@ public class LeaderboardManager {
     }
 
     public PlayerEntry getLeaderboardSlot(Kit kit, LeaderboardType leaderboardType, int i) {
-        return getLeaderboard(kit, leaderboardType).get(i);
+        return getLeaderboard(kit, leaderboardType).get(i - 1);
     }
 
     public List<PlayerEntry> getLeaderboard(Kit kit, LeaderboardType leaderboardType) {

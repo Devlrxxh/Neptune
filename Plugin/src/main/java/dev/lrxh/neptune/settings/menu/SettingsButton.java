@@ -1,7 +1,10 @@
 package dev.lrxh.neptune.settings.menu;
 
+import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.settings.Setting;
 import dev.lrxh.neptune.utils.ItemBuilder;
+import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
@@ -14,15 +17,18 @@ public class SettingsButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+
         return new ItemBuilder(setting.getMaterial(), player.getUniqueId())
                 .name(setting.getDisplayName())
-                .lore(setting.toggled(player) ? setting.getEnabledLore() : setting.getDisabledLore())
+                .lore(ItemUtils.getLore(setting.toggled(player) ? setting.getEnabledLore() : setting.getDisabledLore(),
+                        new Replacement("<ping>", profile.getSettingData().getMaxPing())))
                 .clearFlags()
                 .build();
     }
 
     @Override
     public void onClick(Player player, ClickType clickType) {
-        setting.execute(player);
+        setting.execute(player, clickType);
     }
 }

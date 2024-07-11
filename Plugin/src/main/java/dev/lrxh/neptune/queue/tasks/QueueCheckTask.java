@@ -7,6 +7,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.queue.Queue;
@@ -39,8 +40,15 @@ public class QueueCheckTask extends NeptuneRunnable {
                 UUID uuid2 = entry2.getKey();
                 Queue queue2 = entry2.getValue();
 
-                if ((uuid1.equals(uuid2))) return;
-                if (!plugin.getQueueManager().compareQueue(queue1, queue2)) return;
+                if ((uuid1.equals(uuid2))) continue;
+                if (!plugin.getQueueManager().compareQueue(queue1, queue2)) continue;
+                SettingData settings1 = plugin.getProfileManager().getByUUID(uuid1).getSettingData();
+                SettingData settings2 = plugin.getProfileManager().getByUUID(uuid2).getSettingData();
+
+                if (!(settings2.getMaxPing() <= settings1.getMaxPing() &&
+                        settings1.getMaxPing() <= settings2.getMaxPing())) {
+                    continue;
+                }
 
                 //Create participants
                 Participant participant1 =
@@ -61,7 +69,7 @@ public class QueueCheckTask extends NeptuneRunnable {
 
                     PlayerUtil.sendMessage(uuid1, CC.error("No arena was found!"));
                     PlayerUtil.sendMessage(uuid2, CC.error("No arena was found!"));
-                    return;
+                    continue;
                 }
 
                 //If arena locations weren't setup
@@ -76,7 +84,7 @@ public class QueueCheckTask extends NeptuneRunnable {
 
                     PlayerUtil.sendMessage(uuid1, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                     PlayerUtil.sendMessage(uuid2, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
-                    return;
+                    continue;
                 }
 
                 //Set arena as being used

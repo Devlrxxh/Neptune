@@ -22,7 +22,7 @@ public class KitData {
     private Division division;
     private Neptune plugin;
 
-    public KitData(Neptune plugin){
+    public KitData(Neptune plugin) {
         this.plugin = plugin;
     }
 
