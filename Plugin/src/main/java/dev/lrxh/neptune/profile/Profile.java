@@ -2,6 +2,7 @@ package dev.lrxh.neptune.profile;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.cosmetics.impl.KillEffect;
 import dev.lrxh.neptune.database.DataDocument;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
@@ -34,12 +35,12 @@ public class Profile {
     private SettingData settingData;
 
     public Profile(Player player, Neptune plugin) {
-        this.plugin = Neptune.get();
+        this.plugin = plugin;
+        this.username = player.getName();
         this.playerUUID = player.getUniqueId();
         this.state = ProfileState.IN_LOBBY;
         this.gameData = new GameData(plugin);
         this.settingData = new SettingData();
-        this.username = player.getName();
 
         load();
     }
@@ -85,6 +86,7 @@ public class Profile {
         settingData.setAllowDuels(settingsStatistics.getBoolean("allowDuels", true));
         settingData.setAllowParty(settingsStatistics.getBoolean("allowParty", true));
         settingData.setMaxPing(settingsStatistics.getInteger("maxPing", 350));
+        settingData.setKillEffect(KillEffect.valueOf(settingsStatistics.getString("killEffect", "NONE")));
 
     }
 
@@ -92,12 +94,7 @@ public class Profile {
         DataDocument dataDocument = new DataDocument();
         dataDocument.put("uuid", playerUUID.toString());
 
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player != null) {
-            dataDocument.put("username", player.getName());
-        } else {
-            dataDocument.put("username", "???");
-        }
+        dataDocument.put("username", username);
 
         DataDocument kitStatsDoc = new DataDocument();
 
@@ -124,6 +121,7 @@ public class Profile {
         settingsDoc.put("allowDuels", settingData.isAllowDuels());
         settingsDoc.put("allowParty", settingData.isAllowParty());
         settingsDoc.put("maxPing", settingData.getMaxPing());
+        settingsDoc.put("killEffect", settingData.getKillEffect().toString());
 
         dataDocument.put("settings", settingsDoc);
 
@@ -186,10 +184,10 @@ public class Profile {
         DuelRequest duelRequest = (DuelRequest) gameData.getRequests().get(senderUUID);
 
         Participant participant1 =
-                new Participant(duelRequest.getSender());
+                new Participant(duelRequest.getSender(), plugin);
 
         Participant participant2 =
-                new Participant(playerUUID);
+                new Participant(playerUUID, plugin);
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 

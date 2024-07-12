@@ -5,6 +5,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.Data;
@@ -28,10 +29,12 @@ public class Participant {
     private boolean loser;
     private boolean disconnected = false;
     private int roundsWon = 0;
+    private Neptune plugin;
 
-    public Participant(UUID playerUUID) {
+    public Participant(UUID playerUUID, Neptune plugin) {
         this.playerUUID = playerUUID;
         this.name = Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getName();
+        this.plugin = plugin;
     }
 
     public String getName() {
@@ -51,6 +54,13 @@ public class Participant {
         if (player == null) return;
         player.playSound(player.getLocation(),
                 (org.bukkit.Sound) Neptune.get().getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
+    }
+
+    public void playKillEffect() {
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (profile == null || player == null) return;
+        profile.getSettingData().getKillEffect().execute(player);
     }
 
     public void sendTitle(String header, String footer, int duration) {

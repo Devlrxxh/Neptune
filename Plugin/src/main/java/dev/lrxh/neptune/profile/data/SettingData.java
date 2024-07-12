@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.profile.data;
 
+import dev.lrxh.neptune.cosmetics.impl.KillEffect;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ public class SettingData {
     private boolean allowDuels = true;
     private boolean allowParty = true;
     private int maxPing = 350;
+    private KillEffect killEffect = KillEffect.NONE;
 
     public void increasePing() {
         if (maxPing == 350) return;

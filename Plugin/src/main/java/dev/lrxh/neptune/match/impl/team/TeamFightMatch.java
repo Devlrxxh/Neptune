@@ -72,7 +72,8 @@ public class TeamFightMatch extends Match {
         addSpectator(participant.getPlayerUUID());
 
         if (participant.getLastAttacker() != null) {
-            participant.getLastAttacker().playSound(dev.lrxh.sounds.Sound.UI_BUTTON_CLICK);
+            participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
+            participant.getLastAttacker().playKillEffect();
         }
 
         sendDeathMessage(participant);

@@ -21,7 +21,7 @@ public abstract class Menu {
     }
 
     public String getUUID() {
-        return buttons.keySet().toString();
+        return buttons.values().toString();
     }
 
     public void openMenu(UUID playerUUID) {

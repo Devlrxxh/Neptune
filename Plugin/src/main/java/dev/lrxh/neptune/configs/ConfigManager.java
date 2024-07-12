@@ -17,6 +17,7 @@ public class ConfigManager {
     private ConfigFile hotbarConfig;
     private ConfigFile menusConfig;
     private ConfigFile divisionsConfig;
+    private ConfigFile cosmeticsConfig;
 
     public ConfigManager() {
         this.plugin = Neptune.get();
@@ -31,6 +32,7 @@ public class ConfigManager {
         hotbarConfig = new ConfigFile("hotbar");
         menusConfig = new ConfigFile("menus");
         divisionsConfig = new ConfigFile("divisions");
+        cosmeticsConfig = new ConfigFile("cosmetics");
 
         initialize();
     }
@@ -42,5 +44,6 @@ public class ConfigManager {
         MenusLocale.FILTER_NAME.load();
         ScoreboardLocale.TITLE.load();
         DivisionsLocale.DIAMOND_1.load();
+        CosmeticsLocale.LIGHTNING_DISPLAY_NAME.load();
     }
 }

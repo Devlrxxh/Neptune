@@ -296,7 +296,32 @@ public enum MenusLocale implements IDataAccessor {
             " ",
             "&a + Left Click to increase",
             "&c - Right Click to decrease"),
-    SETTINGS_PING_RANGE_SLOT("SETTINGS.PING-RANGE.SLOT", DataType.INT, "14");
+    SETTINGS_PING_RANGE_SLOT("SETTINGS.PING-RANGE.SLOT", DataType.INT, "14"),
+    SETTINGS_COSMETICS_MATERIAL("SETTINGS.COSMETICS.MATERIAL", DataType.STRING, "CAKE"),
+    SETTINGS_COSMETICS_TITLE("SETTINGS.COSMETICS.NAME", DataType.STRING, "&bManage Cosmetics"),
+    SETTINGS_COSMETICS_LORE("SETTINGS.COSMETICS.LORE", DataType.STRING_LIST,
+            "&7Manage unlocked cosmetics",
+            "",
+            " &7Current Cosmetic: &b<kill-effect>",
+            " ",
+            "&aClick to open cosmetics menu"),
+    SETTINGS_COSMETICS_SLOT("SETTINGS.COSMETICS.SLOT", DataType.INT, "15"),
+    COSMETICS_SIZE("COSMETICS.SIZE", DataType.INT, "27"),
+    COSMETICS_FILTER("COSMETICS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
+    COSMETICS_TITLE("COSMETICS.TITLE", DataType.STRING, "&7Cosmetics Management"),
+    KILL_EFFECTS_SLOT("COSMETICS.KILL-EFFECTS.SLOT", DataType.INT, "10"),
+    KILL_EFFECTS_NAME("COSMETICS.KILL-EFFECTS.NAME", DataType.STRING, "&bKill Effects"),
+    KILL_EFFECTS_LORE("COSMETICS.KILL-EFFECTS.LORE", DataType.STRING_LIST, "&7View all available kill effects", " ", "&aClick to open"),
+    KILL_EFFECTS_MATERIAL("COSMETICS.KILL-EFFECTS.MATERIAL", DataType.STRING, "REDSTONE"),
+    KILL_EFFECTS_TITLE("COSMETICS.KILL-EFFECTS.TITLE", DataType.STRING, "&7Kill Effects"),
+    KILL_EFFECTS_SIZE("KILL_EFFECTS.SIZE", DataType.INT, "27"),
+    KILL_EFFECTS_FILTER("KILL_EFFECTS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
+    KILL_EFFECTS_SELECTED_LORE("KILL_EFFECTS.SELECTED.LORE", DataType.STRING_LIST,
+            " ", "&cClick to unselect"),
+    KILL_EFFECTS_UNSELECTED_LORE("KILL_EFFECTS.UNSELECTED.LORE", DataType.STRING_LIST,
+            " ", "&aClick to select"),
+    KILL_EFFECTS_NO_PERMISSION_LORE("KILL_EFFECTS.NO-PERMISSION.LORE", DataType.STRING_LIST,
+            " ", "&cNo permission");
 
     private final String path;
     private final String comment;

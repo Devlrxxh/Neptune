@@ -26,7 +26,7 @@ public class DivisionManager implements IManager {
         if (config.contains("DIVISIONS")) {
             for (String divisionName : getKeys("DIVISIONS")) {
                 String path = "DIVISIONS." + divisionName + ".";
-                String displayName = config.getString(path + "DISPLAYNAME");
+                String displayName = config.getString(path + "DISPLAY-NAME");
                 int winsRequired = config.getInt(path + "WINS");
                 Material material = Material.getMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL")));
 

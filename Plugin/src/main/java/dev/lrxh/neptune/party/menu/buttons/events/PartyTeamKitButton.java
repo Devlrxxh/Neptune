@@ -35,7 +35,7 @@ public class PartyTeamKitButton extends Button {
     public void onClick(Player player, ClickType clickType) {
         List<Participant> participants = new ArrayList<>();
         for (UUID uuid : party.getUsers()) {
-            participants.add(new Participant(uuid));
+            participants.add(new Participant(uuid, plugin));
         }
         eventType.start(participants, kit);
     }

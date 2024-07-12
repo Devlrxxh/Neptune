@@ -107,7 +107,6 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
-
         sendDeathMessage(participant);
 
         if (rounds > 1 && !participant.isDisconnected()) {
@@ -124,6 +123,7 @@ public class SoloFightMatch extends Match {
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
+            participant.getLastAttacker().playKillEffect();
         }
 
         participant.setLoser(true);

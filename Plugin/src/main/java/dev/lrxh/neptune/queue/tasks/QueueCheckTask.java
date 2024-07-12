@@ -52,10 +52,10 @@ public class QueueCheckTask extends NeptuneRunnable {
 
                 //Create participants
                 Participant participant1 =
-                        new Participant(uuid1);
+                        new Participant(uuid1, plugin);
 
                 Participant participant2 =
-                        new Participant(uuid2);
+                        new Participant(uuid2, plugin);
 
                 List<Participant> participants = Arrays.asList(participant1, participant2);
 

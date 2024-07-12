@@ -40,7 +40,7 @@ public class MenuListener implements Listener {
 
         button.onClick(player, event.getClick());
 
-        if (menu.isUpdateOnClick()) {
+        if (menu.isUpdateOnClick() && plugin.getMenuManager().openedMenus.get(player.getUniqueId()).getUUID().equals(menu.getUUID())) {
             menu.update();
         }
 

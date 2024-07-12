@@ -2,6 +2,7 @@ package dev.lrxh.neptune.settings;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.cosmetics.menu.CosmeticsManageMenu;
 import dev.lrxh.neptune.profile.Profile;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -91,6 +92,15 @@ public enum Setting {
                 profile.getSettingData().decreasePing();
             }
 
+        }
+    },
+    COSMETICS(MenusLocale.SETTINGS_COSMETICS_TITLE.getString(),
+            MenusLocale.SETTINGS_COSMETICS_MATERIAL.getString(),
+            MenusLocale.SETTINGS_COSMETICS_LORE.getStringList(),
+            MenusLocale.SETTINGS_COSMETICS_SLOT.getInt()) {
+        @Override
+        public void execute(Player player, ClickType clicktype) {
+            new CosmeticsManageMenu().openMenu(player.getUniqueId());
         }
     };
 
