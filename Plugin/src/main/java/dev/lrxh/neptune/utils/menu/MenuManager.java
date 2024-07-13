@@ -4,9 +4,9 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 
 public class MenuManager {
-    public WeakHashMap<UUID, Menu> openedMenus = new WeakHashMap<>();
+    public WeakHashMap<UUID, Menu> openedMenus;
 
-    public void closeMenu(UUID playerUUID) {
-        openedMenus.remove(playerUUID);
+    public MenuManager() {
+        this.openedMenus = new WeakHashMap<>();
     }
 }

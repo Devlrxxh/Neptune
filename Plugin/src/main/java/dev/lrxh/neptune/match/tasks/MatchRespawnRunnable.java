@@ -40,7 +40,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
             return;
         }
 
-        if (match.getMatchState().equals(MatchState.STARTING)) {
+        if (match.getState().equals(MatchState.STARTING)) {
             match.playSound(Sound.UI_BUTTON_CLICK);
 
             match.sendTitle(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(respawnTimer)),

@@ -45,8 +45,8 @@ public class QueueCheckTask extends NeptuneRunnable {
                 SettingData settings1 = plugin.getProfileManager().getByUUID(uuid1).getSettingData();
                 SettingData settings2 = plugin.getProfileManager().getByUUID(uuid2).getSettingData();
 
-                if (!(settings2.getMaxPing() <= settings1.getMaxPing() &&
-                        settings1.getMaxPing() <= settings2.getMaxPing())) {
+                if (!(PlayerUtil.getPing(uuid2) <= settings1.getMaxPing() &&
+                        PlayerUtil.getPing(uuid1) <= settings2.getMaxPing())) {
                     continue;
                 }
 

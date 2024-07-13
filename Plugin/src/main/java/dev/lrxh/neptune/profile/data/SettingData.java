@@ -13,6 +13,7 @@ public class SettingData {
     private boolean allowParty = true;
     private int maxPing = 350;
     private KillEffect killEffect = KillEffect.NONE;
+    private boolean menuSound = false;
 
     public void increasePing() {
         if (maxPing == 350) return;

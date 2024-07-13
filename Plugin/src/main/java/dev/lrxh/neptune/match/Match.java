@@ -46,7 +46,7 @@ public abstract class Match {
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
-    public MatchState matchState;
+    public MatchState state;
     public Arena arena;
     public Kit kit;
     public List<Participant> participants;
@@ -139,7 +139,7 @@ public abstract class Match {
         if (player == null) return new ArrayList<>();
 
         if (this instanceof SoloFightMatch) {
-            MatchState matchState = this.getMatchState();
+            MatchState matchState = this.getState();
 
             switch (matchState) {
                 case STARTING:
@@ -204,7 +204,7 @@ public abstract class Match {
         forEachParticipant(participant -> {
             if (!(this instanceof FfaFightMatch)) {
                 if (kit.is(KitRule.DENY_MOVEMENT)) {
-                    if (matchState.equals(MatchState.STARTING)) {
+                    if (state.equals(MatchState.STARTING)) {
                         PlayerUtil.denyMovement(participant.getPlayerUUID());
                     } else {
                         PlayerUtil.allowMovement(participant.getPlayerUUID());
@@ -212,7 +212,7 @@ public abstract class Match {
                 }
             }
             if (kit.is(KitRule.SHOW_HP)) {
-                if (matchState.equals(MatchState.STARTING)) {
+                if (state.equals(MatchState.STARTING)) {
                     showHealth(participant.getPlayerUUID());
                 }
             }

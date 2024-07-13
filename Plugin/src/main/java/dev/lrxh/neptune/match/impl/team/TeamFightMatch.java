@@ -40,7 +40,7 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void end() {
-        matchState = MatchState.ENDING;
+        state = MatchState.ENDING;
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
 
@@ -105,7 +105,7 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void startMatch() {
-        matchState = MatchState.IN_ROUND;
+        state = MatchState.IN_ROUND;
         checkRules();
 
         showPlayerForSpectators();

@@ -1,8 +1,10 @@
 package dev.lrxh.neptune.utils.menu.listener;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -39,8 +41,13 @@ public class MenuListener implements Listener {
         }
 
         button.onClick(player, event.getClick());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile != null && profile.getSettingData().isMenuSound()) {
+            player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
+        }
 
-        if (menu.isUpdateOnClick() && plugin.getMenuManager().openedMenus.get(player.getUniqueId()).getUUID().equals(menu.getUUID())) {
+        Menu currentMenu = plugin.getMenuManager().openedMenus.get(player.getUniqueId());
+        if (menu.isUpdateOnClick() && (currentMenu != null && currentMenu.getUUID().equals(menu.getUUID()))) {
             menu.update();
         }
 

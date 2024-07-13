@@ -102,6 +102,22 @@ public enum Setting {
         public void execute(Player player, ClickType clicktype) {
             new CosmeticsManageMenu().openMenu(player.getUniqueId());
         }
+    },
+    MENU_SOUNDS(MenusLocale.SETTINGS_MENU_SOUNDS_TITLE.getString(),
+            MenusLocale.SETTINGS_MENU_SOUNDS_MATERIAL.getString(),
+            MenusLocale.SETTINGS_MENU_SOUNDS_LORE_ENABLED.getStringList(),
+            MenusLocale.SETTINGS_MENU_SOUNDS_LORE_DISABLED.getStringList(),
+            MenusLocale.SETTINGS_MENU_SOUNDS_SLOT.getInt()) {
+        @Override
+        public void execute(Player player, ClickType clicktype) {
+            Profile profile = getProfile(player);
+            profile.getSettingData().setMenuSound(!profile.getSettingData().isMenuSound());
+        }
+
+        @Override
+        public boolean toggled(Player player) {
+            return getProfile(player).getSettingData().isMenuSound();
+        }
     };
 
     private String displayName;

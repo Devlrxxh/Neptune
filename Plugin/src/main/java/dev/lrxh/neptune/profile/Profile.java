@@ -87,6 +87,7 @@ public class Profile {
         settingData.setAllowParty(settingsStatistics.getBoolean("allowParty", true));
         settingData.setMaxPing(settingsStatistics.getInteger("maxPing", 350));
         settingData.setKillEffect(KillEffect.valueOf(settingsStatistics.getString("killEffect", "NONE")));
+        settingData.setMenuSound(settingsStatistics.getBoolean("menuSound", false));
 
     }
 
@@ -122,6 +123,7 @@ public class Profile {
         settingsDoc.put("allowParty", settingData.isAllowParty());
         settingsDoc.put("maxPing", settingData.getMaxPing());
         settingsDoc.put("killEffect", settingData.getKillEffect().toString());
+        settingsDoc.put("menuSound", settingData.isMenuSound());
 
         dataDocument.put("settings", settingsDoc);
 

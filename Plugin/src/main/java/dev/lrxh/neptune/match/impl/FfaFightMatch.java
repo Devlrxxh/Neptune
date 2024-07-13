@@ -27,7 +27,7 @@ public class FfaFightMatch extends Match {
 
     @Override
     public void end() {
-        matchState = MatchState.ENDING;
+        state = MatchState.ENDING;
 
         forEachParticipant(participant -> {
             if (winner == null) return;
@@ -85,7 +85,7 @@ public class FfaFightMatch extends Match {
 
     @Override
     public void startMatch() {
-        matchState = MatchState.IN_ROUND;
+        state = MatchState.IN_ROUND;
         checkRules();
 
         showPlayerForSpectators();

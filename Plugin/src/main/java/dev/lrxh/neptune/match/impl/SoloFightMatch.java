@@ -40,7 +40,7 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void end() {
-        matchState = MatchState.ENDING;
+        state = MatchState.ENDING;
 
         if (!isDuel()) {
             addStats();
@@ -115,7 +115,7 @@ public class SoloFightMatch extends Match {
             if (participantKiller.getRoundsWon() < rounds) {
                 participantKiller.setCombo(0);
 
-                matchState = MatchState.STARTING;
+                state = MatchState.STARTING;
                 new MatchRespawnRunnable(this, participant).start(0L, 20L, plugin);
                 return;
             }
@@ -146,7 +146,7 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void startMatch() {
-        matchState = MatchState.IN_ROUND;
+        state = MatchState.IN_ROUND;
         checkRules();
 
         showPlayerForSpectators();

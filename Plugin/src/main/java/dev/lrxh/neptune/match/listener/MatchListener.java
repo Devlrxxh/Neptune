@@ -73,7 +73,7 @@ public class MatchListener implements Listener {
             return;
         }
         if (match != null && match.getKit().is(KitRule.BUILD)) {
-            if (match.getMatchState().equals(MatchState.STARTING)) {
+            if (match.getState().equals(MatchState.STARTING)) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou can't place blocks yet!"));
                 return;
@@ -100,7 +100,7 @@ public class MatchListener implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (match.getMatchState().equals(MatchState.STARTING)) {
+        if (match.getState().equals(MatchState.STARTING)) {
             event.setCancelled(true);
         }
     }
@@ -130,7 +130,7 @@ public class MatchListener implements Listener {
                 }
             }
 
-            if (!match.matchState.equals(MatchState.IN_ROUND)) {
+            if (!match.state.equals(MatchState.IN_ROUND)) {
                 event.setCancelled(true);
             } else {
                 if (!match.getKit().is(KitRule.DAMAGE)) {
@@ -164,7 +164,7 @@ public class MatchListener implements Listener {
         if (profile == null) return;
         Match match = profile.getMatch();
 
-        if (match != null && match.getMatchState().equals(MatchState.IN_ROUND)) {
+        if (match != null && match.getState().equals(MatchState.IN_ROUND)) {
             Participant participant = match.getParticipant(player.getUniqueId());
             Location playerLocation = player.getLocation();
 
@@ -187,10 +187,16 @@ public class MatchListener implements Listener {
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
 
-            if (!profile.getState().equals(ProfileState.IN_GAME) ||
-                    (match != null && !match.getKit().is(KitRule.FALL_DAMAGE) && event.getCause().equals(EntityDamageEvent.DamageCause.FALL))) {
+            boolean isNotInGame = !profile.getState().equals(ProfileState.IN_GAME);
+            boolean allowDamage = match != null &&
+                    !match.getKit().is(KitRule.FALL_DAMAGE) &&
+                    event.getCause().equals(EntityDamageEvent.DamageCause.FALL) &&
+                    !match.getState().equals(MatchState.IN_ROUND);
+
+            if (isNotInGame || !allowDamage) {
                 event.setCancelled(true);
             }
+
         }
     }
 
@@ -236,7 +242,7 @@ public class MatchListener implements Listener {
             return;
         }
         if (match != null && match.getKit().is(KitRule.BUILD)) {
-            if (match.getMatchState().equals(MatchState.STARTING)) {
+            if (match.getState().equals(MatchState.STARTING)) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou can't place blocks yet!"));
                 return;
