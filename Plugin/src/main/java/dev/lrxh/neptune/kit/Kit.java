@@ -19,7 +19,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Setter
 @AllArgsConstructor
 public class Kit {
-    private final Neptune plugin = Neptune.get();
+    private Neptune plugin;
     private String name;
     private String displayName;
     private List<ItemStack> items;
@@ -28,7 +28,7 @@ public class Kit {
     private HashMap<KitRule, Boolean> rules;
     private int queue, playing;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, Neptune plugin) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -37,17 +37,12 @@ public class Kit {
         this.rules = rules;
         this.queue = 0;
         this.playing = 0;
+        this.plugin = plugin;
 
-        if (plugin.getLeaderboardManager() != null) {
-            plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
-        }
-
-        if (plugin.getProfileManager() != null) {
-            addToProfiles();
-        }
+        checkMissing();
     }
 
-    public Kit(String name, List<ItemStack> items, ItemStack icon) {
+    public Kit(String name, List<ItemStack> items, ItemStack icon, Neptune plugin) {
         this.name = name;
         this.displayName = name;
         this.items = items;
@@ -56,7 +51,13 @@ public class Kit {
         this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : new ItemStack(icon);
         this.queue = 0;
         this.playing = 0;
+        this.plugin = plugin;
 
+        checkMissing();
+    }
+
+
+    private void checkMissing() {
         if (plugin.getLeaderboardManager() != null) {
             plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
         }
@@ -128,7 +129,7 @@ public class Kit {
     }
 
     public void delete() {
-        Neptune.get().getKitManager().kits.remove(this);
+        plugin.getKitManager().kits.remove(this);
     }
 }
 

@@ -45,7 +45,7 @@ public class KitManager implements IManager {
                     rules.put(kitRule, config.getBoolean(path + kitRule.getSaveName(), false));
                 }
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, plugin));
             }
         }
     }

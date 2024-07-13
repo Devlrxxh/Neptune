@@ -2,6 +2,7 @@ package dev.lrxh.neptune.cosmetics.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.CosmeticsLocale;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import lombok.Getter;
 import org.bukkit.*;
 import org.bukkit.entity.Firework;
@@ -40,7 +41,12 @@ public enum KillEffect {
             meta.addEffect(builder.build());
             meta.setPower(1);
             firework.setFireworkMeta(meta);
-            Bukkit.getScheduler().runTaskLater(Neptune.get(), firework::detonate, 5L);
+            new NeptuneRunnable() {
+                @Override
+                public void run() {
+                    firework.detonate();
+                }
+            }.startLater(5, Neptune.get());
         }
     };
 

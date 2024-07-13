@@ -64,7 +64,7 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
                         line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
                         line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
-                        line = line.replaceAll("<diffrence>", getDifference(participant, opponent));
+                        line = line.replaceAll("<diffrence>", participant.getHitsDifference(opponent));
 
 
                         if (match.getRounds() > 1) {
@@ -121,15 +121,5 @@ public class PlaceholderUtil {
         }
 
         return formattedLines;
-    }
-
-    public String getDifference(Participant participant, Participant opponent) {
-        if (participant.getHits() - opponent.getHits() > 0) {
-            return CC.color("&a(+" + (participant.getHits() - opponent.getHits()) + ")");
-        } else if (participant.getHits() - opponent.getHits() < 0) {
-            return CC.color("&c(" + (participant.getHits() - opponent.getHits()) + ")");
-        } else {
-            return CC.color("&e(" + (participant.getHits() - opponent.getHits()) + ")");
-        }
     }
 }

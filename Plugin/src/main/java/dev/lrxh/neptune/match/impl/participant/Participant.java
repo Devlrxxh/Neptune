@@ -6,6 +6,7 @@ import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.Data;
@@ -53,7 +54,7 @@ public class Participant {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         player.playSound(player.getLocation(),
-                (org.bukkit.Sound) Neptune.get().getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
+                (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
     }
 
     public void playKillEffect() {
@@ -100,7 +101,7 @@ public class Participant {
                     break;
             }
         }
-        Match match = Neptune.get().getProfileManager().getByUUID(playerUUID).getMatch();
+        Match match = plugin.getProfileManager().getByUUID(playerUUID).getMatch();
         if (match instanceof SoloFightMatch) {
             if (match.getKit().is(KitRule.BOXING)) {
                 if (hits >= 100) {
@@ -108,6 +109,16 @@ public class Participant {
                     match.onDeath(opponent);
                 }
             }
+        }
+    }
+
+    public String getHitsDifference(Participant otherParticipant) {
+        if (hits - otherParticipant.getHits() > 0) {
+            return CC.color("&a(+" + (hits - otherParticipant.getHits()) + ")");
+        } else if (hits - otherParticipant.getHits() < 0) {
+            return CC.color("&c(" + (hits - otherParticipant.getHits()) + ")");
+        } else {
+            return CC.color("&e(" + (hits - otherParticipant.getHits()) + ")");
         }
     }
 }

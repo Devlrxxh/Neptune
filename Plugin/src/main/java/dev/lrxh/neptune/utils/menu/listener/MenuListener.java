@@ -42,7 +42,7 @@ public class MenuListener implements Listener {
 
         button.onClick(player, event.getClick());
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if (profile != null && profile.getSettingData().isMenuSound()) {
+        if (profile != null && profile.getSettingData().isMenuSound() && button.isSound()) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
         }
 

@@ -37,10 +37,14 @@ public class VisibilityLogic {
             return;
         }
 
-        if (viewerProfile.getSettingData().isPlayerVisibility() &&
-                has(playerUUID, otherUUID, ProfileState.IN_LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
+        if (has(playerUUID, otherUUID, ProfileState.IN_LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
+            return;
+        }
+
+        if(viewerProfile.getSettingData().isPlayerVisibility()){
+            viewerPlayer.showPlayer(plugin, otherPlayer);
             return;
         }
 

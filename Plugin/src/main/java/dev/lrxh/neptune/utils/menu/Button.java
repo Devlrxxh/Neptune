@@ -13,8 +13,10 @@ import org.bukkit.inventory.ItemStack;
 @NoArgsConstructor
 public abstract class Button {
     public Neptune plugin = Neptune.get();
+    private boolean sound = true;
 
     public void onClick(Player player, ClickType clickType) {
+        sound = false;
     }
 
     public abstract ItemStack getButtonItem(Player player);

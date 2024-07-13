@@ -63,7 +63,7 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), PlayerUtil.getItemInHand(player.getUniqueId()));
+        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), PlayerUtil.getItemInHand(player.getUniqueId()), plugin);
 
         plugin.getKitManager().kits.add(kit);
         plugin.getKitManager().saveKits();

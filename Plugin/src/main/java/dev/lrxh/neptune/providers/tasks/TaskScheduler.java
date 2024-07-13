@@ -7,20 +7,25 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TaskScheduler {
     private final List<NeptuneRunnable> tasks = new CopyOnWriteArrayList<>();
+    private final Neptune plugin;
+
+    public TaskScheduler(Neptune plugin) {
+        this.plugin = plugin;
+    }
 
     public void startTask(NeptuneRunnable task, long delay, long period) {
         tasks.add(task);
-        task.runTaskTimer(Neptune.get(), delay, period);
+        task.runTaskTimer(plugin, delay, period);
     }
 
     public void startTask(NeptuneRunnable task) {
         tasks.add(task);
-        task.runTask(Neptune.get());
+        task.runTask(plugin);
     }
 
     public void startTaskLater(NeptuneRunnable task, long delay) {
         tasks.add(task);
-        task.runTaskLater(Neptune.get(), delay);
+        task.runTaskLater(plugin, delay);
     }
 
     public void stopAllTasks(Neptune plugin) {

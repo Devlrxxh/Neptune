@@ -2,7 +2,6 @@ package dev.lrxh.neptune.kit.impl;
 
 import lombok.Getter;
 
-@SuppressWarnings("unused")
 @Getter
 public enum KitRule {
     BUILD("Allow/Deny Players to place blocks.", "Build", "build"),
