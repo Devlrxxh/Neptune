@@ -40,7 +40,7 @@ public class Profile {
         this.playerUUID = player.getUniqueId();
         this.state = ProfileState.IN_LOBBY;
         this.gameData = new GameData(plugin);
-        this.settingData = new SettingData();
+        this.settingData = new SettingData(plugin);
 
         load();
     }
@@ -88,7 +88,7 @@ public class Profile {
         settingData.setMaxPing(settingsStatistics.getInteger("maxPing", 350));
         settingData.setKillEffect(KillEffect.valueOf(settingsStatistics.getString("killEffect", "NONE")));
         settingData.setMenuSound(settingsStatistics.getBoolean("menuSound", false));
-
+        settingData.setKillMessagePackage(plugin.getCosmeticManager().getDeathMessagePackage(settingsStatistics.getString("deathMessagePackage", "DEFAULT")));
     }
 
     public void save() {
@@ -124,6 +124,7 @@ public class Profile {
         settingsDoc.put("maxPing", settingData.getMaxPing());
         settingsDoc.put("killEffect", settingData.getKillEffect().toString());
         settingsDoc.put("menuSound", settingData.isMenuSound());
+        settingsDoc.put("deathMessagePackage", settingData.getKillMessagePackage().getName());
 
         dataDocument.put("settings", settingsDoc);
 
@@ -168,7 +169,6 @@ public class Profile {
         Party party = gameData.getParty();
 
         if (party == null) {
-            MessagesLocale.PARTY_NOT_IN.send(playerUUID);
             return;
         }
 

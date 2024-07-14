@@ -24,6 +24,7 @@ import java.util.function.Consumer;
 @Setter
 public class GameData {
     private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.REQUEST_EXPIRY_TIME.getInt());
+    private final Neptune plugin;
     private Match match;
     private HashMap<Kit, KitData> kitData;
     private ArrayList<MatchHistory> matchHistories;
@@ -37,6 +38,7 @@ public class GameData {
         this.kitData = new HashMap<>();
         this.matchHistories = new ArrayList<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
+        this.plugin = plugin;
 
         for (Kit kit : plugin.getKitManager().kits) {
             kitData.put(kit, new KitData(plugin));
@@ -72,7 +74,7 @@ public class GameData {
     }
 
     public void addRequest(Request duelRequest, UUID name, Consumer<Player> action) {
-        requests.put(name, duelRequest, new TtlAction(name, action));
+        requests.put(name, duelRequest, new TtlAction(name, action, plugin));
 
     }
 

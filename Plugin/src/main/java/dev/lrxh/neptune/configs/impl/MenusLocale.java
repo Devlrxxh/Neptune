@@ -302,7 +302,8 @@ public enum MenusLocale implements IDataAccessor {
     SETTINGS_COSMETICS_LORE("SETTINGS.SETTINGS.COSMETICS.LORE", DataType.STRING_LIST,
             "&7Manage unlocked cosmetics",
             "",
-            " &7Current Cosmetic: &b<kill-effect>",
+            " &7Current Kill Effect: &b<kill-effect>",
+            " &7Current Kill Message: &b<kill-message>",
             " ",
             "&aClick to open cosmetics menu"),
     SETTINGS_COSMETICS_SLOT("SETTINGS.SETTINGS.COSMETICS.SLOT", DataType.INT, "15"),
@@ -313,7 +314,7 @@ public enum MenusLocale implements IDataAccessor {
     KILL_EFFECTS_NAME("SETTINGS.COSMETICS.KILL-EFFECTS.NAME", DataType.STRING, "&bKill Effects"),
     KILL_EFFECTS_LORE("SETTINGS.COSMETICS.KILL-EFFECTS.LORE", DataType.STRING_LIST, "&7View all available kill effects", " ", "&aClick to open"),
     KILL_EFFECTS_MATERIAL("SETTINGS.COSMETICS.KILL-EFFECTS.MATERIAL", DataType.STRING, "REDSTONE"),
-    KILL_EFFECTS_TITLE("SETTINGS.COSMETICS.KILL-EFFECTS.TITLE", DataType.STRING, "&7Kill Effects"),
+    KILL_EFFECTS_TITLE("SETTINGS.KILL-EFFECTS.TITLE", DataType.STRING, "&7Kill Effects"),
     KILL_EFFECTS_SIZE("SETTINGS.KILL-EFFECTS.SIZE", DataType.INT, "27"),
     KILL_EFFECTS_FILTER("SETTINGS.KILL-EFFECTS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
     KILL_EFFECTS_SELECTED_LORE("SETTINGS.KILL-EFFECTS.SELECTED.LORE", DataType.STRING_LIST,
@@ -340,7 +341,14 @@ public enum MenusLocale implements IDataAccessor {
             " &c&l▶ &cDisabled",
             " ",
             "&aClick to enable."),
-    SETTINGS_MENU_SOUNDS_SLOT("SETTINGS.MENU-SOUNDS.SLOT", DataType.INT, "16");
+    SETTINGS_MENU_SOUNDS_SLOT("SETTINGS.MENU-SOUNDS.SLOT", DataType.INT, "16"),
+    KILL_MESSAGES_TITLE("SETTINGS.KILL-MESSAGES.TITLE", DataType.STRING, "&7Kill Messages"),
+    KILL_MESSAGES_SIZE("SETTINGS.KILL-MESSAGES.SIZE", DataType.INT, "27"),
+    KILL_MESSAGES_FILTER("SETTINGS.KILL-MESSAGES.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
+    KILL_MESSAGES_SLOT("SETTINGS.COSMETICS.KILL-MESSAGES.SLOT", DataType.INT, "11"),
+    KILL_MESSAGES_NAME("SETTINGS.COSMETICS.KILL-MESSAGES.NAME", DataType.STRING, "&bKill Messages"),
+    KILL_MESSAGES_MATERIAL("SETTINGS.COSMETICS.KILL-MESSAGES.MATERIAL", DataType.STRING, "BOOK"),
+    KILL_MESSAGES_LORE("SETTINGS.COSMETICS.KILL-MESSAGES.LORE", DataType.STRING_LIST, "&7View all available kill messages", " ", "&aClick to open");
 
     private final String path;
     private final String comment;

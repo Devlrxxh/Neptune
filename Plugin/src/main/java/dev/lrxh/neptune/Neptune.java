@@ -14,6 +14,7 @@ import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.*;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
+import dev.lrxh.neptune.cosmetics.CosmeticManager;
 import dev.lrxh.neptune.database.DatabaseManager;
 import dev.lrxh.neptune.divisions.DivisionManager;
 import dev.lrxh.neptune.duel.command.DuelCommand;
@@ -39,6 +40,7 @@ import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
+import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuManager;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
@@ -80,6 +82,7 @@ public final class Neptune extends JavaPlugin {
     private EntityHider entityHider;
     private DivisionManager divisionManager;
     private DatabaseManager databaseManager;
+    private CosmeticManager cosmeticManager;
 
     public static Neptune get() {
         return instance;
@@ -110,6 +113,7 @@ public final class Neptune extends JavaPlugin {
         this.databaseManager = new DatabaseManager();
         if (!isEnabled()) return;
 
+        this.cosmeticManager = new CosmeticManager();
         this.divisionManager = new DivisionManager();
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
@@ -124,6 +128,8 @@ public final class Neptune extends JavaPlugin {
 
         System.gc();
         Runtime.getRuntime().freeMemory();
+
+        ServerUtils.sendMessage("&aNeptune has loaded");
     }
 
     private void initAPIs() {

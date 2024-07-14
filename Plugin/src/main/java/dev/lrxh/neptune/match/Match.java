@@ -200,6 +200,12 @@ public abstract class Match {
         forEachSpectator(player -> messagesLocale.send(player.getUniqueId(), replacements));
     }
 
+    public void broadcast(String message) {
+        forEachParticipant(participant -> participant.sendMessage(message));
+
+        forEachSpectator(player -> player.sendMessage(message));
+    }
+
     public void checkRules() {
         forEachParticipant(participant -> {
             if (!(this instanceof FfaFightMatch)) {
@@ -269,9 +275,17 @@ public abstract class Match {
     }
 
     public void sendDeathMessage(Participant deadParticipant) {
-        broadcast(deadParticipant.getDeathCause().getMessagesLocale(),
-                new Replacement("<player>", deadParticipant.getName()),
-                new Replacement("<killer>", deadParticipant.getLastAttacker() != null ? deadParticipant.getLastAttacker().getName() : ""));
+        String deathMessage = deadParticipant.getDeathMessage();
+
+        if (deathMessage.isEmpty()) {
+            broadcast(
+                    deadParticipant.getDeathCause().getMessagesLocale(),
+                    new Replacement("<player>", deadParticipant.getName()),
+                    new Replacement("<killer>", deadParticipant.getLastAttackerName())
+            );
+        } else {
+            broadcast(deathMessage);
+        }
     }
 
     public abstract void end();

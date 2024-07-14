@@ -43,7 +43,7 @@ public class VisibilityLogic {
             return;
         }
 
-        if(viewerProfile.getSettingData().isPlayerVisibility()){
+        if (viewerProfile.getSettingData().isPlayerVisibility()) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             return;
         }

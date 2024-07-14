@@ -23,7 +23,8 @@ public class SettingsButton extends Button {
                 .name(setting.getDisplayName())
                 .lore(ItemUtils.getLore(setting.toggled(player) ? setting.getEnabledLore() : setting.getDisabledLore(),
                         new Replacement("<ping>", profile.getSettingData().getMaxPing()),
-                        new Replacement("<kill-effect>", profile.getSettingData().getKillEffect().getDisplayName().replace("<selected>", ""))))
+                        new Replacement("<kill-effect>", profile.getSettingData().getKillEffect().getDisplayName().replace("<selected>", "")),
+                        new Replacement("<kill-message>", profile.getSettingData().getKillMessagePackage().getDisplayName().replace("<selected>", ""))))
                 .clearFlags()
                 .build();
     }

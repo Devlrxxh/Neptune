@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 @Data
@@ -120,5 +121,37 @@ public class Participant {
         } else {
             return CC.color("&e(" + (hits - otherParticipant.getHits()) + ")");
         }
+    }
+
+    public String getDeathMessage() {
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        if (profile == null) {
+            return "";
+        }
+
+        Match match = profile.getMatch();
+        if (match == null) {
+            return "";
+        }
+
+        Participant lastAttacker = getLastAttacker();
+        if (lastAttacker == null) {
+            return "";
+        }
+
+        Profile attackerProfile = plugin.getProfileManager().getByUUID(lastAttacker.getPlayerUUID());
+        if (attackerProfile == null || attackerProfile.getSettingData().getKillMessagePackage() == null) {
+            return "";
+        }
+
+        return attackerProfile.getSettingData().getKillMessagePackage().getRandomMessage()
+                .replace("<player>", getName())
+                .replace("<killer>", getLastAttackerName());
+    }
+
+    public String getLastAttackerName() {
+        return Optional.ofNullable(getLastAttacker())
+                .map(Participant::getName)
+                .orElse("");
     }
 }

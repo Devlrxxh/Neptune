@@ -2,6 +2,7 @@ package dev.lrxh.neptune.cosmetics.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.cosmetics.menu.killEffects.KillEffectsMenu;
+import dev.lrxh.neptune.cosmetics.menu.killMessages.KillMessagesMenu;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
 import dev.lrxh.neptune.utils.menu.Menu;
@@ -42,6 +43,13 @@ public class CosmeticsManageMenu extends Menu {
                         MenusLocale.KILL_EFFECTS_LORE.getStringList(),
                         Material.valueOf(MenusLocale.KILL_EFFECTS_MATERIAL.getString()),
                         new KillEffectsMenu()));
+
+        buttons.put(MenusLocale.KILL_MESSAGES_SLOT.getInt(),
+                new CosmeticsManagementButton(
+                        MenusLocale.KILL_MESSAGES_NAME.getString(),
+                        MenusLocale.KILL_MESSAGES_LORE.getStringList(),
+                        Material.valueOf(MenusLocale.KILL_MESSAGES_MATERIAL.getString()),
+                        new KillMessagesMenu()));
         return buttons;
     }
 }

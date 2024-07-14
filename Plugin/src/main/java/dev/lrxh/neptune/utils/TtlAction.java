@@ -12,15 +12,17 @@ import java.util.function.Consumer;
 public class TtlAction {
     private final UUID playerUUID;
     private final Consumer<Player> consumer;
+    private final Neptune plugin;
     private NeptuneRunnable runnable;
 
-    public TtlAction(UUID playerUUID, Consumer<Player> consumer) {
+    public TtlAction(UUID playerUUID, Consumer<Player> consumer, Neptune plugin) {
         this.playerUUID = playerUUID;
         this.consumer = consumer;
+        this.plugin = plugin;
     }
 
     public void setRunnable(NeptuneRunnable runnable, long leaveTime) {
         this.runnable = runnable;
-        Neptune.get().getTaskScheduler().startTaskLater(runnable, leaveTime * 20L);
+        plugin.getTaskScheduler().startTaskLater(runnable, leaveTime * 20L);
     }
 }
