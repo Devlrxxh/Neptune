@@ -36,7 +36,7 @@ public class KillMessageButton extends Button {
                         .replace("<selected>", selected ? CosmeticsLocale.SELECTED_DISPLAY_NAME.getString() : ""))
                 .lore(ItemUtils.getLore(lore,
                         new Replacement("<description>", killMessagePackage.getDescription()),
-                        new Replacement("<messages>", killMessagePackage.getMessages())))
+                        new Replacement("<messages>", ItemUtils.getLore(killMessagePackage.getMessages(), new Replacement("<player>", player.getName()), new Replacement("<killer>", player.getName())))))
                 .clearFlags()
                 .build();
     }

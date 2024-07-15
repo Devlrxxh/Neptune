@@ -36,6 +36,7 @@ public class MainCommand extends BaseCommand {
     @Subcommand("reload")
     public void reload(Player player) {
         plugin.getConfigManager().load();
+        plugin.getCosmeticManager().load();
         player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 }
