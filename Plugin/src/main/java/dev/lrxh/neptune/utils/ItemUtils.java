@@ -111,19 +111,29 @@ public class ItemUtils {
         return items;
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> getLore(List<String> lore, Replacement... replacements) {
         List<String> newLore = new ArrayList<>();
 
-        lore.forEach(line -> {
+        for (String line : lore) {
+            boolean skip = false;
             for (Replacement replacement : replacements) {
                 if (replacement.getReplacement() instanceof String) {
                     line = line.replaceAll(replacement.getPlaceholder(), (String) replacement.getReplacement());
+                }else if (replacement.getReplacement() instanceof List<?>) {
+                    if(line.contains(replacement.getPlaceholder())) {
+                        List<String> replacementList = (List<String>) replacement.getReplacement();
+                        for (String replacementLine : replacementList) {
+                            newLore.add(line.replaceAll(replacement.getPlaceholder(), replacementLine));
+                        }
+                        skip = true;
+                    }
                 } else if (replacement.getReplacement() instanceof Integer) {
                     line = line.replaceAll(replacement.getPlaceholder(), String.valueOf(replacement.getReplacement()));
                 }
             }
-            newLore.add(line);
-        });
+            if(!skip) newLore.add(line);
+        }
         return newLore;
     }
 

@@ -318,7 +318,7 @@ public enum MenusLocale implements IDataAccessor {
     KILL_EFFECTS_SIZE("SETTINGS.KILL-EFFECTS.SIZE", DataType.INT, "27"),
     KILL_EFFECTS_FILTER("SETTINGS.KILL-EFFECTS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
     KILL_EFFECTS_SELECTED_LORE("SETTINGS.KILL-EFFECTS.SELECTED.LORE", DataType.STRING_LIST,
-            " ", "&cClick to unselect"),
+            " ", "&eCurrently Selected"),
     KILL_EFFECTS_UNSELECTED_LORE("SETTINGS.KILL-EFFECTS.UNSELECTED.LORE", DataType.STRING_LIST,
             " ", "&aClick to select"),
     KILL_EFFECTS_NO_PERMISSION_LORE("SETTINGS.KILL-EFFECTS.NO-PERMISSION.LORE", DataType.STRING_LIST,
@@ -348,7 +348,22 @@ public enum MenusLocale implements IDataAccessor {
     KILL_MESSAGES_SLOT("SETTINGS.COSMETICS.KILL-MESSAGES.SLOT", DataType.INT, "11"),
     KILL_MESSAGES_NAME("SETTINGS.COSMETICS.KILL-MESSAGES.NAME", DataType.STRING, "&bKill Messages"),
     KILL_MESSAGES_MATERIAL("SETTINGS.COSMETICS.KILL-MESSAGES.MATERIAL", DataType.STRING, "BOOK"),
-    KILL_MESSAGES_LORE("SETTINGS.COSMETICS.KILL-MESSAGES.LORE", DataType.STRING_LIST, "&7View all available kill messages", " ", "&aClick to open");
+    KILL_MESSAGES_LORE("SETTINGS.COSMETICS.KILL-MESSAGES.LORE", DataType.STRING_LIST, "&7View all available kill messages", " ", "&aClick to open"),
+    KILL_MESSAGES_SELECTED_LORE("SETTINGS.KILL-MESSAGES.SELECTED.LORE", DataType.STRING_LIST,
+            "<description> ",
+            "<messages>",
+            " ",
+            "&eCurrently Selected"),
+    KILL_MESSAGES_UNSELECTED_LORE("SETTINGS.KILL-MESSAGES.UNSELECTED.LORE", DataType.STRING_LIST,
+            "<description> ",
+            "<messages>",
+            " ",
+            "&aClick to select"),
+    KILL_MESSAGES_NO_PERMISSION_LORE("SETTINGS.KILL-MESSAGES.NO-PERMISSION.LORE", DataType.STRING_LIST,
+            "<description> ",
+            "<messages>",
+            " ",
+            "&cNo permission");
 
     private final String path;
     private final String comment;
