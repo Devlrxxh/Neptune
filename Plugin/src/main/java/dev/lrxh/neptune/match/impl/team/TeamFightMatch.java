@@ -50,9 +50,7 @@ public class TeamFightMatch extends Match {
         loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "Opponent Team"), 100);
 
-        if (participant.getLastAttacker() != null) {
-            participant.playKillEffect();
-        }
+        participant.playKillEffect();
 
         new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
