@@ -12,7 +12,8 @@ import dev.lrxh.neptune.arena.command.ArenaCommand;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
-import dev.lrxh.neptune.commands.*;
+import dev.lrxh.neptune.commands.LeaveCommand;
+import dev.lrxh.neptune.commands.MainCommand;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.cosmetics.CosmeticManager;
@@ -121,7 +122,7 @@ public final class Neptune extends JavaPlugin {
         this.kitManager = new KitManager();
         this.cache = new Cache();
         this.hotbarManager = new HotbarManager();
-        this.databaseManager = new DatabaseManager();
+        this.databaseManager = new DatabaseManager(this);
         if (!isEnabled()) return;
 
         this.cosmeticManager = new CosmeticManager();

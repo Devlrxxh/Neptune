@@ -6,38 +6,26 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.database.DataDocument;
 import dev.lrxh.neptune.database.IDatabase;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;
-import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class MongoDatabase implements IDatabase {
-    private final Neptune plugin;
     public MongoCollection<Document> collection;
-
-    public MongoDatabase() {
-        this.plugin = Neptune.get();
-    }
 
     @Override
     public IDatabase load() {
-        if (uri != null && !uri.isEmpty() && !uri.equals("NONE")) {
-            try {
-                MongoClient mongoClient = MongoClients.create(uri);
-                com.mongodb.client.MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
-                collection = mongoDatabase.getCollection("playerData");
-            } catch (Exception e) {
-                ServerUtils.error("Connecting to MongoDB:" + e.getMessage());
-            }
-        } else {
-            ServerUtils.error("MongoDB URI is missing or empty");
-            Bukkit.getPluginManager().disablePlugin(plugin);
+        try {
+            MongoClient mongoClient = MongoClients.create(uri);
+            com.mongodb.client.MongoDatabase mongoDatabase = mongoClient.getDatabase(database);
+            collection = mongoDatabase.getCollection("playerData");
+        } catch (Exception e) {
+            ServerUtils.error("Connecting to MongoDB:" + e.getMessage());
         }
         return this;
     }

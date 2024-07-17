@@ -40,7 +40,7 @@ public class RoundsSelectMenu extends Menu {
 
         String[] parts = MenusLocale.ROUNDS_LIST.getString().replace(" ", "").split(",");
 
-        for(String round : parts){
+        for (String round : parts) {
             buttons.put(i++, new RoundSelectButton(kit, receiver, test, Integer.parseInt(round)));
         }
 

@@ -122,8 +122,8 @@ public enum Setting {
     private final String displayName;
     private final String material;
     private final List<String> enabledLore;
-    private List<String> disabledLore;
     private final int slot;
+    private List<String> disabledLore;
 
     Setting(String displayName, String material, List<String> enabledLore, List<String> disabledLore, int slot) {
         this.displayName = displayName;
