@@ -34,15 +34,15 @@ public class TeamFightMatch extends Match {
         this.teamB = teamB;
     }
 
-    public MatchTeam getPlayerTeam(Participant participant) {
+    public MatchTeam getParticipantTeam(Participant participant) {
         return teamA.getParticipants().contains(participant) ? teamA : teamB;
     }
 
     @Override
-    public void end(Participant participant) {
+    public void end(Participant loser) {
         state = MatchState.ENDING;
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
-        MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
+        MatchTeam loserTeam = getParticipantTeam(loser);
 
         winnerTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "You"), 100);
@@ -50,9 +50,7 @@ public class TeamFightMatch extends Match {
         loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "Opponent Team"), 100);
 
-        if (participant.getLastAttacker() != null) {
-            participant.playKillEffect();
-        }
+        loser.playKillEffect();
 
         new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
@@ -81,7 +79,7 @@ public class TeamFightMatch extends Match {
 
         sendDeathMessage(participant);
 
-        MatchTeam team = getPlayerTeam(participant);
+        MatchTeam team = getParticipantTeam(participant);
         team.getDeadParticipants().add(participant);
 
 
@@ -96,7 +94,7 @@ public class TeamFightMatch extends Match {
         Participant participant = getParticipant(playerUUID);
         Participant other = getParticipant(otherUUID);
 
-        return getPlayerTeam(participant).equals(getPlayerTeam(other));
+        return getParticipantTeam(participant).equals(getParticipantTeam(other));
     }
 
     @Override

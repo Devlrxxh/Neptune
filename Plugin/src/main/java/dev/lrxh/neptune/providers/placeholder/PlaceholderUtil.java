@@ -85,7 +85,7 @@ public class PlaceholderUtil {
                     }
                 }
                 if (match instanceof TeamFightMatch teamFightMatch) {
-                    MatchTeam matchTeam = teamFightMatch.getPlayerTeam(teamFightMatch.getParticipant(player.getUniqueId()));
+                    MatchTeam matchTeam = teamFightMatch.getParticipantTeam(teamFightMatch.getParticipant(player.getUniqueId()));
                     MatchTeam opponentTeam = matchTeam.equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
 
                     if (profile.getState().equals(ProfileState.IN_GAME)) {

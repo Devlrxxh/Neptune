@@ -56,9 +56,7 @@ public class SoloFightMatch extends Match {
 
         removePlaying();
 
-        if (loser.getLastAttacker() != null) {
-            loser.playKillEffect();
-        }
+        loser.playKillEffect();
 
         new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
