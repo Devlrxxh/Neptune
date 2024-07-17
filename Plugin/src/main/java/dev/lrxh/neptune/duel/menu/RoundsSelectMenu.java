@@ -38,14 +38,11 @@ public class RoundsSelectMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.ROUNDS_STARTING_SLOT.getInt();
 
-        buttons.put(i++, new RoundSelectButton(kit, receiver, test, 1));
-        buttons.put(i++, new RoundSelectButton(kit, receiver, test, 3));
-        buttons.put(i++, new RoundSelectButton(kit, receiver, test, 5));
-        buttons.put(i++, new RoundSelectButton(kit, receiver, test, 6));
-        buttons.put(i++, new RoundSelectButton(kit, receiver, test, 10));
-        buttons.put(i++, new RoundSelectButton(kit, receiver, test, 15));
-        buttons.put(i, new RoundSelectButton(kit, receiver, test, 20));
+        String[] parts = MenusLocale.ROUNDS_LIST.getString().replace(" ", "").split(",");
 
+        for(String round : parts){
+            buttons.put(i++, new RoundSelectButton(kit, receiver, test, Integer.parseInt(round)));
+        }
 
         return buttons;
     }

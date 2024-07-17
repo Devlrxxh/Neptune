@@ -11,7 +11,6 @@ import org.bukkit.event.inventory.ClickType;
 import java.util.List;
 
 @Getter
-@SuppressWarnings("all")
 public enum Setting {
     PLAYER_VISIBILITY(MenusLocale.SETTINGS_PLAYER_VISIBILITY_TITLE.getString(),
             MenusLocale.SETTINGS_PLAYER_VISIBILITY_MATERIAL.getString(),
@@ -120,11 +119,11 @@ public enum Setting {
         }
     };
 
-    private String displayName;
-    private String material;
-    private List<String> enabledLore;
+    private final String displayName;
+    private final String material;
+    private final List<String> enabledLore;
     private List<String> disabledLore;
-    private int slot;
+    private final int slot;
 
     Setting(String displayName, String material, List<String> enabledLore, List<String> disabledLore, int slot) {
         this.displayName = displayName;

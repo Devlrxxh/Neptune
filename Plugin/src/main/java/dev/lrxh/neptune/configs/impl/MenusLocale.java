@@ -70,6 +70,7 @@ public enum MenusLocale implements IDataAccessor {
     ROUNDS_LORE("ROUNDS.LORE", DataType.STRING_LIST,
             "",
             "&a&lClick to select rounds amount!"),
+    ROUNDS_LIST("ROUNDS.AMOUNT", "Change the amount of rounds available", DataType.STRING, "1, 3, 5, 6, 10, 15, 20"),
     MATCH_HISTORY_TITLE("MATCH_HISTORY.TITLE", DataType.STRING, "&7Match History"),
     MATCH_HISTORY_SIZE("MATCH_HISTORY.SIZE", DataType.INT, "27"),
     MATCH_HISTORY_STARTING_SLOT("MATCH_HISTORY.STARTING-SLOT", DataType.INT, "10"),
