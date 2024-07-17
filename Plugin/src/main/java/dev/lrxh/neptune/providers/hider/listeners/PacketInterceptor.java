@@ -15,7 +15,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
 import java.util.UUID;
-import java.util.logging.Logger;
 
 /**
  * Author: Athishh
@@ -23,8 +22,6 @@ import java.util.logging.Logger;
  * Created on: 1/20/2024
  */
 public class PacketInterceptor extends PacketListenerAbstract {
-
-    private static final Logger logger = Logger.getLogger(PacketInterceptor.class.getName());
 
     public PacketInterceptor() {
         super(PacketListenerPriority.MONITOR);

@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.commands;
+package dev.lrxh.neptune.match.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;

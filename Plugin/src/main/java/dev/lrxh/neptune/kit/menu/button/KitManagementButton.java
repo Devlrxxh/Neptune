@@ -1,7 +1,8 @@
-package dev.lrxh.neptune.kit.menu;
+package dev.lrxh.neptune.kit.menu.button;
 
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
+import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;

@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unchecked")
 public class DataDocument {
     public Map<String, Object> data;
 
@@ -84,6 +83,7 @@ public class DataDocument {
         return (String) value;
     }
 
+    @SuppressWarnings("unchecked")
     public List<String> getList(String key, List<String> defaultValue) {
         Object value = data.get(key);
         if (value == null) return defaultValue;

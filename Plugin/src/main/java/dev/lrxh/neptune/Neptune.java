@@ -9,6 +9,7 @@ import dev.lrxh.gameRule.GameRule;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
+import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.*;
@@ -23,23 +24,28 @@ import dev.lrxh.neptune.hotbar.listener.ItemListener;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
+import dev.lrxh.neptune.kit.command.KitEditorCommand;
+import dev.lrxh.neptune.kit.command.StatsCommand;
 import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.leaderboard.task.LeaderboardTask;
 import dev.lrxh.neptune.listeners.LobbyListener;
 import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
+import dev.lrxh.neptune.match.commands.SpectateCommand;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
-import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
 import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
+import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
@@ -102,13 +108,13 @@ public final class Neptune extends JavaPlugin {
 
         loadExtensions();
         if (!isEnabled()) return;
-        if(placeholder){
+        if (placeholder) {
+            ServerUtils.sendMessage("&aPlaceholder API found, loading expansion.");
             new PlaceholderImpl(this).register();
         }
 
         this.configManager = new ConfigManager();
         this.configManager.load();
-        initAPIs();
         this.queueManager = new QueueManager();
         this.matchManager = new MatchManager();
         this.arenaManager = new ArenaManager();
@@ -130,6 +136,7 @@ public final class Neptune extends JavaPlugin {
         loadCommandManager();
         loadTasks();
         loadWorlds();
+        initAPIs();
 
         System.gc();
         Runtime.getRuntime().freeMemory();
@@ -140,7 +147,6 @@ public final class Neptune extends JavaPlugin {
     private void initAPIs() {
         entityHider = new EntityHider(this, EntityHider.Policy.BLACKLIST);
 
-        Bukkit.getServer().getPluginManager().registerEvents(new BukkitListener(), this);
         PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
         PacketEvents.getAPI().init();
     }
@@ -153,7 +159,8 @@ public final class Neptune extends JavaPlugin {
                 new ItemListener(),
                 new MenuListener(),
                 new EntityCache(),
-                new ItemCache()
+                new ItemCache(),
+                new BukkitListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

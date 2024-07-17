@@ -1,4 +1,4 @@
-package dev.lrxh.neptune;
+package dev.lrxh.neptune.cache;
 
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.utils.LocationUtil;

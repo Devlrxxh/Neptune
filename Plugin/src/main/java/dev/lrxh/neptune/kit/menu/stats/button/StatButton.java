@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.providers.menus.stats;
+package dev.lrxh.neptune.kit.menu.stats.button;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;

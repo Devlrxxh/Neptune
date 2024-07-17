@@ -10,6 +10,5 @@ public class DatabaseManager {
 
     public DatabaseManager() {
         database = DatabaseType.valueOf(SettingsLocale.DATABASE_TYPE.getString()).getIDatabase().load();
-
     }
 }

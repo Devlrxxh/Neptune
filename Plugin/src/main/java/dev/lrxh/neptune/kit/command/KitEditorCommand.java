@@ -1,14 +1,14 @@
-package dev.lrxh.neptune.commands;
+package dev.lrxh.neptune.kit.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.providers.menus.kitEditor.KitEditorMenu;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
@@ -20,7 +20,7 @@ public class KitEditorCommand extends BaseCommand {
     private final Neptune plugin = Neptune.get();
 
     @Default
-    public void open(Player player){
+    public void open(Player player) {
         new KitEditorMenu().openMenu(player.getUniqueId());
     }
 

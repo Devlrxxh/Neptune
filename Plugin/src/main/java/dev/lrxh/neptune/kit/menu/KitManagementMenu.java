@@ -2,6 +2,7 @@ package dev.lrxh.neptune.kit.menu;
 
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
+import dev.lrxh.neptune.kit.menu.button.KitManagementButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
 import dev.lrxh.neptune.utils.menu.Menu;

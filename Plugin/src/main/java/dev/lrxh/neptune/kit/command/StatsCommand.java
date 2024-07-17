@@ -1,8 +1,8 @@
-package dev.lrxh.neptune.commands;
+package dev.lrxh.neptune.kit.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import dev.lrxh.neptune.providers.menus.stats.StatsMenu;
+import dev.lrxh.neptune.kit.menu.stats.StatsMenu;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

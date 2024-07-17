@@ -1,7 +1,8 @@
-package dev.lrxh.neptune.providers.menus.kitEditor;
+package dev.lrxh.neptune.kit.menu.editor;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.menu.editor.buttons.KitEditorSelectButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
 import dev.lrxh.neptune.utils.menu.Menu;

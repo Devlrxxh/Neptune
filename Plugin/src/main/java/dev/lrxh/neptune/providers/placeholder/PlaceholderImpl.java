@@ -36,8 +36,8 @@ public class PlaceholderImpl extends PlaceholderExpansion {
         if (player == null) return "";
         if (!player.isOnline()) return "Offline Player";
         String[] parts = identifier.split("_");
-        if(parts.length == 1){
-            switch (parts[0]){
+        if (parts.length == 1) {
+            switch (parts[0]) {
                 case "ping":
                     return String.valueOf(PlayerUtil.getPing(player.getUniqueId()));
                 case "in-match":
