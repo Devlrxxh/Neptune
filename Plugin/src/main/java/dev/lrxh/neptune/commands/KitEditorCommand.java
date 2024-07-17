@@ -8,6 +8,7 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.menus.kitEditor.KitEditorMenu;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
@@ -17,6 +18,11 @@ import java.util.Arrays;
 @Description("Kit Editor command")
 public class KitEditorCommand extends BaseCommand {
     private final Neptune plugin = Neptune.get();
+
+    @Default
+    public void open(Player player){
+        new KitEditorMenu().openMenu(player.getUniqueId());
+    }
 
     @Subcommand("reset")
     @Syntax("<kit>")

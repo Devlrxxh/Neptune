@@ -6,12 +6,18 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.menu.QueueMenu;
 import org.bukkit.entity.Player;
 
 @CommandAlias("queue")
 @Description("Queue Selection command.")
 public class QueueCommand extends BaseCommand {
     private final Neptune plugin = Neptune.get();
+
+    @Default
+    public void open(Player player){
+        new QueueMenu().openMenu(player.getUniqueId());
+    }
 
     @Default
     @Syntax("<kit>")
