@@ -36,7 +36,9 @@ public class FfaFightMatch extends Match {
                     MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
         });
 
-        loser.playKillEffect();
+        if (loser.getLastAttacker() != null) {
+            loser.playKillEffect();
+        }
 
         new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
@@ -47,6 +49,7 @@ public class FfaFightMatch extends Match {
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
+            participant.getLastAttacker().playKillEffect();
         }
 
         participant.setLoser(true);
