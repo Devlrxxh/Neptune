@@ -193,7 +193,7 @@ public class MatchListener implements Listener {
                     event.getCause().equals(EntityDamageEvent.DamageCause.FALL) &&
                     !match.getState().equals(MatchState.IN_ROUND);
 
-            if (isNotInGame || !allowDamage) {
+            if (isNotInGame || allowDamage) {
                 event.setCancelled(true);
             }
 

@@ -39,7 +39,7 @@ public class TeamFightMatch extends Match {
     }
 
     @Override
-    public void end() {
+    public void end(Participant participant) {
         state = MatchState.ENDING;
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
@@ -49,6 +49,10 @@ public class TeamFightMatch extends Match {
 
         loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "Opponent Team"), 100);
+
+        if (participant.getLastAttacker() != null) {
+            participant.playKillEffect();
+        }
 
         new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
@@ -73,7 +77,6 @@ public class TeamFightMatch extends Match {
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
-            participant.getLastAttacker().playKillEffect();
         }
 
         sendDeathMessage(participant);
@@ -86,7 +89,7 @@ public class TeamFightMatch extends Match {
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
-        end();
+        end(participant);
     }
 
     public boolean onSameTeam(UUID playerUUID, UUID otherUUID) {

@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.utils;
+package dev.lrxh.neptune.providers.placeholder;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.match.Match;
@@ -11,6 +11,7 @@ import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;

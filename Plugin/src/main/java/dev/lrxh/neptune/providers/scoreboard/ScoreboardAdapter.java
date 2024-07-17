@@ -7,7 +7,7 @@ import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
-import dev.lrxh.neptune.utils.PlaceholderUtil;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.assemble.AssembleAdapter;
 import org.bukkit.entity.Player;
 

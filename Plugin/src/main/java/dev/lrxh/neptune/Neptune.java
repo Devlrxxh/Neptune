@@ -32,6 +32,7 @@ import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
@@ -84,6 +85,7 @@ public final class Neptune extends JavaPlugin {
     private DatabaseManager databaseManager;
     private CosmeticManager cosmeticManager;
 
+
     public static Neptune get() {
         return instance;
     }
@@ -100,6 +102,9 @@ public final class Neptune extends JavaPlugin {
 
         loadExtensions();
         if (!isEnabled()) return;
+        if(placeholder){
+            new PlaceholderImpl(this).register();
+        }
 
         this.configManager = new ConfigManager();
         this.configManager.load();

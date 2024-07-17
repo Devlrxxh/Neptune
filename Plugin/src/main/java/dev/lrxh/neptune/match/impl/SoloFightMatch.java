@@ -39,7 +39,7 @@ public class SoloFightMatch extends Match {
     }
 
     @Override
-    public void end() {
+    public void end(Participant loser) {
         state = MatchState.ENDING;
 
         if (!isDuel()) {
@@ -47,7 +47,6 @@ public class SoloFightMatch extends Match {
         }
 
         Participant winner = participantA.isLoser() ? participantB : participantA;
-        Participant loser = participantA.isLoser() ? participantA : participantB;
 
         winner.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "You"), 100);
@@ -56,6 +55,10 @@ public class SoloFightMatch extends Match {
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
 
         removePlaying();
+
+        if (loser.getLastAttacker() != null) {
+            loser.playKillEffect();
+        }
 
         new MatchEndRunnable(this).start(0L, 20L, plugin);
     }
@@ -123,7 +126,6 @@ public class SoloFightMatch extends Match {
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
-            participant.getLastAttacker().playKillEffect();
         }
 
         participant.setLoser(true);
@@ -134,7 +136,7 @@ public class SoloFightMatch extends Match {
 
         addSpectator(participant.getPlayerUUID());
 
-        end();
+        end(participant);
     }
 
     @Override

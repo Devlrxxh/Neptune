@@ -15,7 +15,7 @@ import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.PlaceholderUtil;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.AllArgsConstructor;
@@ -288,7 +288,7 @@ public abstract class Match {
         }
     }
 
-    public abstract void end();
+    public abstract void end(Participant loser);
 
     public abstract void onDeath(Participant participant);
 
