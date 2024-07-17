@@ -11,11 +11,11 @@ import org.bukkit.entity.Player;
 public class ServerUtils {
 
     public void sendMessage(String message) {
-        Neptune.get().getLogger().info(message);
+        Neptune.get().getLogger().info(CC.color(message));
     }
 
     public void error(String message) {
-        Bukkit.getLogger().severe(message);
+        Bukkit.getLogger().severe(CC.color(message));
     }
 
     public void broadcast(MessagesLocale message, Replacement... replacements) {

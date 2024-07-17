@@ -1,6 +1,9 @@
 package dev.lrxh.neptune.cosmetics.menu;
 
+import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
+import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import lombok.AllArgsConstructor;
@@ -20,7 +23,9 @@ public class CosmeticsManagementButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        return new ItemBuilder(material).name(title).lore(lore).clearFlags().build();
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        return new ItemBuilder(material).name(title).lore(ItemUtils.getLore(lore, new Replacement("<kill-effect>", profile.getSettingData().getKillEffect().getDisplayName()), new Replacement("<kill-message>", profile.getSettingData().getKillMessagePackage().getDisplayName()
+        ))).clearFlags().build();
     }
 
     @Override

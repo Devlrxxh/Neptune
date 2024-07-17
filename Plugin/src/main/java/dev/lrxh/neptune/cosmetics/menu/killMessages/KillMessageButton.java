@@ -8,6 +8,7 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
+import dev.lrxh.neptune.utils.menu.Menu;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -32,8 +33,8 @@ public class KillMessageButton extends Button {
             lore = MenusLocale.KILL_MESSAGES_NO_PERMISSION_LORE.getStringList();
         }
 
-        return new ItemBuilder(killMessagePackage.getMaterial()).name(killMessagePackage.getDisplayName()
-                        .replace("<selected>", selected ? CosmeticsLocale.SELECTED_DISPLAY_NAME.getString() : ""))
+        return new ItemBuilder(killMessagePackage.getMaterial())
+                .name(selected ? MenusLocale.KILL_MESSAGES_NAME_SELECTED.getString().replace("<displayName>", killMessagePackage.getDisplayName()) : MenusLocale.KILL_MESSAGES_NAME_NOT_SELECTED.getString().replace("<displayName>", killMessagePackage.getDisplayName()))
                 .lore(ItemUtils.getLore(lore,
                         new Replacement("<description>", killMessagePackage.getDescription()),
                         new Replacement("<messages>", ItemUtils.getLore(killMessagePackage.getMessages(), new Replacement("<player>", player.getName()), new Replacement("<killer>", player.getName())))))
