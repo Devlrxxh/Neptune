@@ -5,11 +5,14 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
@@ -74,9 +77,8 @@ public class Kit {
     }
 
     public List<String> getArenasAsString() {
-        List<String> arenasString = null;
-        if (arenas != null && !arenas.isEmpty()) {
-            arenasString = new ArrayList<>();
+        List<String> arenasString = new ArrayList<>();
+        if (!arenas.isEmpty()) {
             for (Arena arena : arenas) {
                 arenasString.add(arena.getName());
             }
@@ -122,6 +124,21 @@ public class Kit {
         }
         Collections.shuffle(kitArenas);
         return kitArenas.isEmpty() ? null : kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
+    }
+
+    public void giveLoadout(UUID playerUUID) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        GameData gameData = profile.getGameData();
+        if (gameData.getKitData() == null || gameData.getKitData().get(this) == null ||
+                gameData.getKitData().get(this).getKitLoadout().isEmpty()) {
+            player.getInventory().setContents(items.toArray(new ItemStack[0]));
+        } else {
+            player.getInventory().setContents(gameData.getKitData().get(this).getKitLoadout().toArray(new ItemStack[0]));
+        }
+
+        player.updateInventory();
     }
 
     public void addPlaying() {

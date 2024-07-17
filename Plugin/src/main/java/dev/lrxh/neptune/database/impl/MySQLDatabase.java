@@ -2,8 +2,6 @@ package dev.lrxh.neptune.database.impl;
 
 import com.google.gson.JsonParseException;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.database.DataDocument;
-import dev.lrxh.neptune.database.IDatabase;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;
 import org.bukkit.Bukkit;

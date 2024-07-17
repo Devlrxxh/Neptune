@@ -1,7 +1,5 @@
-package dev.lrxh.neptune.database;
+package dev.lrxh.neptune.database.impl;
 
-import dev.lrxh.neptune.database.impl.MongoDatabase;
-import dev.lrxh.neptune.database.impl.MySQLDatabase;
 import lombok.Getter;
 
 @Getter

@@ -3,7 +3,7 @@ package dev.lrxh.neptune.profile;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.cosmetics.impl.KillEffect;
-import dev.lrxh.neptune.database.DataDocument;
+import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;

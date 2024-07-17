@@ -2,11 +2,11 @@ package dev.lrxh.neptune.database;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
+import dev.lrxh.neptune.database.impl.DatabaseType;
+import dev.lrxh.neptune.database.impl.IDatabase;
 import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
-
 
 @Getter
 public class DatabaseManager {

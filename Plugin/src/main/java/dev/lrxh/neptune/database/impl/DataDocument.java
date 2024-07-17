@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.database;
+package dev.lrxh.neptune.database.impl;
 
 import com.google.gson.JsonParseException;
 import dev.lrxh.neptune.utils.ServerUtils;

@@ -7,7 +7,6 @@ import dev.lrxh.neptune.profile.Profile;
 import dev.lrxh.neptune.profile.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
-import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
@@ -37,7 +36,7 @@ public class KitEditorSelectButton extends Button {
         profile.getGameData().setKitEditor(kit);
         profile.setState(ProfileState.IN_KIT_EDITOR);
 
-        PlayerUtil.giveKit(player.getUniqueId(), kit);
+        kit.giveLoadout(player.getUniqueId());
 
         player.updateInventory();
     }

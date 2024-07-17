@@ -9,6 +9,7 @@ import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.Profile;
@@ -84,9 +85,7 @@ public abstract class Match {
         profile.setState(ProfileState.IN_SPECTATOR);
         spectators.add(playerUUID);
 
-        forEachPlayer(participiantPlayer -> {
-            player.showPlayer(plugin, participiantPlayer);
-        });
+        forEachPlayer(participiantPlayer -> player.showPlayer(plugin, participiantPlayer));
 
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
@@ -96,9 +95,7 @@ public abstract class Match {
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(player -> {
-            forEachPlayer(participiantPlayer -> player.showPlayer(plugin, participiantPlayer));
-        });
+        forEachSpectator(player -> forEachPlayer(participiantPlayer -> player.showPlayer(plugin, participiantPlayer)));
     }
 
     public void forEachPlayer(Consumer<Player> action) {
@@ -191,7 +188,7 @@ public abstract class Match {
         Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
-        PlayerUtil.giveKit(player.getUniqueId(), kit);
+        kit.giveLoadout(playerUUID);
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
@@ -276,8 +273,9 @@ public abstract class Match {
 
     public void sendDeathMessage(Participant deadParticipant) {
         String deathMessage = deadParticipant.getDeathMessage();
+        DeathCause deathCause = deadParticipant.getDeathCause();
 
-        if (deathMessage.isEmpty()) {
+        if (deathMessage.isEmpty() && deathCause != null && !deathCause.equals(DeathCause.DIED)) {
             broadcast(
                     deadParticipant.getDeathCause().getMessagesLocale(),
                     new Replacement("<player>", deadParticipant.getName()),

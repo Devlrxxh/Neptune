@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.database;
+package dev.lrxh.neptune.database.impl;
 
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 

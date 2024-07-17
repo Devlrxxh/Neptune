@@ -5,7 +5,7 @@ import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
-import dev.lrxh.neptune.database.DataDocument;
+import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;

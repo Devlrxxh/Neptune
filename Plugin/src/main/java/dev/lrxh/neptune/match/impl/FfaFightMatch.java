@@ -46,7 +46,6 @@ public class FfaFightMatch extends Match {
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
-            participant.getLastAttacker().playKillEffect();
         }
 
         participant.setLoser(true);

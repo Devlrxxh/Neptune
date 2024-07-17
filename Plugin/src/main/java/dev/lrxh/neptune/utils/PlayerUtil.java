@@ -50,21 +50,6 @@ public class PlayerUtil {
         utils.kick(playerUUID, CC.color(message));
     }
 
-    public void giveKit(UUID playerUUID, Kit kit) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
-        GameData gameData = profile.getGameData();
-        if (gameData.getKitData() == null || gameData.getKitData().get(kit) == null ||
-                gameData.getKitData().get(kit).getKitLoadout().isEmpty()) {
-            player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
-        } else {
-            player.getInventory().setContents(gameData.getKitData().get(kit).getKitLoadout().toArray(new ItemStack[0]));
-        }
-
-        player.updateInventory();
-    }
-
     public void teleportToSpawn(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;

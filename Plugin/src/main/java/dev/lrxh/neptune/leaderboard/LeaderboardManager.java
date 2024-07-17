@@ -2,7 +2,7 @@ package dev.lrxh.neptune.leaderboard;
 
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.database.DataDocument;
+import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
