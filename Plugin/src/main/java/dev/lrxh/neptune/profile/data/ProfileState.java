@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.profile;
+package dev.lrxh.neptune.profile.data;
 
 public enum ProfileState {
     IN_LOBBY,

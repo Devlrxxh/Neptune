@@ -4,7 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
-import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
 import lombok.AllArgsConstructor;

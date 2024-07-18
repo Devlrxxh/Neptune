@@ -27,14 +27,11 @@ public class KitData {
     }
 
     public double getKdr() {
-        double kd = wins;
-        if (losses > 0) {
-            kd = (double) wins / losses;
-            BigDecimal bd = new BigDecimal(kd);
-            BigDecimal bd2 = bd.setScale(1, RoundingMode.HALF_UP);
-            kd = bd2.doubleValue();
-        }
-        return kd;
+        if (losses == 0) return wins;
+        double kd = (double) wins / losses;
+        BigDecimal bd = new BigDecimal(kd);
+        bd = bd.setScale(1, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 
     public void updateDivision() {

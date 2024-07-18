@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.profile;
+package dev.lrxh.neptune.profile.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -11,6 +11,7 @@ import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;

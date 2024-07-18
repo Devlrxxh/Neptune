@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.utils.menu.listener;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
 import org.bukkit.Sound;

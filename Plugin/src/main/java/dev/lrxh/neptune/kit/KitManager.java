@@ -28,7 +28,7 @@ public class KitManager implements IManager {
         if (config.contains("kits")) {
             for (String kitName : getKeys("kits")) {
                 String path = "kits." + kitName + ".";
-                String displayName = config.getString(path + "displayName");
+                String displayName = config.getString(path + "displayName", kitName);
                 ItemStack icon = ItemUtils.deserializeItem(Objects.requireNonNull(config.getString(path + "icon")));
 
                 List<ItemStack> items = ItemUtils.deserialize(Objects.requireNonNull(config.getString(path + "items")));

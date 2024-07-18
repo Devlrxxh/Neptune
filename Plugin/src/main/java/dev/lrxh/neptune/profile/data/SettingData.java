@@ -19,7 +19,6 @@ public class SettingData {
     private boolean menuSound = true;
     private KillMessagePackage killMessagePackage;
 
-
     public SettingData(Neptune plugin) {
         this.plugin = plugin;
         this.killMessagePackage = plugin.getCosmeticManager().getDefault();

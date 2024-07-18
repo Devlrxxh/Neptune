@@ -1,8 +1,8 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.Profile;
-import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.profile.data.ProfileState;
 
 import java.util.Map;
 import java.util.UUID;

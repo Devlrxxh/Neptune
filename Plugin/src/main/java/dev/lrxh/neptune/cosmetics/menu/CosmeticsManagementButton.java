@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.cosmetics.menu;
 
-import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;

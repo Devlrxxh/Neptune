@@ -1,6 +1,7 @@
-package dev.lrxh.neptune.profile;
+package dev.lrxh.neptune.profile.impl;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

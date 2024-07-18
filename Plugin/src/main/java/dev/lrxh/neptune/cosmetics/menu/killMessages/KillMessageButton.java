@@ -1,14 +1,12 @@
 package dev.lrxh.neptune.cosmetics.menu.killMessages;
 
-import dev.lrxh.neptune.configs.impl.CosmeticsLocale;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
-import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Menu;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;

@@ -5,8 +5,8 @@ import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.Profile;
-import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import org.bukkit.entity.Player;
 
 @CommandAlias("leave")

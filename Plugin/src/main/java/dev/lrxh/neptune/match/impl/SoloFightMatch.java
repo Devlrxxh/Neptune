@@ -9,7 +9,7 @@ import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
-import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;

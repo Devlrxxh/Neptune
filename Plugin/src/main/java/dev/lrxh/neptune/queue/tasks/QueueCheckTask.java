@@ -6,7 +6,7 @@ import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.impl.participant.Participant;
-import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;

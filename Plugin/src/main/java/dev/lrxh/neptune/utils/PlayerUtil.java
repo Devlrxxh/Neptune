@@ -1,9 +1,6 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.profile.Profile;
-import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.utils.IPlayerUtils;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;

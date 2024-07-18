@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.settings.menu;
 
-import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.settings.Setting;
 import dev.lrxh.neptune.utils.ItemBuilder;

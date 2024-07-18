@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.profile;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

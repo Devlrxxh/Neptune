@@ -111,6 +111,25 @@ public class KitCommand extends BaseCommand {
         player.sendMessage(CC.color("&4IMPORTANT &8- &cMake sure to run /kit updateDB " + kitName));
     }
 
+    @Subcommand("rename")
+    @Syntax("<kit> <name>")
+    @CommandCompletion("@kits")
+    public void rename(Player player, String kitName, String name) {
+        if (player == null) return;
+        if (!checkKit(kitName)) {
+            player.sendMessage(CC.error("Kit doesn't exist!"));
+            return;
+        }
+        Kit kit = plugin.getKitManager().getKitByName(kitName);
+
+        kit.setDisplayName(name);
+
+        plugin.getKitManager().saveKits();
+
+        player.sendMessage(CC.color("&aSuccessfully renamed kit display name!"));
+    }
+
+
     @Subcommand("delete")
     @Syntax("<kit>")
     @CommandCompletion("@kits")

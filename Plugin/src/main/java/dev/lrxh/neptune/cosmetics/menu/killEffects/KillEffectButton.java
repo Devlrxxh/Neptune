@@ -1,9 +1,8 @@
 package dev.lrxh.neptune.cosmetics.menu.killEffects;
 
-import dev.lrxh.neptune.configs.impl.CosmeticsLocale;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.cosmetics.impl.KillEffect;
-import dev.lrxh.neptune.profile.Profile;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;

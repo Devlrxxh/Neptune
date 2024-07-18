@@ -3,7 +3,7 @@ package dev.lrxh.neptune.hotbar;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.impl.Hotbar;
 import dev.lrxh.neptune.hotbar.impl.Item;
-import dev.lrxh.neptune.profile.ProfileState;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;

@@ -10,8 +10,8 @@ import dev.lrxh.neptune.cosmetics.menu.killEffects.KillEffectsMenu;
 import dev.lrxh.neptune.cosmetics.menu.killMessages.KillMessagesMenu;
 import org.bukkit.entity.Player;
 
-@CommandAlias("queue")
-@Description("Queue Selection command.")
+@CommandAlias("cosmetics")
+@Description("Cosmetics command.")
 public class CosmeticsCommand extends BaseCommand {
 
     @Default
