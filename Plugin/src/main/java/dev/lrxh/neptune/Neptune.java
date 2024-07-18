@@ -17,6 +17,7 @@ import dev.lrxh.neptune.commands.MainCommand;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.cosmetics.CosmeticManager;
+import dev.lrxh.neptune.cosmetics.command.CosmeticsCommand;
 import dev.lrxh.neptune.database.DatabaseManager;
 import dev.lrxh.neptune.divisions.DivisionManager;
 import dev.lrxh.neptune.duel.command.DuelCommand;
@@ -210,7 +211,8 @@ public final class Neptune extends JavaPlugin {
                 new MatchHistoryCommand(),
                 new PartyCommand(),
                 new LeaderboardCommand(),
-                new KitEditorCommand()
+                new KitEditorCommand(),
+                new CosmeticsCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 
