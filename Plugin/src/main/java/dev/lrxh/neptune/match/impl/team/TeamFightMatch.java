@@ -81,8 +81,7 @@ public class TeamFightMatch extends Match {
 
         MatchTeam team = getParticipantTeam(participant);
         team.getDeadParticipants().add(participant);
-
-
+        
         if (!team.isLoser()) return;
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());

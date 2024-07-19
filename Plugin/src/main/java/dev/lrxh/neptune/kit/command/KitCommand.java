@@ -169,10 +169,8 @@ public class KitCommand extends BaseCommand {
             DataDocument kitStatistics = document.getDataDocument("kitData");
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
 
-            if (kitDocument != null && !Objects.equals(kitDocument.getString("kit"), "")) {
-                kitDocument.put("kit", "");
-                i++;
-            }
+            kitDocument.put("kit", "");
+            i++;
 
             kitStatistics.put("kitData", kitDocument);
 
