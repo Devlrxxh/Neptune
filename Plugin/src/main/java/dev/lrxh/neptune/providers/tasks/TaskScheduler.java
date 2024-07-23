@@ -31,12 +31,10 @@ public class TaskScheduler {
     public void stopAllTasks(Neptune plugin) {
         for (NeptuneRunnable task : tasks) {
             task.stop(plugin);
-            tasks.remove(task);
         }
     }
 
     public void removeTask(NeptuneRunnable task) {
-        task.cancel();
         tasks.remove(task);
     }
 }

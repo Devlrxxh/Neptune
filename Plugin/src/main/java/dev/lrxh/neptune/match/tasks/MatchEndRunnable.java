@@ -15,13 +15,14 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class MatchEndRunnable extends NeptuneRunnable {
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
 
     private final Match match;
     private int endTimer = 3;
 
-    public MatchEndRunnable(Match match) {
+    public MatchEndRunnable(Match match, Neptune plugin) {
         this.match = match;
+        this.plugin = plugin;
     }
 
     @Override

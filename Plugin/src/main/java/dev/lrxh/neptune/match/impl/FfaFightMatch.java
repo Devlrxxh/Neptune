@@ -37,7 +37,7 @@ public class FfaFightMatch extends Match {
 
         loser.playKillEffect();
 
-        new MatchEndRunnable(this).start(0L, 20L, plugin);
+        new MatchEndRunnable(this, plugin).start(0L, 20L, plugin);
     }
 
     @Override
@@ -92,11 +92,6 @@ public class FfaFightMatch extends Match {
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 20);
-    }
-
-    @Override
-    public void teleportToPositions() {
-        forEachPlayer(player -> player.teleport(arena.getRedSpawn()));
     }
 
     @Override

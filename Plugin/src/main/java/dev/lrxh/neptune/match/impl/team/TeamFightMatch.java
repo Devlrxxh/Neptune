@@ -52,7 +52,7 @@ public class TeamFightMatch extends Match {
 
         loser.playKillEffect();
 
-        new MatchEndRunnable(this).start(0L, 20L, plugin);
+        new MatchEndRunnable(this, plugin).start(0L, 20L, plugin);
     }
 
 
@@ -111,22 +111,5 @@ public class TeamFightMatch extends Match {
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 10);
-    }
-
-    @Override
-    public void teleportToPositions() {
-        for (Participant participant : teamA.getParticipants()) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
-
-            player.teleport(arena.getRedSpawn());
-        }
-
-        for (Participant participant : teamB.getParticipants()) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
-            if (player == null) continue;
-
-            player.teleport(arena.getBlueSpawn());
-        }
     }
 }

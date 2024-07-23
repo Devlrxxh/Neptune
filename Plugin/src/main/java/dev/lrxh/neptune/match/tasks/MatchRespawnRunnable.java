@@ -13,15 +13,16 @@ import org.bukkit.Bukkit;
 
 
 public class MatchRespawnRunnable extends NeptuneRunnable {
-    private final Neptune plugin = Neptune.get();
+    private final Neptune plugin;
 
     private final Match match;
     private final Participant participant;
     private int respawnTimer = 3;
 
-    public MatchRespawnRunnable(Match match, Participant participant) {
+    public MatchRespawnRunnable(Match match, Participant participant, Neptune plugin) {
         this.match = match;
         this.participant = participant;
+        this.plugin = plugin;
     }
 
     @Override

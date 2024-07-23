@@ -17,7 +17,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
-import java.util.Objects;
 
 @CommandAlias("kit")
 @CommandPermission("neptune.admin.kit")
@@ -158,13 +157,13 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        int i = 0;
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             PlayerUtil.kick(onlinePlayer.getUniqueId(), "&cUpdating player data...");
         }
 
+        int i = 0;
         for (DataDocument document : plugin.getDatabaseManager().getDatabase().getAll()) {
             DataDocument kitStatistics = document.getDataDocument("kitData");
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
@@ -176,7 +175,7 @@ public class KitCommand extends BaseCommand {
 
             plugin.getDatabaseManager().getDatabase().replace(document.getString("uuid"), document);
         }
-        ServerUtils.sendMessage("&aUpdated kit for " + i + " players!");
+        ServerUtils.sendMessage("Updated kit for " + i + " players!");
     }
 
     @Subcommand("seticon")

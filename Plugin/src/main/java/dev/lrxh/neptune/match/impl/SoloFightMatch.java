@@ -58,7 +58,7 @@ public class SoloFightMatch extends Match {
 
         loser.playKillEffect();
 
-        new MatchEndRunnable(this).start(0L, 20L, plugin);
+        new MatchEndRunnable(this, plugin).start(0L, 20L, plugin);
     }
 
     private void removePlaying() {
@@ -117,7 +117,7 @@ public class SoloFightMatch extends Match {
                 participantKiller.setCombo(0);
 
                 state = MatchState.STARTING;
-                new MatchRespawnRunnable(this, participant).start(0L, 20L, plugin);
+                new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
                 return;
             }
         }
@@ -152,17 +152,5 @@ public class SoloFightMatch extends Match {
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 20);
-    }
-
-    @Override
-    public void teleportToPositions() {
-        Player playerA = Bukkit.getPlayer(participantA.getPlayerUUID());
-        if (playerA == null) return;
-        playerA.teleport(arena.getRedSpawn());
-
-        Player playerB = Bukkit.getPlayer(participantB.getPlayerUUID());
-        if (playerB == null) return;
-
-        playerB.teleport(arena.getBlueSpawn());
     }
 }
