@@ -13,8 +13,8 @@ import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
-import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.CC;
@@ -291,9 +291,9 @@ public abstract class Match {
         for (Participant participant : participants) {
             Player player = Bukkit.getPlayer(participant.getPlayerUUID());
             if (player == null) continue;
-            if(participant.getColor().equals(ParticipantColor.RED)){
+            if (participant.getColor().equals(ParticipantColor.RED)) {
                 player.teleport(arena.getRedSpawn());
-            }else {
+            } else {
                 player.teleport(arena.getBlueSpawn());
             }
         }

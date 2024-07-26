@@ -93,7 +93,6 @@ public final class Neptune extends JavaPlugin {
     private DatabaseManager databaseManager;
     private CosmeticManager cosmeticManager;
 
-
     public static Neptune get() {
         return instance;
     }
