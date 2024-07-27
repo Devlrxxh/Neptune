@@ -15,7 +15,7 @@ import java.util.UUID;
 public class KitSelectButton extends Button {
     private final Kit kit;
     private final UUID receiver;
-    private boolean test;
+    private boolean party;
 
     @Override
     public ItemStack getButtonItem(Player player) {
@@ -28,6 +28,6 @@ public class KitSelectButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
 
-        new RoundsSelectMenu(kit, receiver, test).openMenu(player.getUniqueId());
+        new RoundsSelectMenu(kit, receiver, party).openMenu(player.getUniqueId());
     }
 }

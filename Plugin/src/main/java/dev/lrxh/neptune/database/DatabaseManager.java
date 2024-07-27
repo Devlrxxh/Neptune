@@ -21,7 +21,7 @@ public class DatabaseManager {
 
         try {
             this.database = DatabaseType.valueOf(SettingsLocale.DATABASE_TYPE.getString()).getIDatabase().load();
-        } catch (RuntimeException e){
+        } catch (RuntimeException e) {
             ServerUtils.error("Unknown database type in settings.yml");
         }
     }

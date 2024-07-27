@@ -41,7 +41,7 @@ public class QueueCheckTask extends NeptuneRunnable {
                 Queue queue2 = entry2.getValue();
 
                 if ((uuid1.equals(uuid2))) continue;
-                if (!plugin.getQueueManager().compareQueue(queue1, queue2)) continue;
+                if (!plugin.getQueueManager().compare(queue1, queue2)) continue;
                 SettingData settings1 = plugin.getProfileManager().getByUUID(uuid1).getSettingData();
                 SettingData settings2 = plugin.getProfileManager().getByUUID(uuid2).getSettingData();
 

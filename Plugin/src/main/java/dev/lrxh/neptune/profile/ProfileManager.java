@@ -16,8 +16,10 @@ public class ProfileManager {
         this.plugin = Neptune.get();
     }
 
-    public void createProfile(Player player) {
-        profiles.put(player.getUniqueId(), new Profile(player, plugin));
+    public Profile createProfile(Player player) {
+        Profile profile = new Profile(player, plugin);
+        profiles.put(player.getUniqueId(), profile);
+        return profile;
     }
 
     public Profile createProfile(UUID playerUUID) {

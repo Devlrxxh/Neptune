@@ -1,8 +1,7 @@
-package dev.lrxh.neptune.profile.impl;
+package dev.lrxh.neptune.profile.data;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.data.ProfileState;
-import lombok.experimental.UtilityClass;
+import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -11,9 +10,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
-@UtilityClass
-public class VisibilityLogic {
-    private final Neptune plugin = Neptune.get();
+public class Visibility {
+    private final Neptune plugin;
+
+    public Visibility(Neptune plugin) {
+        this.plugin = plugin;
+    }
 
     public void handle(UUID playerUUID) {
         for (Player players : Bukkit.getOnlinePlayers()) {
@@ -51,7 +53,6 @@ public class VisibilityLogic {
 
         viewerPlayer.hidePlayer(plugin, otherPlayer);
         otherPlayer.hidePlayer(plugin, viewerPlayer);
-
     }
 
     public boolean has(UUID playerUUID, UUID otherUUID, ProfileState... states) {

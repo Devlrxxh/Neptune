@@ -21,7 +21,7 @@ public class QueueCommand extends BaseCommand {
         if (plugin.getKitManager().getKitByName(kitName) != null) {
             Queue queue = new Queue(plugin.getKitManager().getKitByName(kitName));
 
-            plugin.getQueueManager().addToQueue(player.getUniqueId(), queue);
+            plugin.getQueueManager().add(player.getUniqueId(), queue);
             MessagesLocale.QUEUE_JOIN.send(player.getUniqueId(),
                     new Replacement("<kit>", queue.getKit().getDisplayName()));
         } else {

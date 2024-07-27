@@ -7,12 +7,8 @@ import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.party.Party;
-import dev.lrxh.neptune.profile.data.GameData;
-import dev.lrxh.neptune.profile.data.KitData;
-import dev.lrxh.neptune.profile.data.ProfileState;
-import dev.lrxh.neptune.profile.data.SettingData;
+import dev.lrxh.neptune.profile.data.*;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemUtils;
@@ -22,7 +18,9 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -34,6 +32,7 @@ public class Profile {
     private Neptune plugin;
     private GameData gameData;
     private SettingData settingData;
+    private Visibility visibility;
 
     public Profile(Player player, Neptune plugin) {
         this.plugin = plugin;
@@ -42,12 +41,13 @@ public class Profile {
         this.state = ProfileState.IN_LOBBY;
         this.gameData = new GameData(plugin);
         this.settingData = new SettingData(plugin);
+        this.visibility = new Visibility(plugin);
 
         load();
     }
 
     public void handleVisibility() {
-        VisibilityLogic.handle(playerUUID);
+        visibility.handle(playerUUID);
     }
 
     public void setState(ProfileState profileState) {
@@ -183,20 +183,7 @@ public class Profile {
     }
 
     public void acceptDuel(UUID senderUUID) {
-        plugin.getQueueManager().remove(playerUUID);
-        DuelRequest duelRequest = (DuelRequest) gameData.getRequests().get(senderUUID);
-
-        Participant participant1 =
-                new Participant(duelRequest.getSender(), plugin);
-
-        Participant participant2 =
-                new Participant(playerUUID, plugin);
-
-        List<Participant> participants = Arrays.asList(participant1, participant2);
-
-        plugin.getMatchManager().startMatch(participants, duelRequest.getKit(),
-                duelRequest.getArena(), true, duelRequest.getRounds());
-
+        ((DuelRequest) gameData.getRequests().get(senderUUID)).start(playerUUID);
         gameData.removeRequest(senderUUID);
     }
 

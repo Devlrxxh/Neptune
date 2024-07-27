@@ -24,11 +24,6 @@ public class TtlHashMap<K, V> extends HashMap<K, V> {
         scheduleRemoval(key);
     }
 
-    @Override
-    public V get(Object key) {
-        return super.get(key);
-    }
-
     public void onExpire(K key) {
         TtlAction action = actions.get(key);
         if (action != null) {
@@ -56,11 +51,6 @@ public class TtlHashMap<K, V> extends HashMap<K, V> {
             actions.remove(castKey);
         }
         return super.remove(key);
-    }
-
-    @Override
-    public boolean containsKey(Object key) {
-        return super.containsKey(key);
     }
 
     private void scheduleRemoval(K key) {

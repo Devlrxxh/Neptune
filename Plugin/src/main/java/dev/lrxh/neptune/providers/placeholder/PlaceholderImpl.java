@@ -50,7 +50,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                 break;
             case 2:
                 KitData data = plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getKitData().get(plugin.getKitManager().getKitByName(parts[0]));
-                switch (parts[1]){
+                switch (parts[1]) {
                     case "division":
                         return data == null ? "" : data.getDivision().getDisplayName();
                     case "wins":

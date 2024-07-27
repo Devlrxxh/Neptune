@@ -33,7 +33,6 @@ public class GameData {
     private Party party;
 
     public GameData(Neptune plugin) {
-        this.match = null;
         this.kitData = new HashMap<>();
         this.matchHistories = new ArrayList<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();

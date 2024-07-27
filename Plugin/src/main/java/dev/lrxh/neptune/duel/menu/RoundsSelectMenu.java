@@ -16,7 +16,7 @@ import java.util.UUID;
 public class RoundsSelectMenu extends Menu {
     private final Kit kit;
     private final UUID receiver;
-    private boolean test;
+    private boolean party;
 
     @Override
     public String getTitle(Player player) {
@@ -41,7 +41,7 @@ public class RoundsSelectMenu extends Menu {
         String[] parts = MenusLocale.ROUNDS_LIST.getString().replace(" ", "").split(",");
 
         for (String round : parts) {
-            buttons.put(i++, new RoundSelectButton(kit, receiver, test, Integer.parseInt(round)));
+            buttons.put(i++, new RoundSelectButton(kit, receiver, party, Integer.parseInt(round)));
         }
 
         return buttons;

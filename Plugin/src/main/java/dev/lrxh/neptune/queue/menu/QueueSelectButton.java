@@ -32,7 +32,7 @@ public class QueueSelectButton extends Button {
 
     @Override
     public void onClick(Player player, ClickType clickType) {
-        plugin.getQueueManager().addToQueue(player.getUniqueId(), new Queue(kit));
+        plugin.getQueueManager().add(player.getUniqueId(), new Queue(kit));
         MessagesLocale.QUEUE_JOIN.send(player.getUniqueId(),
                 new Replacement("<kit>", kit.getDisplayName()));
         player.closeInventory();

@@ -15,7 +15,7 @@ import java.util.UUID;
 @AllArgsConstructor
 public class KitSelectMenu extends Menu {
     private final UUID receiver;
-    private boolean test;
+    private boolean party;
 
     @Override
     public String getTitle(Player player) {
@@ -38,7 +38,7 @@ public class KitSelectMenu extends Menu {
         int i = MenusLocale.DUEL_STARTING_SLOT.getInt();
 
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(i++, new KitSelectButton(kit, receiver, test));
+            buttons.put(i++, new KitSelectButton(kit, receiver, party));
         }
 
         return buttons;

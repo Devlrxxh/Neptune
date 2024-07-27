@@ -4,9 +4,8 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.Participant;
-import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.profile.data.ProfileState;
-import dev.lrxh.neptune.profile.impl.VisibilityLogic;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
@@ -27,13 +26,14 @@ public class ProfileListener implements Listener {
         Player player = event.getPlayer();
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
-        plugin.getProfileManager().createProfile(player);
+        Profile profile = plugin.getProfileManager().createProfile(player);
 
         event.setJoinMessage(null);
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
             ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE, new Replacement("<player>", player.getName()));
         }
-        VisibilityLogic.handle(player.getUniqueId());
+
+        profile.handleVisibility();
         PlayerUtil.reset(player.getUniqueId());
         plugin.getHotbarManager().giveItems(player.getUniqueId());
     }

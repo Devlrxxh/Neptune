@@ -36,7 +36,7 @@ public class KitEditorMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.KIT_EDITOR_SELECT_STARTING_SLOT.getInt();
         for (Kit kit : plugin.getKitManager().kits) {
-            if(kit.is(KitRule.ALL0W_KIT_EDITOR)){
+            if (kit.is(KitRule.ALL0W_KIT_EDITOR)) {
                 buttons.put(i++, new KitEditorSelectButton(kit));
             }
         }

@@ -1,8 +1,8 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 
 import java.util.Map;
 import java.util.UUID;
@@ -16,7 +16,7 @@ public class QueueManager {
         this.plugin = Neptune.get();
     }
 
-    public void addToQueue(UUID playerUUID, Queue queue) {
+    public void add(UUID playerUUID, Queue queue) {
         if (queues.containsKey(playerUUID)) return;
         Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         if (profile.getGameData().getParty() != null) return;
@@ -31,7 +31,7 @@ public class QueueManager {
         queues.remove(playerUUID);
     }
 
-    public boolean compareQueue(Queue queue1, Queue queue2) {
+    public boolean compare(Queue queue1, Queue queue2) {
         return queue1.getKit().getName().equals(queue2.getKit().getName());
     }
 }

@@ -21,7 +21,7 @@ import java.util.UUID;
 public class RoundSelectButton extends Button {
     private final Kit kit;
     private final UUID receiver;
-    private final boolean test;
+    private final boolean party;
     private int round;
 
     @Override
@@ -43,7 +43,7 @@ public class RoundSelectButton extends Button {
             return;
         }
 
-        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), test, round);
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, round, plugin);
         MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
                 new Replacement("<receiver>", receiverPlayer.getName()),
                 new Replacement("<kit>", kit.getDisplayName()),

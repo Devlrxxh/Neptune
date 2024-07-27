@@ -14,8 +14,6 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -81,7 +79,7 @@ public class TeamFightMatch extends Match {
 
         MatchTeam team = getParticipantTeam(participant);
         team.getDeadParticipants().add(participant);
-        
+
         if (!team.isLoser()) return;
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());

@@ -6,9 +6,9 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.duel.menu.KitSelectMenu;
-import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.data.GameData;
+import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
@@ -52,7 +52,13 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        new KitSelectMenu(target.getUniqueId(), false).openMenu(player.getUniqueId());
+        Profile userProfile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (userProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getState().equals(ProfileState.IN_PARTY)) {
+            player.sendMessage(CC.error("You can't send duel requests right now!"));
+            return;
+        }
+
+        new KitSelectMenu(target.getUniqueId(), userProfile.getState().equals(ProfileState.IN_PARTY)).openMenu(player.getUniqueId());
     }
 
     @Subcommand("accept")
@@ -65,16 +71,22 @@ public class DuelCommand extends BaseCommand {
             player.sendMessage(CC.error("You can't accept duel requests right now!"));
             return;
         }
-        UUID otherUUID = UUID.fromString(otherString);
+        UUID targetUUID = UUID.fromString(otherString);
+        Profile targetProfile = plugin.getProfileManager().getByUUID(targetUUID);
 
-        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(otherUUID);
+        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(targetUUID);
 
         if (duelRequest == null) {
             player.sendMessage(CC.error("You don't have any duel request from this player!"));
             return;
         }
 
-        profile.acceptDuel(otherUUID);
+        if (!duelRequest.isParty() && targetProfile.getState().equals(ProfileState.IN_PARTY)) {
+            player.sendMessage(CC.error("You can't accept duel requests right now!"));
+            return;
+        }
+
+        profile.acceptDuel(targetUUID);
     }
 
     @Subcommand("deny")

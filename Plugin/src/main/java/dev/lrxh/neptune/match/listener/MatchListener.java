@@ -8,8 +8,8 @@ import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
-import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.EntityUtils;
@@ -187,13 +187,13 @@ public class MatchListener implements Listener {
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
 
-            boolean isNotInGame = !profile.getState().equals(ProfileState.IN_GAME);
+            boolean inGame = !profile.getState().equals(ProfileState.IN_GAME);
             boolean allowDamage = match != null &&
-                    !match.getKit().is(KitRule.FALL_DAMAGE) &&
-                    event.getCause().equals(EntityDamageEvent.DamageCause.FALL) &&
-                    !match.getState().equals(MatchState.IN_ROUND);
+                    ((match.getKit().is(KitRule.FALL_DAMAGE) &&
+                    event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) ||
+                    match.getState().equals(MatchState.IN_ROUND));
 
-            if (isNotInGame || allowDamage) {
+            if (!inGame || !allowDamage) {
                 event.setCancelled(true);
             }
 
