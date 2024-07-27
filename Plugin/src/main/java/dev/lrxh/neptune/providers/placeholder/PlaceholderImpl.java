@@ -63,6 +63,6 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return data == null ? "" : String.valueOf(data.getBestStreak());
                 }
         }
-        return "";
+        return "INVALID_PLACEHOLDER";
     }
 }

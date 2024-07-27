@@ -50,13 +50,22 @@ public class Kit {
         this.displayName = name;
         this.items = items;
         this.arenas = new HashSet<>();
-        this.rules = new HashMap<>();
+        this.rules = rules();
         this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : new ItemStack(icon);
         this.queue = 0;
         this.playing = 0;
         this.plugin = plugin;
 
         checkMissing();
+    }
+
+    private HashMap<KitRule, Boolean> rules(){
+        HashMap<KitRule, Boolean> rules = new HashMap<>();
+        for (KitRule kitRule : KitRule.values()){
+            rules.put(kitRule, false);
+        }
+
+        return rules;
     }
 
 

@@ -2,6 +2,7 @@ package dev.lrxh.neptune.kit.menu.editor;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.editor.buttons.KitEditorSelectButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
@@ -35,7 +36,9 @@ public class KitEditorMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.KIT_EDITOR_SELECT_STARTING_SLOT.getInt();
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(i++, new KitEditorSelectButton(kit));
+            if(kit.is(KitRule.ALL0W_KIT_EDITOR)){
+                buttons.put(i++, new KitEditorSelectButton(kit));
+            }
         }
         return buttons;
     }

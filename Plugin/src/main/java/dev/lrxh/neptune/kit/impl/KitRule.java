@@ -15,6 +15,7 @@ public enum KitRule {
     BEST_OF_THREE("If enabled Players would need to win 3 times", "Best of 3", "bestOfThree"),
     SATURATION_HEAL("If Players should regen from saturation", "Saturation Heal", "saturationHeal"),
     SHOW_HP("If players should see their enemies health under their name", "Show Health", "showHP"),
+    ALL0W_KIT_EDITOR("If players should be able to modify this kit in kiteditor.", "Allow Kit Editor", "allowKitEditor"),
     SATURATION("If Saturation should be disabled", "Saturation", "saturation");
 
     private final String description;

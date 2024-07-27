@@ -34,7 +34,6 @@ public class GameData {
 
     public GameData(Neptune plugin) {
         this.match = null;
-        this.kitEditor = null;
         this.kitData = new HashMap<>();
         this.matchHistories = new ArrayList<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
