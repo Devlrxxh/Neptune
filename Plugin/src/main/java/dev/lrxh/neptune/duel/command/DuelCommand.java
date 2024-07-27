@@ -53,7 +53,7 @@ public class DuelCommand extends BaseCommand {
         }
 
         Profile userProfile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if (userProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getState().equals(ProfileState.IN_PARTY)) {
+        if (userProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getState().equals(ProfileState.IN_PARTY) || targetProfile.getState().equals(ProfileState.IN_PARTY) && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
             return;
         }
