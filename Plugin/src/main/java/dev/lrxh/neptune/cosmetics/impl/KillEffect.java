@@ -3,14 +3,16 @@ package dev.lrxh.neptune.cosmetics.impl;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.CosmeticsLocale;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.utils.RandomUtils;
 import lombok.Getter;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Firework;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.meta.FireworkMeta;
+
+import java.security.SecureRandom;
+import java.util.Random;
 
 @Getter
 public enum KillEffect {
@@ -20,7 +22,7 @@ public enum KillEffect {
     LIGHTNING(CosmeticsLocale.LIGHTNING_DISPLAY_NAME.getString(), Material.valueOf(CosmeticsLocale.LIGHTNING_MATERIAL.getString()),
             CosmeticsLocale.LIGHTNING_SLOT.getInt()) {
         @Override
-        public void execute(Player player) {
+        public void execute(Player player, Player killer) {
             Location location = player.getLocation();
             double x = location.getX();
             double y = location.getY() + 2.0;
@@ -31,31 +33,36 @@ public enum KillEffect {
     FIREWORKS(CosmeticsLocale.FIREWORKS_DISPLAY_NAME.getString(), Material.valueOf(CosmeticsLocale.FIREWORKS_MATERIAL.getString()),
             CosmeticsLocale.FIREWORKS_SLOT.getInt()) {
         @Override
-        public void execute(Player player) {
-            Location location = player.getLocation();
-
-            Firework firework = location.getWorld().spawn(location, Firework.class);
-            FireworkMeta meta = firework.getFireworkMeta();
-            FireworkEffect.Builder builder = FireworkEffect.builder()
-                    .withColor(Color.RED)
-                    .with(FireworkEffect.Type.BALL_LARGE)
-                    .trail(true)
-                    .flicker(false);
-            meta.addEffect(builder.build());
-            meta.setPower(1);
-            firework.setFireworkMeta(meta);
-            new NeptuneRunnable() {
-                @Override
-                public void run() {
-                    firework.detonate();
-                }
-            }.startLater(5, Neptune.get());
+        public void execute(Player player, Player killer) {
+            playEffect(Particle.FIREWORKS_SPARK, killer, player.getLocation(), 50, 5);
+        }
+    },
+    ANGRY(CosmeticsLocale.ANGRY_DISPLAY_NAME.getString(), Material.valueOf(CosmeticsLocale.ANGRY_MATERIAL.getString()),
+            CosmeticsLocale.ANGRY_SLOT.getInt()) {
+        @Override
+        public void execute(Player player, Player killer) {
+            playEffect(Particle.VILLAGER_ANGRY, killer, player.getLocation(), 25, 5);
+        }
+    },
+    HEARTS(CosmeticsLocale.HEARTS_DISPLAY_NAME.getString(), Material.valueOf(CosmeticsLocale.HEARTS_MATERIAL.getString()),
+            CosmeticsLocale.HEARTS_SLOT.getInt()) {
+        @Override
+        public void execute(Player player, Player killer) {
+            playEffect(Particle.HEART, killer, player.getLocation(), 25, 5);
+        }
+    },
+    LAVA(CosmeticsLocale.LAVA_DISPLAY_NAME.getString(), Material.valueOf(CosmeticsLocale.LAVA_MATERIAL.getString()),
+            CosmeticsLocale.LAVA_SLOT.getInt()) {
+        @Override
+        public void execute(Player player, Player killer) {
+            playEffect(Particle.FLAME, killer, player.getLocation(), 25, 5);
         }
     };
 
     private final String displayName;
     private final Material material;
     private final int slot;
+    private final Neptune plugin = Neptune.get();
 
     KillEffect(String displayName, Material material, int slot) {
         this.displayName = displayName;
@@ -63,7 +70,25 @@ public enum KillEffect {
         this.slot = slot;
     }
 
-    public void execute(Player player) {
+    public void execute(Player player, Player killer) {
+    }
+
+    public void playEffect(Particle particle, Player player, Location location, int amount, int duration) {
+        new NeptuneRunnable() {
+            final int maxTicks = duration * 20;
+            int ticks = 0;
+
+            @Override
+            public void run() {
+                if (ticks >= maxTicks) {
+                    stop(plugin);
+                    return;
+                }
+
+                player.spawnParticle(particle, location, amount, RandomUtils.getRandFloat(0, 0.7f), 1, RandomUtils.getRandFloat(0, 0.7f), 0.05, null);
+                ticks += 10;
+            }
+        }.start(10, plugin);
     }
 
     public String permission() {

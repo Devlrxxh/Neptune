@@ -62,9 +62,10 @@ public class Participant {
         UUID attckerUUID = getLastAttacker().getPlayerUUID();
         if (attckerUUID == null) return;
         Profile profile = plugin.getProfileManager().getByUUID(attckerUUID);
-        Player player = Bukkit.getPlayer(attckerUUID);
-        if (profile == null || player == null) return;
-        profile.getSettingData().getKillEffect().execute(player);
+        Player player = Bukkit.getPlayer(playerUUID);
+        Player killer = Bukkit.getPlayer(attckerUUID);
+        if (profile == null || player == null || killer == null) return;
+        profile.getSettingData().getKillEffect().execute(player, killer);
     }
 
     public void sendTitle(String header, String footer, int duration) {
