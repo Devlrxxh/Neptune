@@ -1,15 +1,12 @@
 package dev.lrxh.neptune.duel.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -37,20 +34,8 @@ public class RoundSelectButton extends Button {
     public void onClick(Player player, ClickType clickType) {
         Profile profile = plugin.getProfileManager().getByUUID(receiver);
         if (profile == null) return;
-        Player receiverPlayer = Bukkit.getPlayer(receiver);
-        if (receiverPlayer == null) {
-            player.closeInventory();
-            return;
-        }
-
         DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, round, plugin);
-        MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
-                new Replacement("<receiver>", receiverPlayer.getName()),
-                new Replacement("<kit>", kit.getDisplayName()),
-                new Replacement("<rounds>", String.valueOf(round)),
-                new Replacement("<arena>", duelRequest.getArena().getDisplayName()));
-
+        profile.sendDuel(duelRequest);
         player.closeInventory();
-        profile.sendDuel(duelRequest, player.getUniqueId());
     }
 }

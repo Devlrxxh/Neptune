@@ -132,12 +132,21 @@ public class Profile {
         plugin.getDatabaseManager().getDatabase().replace(playerUUID, dataDocument);
     }
 
-    public void sendDuel(DuelRequest duelRequest, UUID senderUUID) {
-        Player sender = Bukkit.getPlayer(duelRequest.getSender());
+    public void sendDuel(DuelRequest duelRequest) {
+        UUID senderUUID = duelRequest.getSender();
+
+        Player sender = Bukkit.getPlayer(senderUUID);
         if (sender == null) return;
 
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
+
+
+        MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
+                new Replacement("<receiver>", username),
+                new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
+                new Replacement("<rounds>", String.valueOf(1)),
+                new Replacement("<arena>", duelRequest.getArena().getDisplayName()));
 
         gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.DUEL_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));
 

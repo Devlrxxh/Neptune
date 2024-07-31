@@ -5,14 +5,10 @@ import dev.lrxh.neptune.configs.impl.CosmeticsLocale;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.RandomUtils;
 import lombok.Getter;
-import org.bukkit.*;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Firework;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.meta.FireworkMeta;
-
-import java.security.SecureRandom;
-import java.util.Random;
 
 @Getter
 public enum KillEffect {

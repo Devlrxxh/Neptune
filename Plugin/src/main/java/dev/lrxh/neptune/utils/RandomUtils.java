@@ -8,11 +8,11 @@ import java.security.SecureRandom;
 public class RandomUtils {
     private final SecureRandom rand = new SecureRandom();
 
-    public float getRandFloat(float min, float max){
+    public float getRandFloat(float min, float max) {
         return min + rand.nextFloat() * (max - min);
     }
 
-    public int getNextInt(int max){
+    public int getNextInt(int max) {
         return rand.nextInt(max);
     }
 }

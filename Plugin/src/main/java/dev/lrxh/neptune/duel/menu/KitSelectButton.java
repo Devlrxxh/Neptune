@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.duel.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
@@ -27,7 +29,14 @@ public class KitSelectButton extends Button {
 
     @Override
     public void onClick(Player player, ClickType clickType) {
-
-        new RoundsSelectMenu(kit, receiver, party).openMenu(player.getUniqueId());
+        if (party) {
+            Profile profile = plugin.getProfileManager().getByUUID(receiver);
+            if (profile == null) return;
+            DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, 1, plugin);
+            profile.sendDuel(duelRequest);
+            player.closeInventory();
+        } else {
+            new RoundsSelectMenu(kit, receiver, false).openMenu(player.getUniqueId());
+        }
     }
 }
