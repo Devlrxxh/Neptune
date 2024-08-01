@@ -12,7 +12,7 @@ public class RandomUtils {
         return min + rand.nextFloat() * (max - min);
     }
 
-    public int getNextInt(int max) {
+    public int getRandInt(int max) {
         return rand.nextInt(max);
     }
 }

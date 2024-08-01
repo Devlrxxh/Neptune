@@ -18,7 +18,7 @@ public class KillMessagePackage {
     private List<String> messages;
 
     public String getRandomMessage() {
-        return messages.get(RandomUtils.getNextInt(messages.size()));
+        return messages.get(RandomUtils.getRandInt(messages.size()));
     }
 
     public String permission() {

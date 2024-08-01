@@ -84,8 +84,8 @@ public class Party {
     public void remove(UUID playerUUID) {
         Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
         users.remove(playerUUID);
-        profile.getGameData().setParty(null);
         profile.setState(ProfileState.IN_LOBBY);
+        profile.getGameData().setParty(null);
     }
 
     public void disband() {
