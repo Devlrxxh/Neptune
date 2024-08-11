@@ -61,8 +61,8 @@ public class Visibility {
     }
 
     public boolean has(UUID playerUUID, UUID otherUUID, ProfileState... states) {
-        Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(playerUUID);
-        Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
+        Profile viewerProfile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile otherProfile = plugin.getProfileManager().getByUUID(otherUUID);
 
         Set<ProfileState> stateSet = new HashSet<>(Arrays.asList(states));
         return stateSet.contains(viewerProfile.getState()) && stateSet.contains(otherProfile.getState());
