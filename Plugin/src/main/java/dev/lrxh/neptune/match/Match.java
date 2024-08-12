@@ -201,7 +201,7 @@ public abstract class Match {
     public void broadcast(String message) {
         forEachParticipant(participant -> participant.sendMessage(message));
 
-        forEachSpectator(player -> player.sendMessage(message));
+        forEachSpectator(player -> player.sendMessage(CC.translate(message)));
     }
 
     public void checkRules() {
