@@ -201,7 +201,8 @@ public abstract class Match {
     public void broadcast(String message) {
         forEachParticipant(participant -> participant.sendMessage(message));
 
-        forEachSpectator(player -> player.sendMessage(CC.translate(message)));
+        //forEachSpectator(player -> player.sendMessage(CC.translate(message))); CC.translate(message) doesn't exist :p
+        forEachSpectator(player -> player.sendMessage(CC.color(message)));
     }
 
     public void checkRules() {
