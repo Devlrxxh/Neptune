@@ -191,6 +191,7 @@ public class MatchListener implements Listener {
             boolean allowDamage = match != null &&
                     ((match.getKit().is(KitRule.FALL_DAMAGE) &&
                             event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) ||
+                            match.getKit().is(KitRule.DAMAGE) ||
                             match.getState().equals(MatchState.IN_ROUND));
 
             if (!inGame || !allowDamage) {
