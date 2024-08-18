@@ -187,7 +187,7 @@ public class MatchListener implements Listener {
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
 
-            boolean inGame = !profile.getState().equals(ProfileState.IN_GAME);
+            boolean inGame = profile.getState().equals(ProfileState.IN_GAME);
             boolean allowDamage = match != null &&
                     ((match.getKit().is(KitRule.FALL_DAMAGE) &&
                             event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) ||
