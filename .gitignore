@@ -32,3 +32,4 @@ build/
 /bin1/
 java/build/**
 /.idea
+.idea/vcs.xml

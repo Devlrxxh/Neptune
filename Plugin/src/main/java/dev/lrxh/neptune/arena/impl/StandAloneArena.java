@@ -1,5 +1,11 @@
 package dev.lrxh.neptune.arena.impl;
 
+import com.sk89q.worldedit.bukkit.BukkitWorld;
+import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
+import com.sk89q.worldedit.function.operation.ForwardExtentCopy;
+import com.sk89q.worldedit.function.operation.Operations;
+import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
@@ -86,7 +92,10 @@ public class StandAloneArena extends Arena {
     public void createCopy() {
         int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 
-        plugin.getGenerationManager().pasteRegion(plugin.getGenerationManager().copyRegion(min, max), min, max, offset);
+        // so now this works like .pasteRegion(clipboard, pasteLocation, offset)
+        // the origin is always set to the minimum point of this arena in getPasteClipboard
+        // arenas should always be in the same orientation i think
+        plugin.getGenerationManager().pasteRegion(getPasteClipboard(), min, offset);
 
         StandAloneArena copy = getArenaCopy(this, LocationUtil.addOffsetToLocation(min, offset), LocationUtil.addOffsetToLocation(max, offset));
 
@@ -128,6 +137,22 @@ public class StandAloneArena extends Arena {
                 true,
                 plugin
         );
+    }
+
+    public BlockArrayClipboard getPasteClipboard() {
+        BlockVector3 maxV = BlockVector3.at(max.getX(), max.getY(), max.getZ());
+        BlockVector3 minV = BlockVector3.at(min.getX(), min.getY(), min.getZ());
+
+        CuboidRegion region = new CuboidRegion(minV, maxV);
+        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
+        // set origin to always be min point
+        clipboard.setOrigin(BlockVector3.at(min.getX(), min.getY(), min.getZ()));
+        ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
+                new BukkitWorld(min.getWorld()), region, clipboard, region.getMinimumPoint()
+        );
+        Operations.complete(forwardExtentCopy);
+
+        return clipboard;
     }
 
     public void addCopiesToKits() {
