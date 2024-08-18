@@ -18,21 +18,8 @@ import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.Location;
 
 public class GenerationManager {
-    public BlockArrayClipboard copyRegion(Location min, Location max) {
-        BlockVector3 maxV = BlockVector3.at(max.getX(), max.getY(), max.getZ());
-        BlockVector3 minV = BlockVector3.at(min.getX(), min.getY(), min.getZ());
 
-        CuboidRegion region = new CuboidRegion(minV, maxV);
-        BlockArrayClipboard clipboard = new BlockArrayClipboard(region);
-        ForwardExtentCopy forwardExtentCopy = new ForwardExtentCopy(
-                new BukkitWorld(min.getWorld()), region, clipboard, region.getMinimumPoint()
-        );
-        Operations.complete(forwardExtentCopy);
-
-        return clipboard;
-    }
-
-    public void pasteRegion(BlockArrayClipboard clipboard, Location loc1, Location loc2, int offset) {
+    public void pasteRegion(BlockArrayClipboard clipboard, Location loc1, int offset) {
         try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
                 .world(new BukkitWorld(loc1.getWorld()))
                 .fastMode(true)
@@ -41,33 +28,7 @@ public class GenerationManager {
                 .build()) {
 
             Location min = LocationUtil.addOffsetToLocation(loc1, offset);
-            Location max = LocationUtil.addOffsetToLocation(loc2, offset);
-
-            BlockVector3 blockVector3 = null;
-            switch (Direction.getDirection(loc1)) {
-                case SOUTH:
-                case WEST:
-                    switch (RelativePosition.getRelativePosition(loc1, loc2)) {
-                        case RIGHT:
-                            blockVector3 = BlockVector3.at(max.getX(), min.getY(), min.getZ());
-                            break;
-                        case LEFT:
-                            blockVector3 = BlockVector3.at(min.getX(), min.getY(), min.getZ());
-                            break;
-                    }
-                    break;
-                case NORTH:
-                case EAST:
-                    switch (RelativePosition.getRelativePosition(loc1, loc2)) {
-                        case RIGHT:
-                            blockVector3 = BlockVector3.at(max.getX(), min.getY(), max.getZ());
-                            break;
-                        case LEFT:
-                            blockVector3 = BlockVector3.at(min.getX(), min.getY(), max.getZ());
-                            break;
-                    }
-                    break;
-            }
+            BlockVector3 blockVector3 = BlockVector3.at(min.getX(), min.getY(), min.getZ());
 
             Operation operation = new ClipboardHolder(clipboard)
                     .createPaste(editSession)
