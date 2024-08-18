@@ -207,8 +207,7 @@ public class MatchListener implements Listener {
             if (profile == null) return;
             Match match = profile.getMatch();
 
-            if (!profile.getState().equals(ProfileState.IN_GAME) ||
-                    (match != null && !match.getKit().is(KitRule.FALL_DAMAGE) && !match.getKit().is(KitRule.HUNGER))) {
+            if (!profile.getState().equals(ProfileState.IN_GAME) && (match != null && !match.getKit().is(KitRule.HUNGER))) {
                 event.setCancelled(true);
             }
         }
