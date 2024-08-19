@@ -299,7 +299,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
     Projectile projectile = event.getEntity();
-    Entity shooter = projectile.getShooter(); 
+    ProjectileSource shooter = projectile.getShooter(); 
 
     if (shooter instanceof Player) {
         Player player = (Player) shooter; 
@@ -312,7 +312,7 @@ public class MatchListener implements Listener {
             plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
                 @Override
                 public void run() {
-                    profile.getMatch().getEntities().add(projectile.getEntityId());
+                    profile.getMatch().getEntities().add(projectile);
                 }
             }, 20);
         }
