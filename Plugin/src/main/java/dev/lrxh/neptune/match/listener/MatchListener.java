@@ -296,6 +296,28 @@ public class MatchListener implements Listener {
         }
     }
 
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event) {
+    Projectile projectile = event.getEntity();
+    Entity shooter = projectile.getShooter(); 
+
+    if (shooter instanceof Player) {
+        Player player = (Player) shooter; 
+        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if (profile == null) return;
+        if (!profile.getState().equals(ProfileState.IN_GAME)) {
+            event.setCancelled(true);
+        } else {
+            plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
+                @Override
+                public void run() {
+                    profile.getMatch().getEntities().add(projectile.getEntityId());
+                }
+            }, 20);
+        }
+    }
+}
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
