@@ -76,7 +76,7 @@ public interface IDataAccessor {
         setHeader();
         for (IDataAccessor accessor : this.getClass().getEnumConstants()) {
             ConfigFile configFile = accessor.getConfigFile();
-            if(configFile == null) return;
+            if (configFile == null) return;
             if (accessor.getConfigFile().getConfiguration().get(accessor.getPath()) == null) {
                 setValue(accessor.getPath(), accessor.getDefaultValue(), accessor.getDataType());
                 comment(accessor.getPath(), accessor.getComment());

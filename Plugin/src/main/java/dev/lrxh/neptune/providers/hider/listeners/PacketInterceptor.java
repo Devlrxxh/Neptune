@@ -6,7 +6,6 @@ import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntitySoundEffect;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoRemove;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
@@ -80,10 +79,10 @@ public class PacketInterceptor extends PacketListenerAbstract {
                 event.setCancelled(true);
             }
 
-        /*
-        * PLAYER_INFO_REMOVE removes player from tablist, but its fired by both hidePlayer() & on Player quit.
-        * We need to cancel the packet only if its fired by hidePlayer() ie only if the player is online.
-        * */
+            /*
+             * PLAYER_INFO_REMOVE removes player from tablist, but its fired by both hidePlayer() & on Player quit.
+             * We need to cancel the packet only if its fired by hidePlayer() ie only if the player is online.
+             * */
         } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
             WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
             Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));

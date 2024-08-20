@@ -32,6 +32,7 @@ public class GameData {
     private Kit kitEditor;
     private Party party;
     private String lastKit = "";
+    private GlobalStats globalStats;
 
     public GameData(Neptune plugin) {
         this.kitData = new HashMap<>();
@@ -42,6 +43,7 @@ public class GameData {
         for (Kit kit : plugin.getKitManager().kits) {
             kitData.put(kit, new KitData(plugin));
         }
+        this.globalStats = new GlobalStats();
     }
 
     public void run(Kit kit, boolean won) {
@@ -52,7 +54,6 @@ public class GameData {
             addLoss(kit);
             kitData.get(kit).setCurrentStreak(0);
         }
-
     }
 
     private void addWin(Kit kit) {

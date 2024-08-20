@@ -37,7 +37,7 @@ public class MatchTeam {
     public String getTeamNames() {
         StringBuilder playerNames = new StringBuilder();
         for (Participant participant : participants) {
-            if (playerNames.length() > 0) {
+            if (!playerNames.isEmpty()) {
                 playerNames.append(MessagesLocale.MATCH_COMMA.getString());
             }
             playerNames.append(participant.getNameUnColored());

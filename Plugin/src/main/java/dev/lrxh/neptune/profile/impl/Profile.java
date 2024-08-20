@@ -46,6 +46,7 @@ public class Profile {
         load();
     }
 
+
     public void handleVisibility() {
         visibility.handle(playerUUID);
     }
@@ -75,9 +76,13 @@ public class Profile {
             if (kitDocument == null) return;
             KitData profileKitData = gameData.getKitData().get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
+            gameData.getGlobalStats().addCurrentStreak(profileKitData.getCurrentStreak());
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
+            gameData.getGlobalStats().addWins(profileKitData.getWins());
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
+            gameData.getGlobalStats().addLosses(profileKitData.getLosses());
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
+            gameData.getGlobalStats().addBestStreak(profileKitData.getBestStreak());
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
             profileKitData.updateDivision();
         }
@@ -89,7 +94,7 @@ public class Profile {
         settingData.setMaxPing(settings.getInteger("maxPing", 350));
         settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
         settingData.setMenuSound(settings.getBoolean("menuSound", false));
-        settingData.setKillMessagePackage(plugin.getCosmeticManager().getDeathMessagePackage(settings.getString("deathMessagePackage", "DEFAULT")));
+        settingData.setKillMessagePackage(plugin.getCosmeticManager().getDeathMessagePackage(settings.getString("deathMessagePackage")));
         gameData.setLastKit(settings.getString("lastKit", ""));
     }
 

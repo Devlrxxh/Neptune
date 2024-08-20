@@ -83,6 +83,8 @@ public enum ItemAction {
             MessagesLocale.PARTY_INFO.send(player.getUniqueId(),
                     new Replacement("<leader>", party.getLeaderName()),
                     new Replacement("<privacy>", party.isOpen() ? "Open" : "Closed"),
+                    new Replacement("<max>", String.valueOf(party.getMaxUsers())),
+                    new Replacement("<members>", party.getUserNames()),
                     new Replacement("<size>", String.valueOf(party.getUsers().size())));
         }
     },

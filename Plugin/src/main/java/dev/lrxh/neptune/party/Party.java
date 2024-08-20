@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.function.Consumer;
 
 @Getter
 @Setter
@@ -90,16 +91,42 @@ public class Party {
 
     public void disband() {
         broadcast(MessagesLocale.PARTY_DISBANDED);
-        for (UUID user : users) {
-            Profile profile = plugin.getProfileManager().getByUUID(user);
+
+        forEachMemberAsUUID(uuid -> {
+            Profile profile = plugin.getProfileManager().getByUUID(uuid);
             profile.getGameData().setParty(null);
             profile.setState(ProfileState.IN_LOBBY);
-        }
+        });
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
+        forEachMemberAsUUID(uuid -> messagesLocale.send(uuid, replacements));
+    }
+
+    public String getUserNames() {
+        StringBuilder playerNames = new StringBuilder();
+        forEachMemberAsPlayer(player -> {
+            if (!playerNames.isEmpty()) {
+                playerNames.append(MessagesLocale.MATCH_COMMA.getString());
+            }
+
+            playerNames.append(player.getName());
+        });
+        return playerNames.toString();
+    }
+
+    public void forEachMemberAsPlayer(Consumer<Player> action) {
         for (UUID user : users) {
-            messagesLocale.send(user, replacements);
+            Player player = Bukkit.getPlayer(user);
+            if (player != null) {
+                action.accept(player);
+            }
+        }
+    }
+
+    public void forEachMemberAsUUID(Consumer<UUID> action) {
+        for (UUID user : users) {
+            action.accept(user);
         }
     }
 }
