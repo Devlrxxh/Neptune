@@ -2,6 +2,7 @@ package dev.lrxh.neptune.hotbar.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 public class Item {
-    private String name;
+    private ItemAction action;
     private String displayName;
     private String material;
     private boolean enabled;
@@ -52,6 +53,19 @@ public class Item {
     public ItemStack constructItem(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ItemStack(Material.BARRIER);
+
+        return new ItemBuilder(material, playerUUID).name(displayName).clearFlags().makeUnbreakable().build();
+    }
+
+    public ItemStack constructItem(UUID playerUUID, Replacement... replacements) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return new ItemStack(Material.BARRIER);
+
+        for (Replacement replacement : replacements) {
+            if (replacement.getReplacement() instanceof String string) {
+                displayName = displayName.replace(replacement.getPlaceholder(), string);
+            }
+        }
 
         return new ItemBuilder(material, playerUUID).name(displayName).clearFlags().makeUnbreakable().build();
     }

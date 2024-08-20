@@ -3,6 +3,7 @@ package dev.lrxh.neptune.hotbar.impl;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.divisions.menu.DivisionsMenu;
+import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.kit.menu.stats.StatsMenu;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
@@ -14,6 +15,7 @@ import dev.lrxh.neptune.party.menu.buttons.events.PartyEventsMenu;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import org.bukkit.entity.Player;
@@ -124,6 +126,16 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             new DivisionsMenu().openMenu(player.getUniqueId());
+        }
+    },
+    PLAY_AGAIN() {
+        @Override
+        public void execute(Player player) {
+            final Neptune plugin = Neptune.get();
+            Kit kit = plugin.getKitManager().getKitByName(plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getLastKit());
+            if (kit != null) {
+                plugin.getQueueManager().add(player.getUniqueId(), new Queue(kit));
+            }
         }
     },
     SETTINGS() {

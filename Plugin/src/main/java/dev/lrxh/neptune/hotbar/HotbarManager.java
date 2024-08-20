@@ -3,7 +3,10 @@ package dev.lrxh.neptune.hotbar;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.impl.Hotbar;
 import dev.lrxh.neptune.hotbar.impl.Item;
+import dev.lrxh.neptune.hotbar.impl.ItemAction;
+import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
@@ -50,6 +53,13 @@ public class HotbarManager implements IManager {
                 Item item = getItemForSlot(inventory, slot);
 
                 if (item != null && item.isEnabled()) {
+                    if (item.getAction().equals(ItemAction.PLAY_AGAIN)) {
+                        Kit kit = plugin.getKitManager().getKitByName(plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getLastKit());
+                        if (kit != null) {
+                            player.getInventory().setItem(item.getSlot(), item.constructItem(playerUUID, new Replacement("<kit>", kit.getDisplayName())));
+                        }
+                        return;
+                    }
                     player.getInventory().setItem(item.getSlot(), item.constructItem(playerUUID));
                 }
             }
@@ -74,10 +84,12 @@ public class HotbarManager implements IManager {
                     boolean enabled = config.getBoolean(path + "ENABLED");
                     byte slot = (byte) config.getInt(path + "SLOT");
 
-                    Item item = new Item(itemName, displayName, material, enabled, slot);
-
-                    if (slot >= 0 && slot < inventory.getSlots().length) {
-                        inventory.setSlot(slot, item);
+                    try {
+                        Item item = new Item(ItemAction.valueOf(itemName), displayName, material, enabled, slot);
+                        if (slot >= 0 && slot < inventory.getSlots().length) {
+                            inventory.setSlot(slot, item);
+                        }
+                    } catch (IllegalArgumentException ignored) {
                     }
 
                     getItems().put(ProfileState.valueOf(section), inventory);

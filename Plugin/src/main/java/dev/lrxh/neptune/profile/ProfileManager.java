@@ -16,12 +16,6 @@ public class ProfileManager {
         this.plugin = Neptune.get();
     }
 
-    public Profile createProfile(Player player) {
-        Profile profile = new Profile(player, plugin);
-        profiles.put(player.getUniqueId(), profile);
-        return profile;
-    }
-
     public Profile createProfile(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return null;
