@@ -10,6 +10,8 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.request.Request;
 import dev.lrxh.neptune.utils.CC;
 import lombok.Getter;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,11 +44,16 @@ public class DuelRequest extends Request {
     }
 
     public void normalDuel(UUID receiver) {
+        Player sender = Bukkit.getPlayer(getSender());
+        Player reciverPlayer = Bukkit.getPlayer(receiver);
+
+        if (reciverPlayer == null || sender == null) return;
+
         Participant participant1 =
-                new Participant(getSender(), plugin);
+                new Participant(sender, plugin);
 
         Participant participant2 =
-                new Participant(receiver, plugin);
+                new Participant(reciverPlayer, plugin);
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 
@@ -64,7 +71,10 @@ public class DuelRequest extends Request {
         List<Participant> teamAList = new ArrayList<>();
 
         for (UUID userUUID : receiverProfile.getGameData().getParty().getUsers()) {
-            Participant participant = new Participant(userUUID, plugin);
+            Player player = Bukkit.getPlayer(userUUID);
+            if (player == null) continue;
+
+            Participant participant = new Participant(player, plugin);
             teamAList.add(participant);
             participants.add(participant);
         }
@@ -72,7 +82,10 @@ public class DuelRequest extends Request {
         List<Participant> teamBList = new ArrayList<>();
 
         for (UUID userUUID : senderProfile.getGameData().getParty().getUsers()) {
-            Participant participant = new Participant(userUUID, plugin);
+            Player player = Bukkit.getPlayer(userUUID);
+            if (player == null) continue;
+
+            Participant participant = new Participant(player, plugin);
             teamBList.add(participant);
             participants.add(participant);
         }

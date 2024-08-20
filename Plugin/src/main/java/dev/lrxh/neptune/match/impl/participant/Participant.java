@@ -13,7 +13,6 @@ import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -33,9 +32,9 @@ public class Participant {
     private int roundsWon = 0;
     private Neptune plugin;
 
-    public Participant(UUID playerUUID, Neptune plugin) {
-        this.playerUUID = playerUUID;
-        this.name = Objects.requireNonNull(Bukkit.getPlayer(playerUUID)).getName();
+    public Participant(Player player, Neptune plugin) {
+        this.playerUUID = player.getUniqueId();
+        this.name = player.getName();
         this.plugin = plugin;
     }
 

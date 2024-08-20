@@ -8,6 +8,7 @@ import dev.lrxh.neptune.party.impl.EventType;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import lombok.AllArgsConstructor;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -35,7 +36,10 @@ public class PartyTeamKitButton extends Button {
     public void onClick(Player player, ClickType clickType) {
         List<Participant> participants = new ArrayList<>();
         for (UUID uuid : party.getUsers()) {
-            participants.add(new Participant(uuid, plugin));
+            Player user = Bukkit.getPlayer(uuid);
+            if (user == null) continue;
+
+            participants.add(new Participant(user, plugin));
         }
         eventType.start(participants, kit);
     }

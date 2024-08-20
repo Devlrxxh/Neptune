@@ -117,6 +117,10 @@ public class Profile {
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
             entry.updateDivision();
+            kitStatisticsDocument.put("WINS_GLOBAL", gameData.getGlobalStats().getWins());
+            kitStatisticsDocument.put("LOSSES_GLOBAL", gameData.getGlobalStats().getLosses());
+            kitStatisticsDocument.put("WIN_STREAK_BEST_GLOBAL", gameData.getGlobalStats().getBestStreak());
+            kitStatisticsDocument.put("WIN_STREAK_CURRENT_GLOBAL", gameData.getGlobalStats().getCurrentStreak());
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
         }

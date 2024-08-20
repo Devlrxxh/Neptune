@@ -13,6 +13,8 @@ import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.List;
@@ -50,12 +52,17 @@ public class QueueCheckTask extends NeptuneRunnable {
                     continue;
                 }
 
+                Player player1 = Bukkit.getPlayer(uuid1);
+                Player player2 = Bukkit.getPlayer(uuid2);
+
+                if (player1 == null || player2 == null) continue;
+
                 //Create participants
                 Participant participant1 =
-                        new Participant(uuid1, plugin);
+                        new Participant(player1, plugin);
 
                 Participant participant2 =
-                        new Participant(uuid2, plugin);
+                        new Participant(player2, plugin);
 
                 List<Participant> participants = Arrays.asList(participant1, participant2);
 
@@ -84,8 +91,8 @@ public class QueueCheckTask extends NeptuneRunnable {
                 }
 
                 //Set arena as being used
-                if (arena instanceof StandAloneArena) {
-                    ((StandAloneArena) arena).setUsed(true);
+                if (arena instanceof StandAloneArena standAloneArena) {
+                    standAloneArena.setUsed(true);
                 }
 
                 //Send match found message
