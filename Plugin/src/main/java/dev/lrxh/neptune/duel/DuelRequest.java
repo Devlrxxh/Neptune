@@ -101,8 +101,8 @@ public class DuelRequest extends Request {
             return;
         }
 
-        if (arena instanceof StandAloneArena) {
-            ((StandAloneArena) arena).setUsed(true);
+        if (arena instanceof StandAloneArena standAloneArena) {
+            standAloneArena.setUsed(true);
         }
 
         plugin.getMatchManager().startMatch(teamA, teamB, kit, arena);

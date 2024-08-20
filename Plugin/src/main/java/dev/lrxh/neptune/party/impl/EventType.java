@@ -31,8 +31,8 @@ public enum EventType {
                 return;
             }
 
-            if (arena instanceof StandAloneArena) {
-                ((StandAloneArena) arena).setUsed(true);
+            if (arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.setUsed(true);
             }
 
             plugin.getMatchManager().startMatch(participants, kit, arena);
@@ -63,8 +63,8 @@ public enum EventType {
                 return;
             }
 
-            if (arena instanceof StandAloneArena) {
-                ((StandAloneArena) arena).setUsed(true);
+            if (arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.setUsed(true);
             }
 
             plugin.getMatchManager().startMatch(teamA, teamB, kit, arena);

@@ -6,10 +6,15 @@ import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.MatchState;
+import dev.lrxh.neptune.match.impl.participant.Participant;
+import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.sounds.Sound;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
+import java.util.UUID;
 
 public class MatchStartRunnable extends NeptuneRunnable {
 
@@ -28,6 +33,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
         if (startTimer == 0) {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.startMatch();
+            checkFollowings();
             stop(plugin);
 
             return;
@@ -41,5 +47,22 @@ public class MatchStartRunnable extends NeptuneRunnable {
         }
         startTimer--;
 
+    }
+
+    private void checkFollowings(){
+        for(Participant participant : match.getParticipants()) {
+            SettingData settingData = plugin.getProfileManager().getByUUID(participant.getPlayerUUID()).getSettingData();
+            if(settingData.getFollowed().isEmpty()) continue;
+
+            for(UUID uuid : settingData.getFollowed()) {
+                Player follower = Bukkit.getPlayer(uuid);
+                if(follower == null) continue;
+
+                Player particpiantPlayer = participant.getPlayer();
+                if(particpiantPlayer == null) continue;
+
+                match.addSpectator(follower, particpiantPlayer, false);
+            }
+        }
     }
 }

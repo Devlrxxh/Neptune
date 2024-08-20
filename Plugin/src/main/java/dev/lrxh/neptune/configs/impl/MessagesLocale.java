@@ -131,7 +131,10 @@ public enum MessagesLocale implements IDataAccessor {
             "&b/party join <player>",
             " "),
     PARTY_EXPIRED("PARTY.EXPIRED", DataType.STRING_LIST, "&cYour party request to &c<player> &chas expired."),
-    SPECTATE_MENU_NO_MATCH("SPECTATE.MENU.NO_MATCH_ONGOING", DataType.STRING_LIST, "&cThere are no ongoing matches!");
+    SPECTATE_MENU_NO_MATCH("SPECTATE.MENU.NO_MATCH_ONGOING", DataType.STRING_LIST, "&cThere are no ongoing matches!"),
+    START_FOLLOW("FOLLOW.STARTED", DataType.STRING_LIST, "&bStarted following &f<player>"),
+    STOP_FOLLOWING("FOLLOW.STOPPED", DataType.STRING_LIST, "&cStopped following <player>"),
+    NOT_ONLINE("NOT_ONLINE", DataType.STRING_LIST, "&c<player> isn't online!");
 
     private final String path;
     private final String comment;

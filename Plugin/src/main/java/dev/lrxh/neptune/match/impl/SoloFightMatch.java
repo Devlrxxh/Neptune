@@ -109,7 +109,7 @@ public class SoloFightMatch extends Match {
         sendDeathMessage(participant);
 
         if (rounds > 1 && !participant.isDisconnected()) {
-            Participant participantKiller = participantA.getName().equals(participant.getName()) ? participantB : participantA;
+            Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
             participantKiller.addWin();
             if (participantKiller.getRoundsWon() < rounds) {
                 participantKiller.setCombo(0);

@@ -57,20 +57,20 @@ public class ArenaManagmentButton extends Button {
         switch (clickType) {
             case SHIFT_RIGHT:
                 arena.setEnabled(!arena.isEnabled());
-                if (arena instanceof StandAloneArena) {
-                    ((StandAloneArena) arena).forEachCopy(copy -> copy.setEnabled(arena.isEnabled()));
+                if (arena instanceof StandAloneArena standAloneArena) {
+                    standAloneArena.forEachCopy(copy -> copy.setEnabled(arena.isEnabled()));
                 }
                 menu.update();
                 break;
             case LEFT:
-                if (arena instanceof StandAloneArena) {
-                    new ArenaCopyMenu((StandAloneArena) arena).openMenu(player.getUniqueId());
+                if (arena instanceof StandAloneArena standAloneArena) {
+                    new ArenaCopyMenu(standAloneArena).openMenu(player.getUniqueId());
                 }
                 break;
             case SHIFT_LEFT:
                 if (arena instanceof StandAloneArena standAloneArena) {
                     player.sendMessage(CC.color("&cDeleting all arenas copies..."));
-                    if (!((StandAloneArena) arena).getCopies().isEmpty()) {
+                    if (!(standAloneArena.getCopies().isEmpty())) {
                         HashSet<StandAloneArena> copies = new HashSet<>(standAloneArena.getCopies());
                         for (StandAloneArena copy : copies) {
                             plugin.getArenaManager().getOriginalArena(copy).removeCopy(copy);

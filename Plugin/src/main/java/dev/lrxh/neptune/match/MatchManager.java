@@ -121,10 +121,11 @@ public class MatchManager {
                 ((StandAloneArena) match.arena).restoreSnapshot();
             }
             for (Participant participant : match.getParticipants()) {
-                Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+                Player player = participant.getPlayer();
                 if (player == null) continue;
                 PlayerUtil.kick(player.getUniqueId(), "&cServer is restarting...");
             }
         }
     }
+
 }

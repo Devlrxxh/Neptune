@@ -58,7 +58,7 @@ public class ArenaManager implements IManager {
         }
 
         for (Arena arena : arenas) {
-            if (arena instanceof StandAloneArena) {
+            if (arena instanceof StandAloneArena standAloneArena) {
                 String path = "arenas." + arena.getName() + ".";
                 LinkedHashSet<StandAloneArena> copies = new LinkedHashSet<>();
                 if (!config.getStringList(path + "copies").isEmpty()) {
@@ -66,15 +66,15 @@ public class ArenaManager implements IManager {
                         copies.add((StandAloneArena) getArenaByName(copyName));
                     }
                 }
-                ((StandAloneArena) arena).setCopies(copies);
+                standAloneArena.setCopies(copies);
             }
         }
     }
 
     public List<Arena> getArenasWithoutDupes() {
         return arenas.stream()
-                .filter(arena -> !(arena instanceof StandAloneArena) ||
-                        !((StandAloneArena) arena).isDuplicate())
+                .filter(arena -> !(arena instanceof StandAloneArena standAloneArena) ||
+                        !standAloneArena.isDuplicate())
                 .collect(Collectors.toList());
     }
 

@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.impl.participant;
 
+import com.mongodb.lang.Nullable;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
@@ -38,7 +39,7 @@ public class Participant {
         this.plugin = plugin;
     }
 
-    public String getName() {
+    public String getNameColored() {
         return color.getColor() + name;
     }
 
@@ -147,13 +148,18 @@ public class Participant {
         }
 
         return attackerProfile.getSettingData().getKillMessagePackage().getRandomMessage()
-                .replace("<player>", getName())
+                .replace("<player>", getNameColored())
                 .replace("<killer>", getLastAttackerName());
     }
 
     public String getLastAttackerName() {
         return Optional.ofNullable(getLastAttacker())
-                .map(Participant::getName)
+                .map(Participant::getNameColored)
                 .orElse("");
+    }
+
+    @Nullable
+    public Player getPlayer(){
+        return Bukkit.getPlayer(playerUUID);
     }
 }

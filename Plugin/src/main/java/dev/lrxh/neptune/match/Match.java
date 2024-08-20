@@ -77,14 +77,12 @@ public abstract class Match {
         forEachParticipant(participant -> message.send(participant.getPlayerUUID(), replacements));
     }
 
-    public void addSpectator(UUID playerUUID, boolean sendMessage) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+    public void addSpectator(Player player, Player target, boolean sendMessage) {
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
 
         profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
-        spectators.add(playerUUID);
+        spectators.add(player.getUniqueId());
 
         forEachPlayer(participiantPlayer -> player.showPlayer(plugin, participiantPlayer));
 
@@ -92,6 +90,7 @@ public abstract class Match {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
         }
 
+        player.teleport(target);
         player.setGameMode(GameMode.SPECTATOR);
     }
 
@@ -101,7 +100,7 @@ public abstract class Match {
 
     public void forEachPlayer(Consumer<Player> action) {
         for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            Player player = participant.getPlayer();
             if (player != null) {
                 action.accept(player);
             }
@@ -119,7 +118,7 @@ public abstract class Match {
 
     public void forEachParticipant(Consumer<Participant> action) {
         for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            Player player = participant.getPlayer();
             if (player != null) {
                 action.accept(participant);
             }
@@ -223,7 +222,7 @@ public abstract class Match {
             }
 
             if (!kit.is(KitRule.SATURATION)) {
-                Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+                Player player = participant.getPlayer();
                 if (player == null) return;
                 player.setSaturation(0.0F);
             }
@@ -246,7 +245,7 @@ public abstract class Match {
         forEachParticipant(participant -> {
             if (playerUUID.equals(participant.getPlayerUUID())) return;
 
-            Player viewer = Bukkit.getPlayer(participant.getPlayerUUID());
+            Player viewer = participant.getPlayer();
             if (viewer == null) return;
 
             Objective objective = viewer.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
@@ -280,7 +279,7 @@ public abstract class Match {
         if (deathMessage.isEmpty() && deathCause != null && !deathCause.equals(DeathCause.DIED)) {
             broadcast(
                     deadParticipant.getDeathCause().getMessagesLocale(),
-                    new Replacement("<player>", deadParticipant.getName()),
+                    new Replacement("<player>", deadParticipant.getNameColored()),
                     new Replacement("<killer>", deadParticipant.getLastAttackerName())
             );
         } else {
@@ -290,7 +289,7 @@ public abstract class Match {
 
     public void teleportToPositions() {
         for (Participant participant : participants) {
-            Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+            Player player = participant.getPlayer();
             if (player == null) continue;
             if (participant.getColor().equals(ParticipantColor.RED)) {
                 player.teleport(arena.getRedSpawn());

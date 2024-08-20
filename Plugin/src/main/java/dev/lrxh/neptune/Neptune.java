@@ -12,6 +12,7 @@ import dev.lrxh.neptune.arena.command.ArenaCommand;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
+import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
 import dev.lrxh.neptune.commands.MainCommand;
 import dev.lrxh.neptune.configs.ConfigManager;
@@ -211,7 +212,8 @@ public final class Neptune extends JavaPlugin {
                 new PartyCommand(),
                 new LeaderboardCommand(),
                 new KitEditorCommand(),
-                new CosmeticsCommand()
+                new CosmeticsCommand(),
+                new FollowCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 

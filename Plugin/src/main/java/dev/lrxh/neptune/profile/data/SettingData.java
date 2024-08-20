@@ -6,6 +6,10 @@ import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
 @Getter
 @Setter
 public class SettingData {
@@ -18,6 +22,7 @@ public class SettingData {
     private KillEffect killEffect = KillEffect.NONE;
     private boolean menuSound = true;
     private KillMessagePackage killMessagePackage;
+    private List<UUID> followed = new ArrayList<>();
 
     public SettingData(Neptune plugin) {
         this.plugin = plugin;
@@ -32,5 +37,9 @@ public class SettingData {
     public void decreasePing() {
         if (maxPing == 10) return;
         maxPing -= 10;
+    }
+
+    public void addFollower(UUID follower) {
+        followed.add(follower);
     }
 }
