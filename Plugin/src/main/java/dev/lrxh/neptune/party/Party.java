@@ -41,7 +41,12 @@ public class Party {
 
     public String getLeaderName() {
         Player player = Bukkit.getPlayer(leader);
-        if (player == null) return "Leader";
+        if (player == null) {
+            users.remove(leader);
+            disband();
+            return "";
+        }
+
         return player.getName();
     }
 

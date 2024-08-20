@@ -81,7 +81,7 @@ public class KitManager implements IManager {
 
     public Kit getKitByDisplay(String kitName) {
         for (Kit kit : kits) {
-            if (kit.getDisplayName().equalsIgnoreCase(kitName)) {
+            if (kit.getDisplayName().equals(kitName)) {
                 return kit;
             }
         }
