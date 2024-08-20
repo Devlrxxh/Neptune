@@ -22,4 +22,8 @@ public class Arena {
         plugin.getArenaManager().arenas.remove(this);
         plugin.getArenaManager().saveArenas();
     }
+
+    public boolean isSetup() {
+        return (getRedSpawn() == null || getBlueSpawn() == null);
+    }
 }

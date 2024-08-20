@@ -89,6 +89,11 @@ public class StandAloneArena extends Arena {
         }
     }
 
+    @Override
+    public boolean isSetup(){
+        return (getRedSpawn() == null || getBlueSpawn() == null || min == null || max == null);
+    }
+
     public void createCopy() {
         int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 

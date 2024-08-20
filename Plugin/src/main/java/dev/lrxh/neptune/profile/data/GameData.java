@@ -31,6 +31,7 @@ public class GameData {
     private Gson gson;
     private Kit kitEditor;
     private Party party;
+    private String lastKit = "";
 
     public GameData(Neptune plugin) {
         this.kitData = new HashMap<>();
@@ -44,6 +45,7 @@ public class GameData {
     }
 
     public void run(Kit kit, boolean won) {
+        setLastKit(kit.getName());
         if (won) {
             addWin(kit);
         } else {

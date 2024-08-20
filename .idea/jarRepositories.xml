@@ -37,6 +37,11 @@
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="paper-api" />
+      <option name="name" value="paper-api" />
+      <option name="url" value="https://repo.papermc.io/repository/maven-public//" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="lunarclient" />
       <option name="name" value="lunarclient" />
       <option name="url" value="https://repo.lunarclient.dev" />

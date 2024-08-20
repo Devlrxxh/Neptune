@@ -37,8 +37,8 @@
   </build>
   <repositories>
     <repository>
-      <id>spigotmc-repo</id>
-      <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+      <id>paper-api</id>
+      <url>https://repo.papermc.io/repository/maven-public//</url>
     </repository>
     <repository>
       <id>sonatype</id>

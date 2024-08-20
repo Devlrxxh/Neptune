@@ -87,7 +87,7 @@ public class LeaderboardManager {
             for (DataDocument document : plugin.getDatabaseManager().getDatabase().getAll()) {
                 String username = document.getString("username");
                 UUID uuid = UUID.fromString(document.getString("uuid"));
-                KitData kitData = getPlayerStats(uuid, kit);
+                KitData kitData = getKitData(uuid, kit);
                 if (kitData == null) continue;
                 PlayerEntry playerEntry = new PlayerEntry(username, uuid, leaderboardType.get(kitData));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
@@ -110,20 +110,17 @@ public class LeaderboardManager {
     private void loadLB(LeaderboardType leaderboardType, LeaderboardPlayerEntry leaderboardPlayerEntry) {
         Kit kit = leaderboardPlayerEntry.getKit();
         PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
-                leaderboardType.get(getPlayerStats(leaderboardPlayerEntry.getPlayerUUID(), kit)));
+                leaderboardType.get(getKitData(leaderboardPlayerEntry.getPlayerUUID(), kit)));
         addPlayerEntry(kit, playerEntry, leaderboardType);
     }
 
-    private KitData getPlayerStats(UUID playerUUID, Kit kit) {
+
+    private KitData getKitData(UUID playerUUID, Kit kit) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
             return plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getKitData().get(kit);
-        } else {
-            return getKitData(playerUUID, kit);
         }
-    }
 
-    private KitData getKitData(UUID playerUUID, Kit kit) {
         DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);
         if (dataDocument == null) return null;
 

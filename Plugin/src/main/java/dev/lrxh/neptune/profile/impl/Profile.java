@@ -68,7 +68,7 @@ public class Profile {
         gameData.setMatchHistories(gameData.deserializeHistory(dataDocument.getList("history", new ArrayList<>())));
 
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
-        DataDocument settingsStatistics = dataDocument.getDataDocument("settings");
+        DataDocument settings = dataDocument.getDataDocument("settings");
 
         for (Kit kit : plugin.getKitManager().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
@@ -82,14 +82,15 @@ public class Profile {
             profileKitData.updateDivision();
         }
 
-        settingData.setPlayerVisibility(settingsStatistics.getBoolean("showPlayers", true));
-        settingData.setAllowSpectators(settingsStatistics.getBoolean("allowSpectators", true));
-        settingData.setAllowDuels(settingsStatistics.getBoolean("allowDuels", true));
-        settingData.setAllowParty(settingsStatistics.getBoolean("allowParty", true));
-        settingData.setMaxPing(settingsStatistics.getInteger("maxPing", 350));
-        settingData.setKillEffect(KillEffect.valueOf(settingsStatistics.getString("killEffect", "NONE")));
-        settingData.setMenuSound(settingsStatistics.getBoolean("menuSound", false));
-        settingData.setKillMessagePackage(plugin.getCosmeticManager().getDeathMessagePackage(settingsStatistics.getString("deathMessagePackage", "DEFAULT")));
+        settingData.setPlayerVisibility(settings.getBoolean("showPlayers", true));
+        settingData.setAllowSpectators(settings.getBoolean("allowSpectators", true));
+        settingData.setAllowDuels(settings.getBoolean("allowDuels", true));
+        settingData.setAllowParty(settings.getBoolean("allowParty", true));
+        settingData.setMaxPing(settings.getInteger("maxPing", 350));
+        settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
+        settingData.setMenuSound(settings.getBoolean("menuSound", false));
+        settingData.setKillMessagePackage(plugin.getCosmeticManager().getDeathMessagePackage(settings.getString("deathMessagePackage", "DEFAULT")));
+        gameData.setLastKit(settings.getString("lastKit", ""));
     }
 
     public void save() {

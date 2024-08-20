@@ -19,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
@@ -298,26 +299,25 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onProjectileHit(ProjectileHitEvent event) {
-    Projectile projectile = event.getEntity();
-    ProjectileSource shooter = projectile.getShooter(); 
+        Projectile projectile = event.getEntity();
+        ProjectileSource shooter = projectile.getShooter();
 
-    if (shooter instanceof Player) {
-        Player player = (Player) shooter; 
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if (profile == null) return;
-        if (!profile.getState().equals(ProfileState.IN_GAME)) {
-            event.setCancelled(true);
-        } else {
-            plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
-                @Override
-                public void run() {
-                    profile.getMatch().getEntities().add(projectile);
-                }
-            }, 20);
+        if (shooter instanceof Player player) {
+            if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            if (profile == null) return;
+            if (!profile.getState().equals(ProfileState.IN_GAME)) {
+                event.setCancelled(true);
+            } else {
+                plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
+                    @Override
+                    public void run() {
+                        profile.getMatch().getEntities().add(projectile);
+                    }
+                }, 20);
+            }
         }
     }
-}
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {

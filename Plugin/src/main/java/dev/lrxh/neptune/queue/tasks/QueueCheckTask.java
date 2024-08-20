@@ -73,11 +73,7 @@ public class QueueCheckTask extends NeptuneRunnable {
                 }
 
                 //If arena locations weren't setup
-                if (arena.getBlueSpawn() == null ||
-                        arena.getRedSpawn() == null ||
-                        (arena instanceof StandAloneArena &&
-                                (((StandAloneArena) arena).getMax() == null ||
-                                        ((StandAloneArena) arena).getMin() == null))) {
+                if (arena.isSetup()) {
 
                     removeFromQueue(uuid1);
                     removeFromQueue(uuid2);
