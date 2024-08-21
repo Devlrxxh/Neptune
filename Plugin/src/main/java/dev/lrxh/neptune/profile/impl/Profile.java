@@ -82,7 +82,6 @@ public class Profile {
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
             gameData.getGlobalStats().addLosses(profileKitData.getLosses());
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
-            gameData.getGlobalStats().addBestStreak(profileKitData.getBestStreak());
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
             profileKitData.updateDivision();
         }
@@ -119,7 +118,6 @@ public class Profile {
             entry.updateDivision();
             kitStatisticsDocument.put("WINS_GLOBAL", gameData.getGlobalStats().getWins());
             kitStatisticsDocument.put("LOSSES_GLOBAL", gameData.getGlobalStats().getLosses());
-            kitStatisticsDocument.put("WIN_STREAK_BEST_GLOBAL", gameData.getGlobalStats().getBestStreak());
             kitStatisticsDocument.put("WIN_STREAK_CURRENT_GLOBAL", gameData.getGlobalStats().getCurrentStreak());
 
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);

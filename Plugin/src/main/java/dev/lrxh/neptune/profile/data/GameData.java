@@ -48,35 +48,44 @@ public class GameData {
 
     public void run(Kit kit, boolean won) {
         setLastKit(kit.getName());
+        KitData kitData = this.kitData.get(kit);
         if (won) {
-            addWin(kit);
+            updateWin(kitData);
         } else {
-            addLoss(kit);
-            kitData.get(kit).setCurrentStreak(0);
+            updateLosses(kitData);
         }
     }
 
-    private void addWin(Kit kit) {
-        kitData.get(kit).setWins(kitData.get(kit).getWins() + 1);
-        addWinStreak(kit);
-        kitData.get(kit).updateDivision();
+    private void updateWin(KitData kitData) {
+        kitData.setWins(kitData.getWins() + 1);
+        updateWinStreak(kitData, true);
+        globalStats.addWins(1);
+        kitData.updateDivision();
     }
 
-    private void addLoss(Kit kit) {
-        kitData.get(kit).setLosses(kitData.get(kit).getLosses() + 1);
+    private void updateLosses(KitData kitData) {
+        globalStats.addLosses(1);
+        kitData.setLosses(kitData.getLosses() + 1);
+        updateWinStreak(kitData, false);
     }
 
-    private void addWinStreak(Kit kit) {
-        kitData.get(kit).setCurrentStreak(kitData.get(kit).getCurrentStreak() + 1);
+    private void updateWinStreak(KitData kitData, boolean won) {
+        if (won) {
+            kitData.setCurrentStreak(kitData.getCurrentStreak() + 1);
+            globalStats.addCurrentStreak(1);
 
-        if (kitData.get(kit).getCurrentStreak() > kitData.get(kit).getBestStreak()) {
-            setBestWinStreak(kit, kitData.get(kit).getCurrentStreak());
+            if (kitData.getCurrentStreak() > kitData.getBestStreak()) {
+                kitData.setBestStreak(kitData.getCurrentStreak());
+            }
+        } else {
+            kitData.setCurrentStreak(kitData.getCurrentStreak() + 1);
+            kitData.setCurrentStreak(0);
+            globalStats.setCurrentStreak(0);
         }
     }
 
     public void addRequest(Request duelRequest, UUID name, Consumer<Player> action) {
         requests.put(name, duelRequest, new TtlAction(name, action, plugin));
-
     }
 
     public void removeRequest(UUID playerUUID) {
@@ -122,7 +131,4 @@ public class GameData {
         return gson.fromJson(serialized, MatchHistory.class);
     }
 
-    private void setBestWinStreak(Kit kit, int value) {
-        kitData.get(kit).setBestStreak(value);
-    }
 }

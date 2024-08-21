@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.providers.placeholder;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.data.GlobalStats;
 import dev.lrxh.neptune.profile.data.KitData;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -37,8 +39,10 @@ public class PlaceholderImpl extends PlaceholderExpansion {
         if (player == null) return "";
         if (!player.isOnline()) return "Offline Player";
         String[] parts = identifier.split("_");
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         switch (parts.length) {
             case 1:
+                GlobalStats globalStats = profile.getGameData().getGlobalStats();
                 switch (parts[0]) {
                     case "ping":
                         return String.valueOf(PlayerUtil.getPing(player.getUniqueId()));
@@ -46,10 +50,16 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return String.valueOf(plugin.getMatchManager().matches.size());
                     case "queued":
                         return String.valueOf(plugin.getQueueManager().queues.size());
+                    case "wins":
+                        return String.valueOf(globalStats.getWins());
+                    case "losses":
+                        return String.valueOf(globalStats.getLosses());
+                    case "currentStreak":
+                        return String.valueOf(globalStats.getCurrentStreak());
                 }
                 break;
             case 2:
-                KitData data = plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getKitData().get(plugin.getKitManager().getKitByName(parts[0]));
+                KitData data = profile.getGameData().getKitData().get(plugin.getKitManager().getKitByName(parts[0]));
                 switch (parts[1]) {
                     case "division":
                         return data == null ? "" : data.getDivision().getDisplayName();

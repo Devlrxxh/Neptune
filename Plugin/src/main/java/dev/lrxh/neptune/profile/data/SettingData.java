@@ -22,7 +22,7 @@ public class SettingData {
     private KillEffect killEffect = KillEffect.NONE;
     private boolean menuSound = true;
     private KillMessagePackage killMessagePackage;
-    private List<UUID> followed = new ArrayList<>();
+    private List<UUID> followings = new ArrayList<>();
 
     public SettingData(Neptune plugin) {
         this.plugin = plugin;
@@ -40,6 +40,10 @@ public class SettingData {
     }
 
     public void addFollower(UUID follower) {
-        followed.add(follower);
+        followings.add(follower);
+    }
+
+    public void removeFollower(UUID follower) {
+        followings.remove(follower);
     }
 }

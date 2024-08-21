@@ -29,8 +29,8 @@ public class FollowCommand extends BaseCommand {
         }
         SettingData followingSettingData = plugin.getProfileManager().getByUUID(followingPlayer.getUniqueId()).getSettingData();
 
-        if(followingSettingData.getFollowed().contains(player.getUniqueId())) {
-            followingSettingData.getFollowed().remove(player.getUniqueId());
+        if(followingSettingData.getFollowings().contains(player.getUniqueId())) {
+            followingSettingData.removeFollower(player.getUniqueId());
             MessagesLocale.STOP_FOLLOWING.send(player.getUniqueId(), new Replacement("<player>", name));
             return;
         }
