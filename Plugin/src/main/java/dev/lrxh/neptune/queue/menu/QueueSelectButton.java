@@ -1,13 +1,10 @@
 package dev.lrxh.neptune.queue.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.leaderboard.impl.LeaderboardEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
@@ -65,6 +62,7 @@ public class QueueSelectButton extends Button {
         return new ItemBuilder(kit.getIcon()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .lore(ItemUtils.getLore(lore,
                         new Replacement("<kit>", kit.getDisplayName()),
+                        new Replacement("<kitName>", kit.getName()),
                         new Replacement("<playing>", String.valueOf(kit.getPlaying())),
                         new Replacement("<queue>", String.valueOf(kit.getQueue()))), player)
                 .clearFlags()
@@ -75,8 +73,6 @@ public class QueueSelectButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
         plugin.getQueueManager().add(player.getUniqueId(), new Queue(kit));
-        MessagesLocale.QUEUE_JOIN.send(player.getUniqueId(),
-                new Replacement("<kit>", kit.getDisplayName()));
         player.closeInventory();
     }
 }

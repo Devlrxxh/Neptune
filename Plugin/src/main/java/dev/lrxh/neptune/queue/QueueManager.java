@@ -1,8 +1,10 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 
 import java.util.Map;
 import java.util.UUID;
@@ -23,6 +25,9 @@ public class QueueManager {
         queues.put(playerUUID, queue);
         profile.setState(ProfileState.IN_QUEUE);
         queue.getKit().addQueue();
+        MessagesLocale.QUEUE_JOIN.send(playerUUID,
+                new Replacement("<kit>", queue.getKit().getDisplayName()),
+                new Replacement("<maxPing>", profile.getSettingData().getMaxPing()));
     }
 
     public void remove(UUID playerUUID) {
