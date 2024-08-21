@@ -41,14 +41,14 @@ public class Profile {
         this.state = ProfileState.IN_LOBBY;
         this.gameData = new GameData(plugin);
         this.settingData = new SettingData(plugin);
-        this.visibility = new Visibility(plugin);
+        this.visibility = new Visibility(plugin, playerUUID);
 
         load();
     }
 
 
     public void handleVisibility() {
-        visibility.handle(playerUUID);
+        visibility.handle();
     }
 
     public void setState(ProfileState profileState) {

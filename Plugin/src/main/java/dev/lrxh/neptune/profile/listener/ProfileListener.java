@@ -26,14 +26,13 @@ public class ProfileListener implements Listener {
         Player player = event.getPlayer();
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
-        Profile profile = plugin.getProfileManager().createProfile(player.getUniqueId());
+       plugin.getProfileManager().createProfile(player.getUniqueId());
 
         event.setJoinMessage(null);
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
             ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE, new Replacement("<player>", player.getName()));
         }
 
-        profile.handleVisibility();
         PlayerUtil.reset(player.getUniqueId());
         plugin.getHotbarManager().giveItems(player.getUniqueId());
     }

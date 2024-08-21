@@ -12,26 +12,29 @@ import java.util.UUID;
 
 public class Visibility {
     private final Neptune plugin;
+    private final UUID uuid;
 
-    public Visibility(Neptune plugin) {
+    public Visibility(Neptune plugin, UUID playerUUID) {
         this.plugin = plugin;
+        this.uuid = playerUUID;
+        handle(playerUUID);
     }
 
-    public void handle(UUID playerUUID) {
+    public void handle() {
         for (Player players : Bukkit.getOnlinePlayers()) {
-            handle(playerUUID, players.getUniqueId());
+            handle(players.getUniqueId());
         }
     }
 
-    public void handle(UUID playerUUID, UUID otherUUID) {
-        Player viewerPlayer = Bukkit.getPlayer(playerUUID);
+    public void handle(UUID otherUUID) {
+        Player viewerPlayer = Bukkit.getPlayer(uuid);
         Player otherPlayer = Bukkit.getPlayer(otherUUID);
         if (viewerPlayer == null || otherPlayer == null || viewerPlayer.equals(otherPlayer)) {
             return;
         }
 
-        Profile viewerProfile = Neptune.get().getProfileManager().getByUUID(playerUUID);
-        Profile otherProfile = Neptune.get().getProfileManager().getByUUID(otherUUID);
+        Profile viewerProfile = plugin.getProfileManager().getByUUID(uuid);
+        Profile otherProfile = plugin.getProfileManager().getByUUID(otherUUID);
 
         if (!viewerProfile.getSettingData().isPlayerVisibility()) {
             viewerPlayer.hidePlayer(plugin, otherPlayer);
@@ -43,14 +46,14 @@ public class Visibility {
             return;
         }
 
-        if (has(playerUUID, otherUUID, ProfileState.IN_GAME)
+        if (has(uuid, otherUUID, ProfileState.IN_GAME)
                 && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
             return;
         }
 
-        if (has(playerUUID, otherUUID, ProfileState.IN_LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
+        if (has(uuid, otherUUID, ProfileState.IN_LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
             return;
