@@ -31,9 +31,15 @@ public class QueueSelectButton extends Button {
         MenusLocale.QUEUE_SELECT_LORE.getStringList().forEach(line -> {
             String[] split = line.split("_");
 
-            if (split.length != 3) return;
+            if (split.length != 3) {
+                lore.add(line);
+                return;
+            }
             LeaderboardType leaderboardType = LeaderboardType.value(split[1]);
-            if(leaderboardType == null) return;
+            if(leaderboardType == null) {
+                lore.add(line);
+                return;
+            }
 
             List<PlayerEntry> leaderboard = plugin.getLeaderboardManager().getPlayerEntries(kit, leaderboardType);
 

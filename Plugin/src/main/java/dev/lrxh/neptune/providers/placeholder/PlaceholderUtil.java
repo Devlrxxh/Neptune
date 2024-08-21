@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.providers.placeholder;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
@@ -47,6 +46,7 @@ public class PlaceholderUtil {
             if (state.equals(ProfileState.IN_QUEUE)) {
                 Queue queue = plugin.getQueueManager().queues.get(player.getUniqueId());
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
+                line = line.replaceAll("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()));
             }
 
             if (state.equals(ProfileState.IN_PARTY)) {
