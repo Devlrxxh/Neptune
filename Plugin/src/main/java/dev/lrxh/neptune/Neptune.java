@@ -98,6 +98,7 @@ public final class Neptune extends JavaPlugin {
     public static Neptune get() {
         return instance;
     }
+
     public API getAPI() {
         return api;
     }

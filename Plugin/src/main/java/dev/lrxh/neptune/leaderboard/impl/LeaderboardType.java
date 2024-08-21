@@ -35,7 +35,7 @@ public enum LeaderboardType {
     @Nullable
     public static LeaderboardType value(String value) {
         for (LeaderboardType leaderboardType : values()) {
-            if(leaderboardType.toString().equalsIgnoreCase(value)) {
+            if (leaderboardType.toString().equalsIgnoreCase(value)) {
                 return leaderboardType;
             }
         }

@@ -27,7 +27,7 @@ public class QueueManager {
         queue.getKit().addQueue();
         MessagesLocale.QUEUE_JOIN.send(playerUUID,
                 new Replacement("<kit>", queue.getKit().getDisplayName()),
-                new Replacement("<maxPing>", profile.getSettingData().getMaxPing()));
+                new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
     }
 
     public void remove(UUID playerUUID) {

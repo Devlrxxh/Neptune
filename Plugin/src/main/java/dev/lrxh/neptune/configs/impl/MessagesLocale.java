@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.configs.impl;
 
+import com.sk89q.worldedit.entity.Player;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.providers.clickable.ClickableUtils;
@@ -22,6 +23,8 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_DEATH_VOID("MATCH.DEATH.VOID", DataType.STRING_LIST, "&c☠ <player> &7fell into the void while fighting \uD83D\uDDE1 <killer>"),
     QUEUE_JOIN("QUEUE.JOIN", DataType.STRING_LIST, "&7(&bDuels&7) Joined Queue"),
     QUEUE_LEAVE("QUEUE.LEAVE", DataType.STRING_LIST, "&7(&bDuels&7) Left queue"),
+    QUEUE_REPEAT("QUEUE.REPEAT", DataType.STRING_LIST, "&aSearching for other players in queue..."),
+    QUEUE_REPEAT_TOGGLE("QUEUE.REPEAT.TOG", DataType.BOOLEAN, "true"),
     MATCH_STARTED("MATCH.STARTED", DataType.STRING_LIST, "&aMatch Started!"),
     ROUND_STARTED("MATCH.ROUND.STARTED", DataType.STRING_LIST, "&aRound Started!"),
     MATCH_FOUND("MATCH.FOUND", DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", " "),
@@ -163,6 +166,19 @@ public enum MessagesLocale implements IDataAccessor {
     @Override
     public String getHeader() {
         return "Replace with NONE to disable";
+    }
+
+    public void send(Player player, Replacement... replacements) {
+        final UUID playerUUID = player.getUniqueId();
+        if (dataType.equals(DataType.STRING_LIST)) {
+            for (String message : getStringList()) {
+                if (message.equals("NONE")) continue;
+                PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
+            }
+        } else if (dataType.equals(DataType.STRING)) {
+            if (getString().equals("NONE")) return;
+            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
+        }
     }
 
     public void send(UUID playerUUID, Replacement... replacements) {

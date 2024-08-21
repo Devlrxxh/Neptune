@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.providers.material.NMaterial;
-import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

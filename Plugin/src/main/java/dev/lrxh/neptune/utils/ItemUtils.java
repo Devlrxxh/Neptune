@@ -91,7 +91,7 @@ public class ItemUtils {
 
     public List<ItemStack> deserialize(String base64) {
         List<ItemStack> items = new ArrayList<>();
-        if(base64 == null) return items;
+        if (base64 == null) return items;
         byte[] data = Base64.getDecoder().decode(base64);
 
         try {

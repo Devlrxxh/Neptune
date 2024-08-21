@@ -33,7 +33,7 @@ public class QueueSelectButton extends Button {
                 return;
             }
             LeaderboardType leaderboardType = LeaderboardType.value(split[1]);
-            if(leaderboardType == null) {
+            if (leaderboardType == null) {
                 lore.add(line);
                 return;
             }

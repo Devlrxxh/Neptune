@@ -159,7 +159,7 @@ public class Participant {
     }
 
     @Nullable
-    public Player getPlayer(){
+    public Player getPlayer() {
         return Bukkit.getPlayer(playerUUID);
     }
 }
