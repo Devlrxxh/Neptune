@@ -29,7 +29,6 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.scoreboard.Criterias;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
@@ -251,7 +250,7 @@ public abstract class Match {
             Objective objective = viewer.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
 
             if (objective == null) {
-                objective = viewer.getScoreboard().registerNewObjective("neptune_health", Criterias.HEALTH, Component.text(CC.color("&c❤")));
+                objective = viewer.getScoreboard().registerNewObjective("neptune_health", "health", Component.text(CC.color("&c❤")));
             }
             try {
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);

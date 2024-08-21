@@ -24,7 +24,7 @@ public class ArenaCopyButton extends Button {
                 .lore(Arrays.asList(
                         " ",
                         "&b&lRIGHT | TELEPORT",
-                        "&c&lSHIFT LEFT | DELETE"))
+                        "&c&lSHIFT LEFT | DELETE"), player)
                 .build();
     }
 

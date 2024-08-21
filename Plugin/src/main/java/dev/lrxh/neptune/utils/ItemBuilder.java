@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.providers.material.NMaterial;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -90,11 +92,11 @@ public class ItemBuilder {
         item.setAmount(1);
     }
 
-    public ItemBuilder lore(List<String> lore) {
+    public ItemBuilder lore(List<String> lore, Player player) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             List<String> toSet = new ArrayList<>();
-            for (String string : lore) {
+            for (String string : PlaceholderUtil.format(lore, player)) {
                 toSet.add(CC.color(string));
             }
             meta.setLore(toSet);

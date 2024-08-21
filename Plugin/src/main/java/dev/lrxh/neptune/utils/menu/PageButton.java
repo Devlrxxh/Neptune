@@ -25,7 +25,7 @@ public class PageButton extends Button {
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
                                 ChatColor.YELLOW + "to the next page."
-                        ))
+                        ), player)
                         .build();
             } else {
                 return new ItemBuilder(Material.REDSTONE)
@@ -33,7 +33,7 @@ public class PageButton extends Button {
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
                                 ChatColor.YELLOW + "next page."
-                        ))
+                        ), player)
                         .build();
             }
         } else {
@@ -43,7 +43,7 @@ public class PageButton extends Button {
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "Click here to jump",
                                 ChatColor.YELLOW + "to the previous page."
-                        ))
+                        ), player)
                         .build();
             } else {
                 return new ItemBuilder(Material.REDSTONE)
@@ -51,7 +51,7 @@ public class PageButton extends Button {
                         .lore(Arrays.asList(
                                 ChatColor.YELLOW + "There is no available",
                                 ChatColor.YELLOW + "previous page."
-                        ))
+                        ), player)
                         .build();
             }
         }

@@ -32,7 +32,7 @@ public class ArenaManagmentButton extends Button {
                             " ",
                             "&b&lRIGHT | TELEPORT",
                             "&a&lSHIFT RIGHT | TOGGLE ARENA",
-                            "&c&lSHIFT LEFT | DELETE ARENA"))
+                            "&c&lSHIFT LEFT | DELETE ARENA"), player)
                     .build();
         } else {
             StandAloneArena standAloneArena = (StandAloneArena) arena;
@@ -46,7 +46,7 @@ public class ArenaManagmentButton extends Button {
                             "&e&lLEFT | COPIES MENU",
                             "&b&lRIGHT | TELEPORT",
                             "&a&lSHIFT RIGHT | TOGGLE ARENA",
-                            "&c&lSHIFT LEFT | DELETE ARENA"))
+                            "&c&lSHIFT LEFT | DELETE ARENA"), player)
                     .build();
         }
 

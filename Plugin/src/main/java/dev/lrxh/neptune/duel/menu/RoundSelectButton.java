@@ -25,7 +25,7 @@ public class RoundSelectButton extends Button {
     public ItemStack getButtonItem(Player player) {
         return new ItemBuilder(Material.MAP)
                 .name(MenusLocale.ROUNDS_ITEM_NAME.getString().replace("<rounds>", String.valueOf(round)))
-                .lore(MenusLocale.ROUNDS_LORE.getStringList())
+                .lore(MenusLocale.ROUNDS_LORE.getStringList(), player)
                 .clearFlags()
                 .build();
     }

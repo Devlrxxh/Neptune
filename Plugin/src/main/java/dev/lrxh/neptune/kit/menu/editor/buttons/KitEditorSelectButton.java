@@ -21,7 +21,7 @@ public class KitEditorSelectButton extends Button {
     public ItemStack getButtonItem(Player player) {
 
         return new ItemBuilder(kit.getIcon()).name(MenusLocale.KIT_EDITOR_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
-                .lore(MenusLocale.KIT_EDITOR_SELECT_LORE.getStringList())
+                .lore(MenusLocale.KIT_EDITOR_SELECT_LORE.getStringList(), player)
                 .build();
     }
 

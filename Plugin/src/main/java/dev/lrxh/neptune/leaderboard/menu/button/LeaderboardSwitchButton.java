@@ -23,7 +23,7 @@ public class LeaderboardSwitchButton extends Button {
     public ItemStack getButtonItem(Player player) {
         return new ItemBuilder(material)
                 .name(title)
-                .lore(lore)
+                .lore(lore, player)
                 .clearFlags()
                 .build();
     }

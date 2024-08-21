@@ -45,10 +45,10 @@ public class LeaderboardManager {
     }
 
     public PlayerEntry getLeaderboardSlot(Kit kit, LeaderboardType leaderboardType, int i) {
-        return getLeaderboard(kit, leaderboardType).get(i - 1);
+        return getPlayerEntries(kit, leaderboardType).get(i - 1);
     }
 
-    public List<PlayerEntry> getLeaderboard(Kit kit, LeaderboardType leaderboardType) {
+    public List<PlayerEntry> getPlayerEntries(Kit kit, LeaderboardType leaderboardType) {
         List<LeaderboardEntry> leaderboardEntries = leaderboards.get(kit);
         for (LeaderboardEntry leaderboardEntry : leaderboardEntries) {
             if (leaderboardEntry.getType().equals(leaderboardType)) {

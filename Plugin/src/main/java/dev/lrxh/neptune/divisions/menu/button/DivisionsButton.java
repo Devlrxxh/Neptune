@@ -18,7 +18,7 @@ public class DivisionsButton extends Button {
     public ItemStack getButtonItem(Player player) {
         return new ItemBuilder(division.getMaterial())
                 .name(MenusLocale.DIVISIONS_ITEM_NAME.getString().replace("<division>", division.getDisplayName()))
-                .lore(ItemUtils.getLore(MenusLocale.DIVISIONS_LORE.getStringList(), new Replacement("<wins>", division.getWinsRequired())))
+                .lore(ItemUtils.getLore(MenusLocale.DIVISIONS_LORE.getStringList(), new Replacement("<wins>", division.getWinsRequired())), player)
                 .clearFlags()
                 .build();
     }

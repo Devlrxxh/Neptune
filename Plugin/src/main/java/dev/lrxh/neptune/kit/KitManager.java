@@ -29,9 +29,9 @@ public class KitManager implements IManager {
             for (String kitName : getKeys("kits")) {
                 String path = "kits." + kitName + ".";
                 String displayName = config.getString(path + "displayName", kitName);
-                ItemStack icon = ItemUtils.deserializeItem(Objects.requireNonNull(config.getString(path + "icon")));
+                ItemStack icon = ItemUtils.deserializeItem(config.getString(path + "icon", ""));
 
-                List<ItemStack> items = ItemUtils.deserialize(Objects.requireNonNull(config.getString(path + "items")));
+                List<ItemStack> items = ItemUtils.deserialize(config.getString(path + "items", ""));
 
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {

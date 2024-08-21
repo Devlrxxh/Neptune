@@ -22,7 +22,7 @@ public class LeaderboardButton extends Button {
     public ItemStack getButtonItem(Player player) {
         List<String> lore = new ArrayList<>();
 
-        List<PlayerEntry> leaderboard = plugin.getLeaderboardManager().getLeaderboard(kit, leaderboardType);
+        List<PlayerEntry> leaderboard = plugin.getLeaderboardManager().getPlayerEntries(kit, leaderboardType);
 
         MenusLocale.LEADERBOARD_LORE.getStringList().forEach(line -> {
             for (int i = 1; i <= 10; i++) {
@@ -46,7 +46,7 @@ public class LeaderboardButton extends Button {
 
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.LEADERBOARD_ITEM_NAME.getString().replace("<kit>", kit.getDisplayName()))
-                .lore(lore)
+                .lore(lore, player)
                 .clearFlags()
                 .build();
     }

@@ -32,7 +32,7 @@ public class MatchHistoryButton extends Button {
                             new Replacement("<kit>", matchHistory.getKitName()),
                             new Replacement("<winner>", matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
                             new Replacement("<loser>", !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
-                            new Replacement("<date>", matchHistory.getDate())))
+                            new Replacement("<date>", matchHistory.getDate())), player)
                     .clearFlags()
                     .build();
         } else {
@@ -47,7 +47,7 @@ public class MatchHistoryButton extends Button {
                             new Replacement("<kit>", matchHistory.getKitName()),
                             new Replacement("<winner>", matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
                             new Replacement("<loser>", !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
-                            new Replacement("<date>", matchHistory.getDate())))
+                            new Replacement("<date>", matchHistory.getDate())), player)
                     .clearFlags()
                     .build();
         }

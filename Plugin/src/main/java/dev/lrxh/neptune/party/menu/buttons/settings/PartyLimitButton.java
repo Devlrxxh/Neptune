@@ -22,7 +22,7 @@ public class PartyLimitButton extends Button {
         return new ItemBuilder(MenusLocale.PARTY_SETTINGS_MAX_SIZE_MATERIAL.getString())
                 .name(MenusLocale.PARTY_SETTINGS_MAX_SIZE_TITLE.getString())
                 .lore(ItemUtils.getLore(MenusLocale.PARTY_SETTINGS_MAX_SIZE_LORE.getStringList(),
-                        new Replacement("<size>", String.valueOf(party.getMaxUsers()))))
+                        new Replacement("<size>", String.valueOf(party.getMaxUsers()))), player)
                 .clearFlags()
                 .build();
     }

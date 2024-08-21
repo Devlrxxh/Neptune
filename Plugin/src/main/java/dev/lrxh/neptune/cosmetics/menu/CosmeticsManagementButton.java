@@ -25,7 +25,7 @@ public class CosmeticsManagementButton extends Button {
     public ItemStack getButtonItem(Player player) {
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
         return new ItemBuilder(material).name(title).lore(ItemUtils.getLore(lore, new Replacement("<kill-effect>", profile.getSettingData().getKillEffect().getDisplayName()), new Replacement("<kill-message>", profile.getSettingData().getKillMessagePackage().getDisplayName()
-        ))).clearFlags().build();
+        )), player).clearFlags().build();
     }
 
     @Override

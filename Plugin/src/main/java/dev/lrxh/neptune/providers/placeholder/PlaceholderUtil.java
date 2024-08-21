@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.providers.placeholder;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;

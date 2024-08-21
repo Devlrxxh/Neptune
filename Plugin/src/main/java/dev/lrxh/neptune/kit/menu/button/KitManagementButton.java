@@ -23,7 +23,7 @@ public class KitManagementButton extends Button {
     public ItemStack getButtonItem(Player player) {
         return new ItemBuilder(kit.is(rule) ? Material.GREEN_WOOL : Material.RED_WOOL)
                 .name(CC.color(kit.is(rule) ? "&a" + rule.getName() : "&c" + rule.getName()))
-                .lore(Arrays.asList(" ", CC.color("&7" + rule.getDescription()), " ", CC.color(kit.is(rule) ? "&cClick to disable." : "&aClick to enable.")))
+                .lore(Arrays.asList(" ", CC.color("&7" + rule.getDescription()), " ", CC.color(kit.is(rule) ? "&cClick to disable." : "&aClick to enable.")), player)
                 .build();
     }
 

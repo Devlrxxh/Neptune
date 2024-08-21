@@ -31,7 +31,7 @@ public class KillEffectButton extends Button {
 
         return new ItemBuilder(killEffect.getMaterial())
                 .name(selected ? MenusLocale.KILL_EFFECTS_NAME_SELECTED.getString().replace("<displayName>", killEffect.getDisplayName()) : MenusLocale.KILL_EFFECTS_NAME_NOT_SELECTED.getString().replace("<displayName>", killEffect.getDisplayName()))
-                .lore(lore)
+                .lore(lore, player)
                 .clearFlags()
                 .build();
     }

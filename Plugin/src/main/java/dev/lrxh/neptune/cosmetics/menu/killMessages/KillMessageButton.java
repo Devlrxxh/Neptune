@@ -35,7 +35,7 @@ public class KillMessageButton extends Button {
                 .name(selected ? MenusLocale.KILL_MESSAGES_NAME_SELECTED.getString().replace("<displayName>", killMessagePackage.getDisplayName()) : MenusLocale.KILL_MESSAGES_NAME_NOT_SELECTED.getString().replace("<displayName>", killMessagePackage.getDisplayName()))
                 .lore(ItemUtils.getLore(lore,
                         new Replacement("<description>", killMessagePackage.getDescription()),
-                        new Replacement("<messages>", ItemUtils.getLore(killMessagePackage.getMessages(), new Replacement("<player>", player.getName()), new Replacement("<killer>", player.getName())))))
+                        new Replacement("<messages>", ItemUtils.getLore(killMessagePackage.getMessages(), new Replacement("<player>", player.getName()), new Replacement("<killer>", player.getName())))), player)
                 .clearFlags()
                 .build();
     }

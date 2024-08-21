@@ -22,7 +22,7 @@ public class ArenaCopyCreateButton extends Button {
                 .name("&aCreate Copy")
                 .lore(Arrays.asList(
                         " ",
-                        "&7&lCLICK TO CREATE COPY"))
+                        "&7&lCLICK TO CREATE COPY"), player)
                 .build();
     }
 
