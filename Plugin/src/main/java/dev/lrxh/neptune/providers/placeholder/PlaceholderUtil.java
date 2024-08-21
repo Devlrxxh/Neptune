@@ -8,6 +8,7 @@ import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.party.Party;
+import dev.lrxh.neptune.profile.data.GlobalStats;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.queue.Queue;
@@ -36,6 +37,11 @@ public class PlaceholderUtil {
             line = line.replaceAll("<in-match>", String.valueOf(plugin.getMatchManager().matches.size()));
             line = line.replaceAll("<player>", player.getName());
             line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player.getUniqueId()))));
+
+            GlobalStats globalStats = profile.getGameData().getGlobalStats();
+            line = line.replaceAll("<wins>", String.valueOf(globalStats.getWins()));
+            line = line.replaceAll("<losses>", String.valueOf(globalStats.getLosses()));
+            line = line.replaceAll("<currentStreak>", String.valueOf(globalStats.getCurrentStreak()));
 
             if (state.equals(ProfileState.IN_QUEUE)) {
                 Queue queue = plugin.getQueueManager().queues.get(player.getUniqueId());

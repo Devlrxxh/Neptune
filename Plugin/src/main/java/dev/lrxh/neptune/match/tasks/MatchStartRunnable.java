@@ -52,9 +52,9 @@ public class MatchStartRunnable extends NeptuneRunnable {
     private void checkFollowings() {
         for (Participant participant : match.getParticipants()) {
             SettingData settingData = plugin.getProfileManager().getByUUID(participant.getPlayerUUID()).getSettingData();
-            if (settingData.getFollowed().isEmpty()) continue;
+            if (settingData.getFollowings().isEmpty()) continue;
 
-            for (UUID uuid : settingData.getFollowed()) {
+            for (UUID uuid : settingData.getFollowings()) {
                 Player follower = Bukkit.getPlayer(uuid);
                 if (follower == null) continue;
 
