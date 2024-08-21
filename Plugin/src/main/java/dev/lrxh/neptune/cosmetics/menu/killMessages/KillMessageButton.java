@@ -20,7 +20,7 @@ public class KillMessageButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return null;
         boolean selected = profile.getSettingData().getKillMessagePackage().equals(killMessagePackage);
         List<String> lore;
@@ -43,6 +43,6 @@ public class KillMessageButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
         if (!player.hasPermission(killMessagePackage.permission())) return;
-        plugin.getProfileManager().getByUUID(player.getUniqueId()).getSettingData().setKillMessagePackage(killMessagePackage);
+        plugin.getAPI().getProfile(player).getSettingData().setKillMessagePackage(killMessagePackage);
     }
 }

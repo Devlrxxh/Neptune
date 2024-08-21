@@ -63,8 +63,8 @@ public class DuelRequest extends Request {
 
     public void partyDuel(UUID receiver) {
         Arena arena = kit.getRandomArena();
-        Profile receiverProfile = plugin.getProfileManager().getByUUID(receiver);
-        Profile senderProfile = plugin.getProfileManager().getByUUID(getSender());
+        Profile receiverProfile = plugin.getAPI().getProfile(receiver);
+        Profile senderProfile = plugin.getAPI().getProfile(getSender());
 
         List<Participant> participants = new ArrayList<>();
 

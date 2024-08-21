@@ -18,8 +18,7 @@ public class StatButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        KitData data = plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getKitData().get(kit);
-
+        KitData data = plugin.getAPI().getProfile(target).getGameData().getKitData().get(kit);
 
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.STAT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))

@@ -33,13 +33,13 @@ public class KitEditorCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         Kit kit = plugin.getKitManager().getKitByName(kitName);
 
         profile.getGameData().getKitData().get(kit).setKitLoadout(kit.getItems());
 
-        if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+        if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
             profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKitLoadout
                     (Arrays.asList(player.getInventory().getContents()));
 

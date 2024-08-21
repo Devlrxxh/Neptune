@@ -21,7 +21,7 @@ public class QueueCommand extends BaseCommand {
             Queue queue = new Queue(plugin.getKitManager().getKitByName(kitName));
             plugin.getQueueManager().add(player.getUniqueId(), queue);
         } else if (kitName.equals("queueLast")){
-            Kit kit = plugin.getKitManager().getKitByName(plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getLastKit());
+            Kit kit = plugin.getKitManager().getKitByName(plugin.getAPI().getProfile(player).getGameData().getLastKit());
             if (kit != null) {
                 plugin.getQueueManager().add(player.getUniqueId(), new Queue(kit));
             }

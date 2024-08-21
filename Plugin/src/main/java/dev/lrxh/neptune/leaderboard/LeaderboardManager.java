@@ -118,7 +118,7 @@ public class LeaderboardManager {
     private KitData getKitData(UUID playerUUID, Kit kit) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
-            return plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getKitData().get(kit);
+            return plugin.getAPI().getProfile(player).getGameData().getKitData().get(kit);
         }
 
         DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);

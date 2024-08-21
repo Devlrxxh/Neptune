@@ -68,8 +68,8 @@ public class SoloFightMatch extends Match {
     public void addStats() {
         Participant winner = participantA.isLoser() ? participantB : participantA;
         Participant loser = participantA.isLoser() ? participantA : participantB;
-        Profile winnerProfile = plugin.getProfileManager().getByUUID(winner.getPlayerUUID());
-        Profile loserProfile = plugin.getProfileManager().getByUUID(loser.getPlayerUUID());
+        Profile winnerProfile = plugin.getAPI().getProfile(winner.getPlayerUUID());
+        Profile loserProfile = plugin.getAPI().getProfile(loser.getPlayerUUID());
 
         winnerProfile.getGameData().addHistory(
                 new MatchHistory(true, loserProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));

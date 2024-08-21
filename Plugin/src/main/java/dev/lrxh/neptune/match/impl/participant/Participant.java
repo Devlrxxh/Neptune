@@ -61,7 +61,7 @@ public class Participant {
     public void playKillEffect() {
         UUID attckerUUID = getLastAttacker().getPlayerUUID();
         if (attckerUUID == null) return;
-        Profile profile = plugin.getProfileManager().getByUUID(attckerUUID);
+        Profile profile = plugin.getAPI().getProfile(attckerUUID);
         Player player = Bukkit.getPlayer(playerUUID);
         Player killer = Bukkit.getPlayer(attckerUUID);
         if (profile == null || player == null || killer == null) return;
@@ -105,7 +105,7 @@ public class Participant {
                     break;
             }
         }
-        Match match = plugin.getProfileManager().getByUUID(playerUUID).getMatch();
+        Match match = plugin.getAPI().getProfile(playerUUID).getMatch();
         if (match instanceof SoloFightMatch) {
             if (match.getKit().is(KitRule.BOXING)) {
                 if (hits >= 100) {
@@ -127,7 +127,7 @@ public class Participant {
     }
 
     public String getDeathMessage() {
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getAPI().getProfile(playerUUID);
         if (profile == null) {
             return "";
         }
@@ -142,7 +142,7 @@ public class Participant {
             return "";
         }
 
-        Profile attackerProfile = plugin.getProfileManager().getByUUID(lastAttacker.getPlayerUUID());
+        Profile attackerProfile = plugin.getAPI().getProfile(lastAttacker.getPlayerUUID());
         if (attackerProfile == null || attackerProfile.getSettingData().getKillMessagePackage() == null) {
             return "";
         }

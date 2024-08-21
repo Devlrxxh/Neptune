@@ -93,9 +93,13 @@ public final class Neptune extends JavaPlugin {
     private DivisionManager divisionManager;
     private DatabaseManager databaseManager;
     private CosmeticManager cosmeticManager;
+    private API api;
 
     public static Neptune get() {
         return instance;
+    }
+    public API getAPI() {
+        return api;
     }
 
     @Override
@@ -133,6 +137,7 @@ public final class Neptune extends JavaPlugin {
         this.menuManager = new MenuManager();
         this.generationManager = new GenerationManager();
         this.assemble = new Assemble(new ScoreboardAdapter());
+        this.api = new API(this);
 
         registerListeners();
         loadCommandManager();

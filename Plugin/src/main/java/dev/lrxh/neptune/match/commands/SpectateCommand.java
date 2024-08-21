@@ -25,20 +25,19 @@ public class SpectateCommand extends BaseCommand {
             player.sendMessage(CC.error("Player isn't online!"));
             return;
         }
-
         if (player.getName().equalsIgnoreCase(otherPlayer)) {
             player.sendMessage(CC.error("You can't spectate yourself!"));
             return;
         }
 
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
 
         if (profile.getMatch() != null) {
             player.sendMessage(CC.error("You can't spectate while in a match!"));
             return;
         }
 
-        Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
+        Profile targetProfile = plugin.getAPI().getProfile(target);
         if (targetProfile.getMatch() == null) {
             player.sendMessage(CC.error("Player isn't in a match!"));
             return;
@@ -54,19 +53,19 @@ public class SpectateCommand extends BaseCommand {
 
     @Subcommand("leave")
     public void leave(Player player) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
 
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            plugin.getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
+            plugin.getAPI().getProfile(player).getMatch().removeSpectator(player.getUniqueId(), true);
         }
     }
 
     @Subcommand("quit")
     public void quit(Player player) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
 
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            plugin.getProfileManager().getByUUID(player.getUniqueId()).getMatch().removeSpectator(player.getUniqueId(), true);
+            plugin.getAPI().getProfile(player).getMatch().removeSpectator(player.getUniqueId(), true);
         }
     }
 }

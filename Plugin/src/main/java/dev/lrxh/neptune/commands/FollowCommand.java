@@ -27,7 +27,7 @@ public class FollowCommand extends BaseCommand {
             MessagesLocale.NOT_ONLINE.send(player.getUniqueId(), new Replacement("<player>", name));
             return;
         }
-        SettingData followingSettingData = plugin.getProfileManager().getByUUID(followingPlayer.getUniqueId()).getSettingData();
+        SettingData followingSettingData = plugin.getAPI().getProfile(followingPlayer.getUniqueId()).getSettingData();
 
         if(followingSettingData.getFollowings().contains(player.getUniqueId())) {
             followingSettingData.removeFollower(player.getUniqueId());
@@ -35,7 +35,7 @@ public class FollowCommand extends BaseCommand {
             return;
         }
 
-        plugin.getProfileManager().getByUUID(followingPlayer.getUniqueId()).getSettingData().addFollower(player.getUniqueId());
+        plugin.getAPI().getProfile(followingPlayer.getUniqueId()).getSettingData().addFollower(player.getUniqueId());
         MessagesLocale.START_FOLLOW.send(player.getUniqueId(), new Replacement("<player>", name));
     }
 }

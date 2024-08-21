@@ -28,7 +28,7 @@ public class PartyCommand extends BaseCommand {
 
     @Subcommand("create")
     public void create(Player player) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         profile.createParty();
     }
 
@@ -42,7 +42,7 @@ public class PartyCommand extends BaseCommand {
             return;
         }
 
-        Party party = plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
+        Party party = plugin.getAPI().getProfile(target).getGameData().getParty();
         if (party == null) {
             player.sendMessage(CC.error("Player isn't in any party"));
             return;
@@ -56,7 +56,7 @@ public class PartyCommand extends BaseCommand {
             return;
 
         }
-        if (plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getParty() != null) {
+        if (plugin.getAPI().getProfile(player).getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;
         }
@@ -66,12 +66,12 @@ public class PartyCommand extends BaseCommand {
 
     @Subcommand("disband")
     public void disband(Player player) {
-        plugin.getProfileManager().getByUUID(player.getUniqueId()).disband();
+        plugin.getAPI().getProfile(player).disband();
     }
 
     @Subcommand("leave")
     public void leave(Player player) {
-        plugin.getProfileManager().getByUUID(player.getUniqueId()).disband();
+        plugin.getAPI().getProfile(player).disband();
     }
 
     @Subcommand("invite")
@@ -83,8 +83,8 @@ public class PartyCommand extends BaseCommand {
             player.sendMessage(CC.error("Player isn't online!"));
             return;
         }
-        Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile targetProfile = plugin.getAPI().getProfile(target);
+        Profile profile = plugin.getAPI().getProfile(player);
         Party party = profile.getGameData().getParty();
 
         if (party == null) {
@@ -102,7 +102,7 @@ public class PartyCommand extends BaseCommand {
             return;
         }
 
-        if (plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty() != null) {
+        if (plugin.getAPI().getProfile(target).getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;
         }
@@ -130,7 +130,7 @@ public class PartyCommand extends BaseCommand {
     @Subcommand("accept")
     @Syntax("<uuid>")
     public void accept(Player player, String otherString) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (!profile.getState().equals(ProfileState.IN_LOBBY)) return;
         try {
             if (profile.getGameData().getParty() != null) {
@@ -156,7 +156,7 @@ public class PartyCommand extends BaseCommand {
             player.sendMessage(CC.error("Player isn't online!"));
             return;
         }
-        Party party = plugin.getProfileManager().getByUUID(target.getUniqueId()).getGameData().getParty();
+        Party party = plugin.getAPI().getProfile(target).getGameData().getParty();
         if (party == null || !party.getLeader().equals(player.getUniqueId())) {
             MessagesLocale.PARTY_NOT_IN_PARTY.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
             return;

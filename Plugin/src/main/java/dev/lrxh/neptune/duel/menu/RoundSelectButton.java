@@ -32,7 +32,7 @@ public class RoundSelectButton extends Button {
 
     @Override
     public void onClick(Player player, ClickType clickType) {
-        Profile profile = plugin.getProfileManager().getByUUID(receiver);
+        Profile profile = plugin.getAPI().getProfile(receiver);
         if (profile == null) return;
         DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, round, plugin);
         profile.sendDuel(duelRequest);

@@ -138,7 +138,7 @@ public class Kit {
     public void giveLoadout(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getAPI().getProfile(playerUUID);
         GameData gameData = profile.getGameData();
         if (gameData.getKitData() == null || gameData.getKitData().get(this) == null ||
                 gameData.getKitData().get(this).getKitLoadout().isEmpty()) {

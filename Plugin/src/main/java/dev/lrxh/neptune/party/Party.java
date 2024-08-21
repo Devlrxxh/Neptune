@@ -62,7 +62,7 @@ public class Party {
                 new Replacement("<accept>", accept),
                 new Replacement("<leader>", getLeaderName()));
 
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getAPI().getProfile(playerUUID);
         profile.getGameData().addRequest(new PartyRequest(leader, this), leader, ignore -> MessagesLocale.PARTY_EXPIRED.send(leader, new Replacement("<player>", player.getName())));
     }
 
@@ -75,11 +75,11 @@ public class Party {
         Player invitedPlayer = Bukkit.getPlayer(playerUUID);
         if (invitedPlayer == null) return;
         users.add(playerUUID);
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getAPI().getProfile(playerUUID);
         profile.getGameData().setParty(this);
         profile.setState(ProfileState.IN_PARTY);
         broadcast(MessagesLocale.PARTY_JOINED, new Replacement("<player>", invitedPlayer.getName()));
-        plugin.getProfileManager().getByUUID(playerUUID).getGameData().removeRequest(leader);
+        plugin.getAPI().getProfile(playerUUID).getGameData().removeRequest(leader);
     }
 
     public void kick(UUID playerUUID) {
@@ -88,7 +88,7 @@ public class Party {
     }
 
     public void remove(UUID playerUUID) {
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getAPI().getProfile(playerUUID);
         users.remove(playerUUID);
         profile.setState(ProfileState.IN_LOBBY);
         profile.getGameData().setParty(null);
@@ -98,7 +98,7 @@ public class Party {
         broadcast(MessagesLocale.PARTY_DISBANDED);
 
         forEachMemberAsUUID(uuid -> {
-            Profile profile = plugin.getProfileManager().getByUUID(uuid);
+            Profile profile = plugin.getAPI().getProfile(uuid);
             profile.getGameData().setParty(null);
             profile.setState(ProfileState.IN_LOBBY);
         });

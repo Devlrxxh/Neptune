@@ -18,7 +18,7 @@ public class KillEffectButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return null;
         boolean selected = profile.getSettingData().getKillEffect().equals(killEffect);
         List<String> lore;
@@ -39,6 +39,6 @@ public class KillEffectButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
         if (!player.hasPermission(killEffect.permission())) return;
-        plugin.getProfileManager().getByUUID(player.getUniqueId()).getSettingData().setKillEffect(killEffect);
+        plugin.getAPI().getProfile(player).getSettingData().setKillEffect(killEffect);
     }
 }

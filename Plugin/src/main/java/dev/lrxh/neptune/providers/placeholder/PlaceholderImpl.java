@@ -39,7 +39,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
         if (player == null) return "";
         if (!player.isOnline()) return "Offline Player";
         String[] parts = identifier.split("_");
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         switch (parts.length) {
             case 1:
                 GlobalStats globalStats = profile.getGameData().getGlobalStats();

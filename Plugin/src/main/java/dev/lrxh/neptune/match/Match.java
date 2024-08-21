@@ -77,7 +77,7 @@ public abstract class Match {
     }
 
     public void addSpectator(Player player, Player target, boolean sendMessage) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
 
         profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
@@ -165,7 +165,7 @@ public abstract class Match {
     public void removeSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getAPI().getProfile(playerUUID);
 
         if (profile.getMatch() == null) return;
         PlayerUtil.reset(playerUUID);
@@ -184,7 +184,7 @@ public abstract class Match {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         PlayerUtil.reset(player.getUniqueId());
-        Profile profile = plugin.getProfileManager().getByUUID(playerUUID);
+        Profile profile = plugin.getAPI().getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
         kit.giveLoadout(playerUUID);

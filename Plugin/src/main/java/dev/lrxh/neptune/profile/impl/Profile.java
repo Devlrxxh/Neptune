@@ -51,6 +51,10 @@ public class Profile {
         visibility.handle();
     }
 
+    public boolean hasState(ProfileState profileState) {
+        return state.equals(profileState);
+    }
+
     public void setState(ProfileState profileState) {
         state = profileState;
         handleVisibility();
@@ -179,7 +183,7 @@ public class Profile {
             return;
         }
 
-        plugin.getProfileManager().getByUUID(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
+        plugin.getAPI().getProfile(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
         MessagesLocale.PARTY_CREATE.send(playerUUID);
     }
 

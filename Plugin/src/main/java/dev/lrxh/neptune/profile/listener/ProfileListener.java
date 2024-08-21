@@ -40,7 +40,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
         if (match != null) {
@@ -60,9 +60,9 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
-        if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+        if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
             profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKitLoadout
                     (Arrays.asList(player.getInventory().getContents()));
 

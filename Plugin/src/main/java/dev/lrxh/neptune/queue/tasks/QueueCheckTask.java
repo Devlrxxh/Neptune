@@ -44,8 +44,8 @@ public class QueueCheckTask extends NeptuneRunnable {
 
                 if ((uuid1.equals(uuid2))) continue;
                 if (!plugin.getQueueManager().compare(queue1, queue2)) continue;
-                SettingData settings1 = plugin.getProfileManager().getByUUID(uuid1).getSettingData();
-                SettingData settings2 = plugin.getProfileManager().getByUUID(uuid2).getSettingData();
+                SettingData settings1 = plugin.getAPI().getProfile(uuid1).getSettingData();
+                SettingData settings2 = plugin.getAPI().getProfile(uuid2).getSettingData();
 
                 if (!(PlayerUtil.getPing(uuid2) <= settings1.getMaxPing() &&
                         PlayerUtil.getPing(uuid1) <= settings2.getMaxPing())) {
@@ -124,6 +124,6 @@ public class QueueCheckTask extends NeptuneRunnable {
 
     private void removeFromQueue(UUID uuid) {
         plugin.getQueueManager().remove(uuid);
-        plugin.getProfileManager().getByUUID(uuid).setState(ProfileState.IN_LOBBY);
+        plugin.getAPI().getProfile(uuid).setState(ProfileState.IN_LOBBY);
     }
 }

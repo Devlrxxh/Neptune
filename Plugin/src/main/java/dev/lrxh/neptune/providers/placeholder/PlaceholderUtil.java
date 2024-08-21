@@ -28,7 +28,7 @@ public class PlaceholderUtil {
 
     public List<String> format(List<String> lines, Player player) {
         List<String> formattedLines = new ArrayList<>();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return formattedLines;
         ProfileState state = profile.getState();
         for (String line : lines) {

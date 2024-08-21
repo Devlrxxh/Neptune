@@ -51,7 +51,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
 
     private void checkFollowings() {
         for (Participant participant : match.getParticipants()) {
-            SettingData settingData = plugin.getProfileManager().getByUUID(participant.getPlayerUUID()).getSettingData();
+            SettingData settingData = plugin.getAPI().getProfile(participant.getPlayerUUID()).getSettingData();
             if (settingData.getFollowings().isEmpty()) continue;
 
             for (UUID uuid : settingData.getFollowings()) {

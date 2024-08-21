@@ -33,8 +33,8 @@ public class Visibility {
             return;
         }
 
-        Profile viewerProfile = plugin.getProfileManager().getByUUID(uuid);
-        Profile otherProfile = plugin.getProfileManager().getByUUID(otherUUID);
+        Profile viewerProfile = plugin.getAPI().getProfile(uuid);
+        Profile otherProfile = plugin.getAPI().getProfile(otherUUID);
 
         if (!viewerProfile.getSettingData().isPlayerVisibility()) {
             viewerPlayer.hidePlayer(plugin, otherPlayer);
@@ -64,8 +64,8 @@ public class Visibility {
     }
 
     public boolean has(UUID playerUUID, UUID otherUUID, ProfileState... states) {
-        Profile viewerProfile = plugin.getProfileManager().getByUUID(playerUUID);
-        Profile otherProfile = plugin.getProfileManager().getByUUID(otherUUID);
+        Profile viewerProfile = plugin.getAPI().getProfile(playerUUID);
+        Profile otherProfile = plugin.getAPI().getProfile(otherUUID);
 
         Set<ProfileState> stateSet = new HashSet<>(Arrays.asList(states));
         return stateSet.contains(viewerProfile.getState()) && stateSet.contains(otherProfile.getState());

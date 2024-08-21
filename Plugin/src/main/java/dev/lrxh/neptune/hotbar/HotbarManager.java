@@ -42,7 +42,7 @@ public class HotbarManager implements IManager {
         if (player == null) return;
 
         player.getInventory().clear();
-        ProfileState profileState = plugin.getProfileManager().getByUUID(player.getUniqueId()).getState();
+        ProfileState profileState = plugin.getAPI().getProfile(player).getState();
         if (profileState.equals(ProfileState.IN_GAME)) return;
         if (profileState.equals(ProfileState.IN_KIT_EDITOR)) return;
 
@@ -54,7 +54,7 @@ public class HotbarManager implements IManager {
 
                 if (item != null && item.isEnabled()) {
                     if (item.getAction().equals(ItemAction.PLAY_AGAIN)) {
-                        Kit kit = plugin.getKitManager().getKitByName(plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getLastKit());
+                        Kit kit = plugin.getKitManager().getKitByName(plugin.getAPI().getProfile(player).getGameData().getLastKit());
                         if (kit != null) {
                             player.getInventory().setItem(item.getSlot(), item.constructItem(playerUUID, new Replacement("<kit>", kit.getDisplayName())));
                         }

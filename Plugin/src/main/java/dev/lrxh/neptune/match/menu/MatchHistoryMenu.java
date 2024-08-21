@@ -33,7 +33,7 @@ public class MatchHistoryMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
 
         int i = MenusLocale.MATCH_LIST_STARTING_SLOT.getInt();
 

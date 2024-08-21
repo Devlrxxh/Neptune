@@ -132,7 +132,7 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             final Neptune plugin = Neptune.get();
-            Kit kit = plugin.getKitManager().getKitByName(plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData().getLastKit());
+            Kit kit = plugin.getKitManager().getKitByName(plugin.getAPI().getProfile(player).getGameData().getLastKit());
             if (kit != null) {
                 plugin.getQueueManager().add(player.getUniqueId(), new Queue(kit));
             }

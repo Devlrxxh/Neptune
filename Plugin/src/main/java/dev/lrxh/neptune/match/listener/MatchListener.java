@@ -39,7 +39,7 @@ public class MatchListener implements Listener {
         Player player = event.getEntity();
         event.setDeathMessage(null);
         event.getDrops().clear();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
@@ -52,7 +52,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
-            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            Profile profile = plugin.getAPI().getProfile(player);
 
             if (!profile.getState().equals(ProfileState.IN_GAME)) {
                 event.setCancelled(true);
@@ -64,11 +64,11 @@ public class MatchListener implements Listener {
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
-        if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+        if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
             event.setCancelled(true);
             player.sendMessage(CC.color("&cYou can't place blocks here!"));
             return;
@@ -95,7 +95,7 @@ public class MatchListener implements Listener {
         ProjectileSource shooter = event.getEntity().getShooter();
         if (!(shooter instanceof Player player)) return;
 
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         Match match = profile.getMatch();
         if (match == null) {
             event.setCancelled(true);
@@ -110,8 +110,8 @@ public class MatchListener implements Listener {
     public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player player) {
 
-            Profile attackerProfile = plugin.getProfileManager().getByUUID(attacker.getUniqueId());
-            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            Profile attackerProfile = plugin.getAPI().getProfile(attacker.getUniqueId());
+            Profile profile = plugin.getAPI().getProfile(player);
             if (profile == null) return;
 
             if (profile.getMatch() == null || attackerProfile.getState().equals(ProfileState.IN_SPECTATOR)) {
@@ -146,8 +146,8 @@ public class MatchListener implements Listener {
     @EventHandler(ignoreCancelled = true)
     public void onPlayerHitEvent(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Player target && event.getDamager() instanceof Player damager) {
-            Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
-            Profile playerProfile = plugin.getProfileManager().getByUUID(damager.getUniqueId());
+            Profile targetProfile = plugin.getAPI().getProfile(target);
+            Profile playerProfile = plugin.getAPI().getProfile(damager.getUniqueId());
 
             if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME)) {
                 Match match = targetProfile.getMatch();
@@ -161,7 +161,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
 
@@ -183,7 +183,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
-            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            Profile profile = plugin.getAPI().getProfile(player);
             if (profile == null) return;
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
@@ -205,7 +205,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player player) {
-            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            Profile profile = plugin.getAPI().getProfile(player);
             if (profile == null) return;
             Match match = profile.getMatch();
 
@@ -218,7 +218,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
         if (event.getEntity() instanceof Player player) {
-            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            Profile profile = plugin.getAPI().getProfile(player);
             if (profile == null) return;
             Match match = profile.getMatch();
             if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
@@ -233,11 +233,11 @@ public class MatchListener implements Listener {
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
-        if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+        if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
             event.setCancelled(true);
             player.sendMessage(CC.color("&cYou can't place blocks here!"));
             return;
@@ -263,7 +263,7 @@ public class MatchListener implements Listener {
     public void onPlayerInteract(EntityPlaceEvent event) {
         if (!event.getEntity().getType().equals(EntityType.ENDER_CRYSTAL)) return;
         if (event.getPlayer() == null) return;
-        Profile profile = plugin.getProfileManager().getByUUID(event.getPlayer().getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(event.getPlayer().getUniqueId());
         if (profile == null) return;
         if (profile.getMatch() == null) return;
 
@@ -275,7 +275,7 @@ public class MatchListener implements Listener {
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         if (profile.getState().equals(ProfileState.IN_LOBBY)) {
             event.setCancelled(true);
@@ -304,7 +304,7 @@ public class MatchListener implements Listener {
 
         if (shooter instanceof Player player) {
             if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            Profile profile = plugin.getAPI().getProfile(player);
             if (profile == null) return;
             if (!profile.getState().equals(ProfileState.IN_GAME)) {
                 event.setCancelled(true);
@@ -323,7 +323,7 @@ public class MatchListener implements Listener {
     public void onItemDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         if (!profile.getState().equals(ProfileState.IN_GAME)) {
             event.setCancelled(true);

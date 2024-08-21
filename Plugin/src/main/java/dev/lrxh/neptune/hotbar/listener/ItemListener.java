@@ -20,7 +20,7 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         if (profile.getState().equals(ProfileState.IN_GAME)) return;
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
 

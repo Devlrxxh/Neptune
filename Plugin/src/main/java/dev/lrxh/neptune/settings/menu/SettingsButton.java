@@ -17,7 +17,7 @@ public class SettingsButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
 
         return new ItemBuilder(setting.getMaterial(), player.getUniqueId())
                 .name(setting.getDisplayName())

@@ -31,7 +31,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        if (plugin.getProfileManager().getByUUID(player.getUniqueId()).getMatch() != null) {
+        if (plugin.getAPI().getProfile(player).getMatch() != null) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
             return;
         }
@@ -40,9 +40,9 @@ public class DuelCommand extends BaseCommand {
             player.sendMessage(CC.error("You can't duel yourself!"));
             return;
         }
-        Profile targetProfile = plugin.getProfileManager().getByUUID(target.getUniqueId());
+        Profile targetProfile = plugin.getAPI().getProfile(target);
 
-        if (targetProfile.getMatch() != null || targetProfile.getState().equals(ProfileState.IN_KIT_EDITOR) || !targetProfile.getSettingData().isAllowDuels()) {
+        if (targetProfile.getMatch() != null || targetProfile.hasState(ProfileState.IN_KIT_EDITOR) || !targetProfile.getSettingData().isAllowDuels()) {
             player.sendMessage(CC.error("Player can't accept duel requests!"));
             return;
         }
@@ -52,7 +52,7 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        Profile userProfile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile userProfile = plugin.getAPI().getProfile(player);
         if (userProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getState().equals(ProfileState.IN_PARTY) || targetProfile.getState().equals(ProfileState.IN_PARTY) && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
             return;
@@ -64,15 +64,15 @@ public class DuelCommand extends BaseCommand {
     @Subcommand("accept")
     @Syntax("<uuid>")
     public void accept(Player player, String otherString) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        GameData playerGameData = plugin.getProfileManager().getByUUID(player.getUniqueId()).getGameData();
+        Profile profile = plugin.getAPI().getProfile(player);
+        GameData playerGameData = plugin.getAPI().getProfile(player).getGameData();
 
-        if (profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+        if (profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.hasState(ProfileState.IN_KIT_EDITOR)) {
             player.sendMessage(CC.error("You can't accept duel requests right now!"));
             return;
         }
         UUID targetUUID = UUID.fromString(otherString);
-        Profile targetProfile = plugin.getProfileManager().getByUUID(targetUUID);
+        Profile targetProfile = plugin.getAPI().getProfile(targetUUID);
 
         DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(targetUUID);
 
@@ -92,7 +92,7 @@ public class DuelCommand extends BaseCommand {
     @Subcommand("deny")
     @Syntax("<uuid>")
     public void deny(Player player, String otherString) {
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = plugin.getAPI().getProfile(player);
         GameData playerGameData = profile.getGameData();
 
         UUID otherUUID = UUID.fromString(otherString);
