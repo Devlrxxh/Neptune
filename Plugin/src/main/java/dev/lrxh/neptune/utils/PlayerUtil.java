@@ -38,7 +38,6 @@ public class PlayerUtil {
             player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
             player.getInventory().setHeldItemSlot(0);
             player.updateInventory();
-            allowMovement(playerUUID);
             player.resetTitle();
         }
     }
@@ -81,29 +80,6 @@ public class PlayerUtil {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         player.sendMessage(CC.color(message));
-    }
-
-    public void denyMovement(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-
-        player.setFlying(false);
-        player.setWalkSpeed(0.0F);
-        player.setFoodLevel(0);
-        player.setSprinting(false);
-
-        player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 250));
-    }
-
-    public void allowMovement(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-
-        player.setFlying(false);
-        player.setWalkSpeed(0.2F);
-        player.setFoodLevel(20);
-        player.setSprinting(true);
-        player.removePotionEffect(PotionEffectType.JUMP);
     }
 
     public void sendTitle(UUID playerUUID, String header, String footer, int duration) {

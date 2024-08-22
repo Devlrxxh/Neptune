@@ -99,16 +99,16 @@ public class HotbarManager implements IManager {
         }
         if (config.getConfigurationSection("CUSTOM_ITEMS") != null) {
             for (String itemName : getKeys("CUSTOM_ITEMS")) {
-                    String path = "CUSTOM_ITEMS." + itemName + ".";
+                String path = "CUSTOM_ITEMS." + itemName + ".";
 
-                    String displayName = config.getString(path + "NAME");
-                    String material = config.getString(path + "MATERIAL");
-                    byte slot = (byte) config.getInt(path + "SLOT");
-                    String command = config.getString(path + "COMMAND");
-                    ProfileState profileState = ProfileState.valueOf(config.getString(path + "STATE"));
+                String displayName = config.getString(path + "NAME");
+                String material = config.getString(path + "MATERIAL");
+                byte slot = (byte) config.getInt(path + "SLOT");
+                String command = config.getString(path + "COMMAND");
+                ProfileState profileState = ProfileState.valueOf(config.getString(path + "STATE"));
 
-                    CustomItem customItem = new CustomItem(displayName, material, slot, command);
-                    items.get(profileState).addItem(customItem, slot);
+                CustomItem customItem = new CustomItem(displayName, material, slot, command);
+                items.get(profileState).addItem(customItem, slot);
             }
         }
     }

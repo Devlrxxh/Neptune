@@ -18,10 +18,10 @@ public class Hotbar {
     }
 
     public void addItem(Item item, byte slot) {
-            if (slot >= 0 && slot < getSlots().length) {
-                if (getSlots()[slot] == null) {
-                    getSlots()[slot] = item;
-                }
+        if (slot >= 0 && slot < getSlots().length) {
+            if (getSlots()[slot] == null) {
+                getSlots()[slot] = item;
             }
+        }
     }
 }

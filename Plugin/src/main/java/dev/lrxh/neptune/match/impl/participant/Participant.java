@@ -32,11 +32,16 @@ public class Participant {
     private boolean disconnected = false;
     private int roundsWon = 0;
     private Neptune plugin;
+    private boolean frozen = false;
 
     public Participant(Player player, Neptune plugin) {
         this.playerUUID = player.getUniqueId();
         this.name = player.getName();
         this.plugin = plugin;
+    }
+
+    public void toggleFreeze() {
+        frozen = !frozen;
     }
 
     public String getNameColored() {

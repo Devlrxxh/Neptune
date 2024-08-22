@@ -165,17 +165,28 @@ public class MatchListener implements Listener {
         if (profile == null) return;
         Match match = profile.getMatch();
 
-        if (match != null && match.getState().equals(MatchState.IN_ROUND)) {
+
+        if (match != null) {
             Participant participant = match.getParticipant(player.getUniqueId());
-            Location playerLocation = player.getLocation();
-
-            if (match.getKit().is(KitRule.SUMO)) {
-                Block block = playerLocation.getBlock();
-
-                if (block.getType() == Material.WATER) {
-                    participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                    match.onDeath(participant);
+            if (participant.isFrozen()) {
+                Location to = event.getTo();
+                Location from = event.getFrom();
+                if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
+                    player.teleport(from);
                 }
+            }
+            if (match.getState().equals(MatchState.IN_ROUND)) {
+                Location playerLocation = player.getLocation();
+
+                if (match.getKit().is(KitRule.SUMO)) {
+                    Block block = playerLocation.getBlock();
+
+                    if (block.getType() == Material.WATER) {
+                        participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                        match.onDeath(participant);
+                    }
+                }
+
             }
         }
     }

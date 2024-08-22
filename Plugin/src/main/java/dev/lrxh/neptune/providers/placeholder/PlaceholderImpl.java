@@ -59,7 +59,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return String.valueOf(globalStats.getCurrentStreak());
                     case "lastKit":
                         Kit kit = plugin.getKitManager().getKitByName(profile.getGameData().getLastKit());
-                        if(kit == null) break;
+                        if (kit == null) break;
                         return kit.getDisplayName();
                 }
                 break;

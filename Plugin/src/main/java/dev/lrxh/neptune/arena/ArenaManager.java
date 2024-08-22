@@ -93,10 +93,10 @@ public class ArenaManager implements IManager {
                         new Value("type", "STANDALONE"),
                         new Value("min", LocationUtil.serialize(standAloneArena.getMin())),
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
-                        new Value("copies", ((StandAloneArena) arena).getCopiesAsString()),
-                        new Value("deathZone", ((StandAloneArena) arena).getDeathY()),
-                        new Value("limit", ((StandAloneArena) arena).getLimit()),
-                        new Value("duplicate", ((StandAloneArena) arena).isDuplicate())
+                        new Value("copies", standAloneArena.getCopiesAsString()),
+                        new Value("deathZone", standAloneArena.getDeathY()),
+                        new Value("limit", standAloneArena.getLimit()),
+                        new Value("duplicate", standAloneArena.isDuplicate())
                 ));
             } else {
                 values.add(new Value("type", "SHARED"));

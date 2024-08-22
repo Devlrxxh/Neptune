@@ -199,7 +199,6 @@ public abstract class Match {
     public void broadcast(String message) {
         forEachParticipant(participant -> participant.sendMessage(message));
 
-        //forEachSpectator(player -> player.sendMessage(CC.translate(message))); CC.translate(message) doesn't exist :p
         forEachSpectator(player -> player.sendMessage(CC.color(message)));
     }
 
@@ -207,11 +206,7 @@ public abstract class Match {
         forEachParticipant(participant -> {
             if (!(this instanceof FfaFightMatch)) {
                 if (kit.is(KitRule.DENY_MOVEMENT)) {
-                    if (state.equals(MatchState.STARTING)) {
-                        PlayerUtil.denyMovement(participant.getPlayerUUID());
-                    } else {
-                        PlayerUtil.allowMovement(participant.getPlayerUUID());
-                    }
+                    participant.toggleFreeze();
                 }
             }
             if (kit.is(KitRule.SHOW_HP)) {
@@ -258,7 +253,6 @@ public abstract class Match {
             }
         });
     }
-
 
     public void removeEntities() {
         for (Entity entity : entities) {

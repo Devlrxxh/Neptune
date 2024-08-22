@@ -37,9 +37,9 @@ public class ItemListener implements Listener {
 
         if (profile.cooldown) return;
 
-        if(clickedItem instanceof CustomItem customItem) {
+        if (clickedItem instanceof CustomItem customItem) {
             String command = customItem.getCommand();
-            if(!command.equalsIgnoreCase("none")){
+            if (!command.equalsIgnoreCase("none")) {
                 player.performCommand(customItem.getCommand());
             }
         } else {
