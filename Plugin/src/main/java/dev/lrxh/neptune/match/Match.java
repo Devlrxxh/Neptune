@@ -192,13 +192,11 @@ public abstract class Match {
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
         forEachParticipant(participant -> messagesLocale.send(participant.getPlayerUUID(), replacements));
-
         forEachSpectator(player -> messagesLocale.send(player.getUniqueId(), replacements));
     }
 
     public void broadcast(String message) {
         forEachParticipant(participant -> participant.sendMessage(message));
-
         forEachSpectator(player -> player.sendMessage(CC.color(message)));
     }
 
@@ -231,7 +229,6 @@ public abstract class Match {
             }
         });
     }
-
 
     private void showHealth(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
@@ -269,12 +266,19 @@ public abstract class Match {
         String deathMessage = deadParticipant.getDeathMessage();
         DeathCause deathCause = deadParticipant.getDeathCause();
 
-        if (deathMessage.isEmpty() && deathCause != null && !deathCause.equals(DeathCause.DIED)) {
-            broadcast(
-                    deadParticipant.getDeathCause().getMessagesLocale(),
+        if (deathMessage.isEmpty() && deathCause != null) {
+            if (deathCause.equals(DeathCause.KILL)) {
+                broadcast(
+                    deathCause.getMessagesLocale(),
                     new Replacement("<player>", deadParticipant.getNameColored()),
                     new Replacement("<killer>", deadParticipant.getLastAttackerName())
-            );
+                );
+            } else {
+                broadcast(
+                    deathCause.getMessagesLocale(),
+                    new Replacement("<player>", deadParticipant.getNameColored())
+                );
+            }
         } else {
             broadcast(deathMessage);
         }
@@ -292,9 +296,16 @@ public abstract class Match {
         }
     }
 
+    protected void handleDeath(Participant participant) {
+        Participant lastAttacker = participant.getLastAttacker();
+        boolean isKill = lastAttacker != null;
+        participant.setDeathCause(isKill ? DeathCause.KILL : DeathCause.DIED);
+        onDeath(participant, isKill);
+    }
+
     public abstract void end(Participant loser);
 
-    public abstract void onDeath(Participant participant);
+    public abstract void onDeath(Participant participant, boolean isKill);
 
     public abstract void onLeave(Participant participant);
 
