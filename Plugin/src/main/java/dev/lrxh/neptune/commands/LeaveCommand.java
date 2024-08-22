@@ -15,7 +15,7 @@ public class LeaveCommand extends BaseCommand {
 
     @Default
     public void leave(Player player) {
-        Profile profile = Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        Profile profile = Neptune.get().getAPI().getProfile(player.getUniqueId());
         ProfileState state = profile.getState();
 
         switch (state) {

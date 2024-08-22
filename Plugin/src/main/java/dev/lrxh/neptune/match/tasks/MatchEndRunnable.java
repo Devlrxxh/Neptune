@@ -35,7 +35,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
         if (endTimer == 0) {
             for (Participant participant : match.participants) {
                 if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
-                Profile profile = Neptune.get().getProfileManager().getByUUID(participant.getPlayerUUID());
+                Profile profile = plugin.getAPI().getProfile(participant.getPlayerUUID());
                 if (profile.getMatch() == null) continue;
                 PlayerUtil.reset(participant.getPlayerUUID());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
@@ -53,9 +53,9 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 match.removeSpectator(spectator, false);
             }
 
-            if (match.arena instanceof StandAloneArena) {
-                ((StandAloneArena) match.arena).setUsed(false);
-                ((StandAloneArena) match.arena).restoreSnapshot();
+            if (match.arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.setUsed(false);
+                standAloneArena.restoreSnapshot();
                 stop(plugin);
             }
             match.removeEntities();

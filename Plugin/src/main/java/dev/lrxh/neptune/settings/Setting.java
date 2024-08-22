@@ -141,7 +141,7 @@ public enum Setting {
     }
 
     public Profile getProfile(Player player) {
-        return Neptune.get().getProfileManager().getByUUID(player.getUniqueId());
+        return Neptune.get().getAPI().getProfile(player.getUniqueId());
     }
 
     public abstract void execute(Player player, ClickType clickType);

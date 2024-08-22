@@ -54,6 +54,7 @@ import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuManager;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
+import dev.lrxh.versioncontroll.Version.Version;
 import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -87,6 +88,7 @@ public final class Neptune extends JavaPlugin {
     private HotbarManager hotbarManager;
     private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
+    private Version version;
     private MenuManager menuManager;
     private GenerationManager generationManager;
     private EntityHider entityHider;
@@ -110,8 +112,10 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadManager() {
-        this.versionHandler = new VersionControll(this).getHandler();
+        VersionControll versionControll = new VersionControll(this);
+        this.versionHandler = versionControll.getHandler();
         if (!isEnabled()) return;
+        this.version = versionControll.getVersion();
 
         loadExtensions();
         if (!isEnabled()) return;

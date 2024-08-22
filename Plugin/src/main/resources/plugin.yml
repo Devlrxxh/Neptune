@@ -5,6 +5,7 @@ api-version: 1.16
 softdepend:
   - PlaceholderAPI
   - FastAsyncWorldEdit
+  - WorldEdit
   - Multiverse-Core
 depend:
   - packetevents
