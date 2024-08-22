@@ -148,7 +148,7 @@ public class MatchListener implements Listener {
         if (event.getEntity() instanceof Player target && event.getDamager() instanceof Player damager) {
             Profile targetProfile = plugin.getAPI().getProfile(target);
             Profile playerProfile = plugin.getAPI().getProfile(damager.getUniqueId());
-            if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME) && event.isCritical() && target.getAttackCooldown() == 1.0) {
+            if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME) && event.isCritical() && damager.getAttackCooldown() == 1.0) {
                 Match match = targetProfile.getMatch();
                 Participant opponent = match.getParticipant(target.getUniqueId());
                 match.getParticipant(damager.getUniqueId()).handleHit(opponent);

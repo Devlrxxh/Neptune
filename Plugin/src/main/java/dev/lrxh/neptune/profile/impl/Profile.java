@@ -75,6 +75,8 @@ public class Profile {
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
         DataDocument settings = dataDocument.getDataDocument("settings");
 
+
+
         for (Kit kit : plugin.getKitManager().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
             if (kitDocument == null) return;
