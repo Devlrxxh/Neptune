@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.hotbar;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Hotbar;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.hotbar.impl.ItemAction;
@@ -92,8 +93,22 @@ public class HotbarManager implements IManager {
                     } catch (IllegalArgumentException ignored) {
                     }
 
-                    getItems().put(ProfileState.valueOf(section), inventory);
+                    items.put(ProfileState.valueOf(section), inventory);
                 }
+            }
+        }
+        if (config.getConfigurationSection("CUSTOM_ITEMS") != null) {
+            for (String itemName : getKeys("CUSTOM_ITEMS")) {
+                    String path = "CUSTOM_ITEMS." + itemName + ".";
+
+                    String displayName = config.getString(path + "NAME");
+                    String material = config.getString(path + "MATERIAL");
+                    byte slot = (byte) config.getInt(path + "SLOT");
+                    String command = config.getString(path + "COMMAND");
+                    ProfileState profileState = ProfileState.valueOf(config.getString(path + "STATE"));
+
+                    CustomItem customItem = new CustomItem(displayName, material, slot, command);
+                    items.get(profileState).addItem(customItem, slot);
             }
         }
     }

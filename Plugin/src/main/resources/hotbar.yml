@@ -1,0 +1,7 @@
+CUSTOM_ITEMS:
+  CUSTOM_ITEM1:
+    NAME: "&aCustom Item"
+    MATERIAL: ENDER_EYE
+    SLOT: 1
+    COMMAND: "say hi"
+    STATE: IN_LOBBY

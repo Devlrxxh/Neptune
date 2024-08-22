@@ -31,7 +31,7 @@ public class StatsMenu extends Menu {
 
     @Override
     public Filter getFilter() {
-        return Filter.valueOf(MenusLocale.STAT_FILTER.getString());
+        return Filter.valueOf((MenusLocale.STAT_FILTER.getString()));
     }
 
     @Override

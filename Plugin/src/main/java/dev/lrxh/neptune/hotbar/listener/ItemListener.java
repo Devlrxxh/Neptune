@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.hotbar.listener;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -36,7 +37,14 @@ public class ItemListener implements Listener {
 
         if (profile.cooldown) return;
 
-        clickedItem.getAction().execute(player);
+        if(clickedItem instanceof CustomItem customItem) {
+            String command = customItem.getCommand();
+            if(!command.equalsIgnoreCase("none")){
+                player.performCommand(customItem.getCommand());
+            }
+        } else {
+            clickedItem.getAction().execute(player);
+        }
 
         profile.cooldown = true;
         plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
