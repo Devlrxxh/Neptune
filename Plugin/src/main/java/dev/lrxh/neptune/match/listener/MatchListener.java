@@ -39,16 +39,25 @@ public class MatchListener implements Listener {
         Player player = event.getEntity();
         event.setDeathMessage(null);
         event.getDrops().clear();
+        
         Profile profile = plugin.getAPI().getProfile(player);
-        if (profile == null) return;
-        if (profile.getMatch() != null) {
-            Match match = profile.getMatch();
-            Participant participant = match.getParticipant(player.getUniqueId());
-            participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-            match.onDeath(participant);
+        Match match = profile.getMatch();
+        Participant participant = match.getParticipant(player.getUniqueId());
+        
+        Player killer = player.getKiller();
+        boolean isKill = killer != null;
+        
+        if (isKill) {
+            Participant killerParticipant = match.getParticipant(killer.getUniqueId());
+            if (killerParticipant != null) {
+                participant.setLastAttacker(killerParticipant);
+            }
         }
+        
+        match.handleDeath(participant);
+        player.spigot().respawn();
     }
-
+    
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
