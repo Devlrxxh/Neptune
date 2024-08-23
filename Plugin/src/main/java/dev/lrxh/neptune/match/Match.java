@@ -255,9 +255,10 @@ public abstract class Match {
     }
 
     public void removeEntities() {
-        for (Entity entity : entities) {
+        for (Entity entity : new HashSet<>(entities)) {
             if (entity == null) continue;
             entity.remove();
+            entities.remove(entity);
         }
     }
 

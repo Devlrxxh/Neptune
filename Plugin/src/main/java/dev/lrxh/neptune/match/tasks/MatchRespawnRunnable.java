@@ -57,9 +57,10 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
             match.teleportToPositions();
 
-            if (match.arena instanceof StandAloneArena) {
-                ((StandAloneArena) match.arena).restoreSnapshot();
+            if (match.arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.restoreSnapshot();
             }
+            match.removeEntities();
 
             match.checkRules();
         }

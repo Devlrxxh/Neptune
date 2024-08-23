@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -119,6 +120,7 @@ public class Kit {
         }
     }
 
+    @Nullable
     public Arena getRandomArena() {
         List<Arena> kitArenas = new ArrayList<>();
         for (Arena arena : arenas) {

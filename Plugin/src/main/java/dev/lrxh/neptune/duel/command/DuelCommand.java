@@ -47,6 +47,11 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
+        if (!targetProfile.getGameData().getParty().isLeader(target.getUniqueId())) {
+            player.sendMessage(CC.error("Player can't accept duel requests!"));
+            return;
+        }
+
         if (targetProfile.getGameData().getRequests().contains(player.getUniqueId())) {
             MessagesLocale.DUEL_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
             return;

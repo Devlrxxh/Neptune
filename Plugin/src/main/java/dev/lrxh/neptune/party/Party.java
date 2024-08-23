@@ -50,6 +50,10 @@ public class Party {
         return player.getName();
     }
 
+    public boolean isLeader(UUID playerUUID) {
+        return leader == playerUUID;
+    }
+
     public void invite(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;

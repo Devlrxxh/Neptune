@@ -64,7 +64,9 @@ public class Participant {
     }
 
     public void playKillEffect() {
-        UUID attckerUUID = getLastAttacker().getPlayerUUID();
+        Participant lastAttacker = getLastAttacker();
+        if (lastAttacker == null) return;
+        UUID attckerUUID = lastAttacker.getPlayerUUID();
         if (attckerUUID == null) return;
         Profile profile = plugin.getAPI().getProfile(attckerUUID);
         Player player = Bukkit.getPlayer(playerUUID);
