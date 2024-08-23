@@ -47,7 +47,7 @@ public class SoloFightMatch extends Match {
         Participant winner = participantA.isLoser() ? participantB : participantA;
 
         winner.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "You"), 100);
+                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);
 
         loser.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);

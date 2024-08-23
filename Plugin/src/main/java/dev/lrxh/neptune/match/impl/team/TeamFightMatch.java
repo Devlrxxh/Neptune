@@ -43,10 +43,10 @@ public class TeamFightMatch extends Match {
         MatchTeam loserTeam = getParticipantTeam(loser);
 
         winnerTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "You"), 100);
+                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);
 
         loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", "Opponent Team"), 100);
+                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_OPPONENT_TEAM.getString()), 100);
 
         loser.playKillEffect();
 

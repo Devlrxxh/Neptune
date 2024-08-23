@@ -2,6 +2,7 @@ package dev.lrxh.neptune.providers.placeholder;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.profile.data.GlobalStats;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -57,6 +58,11 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return String.valueOf(globalStats.getLosses());
                     case "currentStreak":
                         return String.valueOf(globalStats.getCurrentStreak());
+                    case "color":
+                        Match match = profile.getMatch();
+                        if (match != null) {
+                            return "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar();
+                        }
                     case "lastKit":
                         Kit kit = plugin.getKitManager().getKitByName(profile.getGameData().getLastKit());
                         if (kit == null) break;

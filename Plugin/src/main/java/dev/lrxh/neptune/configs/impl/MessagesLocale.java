@@ -17,6 +17,8 @@ import java.util.UUID;
 
 @Getter
 public enum MessagesLocale implements IDataAccessor {
+    MATCH_YOU("MATCH.YOU", DataType.STRING, "You"),
+    MATCH_OPPONENT_TEAM("MATCH.OPPONENT_TEAM", DataType.STRING, "Opponent Team"),
     MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", DataType.STRING_LIST, "<player> &7disconnected"),
     MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", DataType.STRING_LIST, "&c☠ <player> &7was killed by \uD83D\uDDE1 <killer>"),
     MATCH_DEATH_DIED("MATCH.DEATH.DIED", DataType.STRING_LIST, "&c☠ <player> &7died"),
