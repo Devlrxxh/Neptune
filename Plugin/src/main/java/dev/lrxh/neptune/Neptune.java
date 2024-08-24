@@ -60,6 +60,7 @@ import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -193,6 +194,7 @@ public final class Neptune extends JavaPlugin {
             versionHandler.getGameRule().setGameRule(world, GameRule.DO_WEATHER_CYCLE, false);
             versionHandler.getGameRule().setGameRule(world, GameRule.DO_DAYLIGHT_CYCLE, false);
             versionHandler.getGameRule().setGameRule(world, GameRule.DO_IMMEDIATE_RESPAWN, true);
+            versionHandler.getGameRule().setGameRule(world, GameRule.ANNOUNCE_ADVANCEMENTS, false);
             world.setDifficulty(Difficulty.HARD);
         }
     }

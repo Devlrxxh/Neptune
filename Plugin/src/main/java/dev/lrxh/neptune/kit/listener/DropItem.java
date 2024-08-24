@@ -21,7 +21,7 @@ public class DropItem implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClick(PlayerDropItemEvent event) {
+    public void onDropItem(PlayerDropItemEvent event) {
 
         Profile profile = plugin.getAPI().getProfile(event.getPlayer());
 

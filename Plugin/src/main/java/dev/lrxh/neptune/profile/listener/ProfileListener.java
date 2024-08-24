@@ -12,6 +12,7 @@ import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -69,5 +70,16 @@ public class ProfileListener implements Listener {
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());
             profile.setState(ProfileState.IN_LOBBY);
         }
+    }
+
+    @EventHandler
+    public void onInventoryClick(InventoryClickEvent event) {
+
+        Profile profile = plugin.getAPI().getProfile((Player) event.getWhoClicked());
+
+        if(event.getWhoClicked().getWorld().getName().equals(plugin.getCache().getSpawn().getWorld().getName()))
+            if(profile.getState().equals(ProfileState.IN_KIT_EDITOR)) {
+                event.setCancelled(true);
+            }
     }
 }
