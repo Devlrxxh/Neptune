@@ -33,3 +33,6 @@ build/
 java/build/**
 /.idea
 .idea/vcs.xml
+*.xml
+.idea/misc.xml
+*.xml

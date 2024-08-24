@@ -28,7 +28,7 @@
       </set>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_18" default="true" project-jdk-name="corretto-18" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" default="true" project-jdk-name="temurin-21 (5)" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>

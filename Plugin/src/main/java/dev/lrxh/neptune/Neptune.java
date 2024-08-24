@@ -29,6 +29,7 @@ import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
 import dev.lrxh.neptune.kit.command.KitEditorCommand;
 import dev.lrxh.neptune.kit.command.StatsCommand;
+import dev.lrxh.neptune.kit.listener.InventoryClick;
 import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.leaderboard.task.LeaderboardTask;
@@ -172,7 +173,8 @@ public final class Neptune extends JavaPlugin {
                 new MenuListener(),
                 new EntityCache(),
                 new ItemCache(),
-                new BukkitListener()
+                new BukkitListener(),
+                new InventoryClick()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
