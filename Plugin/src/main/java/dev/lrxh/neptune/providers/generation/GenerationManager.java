@@ -1,57 +1,45 @@
 package dev.lrxh.neptune.providers.generation;
 
-import com.sk89q.worldedit.EditSession;
-import com.sk89q.worldedit.WorldEdit;
-import com.sk89q.worldedit.WorldEditException;
-import com.sk89q.worldedit.bukkit.BukkitWorld;
-import com.sk89q.worldedit.extent.clipboard.BlockArrayClipboard;
-import com.sk89q.worldedit.function.operation.Operation;
-import com.sk89q.worldedit.function.operation.Operations;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.regions.CuboidRegion;
-import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.session.ClipboardHolder;
-import com.sk89q.worldedit.world.block.BlockTypes;
-import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.neptune.utils.ServerUtils;
+import dev.lrxh.VersionHandler;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.utils.chunk.IChunkUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Block;
 
 public class GenerationManager {
+    private final IChunkUtils chunkUtils;
 
-    public void pasteRegion(BlockArrayClipboard clipboard, Location loc1, int offset) {
-        try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
-                .world(new BukkitWorld(loc1.getWorld()))
-                .fastMode(true)
-                .limitUnlimited()
-                .allowedRegionsEverywhere()
-                .build()) {
-
-            Location min = LocationUtil.addOffsetToLocation(loc1, offset);
-            BlockVector3 blockVector3 = BlockVector3.at(min.getX(), min.getY(), min.getZ());
-
-            Operation operation = new ClipboardHolder(clipboard)
-                    .createPaste(editSession)
-                    .to(blockVector3)
-                    .ignoreAirBlocks(true)
-                    .build();
-            Operations.complete(operation);
-        }
+    public GenerationManager(VersionHandler versionHandler) {
+        this.chunkUtils = versionHandler.getChunk();
     }
 
-    public synchronized void deleteRegion(Location min, Location max) {
-        BlockVector3 minV = BlockVector3.at(min.getX(), min.getY(), min.getZ());
-        BlockVector3 maxV = BlockVector3.at(max.getX(), max.getY(), max.getZ());
-        Region region = new CuboidRegion(minV, maxV);
+    public void pasteRegion(StandAloneArena standAloneArena, Location minOld, Location maxOld, int offset) {
+        Location min = minOld.add(0, 0, offset);
+        Location max = maxOld.add(0, 0, offset);
 
-        try (EditSession editSession = WorldEdit.getInstance().newEditSessionBuilder()
-                .world(new BukkitWorld(max.getWorld()))
-                .fastMode(true)
-                .limitUnlimited()
-                .allowedRegionsEverywhere()
-                .build()) {
-            editSession.setBlocks(region, BlockTypes.AIR);
-        } catch (WorldEditException e) {
-            ServerUtils.error("Failed to delete region: " + e.getMessage());
+        chunkUtils.pasteSnapshot(standAloneArena.getChunkSnapshots(), min, max, max.getWorld());
+    }
+
+    public void deleteRegion(Location min, Location max) {
+        World world = min.getWorld();
+
+        int minX = Math.min(min.getBlockX(), max.getBlockX());
+        int minY = Math.min(min.getBlockY(), max.getBlockY());
+        int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
+
+        int maxX = Math.max(min.getBlockX(), max.getBlockX());
+        int maxY = Math.max(min.getBlockY(), max.getBlockY());
+        int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    Block block = world.getBlockAt(x, y, z);
+                    block.setType(Material.AIR);
+                }
+            }
         }
     }
 }

@@ -86,14 +86,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.boydti</groupId>
-            <artifactId>fawe-api</artifactId>
-            <version>latest</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/libs/fawe.jar</systemPath>
-        </dependency>
-
-        <dependency>
             <groupId>dev.lrxh</groupId>
             <artifactId>Build</artifactId>
             <version>1.0</version>

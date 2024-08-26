@@ -47,7 +47,7 @@ public class MatchListener implements Listener {
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
-        player.respawn()
+        player.spigot().respawn();
     }
 
     @EventHandler

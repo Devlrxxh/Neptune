@@ -140,7 +140,7 @@ public final class Neptune extends JavaPlugin {
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
-        this.generationManager = new GenerationManager();
+        this.generationManager = new GenerationManager(versionHandler);
         this.assemble = new Assemble(new ScoreboardAdapter());
         this.api = new API(this);
 
@@ -178,7 +178,6 @@ public final class Neptune extends JavaPlugin {
 
     private void loadExtensions() {
         placeholder = loadExtension("PlaceholderAPI");
-        fawe = loadExtension("FastAsyncWorldEdit");
     }
 
     private boolean loadExtension(String pluginName) {

@@ -47,11 +47,6 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        if (!targetProfile.getGameData().getParty().isLeader(target.getUniqueId())) {
-            player.sendMessage(CC.error("Player can't accept duel requests!"));
-            return;
-        }
-
         if (targetProfile.getGameData().getRequests().contains(player.getUniqueId())) {
             MessagesLocale.DUEL_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
             return;
@@ -60,6 +55,11 @@ public class DuelCommand extends BaseCommand {
         Profile userProfile = plugin.getAPI().getProfile(player);
         if (userProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getState().equals(ProfileState.IN_PARTY) || targetProfile.getState().equals(ProfileState.IN_PARTY) && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
+            return;
+        }
+
+        if (targetProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getGameData().getParty().isLeader(target.getUniqueId())) {
+            player.sendMessage(CC.error("Player can't accept duel requests!"));
             return;
         }
 

@@ -18,11 +18,7 @@ public class ItemBuilder {
     private final ItemStack item;
 
     public ItemBuilder(Material material) {
-        if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(material));
-        } else {
-            item = new ItemStack(Material.BARRIER);
-        }
+        item = new ItemStack(Objects.requireNonNullElse(material, Material.BARRIER));
     }
 
     public ItemBuilder(String material) {
