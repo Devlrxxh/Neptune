@@ -2,6 +2,7 @@ package dev.lrxh.neptune.party.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.impl.EventType;
 import dev.lrxh.neptune.party.menu.buttons.events.PartyTeamKitButton;
@@ -41,7 +42,9 @@ public class PartyEventsKitMenu extends Menu {
         int slot = MenusLocale.PARTY_EVENTS_KIT_SELECT_SLOT.getInt();
 
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(slot++, new PartyTeamKitButton(party, kit, eventType));
+            if(kit.is(KitRule.ALLOW_PARTY)) {
+                buttons.put(slot++, new PartyTeamKitButton(party, kit, eventType));
+            }
         }
 
         return buttons;
