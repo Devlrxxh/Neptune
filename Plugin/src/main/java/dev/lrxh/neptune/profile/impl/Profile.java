@@ -75,22 +75,21 @@ public class Profile {
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
         DataDocument settings = dataDocument.getDataDocument("settings");
 
-
-
         for (Kit kit : plugin.getKitManager().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
             if (kitDocument == null) return;
             KitData profileKitData = gameData.getKitData().get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
-            gameData.getGlobalStats().addCurrentStreak(profileKitData.getCurrentStreak());
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
-            gameData.getGlobalStats().addWins(profileKitData.getWins());
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
-            gameData.getGlobalStats().addLosses(profileKitData.getLosses());
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
             profileKitData.updateDivision();
         }
+
+        gameData.getGlobalStats().setCurrentStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_CURRENT", gameData.countGlobalWins()));
+        gameData.getGlobalStats().setWins(kitStatistics.getInteger("GLOBAL_WINS", gameData.countGlobalLosses()));
+        gameData.getGlobalStats().setLosses(kitStatistics.getInteger("GLOBAL_LOSSES", gameData.countGlobalCurrentStreak()));
 
         settingData.setPlayerVisibility(settings.getBoolean("showPlayers", true));
         settingData.setAllowSpectators(settings.getBoolean("allowSpectators", true));
@@ -113,21 +112,23 @@ public class Profile {
 
         dataDocument.put("history", gameData.serializeHistory());
 
+
         for (Kit kit : plugin.getKitManager().kits) {
-            KitData entry = gameData.getKitData().get(kit);
             DataDocument kitStatisticsDocument = new DataDocument();
+            KitData entry = gameData.getKitData().get(kit);
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
             kitStatisticsDocument.put("WINS", entry.getWins());
             kitStatisticsDocument.put("LOSSES", entry.getLosses());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
             entry.updateDivision();
-            kitStatisticsDocument.put("WINS_GLOBAL", gameData.getGlobalStats().getWins());
-            kitStatisticsDocument.put("LOSSES_GLOBAL", gameData.getGlobalStats().getLosses());
-            kitStatisticsDocument.put("WIN_STREAK_CURRENT_GLOBAL", gameData.getGlobalStats().getCurrentStreak());
-
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
         }
+
+        kitStatsDoc.put("GLOBAL_WINS", gameData.getGlobalStats().getWins());
+        kitStatsDoc.put("GLOBAL_LOSSES", gameData.getGlobalStats().getLosses());
+        kitStatsDoc.put("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak());
+
         dataDocument.put("kitData", kitStatsDoc);
 
         DataDocument settingsDoc = new DataDocument();
