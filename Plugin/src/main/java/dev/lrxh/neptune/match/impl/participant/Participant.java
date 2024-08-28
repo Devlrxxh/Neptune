@@ -6,6 +6,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -113,12 +114,21 @@ public class Participant {
             }
         }
         Match match = plugin.getAPI().getProfile(playerUUID).getMatch();
+        if (match instanceof SoloFightMatch) {
             if (match.getKit().is(KitRule.BOXING)) {
-                if (match instanceof SoloFightMatch ? hits >= 100 : hits >= 200) {
+                if (hits >= 100) {
                     opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(opponent);
                 }
             }
+        } else if (match instanceof TeamFightMatch teamFightMatch) {
+            if (match.getKit().is(KitRule.BOXING)) {
+                if (hits >= teamFightMatch.getTeamA().getParticipants().size() * 100) {
+                    opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                    match.onDeath(opponent);
+                }
+            }
+        }
     }
 
     public String getHitsDifference(Participant otherParticipant) {

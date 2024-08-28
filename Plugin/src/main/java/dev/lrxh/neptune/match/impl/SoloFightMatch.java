@@ -44,7 +44,7 @@ public class SoloFightMatch extends Match {
             addStats();
         }
 
-        Participant winner = participantA.isLoser() ? participantB : participantA;
+        Participant winner = getWinner();
 
         winner.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);
@@ -66,8 +66,8 @@ public class SoloFightMatch extends Match {
     }
 
     public void addStats() {
-        Participant winner = participantA.isLoser() ? participantB : participantA;
-        Participant loser = participantA.isLoser() ? participantA : participantB;
+        Participant winner = getWinner();
+        Participant loser = getLoser();
         Profile winnerProfile = plugin.getAPI().getProfile(winner.getPlayerUUID());
         Profile loserProfile = plugin.getAPI().getProfile(loser.getPlayerUUID());
 
@@ -84,10 +84,18 @@ public class SoloFightMatch extends Match {
                 (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
     }
 
+    private Participant getLoser(){
+        return participantA.isLoser() ? participantA : participantB;
+    }
+
+    private Participant getWinner(){
+        return participantA.isLoser() ? participantB : participantA;
+    }
+
     @Override
     public void sendEndMessage() {
-        Participant winner = participantA.isLoser() ? participantB : participantA;
-        Participant loser = participantA.isLoser() ? participantA : participantB;
+        Participant winner = getWinner();
+        Participant loser = getLoser();
 
         broadcast(MessagesLocale.MATCH_END_DETAILS_SOLO,
                 new Replacement("<loser>", loser.getNameUnColored()),
