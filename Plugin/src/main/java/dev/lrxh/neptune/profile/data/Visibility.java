@@ -36,6 +36,13 @@ public class Visibility {
         Profile viewerProfile = plugin.getAPI().getProfile(uuid);
         Profile otherProfile = plugin.getAPI().getProfile(otherUUID);
 
+        if (has(uuid, otherUUID, ProfileState.IN_GAME)
+                && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())) {
+            viewerPlayer.showPlayer(plugin, otherPlayer);
+            otherPlayer.showPlayer(plugin, viewerPlayer);
+            return;
+        }
+
         if (!viewerProfile.getSettingData().isPlayerVisibility()) {
             viewerPlayer.hidePlayer(plugin, otherPlayer);
             return;
@@ -43,13 +50,6 @@ public class Visibility {
 
         if (!otherProfile.getSettingData().isPlayerVisibility()) {
             otherPlayer.hidePlayer(plugin, viewerPlayer);
-            return;
-        }
-
-        if (has(uuid, otherUUID, ProfileState.IN_GAME)
-                && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())) {
-            viewerPlayer.showPlayer(plugin, otherPlayer);
-            otherPlayer.showPlayer(plugin, viewerPlayer);
             return;
         }
 
