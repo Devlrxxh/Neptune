@@ -54,7 +54,7 @@ public class HotbarManager implements IManager {
                 Item item = getItemForSlot(inventory, slot);
 
                 if (item != null && item.isEnabled()) {
-                    if(!(item instanceof CustomItem)) {
+                    if (!(item instanceof CustomItem)) {
                         if (item.getAction().equals(ItemAction.PLAY_AGAIN)) {
                             Kit kit = plugin.getKitManager().getKitByName(plugin.getAPI().getProfile(player).getGameData().getLastKit());
                             if (kit != null) {

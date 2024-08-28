@@ -21,7 +21,7 @@ public class QueueManager {
     public void add(UUID playerUUID, Queue queue) {
         if (queues.containsKey(playerUUID)) return;
         Profile profile = plugin.getAPI().getProfile(playerUUID);
-        if(profile.hasState(ProfileState.IN_GAME)) return;
+        if (profile.hasState(ProfileState.IN_GAME)) return;
         if (profile.getGameData().getParty() != null) return;
         queues.put(playerUUID, queue);
         profile.setState(ProfileState.IN_QUEUE);

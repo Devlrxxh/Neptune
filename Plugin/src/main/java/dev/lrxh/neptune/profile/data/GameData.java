@@ -48,7 +48,7 @@ public class GameData {
 
     public int countGlobalWins() {
         int value = 0;
-        for(KitData kitData : kitData.values()) {
+        for (KitData kitData : kitData.values()) {
             value += kitData.getWins();
         }
         return value;
@@ -56,7 +56,7 @@ public class GameData {
 
     public int countGlobalLosses() {
         int value = 0;
-        for(KitData kitData : kitData.values()) {
+        for (KitData kitData : kitData.values()) {
             value += kitData.getLosses();
         }
         return value;
@@ -64,7 +64,7 @@ public class GameData {
 
     public int countGlobalCurrentStreak() {
         int value = 0;
-        for(KitData kitData : kitData.values()) {
+        for (KitData kitData : kitData.values()) {
             value += kitData.getCurrentStreak();
         }
         return value;

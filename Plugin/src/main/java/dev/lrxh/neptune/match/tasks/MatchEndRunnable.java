@@ -9,7 +9,6 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import org.bukkit.Bukkit;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -34,7 +33,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
         }
         if (endTimer == 0) {
             for (Participant participant : match.participants) {
-                if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) continue;
+                if (participant.getPlayer() == null) continue;
                 Profile profile = plugin.getAPI().getProfile(participant.getPlayerUUID());
                 if (profile.getMatch() == null) continue;
                 PlayerUtil.reset(participant.getPlayerUUID());

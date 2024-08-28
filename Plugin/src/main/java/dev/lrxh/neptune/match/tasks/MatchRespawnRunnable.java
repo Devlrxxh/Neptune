@@ -9,7 +9,6 @@ import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.sounds.Sound;
-import org.bukkit.Bukkit;
 
 
 public class MatchRespawnRunnable extends NeptuneRunnable {
@@ -32,7 +31,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
             return;
         }
-        if (Bukkit.getPlayer(participant.getPlayerUUID()) == null) return;
+        if (participant.getPlayer() == null) return;
         if (respawnTimer == 0) {
 
             MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());

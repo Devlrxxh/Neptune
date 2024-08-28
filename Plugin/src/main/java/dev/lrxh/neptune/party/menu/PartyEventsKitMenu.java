@@ -42,7 +42,7 @@ public class PartyEventsKitMenu extends Menu {
         int slot = MenusLocale.PARTY_EVENTS_KIT_SELECT_SLOT.getInt();
 
         for (Kit kit : plugin.getKitManager().kits) {
-            if(kit.is(KitRule.ALLOW_PARTY)) {
+            if (kit.is(KitRule.ALLOW_PARTY)) {
                 buttons.put(slot++, new PartyTeamKitButton(party, kit, eventType));
             }
         }

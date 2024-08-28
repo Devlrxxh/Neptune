@@ -84,7 +84,6 @@ public final class Neptune extends JavaPlugin {
     private Cache cache;
     private Assemble assemble;
     private boolean placeholder = false;
-    private boolean fawe = false;
     private HotbarManager hotbarManager;
     private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
