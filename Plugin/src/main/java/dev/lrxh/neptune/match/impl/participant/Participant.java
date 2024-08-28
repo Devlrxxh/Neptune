@@ -113,14 +113,12 @@ public class Participant {
             }
         }
         Match match = plugin.getAPI().getProfile(playerUUID).getMatch();
-        if (match instanceof SoloFightMatch) {
             if (match.getKit().is(KitRule.BOXING)) {
-                if (hits >= 100) {
+                if (match instanceof SoloFightMatch ? hits >= 100 : hits >= 200) {
                     opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(opponent);
                 }
             }
-        }
     }
 
     public String getHitsDifference(Participant otherParticipant) {
