@@ -119,7 +119,7 @@ public final class Neptune extends JavaPlugin {
         loadExtensions();
         if (!isEnabled()) return;
         if (placeholder) {
-            ServerUtils.sendMessage("Placeholder API found, loading expansion.");
+            ServerUtils.info("Placeholder API found, loading expansion.");
             new PlaceholderImpl(this).register();
         }
 
@@ -152,7 +152,7 @@ public final class Neptune extends JavaPlugin {
         System.gc();
         Runtime.getRuntime().freeMemory();
 
-        ServerUtils.sendMessage("Loaded Successfully");
+        ServerUtils.info("Loaded Successfully");
     }
 
     private void initAPIs() {

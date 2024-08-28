@@ -175,7 +175,7 @@ public class KitCommand extends BaseCommand {
 
             plugin.getDatabaseManager().getDatabase().replace(document.getString("uuid"), document);
         }
-        ServerUtils.sendMessage("Updated kit for " + i + " players!");
+        ServerUtils.info("Updated kit for " + i + " players!");
     }
 
     @Subcommand("seticon")

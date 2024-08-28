@@ -60,9 +60,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return String.valueOf(globalStats.getCurrentStreak());
                     case "color":
                         Match match = profile.getMatch();
-                        if (match != null) {
-                            return "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar();
-                        }
+                        return match != null ? "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar() : "";
                     case "lastKit":
                         Kit kit = plugin.getKitManager().getKitByName(profile.getGameData().getLastKit());
                         if (kit == null) break;
