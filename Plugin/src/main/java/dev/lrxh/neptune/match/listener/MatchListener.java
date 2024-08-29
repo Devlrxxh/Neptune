@@ -45,10 +45,9 @@ public class MatchListener implements Listener {
             Match match = profile.getMatch();
             Participant participant = match.getParticipant(player.getUniqueId());
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+            event.setCancelled(true);
             match.onDeath(participant);
         }
-        player.setRespawnLocation(player.getLocation());
-        player.spigot().respawn();
     }
 
     @EventHandler

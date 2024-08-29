@@ -30,9 +30,9 @@ public class Kit {
     private HashSet<Arena> arenas;
     private ItemStack icon;
     private HashMap<KitRule, Boolean> rules;
-    private int queue, playing;
+    private int queue, playing, slot;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, Neptune plugin) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, Neptune plugin) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -42,6 +42,7 @@ public class Kit {
         this.queue = 0;
         this.playing = 0;
         this.plugin = plugin;
+        this.slot = slot;
 
         checkMissing();
     }
@@ -56,6 +57,7 @@ public class Kit {
         this.queue = 0;
         this.playing = 0;
         this.plugin = plugin;
+        this.slot = 0;
 
         checkMissing();
     }

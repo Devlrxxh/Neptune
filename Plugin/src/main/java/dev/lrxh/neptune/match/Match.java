@@ -124,12 +124,6 @@ public abstract class Match {
         }
     }
 
-    public void addSpectator(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        player.setGameMode(GameMode.SPECTATOR);
-    }
-
     public List<String> getScoreboard(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ArrayList<>();

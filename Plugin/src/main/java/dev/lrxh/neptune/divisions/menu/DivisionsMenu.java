@@ -32,7 +32,7 @@ public class DivisionsMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = MenusLocale.LEADERBOARD_STARTING_SLOT.getInt();
+        int i = MenusLocale.DIVISIONS_STARTING_SLOT.getInt();
 
         ArrayList<Division> divisions = new ArrayList<>(plugin.getDivisionManager().divisions);
         Collections.reverse(divisions);

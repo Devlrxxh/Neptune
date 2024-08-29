@@ -178,10 +178,10 @@ public class KitCommand extends BaseCommand {
         ServerUtils.info("Updated kit for " + i + " players!");
     }
 
-    @Subcommand("seticon")
+    @Subcommand("setIcon")
     @Syntax("<kit>")
     @CommandCompletion("@kits")
-    public void seticon(Player player, String kitName) {
+    public void setIcon(Player player, String kitName) {
         if (player == null) return;
         if (!checkKit(kitName)) {
             player.sendMessage(CC.error("Kit doesn't exist!"));
@@ -193,6 +193,23 @@ public class KitCommand extends BaseCommand {
 
         plugin.getKitManager().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit icon!"));
+    }
+
+    @Subcommand("setSlot")
+    @Syntax("<kit> <slo>")
+    @CommandCompletion("@kits")
+    public void setSlot(Player player, String kitName, int slot) {
+        if (player == null) return;
+        if (!checkKit(kitName)) {
+            player.sendMessage(CC.error("Kit doesn't exist!"));
+            return;
+        }
+        Kit kit = plugin.getKitManager().getKitByName(kitName);
+
+        kit.setSlot(slot);
+
+        plugin.getKitManager().saveKits();
+        player.sendMessage(CC.color("&aSuccessfully set kit slot!"));
     }
 
     @Subcommand("addArena")

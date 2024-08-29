@@ -32,6 +32,7 @@ public class KitManager implements IManager {
                 ItemStack icon = ItemUtils.deserializeItem(config.getString(path + "icon", ""));
 
                 List<ItemStack> items = ItemUtils.deserialize(config.getString(path + "items", ""));
+                int slot = config.getInt(path + "slot", kits.size() + 1);
 
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
@@ -45,7 +46,7 @@ public class KitManager implements IManager {
                     rules.put(kitRule, config.getBoolean(path + kitRule.getSaveName(), false));
                 }
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, plugin));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, plugin));
             }
         }
     }
@@ -60,6 +61,7 @@ public class KitManager implements IManager {
             values.add(new Value("items", ItemUtils.serialize(kit.getItems())));
             values.add(new Value("arenas", kit.getArenasAsString()));
             values.add(new Value("icon", ItemUtils.serialize(kit.getIcon())));
+            values.add(new Value("slot", kit.getSlot()));
 
             for (Map.Entry<KitRule, Boolean> kitRuleEntry : kit.getRules().entrySet()) {
                 values.add(new Value(kitRuleEntry.getKey().getSaveName(), kit.is(kitRuleEntry.getKey())));

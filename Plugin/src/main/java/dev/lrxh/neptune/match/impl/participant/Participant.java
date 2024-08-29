@@ -5,7 +5,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
@@ -13,6 +12,7 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.Data;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -62,6 +62,13 @@ public class Participant {
         if (player == null) return;
         player.playSound(player.getLocation(),
                 (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
+    }
+
+    public void setSpectator() {
+        Player player = getPlayer();
+        if (player == null) return;
+        player.setGameMode(GameMode.SPECTATOR);
+        player.updateInventory();
     }
 
     public void playKillEffect() {

@@ -67,9 +67,9 @@ public class TeamFightMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
 
-        PlayerUtil.reset(participant.getPlayerUUID());
+        participant.setSpectator();
 
-        addSpectator(participant.getPlayerUUID());
+        PlayerUtil.reset(participant.getPlayerUUID());
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);

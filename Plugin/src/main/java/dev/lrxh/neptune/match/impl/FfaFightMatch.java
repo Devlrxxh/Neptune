@@ -42,9 +42,10 @@ public class FfaFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
-        PlayerUtil.reset(participant.getPlayerUUID());
 
-        addSpectator(participant.getPlayerUUID());
+        participant.setSpectator();
+
+        PlayerUtil.reset(participant.getPlayerUUID());
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
@@ -54,8 +55,6 @@ public class FfaFightMatch extends Match {
 
         participant.setLoser(true);
         deadParticipants.add(participant);
-
-        addSpectator(participant.getPlayerUUID());
 
         if (!isLastPlayerStanding()) return;
 

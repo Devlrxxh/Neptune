@@ -25,6 +25,11 @@ public class StatsMenu extends Menu {
     }
 
     @Override
+    public boolean fixPosition() {
+        return false;
+    }
+
+    @Override
     public int getSize() {
         return MenusLocale.STAT_SIZE.getInt();
     }
@@ -37,9 +42,8 @@ public class StatsMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = MenusLocale.STAT_STARTING_SLOT.getInt();
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(i++, new StatButton(kit, target));
+            buttons.put(kit.getSlot(), new StatButton(kit, target));
         }
         return buttons;
     }

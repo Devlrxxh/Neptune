@@ -36,10 +36,9 @@ public class LeaderboardMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = MenusLocale.LEADERBOARD_STARTING_SLOT.getInt();
 
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(i++, new LeaderboardButton(kit, leaderboardType));
+            buttons.put(kit.getSlot(), new LeaderboardButton(kit, leaderboardType));
         }
         switch (leaderboardType) {
             case WINS:

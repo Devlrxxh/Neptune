@@ -39,11 +39,10 @@ public class PartyEventsKitMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        int slot = MenusLocale.PARTY_EVENTS_KIT_SELECT_SLOT.getInt();
 
         for (Kit kit : plugin.getKitManager().kits) {
             if (kit.is(KitRule.ALLOW_PARTY)) {
-                buttons.put(slot++, new PartyTeamKitButton(party, kit, eventType));
+                buttons.put(kit.getSlot(), new PartyTeamKitButton(party, kit, eventType));
             }
         }
 

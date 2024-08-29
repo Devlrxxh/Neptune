@@ -34,7 +34,7 @@ public abstract class Menu {
         buttons.clear();
         buttons.putAll(getButtons(player));
 
-        if (getFilter() != Filter.NONE) {
+        if (getFilter() != Filter.NONE && fixPosition()) {
             TreeSet<Map.Entry<Integer, Button>> sortedEntries = new TreeSet<>(Map.Entry.comparingByKey());
             sortedEntries.addAll(buttons.entrySet());
 
@@ -152,6 +152,10 @@ public abstract class Menu {
     public ItemStack getFilterItem() {
         return new ItemBuilder(MenusLocale.FILTER_MATERIAL.getString())
                 .name(MenusLocale.FILTER_NAME.getString()).amount(1).build();
+    }
+
+    public boolean fixPosition() {
+        return true;
     }
 
     public Filter getFilter() {

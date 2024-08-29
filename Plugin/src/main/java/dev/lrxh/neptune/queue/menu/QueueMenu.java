@@ -30,6 +30,11 @@ public class QueueMenu extends Menu {
     }
 
     @Override
+    public boolean fixPosition() {
+        return false;
+    }
+
+    @Override
     public Filter getFilter() {
         return Filter.valueOf(MenusLocale.QUEUE_SELECT_FILTER.getString());
     }
@@ -37,9 +42,8 @@ public class QueueMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = MenusLocale.QUEUE_SELECT_STARTING_SLOT.getInt();
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(i++, new QueueSelectButton(kit));
+            buttons.put(kit.getSlot(), new QueueSelectButton(kit));
         }
         return buttons;
     }

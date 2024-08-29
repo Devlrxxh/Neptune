@@ -32,12 +32,16 @@ public class KitEditorMenu extends Menu {
     }
 
     @Override
+    public boolean fixPosition() {
+        return false;
+    }
+
+    @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = MenusLocale.KIT_EDITOR_SELECT_STARTING_SLOT.getInt();
         for (Kit kit : plugin.getKitManager().kits) {
             if (kit.is(KitRule.ALL0W_KIT_EDITOR)) {
-                buttons.put(i++, new KitEditorSelectButton(kit));
+                buttons.put(kit.getSlot(), new KitEditorSelectButton(kit));
             }
         }
         return buttons;

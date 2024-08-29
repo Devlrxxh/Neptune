@@ -132,13 +132,13 @@ public class SoloFightMatch extends Match {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
         }
 
+        participant.setSpectator();
+
         participant.setLoser(true);
 
         PlayerUtil.reset(participant.getPlayerUUID());
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
-
-        addSpectator(participant.getPlayerUUID());
 
         end(participant);
     }
