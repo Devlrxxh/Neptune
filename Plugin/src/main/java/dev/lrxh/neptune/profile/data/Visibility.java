@@ -36,7 +36,7 @@ public class Visibility {
         Profile viewerProfile = plugin.getAPI().getProfile(uuid);
         Profile otherProfile = plugin.getAPI().getProfile(otherUUID);
 
-        if (has(uuid, otherUUID, ProfileState.IN_GAME)
+        if (has(viewerProfile, otherProfile, ProfileState.IN_GAME)
                 && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
@@ -53,7 +53,7 @@ public class Visibility {
             return;
         }
 
-        if (has(uuid, otherUUID, ProfileState.IN_LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
+        if (has(viewerProfile, otherProfile, ProfileState.IN_LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
             viewerPlayer.showPlayer(plugin, otherPlayer);
             otherPlayer.showPlayer(plugin, viewerPlayer);
             return;
@@ -63,11 +63,7 @@ public class Visibility {
         otherPlayer.hidePlayer(plugin, viewerPlayer);
     }
 
-    public boolean has(UUID playerUUID, UUID otherUUID, ProfileState... states) {
-        Profile viewerProfile = plugin.getAPI().getProfile(playerUUID);
-        Profile otherProfile = plugin.getAPI().getProfile(otherUUID);
-
-        Set<ProfileState> stateSet = new HashSet<>(Arrays.asList(states));
-        return stateSet.contains(viewerProfile.getState()) && stateSet.contains(otherProfile.getState());
+    public boolean has(Profile viewerProfile, Profile otherProfile, ProfileState... states) {
+        return viewerProfile.hasState(states) && otherProfile.hasState(states);
     }
 }

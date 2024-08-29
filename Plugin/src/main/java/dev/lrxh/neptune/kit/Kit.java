@@ -57,7 +57,7 @@ public class Kit {
         this.queue = 0;
         this.playing = 0;
         this.plugin = plugin;
-        this.slot = 0;
+        this.slot = plugin.getKitManager().kits.size() + 1;
 
         checkMissing();
     }

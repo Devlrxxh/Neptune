@@ -55,6 +55,15 @@ public class Profile {
         return state.equals(profileState);
     }
 
+    public boolean hasState(ProfileState... profileStates) {
+        for (ProfileState profileState : profileStates) {
+            if(profileState.equals(state)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void setState(ProfileState profileState) {
         state = profileState;
         handleVisibility();

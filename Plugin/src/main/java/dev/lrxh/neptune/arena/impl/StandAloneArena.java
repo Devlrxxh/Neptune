@@ -5,15 +5,12 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.utils.ConcurrentLinkedHashMap;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.function.Consumer;
 
 
@@ -21,7 +18,7 @@ import java.util.function.Consumer;
 @Setter
 public class StandAloneArena extends Arena {
     private final Neptune plugin;
-    private transient ConcurrentLinkedHashMap<Chunk, Object[]> chunkSnapshots;
+    private HashMap<Chunk, Object[]> chunkSnapshots;
     private Location min;
     private Location max;
     private double deathY;
@@ -39,7 +36,7 @@ public class StandAloneArena extends Arena {
         this.deathY = deathY;
         this.used = false;
         this.duplicate = duplicate;
-        this.chunkSnapshots = new ConcurrentLinkedHashMap<>();
+        this.chunkSnapshots = new HashMap<>();
         this.plugin = plugin;
 
         takeSnapshot();
@@ -54,10 +51,8 @@ public class StandAloneArena extends Arena {
         this.deathY = 0;
         this.used = false;
         this.duplicate = false;
-        this.chunkSnapshots = new ConcurrentLinkedHashMap<>();
+        this.chunkSnapshots = new HashMap<>();
         this.plugin = plugin;
-
-        takeSnapshot();
     }
 
     public List<String> getCopiesAsString() {
@@ -72,15 +67,13 @@ public class StandAloneArena extends Arena {
     }
 
     public void takeSnapshot() {
-        if (min != null && max != null) {
-            chunkSnapshots = plugin.getVersionHandler().getChunk().takeSnapshot(getMin().getWorld(), min, max);
-        }
+        if (min == null && max == null) return;
+        chunkSnapshots = plugin.getVersionHandler().getChunk().takeSnapshot(min, max);
     }
 
     public void restoreSnapshot() {
-        if (min != null && max != null) {
-            plugin.getVersionHandler().getChunk().restoreSnapshot(chunkSnapshots, getMin().getWorld());
-        }
+        if (min == null && max == null) return;
+        plugin.getVersionHandler().getChunk().restoreSnapshot(chunkSnapshots);
     }
 
     @Override

@@ -137,6 +137,24 @@ public class ArenaCommand extends BaseCommand {
         plugin.getArenaManager().saveArenas();
     }
 
+    @Subcommand("regenerate")
+    @Syntax("<arena>")
+    @CommandCompletion("@arenas")
+    public void regenerate(Player player, String arenaName) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena arena)) {
+            player.sendMessage(CC.error("Arena isn't standalone!"));
+            return;
+        }
+        arena.restoreSnapshot();
+
+        player.sendMessage(CC.color("&aSuccessfully regenerated arena"));
+    }
+
     @Subcommand("manage")
     @Syntax("<arena>")
     public void manage(Player player) {

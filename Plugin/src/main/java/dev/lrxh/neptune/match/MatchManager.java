@@ -116,8 +116,8 @@ public class MatchManager {
 
     public void stopAllGames() {
         for (Match match : matches) {
-            if (match.getArena() instanceof StandAloneArena) {
-                ((StandAloneArena) match.arena).restoreSnapshot();
+            if (match.getArena() instanceof StandAloneArena standAloneArena) {
+                standAloneArena.restoreSnapshot();
             }
             for (Participant participant : match.getParticipants()) {
                 Player player = participant.getPlayer();
