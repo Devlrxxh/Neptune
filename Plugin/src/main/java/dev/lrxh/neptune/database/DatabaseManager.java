@@ -16,7 +16,7 @@ public class DatabaseManager {
         String uri = SettingsLocale.URI.getString();
         if (uri != null && (uri.isEmpty() || uri.equals("NONE"))) {
             ServerUtils.error("URI is missing or empty");
-            Bukkit.getPluginManager().disablePlugin(plugin);
+            Bukkit.getPluginManager().disablePlugin(plugin.getPlugin());
         }
 
         try {

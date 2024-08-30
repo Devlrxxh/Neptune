@@ -13,20 +13,35 @@ public class ConfigFile {
     private final YamlConfiguration configuration;
     private final Neptune plugin = Neptune.get();
 
-    public ConfigFile(String name) {
-        this.file = new File(plugin.getDataFolder(), name + ".yml");
 
-        if (!file.exists()) {
-            plugin.saveResource(name + ".yml", false);
+    public ConfigFile(String name) {
+        File dataFolder = new File(plugin.getPlugin().getDataFolder().getParentFile(), "Neptune");
+        if (!dataFolder.exists()) {
+            dataFolder.mkdirs();
         }
 
+        this.file = new File(dataFolder, name + ".yml");
+
+        if (!file.exists()) {
+            try {
+                boolean created = file.createNewFile();
+                if (!created) {
+                    throw new IOException("File was not created.");
+                }
+            } catch (IOException e) {
+                ServerUtils.error("Error occurred creating config file: " + e);
+            }
+        }
+
+        // Load configuration
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 
     public void save() {
         try {
             configuration.save(file);
-        } catch (IOException ignored) {
+        } catch (IOException e) {
+            ServerUtils.error("Error occurred saving config: " + e);
         }
     }
 }

@@ -50,13 +50,14 @@ import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
+import dev.lrxh.neptune.utils.PluginLogger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuManager;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
-import dev.lrxh.versioncontroll.Version.Version;
 import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
+import me.lrxh.client.InjectedPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
@@ -70,7 +71,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Getter
-public final class Neptune extends JavaPlugin {
+public final class Neptune implements InjectedPlugin {
 
     private static Neptune instance;
     private TaskScheduler taskScheduler;
@@ -87,7 +88,7 @@ public final class Neptune extends JavaPlugin {
     private HotbarManager hotbarManager;
     private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
-    private Version version;
+    //private Version version;
     private MenuManager menuManager;
     private GenerationManager generationManager;
     private EntityHider entityHider;
@@ -95,6 +96,8 @@ public final class Neptune extends JavaPlugin {
     private DatabaseManager databaseManager;
     private CosmeticManager cosmeticManager;
     private API api;
+    private JavaPlugin plugin;
+    private PluginLogger logger;
 
     public static Neptune get() {
         return instance;
@@ -105,16 +108,18 @@ public final class Neptune extends JavaPlugin {
     }
 
     @Override
-    public void onEnable() {
+    public void onEnable(JavaPlugin plugin) {
         instance = this;
+        this.plugin = plugin;
+        this.logger = new PluginLogger(this);
         loadManager();
     }
 
     private void loadManager() {
-        VersionControll versionControll = new VersionControll(this);
+        VersionControll versionControll = new VersionControll(plugin);
         this.versionHandler = versionControll.getHandler();
         if (!isEnabled()) return;
-        this.version = versionControll.getVersion();
+        //this.version = versionControll.getVersion();
 
         loadExtensions();
         if (!isEnabled()) return;
@@ -156,7 +161,7 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void initAPIs() {
-        entityHider = new EntityHider(this, EntityHider.Policy.BLACKLIST);
+        entityHider = new EntityHider(plugin, EntityHider.Policy.BLACKLIST);
 
         PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
         PacketEvents.getAPI().init();
@@ -172,7 +177,7 @@ public final class Neptune extends JavaPlugin {
                 new EntityCache(),
                 new ItemCache(),
                 new BukkitListener()
-        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
+        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, plugin));
     }
 
     private void loadExtensions() {
@@ -200,7 +205,7 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadCommandManager() {
-        paperCommandManager = new PaperCommandManager(this);
+        paperCommandManager = new PaperCommandManager(plugin);
         registerCommands();
         loadCommandCompletions();
     }
@@ -243,6 +248,14 @@ public final class Neptune extends JavaPlugin {
         stopService(matchManager, MatchManager::stopAllGames);
         stopService(taskScheduler, ts -> ts.stopAllTasks(this));
         stopService(cache, Cache::save);
+    }
+
+    public String getName() {
+        return "Neptune";
+    }
+
+    public String getVersion() {
+        return "1.6";
     }
 
     public <T> void stopService(T service, Consumer<T> consumer) {

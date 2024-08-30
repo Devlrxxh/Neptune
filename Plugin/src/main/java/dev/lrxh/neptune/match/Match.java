@@ -83,7 +83,7 @@ public abstract class Match {
         profile.setState(ProfileState.IN_SPECTATOR);
         spectators.add(player.getUniqueId());
 
-        forEachPlayer(participiantPlayer -> player.showPlayer(plugin, participiantPlayer));
+        forEachPlayer(participiantPlayer -> player.showPlayer(plugin.getPlugin(), participiantPlayer));
 
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
@@ -94,7 +94,7 @@ public abstract class Match {
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(player -> forEachPlayer(participiantPlayer -> player.showPlayer(plugin, participiantPlayer)));
+        forEachSpectator(player -> forEachPlayer(participiantPlayer -> player.showPlayer(plugin.getPlugin(), participiantPlayer)));
     }
 
     public void forEachPlayer(Consumer<Player> action) {

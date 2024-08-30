@@ -11,8 +11,6 @@ import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
-import dev.lrxh.neptune.utils.PlayerUtil;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -118,11 +116,6 @@ public class MatchManager {
         for (Match match : matches) {
             if (match.getArena() instanceof StandAloneArena standAloneArena) {
                 standAloneArena.restoreSnapshot();
-            }
-            for (Participant participant : match.getParticipants()) {
-                Player player = participant.getPlayer();
-                if (player == null) continue;
-                PlayerUtil.kick(player.getUniqueId(), "&cServer is restarting...");
             }
         }
     }

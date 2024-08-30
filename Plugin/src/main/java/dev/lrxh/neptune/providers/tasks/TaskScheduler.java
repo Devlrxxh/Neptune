@@ -15,17 +15,17 @@ public class TaskScheduler {
 
     public void startTask(NeptuneRunnable task, long delay, long period) {
         tasks.add(task);
-        task.runTaskTimer(plugin, delay, period);
+        task.runTaskTimer(plugin.getPlugin(), delay, period);
     }
 
     public void startTask(NeptuneRunnable task) {
         tasks.add(task);
-        task.runTask(plugin);
+        task.runTask(plugin.getPlugin());
     }
 
     public void startTaskLater(NeptuneRunnable task, long delay) {
         tasks.add(task);
-        task.runTaskLater(plugin, delay);
+        task.runTaskLater(plugin.getPlugin(), delay);
     }
 
     public void stopAllTasks(Neptune plugin) {

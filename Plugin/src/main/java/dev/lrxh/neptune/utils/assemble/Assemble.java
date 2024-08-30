@@ -49,7 +49,7 @@ public class Assemble {
     public void setup() {
         // Register Events.
         this.listeners = new AssembleListener(this);
-        this.plugin.getServer().getPluginManager().registerEvents(listeners, this.plugin);
+        this.plugin.getServer().getPluginManager().registerEvents(listeners, this.plugin.getPlugin());
 
         // Ensure that the thread has stopped running.
         if (this.thread != null) {

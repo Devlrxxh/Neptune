@@ -5,9 +5,6 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 
 public class Visibility {
@@ -38,29 +35,29 @@ public class Visibility {
 
         if (has(viewerProfile, otherProfile, ProfileState.IN_GAME)
                 && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())) {
-            viewerPlayer.showPlayer(plugin, otherPlayer);
-            otherPlayer.showPlayer(plugin, viewerPlayer);
+            viewerPlayer.showPlayer(plugin.getPlugin(), otherPlayer);
+            otherPlayer.showPlayer(plugin.getPlugin(), viewerPlayer);
             return;
         }
 
         if (!viewerProfile.getSettingData().isPlayerVisibility()) {
-            viewerPlayer.hidePlayer(plugin, otherPlayer);
+            viewerPlayer.hidePlayer(plugin.getPlugin(), otherPlayer);
             return;
         }
 
         if (!otherProfile.getSettingData().isPlayerVisibility()) {
-            otherPlayer.hidePlayer(plugin, viewerPlayer);
+            otherPlayer.hidePlayer(plugin.getPlugin(), viewerPlayer);
             return;
         }
 
         if (has(viewerProfile, otherProfile, ProfileState.IN_LOBBY, ProfileState.IN_QUEUE, ProfileState.IN_PARTY)) {
-            viewerPlayer.showPlayer(plugin, otherPlayer);
-            otherPlayer.showPlayer(plugin, viewerPlayer);
+            viewerPlayer.showPlayer(plugin.getPlugin(), otherPlayer);
+            otherPlayer.showPlayer(plugin.getPlugin(), viewerPlayer);
             return;
         }
 
-        viewerPlayer.hidePlayer(plugin, otherPlayer);
-        otherPlayer.hidePlayer(plugin, viewerPlayer);
+        viewerPlayer.hidePlayer(plugin.getPlugin(), otherPlayer);
+        otherPlayer.hidePlayer(plugin.getPlugin(), viewerPlayer);
     }
 
     public boolean has(Profile viewerProfile, Profile otherProfile, ProfileState... states) {

@@ -11,7 +11,6 @@ import lombok.AllArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
-
 @AllArgsConstructor
 public class PlaceholderImpl extends PlaceholderExpansion {
     private final Neptune plugin;
@@ -28,7 +27,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return plugin.getDescription().getVersion();
+        return plugin.getVersion();
     }
 
     @Override

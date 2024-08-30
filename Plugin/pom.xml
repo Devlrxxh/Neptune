@@ -91,6 +91,12 @@
             <version>1.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>dev.lrxh.loader</groupId>
+            <artifactId>Client</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -116,6 +122,8 @@
                         <includes>
                             <include>co.aikar:acf-paper</include>
                             <include>dev.lrxh:Build</include>
+                            <include>dev.lrxh.l:Build</include>
+
                             <include>org.mongodb:mongodb-driver-core</include>
                             <include>org.mongodb:mongodb-driver-sync</include>
                             <include>org.mongodb:bson</include>
