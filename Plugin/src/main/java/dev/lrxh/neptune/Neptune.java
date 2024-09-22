@@ -130,6 +130,8 @@ public final class Neptune implements InjectedPlugin {
             new PlaceholderImpl(this).register();
         }
 
+        this.workloadManager = new WorkloadManager();
+        this.taskScheduler = new TaskScheduler(this);
         this.configManager = new ConfigManager();
         this.configManager.load();
         this.queueManager = new QueueManager();
@@ -149,7 +151,6 @@ public final class Neptune implements InjectedPlugin {
         this.generationManager = new GenerationManager(versionHandler);
         this.assemble = new Assemble(new ScoreboardAdapter());
         this.api = new API(this);
-        this.workloadManager = new WorkloadManager();
 
         registerListeners();
         loadCommandManager();
@@ -202,7 +203,6 @@ public final class Neptune implements InjectedPlugin {
     }
 
     private void loadTasks() {
-        taskScheduler = new TaskScheduler(this);
         new QueueCheckTask(this).start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
         new LeaderboardTask(this).start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
         new WorkloadTask(workloadManager).start(1,this);

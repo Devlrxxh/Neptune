@@ -3,6 +3,7 @@ package dev.lrxh.neptune.arena.impl;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.tasks.ArenaCaptureTask;
+import dev.lrxh.neptune.arena.impl.tasks.ArenaCopyTask;
 import dev.lrxh.neptune.arena.impl.tasks.ArenaResetTask;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -88,9 +89,9 @@ public class StandAloneArena extends Arena {
     public void createCopy() {
         int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 
-        plugin.getGenerationManager().pasteRegion(this, min, max, offset);
+        new ArenaCopyTask(this, offset).start(plugin);
 
-        StandAloneArena copy = getArenaCopy(this, LocationUtil.addOffsetToLocation(min, offset), LocationUtil.addOffsetToLocation(max, offset));
+        StandAloneArena copy = getArenaCopy(this,  offset);
 
         copies.add(copy);
 
@@ -112,9 +113,11 @@ public class StandAloneArena extends Arena {
         plugin.getKitManager().saveKits();
     }
 
-    private StandAloneArena getArenaCopy(StandAloneArena arena, Location min, Location max) {
-        Location redSpawn = new Location(min.getWorld(), arena.getRedSpawn().getX() - arena.getMin().getX() + min.getX(), arena.getRedSpawn().getY(), arena.getRedSpawn().getZ() - arena.getMin().getZ() + min.getZ(), arena.getRedSpawn().getYaw(), arena.getRedSpawn().getPitch());
-        Location blueSpawn = new Location(max.getWorld(), arena.getBlueSpawn().getX() - arena.getMin().getX() + min.getX(), arena.getBlueSpawn().getY(), arena.getBlueSpawn().getZ() - arena.getMin().getZ() + min.getZ(), arena.getBlueSpawn().getYaw(), arena.getBlueSpawn().getPitch());
+    private StandAloneArena getArenaCopy(StandAloneArena arena, int offset) {
+        Location redSpawn = getRedSpawn().add(0, 0, offset);
+        Location blueSpawn = getBlueSpawn().add(0, 0,offset);
+        Location min = getMin().add(0, 0, offset);
+        Location max = getMax().add(0, 0,offset);
 
         return new StandAloneArena(
                 arena.getName() + "#" + (arena.getCopies().size() + 1),
