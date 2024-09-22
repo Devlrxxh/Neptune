@@ -19,7 +19,7 @@ public class GenerationManager {
         Location min = minOld.add(0, 0, offset);
         Location max = maxOld.add(0, 0, offset);
 
-        chunkUtils.pasteSnapshot(standAloneArena.getChunkSnapshots(), min, max, max.getWorld());
+       // chunkUtils.pasteSnapshot(standAloneArena.getChunkSnapshots(), min, max, max.getWorld());
     }
 
     public void deleteRegion(Location min, Location max) {

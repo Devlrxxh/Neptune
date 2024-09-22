@@ -8,9 +8,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class TaskScheduler {
     private final List<NeptuneRunnable> tasks = new CopyOnWriteArrayList<>();
     private final Neptune plugin;
+    private final WorkloadManager workloadManager;
 
     public TaskScheduler(Neptune plugin) {
         this.plugin = plugin;
+        this.workloadManager = plugin.getWorkloadManager();
     }
 
     public void startTask(NeptuneRunnable task, long delay, long period) {
@@ -26,6 +28,10 @@ public class TaskScheduler {
     public void startTaskLater(NeptuneRunnable task, long delay) {
         tasks.add(task);
         task.runTaskLater(plugin.getPlugin(), delay);
+    }
+
+    public void startWorkLoad(Workload workload) {
+        workloadManager.addWorkload(workload);
     }
 
     public void stopAllTasks(Neptune plugin) {

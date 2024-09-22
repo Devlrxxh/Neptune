@@ -59,7 +59,7 @@ public class TtlHashMap<K, V> extends HashMap<K, V> {
             action.setRunnable(new NeptuneRunnable() {
                 @Override
                 public void run() {
-                    TtlHashMap.this.remove(key);
+                    remove(key);
                     onExpire(key);
                 }
             }, leaveTime);

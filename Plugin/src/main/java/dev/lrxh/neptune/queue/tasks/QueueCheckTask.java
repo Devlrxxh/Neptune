@@ -25,8 +25,8 @@ import java.util.UUID;
 public class QueueCheckTask extends NeptuneRunnable {
     private final Neptune plugin;
 
-    public QueueCheckTask() {
-        this.plugin = Neptune.get();
+    public QueueCheckTask(Neptune plugin) {
+        this.plugin = plugin;
     }
 
     @Override

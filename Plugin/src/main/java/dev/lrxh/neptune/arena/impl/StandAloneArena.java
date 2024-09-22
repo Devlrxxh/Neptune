@@ -2,13 +2,15 @@ package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.impl.tasks.ArenaCaptureTask;
+import dev.lrxh.neptune.arena.impl.tasks.ArenaResetTask;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -18,7 +20,8 @@ import java.util.function.Consumer;
 @Setter
 public class StandAloneArena extends Arena {
     private final Neptune plugin;
-    private HashMap<Chunk, Object[]> chunkSnapshots;
+//    private HashMap<Chunk, Object[]> chunkSnapshots;
+    private final Map<Location, Material> blockMap = new HashMap<>();
     private Location min;
     private Location max;
     private double deathY;
@@ -36,7 +39,7 @@ public class StandAloneArena extends Arena {
         this.deathY = deathY;
         this.used = false;
         this.duplicate = duplicate;
-        this.chunkSnapshots = new HashMap<>();
+//        this.chunkSnapshots = new HashMap<>();
         this.plugin = plugin;
 
         takeSnapshot();
@@ -51,7 +54,7 @@ public class StandAloneArena extends Arena {
         this.deathY = 0;
         this.used = false;
         this.duplicate = false;
-        this.chunkSnapshots = new HashMap<>();
+//        this.chunkSnapshots = new HashMap<>();
         this.plugin = plugin;
     }
 
@@ -68,12 +71,13 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         if (min == null && max == null) return;
-        chunkSnapshots = plugin.getVersionHandler().getChunk().takeSnapshot(min, max);
+        new ArenaCaptureTask(this).start(plugin);
     }
+
 
     public void restoreSnapshot() {
         if (min == null && max == null) return;
-        plugin.getVersionHandler().getChunk().restoreSnapshot(chunkSnapshots);
+        new ArenaResetTask(this).start(plugin);
     }
 
     @Override

@@ -5,6 +5,7 @@ import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
 import dev.lrxh.VersionHandler;
+import dev.lrxh.client.InjectedPlugin;
 import dev.lrxh.gameRule.GameRule;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
@@ -47,6 +48,8 @@ import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
+import dev.lrxh.neptune.providers.tasks.WorkloadManager;
+import dev.lrxh.neptune.providers.tasks.WorkloadTask;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
@@ -57,14 +60,12 @@ import dev.lrxh.neptune.utils.menu.MenuManager;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
 import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
-import me.lrxh.client.InjectedPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -95,6 +96,7 @@ public final class Neptune implements InjectedPlugin {
     private DivisionManager divisionManager;
     private DatabaseManager databaseManager;
     private CosmeticManager cosmeticManager;
+    private WorkloadManager workloadManager;
     private API api;
     private JavaPlugin plugin;
     private PluginLogger logger;
@@ -147,6 +149,7 @@ public final class Neptune implements InjectedPlugin {
         this.generationManager = new GenerationManager(versionHandler);
         this.assemble = new Assemble(new ScoreboardAdapter());
         this.api = new API(this);
+        this.workloadManager = new WorkloadManager();
 
         registerListeners();
         loadCommandManager();
@@ -200,8 +203,9 @@ public final class Neptune implements InjectedPlugin {
 
     private void loadTasks() {
         taskScheduler = new TaskScheduler(this);
-        new QueueCheckTask().start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
-        new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
+        new QueueCheckTask(this).start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
+        new LeaderboardTask(this).start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
+        new WorkloadTask(workloadManager).start(1,this);
     }
 
     private void loadCommandManager() {

@@ -1,18 +1,19 @@
 package dev.lrxh.neptune.leaderboard.task;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 
 
 public class LeaderboardTask extends NeptuneRunnable {
-    private final Neptune plugin;
+    private final LeaderboardManager manager;
 
-    public LeaderboardTask() {
-        plugin = Neptune.get();
+    public LeaderboardTask(Neptune plugin) {
+        this.manager= plugin.getLeaderboardManager();
     }
 
     @Override
     public void run() {
-        plugin.getLeaderboardManager().update();
+        manager.update();
     }
 }
