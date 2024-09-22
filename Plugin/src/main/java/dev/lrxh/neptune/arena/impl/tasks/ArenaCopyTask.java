@@ -23,7 +23,7 @@ public class ArenaCopyTask implements Workload {
     @Override
     public void compute() {
         for (Map.Entry<Location, Material> stuff : arena.getBlockMap().entrySet()) {
-            plugin.getVersionHandler().getReflection().setBlock(plugin.getPlugin(), stuff.getKey().add(0, 0, offset), stuff.getValue(), false);
+            plugin.getVersionHandler().getChunk().setBlock(plugin.getPlugin(), stuff.getKey().add(0, 0, offset), stuff.getValue(), false);
         }
     }
 }
