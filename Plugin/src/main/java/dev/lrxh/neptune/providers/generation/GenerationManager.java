@@ -1,17 +1,12 @@
 package dev.lrxh.neptune.providers.generation;
 
-import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.providers.tasks.workload.tasks.BlockPlaceTask;
 import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
-@AllArgsConstructor
 public class GenerationManager {
-    private final Neptune plugin;
-
     public void deleteRegion(Location min, Location max) {
         World world = min.getWorld();
 
@@ -29,8 +24,6 @@ public class GenerationManager {
                     Location location = new Location(world, x, y, z);
                     Block block = world.getBlockAt(location);
                     block.setType(Material.AIR);
-                    new BlockPlaceTask(Material.AIR, location, plugin);
-
                 }
             }
         }

@@ -2,7 +2,7 @@ package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.providers.tasks.workload.tasks.BlockPlaceTask;
+import dev.lrxh.neptune.providers.tasks.workload.tasks.*;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import lombok.Getter;
@@ -89,9 +89,7 @@ public class StandAloneArena extends Arena {
 
     public void restoreSnapshot() {
         if (min == null && max == null) return;
-        for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
-            new BlockPlaceTask(block.getValue(), block.getKey(), plugin);
-        }
+        new ArenaResetTask(this).start(plugin);
     }
 
     @Override
@@ -102,9 +100,7 @@ public class StandAloneArena extends Arena {
     public void createCopy() {
         int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 
-        for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
-            new BlockPlaceTask(block.getValue(), block.getKey(), plugin);
-        }
+        new ArenaCopyTask(this, offset).start(plugin);
 
         StandAloneArena copy = getArenaCopy(this,  offset);
 

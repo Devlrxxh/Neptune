@@ -129,11 +129,10 @@ public final class Neptune implements InjectedPlugin {
             ServerUtils.info("Placeholder API found, loading expansion.");
             new PlaceholderImpl(this).register();
         }
-
-        this.workloadManager = new WorkloadManager();
-        this.taskScheduler = new TaskScheduler(this);
         this.configManager = new ConfigManager();
         this.configManager.load();
+        this.workloadManager = new WorkloadManager();
+        this.taskScheduler = new TaskScheduler(this);
         this.queueManager = new QueueManager();
         this.matchManager = new MatchManager();
         this.arenaManager = new ArenaManager();
@@ -148,7 +147,7 @@ public final class Neptune implements InjectedPlugin {
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
-        this.generationManager = new GenerationManager(this);
+        this.generationManager = new GenerationManager();
         this.assemble = new Assemble(new ScoreboardAdapter());
         this.api = new API(this);
 

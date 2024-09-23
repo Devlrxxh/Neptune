@@ -38,10 +38,7 @@ public class HotbarManager implements IManager {
         }
     }
 
-    public void giveItems(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-
+    public void giveItems(Player player) {
         player.getInventory().clear();
         ProfileState profileState = plugin.getAPI().getProfile(player).getState();
         if (profileState.equals(ProfileState.IN_GAME)) return;
@@ -58,12 +55,12 @@ public class HotbarManager implements IManager {
                         if (item.getAction().equals(ItemAction.PLAY_AGAIN)) {
                             Kit kit = plugin.getKitManager().getKitByName(plugin.getAPI().getProfile(player).getGameData().getLastKit());
                             if (kit != null) {
-                                player.getInventory().setItem(item.getSlot(), item.constructItem(playerUUID, new Replacement("<kit>", kit.getDisplayName())));
+                                player.getInventory().setItem(item.getSlot(), item.constructItem(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName())));
                             }
                             return;
                         }
                     }
-                    player.getInventory().setItem(item.getSlot(), item.constructItem(playerUUID));
+                    player.getInventory().setItem(item.getSlot(), item.constructItem(player.getUniqueId()));
                 }
             }
         }

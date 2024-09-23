@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.profile;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.Bukkit;
@@ -16,10 +17,12 @@ public class ProfileManager {
         this.plugin = Neptune.get();
     }
 
-    public Profile createProfile(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return null;
-        return profiles.put(playerUUID, new Profile(player, plugin));
+    public void createProfile(PlayerProfile playerProfile) {
+        profiles.put(playerProfile.getId(), new Profile(playerProfile.getName(), playerProfile.getId(), plugin));
+    }
+
+    public void createProfile(Player player) {
+        profiles.put(player.getUniqueId(), new Profile(player.getName(), player.getUniqueId(), plugin));
     }
 
     public void removeProfile(UUID playerUUID) {
@@ -32,6 +35,6 @@ public class ProfileManager {
     }
 
     public Profile getByUUID(UUID playerUUID) {
-        return profiles.get(playerUUID) == null ? createProfile(playerUUID) : profiles.get(playerUUID);
+        return profiles.get(playerUUID);
     }
 }

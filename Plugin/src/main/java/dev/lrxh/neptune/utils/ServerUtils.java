@@ -4,6 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
+import org.bukkit.block.BlockState;
 import org.bukkit.entity.Player;
 
 @UtilityClass
@@ -20,6 +21,12 @@ public class ServerUtils {
     public void broadcast(MessagesLocale message, Replacement... replacements) {
         for (Player player : Neptune.get().getServer().getOnlinePlayers()) {
             message.send(player.getUniqueId(), replacements);
+        }
+    }
+
+    public void broadcast(String message) {
+        for (Player player : Neptune.get().getServer().getOnlinePlayers()) {
+            player.sendMessage(CC.color(message));
         }
     }
 }

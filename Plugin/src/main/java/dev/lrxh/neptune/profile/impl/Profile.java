@@ -34,10 +34,10 @@ public class Profile {
     private SettingData settingData;
     private Visibility visibility;
 
-    public Profile(Player player, Neptune plugin) {
+    public Profile(String name, UUID uuid, Neptune plugin) {
         this.plugin = plugin;
-        this.username = player.getName();
-        this.playerUUID = player.getUniqueId();
+        this.username = name;
+        this.playerUUID = uuid;
         this.state = ProfileState.IN_LOBBY;
         this.gameData = new GameData(plugin);
         this.settingData = new SettingData(plugin);
@@ -67,7 +67,11 @@ public class Profile {
     public void setState(ProfileState profileState) {
         state = profileState;
         handleVisibility();
-        plugin.getHotbarManager().giveItems(playerUUID);
+        plugin.getHotbarManager().giveItems(getPlayer());
+    }
+
+    public Player getPlayer(){
+        return Bukkit.getPlayer(playerUUID);
     }
 
     public void load() {

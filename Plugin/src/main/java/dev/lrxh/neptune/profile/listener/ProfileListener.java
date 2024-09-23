@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.profile.listener;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -22,11 +24,20 @@ public class ProfileListener implements Listener {
     private final Neptune plugin = Neptune.get();
 
     @EventHandler
+    public void onJoin(AsyncPlayerPreLoginEvent event) {
+        PlayerProfile playerProfile = event.getPlayerProfile();
+        if (event.getPlayerProfile().complete() && playerProfile.getId() != null) {
+            plugin.getProfileManager().createProfile(event.getPlayerProfile());
+        }
+    }
+
+    @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        PlayerUtil.teleportToSpawn(player.getUniqueId());
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        if(profile == null) plugin.getProfileManager().createProfile(player);
 
-        plugin.getProfileManager().createProfile(player.getUniqueId());
+        PlayerUtil.teleportToSpawn(player.getUniqueId());
 
         event.setJoinMessage(null);
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
@@ -34,7 +45,7 @@ public class ProfileListener implements Listener {
         }
 
         PlayerUtil.reset(player.getUniqueId());
-        plugin.getHotbarManager().giveItems(player.getUniqueId());
+        plugin.getHotbarManager().giveItems(player);
     }
 
     @EventHandler
