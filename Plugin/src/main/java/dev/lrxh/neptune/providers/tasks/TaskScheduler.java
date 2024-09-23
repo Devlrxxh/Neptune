@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.providers.tasks;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.providers.tasks.workload.Workload;
+import dev.lrxh.neptune.providers.tasks.workload.WorkloadManager;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;

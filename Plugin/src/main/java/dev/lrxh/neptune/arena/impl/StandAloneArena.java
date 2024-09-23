@@ -2,15 +2,14 @@ package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.tasks.ArenaCaptureTask;
-import dev.lrxh.neptune.arena.impl.tasks.ArenaCopyTask;
-import dev.lrxh.neptune.arena.impl.tasks.ArenaResetTask;
+import dev.lrxh.neptune.providers.tasks.workload.tasks.BlockPlaceTask;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -67,14 +66,32 @@ public class StandAloneArena extends Arena {
     }
 
     public void takeSnapshot() {
-        if (min == null && max == null) return;
-        new ArenaCaptureTask(this).start(plugin);
+        if (min == null || max == null) return;
+
+        int minX = Math.min(min.getBlockX(), max.getBlockX());
+        int minY = Math.min(min.getBlockY(), max.getBlockY());
+        int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
+
+        int maxX = Math.max(min.getBlockX(), max.getBlockX());
+        int maxY = Math.max(min.getBlockY(), max.getBlockY());
+        int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    Block block = min.getWorld().getBlockAt(x, y, z);
+                    blockMap.put(block.getLocation(), block.getType());
+                }
+            }
+        }
     }
 
 
     public void restoreSnapshot() {
         if (min == null && max == null) return;
-        new ArenaResetTask(this).start(plugin);
+        for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
+            new BlockPlaceTask(block.getValue(), block.getKey(), plugin);
+        }
     }
 
     @Override
@@ -85,7 +102,9 @@ public class StandAloneArena extends Arena {
     public void createCopy() {
         int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 
-        new ArenaCopyTask(this, offset).start(plugin);
+        for (Map.Entry<Location, Material> block : blockMap.entrySet()) {
+            new BlockPlaceTask(block.getValue(), block.getKey(), plugin);
+        }
 
         StandAloneArena copy = getArenaCopy(this,  offset);
 

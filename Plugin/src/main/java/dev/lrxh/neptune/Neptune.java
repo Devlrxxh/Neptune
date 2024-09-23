@@ -48,8 +48,8 @@ import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
-import dev.lrxh.neptune.providers.tasks.WorkloadManager;
-import dev.lrxh.neptune.providers.tasks.WorkloadTask;
+import dev.lrxh.neptune.providers.tasks.workload.WorkloadManager;
+import dev.lrxh.neptune.providers.tasks.workload.WorkloadTask;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
@@ -148,7 +148,7 @@ public final class Neptune implements InjectedPlugin {
         this.profileManager = new ProfileManager();
         this.leaderboardManager = new LeaderboardManager();
         this.menuManager = new MenuManager();
-        this.generationManager = new GenerationManager(versionHandler);
+        this.generationManager = new GenerationManager(this);
         this.assemble = new Assemble(new ScoreboardAdapter());
         this.api = new API(this);
 

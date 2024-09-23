@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.providers.tasks;
+package dev.lrxh.neptune.providers.tasks.workload;
 
 import dev.lrxh.neptune.Neptune;
 

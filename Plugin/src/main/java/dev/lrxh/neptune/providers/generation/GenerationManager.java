@@ -1,26 +1,16 @@
 package dev.lrxh.neptune.providers.generation;
 
-import dev.lrxh.VersionHandler;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
-import dev.lrxh.utils.chunk.IChunkUtils;
+import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.providers.tasks.workload.tasks.BlockPlaceTask;
+import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 
+@AllArgsConstructor
 public class GenerationManager {
-    private final IChunkUtils chunkUtils;
-
-    public GenerationManager(VersionHandler versionHandler) {
-        this.chunkUtils = versionHandler.getChunk();
-    }
-
-    public void pasteRegion(StandAloneArena standAloneArena, Location minOld, Location maxOld, int offset) {
-        Location min = minOld.add(0, 0, offset);
-        Location max = maxOld.add(0, 0, offset);
-
-       // chunkUtils.pasteSnapshot(standAloneArena.getChunkSnapshots(), min, max, max.getWorld());
-    }
+    private final Neptune plugin;
 
     public void deleteRegion(Location min, Location max) {
         World world = min.getWorld();
@@ -36,8 +26,11 @@ public class GenerationManager {
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
-                    Block block = world.getBlockAt(x, y, z);
+                    Location location = new Location(world, x, y, z);
+                    Block block = world.getBlockAt(location);
                     block.setType(Material.AIR);
+                    new BlockPlaceTask(Material.AIR, location, plugin);
+
                 }
             }
         }

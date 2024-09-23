@@ -19,6 +19,7 @@ public enum SettingsLocale implements IDataAccessor {
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
     REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30"),
+    MODE("MODE", "PERFORMANCE/SPEED. This can affect server performance if you have issues with SPEED then switch to performance", DataType.STRING, "SPEED"),
     ARENA_COPY_DISTANCE("ARENA_COPY_DISTANCE", "Distance between each standalone arena copy", DataType.INT, "300");
 
     private final String path;

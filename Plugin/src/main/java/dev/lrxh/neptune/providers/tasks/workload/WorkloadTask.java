@@ -1,5 +1,6 @@
-package dev.lrxh.neptune.providers.tasks;
+package dev.lrxh.neptune.providers.tasks.workload;
 
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
