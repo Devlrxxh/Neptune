@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.providers.generation;
 
-import lombok.AllArgsConstructor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;

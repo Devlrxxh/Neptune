@@ -23,7 +23,7 @@ public class KitEditorCommand extends BaseCommand {
     public void open(Player player) {
         Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
-        if(profile.hasState(ProfileState.IN_LOBBY, ProfileState.IN_PARTY)) {
+        if (profile.hasState(ProfileState.IN_LOBBY, ProfileState.IN_PARTY)) {
             new KitEditorMenu().openMenu(player.getUniqueId());
         }
     }

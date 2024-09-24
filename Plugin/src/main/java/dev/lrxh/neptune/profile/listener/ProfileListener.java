@@ -35,7 +35,7 @@ public class ProfileListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
         Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if(profile == null) plugin.getProfileManager().createProfile(player);
+        if (profile == null) plugin.getProfileManager().createProfile(player);
 
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
@@ -54,6 +54,7 @@ public class ProfileListener implements Listener {
         Profile profile = plugin.getAPI().getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
+
         if (match != null) {
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant == null) return;

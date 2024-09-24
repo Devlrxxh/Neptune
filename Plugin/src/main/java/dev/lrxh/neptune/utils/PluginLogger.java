@@ -6,7 +6,7 @@ import java.util.logging.Level;
 import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
-public class PluginLogger  extends Logger {
+public class PluginLogger extends Logger {
 
     public PluginLogger(Neptune plugin) {
         super(plugin.getName(), null);

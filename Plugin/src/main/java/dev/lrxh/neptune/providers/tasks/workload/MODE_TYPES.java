@@ -9,7 +9,7 @@ public enum MODE_TYPES {
 
     final double MAX_MILLIS_PER_TICK;
 
-    MODE_TYPES(double MAX_MILLIS_PER_TICK){
+    MODE_TYPES(double MAX_MILLIS_PER_TICK) {
         this.MAX_MILLIS_PER_TICK = MAX_MILLIS_PER_TICK;
     }
 }

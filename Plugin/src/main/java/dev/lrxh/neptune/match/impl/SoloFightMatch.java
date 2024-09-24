@@ -84,11 +84,11 @@ public class SoloFightMatch extends Match {
                 (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
     }
 
-    private Participant getLoser(){
+    private Participant getLoser() {
         return participantA.isLoser() ? participantA : participantB;
     }
 
-    private Participant getWinner(){
+    private Participant getWinner() {
         return participantA.isLoser() ? participantB : participantA;
     }
 

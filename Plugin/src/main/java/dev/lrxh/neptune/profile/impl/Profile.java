@@ -57,7 +57,7 @@ public class Profile {
 
     public boolean hasState(ProfileState... profileStates) {
         for (ProfileState profileState : profileStates) {
-            if(profileState.equals(state)){
+            if (profileState.equals(state)) {
                 return true;
             }
         }
@@ -70,7 +70,7 @@ public class Profile {
         plugin.getHotbarManager().giveItems(getPlayer());
     }
 
-    public Player getPlayer(){
+    public Player getPlayer() {
         return Bukkit.getPlayer(playerUUID);
     }
 

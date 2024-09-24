@@ -121,12 +121,12 @@ public class Participant {
             }
         }
         Match match = plugin.getAPI().getProfile(playerUUID).getMatch();
-            if (match.getKit().is(KitRule.BOXING)) {
-                if (match instanceof TeamFightMatch teamFightMatch ? hits >= teamFightMatch.getTeamA().getParticipants().size() * 100 : hits >= 100) {
-                    opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                    match.onDeath(opponent);
-                }
+        if (match.getKit().is(KitRule.BOXING)) {
+            if (match instanceof TeamFightMatch teamFightMatch ? hits >= teamFightMatch.getTeamA().getParticipants().size() * 100 : hits >= 100) {
+                opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                match.onDeath(opponent);
             }
+        }
     }
 
     public String getHitsDifference(Participant otherParticipant) {

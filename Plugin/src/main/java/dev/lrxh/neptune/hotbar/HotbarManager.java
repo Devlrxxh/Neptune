@@ -11,13 +11,11 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Getter
 public class HotbarManager implements IManager {
