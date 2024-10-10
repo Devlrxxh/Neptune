@@ -99,4 +99,12 @@ public class FfaFightMatch extends Match {
         forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_FFA.send(participant.getPlayerUUID(),
                 new Replacement("<winner>", winner.getNameUnColored())));
     }
+
+    @Override
+    public void breakBed(Participant participant) {}
+
+    @Override
+    public void sendTitle(Participant ignore, String header, String footer, int duration) {
+        forEachParticipant(participant -> participant.sendTitle(header, footer, duration));
+    }
 }

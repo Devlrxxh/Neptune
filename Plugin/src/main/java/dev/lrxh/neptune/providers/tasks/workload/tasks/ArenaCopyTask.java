@@ -3,6 +3,7 @@ package dev.lrxh.neptune.providers.tasks.workload.tasks;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.providers.tasks.workload.Workload;
+import dev.lrxh.neptune.utils.LocationUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -22,8 +23,9 @@ public class ArenaCopyTask implements Workload {
 
     @Override
     public void compute() {
-        for (Map.Entry<Location, Material> stuff : arena.getBlockMap().entrySet()) {
-            plugin.getVersionHandler().getChunk().setBlock(plugin.getPlugin(), stuff.getKey().add(0, 0, offset), stuff.getValue(), false);
+        for (Map.Entry<Location, Material> block : arena.getBlockMap().entrySet()) {
+            Location location = LocationUtil.addOffsetToLocation(block.getKey(), offset);
+            plugin.getVersionHandler().getChunk().setBlock(plugin.getPlugin(), location, block.getValue(), false);
         }
     }
 }

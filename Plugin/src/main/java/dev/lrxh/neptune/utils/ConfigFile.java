@@ -33,7 +33,6 @@ public class ConfigFile {
             }
         }
 
-        // Load configuration
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 

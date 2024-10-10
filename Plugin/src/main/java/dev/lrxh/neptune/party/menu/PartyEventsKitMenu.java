@@ -41,7 +41,7 @@ public class PartyEventsKitMenu extends Menu {
 
 
         for (Kit kit : plugin.getKitManager().kits) {
-            if (kit.is(KitRule.ALLOW_PARTY)) {
+            if (kit.is(KitRule.ALLOW_PARTY) || !kit.is(KitRule.BEDWARS)) {
                 buttons.put(kit.getSlot(), new PartyTeamKitButton(party, kit, eventType));
             }
         }

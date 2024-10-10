@@ -6,6 +6,7 @@ import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.providers.tasks.workload.tasks.ArenaCopyTask;
 import dev.lrxh.neptune.providers.tasks.workload.tasks.ArenaResetTask;
+import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -126,10 +127,10 @@ public class StandAloneArena extends Arena {
     }
 
     private StandAloneArena getArenaCopy(StandAloneArena arena, int offset) {
-        Location redSpawn = getRedSpawn().add(0, 0, offset);
-        Location blueSpawn = getBlueSpawn().add(0, 0, offset);
-        Location min = getMin().add(0, 0, offset);
-        Location max = getMax().add(0, 0, offset);
+        Location redSpawn = LocationUtil.addOffsetToLocation(getRedSpawn(), offset);
+        Location blueSpawn = LocationUtil.addOffsetToLocation(getBlueSpawn(), offset);
+        Location min = LocationUtil.addOffsetToLocation(getMin(), offset);
+        Location max = LocationUtil.addOffsetToLocation(getMax(), offset);
 
         return new StandAloneArena(
                 arena.getName() + "#" + (arena.getCopies().size() + 1),

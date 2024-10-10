@@ -59,6 +59,14 @@ public abstract class Match {
                 (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f));
     }
 
+    public Location getSpawn(Participant participant) {
+        if (participant.getColor().equals(ParticipantColor.RED)) {
+            return arena.getRedSpawn();
+        } else {
+            return arena.getBlueSpawn();
+        }
+    }
+
     public Participant getParticipant(UUID playerUUID) {
         for (Participant participant : participants) {
             if (participant.getPlayerUUID().equals(playerUUID)) {
@@ -296,4 +304,8 @@ public abstract class Match {
     public abstract void startMatch();
 
     public abstract void sendEndMessage();
+
+    public abstract void breakBed(Participant participant);
+
+    public abstract void sendTitle(Participant participant, String header, String footer, int duration);
 }

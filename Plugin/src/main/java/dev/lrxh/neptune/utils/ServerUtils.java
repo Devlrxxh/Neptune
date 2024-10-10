@@ -22,10 +22,4 @@ public class ServerUtils {
             message.send(player.getUniqueId(), replacements);
         }
     }
-
-    public void broadcast(String message) {
-        for (Player player : Neptune.get().getServer().getOnlinePlayers()) {
-            player.sendMessage(CC.color(message));
-        }
-    }
 }

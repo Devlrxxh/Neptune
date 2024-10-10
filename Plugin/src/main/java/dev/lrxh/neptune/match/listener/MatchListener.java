@@ -2,11 +2,13 @@ package dev.lrxh.neptune.match.listener;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
+import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -60,6 +62,35 @@ public class MatchListener implements Listener {
             }
         }
     }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onBedBreak(BlockBreakEvent event) {
+        if (event.getBlock().getType().toString().contains("BED")) {
+            Location bed = event.getBlock().getLocation();
+
+            Player player = event.getPlayer();
+            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+            Match match = profile.getMatch();
+
+            if (match == null) return;
+
+            Participant participant = match.getParticipant(player.getUniqueId());
+            Location spawn = match.getSpawn(participant);
+            Participant opponent = participant.getOpponent();
+            Location opponentSpawn = match.getSpawn(opponent);
+            ParticipantColor color = participant.getColor();
+
+            if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
+                match.breakBed(opponent);
+                match.sendTitle(opponent, MessagesLocale.BED_BREAK_TITLE.getString(), MessagesLocale.BED_BREAK_FOOTER.getString(), 20);
+                match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE : MessagesLocale.BLUE_BED_BROKEN_MESSAGE);
+            } else {
+                event.setCancelled(true);
+                participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED.getString());
+            }
+        }
+    }
+
 
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {

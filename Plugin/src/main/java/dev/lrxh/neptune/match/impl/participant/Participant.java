@@ -34,6 +34,7 @@ public class Participant {
     private int roundsWon = 0;
     private Neptune plugin;
     private boolean frozen = false;
+    private boolean bedBroken;
 
     public Participant(Player player, Neptune plugin) {
         this.playerUUID = player.getUniqueId();

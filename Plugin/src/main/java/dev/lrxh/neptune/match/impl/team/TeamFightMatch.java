@@ -8,6 +8,7 @@ import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
+import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -65,7 +66,23 @@ public class TeamFightMatch extends Match {
     }
 
     @Override
+    public void breakBed(Participant participant) {
+        getParticipantTeam(participant).forEachParticipant(participants -> participants.setBedBroken(true));
+    }
+
+    @Override
+    public void sendTitle(Participant participant, String header, String footer, int duration) {
+        getParticipantTeam(participant).sendTitle(header, footer, duration);
+    }
+
+    @Override
     public void onDeath(Participant participant) {
+
+        if (!participant.isBedBroken()) {
+            state = MatchState.STARTING;
+            new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+            return;
+        }
 
         participant.setSpectator();
 

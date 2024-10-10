@@ -4,9 +4,11 @@ package dev.lrxh.neptune.match.impl.team;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import lombok.Data;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 @Data
 public class MatchTeam {
@@ -29,9 +31,7 @@ public class MatchTeam {
     }
 
     public void sendTitle(String header, String footer, int duration) {
-        for (Participant participant : participants) {
-            participant.sendTitle(header, footer, duration);
-        }
+        forEachParticipant((participant) -> participant.sendTitle(header, footer, duration));
     }
 
     public String getTeamNames() {
@@ -45,4 +45,12 @@ public class MatchTeam {
         return playerNames.toString();
     }
 
+    public void forEachParticipant(Consumer<Participant> action) {
+        for (Participant participant : participants) {
+            Player player = participant.getPlayer();
+            if (player != null) {
+                action.accept(participant);
+            }
+        }
+    }
 }

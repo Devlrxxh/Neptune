@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match.impl;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
@@ -113,11 +114,29 @@ public class SoloFightMatch extends Match {
     }
 
     @Override
+    public void breakBed(Participant participant) {
+        participant.setBedBroken(true);
+    }
+
+    @Override
+    public void sendTitle(Participant participant, String header, String footer, int duration) {
+        participant.sendTitle(header, footer, duration);
+    }
+
+    @Override
     public void onDeath(Participant participant) {
+        Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
         sendDeathMessage(participant);
 
-        if (rounds > 1 && !participant.isDisconnected()) {
-            Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
+        if (!participant.isBedBroken()) {
+            participantKiller.setCombo(0);
+
+            state = MatchState.STARTING;
+            new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+            return;
+        }
+
+        if (rounds > 1 && !participant.isDisconnected() && !kit.is(KitRule.BEDWARS)) {
             participantKiller.addWin();
             if (participantKiller.getRoundsWon() < rounds) {
                 participantKiller.setCombo(0);

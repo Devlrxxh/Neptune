@@ -17,6 +17,7 @@ public enum KitRule {
     SHOW_HP("If players should see their enemies health under their name", "Show Health", "showHP"),
     ALL0W_KIT_EDITOR("If players should be able to modify this kit in kiteditor.", "Allow Kit Editor", "allowKitEditor"),
     ALLOW_PARTY("If players should be able to play this kit in party events.", "Allow Party Events", "allowParty"),
+    BEDWARS("Allow/Deny Bedwars", "Bedwars", "bedwars"),
     SATURATION("If Saturation should be disabled", "Saturation", "saturation");
 
     private final String description;
