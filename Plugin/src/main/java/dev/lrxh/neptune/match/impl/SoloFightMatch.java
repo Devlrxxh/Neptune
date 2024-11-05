@@ -128,24 +128,26 @@ public class SoloFightMatch extends Match {
         Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
         sendDeathMessage(participant);
 
-        if (!participant.isBedBroken()) {
-            participantKiller.setCombo(0);
+         if (!participant.isDisconnected()) {
+             if (!participant.isBedBroken()) {
+                 participantKiller.setCombo(0);
 
-            state = MatchState.STARTING;
-            new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
-            return;
-        }
+                 state = MatchState.STARTING;
+                 new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+                 return;
+             }
 
-        if (rounds > 1 && !participant.isDisconnected() && !kit.is(KitRule.BEDWARS)) {
-            participantKiller.addWin();
-            if (participantKiller.getRoundsWon() < rounds) {
-                participantKiller.setCombo(0);
+             if (rounds > 1 && !participant.isDisconnected() && !kit.is(KitRule.BEDWARS)) {
+                 participantKiller.addWin();
+                 if (participantKiller.getRoundsWon() < rounds) {
+                     participantKiller.setCombo(0);
 
-                state = MatchState.STARTING;
-                new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
-                return;
-            }
-        }
+                     state = MatchState.STARTING;
+                     new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+                     return;
+                 }
+             }
+         }
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
