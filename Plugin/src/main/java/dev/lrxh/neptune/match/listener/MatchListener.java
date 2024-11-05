@@ -196,7 +196,6 @@ public class MatchListener implements Listener {
         if (profile == null) return;
         Match match = profile.getMatch();
 
-
         if (match != null) {
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant.isFrozen()) {
@@ -204,8 +203,17 @@ public class MatchListener implements Listener {
                 Location from = event.getFrom();
                 if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
                     player.teleport(from);
+                    return;
                 }
             }
+
+            if (match.getArena() instanceof StandAloneArena arena) {
+                if (player.getY() <= arena.getDeathY()) {
+                    match.onDeath(participant);
+                    return;
+                }
+            }
+
             if (match.getState().equals(MatchState.IN_ROUND)) {
                 Location playerLocation = player.getLocation();
 
@@ -217,7 +225,6 @@ public class MatchListener implements Listener {
                         match.onDeath(participant);
                     }
                 }
-
             }
         }
     }

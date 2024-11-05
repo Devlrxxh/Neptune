@@ -101,7 +101,8 @@ public class FfaFightMatch extends Match {
     }
 
     @Override
-    public void breakBed(Participant participant) {}
+    public void breakBed(Participant participant) {
+    }
 
     @Override
     public void sendTitle(Participant ignore, String header, String footer, int duration) {
