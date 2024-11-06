@@ -12,6 +12,7 @@ import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.EntityUtils;
@@ -83,10 +84,10 @@ public class MatchListener implements Listener {
             if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
                 match.breakBed(opponent);
                 match.sendTitle(opponent, MessagesLocale.BED_BREAK_TITLE.getString(), MessagesLocale.BED_BREAK_FOOTER.getString(), 20);
-                match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE : MessagesLocale.BLUE_BED_BROKEN_MESSAGE);
+                match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE : MessagesLocale.BLUE_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
             } else {
                 event.setCancelled(true);
-                participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED.getString());
+                participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
             }
         }
     }
@@ -208,7 +209,8 @@ public class MatchListener implements Listener {
             }
 
             if (match.getArena() instanceof StandAloneArena arena) {
-                if (player.getY() <= arena.getDeathY()) {
+                if (player.getY() <= arena.getDeathY() && !participant.isDead()) {
+                    participant.setDeathCause(DeathCause.DIED);
                     match.onDeath(participant);
                     return;
                 }

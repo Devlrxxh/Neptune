@@ -57,6 +57,8 @@ public enum MessagesLocale implements IDataAccessor {
             " "),
     MATCH_RESPAWN_TIMER("MATCH.RESPAWN_TIMER", DataType.STRING_LIST, "&fRespawning in &b<timer>&f..."),
     MATCH_RESPAWNED("MATCH.RESPAWNED", DataType.STRING_LIST, "&aRespawned!"),
+    MATCH_RESPAWN_TITLE_HEADER("MATCH.RESPAWN_TITLE.HEADER", DataType.STRING, "&fRespawning in &b<timer>&f..."),
+    MATCH_RESPAWN_TITLE_FOOTER("MATCH.RESPAWNED_TITLE_FOOTER", DataType.STRING, ""),
     MATCH_PLAY_AGAIN_ENABLED("MATCH.PLAY_AGAIN.ENABLED", DataType.BOOLEAN, "true"),
     MATCH_PLAY_AGAIN("MATCH.PLAY_AGAIN.MESSAGE", DataType.STRING, "&bDo you want to play again? &a(Click here)"),
     MATCH_PLAY_AGAIN_HOVER("MATCH.PLAY_AGAIN.HOVER", DataType.STRING, "&aClick to play again!"),

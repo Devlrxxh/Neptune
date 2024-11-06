@@ -10,6 +10,7 @@ import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
+import dev.lrxh.neptune.match.tasks.MatchSecondRoundRunnable;
 import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
@@ -125,25 +126,27 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
+        participant.setDead(true);
+
         Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
         sendDeathMessage(participant);
 
         if (!participant.isDisconnected()) {
-            if (!participant.isBedBroken()) {
-                participantKiller.setCombo(0);
-
-                state = MatchState.STARTING;
-                new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
-                return;
+            if (kit.is(KitRule.BEDWARS)) {
+                if (!participant.isBedBroken()) {
+                    participantKiller.setCombo(0);
+                    new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+                    return;
+                }
             }
 
-            if (rounds > 1 && !participant.isDisconnected() && !kit.is(KitRule.BEDWARS)) {
+            if (rounds > 1) {
                 participantKiller.addWin();
                 if (participantKiller.getRoundsWon() < rounds) {
                     participantKiller.setCombo(0);
 
                     state = MatchState.STARTING;
-                    new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+                    new MatchSecondRoundRunnable(this, participant, plugin).start(0L, 20L, plugin);
                     return;
                 }
             }

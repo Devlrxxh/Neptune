@@ -1,15 +1,15 @@
 package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.Participant;
+import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
-
 
 public class MatchRespawnRunnable extends NeptuneRunnable {
     private final Neptune plugin;
@@ -31,38 +31,34 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
             return;
         }
+
+        if (respawnTimer == 3) {
+            participant.setSpectator();
+            PlayerUtil.reset(participant.getPlayerUUID());
+            PlayerUtil.doVelocityChange(participant.getPlayerUUID());
+        }
+
         if (participant.getPlayer() == null) return;
         if (respawnTimer == 0) {
+            if (participant.getColor().equals(ParticipantColor.RED)) {
+                participant.teleport(match.getArena().getRedSpawn());
+            } else {
+                participant.teleport(match.getArena().getBlueSpawn());
+            }
 
-            MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
-            match.startMatch();
+            match.setupPlayer(participant.getPlayerUUID());
+            participant.setDead(false);
             stop(plugin);
             return;
         }
 
-        if (match.getState().equals(MatchState.STARTING)) {
-            match.playSound(Sound.UI_BUTTON_CLICK);
+        match.playSound(Sound.UI_BUTTON_CLICK);
 
-            match.sendTitle(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(respawnTimer)),
-                    MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(respawnTimer)),
+        participant.sendTitle(MessagesLocale.MATCH_RESPAWN_TITLE_HEADER.getString().replace("<timer>", String.valueOf(respawnTimer)),
+                MessagesLocale.MATCH_RESPAWN_TITLE_FOOTER.getString().replace("<timer>", String.valueOf(respawnTimer)),
                     100);
-            match.sendMessage(MessagesLocale.ROUND_STARTING, new Replacement("<timer>", String.valueOf(respawnTimer)));
-        }
+        participant.sendMessage(MessagesLocale.MATCH_RESPAWN_TIMER, new Replacement("<timer>", String.valueOf(respawnTimer)));
 
-        if (respawnTimer == 3) {
-            for (Participant p : match.participants) {
-                match.setupPlayer(p.getPlayerUUID());
-            }
-
-            match.teleportToPositions();
-
-            if (match.arena instanceof StandAloneArena standAloneArena) {
-                standAloneArena.restoreSnapshot();
-            }
-            match.removeEntities();
-
-            match.checkRules();
-        }
         respawnTimer--;
     }
 }

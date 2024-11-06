@@ -126,10 +126,6 @@ public final class Neptune implements InjectedPlugin {
 
         loadExtensions();
         if (!isEnabled()) return;
-        if (placeholder) {
-            ServerUtils.info("Placeholder API found, loading expansion.");
-            new PlaceholderImpl(this).register();
-        }
         this.configManager = new ConfigManager();
         this.configManager.load();
         this.workloadManager = new WorkloadManager();
@@ -186,6 +182,10 @@ public final class Neptune implements InjectedPlugin {
 
     private void loadExtensions() {
         placeholder = loadExtension("PlaceholderAPI");
+        if (placeholder) {
+            ServerUtils.info("Placeholder API found, loading expansion.");
+            new PlaceholderImpl(this).register();
+        }
     }
 
     private boolean loadExtension(String pluginName) {

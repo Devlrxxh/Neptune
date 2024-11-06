@@ -272,7 +272,7 @@ public abstract class Match {
         String deathMessage = deadParticipant.getDeathMessage();
         DeathCause deathCause = deadParticipant.getDeathCause();
 
-        if (deathMessage.isEmpty() && deathCause != null && !deathCause.equals(DeathCause.DIED)) {
+        if (deathMessage.isEmpty() && deathCause != null) {
             broadcast(
                     deadParticipant.getDeathCause().getMessagesLocale(),
                     new Replacement("<player>", deadParticipant.getNameColored()),

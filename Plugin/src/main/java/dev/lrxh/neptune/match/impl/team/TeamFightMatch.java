@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match.impl.team;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
@@ -77,13 +78,14 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
+        participant.setDead(true);
 
-        if (!participant.isBedBroken()) {
-            state = MatchState.STARTING;
-            new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
-            return;
+        if (kit.is(KitRule.BEDWARS)) {
+            if (!participant.isBedBroken()) {
+                new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+                return;
+            }
         }
-
         participant.setSpectator();
 
         PlayerUtil.reset(participant.getPlayerUUID());

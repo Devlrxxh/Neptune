@@ -7,12 +7,15 @@ import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.Data;
+import org.apache.logging.log4j.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -35,6 +38,7 @@ public class Participant {
     private Neptune plugin;
     private boolean frozen = false;
     private boolean bedBroken;
+    public boolean dead = false;
 
     public Participant(Player player, Neptune plugin) {
         this.playerUUID = player.getUniqueId();
@@ -72,6 +76,12 @@ public class Participant {
         player.updateInventory();
     }
 
+    public void teleport(Location location) {
+        Player player = getPlayer();
+        if (player == null) return;
+        player.teleport(location);
+    }
+
     public void playKillEffect() {
         Participant lastAttacker = getLastAttacker();
         if (lastAttacker == null) return;
@@ -90,6 +100,10 @@ public class Participant {
 
     public void sendMessage(String message) {
         PlayerUtil.sendMessage(playerUUID, message);
+    }
+
+    public void sendMessage(MessagesLocale message, Replacement... replacements) {
+        message.send(getPlayer(), replacements);
     }
 
     public void resetCombo() {
