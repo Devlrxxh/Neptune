@@ -4,9 +4,11 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
+import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.utils.ItemUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -149,6 +151,21 @@ public class Kit {
             player.getInventory().setContents(items.toArray(new ItemStack[0]));
         } else {
             player.getInventory().setContents(gameData.getKitData().get(this).getKitLoadout().toArray(new ItemStack[0]));
+        }
+
+        player.updateInventory();
+    }
+
+    public void giveLoadout(Participant participant) {
+        Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+        if (player == null) return;
+        Profile profile = plugin.getAPI().getProfile(participant.getPlayerUUID());
+        GameData gameData = profile.getGameData();
+        if (gameData.getKitData() == null || gameData.getKitData().get(this) == null ||
+                gameData.getKitData().get(this).getKitLoadout().isEmpty()) {
+            player.getInventory().setContents(ItemUtils.color(items.toArray(new ItemStack[0]), participant.getColor().getContentColor()));
+        } else {
+            player.getInventory().setContents(ItemUtils.color(gameData.getKitData().get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor()));
         }
 
         player.updateInventory();

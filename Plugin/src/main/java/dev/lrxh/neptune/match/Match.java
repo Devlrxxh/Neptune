@@ -189,7 +189,7 @@ public abstract class Match {
         Profile profile = plugin.getAPI().getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
-        kit.giveLoadout(playerUUID);
+        kit.giveLoadout(getParticipant(playerUUID));
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {

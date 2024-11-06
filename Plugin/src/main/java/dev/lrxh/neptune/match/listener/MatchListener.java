@@ -24,6 +24,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -64,16 +65,23 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onBedBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
+        Match match = profile.getMatch();
+        Material blockType = event.getBlock().getType();
+
+        if (match == null) return;
+
+        if (match.getKit().is(KitRule.BEDWARS)) {
+            if (blockType == Material.OAK_PLANKS || blockType == Material.END_STONE) {
+                event.setCancelled(false);
+            }
+        }
+
         if (event.getBlock().getType().toString().contains("BED")) {
             Location bed = event.getBlock().getLocation();
-
-            Player player = event.getPlayer();
-            Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-            Match match = profile.getMatch();
-
-            if (match == null) return;
 
             Participant participant = match.getParticipant(player.getUniqueId());
             Location spawn = match.getSpawn(participant);
@@ -322,7 +330,7 @@ public class MatchListener implements Listener {
     }
 
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOW)
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
@@ -338,12 +346,15 @@ public class MatchListener implements Listener {
         }
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
-        if (!(match != null && match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation))) {
+        Material blockType = event.getBlock().getType();
+        if (match == null) return;
+        if (blockType.name().contains("BED")) return;
+        if (!(match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation))) {
             event.setCancelled(true);
-        } else {
-            match.getPlacedBlocks().remove(blockLocation);
+            return;
         }
-        if (match != null && match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
+
+        if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
             event.setCancelled(false);
         }
     }
@@ -372,6 +383,10 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
+        if (event.getItemDrop().getItemStack().getType().name().contains("BED")) {
+            event.getItemDrop().remove();
+            return;
+        }
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = plugin.getAPI().getProfile(player);
