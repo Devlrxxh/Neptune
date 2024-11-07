@@ -92,7 +92,7 @@ public class MatchListener implements Listener {
             if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
                 match.breakBed(opponent);
                 match.sendTitle(opponent, MessagesLocale.BED_BREAK_TITLE.getString(), MessagesLocale.BED_BREAK_FOOTER.getString(), 20);
-                match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE : MessagesLocale.BLUE_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
+                match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.BLUE_BED_BROKEN_MESSAGE : MessagesLocale.RED_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
             } else {
                 event.setCancelled(true);
                 participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);

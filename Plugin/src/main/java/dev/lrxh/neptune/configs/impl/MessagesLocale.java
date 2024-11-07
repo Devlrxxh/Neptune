@@ -145,8 +145,8 @@ public enum MessagesLocale implements IDataAccessor {
     CANT_BREAK_OWN_BED("CANT.BREAK.OWN.BEAD", DataType.STRING_LIST, "&cYou can't break your own bed!"),
     BED_BREAK_TITLE("BEDWARS.OWN_BREAK.TITLE", DataType.STRING, "&cBED DESTROYED!"),
     BED_BREAK_FOOTER("BEDWARS.OWN_BREAK.FOOTER", DataType.STRING, "&fYou will no longer respawn!"),
-    BLUE_BED_BROKEN_MESSAGE("BEDWARS.BLUE_BREAK.MESSAGE", DataType.STRING, "&9Blue Bed &f was broken by <player>"),
-    RED_BED_BROKEN_MESSAGE("BEDWARS.RED_BREAK.MESSAGE", DataType.STRING, "&cRed Bed &f was broken by <player>");
+    BLUE_BED_BROKEN_MESSAGE("BEDWARS.BLUE_BREAK.MESSAGE", DataType.STRING, "&9Blue Bed &7was broken by <player>"),
+    RED_BED_BROKEN_MESSAGE("BEDWARS.RED_BREAK.MESSAGE", DataType.STRING, "&cRed Bed &7was broken by <player>");
 
     private final String path;
     private final String comment;

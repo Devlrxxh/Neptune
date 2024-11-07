@@ -169,8 +169,7 @@ public class Profile {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
 
-
-        MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
+        MessagesLocale.DUEL_REQUEST_SENDER.send(sender.getUniqueId(),
                 new Replacement("<receiver>", username),
                 new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
                 new Replacement("<rounds>", String.valueOf(1)),
