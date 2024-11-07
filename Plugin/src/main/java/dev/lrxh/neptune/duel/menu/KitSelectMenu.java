@@ -35,10 +35,9 @@ public class KitSelectMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = MenusLocale.DUEL_STARTING_SLOT.getInt();
 
         for (Kit kit : plugin.getKitManager().kits) {
-            buttons.put(i++, new KitSelectButton(kit, receiver, party));
+            buttons.put(kit.getSlot(), new KitSelectButton(kit, receiver, party));
         }
 
         return buttons;
