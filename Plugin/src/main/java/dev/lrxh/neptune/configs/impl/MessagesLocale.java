@@ -141,6 +141,7 @@ public enum MessagesLocale implements IDataAccessor {
     SPECTATE_MENU_NO_MATCH("SPECTATE.MENU.NO_MATCH_ONGOING", DataType.STRING_LIST, "&cThere are no ongoing matches!"),
     START_FOLLOW("FOLLOW.STARTED", DataType.STRING_LIST, "&bStarted following &f<player>"),
     STOP_FOLLOWING("FOLLOW.STOPPED", DataType.STRING_LIST, "&cStopped following <player>"),
+    NOT_FOLLOWING("FOLLOW.NOT", DataType.STRING_LIST, "&cYou are not following anyone."),
     NOT_ONLINE("NOT_ONLINE", DataType.STRING_LIST, "&c<player> isn't online!"),
     CANT_BREAK_OWN_BED("CANT.BREAK.OWN.BEAD", DataType.STRING_LIST, "&cYou can't break your own bed!"),
     BED_BREAK_TITLE("BEDWARS.OWN_BREAK.TITLE", DataType.STRING, "&cBED DESTROYED!"),
