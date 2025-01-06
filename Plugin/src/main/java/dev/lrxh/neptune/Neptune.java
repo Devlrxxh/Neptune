@@ -224,7 +224,8 @@ public final class Neptune extends JavaPlugin {
                 new LeaderboardCommand(),
                 new KitEditorCommand(),
                 new CosmeticsCommand(),
-                new FollowCommand()
+                new FollowCommand(),
+                new UnFollowCommand()
         ).forEach(command -> paperCommandManager.registerCommand(command));
     }
 
