@@ -4,16 +4,15 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.providers.tasks.workload.tasks.ArenaCopyTask;
-import dev.lrxh.neptune.providers.tasks.workload.tasks.ArenaResetTask;
+import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.function.Consumer;
 
 
@@ -21,7 +20,7 @@ import java.util.function.Consumer;
 @Setter
 public class StandAloneArena extends Arena {
     private final Neptune plugin;
-    private final Map<Location, Material> blockMap = new HashMap<>();
+    private BlockChanger.Snapshot snapshot;
     private Location min;
     private Location max;
     private double deathY;
@@ -69,29 +68,13 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         if (min == null || max == null) return;
-
-        int minX = Math.min(min.getBlockX(), max.getBlockX());
-        int minY = Math.min(min.getBlockY(), max.getBlockY());
-        int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
-
-        int maxX = Math.max(min.getBlockX(), max.getBlockX());
-        int maxY = Math.max(min.getBlockY(), max.getBlockY());
-        int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
-
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    Block block = min.getWorld().getBlockAt(x, y, z);
-                    blockMap.put(block.getLocation(), block.getType());
-                }
-            }
-        }
+        snapshot = plugin.getBlockChanger().capture(min, max, 0);
     }
 
 
     public void restoreSnapshot() {
         if (min == null && max == null) return;
-        new ArenaResetTask(this).start(plugin);
+        plugin.getBlockChanger().revert(snapshot);
     }
 
     @Override
@@ -102,7 +85,7 @@ public class StandAloneArena extends Arena {
     public void createCopy() {
         int offset = SettingsLocale.ARENA_COPY_DISTANCE.getInt() * (copies.size() + 1);
 
-        new ArenaCopyTask(this, offset).start(plugin);
+        plugin.getBlockChanger().revert(plugin.getBlockChanger().capture(min, max, offset));
 
         StandAloneArena copy = getArenaCopy(this, offset);
 

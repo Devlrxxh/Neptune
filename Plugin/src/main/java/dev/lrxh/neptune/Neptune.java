@@ -47,11 +47,10 @@ import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
-import dev.lrxh.neptune.providers.tasks.workload.WorkloadManager;
-import dev.lrxh.neptune.providers.tasks.workload.WorkloadTask;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
+import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.MenuManager;
@@ -95,8 +94,8 @@ public final class Neptune extends JavaPlugin {
     private DivisionManager divisionManager;
     private DatabaseManager databaseManager;
     private CosmeticManager cosmeticManager;
-    private WorkloadManager workloadManager;
     private API api;
+    private BlockChanger blockChanger;
 
     public static Neptune get() {
         return instance;
@@ -117,12 +116,11 @@ public final class Neptune extends JavaPlugin {
         this.versionHandler = versionControll.getHandler();
         if (!isEnabled()) return;
         //this.version = versionControll.getVersion();
-
+        this.blockChanger = new BlockChanger(this, false);
         loadExtensions();
         if (!isEnabled()) return;
         this.configManager = new ConfigManager();
         this.configManager.load();
-        this.workloadManager = new WorkloadManager();
         this.taskScheduler = new TaskScheduler(this);
         this.queueManager = new QueueManager();
         this.matchManager = new MatchManager();
@@ -199,7 +197,6 @@ public final class Neptune extends JavaPlugin {
     private void loadTasks() {
         new QueueCheckTask(this).start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
         new LeaderboardTask(this).start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
-        new WorkloadTask(workloadManager).start(1, this);
     }
 
     private void loadCommandManager() {

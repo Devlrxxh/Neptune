@@ -12,7 +12,6 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.sounds.Sound;
 import lombok.Data;
-import org.apache.logging.log4j.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -23,6 +22,7 @@ import java.util.UUID;
 
 @Data
 public class Participant {
+    public boolean dead = false;
     private UUID playerUUID;
     private String name;
     private Participant opponent;
@@ -38,7 +38,6 @@ public class Participant {
     private Neptune plugin;
     private boolean frozen = false;
     private boolean bedBroken;
-    public boolean dead = false;
 
     public Participant(Player player, Neptune plugin) {
         this.playerUUID = player.getUniqueId();

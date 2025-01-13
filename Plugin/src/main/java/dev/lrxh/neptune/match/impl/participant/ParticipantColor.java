@@ -11,13 +11,13 @@ public enum ParticipantColor {
 
     private final ChatColor color;
 
+    ParticipantColor(ChatColor color) {
+        this.color = color;
+    }
+
     public Color getContentColor() {
         if (this.equals(RED)) return Color.RED;
 
         return Color.BLUE;
-    }
-
-    ParticipantColor(ChatColor color) {
-        this.color = color;
     }
 }
