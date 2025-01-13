@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.utils;
 
+import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.SneakyThrows;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -52,56 +53,92 @@ public final class BlockChanger {
         String CRAFT_BUKKIT;
         String NET_MINECRAFT = "net.minecraft.";
 
+        if (MINOR_VERSION == 16) {
+            NET_MINECRAFT = "net.minecraft.server." + plugin.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
+        }
         if (supports(21)) {
             CRAFT_BUKKIT = "org.bukkit.craftbukkit.";
         } else {
             CRAFT_BUKKIT = "org.bukkit.craftbukkit." + plugin.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
         }
 
-        Class<?> i_BLOCK_DATA = loadClass(NET_MINECRAFT + "world.level.block.state.IBlockData");
+        Class<?> i_BLOCK_DATA;
+
+        if (MINOR_VERSION != 16) {
+            i_BLOCK_DATA = loadClass(NET_MINECRAFT + "world.level.block.state.IBlockData");
+        } else {
+            i_BLOCK_DATA = loadClass(NET_MINECRAFT + "IBlockData");
+        }
         debug("I_BLOCK_DATA Loaded");
 
-        CHUNK = loadClass(NET_MINECRAFT + "world.level.chunk.Chunk");
+        if (MINOR_VERSION != 16) {
+            CHUNK = loadClass(NET_MINECRAFT + "world.level.chunk.Chunk");
+        } else {
+            CHUNK = loadClass(NET_MINECRAFT + "Chunk");
+        }
         debug("CHUNK Loaded");
 
-        Class<?> CHUNK_SECTION = loadClass(NET_MINECRAFT + "world.level.chunk.ChunkSection");
+        Class<?> CHUNK_SECTION;
+
+        if (MINOR_VERSION != 16) {
+            CHUNK_SECTION = loadClass(NET_MINECRAFT + "world.level.chunk.ChunkSection");
+        } else {
+            CHUNK_SECTION = loadClass(NET_MINECRAFT + "ChunkSection");
+        }
         debug("CHUNK_SECTION Loaded");
 
         CRAFT_CHUNK = loadClass(CRAFT_BUKKIT + "CraftChunk");
         debug("CRAFT_CHUNK Loaded");
 
-        Class<?> i_CHUNK_ACCESS = loadClass(NET_MINECRAFT + "world.level.chunk.IChunkAccess");
+        Class<?> i_CHUNK_ACCESS;
+
+        if (MINOR_VERSION != 16) {
+            i_CHUNK_ACCESS = loadClass(NET_MINECRAFT + "world.level.chunk.IChunkAccess");
+        } else {
+            i_CHUNK_ACCESS = loadClass(NET_MINECRAFT + "IChunkAccess");
+        }
         debug("I_CHUNK_ACCESS Loaded");
 
         CRAFT_BLOCK_DATA = loadClass(CRAFT_BUKKIT + "block.data.CraftBlockData");
         debug("CRAFT_BLOCK_DATA Loaded");
 
         Class<?> CHUNK_STATUS;
-        if (supports(21)) {
-            CHUNK_STATUS = loadClass(NET_MINECRAFT + "world.level.chunk.status.ChunkStatus");
+        if (MINOR_VERSION != 16) {
+            if (supports(21)) {
+                CHUNK_STATUS = loadClass(NET_MINECRAFT + "world.level.chunk.status.ChunkStatus");
+            } else {
+                CHUNK_STATUS = loadClass(NET_MINECRAFT + "world.level.chunk.ChunkStatus");
+            }
         } else {
-            CHUNK_STATUS = loadClass(NET_MINECRAFT + "world.level.chunk.ChunkStatus");
+            CHUNK_STATUS = loadClass(NET_MINECRAFT + "ChunkStatus");
         }
         debug("CHUNK_STATUS Loaded");
 
         GET_STATE = getDeclaredMethod(CRAFT_BLOCK_DATA, "getState");
         debug("GET_STATE Loaded");
 
-        GET_HANDLE = getDeclaredMethod(CRAFT_CHUNK, "getHandle", CHUNK_STATUS);
+        if (MINOR_VERSION != 16) {
+            GET_HANDLE = getDeclaredMethod(CRAFT_CHUNK, "getHandle", CHUNK_STATUS);
+        } else {
+            GET_HANDLE = getDeclaredMethod(CRAFT_CHUNK, "getHandle");
+        }
         debug("GET_HANDLE Loaded");
 
-        if (supports(21)) {
+        if (supports(21) || MINOR_VERSION == 16) {
             GET_SECTIONS = getDeclaredMethod(i_CHUNK_ACCESS, "getSections");
         } else {
             GET_SECTIONS = getDeclaredMethod(i_CHUNK_ACCESS, "d");
         }
-
         debug("GET_SECTIONS Loaded");
 
-        if (supports(21)) {
-            SET_BLOCK_STATE = getDeclaredMethod(CHUNK_SECTION, "setBlockState", int.class, int.class, int.class, i_BLOCK_DATA);
+        if (MINOR_VERSION != 16) {
+            if (supports(21)) {
+                SET_BLOCK_STATE = getDeclaredMethod(CHUNK_SECTION, "setBlockState", int.class, int.class, int.class, i_BLOCK_DATA);
+            } else {
+                SET_BLOCK_STATE = getDeclaredMethod(CHUNK_SECTION, "a", int.class, int.class, int.class, i_BLOCK_DATA);
+            }
         } else {
-            SET_BLOCK_STATE = getDeclaredMethod(CHUNK_SECTION, "a", int.class, int.class, int.class, i_BLOCK_DATA);
+            SET_BLOCK_STATE = getDeclaredMethod(CHUNK_SECTION, "setType", int.class, int.class, int.class, i_BLOCK_DATA);
         }
         debug("SET_BLOCK_STATE Loaded");
 
@@ -119,7 +156,7 @@ public final class BlockChanger {
         for (Method method : methods) {
             System.out.print("Method: " + method.getName());
             System.out.print(" | Return type: " + method.getReturnType().getSimpleName());
-            System.out.print(" | Modifiers: " + java.lang.reflect.Modifier.toString(method.getModifiers()));
+            System.out.print(" | Modifiers: " + Modifier.toString(method.getModifiers()));
             System.out.print(" | Parameters: ");
             Parameter[] parameters = method.getParameters();
             if (parameters.length == 0) {
@@ -224,6 +261,12 @@ public final class BlockChanger {
 
     @SneakyThrows
     private Object getChunkNMS(Chunk chunk) {
+        if (MINOR_VERSION == 16) {
+            Object craftChunk = CRAFT_CHUNK.cast(chunk);
+
+            return GET_HANDLE.invoke(craftChunk);
+        }
+
         Object craftChunk = CRAFT_CHUNK.cast(chunk);
         Object IChunkAccess = GET_HANDLE.invoke(craftChunk, CHUNK_STATUS_FULL.get(null));
 
