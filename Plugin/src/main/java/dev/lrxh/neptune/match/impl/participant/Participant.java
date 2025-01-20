@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.impl.participant;
 
-import com.mongodb.lang.Nullable;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -11,11 +10,11 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import dev.lrxh.sounds.Sound;
 import lombok.Data;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -65,8 +64,7 @@ public class Participant {
     public void playSound(Sound sound) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        player.playSound(player.getLocation(),
-                (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f);
+        player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
     }
 
     public void setSpectator() {
@@ -88,14 +86,14 @@ public class Participant {
         UUID attckerUUID = lastAttacker.getPlayerUUID();
         if (attckerUUID == null) return;
         Profile profile = API.getProfile(attckerUUID);
-        Player player = Bukkit.getPlayer(playerUUID);
+        Player player = getPlayer();
         Player killer = Bukkit.getPlayer(attckerUUID);
         if (profile == null || player == null || killer == null) return;
         profile.getSettingData().getKillEffect().execute(player, killer);
     }
 
     public void sendTitle(String header, String footer, int duration) {
-        PlayerUtil.sendTitle(playerUUID, header, footer, duration);
+        PlayerUtil.sendTitle(getPlayer(), header, footer, duration);
     }
 
     public void sendMessage(String message) {
@@ -186,7 +184,6 @@ public class Participant {
                 .orElse("");
     }
 
-    @Nullable
     public Player getPlayer() {
         return Bukkit.getPlayer(playerUUID);
     }

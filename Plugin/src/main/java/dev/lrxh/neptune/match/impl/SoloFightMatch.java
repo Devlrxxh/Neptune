@@ -20,10 +20,10 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.DateUtils;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import dev.lrxh.sounds.Sound;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.Sound;
 
 import java.util.List;
 

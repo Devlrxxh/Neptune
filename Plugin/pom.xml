@@ -43,25 +43,8 @@
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
-            <version>1.20.4-R0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.md-5</groupId>
-                    <artifactId>bungeecord-chat</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.lrxh</groupId>
-            <artifactId>Build</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.lrxh</groupId>
-            <artifactId>Shared</artifactId>
-            <version>1.0</version>
+            <version>1.19.4-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>

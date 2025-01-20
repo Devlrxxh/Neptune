@@ -219,7 +219,7 @@ public class MatchListener implements Listener {
             }
 
             if (match.getArena() instanceof StandAloneArena arena) {
-                if (player.getY() <= arena.getDeathY() && !participant.isDead()) {
+                if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
                     participant.setDeathCause(DeathCause.DIED);
                     match.onDeath(participant);
                     return;

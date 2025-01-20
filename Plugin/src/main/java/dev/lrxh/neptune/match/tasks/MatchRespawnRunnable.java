@@ -9,7 +9,7 @@ import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import dev.lrxh.sounds.Sound;
+import org.bukkit.Sound;
 
 public class MatchRespawnRunnable extends NeptuneRunnable {
     private final Neptune plugin;

@@ -30,10 +30,7 @@ public class QueueMenu extends Menu {
         return MenusLocale.QUEUE_SELECT_SIZE.getInt();
     }
 
-    @Override
-    public boolean fixPosition() {
-        return false;
-    }
+
 
     @Override
     public Filter getFilter() {

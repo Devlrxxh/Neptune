@@ -39,7 +39,7 @@ public class PlaceholderUtil {
             line = line.replaceAll("<queued>", String.valueOf(QueueManager.get().queues.size()));
             line = line.replaceAll("<in-match>", String.valueOf(MatchManager.get().matches.size()));
             line = line.replaceAll("<player>", player.getName());
-            line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player.getUniqueId()))));
+            line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player))));
 
             GlobalStats globalStats = profile.getGameData().getGlobalStats();
             line = line.replaceAll("<wins>", String.valueOf(globalStats.getWins()));
@@ -69,7 +69,7 @@ public class PlaceholderUtil {
                         Participant participant = match.getParticipant(player.getUniqueId());
                         Participant opponent = participant.getOpponent();
                         line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
-                        line = line.replaceAll("<opponent-ping>", String.valueOf(PlayerUtil.getPing(participant.getOpponent().getPlayerUUID())));
+                        line = line.replaceAll("<opponent-ping>", String.valueOf(PlayerUtil.getPing(participant.getOpponent().getPlayer())));
 
                         line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
                         line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
@@ -90,8 +90,8 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<playerRed_name>", redPlayer.getNameUnColored());
                         line = line.replaceAll("<playerBlue_name>", bluePlayer.getNameUnColored());
 
-                        line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(redPlayer.getPlayerUUID())));
-                        line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayerUUID())));
+                        line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(redPlayer.getPlayer())));
+                        line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayer())));
                     }
                 }
                 if (match instanceof TeamFightMatch teamFightMatch) {

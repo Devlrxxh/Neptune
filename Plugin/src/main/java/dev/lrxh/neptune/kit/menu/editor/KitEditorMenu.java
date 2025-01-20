@@ -32,10 +32,7 @@ public class KitEditorMenu extends Menu {
         return Filter.valueOf(MenusLocale.KIT_EDITOR_SELECT_FILTER.getString());
     }
 
-    @Override
-    public boolean fixPosition() {
-        return false;
-    }
+
 
     @Override
     public Map<Integer, Button> getButtons(Player player) {

@@ -24,7 +24,7 @@ import java.util.Arrays;
 @CommandPermission("neptune.admin.kit")
 @Description("Command to manage and create new kits.")
 public class KitCommand extends BaseCommand {
-    
+
 
     @Subcommand("list")
     public void list(Player player) {
@@ -64,7 +64,7 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), PlayerUtil.getItemInHand(player.getUniqueId()));
+        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), player.getInventory().getItemInMainHand());
 
         KitManager.get().kits.add(kit);
         KitManager.get().saveKits();
@@ -162,7 +162,7 @@ public class KitCommand extends BaseCommand {
         Kit kit = KitManager.get().getKitByName(kitName);
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            PlayerUtil.kick(onlinePlayer.getUniqueId(), "&cUpdating player data...");
+            PlayerUtil.kick(onlinePlayer, "&cUpdating player data...");
         }
 
         int i = 0;
@@ -191,7 +191,7 @@ public class KitCommand extends BaseCommand {
         }
         Kit kit = KitManager.get().getKitByName(kitName);
 
-        kit.setIcon(PlayerUtil.getItemInHand(player.getUniqueId()));
+        kit.setIcon(player.getInventory().getItemInMainHand());
 
         KitManager.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit icon!"));

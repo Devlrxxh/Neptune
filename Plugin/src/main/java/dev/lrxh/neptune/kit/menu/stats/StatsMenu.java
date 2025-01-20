@@ -25,10 +25,7 @@ public class StatsMenu extends Menu {
         return MenusLocale.STAT_TITLE.getString().replace("<player>", target.equals(player) ? "Your" : target.getName());
     }
 
-    @Override
-    public boolean fixPosition() {
-        return false;
-    }
+
 
     @Override
     public int getSize() {

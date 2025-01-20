@@ -33,30 +33,6 @@ public abstract class Menu {
         buttons.clear();
         buttons.putAll(getButtons(player));
 
-        if (getFilter() != Filter.NONE && fixPosition()) {
-            TreeSet<Map.Entry<Integer, Button>> sortedEntries = new TreeSet<>(Map.Entry.comparingByKey());
-            sortedEntries.addAll(buttons.entrySet());
-
-            TreeMap<Integer, Button> updatedButtons = new TreeMap<>();
-
-            for (Map.Entry<Integer, Button> buttonEntry : sortedEntries) {
-                int slot = buttonEntry.getKey();
-
-                if ((slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton && buttonEntry.getValue().isDisplay())) {
-                    slot += 2;
-                }
-
-                while (updatedButtons.containsKey(slot)) {
-                    slot++;
-                }
-
-                updatedButtons.put(slot, buttonEntry.getValue());
-            }
-
-            this.buttons = updatedButtons;
-        }
-
-
         switch (getFilter()) {
             case BORDER:
                 addBorder(inventory);
@@ -151,10 +127,6 @@ public abstract class Menu {
     public ItemStack getFilterItem() {
         return new ItemBuilder(MenusLocale.FILTER_MATERIAL.getString())
                 .name(MenusLocale.FILTER_NAME.getString()).amount(1).build();
-    }
-
-    public boolean fixPosition() {
-        return true;
     }
 
     public Filter getFilter() {

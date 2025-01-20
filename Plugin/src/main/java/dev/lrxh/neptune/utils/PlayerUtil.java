@@ -1,12 +1,16 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.utils.IPlayerUtils;
 import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
 
 import java.util.List;
@@ -14,8 +18,6 @@ import java.util.UUID;
 
 @UtilityClass
 public class PlayerUtil {
-    
-    private final IPlayerUtils utils = Neptune.get().getVersionHandler().getPlayerUtils();
 
     public void reset(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
@@ -40,8 +42,8 @@ public class PlayerUtil {
         }
     }
 
-    public void kick(UUID playerUUID, String message) {
-        utils.kick(playerUUID, CC.color(message));
+    public void kick(Player player, String message) {
+        player.kick(Component.text(CC.color(message)));
     }
 
     public void teleportToSpawn(UUID playerUUID) {
@@ -54,24 +56,49 @@ public class PlayerUtil {
         }
     }
 
-    public int getPing(UUID playerUUID) {
-        return utils.getPing(playerUUID);
+    public int getPing(Player player) {
+        return player.getPing();
+    }
+
+    public int getPing(UUID uuid) {
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) throw new RuntimeException("Player UUID isn't valid");
+        return player.getPing();
     }
 
     public ItemStack getPlayerHead(UUID playerUUID) {
-        return utils.getPlayerHead(playerUUID);
+        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
+        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
+        skullMeta.setOwningPlayer(Bukkit.getPlayer(playerUUID));
+        head.setItemMeta(skullMeta);
+        return head;
     }
 
     public void sendMessage(UUID playerUUID, List<Object> content) {
-        utils.sendMessage(playerUUID, content);
+        TextComponent.Builder builder = Component.text();
+
+        for (Object obj : content) {
+            if (obj instanceof String message) {
+                builder.append(Component.text(message));
+            } else if (obj instanceof TextComponent) {
+                builder.append((TextComponent) obj);
+            }
+        }
+
+        sendMessage(playerUUID, builder);
     }
 
-    public void sendMessage(UUID playerUUID, Object content) {
-        utils.sendMessage(playerUUID, content);
-    }
+    public void sendMessage(UUID playerUUID, Object message) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
 
-    public ItemStack getItemInHand(UUID playerUUID) {
-        return utils.getItemInHand(playerUUID);
+        if (message instanceof String) {
+            player.sendMessage((String) message);
+        } else if (message instanceof Component) {
+            player.sendMessage((Component) message);
+        } else if (message instanceof TextComponent.Builder) {
+            player.sendMessage((TextComponent.Builder) message);
+        }
     }
 
     public void sendMessage(UUID playerUUID, String message) {
@@ -80,8 +107,8 @@ public class PlayerUtil {
         player.sendMessage(CC.color(message));
     }
 
-    public void sendTitle(UUID playerUUID, String header, String footer, int duration) {
-        utils.sendTitle(playerUUID, CC.color(header), CC.color(footer), 1, duration, 5);
+    public void sendTitle(Player player, String header, String footer, int duration) {
+        player.sendTitle(CC.color(header), CC.color(footer), 1, duration, 5);
     }
 
     public void doVelocityChange(UUID playerUUID) {

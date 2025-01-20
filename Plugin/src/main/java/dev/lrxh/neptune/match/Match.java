@@ -20,13 +20,13 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import dev.lrxh.sounds.Sound;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -55,8 +55,7 @@ public abstract class Match {
     private boolean duel;
 
     public void playSound(Sound sound) {
-        forEachPlayer(player -> player.playSound(player.getLocation(),
-                (org.bukkit.Sound) plugin.getVersionHandler().getSound().getSound(sound), 1.0f, 1.0f));
+        forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
     }
 
     public Location getSpawn(Participant participant) {
@@ -77,7 +76,7 @@ public abstract class Match {
     }
 
     public void sendTitle(String header, String footer, int duration) {
-        forEachParticipant(participant -> PlayerUtil.sendTitle(participant.getPlayerUUID(), header, footer, duration));
+        forEachParticipant(participant -> PlayerUtil.sendTitle(participant.getPlayer(), header, footer, duration));
     }
 
     public void sendMessage(MessagesLocale message, Replacement... replacements) {

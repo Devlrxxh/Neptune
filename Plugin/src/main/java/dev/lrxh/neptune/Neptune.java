@@ -4,8 +4,6 @@ import co.aikar.commands.BukkitCommandCompletionContext;
 import co.aikar.commands.CommandCompletions;
 import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
-import dev.lrxh.VersionHandler;
-import dev.lrxh.gameRule.GameRule;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.command.ArenaCommand;
@@ -51,10 +49,10 @@ import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
-import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -72,7 +70,6 @@ public final class Neptune extends JavaPlugin {
     private Cache cache;
     private Assemble assemble;
     private boolean placeholder = false;
-    private VersionHandler versionHandler;
     private EntityHider entityHider;
     private API api;
     private BlockChanger blockChanger;
@@ -92,11 +89,7 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadManager() {
-        VersionControll versionControll = new VersionControll(this);
-        this.versionHandler = versionControll.getHandler();
         if (!isEnabled()) return;
-        //this.version = versionControll.getVersion();
-        this.blockChanger = new BlockChanger(this, false);
 
         loadExtensions();
         if (!isEnabled()) return;
@@ -163,9 +156,10 @@ public final class Neptune extends JavaPlugin {
 
     private void loadWorlds() {
         for (World world : getServer().getWorlds()) {
-            versionHandler.getGameRule().setGameRule(world, GameRule.DO_WEATHER_CYCLE, false);
-            versionHandler.getGameRule().setGameRule(world, GameRule.DO_DAYLIGHT_CYCLE, false);
-            versionHandler.getGameRule().setGameRule(world, GameRule.DO_IMMEDIATE_RESPAWN, true);
+            world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+            world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
             world.setDifficulty(Difficulty.HARD);
         }
     }

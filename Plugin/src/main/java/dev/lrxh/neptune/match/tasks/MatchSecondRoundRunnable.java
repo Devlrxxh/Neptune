@@ -9,7 +9,7 @@ import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
-import dev.lrxh.sounds.Sound;
+import org.bukkit.Sound;
 
 public class MatchSecondRoundRunnable extends NeptuneRunnable {
     private final Neptune plugin;

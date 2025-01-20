@@ -14,14 +14,12 @@ import java.util.List;
 @Getter
 public enum SettingsLocale implements IDataAccessor {
     SPAWN_LOCATION("SPAWN.LOCATION", DataType.STRING, "NONE"),
-    QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "20"),
+    QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "60"),
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "20"),
     DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL", DataType.STRING, "MONGO"),
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
-    REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30"),
-    ARENA_COPY_DISTANCE("ARENA_COPY_DISTANCE", "Distance between each standalone arena copy", DataType.INT, "300");
-
+    REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30");
     private final String path;
     private final String comment;
     private final List<String> defaultValue = new ArrayList<>();

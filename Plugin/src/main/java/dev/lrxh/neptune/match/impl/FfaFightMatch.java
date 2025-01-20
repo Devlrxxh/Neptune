@@ -10,7 +10,7 @@ import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import dev.lrxh.sounds.Sound;
+import org.bukkit.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
