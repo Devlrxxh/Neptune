@@ -50,6 +50,7 @@ import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
+import dev.lrxh.neptune.utils.menu.listener.MenuListener;
 import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -142,7 +143,8 @@ public final class Neptune extends JavaPlugin {
                 new ItemListener(),
                 new EntityCache(),
                 new ItemCache(),
-                new BukkitListener()
+                new BukkitListener(),
+                new MenuListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

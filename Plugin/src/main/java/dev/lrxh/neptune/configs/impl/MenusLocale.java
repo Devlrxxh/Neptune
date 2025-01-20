@@ -203,7 +203,7 @@ public enum MenusLocale implements IDataAccessor {
     DIVISIONS_LORE("DIVISIONS.LORE", DataType.STRING_LIST,
             "&7To reach this this rank you", "&7need <wins> wins."),
     SETTINGS_TITLE("SETTINGS.TITLE", DataType.STRING, "&7Profile Settings"),
-    SETTINGS_SIZE("SETTINGS.SIZE", DataType.INT, "36"),
+    SETTINGS_SIZE("SETTINGS.SIZE", DataType.INT, "27"),
     SETTINGS_FILTER("SETTINGS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
 
     SETTINGS_PLAYER_VISIBILITY_MATERIAL("SETTINGS.PLAYER-VISIBILITY.MATERIAL", DataType.STRING, "ENDER_EYE"),
