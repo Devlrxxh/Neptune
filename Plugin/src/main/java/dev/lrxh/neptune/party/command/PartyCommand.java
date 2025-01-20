@@ -19,7 +19,7 @@ import java.util.UUID;
 @CommandAlias("party|p")
 @Description("Party Command.")
 public class PartyCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Default
     @Subcommand("help")

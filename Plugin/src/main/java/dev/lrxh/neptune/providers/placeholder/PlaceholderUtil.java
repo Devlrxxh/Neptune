@@ -27,7 +27,7 @@ import java.util.List;
 
 @UtilityClass
 public class PlaceholderUtil {
-    private final Neptune plugin = Neptune.get();
+    
 
     public List<String> format(List<String> lines, Player player) {
         List<String> formattedLines = new ArrayList<>();
@@ -124,7 +124,7 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<arena>", match.getArena().getDisplayName());
             }
 
-            if (plugin.isPlaceholder() && PlaceholderAPIPlugin.getInstance().isEnabled()) {
+            if (Neptune.get().isPlaceholder() && PlaceholderAPIPlugin.getInstance().isEnabled()) {
                 formattedLines.add(PlaceholderAPI.setPlaceholders(player, line));
             } else {
                 formattedLines.add(line);

@@ -11,7 +11,7 @@ import java.io.IOException;
 public class ConfigFile {
     private final File file;
     private final YamlConfiguration configuration;
-    private final Neptune plugin = Neptune.get();
+    
 
 
     public ConfigFile(String name) {

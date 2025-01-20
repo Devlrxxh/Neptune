@@ -24,7 +24,6 @@ public class ConfigManager {
         return instance;
     }
 
-
     public void load() {
         messagesConfig = new ConfigFile("messages");
         arenasConfig = new ConfigFile("arenas");

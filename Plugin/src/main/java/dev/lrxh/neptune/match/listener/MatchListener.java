@@ -39,7 +39,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 
 public class MatchListener implements Listener {
-    private final Neptune plugin = Neptune.get();
+    
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {

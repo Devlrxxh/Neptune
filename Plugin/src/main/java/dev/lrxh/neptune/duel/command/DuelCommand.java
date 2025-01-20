@@ -20,7 +20,7 @@ import java.util.UUID;
 @CommandAlias("duel|1v1")
 @Description("Duel other players.")
 public class DuelCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Default
     @Syntax("<name>")

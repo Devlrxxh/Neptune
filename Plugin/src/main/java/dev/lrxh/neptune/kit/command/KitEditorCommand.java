@@ -19,7 +19,7 @@ import java.util.Arrays;
 @CommandAlias("kiteditor")
 @Description("Kit Editor command")
 public class KitEditorCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Default
     public void open(Player player) {

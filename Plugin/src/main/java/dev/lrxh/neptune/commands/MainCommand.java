@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("neptune.admin.main")
 @Description("Main Command for Neptune Practice Core.")
 public class MainCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Default
     @Subcommand("help")
@@ -29,8 +29,7 @@ public class MainCommand extends BaseCommand {
 
     @Subcommand("setspawn")
     public void setspawn(Player player) {
-        plugin.getCache().setSpawn(player.getLocation());
-        plugin.getCache().save();
+        Neptune.get().getCache().setSpawn(player.getLocation());
         player.sendMessage(CC.color("&aSuccessfully set spawn!"));
     }
 

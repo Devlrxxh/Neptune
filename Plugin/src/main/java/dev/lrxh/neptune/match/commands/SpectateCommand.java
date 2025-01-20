@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("spectate|spec")
 @Description("Spectate a match.")
 public class SpectateCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Default
     @Syntax("<name>")

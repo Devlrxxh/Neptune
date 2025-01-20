@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 
 public class ItemListener implements Listener {
-    private final Neptune plugin = Neptune.get();
+    
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {

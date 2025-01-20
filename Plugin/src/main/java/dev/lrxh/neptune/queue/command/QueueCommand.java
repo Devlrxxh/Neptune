@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("queue")
 @Description("Queue Selection command.")
 public class QueueCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Default
     @Syntax("<kit>")

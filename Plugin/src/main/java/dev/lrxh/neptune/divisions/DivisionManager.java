@@ -21,7 +21,6 @@ public class DivisionManager implements IManager {
     public DivisionManager() {
         this.plugin = Neptune.get();
         divisions = new LinkedHashSet<>();
-        loadDivisions();
     }
 
     public static DivisionManager get() {

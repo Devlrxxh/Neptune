@@ -24,7 +24,7 @@ import java.util.Arrays;
 @CommandPermission("neptune.admin.kit")
 @Description("Command to manage and create new kits.")
 public class KitCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Subcommand("list")
     public void list(Player player) {

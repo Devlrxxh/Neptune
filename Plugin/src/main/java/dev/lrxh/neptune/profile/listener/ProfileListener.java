@@ -22,7 +22,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.Arrays;
 
 public class ProfileListener implements Listener {
-    private final Neptune plugin = Neptune.get();
+    
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

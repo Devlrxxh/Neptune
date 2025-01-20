@@ -58,7 +58,7 @@ public enum KillEffect {
     private final String displayName;
     private final Material material;
     private final int slot;
-    private final Neptune plugin = Neptune.get();
+    
 
     KillEffect(String displayName, Material material, int slot) {
         this.displayName = displayName;
@@ -77,14 +77,14 @@ public enum KillEffect {
             @Override
             public void run() {
                 if (ticks >= maxTicks) {
-                    stop(plugin);
+                    stop(Neptune.get());
                     return;
                 }
 
                 player.spawnParticle(particle, location, amount, RandomUtils.getRandFloat(0, 0.7f), 1, RandomUtils.getRandFloat(0, 0.7f), 0.05, null);
                 ticks += 10;
             }
-        }.start(10, plugin);
+        }.start(10, Neptune.get());
     }
 
     public String permission() {

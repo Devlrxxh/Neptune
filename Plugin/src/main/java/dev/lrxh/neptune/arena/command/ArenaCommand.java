@@ -18,7 +18,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("neptune.admin.arena")
 @Description("Command to manage and create new Arena.")
 public class ArenaCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Subcommand("list")
     public void list(Player player) {

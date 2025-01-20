@@ -14,8 +14,8 @@ import java.util.UUID;
 
 @UtilityClass
 public class PlayerUtil {
-    private final Neptune plugin = Neptune.get();
-    private final IPlayerUtils utils = plugin.getVersionHandler().getPlayerUtils();
+    
+    private final IPlayerUtils utils = Neptune.get().getVersionHandler().getPlayerUtils();
 
     public void reset(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
@@ -47,8 +47,8 @@ public class PlayerUtil {
     public void teleportToSpawn(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        if (plugin.getCache().getSpawn() != null) {
-            player.teleport(plugin.getCache().getSpawn());
+        if (Neptune.get().getCache().getSpawn() != null) {
+            player.teleport(Neptune.get().getCache().getSpawn());
         } else {
             player.sendMessage(CC.error("Make sure to set spawn location using /neptune setspawn!"));
         }

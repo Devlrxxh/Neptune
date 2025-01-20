@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("neptune.admin.follow")
 @Description("Follow Command for Neptune Practice Core.")
 public class FollowCommand extends BaseCommand {
-    private final Neptune plugin = Neptune.get();
+    
 
     @Default
     @Syntax("<player>")
