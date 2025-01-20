@@ -9,11 +9,9 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class Visibility {
-    private final Neptune plugin;
     private final UUID uuid;
 
-    public Visibility(Neptune plugin, UUID playerUUID) {
-        this.plugin = plugin;
+    public Visibility(UUID playerUUID) {
         this.uuid = playerUUID;
         handle(playerUUID);
     }

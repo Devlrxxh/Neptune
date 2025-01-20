@@ -121,9 +121,7 @@ public class MatchManager {
 
     public void stopAllGames() {
         for (Match match : matches) {
-            if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                standAloneArena.restoreSnapshot();
-            }
+            match.resetArena();
         }
     }
 

@@ -19,9 +19,7 @@ import java.util.UUID;
 @UtilityClass
 public class PlayerUtil {
 
-    public void reset(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player != null) {
+    public void reset(Player player) {
             player.setHealth(20.0D);
             player.setSaturation(20.0F);
             player.setFallDistance(0.0F);
@@ -39,7 +37,6 @@ public class PlayerUtil {
             player.getInventory().setHeldItemSlot(0);
             player.updateInventory();
             player.resetTitle();
-        }
     }
 
     public void kick(Player player, String message) {

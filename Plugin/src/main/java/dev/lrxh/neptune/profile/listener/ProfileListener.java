@@ -37,7 +37,7 @@ public class ProfileListener implements Listener {
             ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE, new Replacement("<player>", player.getName()));
         }
 
-        PlayerUtil.reset(player.getUniqueId());
+        PlayerUtil.reset(player);
         HotbarManager.get().giveItems(player);
     }
 

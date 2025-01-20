@@ -46,7 +46,7 @@ public class Profile {
         this.state = ProfileState.IN_LOBBY;
         this.gameData = new GameData();
         this.settingData = new SettingData(plugin);
-        this.visibility = new Visibility(plugin, playerUUID);
+        this.visibility = new Visibility(playerUUID);
 
         load();
     }

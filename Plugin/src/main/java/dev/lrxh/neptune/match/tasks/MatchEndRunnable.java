@@ -38,7 +38,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 if (participant.getPlayer() == null) continue;
                 Profile profile = API.getProfile(participant.getPlayerUUID());
                 if (profile.getMatch() == null) continue;
-                PlayerUtil.reset(participant.getPlayerUUID());
+                PlayerUtil.reset(participant.getPlayer());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
                 profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
                 profile.setMatch(null);
@@ -56,7 +56,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
             if (match.arena instanceof StandAloneArena standAloneArena) {
                 standAloneArena.setUsed(false);
-                standAloneArena.restoreSnapshot();
+                match.resetArena();
                 stop(plugin);
             }
             match.removeEntities();

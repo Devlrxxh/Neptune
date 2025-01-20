@@ -131,9 +131,6 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.color("&aSuccessfully set &cMax&a for arena " + arena.getDisplayName()));
         }
 
-        if (arena.getMin() != null && arena.getMax() != null) {
-            arena.takeSnapshot();
-        }
         ArenaManager.get().saveArenas();
     }
 
@@ -151,8 +148,6 @@ public class ArenaCommand extends BaseCommand {
             return;
         }
 
-        arena.restoreSnapshot();
-
         player.sendMessage(CC.color("&aSuccessfully regenerated arena"));
     }
 
@@ -169,8 +164,6 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena isn't standalone!"));
             return;
         }
-
-        arena.takeSnapshot();
 
         player.sendMessage(CC.color("&aSuccessfully captured arena"));
     }

@@ -128,6 +128,8 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
+        hideParticipant(participant);
+
         participant.setDead(true);
 
         Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
@@ -162,7 +164,7 @@ public class SoloFightMatch extends Match {
 
         participant.setLoser(true);
 
-        PlayerUtil.reset(participant.getPlayerUUID());
+        PlayerUtil.reset(participant.getPlayer());
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 

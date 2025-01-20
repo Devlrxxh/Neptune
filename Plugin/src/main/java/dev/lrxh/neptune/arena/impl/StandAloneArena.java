@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -10,7 +9,6 @@ import org.bukkit.Location;
 @Getter
 @Setter
 public class StandAloneArena extends Arena {
-    public BlockChanger.Snapshot snapshot;
     private Location min;
     private Location max;
     private double deathY;
@@ -24,8 +22,6 @@ public class StandAloneArena extends Arena {
         this.limit = limit;
         this.deathY = deathY;
         this.used = false;
-
-        takeSnapshot();
     }
 
     public StandAloneArena(String arenaName) {
@@ -35,18 +31,6 @@ public class StandAloneArena extends Arena {
         this.limit = 68321;
         this.deathY = 0;
         this.used = false;
-    }
-
-    public void takeSnapshot() {
-        if (min == null || max == null) {
-        }
-//        snapshot = plugin.getBlockChanger().capture(min, max);
-    }
-
-    public void restoreSnapshot() {
-        if (min == null || max == null) {
-        }
-//        plugin.getBlockChanger().revert(snapshot);
     }
 
     @Override

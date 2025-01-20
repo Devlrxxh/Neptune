@@ -34,6 +34,7 @@ import dev.lrxh.neptune.listeners.LobbyListener;
 import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.match.commands.SpectateCommand;
+import dev.lrxh.neptune.match.listener.BlockTracker;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
@@ -45,7 +46,6 @@ import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
-import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import dev.lrxh.neptune.utils.menu.listener.MenuListener;
@@ -71,15 +71,9 @@ public final class Neptune extends JavaPlugin {
     private Assemble assemble;
     private boolean placeholder = false;
     private EntityHider entityHider;
-    private API api;
-    private BlockChanger blockChanger;
 
     public static Neptune get() {
         return instance;
-    }
-
-    public API getAPI() {
-        return api;
     }
 
     @Override
@@ -137,7 +131,8 @@ public final class Neptune extends JavaPlugin {
                 new EntityCache(),
                 new ItemCache(),
                 new BukkitListener(),
-                new MenuListener()
+                new MenuListener(),
+                new BlockTracker()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

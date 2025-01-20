@@ -56,9 +56,6 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
 
             match.teleportToPositions();
 
-            if (match.arena instanceof StandAloneArena standAloneArena) {
-                standAloneArena.restoreSnapshot();
-            }
             match.removeEntities();
 
             match.checkRules();

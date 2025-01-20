@@ -23,19 +23,15 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
@@ -45,6 +41,7 @@ public abstract class Match {
     public final List<UUID> spectators = new ArrayList<>();
     public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
+    private final HashMap<Location, BlockData> changes = new HashMap<>();
     private final HashSet<Location> placedBlocks = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
     public MatchState state;
@@ -63,6 +60,12 @@ public abstract class Match {
             return arena.getRedSpawn();
         } else {
             return arena.getBlueSpawn();
+        }
+    }
+
+    public void addChange(Location location, Block block, boolean place) {
+        if (placedBlocks.contains(location) && !place) {
+            changes.put(location, block.getBlockData());
         }
     }
 
@@ -131,6 +134,16 @@ public abstract class Match {
         }
     }
 
+    public void resetArena() {
+        if (kit.is(KitRule.BUILD)) {
+            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+                World world = entry.getKey().getWorld();
+
+                world.setBlockData(entry.getKey(), entry.getValue());
+            }
+        }
+    }
+
     public List<String> getScoreboard(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ArrayList<>();
@@ -169,7 +182,7 @@ public abstract class Match {
         Profile profile = API.getProfile(playerUUID);
 
         if (profile.getMatch() == null) return;
-        PlayerUtil.reset(playerUUID);
+        PlayerUtil.reset(player);
         PlayerUtil.teleportToSpawn(playerUUID);
         profile.setState(ProfileState.IN_LOBBY);
         profile.setMatch(null);
@@ -184,7 +197,7 @@ public abstract class Match {
     public void setupPlayer(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        PlayerUtil.reset(player.getUniqueId());
+        PlayerUtil.reset(player);
         Profile profile = API.getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
@@ -229,6 +242,22 @@ public abstract class Match {
             Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
             if (objective != null) {
                 objective.unregister();
+            }
+        });
+    }
+
+    public void hideParticipant(Participant participant) {
+        forEachParticipant(p -> {
+            if (!p.equals(participant)) {
+                p.getPlayer().hidePlayer(Neptune.get(), participant.getPlayer());
+            }
+        });
+    }
+
+    public void showParticipant(Participant participant) {
+        forEachParticipant(p -> {
+            if (!p.equals(participant)) {
+                p.getPlayer().showPlayer(Neptune.get(), participant.getPlayer());
             }
         });
     }

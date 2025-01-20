@@ -34,7 +34,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
         if (respawnTimer == 3) {
             PlayerUtil.doVelocityChange(participant.getPlayerUUID());
-            PlayerUtil.reset(participant.getPlayerUUID());
+            PlayerUtil.reset(participant.getPlayer());
             participant.setSpectator();
         }
 
@@ -48,6 +48,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
             match.setupPlayer(participant.getPlayerUUID());
             participant.setDead(false);
+            match.showParticipant(participant);
             stop(plugin);
             return;
         }
