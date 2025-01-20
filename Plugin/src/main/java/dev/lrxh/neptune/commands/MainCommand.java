@@ -3,6 +3,8 @@ package dev.lrxh.neptune.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.cosmetics.CosmeticManager;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
@@ -35,8 +37,8 @@ public class MainCommand extends BaseCommand {
 
     @Subcommand("reload")
     public void reload(Player player) {
-        plugin.getConfigManager().load();
-        plugin.getCosmeticManager().load();
+        ConfigManager.get().load();
+        CosmeticManager.get().load();
         player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 }

@@ -17,11 +17,18 @@ import java.util.HashSet;
 import java.util.List;
 
 public class MatchManager {
+    private static MatchManager instance;
     public final HashSet<Match> matches = new HashSet<>();
     private final Neptune plugin;
 
     public MatchManager() {
         this.plugin = Neptune.get();
+    }
+
+    public static MatchManager get() {
+        if (instance == null) instance = new MatchManager();
+
+        return instance;
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {

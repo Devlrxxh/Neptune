@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.divisions.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.divisions.DivisionManager;
 import dev.lrxh.neptune.divisions.impl.Division;
 import dev.lrxh.neptune.divisions.menu.button.DivisionsButton;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -34,7 +35,7 @@ public class DivisionsMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = MenusLocale.DIVISIONS_STARTING_SLOT.getInt();
 
-        ArrayList<Division> divisions = new ArrayList<>(plugin.getDivisionManager().divisions);
+        ArrayList<Division> divisions = new ArrayList<>(DivisionManager.get().divisions);
         Collections.reverse(divisions);
 
         for (Division division : divisions) {

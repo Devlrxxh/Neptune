@@ -1,9 +1,11 @@
 package dev.lrxh.neptune.match.tasks;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -26,7 +28,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
     @Override
     public void run() {
-        if (!plugin.getMatchManager().matches.contains(match)) {
+        if (!MatchManager.get().matches.contains(match)) {
             stop(plugin);
 
             return;
@@ -34,7 +36,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
         if (endTimer == 0) {
             for (Participant participant : match.participants) {
                 if (participant.getPlayer() == null) continue;
-                Profile profile = plugin.getAPI().getProfile(participant.getPlayerUUID());
+                Profile profile = API.getProfile(participant.getPlayerUUID());
                 if (profile.getMatch() == null) continue;
                 PlayerUtil.reset(participant.getPlayerUUID());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
@@ -58,7 +60,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 stop(plugin);
             }
             match.removeEntities();
-            plugin.getMatchManager().matches.remove(match);
+            MatchManager.get().matches.remove(match);
         }
         endTimer--;
     }

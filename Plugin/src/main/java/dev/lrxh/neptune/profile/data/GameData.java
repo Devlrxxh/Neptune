@@ -2,9 +2,9 @@ package dev.lrxh.neptune.profile.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.providers.request.Request;
@@ -24,7 +24,6 @@ import java.util.function.Consumer;
 @Setter
 public class GameData {
     private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.REQUEST_EXPIRY_TIME.getInt());
-    private final Neptune plugin;
     private Match match;
     private HashMap<Kit, KitData> kitData;
     private ArrayList<MatchHistory> matchHistories;
@@ -34,14 +33,13 @@ public class GameData {
     private String lastKit = "";
     private GlobalStats globalStats;
 
-    public GameData(Neptune plugin) {
+    public GameData() {
         this.kitData = new HashMap<>();
         this.matchHistories = new ArrayList<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
-        this.plugin = plugin;
 
-        for (Kit kit : plugin.getKitManager().kits) {
-            kitData.put(kit, new KitData(plugin));
+        for (Kit kit : KitManager.get().kits) {
+            kitData.put(kit, new KitData());
         }
         this.globalStats = new GlobalStats();
     }
@@ -109,7 +107,7 @@ public class GameData {
     }
 
     public void addRequest(Request duelRequest, UUID name, Consumer<Player> action) {
-        requests.put(name, duelRequest, new TtlAction(name, action, plugin));
+        requests.put(name, duelRequest, new TtlAction(name, action));
     }
 
     public void removeRequest(UUID playerUUID) {

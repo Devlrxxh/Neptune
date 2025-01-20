@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.party;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.party.impl.PartyRequest;
@@ -66,7 +67,7 @@ public class Party {
                 new Replacement("<accept>", accept),
                 new Replacement("<leader>", getLeaderName()));
 
-        Profile profile = plugin.getAPI().getProfile(playerUUID);
+        Profile profile = API.getProfile(playerUUID);
         profile.getGameData().addRequest(new PartyRequest(leader, this), leader, ignore -> MessagesLocale.PARTY_EXPIRED.send(leader, new Replacement("<player>", player.getName())));
     }
 
@@ -79,11 +80,11 @@ public class Party {
         Player invitedPlayer = Bukkit.getPlayer(playerUUID);
         if (invitedPlayer == null) return;
         users.add(playerUUID);
-        Profile profile = plugin.getAPI().getProfile(playerUUID);
+        Profile profile = API.getProfile(playerUUID);
         profile.getGameData().setParty(this);
         profile.setState(ProfileState.IN_PARTY);
         broadcast(MessagesLocale.PARTY_JOINED, new Replacement("<player>", invitedPlayer.getName()));
-        plugin.getAPI().getProfile(playerUUID).getGameData().removeRequest(leader);
+        API.getProfile(playerUUID).getGameData().removeRequest(leader);
     }
 
     public void kick(UUID playerUUID) {
@@ -92,7 +93,7 @@ public class Party {
     }
 
     public void remove(UUID playerUUID) {
-        Profile profile = plugin.getAPI().getProfile(playerUUID);
+        Profile profile = API.getProfile(playerUUID);
         users.remove(playerUUID);
         profile.setState(ProfileState.IN_LOBBY);
         profile.getGameData().setParty(null);
@@ -102,7 +103,7 @@ public class Party {
         broadcast(MessagesLocale.PARTY_DISBANDED);
 
         forEachMemberAsUUID(uuid -> {
-            Profile profile = plugin.getAPI().getProfile(uuid);
+            Profile profile = API.getProfile(uuid);
             profile.getGameData().setParty(null);
             profile.setState(ProfileState.IN_LOBBY);
         });

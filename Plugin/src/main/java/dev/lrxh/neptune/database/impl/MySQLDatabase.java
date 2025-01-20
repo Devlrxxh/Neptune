@@ -26,7 +26,7 @@ public class MySQLDatabase implements IDatabase {
             createTableIfNotExists();
         } catch (SQLException e) {
             ServerUtils.error("Failed to connect to MySQL database: " + e.getMessage());
-            Bukkit.getPluginManager().disablePlugin(plugin.get());
+            Bukkit.getPluginManager().disablePlugin(Neptune.get());
         }
         return this;
     }

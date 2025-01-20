@@ -1,10 +1,12 @@
 package dev.lrxh.neptune.kit;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
+import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.match.impl.participant.Participant;
+import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -25,7 +27,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @Setter
 @AllArgsConstructor
 public class Kit {
-    private Neptune plugin;
     private String name;
     private String displayName;
     private List<ItemStack> items;
@@ -34,7 +35,7 @@ public class Kit {
     private HashMap<KitRule, Boolean> rules;
     private int queue, playing, slot;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, Neptune plugin) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -43,13 +44,12 @@ public class Kit {
         this.rules = rules;
         this.queue = 0;
         this.playing = 0;
-        this.plugin = plugin;
         this.slot = slot;
 
         checkMissing();
     }
 
-    public Kit(String name, List<ItemStack> items, ItemStack icon, Neptune plugin) {
+    public Kit(String name, List<ItemStack> items, ItemStack icon) {
         this.name = name;
         this.displayName = name;
         this.items = items;
@@ -58,8 +58,7 @@ public class Kit {
         this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : new ItemStack(icon);
         this.queue = 0;
         this.playing = 0;
-        this.plugin = plugin;
-        this.slot = plugin.getKitManager().kits.size() + 1;
+        this.slot = KitManager.get().kits.size() + 1;
 
         checkMissing();
     }
@@ -75,18 +74,14 @@ public class Kit {
 
 
     private void checkMissing() {
-        if (plugin.getLeaderboardManager() != null) {
-            plugin.getLeaderboardManager().getLeaderboards().put(this, new ArrayList<>());
-        }
+        LeaderboardManager.get().getLeaderboards().put(this, new ArrayList<>());
 
-        if (plugin.getProfileManager() != null) {
-            addToProfiles();
-        }
+        addToProfiles();
     }
 
     private void addToProfiles() {
-        for (Map.Entry<UUID, Profile> profile : plugin.getProfileManager().profiles.entrySet()) {
-            profile.getValue().getGameData().getKitData().put(this, new KitData(plugin));
+        for (Map.Entry<UUID, Profile> profile : ProfileManager.get().profiles.entrySet()) {
+            profile.getValue().getGameData().getKitData().put(this, new KitData());
         }
     }
 
@@ -144,7 +139,7 @@ public class Kit {
     public void giveLoadout(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        Profile profile = plugin.getAPI().getProfile(playerUUID);
+        Profile profile = API.getProfile(playerUUID);
         GameData gameData = profile.getGameData();
         if (gameData.getKitData() == null || gameData.getKitData().get(this) == null ||
                 gameData.getKitData().get(this).getKitLoadout().isEmpty()) {
@@ -159,7 +154,7 @@ public class Kit {
     public void giveLoadout(Participant participant) {
         Player player = Bukkit.getPlayer(participant.getPlayerUUID());
         if (player == null) return;
-        Profile profile = plugin.getAPI().getProfile(participant.getPlayerUUID());
+        Profile profile = API.getProfile(participant.getPlayerUUID());
         GameData gameData = profile.getGameData();
         if (gameData.getKitData() == null || gameData.getKitData().get(this) == null ||
                 gameData.getKitData().get(this).getKitLoadout().isEmpty()) {
@@ -176,7 +171,7 @@ public class Kit {
     }
 
     public void delete() {
-        plugin.getKitManager().kits.remove(this);
+        KitManager.get().kits.remove(this);
     }
 }
 

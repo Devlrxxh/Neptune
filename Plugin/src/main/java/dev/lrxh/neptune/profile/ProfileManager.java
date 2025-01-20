@@ -3,17 +3,25 @@ package dev.lrxh.neptune.profile;
 import com.destroystokyo.paper.profile.PlayerProfile;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.queue.QueueManager;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.UUID;
 
 public class ProfileManager {
+    private static ProfileManager instance;
     public final HashMap<UUID, Profile> profiles = new HashMap<>();
     private final Neptune plugin;
 
     public ProfileManager() {
         this.plugin = Neptune.get();
+    }
+
+    public static ProfileManager get() {
+        if (instance == null) instance = new ProfileManager();
+
+        return instance;
     }
 
     public void createProfile(PlayerProfile playerProfile) {
@@ -25,7 +33,7 @@ public class ProfileManager {
     }
 
     public void removeProfile(UUID playerUUID) {
-        plugin.getQueueManager().remove(playerUUID);
+        QueueManager.get().remove(playerUUID);
         Profile profile = profiles.get(playerUUID);
         profile.save();
         profile.disband();

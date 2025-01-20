@@ -2,6 +2,7 @@ package dev.lrxh.neptune.queue.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
 import dev.lrxh.neptune.utils.menu.Menu;
@@ -42,7 +43,7 @@ public class QueueMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitManager.get().kits) {
             buttons.put(kit.getSlot(), new QueueSelectButton(kit));
         }
         return buttons;

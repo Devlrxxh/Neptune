@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -84,13 +85,13 @@ public abstract class Match {
     }
 
     public void addSpectator(Player player, Player target, boolean sendMessage) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
 
         profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
         spectators.add(player.getUniqueId());
 
-        forEachPlayer(participiantPlayer -> player.showPlayer(plugin.get(), participiantPlayer));
+        forEachPlayer(participiantPlayer -> player.showPlayer(Neptune.get(), participiantPlayer));
 
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
@@ -101,7 +102,7 @@ public abstract class Match {
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(player -> forEachPlayer(participiantPlayer -> player.showPlayer(plugin.get(), participiantPlayer)));
+        forEachSpectator(player -> forEachPlayer(participiantPlayer -> player.showPlayer(Neptune.get(), participiantPlayer)));
     }
 
     public void forEachPlayer(Consumer<Player> action) {
@@ -166,7 +167,7 @@ public abstract class Match {
     public void removeSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        Profile profile = plugin.getAPI().getProfile(playerUUID);
+        Profile profile = API.getProfile(playerUUID);
 
         if (profile.getMatch() == null) return;
         PlayerUtil.reset(playerUUID);
@@ -185,7 +186,7 @@ public abstract class Match {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         PlayerUtil.reset(player.getUniqueId());
-        Profile profile = plugin.getAPI().getProfile(playerUUID);
+        Profile profile = API.getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
         kit.giveLoadout(getParticipant(playerUUID));

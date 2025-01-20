@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.settings.menu;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.settings.Setting;
@@ -17,7 +18,7 @@ public class SettingsButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
 
         return new ItemBuilder(setting.getMaterial(), player.getUniqueId())
                 .name(setting.getDisplayName())

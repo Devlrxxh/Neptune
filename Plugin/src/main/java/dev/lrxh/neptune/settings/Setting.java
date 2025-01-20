@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.settings;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.cosmetics.menu.CosmeticsManageMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -141,7 +141,7 @@ public enum Setting {
     }
 
     public Profile getProfile(Player player) {
-        return Neptune.get().getAPI().getProfile(player.getUniqueId());
+        return API.getProfile(player.getUniqueId());
     }
 
     public abstract void execute(Player player, ClickType clickType);

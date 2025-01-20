@@ -9,7 +9,7 @@ public class LeaderboardTask extends NeptuneRunnable {
     private final LeaderboardManager manager;
 
     public LeaderboardTask(Neptune plugin) {
-        this.manager = plugin.getLeaderboardManager();
+        this.manager = LeaderboardManager.get();
     }
 
     @Override

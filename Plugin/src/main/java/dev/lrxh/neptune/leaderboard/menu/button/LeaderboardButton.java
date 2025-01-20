@@ -2,6 +2,7 @@ package dev.lrxh.neptune.leaderboard.menu.button;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.utils.ItemBuilder;
@@ -22,13 +23,13 @@ public class LeaderboardButton extends Button {
     public ItemStack getButtonItem(Player player) {
         List<String> lore = new ArrayList<>();
 
-        List<PlayerEntry> leaderboard = plugin.getLeaderboardManager().getPlayerEntries(kit, leaderboardType);
+        List<PlayerEntry> leaderboard = LeaderboardManager.get().getPlayerEntries(kit, leaderboardType);
 
         MenusLocale.LEADERBOARD_LORE.getStringList().forEach(line -> {
             for (int i = 1; i <= 10; i++) {
                 PlayerEntry playerEntry = null;
                 if (i <= leaderboard.size()) {
-                    playerEntry = plugin.getLeaderboardManager().getLeaderboardSlot(kit, leaderboardType, i);
+                    playerEntry = LeaderboardManager.get().getLeaderboardSlot(kit, leaderboardType, i);
                 }
 
                 if (playerEntry == null) {

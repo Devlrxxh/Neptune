@@ -1,11 +1,15 @@
 package dev.lrxh.neptune.providers.placeholder;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.profile.data.GlobalStats;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
@@ -41,7 +45,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
         if (player == null) return "";
         if (!player.isOnline()) return "Offline Player";
         String[] parts = identifier.split("_");
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         switch (parts.length) {
             case 1:
                 GlobalStats globalStats = profile.getGameData().getGlobalStats();
@@ -49,9 +53,9 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                     case "ping":
                         return String.valueOf(PlayerUtil.getPing(player.getUniqueId()));
                     case "in-match":
-                        return String.valueOf(plugin.getMatchManager().matches.size());
+                        return String.valueOf(MatchManager.get().matches.size());
                     case "queued":
-                        return String.valueOf(plugin.getQueueManager().queues.size());
+                        return String.valueOf(QueueManager.get().queues.size());
                     case "wins":
                         return String.valueOf(globalStats.getWins());
                     case "losses":
@@ -62,13 +66,13 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         Match match = profile.getMatch();
                         return match != null ? "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar() : "";
                     case "lastKit":
-                        Kit kit = plugin.getKitManager().getKitByName(profile.getGameData().getLastKit());
+                        Kit kit = KitManager.get().getKitByName(profile.getGameData().getLastKit());
                         if (kit == null) break;
                         return kit.getDisplayName();
                 }
                 break;
             case 2:
-                KitData data = profile.getGameData().getKitData().get(plugin.getKitManager().getKitByName(parts[0]));
+                KitData data = profile.getGameData().getKitData().get(KitManager.get().getKitByName(parts[0]));
                 switch (parts[1]) {
                     case "division":
                         return data == null ? "" : data.getDivision().getDisplayName();

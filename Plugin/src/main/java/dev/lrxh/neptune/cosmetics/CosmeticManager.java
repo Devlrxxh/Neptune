@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.cosmetics;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -13,17 +13,22 @@ import java.util.Map;
 import java.util.Objects;
 
 public class CosmeticManager implements IManager {
+    private static CosmeticManager instance;
     public final Map<String, KillMessagePackage> deathMessages;
-    private final Neptune plugin;
 
     public CosmeticManager() {
-        this.plugin = Neptune.get();
         this.deathMessages = new HashMap<>();
         load();
     }
 
+    public static CosmeticManager get() {
+        if (instance == null) instance = new CosmeticManager();
+
+        return instance;
+    }
+
     public void load() {
-        FileConfiguration config = plugin.getConfigManager().getCosmeticsConfig().getConfiguration();
+        FileConfiguration config = ConfigManager.get().getCosmeticsConfig().getConfiguration();
         if (config.contains("KILL_MESSAGES")) {
             for (String deathPackageName : getKeys("KILL_MESSAGES")) {
                 String path = "KILL_MESSAGES." + deathPackageName + ".";
@@ -40,7 +45,7 @@ public class CosmeticManager implements IManager {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getCosmeticsConfig();
+        return ConfigManager.get().getCosmeticsConfig();
     }
 
     public KillMessagePackage getDeathMessagePackage(String packageName) {

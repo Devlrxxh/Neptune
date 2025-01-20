@@ -1,9 +1,12 @@
 package dev.lrxh.neptune.leaderboard;
 
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.database.DatabaseManager;
 import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
@@ -20,18 +23,23 @@ import java.util.UUID;
 
 @Getter
 public class LeaderboardManager {
+    private static LeaderboardManager instance;
     private final List<LeaderboardPlayerEntry> changes = new ArrayList<>();
     private final Neptune plugin;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
     public LeaderboardManager() {
         this.plugin = Neptune.get();
-        checkIfMissing();
-        load();
+    }
+
+    public static LeaderboardManager get() {
+        if (instance == null) instance = new LeaderboardManager();
+
+        return instance;
     }
 
     private void checkIfMissing() {
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitManager.get().kits) {
             if (leaderboards.containsKey(kit)) continue;
 
             List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
@@ -65,7 +73,8 @@ public class LeaderboardManager {
     }
 
 
-    private void load() {
+    public void load() {
+        checkIfMissing();
         for (LeaderboardType leaderboardType : LeaderboardType.values()) {
             loadType(leaderboardType);
         }
@@ -83,8 +92,8 @@ public class LeaderboardManager {
     }
 
     private void loadType(LeaderboardType leaderboardType) {
-        for (Kit kit : plugin.getKitManager().kits) {
-            for (DataDocument document : plugin.getDatabaseManager().getDatabase().getAll()) {
+        for (Kit kit : KitManager.get().kits) {
+            for (DataDocument document : DatabaseManager.get().getDatabase().getAll()) {
                 String username = document.getString("username");
                 UUID uuid = UUID.fromString(document.getString("uuid"));
                 KitData kitData = getKitData(uuid, kit);
@@ -118,17 +127,17 @@ public class LeaderboardManager {
     private KitData getKitData(UUID playerUUID, Kit kit) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
-            return plugin.getAPI().getProfile(player).getGameData().getKitData().get(kit);
+            return API.getProfile(player).getGameData().getKitData().get(kit);
         }
 
-        DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);
+        DataDocument dataDocument = DatabaseManager.get().getDatabase().getUserData(playerUUID);
         if (dataDocument == null) return null;
 
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
         DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
         if (kitDocument == null) return null;
 
-        KitData profileKitData = new KitData(plugin);
+        KitData profileKitData = new KitData();
         profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
         profileKitData.setWins(kitDocument.getInteger("WINS", 0));
         profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));

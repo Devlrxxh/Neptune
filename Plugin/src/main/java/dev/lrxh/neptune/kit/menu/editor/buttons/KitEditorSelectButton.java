@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.kit.menu.editor.buttons;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -28,7 +29,7 @@ public class KitEditorSelectButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
 
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
 
         MessagesLocale.KIT_EDITOR_START.send(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName()));
         player.closeInventory();

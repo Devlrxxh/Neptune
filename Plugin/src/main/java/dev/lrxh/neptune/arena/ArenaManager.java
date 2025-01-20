@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.arena;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -20,16 +20,17 @@ import java.util.stream.Collectors;
 
 @Getter
 public class ArenaManager implements IManager {
+    private static ArenaManager instance;
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
-    private final Neptune plugin;
 
-    public ArenaManager() {
-        this.plugin = Neptune.get();
-        loadArenas();
+    public static ArenaManager get() {
+        if (instance == null) instance = new ArenaManager();
+
+        return instance;
     }
 
     public void loadArenas() {
-        FileConfiguration config = plugin.getConfigManager().getArenasConfig().getConfiguration();
+        FileConfiguration config = ConfigManager.get().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
             for (String arenaName : getKeys("arenas")) {
                 String path = "arenas." + arenaName + ".";
@@ -46,35 +47,20 @@ public class ArenaManager implements IManager {
 
                     double deathZone = config.getDouble(path + "deathZone");
                     double limit = config.getDouble(path + "limit");
-                    boolean duplicate = config.getBoolean(path + "duplicate", false);
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, null, deathZone, limit, enabled, duplicate, plugin);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, deathZone, limit, enabled);
                     arenas.add(arena);
                 } else {
-                    SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled, plugin);
+                    SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
                     arenas.add(arena);
                 }
-            }
-        }
-
-        for (Arena arena : arenas) {
-            if (arena instanceof StandAloneArena standAloneArena) {
-                String path = "arenas." + arena.getName() + ".";
-                LinkedHashSet<StandAloneArena> copies = new LinkedHashSet<>();
-                if (!config.getStringList(path + "copies").isEmpty()) {
-                    for (String copyName : config.getStringList(path + "copies")) {
-                        copies.add((StandAloneArena) getArenaByName(copyName));
-                    }
-                }
-                standAloneArena.setCopies(copies);
             }
         }
     }
 
     public List<Arena> getArenasWithoutDupes() {
         return arenas.stream()
-                .filter(arena -> !(arena instanceof StandAloneArena standAloneArena) ||
-                        !standAloneArena.isDuplicate())
+                .filter(arena -> !(arena instanceof StandAloneArena))
                 .collect(Collectors.toList());
     }
 
@@ -93,10 +79,8 @@ public class ArenaManager implements IManager {
                         new Value("type", "STANDALONE"),
                         new Value("min", LocationUtil.serialize(standAloneArena.getMin())),
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
-                        new Value("copies", standAloneArena.getCopiesAsString()),
                         new Value("deathZone", standAloneArena.getDeathY()),
-                        new Value("limit", standAloneArena.getLimit()),
-                        new Value("duplicate", standAloneArena.isDuplicate())
+                        new Value("limit", standAloneArena.getLimit())
                 ));
             } else {
                 values.add(new Value("type", "SHARED"));
@@ -115,19 +99,8 @@ public class ArenaManager implements IManager {
         return null;
     }
 
-    public StandAloneArena getOriginalArena(StandAloneArena copy) {
-        for (Arena arena : arenas) {
-            if (!(arena instanceof StandAloneArena)) continue;
-            if (((StandAloneArena) arena).getCopies().contains(copy)) {
-                return (StandAloneArena) arena;
-            }
-        }
-        return null;
-    }
-
-
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getArenasConfig();
+        return ConfigManager.get().getArenasConfig();
     }
 }

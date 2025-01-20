@@ -2,9 +2,11 @@ package dev.lrxh.neptune.kit.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -21,7 +23,7 @@ public class KitEditorCommand extends BaseCommand {
 
     @Default
     public void open(Player player) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return;
         if (profile.hasState(ProfileState.IN_LOBBY, ProfileState.IN_PARTY)) {
             new KitEditorMenu().openMenu(player.getUniqueId());
@@ -37,9 +39,9 @@ public class KitEditorCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return;
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         profile.getGameData().getKitData().get(kit).setKitLoadout(kit.getItems());
 
@@ -55,6 +57,6 @@ public class KitEditorCommand extends BaseCommand {
     }
 
     private boolean checkKit(String kitName) {
-        return plugin.getKitManager().getKitByName(kitName) != null;
+        return KitManager.get().getKitByName(kitName) != null;
     }
 }

@@ -1,10 +1,12 @@
 package dev.lrxh.neptune.queue.tasks;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.data.SettingData;
@@ -12,6 +14,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
@@ -31,12 +34,12 @@ public class QueueCheckTask extends NeptuneRunnable {
 
     @Override
     public void run() {
-        if (plugin.getQueueManager().queues.isEmpty()) return;
+        if (QueueManager.get().queues.isEmpty()) return;
 
-        for (Map.Entry<UUID, Queue> entry1 : plugin.getQueueManager().queues.entrySet()) {
+        for (Map.Entry<UUID, Queue> entry1 : QueueManager.get().queues.entrySet()) {
             //Check if 2 same queue were found in the queue
             UUID uuid1 = entry1.getKey();
-            Profile profile1 = plugin.getAPI().getProfile(uuid1);
+            Profile profile1 = API.getProfile(uuid1);
             Queue queue1 = entry1.getValue();
 
             if (MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) {
@@ -46,14 +49,14 @@ public class QueueCheckTask extends NeptuneRunnable {
             }
 
 
-            for (Map.Entry<UUID, Queue> entry2 : plugin.getQueueManager().queues.entrySet()) {
+            for (Map.Entry<UUID, Queue> entry2 : QueueManager.get().queues.entrySet()) {
                 UUID uuid2 = entry2.getKey();
                 Queue queue2 = entry2.getValue();
 
                 if ((uuid1.equals(uuid2))) continue;
-                if (!plugin.getQueueManager().compare(queue1, queue2)) continue;
+                if (!QueueManager.get().compare(queue1, queue2)) continue;
                 SettingData settings1 = profile1.getSettingData();
-                SettingData settings2 = plugin.getAPI().getProfile(uuid2).getSettingData();
+                SettingData settings2 = API.getProfile(uuid2).getSettingData();
 
                 if (!(PlayerUtil.getPing(uuid2) <= settings1.getMaxPing() &&
                         PlayerUtil.getPing(uuid1) <= settings2.getMaxPing())) {
@@ -119,19 +122,19 @@ public class QueueCheckTask extends NeptuneRunnable {
                         new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
 
                 //Start match
-                plugin.getMatchManager().startMatch(participants, queue1.getKit(),
+                MatchManager.get().startMatch(participants, queue1.getKit(),
                         arena, false, queue1.getKit().is(KitRule.BEST_OF_THREE) ? 3 : 1);
 
                 //Remove the players from queue
-                plugin.getQueueManager().remove(uuid1);
-                plugin.getQueueManager().remove(uuid2);
+                QueueManager.get().remove(uuid1);
+                QueueManager.get().remove(uuid2);
 
             }
         }
     }
 
     private void removeFromQueue(UUID uuid) {
-        plugin.getQueueManager().remove(uuid);
-        plugin.getAPI().getProfile(uuid).setState(ProfileState.IN_LOBBY);
+        QueueManager.get().remove(uuid);
+        API.getProfile(uuid).setState(ProfileState.IN_LOBBY);
     }
 }

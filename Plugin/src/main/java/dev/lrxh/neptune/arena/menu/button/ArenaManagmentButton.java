@@ -3,7 +3,6 @@ package dev.lrxh.neptune.arena.menu.button;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
-import dev.lrxh.neptune.arena.menu.ArenaCopyMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -15,7 +14,6 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Arrays;
-import java.util.HashSet;
 
 @AllArgsConstructor
 public class ArenaManagmentButton extends Button {
@@ -35,15 +33,11 @@ public class ArenaManagmentButton extends Button {
                             "&c&lSHIFT LEFT | DELETE ARENA"), player)
                     .build();
         } else {
-            StandAloneArena standAloneArena = (StandAloneArena) arena;
 
             return new ItemBuilder(arena.isEnabled() ? Material.GREEN_WOOL : Material.RED_WOOL)
                     .name(arena.getDisplayName() + " &7(" + arena.getName() + "&7)")
                     .lore(Arrays.asList(
-                            " ",
-                            "&fCopies: &9" + standAloneArena.getCopies().size(),
-                            " ",
-                            "&e&lLEFT | COPIES MENU",
+                            "",
                             "&b&lRIGHT | TELEPORT",
                             "&a&lSHIFT RIGHT | TOGGLE ARENA",
                             "&c&lSHIFT LEFT | DELETE ARENA"), player)
@@ -57,26 +51,12 @@ public class ArenaManagmentButton extends Button {
         switch (clickType) {
             case SHIFT_RIGHT:
                 arena.setEnabled(!arena.isEnabled());
-                if (arena instanceof StandAloneArena standAloneArena) {
-                    standAloneArena.forEachCopy(copy -> copy.setEnabled(arena.isEnabled()));
-                }
                 menu.update();
-                break;
-            case LEFT:
-                if (arena instanceof StandAloneArena standAloneArena) {
-                    new ArenaCopyMenu(standAloneArena).openMenu(player.getUniqueId());
-                }
                 break;
             case SHIFT_LEFT:
                 if (arena instanceof StandAloneArena standAloneArena) {
-                    player.sendMessage(CC.color("&cDeleting all arenas copies..."));
-                    if (!(standAloneArena.getCopies().isEmpty())) {
-                        HashSet<StandAloneArena> copies = new HashSet<>(standAloneArena.getCopies());
-                        for (StandAloneArena copy : copies) {
-                            plugin.getArenaManager().getOriginalArena(copy).removeCopy(copy);
-                        }
-                    }
-
+                    standAloneArena.delete();
+                    player.sendMessage(CC.color("&cArena deleted"));
                 }
                 player.closeInventory();
                 arena.delete();

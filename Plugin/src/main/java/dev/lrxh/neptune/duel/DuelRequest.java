@@ -1,9 +1,11 @@
 package dev.lrxh.neptune.duel;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -57,14 +59,14 @@ public class DuelRequest extends Request {
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 
-        plugin.getMatchManager().startMatch(participants, kit,
+        MatchManager.get().startMatch(participants, kit,
                 arena, true, rounds);
     }
 
     public void partyDuel(UUID receiver) {
         Arena arena = kit.getRandomArena();
-        Profile receiverProfile = plugin.getAPI().getProfile(receiver);
-        Profile senderProfile = plugin.getAPI().getProfile(getSender());
+        Profile receiverProfile = API.getProfile(receiver);
+        Profile senderProfile = API.getProfile(getSender());
 
         List<Participant> participants = new ArrayList<>();
 
@@ -105,6 +107,6 @@ public class DuelRequest extends Request {
             standAloneArena.setUsed(true);
         }
 
-        plugin.getMatchManager().startMatch(teamA, teamB, kit, arena);
+        MatchManager.get().startMatch(teamA, teamB, kit, arena);
     }
 }

@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.profile.data;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.divisions.DivisionManager;
 import dev.lrxh.neptune.divisions.impl.Division;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,11 +20,7 @@ public class KitData {
     private int currentStreak = 0;
     private List<ItemStack> kitLoadout = new ArrayList<>();
     private Division division;
-    private Neptune plugin;
 
-    public KitData(Neptune plugin) {
-        this.plugin = plugin;
-    }
 
     public double getKdr() {
         if (losses == 0) return wins;
@@ -35,7 +31,7 @@ public class KitData {
     }
 
     public void updateDivision() {
-        division = plugin.getDivisionManager().getDivisionByWinCount(wins);
+        division = DivisionManager.get().getDivisionByWinCount(wins);
     }
 }
 

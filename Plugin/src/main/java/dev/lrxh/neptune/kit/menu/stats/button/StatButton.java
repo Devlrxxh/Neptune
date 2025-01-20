@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.kit.menu.stats.button;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.data.KitData;
@@ -18,7 +19,7 @@ public class StatButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        KitData data = plugin.getAPI().getProfile(target).getGameData().getKitData().get(kit);
+        KitData data = API.getProfile(target).getGameData().getKitData().get(kit);
 
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.STAT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))

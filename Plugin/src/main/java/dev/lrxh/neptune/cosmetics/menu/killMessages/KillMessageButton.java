@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.cosmetics.menu.killMessages;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -20,7 +21,7 @@ public class KillMessageButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return null;
         boolean selected = profile.getSettingData().getKillMessagePackage().equals(killMessagePackage);
         List<String> lore;
@@ -43,6 +44,6 @@ public class KillMessageButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
         if (!player.hasPermission(killMessagePackage.permission())) return;
-        plugin.getAPI().getProfile(player).getSettingData().setKillMessagePackage(killMessagePackage);
+        API.getProfile(player).getSettingData().setKillMessagePackage(killMessagePackage);
     }
 }

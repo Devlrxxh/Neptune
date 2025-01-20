@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.cosmetics.menu.killMessages;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.cosmetics.CosmeticManager;
 import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
@@ -35,7 +36,7 @@ public class KillMessagesMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (KillMessagePackage killMessagePackage : plugin.getCosmeticManager().deathMessages.values()) {
+        for (KillMessagePackage killMessagePackage : CosmeticManager.get().deathMessages.values()) {
             buttons.put(killMessagePackage.getSlot(), new KillMessageButton(killMessagePackage));
         }
 

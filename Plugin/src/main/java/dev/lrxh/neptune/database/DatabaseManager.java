@@ -10,13 +10,14 @@ import org.bukkit.Bukkit;
 
 @Getter
 public class DatabaseManager {
+    private static DatabaseManager instance;
     private IDatabase database = null;
 
-    public DatabaseManager(Neptune plugin) {
+    public DatabaseManager() {
         String uri = SettingsLocale.URI.getString();
         if (uri != null && (uri.isEmpty() || uri.equals("NONE"))) {
             ServerUtils.error("URI is missing or empty");
-            Bukkit.getPluginManager().disablePlugin(plugin.get());
+            Bukkit.getPluginManager().disablePlugin(Neptune.get());
         }
 
         try {
@@ -24,5 +25,11 @@ public class DatabaseManager {
         } catch (RuntimeException e) {
             ServerUtils.error("Unknown database type in settings.yml");
         }
+    }
+
+    public static DatabaseManager get() {
+        if (instance == null) instance = new DatabaseManager();
+
+        return instance;
     }
 }

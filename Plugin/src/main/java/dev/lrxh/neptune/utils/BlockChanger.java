@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.utils;
 
-import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.SneakyThrows;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -11,8 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -150,49 +147,16 @@ public final class BlockChanger {
         debug("CHUNK_STATUS_FULL Loaded");
     }
 
-    private void printAllMethods(Class<?> clazz) {
-        Method[] methods = clazz.getDeclaredMethods();
-
-        for (Method method : methods) {
-            System.out.print("Method: " + method.getName());
-            System.out.print(" | Return type: " + method.getReturnType().getSimpleName());
-            System.out.print(" | Modifiers: " + Modifier.toString(method.getModifiers()));
-            System.out.print(" | Parameters: ");
-            Parameter[] parameters = method.getParameters();
-            if (parameters.length == 0) {
-                System.out.print("None");
-            } else {
-                for (Parameter param : parameters) {
-                    System.out.print(param.getType().getSimpleName() + " " + param.getName() + ", ");
-                }
-                System.out.print("\b\b");
-            }
-
-            System.out.println();
-        }
-    }
-
-    private void printAllFields(Class<?> clazz) {
-        Field[] fields = clazz.getDeclaredFields();
-
-        for (Field field : fields) {
-            System.out.print("Field: " + field.getName());
-            System.out.print(" | Type: " + field.getType().getSimpleName());
-            System.out.print(" | Modifiers: " + Modifier.toString(field.getModifiers()));
-            System.out.println();
-        }
-    }
-
     private void debug(String message) {
         if (debug) plugin.getLogger().info(message);
     }
 
     public void setBlock(Location location, BlockData blockData) {
-        setBlock(location, getBlockDataNMS(blockData));
+        setBlockP(location, getBlockDataNMS(blockData));
     }
 
     @SneakyThrows
-    private void setBlock(Location location, Object iBlockData) {
+    private void setBlockP(Location location, Object iBlockData) {
         int x = location.getBlockX();
         int y = location.getBlockY();
         int z = location.getBlockZ();
@@ -206,19 +170,16 @@ public final class BlockChanger {
         chunks.add(location.getChunk());
     }
 
-    public Snapshot capture(Location min, Location max, int offset) {
-        Location maxx = LocationUtil.addOffsetToLocation(max, offset);
-        Location minn = LocationUtil.addOffsetToLocation(min, offset);
-
+    public Snapshot capture(Location min, Location max) {
         Snapshot snapshot = new Snapshot();
-        World world = max.getWorld();
-        int minX = Math.min(minn.getBlockX(), maxx.getBlockX());
-        int minY = Math.min(minn.getBlockY(), maxx.getBlockY());
-        int minZ = Math.min(minn.getBlockZ(), maxx.getBlockZ());
+        World world = min.getWorld();
+        int minX = Math.min(min.getBlockX(), max.getBlockX());
+        int minY = Math.min(min.getBlockY(), max.getBlockY());
+        int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
 
-        int maxX = Math.max(minn.getBlockX(), maxx.getBlockX());
-        int maxY = Math.max(minn.getBlockY(), maxx.getBlockY());
-        int maxZ = Math.max(minn.getBlockZ(), maxx.getBlockZ());
+        int maxX = Math.max(min.getBlockX(), max.getBlockX());
+        int maxY = Math.max(min.getBlockY(), max.getBlockY());
+        int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
 
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
@@ -306,12 +267,12 @@ public final class BlockChanger {
     public static class Snapshot {
         protected HashMap<Location, BlockData> snapshot;
 
-        public Snapshot() {
+        protected Snapshot() {
             snapshot = new HashMap<>();
         }
 
         protected void add(Location location, BlockData blockData) {
-            snapshot.put(location, blockData);
+            snapshot.put(location, blockData.clone());
         }
     }
 }

@@ -4,9 +4,11 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.arena.ArenaManager;
+import dev.lrxh.neptune.database.DatabaseManager;
 import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -28,14 +30,14 @@ public class KitCommand extends BaseCommand {
     public void list(Player player) {
         if (player == null)
             return;
-        if (plugin.getKitManager().kits.isEmpty()) {
+        if (KitManager.get().kits.isEmpty()) {
             player.sendMessage(CC.error("No kits found!"));
             return;
         }
         player.sendMessage(CC.color("&7&m----------------------------------"));
         player.sendMessage(CC.color("&9Kits: "));
         player.sendMessage(" ");
-        plugin.getKitManager().kits.forEach(kit -> player.sendMessage(CC.color("&7- &9" + kit.getName() + " &7 | " + kit.getDisplayName())));
+        KitManager.get().kits.forEach(kit -> player.sendMessage(CC.color("&7- &9" + kit.getName() + " &7 | " + kit.getDisplayName())));
         player.sendMessage(CC.color("&7&m----------------------------------"));
     }
 
@@ -48,7 +50,7 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         new KitManagementMenu(kit).openMenu(player.getUniqueId());
     }
@@ -62,10 +64,10 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), PlayerUtil.getItemInHand(player.getUniqueId()), plugin);
+        Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), PlayerUtil.getItemInHand(player.getUniqueId()));
 
-        plugin.getKitManager().kits.add(kit);
-        plugin.getKitManager().saveKits();
+        KitManager.get().kits.add(kit);
+        KitManager.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully created new Kit!"));
     }
 
@@ -78,7 +80,7 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
 
@@ -100,11 +102,11 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
 
-        plugin.getKitManager().saveKits();
+        KitManager.get().saveKits();
 
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
         player.sendMessage(CC.color("&4IMPORTANT &8- &cMake sure to run /kit updateDB " + kitName));
@@ -119,11 +121,11 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         kit.setDisplayName(name);
 
-        plugin.getKitManager().saveKits();
+        KitManager.get().saveKits();
 
         player.sendMessage(CC.color("&aSuccessfully renamed kit display name!"));
     }
@@ -139,11 +141,11 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         kit.delete();
 
-        plugin.getKitManager().saveKits();
+        KitManager.get().saveKits();
 
         player.sendMessage(CC.color("&aSuccessfully deleted kit!"));
     }
@@ -157,14 +159,14 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
             PlayerUtil.kick(onlinePlayer.getUniqueId(), "&cUpdating player data...");
         }
 
         int i = 0;
-        for (DataDocument document : plugin.getDatabaseManager().getDatabase().getAll()) {
+        for (DataDocument document : DatabaseManager.get().getDatabase().getAll()) {
             DataDocument kitStatistics = document.getDataDocument("kitData");
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
 
@@ -173,7 +175,7 @@ public class KitCommand extends BaseCommand {
 
             kitStatistics.put("kitData", kitDocument);
 
-            plugin.getDatabaseManager().getDatabase().replace(document.getString("uuid"), document);
+            DatabaseManager.get().getDatabase().replace(document.getString("uuid"), document);
         }
         ServerUtils.info("Updated kit for " + i + " players!");
     }
@@ -187,11 +189,11 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         kit.setIcon(PlayerUtil.getItemInHand(player.getUniqueId()));
 
-        plugin.getKitManager().saveKits();
+        KitManager.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit icon!"));
     }
 
@@ -204,11 +206,11 @@ public class KitCommand extends BaseCommand {
             player.sendMessage(CC.error("Kit doesn't exist!"));
             return;
         }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         kit.setSlot(slot);
 
-        plugin.getKitManager().saveKits();
+        KitManager.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit slot!"));
     }
 
@@ -222,14 +224,14 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
 
         if (arena == null) {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
 
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
+        Kit kit = KitManager.get().getKitByName(kitName);
 
         if (kit.getArenas().contains(arena)) {
             player.sendMessage(CC.error("Arena is already added!"));
@@ -238,11 +240,7 @@ public class KitCommand extends BaseCommand {
 
         kit.getArenas().add(arena);
 
-        if (arena instanceof StandAloneArena standAloneArena) {
-            standAloneArena.addCopiesToKits();
-        }
-
-        plugin.getKitManager().saveKits();
+        KitManager.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7)!"));
     }
 
@@ -256,30 +254,24 @@ public class KitCommand extends BaseCommand {
             return;
         }
 
-        if (plugin.getArenaManager().getArenaByName(arenaName) == null) {
+        if (ArenaManager.get().getArenaByName(arenaName) == null) {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        Kit kit = plugin.getKitManager().getKitByName(kitName);
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Kit kit = KitManager.get().getKitByName(kitName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
 
         if (!kit.getArenas().contains(arena)) {
             player.sendMessage(CC.error("Arena isn't added to the kit!"));
             return;
         }
 
-        if (arena instanceof StandAloneArena standAloneArena) {
-            for (StandAloneArena copy : standAloneArena.getCopies()) {
-                standAloneArena.removeCopyFromKits(copy);
-            }
-        }
-
         kit.getArenas().remove(arena);
-        plugin.getKitManager().saveKits();
+        KitManager.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully removed arena &7(" + arena.getDisplayName() + "&7) from kit &7(" + kit.getDisplayName() + "&7)!"));
     }
 
     private boolean checkKit(String kitName) {
-        return plugin.getKitManager().getKitByName(kitName) != null;
+        return KitManager.get().getKitByName(kitName) != null;
     }
 }

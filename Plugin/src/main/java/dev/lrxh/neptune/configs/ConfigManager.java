@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.configs;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.*;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
@@ -8,7 +7,7 @@ import lombok.Getter;
 
 @Getter
 public class ConfigManager {
-    private final Neptune plugin;
+    private static ConfigManager instance;
     private ConfigFile messagesConfig;
     private ConfigFile arenasConfig;
     private ConfigFile kitsConfig;
@@ -19,9 +18,12 @@ public class ConfigManager {
     private ConfigFile divisionsConfig;
     private ConfigFile cosmeticsConfig;
 
-    public ConfigManager() {
-        this.plugin = Neptune.get();
+    public static ConfigManager get() {
+        if (instance == null) instance = new ConfigManager();
+
+        return instance;
     }
+
 
     public void load() {
         messagesConfig = new ConfigFile("messages");

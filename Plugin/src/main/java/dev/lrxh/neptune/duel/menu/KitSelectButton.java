@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.duel.menu;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
@@ -30,7 +31,7 @@ public class KitSelectButton extends Button {
     @Override
     public void onClick(Player player, ClickType clickType) {
         if (party) {
-            Profile profile = plugin.getAPI().getProfile(receiver);
+            Profile profile = API.getProfile(receiver);
             if (profile == null) return;
             DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, 1, plugin);
             profile.sendDuel(duelRequest);

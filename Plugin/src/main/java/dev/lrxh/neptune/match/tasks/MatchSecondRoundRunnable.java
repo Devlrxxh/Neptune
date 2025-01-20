@@ -4,6 +4,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -25,7 +26,7 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
 
     @Override
     public void run() {
-        if (!plugin.getMatchManager().matches.contains(match)) {
+        if (!MatchManager.get().matches.contains(match)) {
             stop(plugin);
 
             return;

@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.menu.button;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
@@ -19,7 +20,7 @@ public class MatchHistoryButton extends Button {
 
     @Override
     public ItemStack getButtonItem(Player player) {
-        Kit kit = plugin.getKitManager().getKitByDisplay(matchHistory.getKitName());
+        Kit kit = KitManager.get().getKitByDisplay(matchHistory.getKitName());
         if (kit == null) {
             return new ItemBuilder(Material.COMPASS)
                     .name(MenusLocale.MATCH_HISTORY_ITEM_NAME.getString()

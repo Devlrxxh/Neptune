@@ -2,6 +2,7 @@ package dev.lrxh.neptune.leaderboard.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.button.LeaderboardButton;
 import dev.lrxh.neptune.leaderboard.menu.button.LeaderboardSwitchButton;
@@ -37,7 +38,7 @@ public class LeaderboardMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitManager.get().kits) {
             buttons.put(kit.getSlot(), new LeaderboardButton(kit, leaderboardType));
         }
         switch (leaderboardType) {

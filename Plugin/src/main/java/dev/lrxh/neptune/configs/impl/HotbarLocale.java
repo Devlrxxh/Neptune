@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -94,6 +95,6 @@ public enum HotbarLocale implements IDataAccessor {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getHotbarConfig();
+        return ConfigManager.get().getHotbarConfig();
     }
 }

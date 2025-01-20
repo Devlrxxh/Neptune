@@ -4,6 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.EdgeType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
@@ -24,7 +25,7 @@ public class ArenaCommand extends BaseCommand {
         if (player == null)
             return;
 
-        if (plugin.getArenaManager().arenas.isEmpty()) {
+        if (ArenaManager.get().arenas.isEmpty()) {
             player.sendMessage(CC.error("No arenas found!"));
             return;
         }
@@ -32,8 +33,7 @@ public class ArenaCommand extends BaseCommand {
         player.sendMessage(CC.color("&7&m----------------------------------"));
         player.sendMessage(CC.color("&9Arenas: "));
         player.sendMessage(" ");
-        for (Arena arena : plugin.getArenaManager().arenas) {
-            if (arena instanceof StandAloneArena && ((StandAloneArena) arena).isDuplicate()) continue;
+        for (Arena arena : ArenaManager.get().arenas) {
             player.sendMessage(CC.color("&7- &9" + arena.getName() + " &7| " + arena.getDisplayName() + " &7| " + (arena.isEnabled() ? "&aEnabled" : "&cDisabled") + " &7| " + (arena instanceof StandAloneArena ? "&8Standalone" : "&8Shared")));
         }
         player.sendMessage(CC.color("&7&m----------------------------------"));
@@ -51,14 +51,14 @@ public class ArenaCommand extends BaseCommand {
         Arena arena;
 
         if (arenaType.equals(ArenaType.STANDALONE)) {
-            arena = new StandAloneArena(arenaName, plugin);
+            arena = new StandAloneArena(arenaName);
 
         } else {
-            arena = new SharedArena(arenaName, plugin);
+            arena = new SharedArena(arenaName);
         }
 
-        plugin.getArenaManager().arenas.add(arena);
-        plugin.getArenaManager().saveArenas();
+        ArenaManager.get().arenas.add(arena);
+        ArenaManager.get().saveArenas();
         player.sendMessage(CC.color("&aSuccessfully created new Arena!"));
     }
 
@@ -71,7 +71,7 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
         if (arenaSpawn.equals(ParticipantColor.BLUE)) {
             arena.setBlueSpawn(player.getLocation());
             player.sendMessage(CC.color("&aSuccessfully set &9Blue &aspawn for arena " + arena.getDisplayName() + "&a!"));
@@ -84,7 +84,7 @@ public class ArenaCommand extends BaseCommand {
             ((StandAloneArena) arena).setLimit(player.getLocation().getY() + 10);
         }
 
-        plugin.getArenaManager().saveArenas();
+        ArenaManager.get().saveArenas();
     }
 
     @Subcommand("tp")
@@ -96,7 +96,7 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
         if (arena.getRedSpawn() != null) {
             player.teleport(arena.getRedSpawn());
         } else if (arena.getBlueSpawn() != null) {
@@ -118,7 +118,7 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena arena)) {
+        if (!(ArenaManager.get().getArenaByName(arenaName) instanceof StandAloneArena arena)) {
             player.sendMessage(CC.error("Arena isn't standalone!"));
             return;
         }
@@ -134,7 +134,7 @@ public class ArenaCommand extends BaseCommand {
         if (arena.getMin() != null && arena.getMax() != null) {
             arena.takeSnapshot();
         }
-        plugin.getArenaManager().saveArenas();
+        ArenaManager.get().saveArenas();
     }
 
     @Subcommand("regenerate")
@@ -146,13 +146,33 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        if (!(plugin.getArenaManager().getArenaByName(arenaName) instanceof StandAloneArena arena)) {
+        if (!(ArenaManager.get().getArenaByName(arenaName) instanceof StandAloneArena arena)) {
             player.sendMessage(CC.error("Arena isn't standalone!"));
             return;
         }
+
         arena.restoreSnapshot();
 
         player.sendMessage(CC.color("&aSuccessfully regenerated arena"));
+    }
+
+    @Subcommand("take")
+    @Syntax("<arena>")
+    @CommandCompletion("@arenas")
+    public void take(Player player, String arenaName) {
+        if (player == null) return;
+        if (!checkArena(arenaName)) {
+            player.sendMessage(CC.error("Arena doesn't exist!"));
+            return;
+        }
+        if (!(ArenaManager.get().getArenaByName(arenaName) instanceof StandAloneArena arena)) {
+            player.sendMessage(CC.error("Arena isn't standalone!"));
+            return;
+        }
+
+        arena.takeSnapshot();
+
+        player.sendMessage(CC.color("&aSuccessfully captured arena"));
     }
 
     @Subcommand("manage")
@@ -160,7 +180,7 @@ public class ArenaCommand extends BaseCommand {
     public void manage(Player player) {
         if (player == null) return;
 
-        if (plugin.getArenaManager().arenas.isEmpty()) {
+        if (ArenaManager.get().arenas.isEmpty()) {
             player.sendMessage(CC.error("No arenas found!"));
             return;
         }
@@ -177,7 +197,7 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
 
         if (!(arena instanceof StandAloneArena)) {
             player.sendMessage(CC.error("Arena must be standalone!"));
@@ -185,11 +205,10 @@ public class ArenaCommand extends BaseCommand {
         }
 
         ((StandAloneArena) arena).setDeathY(player.getLocation().getY());
-        ((StandAloneArena) arena).forEachCopy(copy -> copy.setDeathY(player.getLocation().getY()));
 
         player.sendMessage(CC.color("&aSuccessfully set Death Y for arena " + arena.getDisplayName()));
 
-        plugin.getArenaManager().saveArenas();
+        ArenaManager.get().saveArenas();
     }
 
     @Subcommand("delete")
@@ -201,12 +220,12 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
 
         arena.delete();
         player.sendMessage(CC.color("&aSuccessfully delete arena " + arena.getDisplayName()));
 
-        plugin.getArenaManager().saveArenas();
+        ArenaManager.get().saveArenas();
     }
 
     @Subcommand("setdisplayName")
@@ -218,13 +237,13 @@ public class ArenaCommand extends BaseCommand {
             player.sendMessage(CC.error("Arena doesn't exist!"));
             return;
         }
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
 
         arena.setDisplayName(displayName);
 
         player.sendMessage(CC.color("&aSuccessfully set Display Name arena " + arena.getDisplayName()));
 
-        plugin.getArenaManager().saveArenas();
+        ArenaManager.get().saveArenas();
     }
 
     @Subcommand("setlimit")
@@ -237,7 +256,7 @@ public class ArenaCommand extends BaseCommand {
             return;
 
         }
-        Arena arena = plugin.getArenaManager().getArenaByName(arenaName);
+        Arena arena = ArenaManager.get().getArenaByName(arenaName);
 
         if (!(arena instanceof StandAloneArena)) {
             player.sendMessage(CC.error("Arena must be standalone!"));
@@ -245,13 +264,12 @@ public class ArenaCommand extends BaseCommand {
         }
 
         ((StandAloneArena) arena).setLimit(player.getLocation().getY());
-        ((StandAloneArena) arena).forEachCopy(copy -> copy.setLimit(player.getLocation().getY()));
         player.sendMessage(CC.color("&aSuccessfully set Build limit for arena " + arena.getDisplayName()));
 
-        plugin.getArenaManager().saveArenas();
+        ArenaManager.get().saveArenas();
     }
 
     private boolean checkArena(String arenaName) {
-        return plugin.getArenaManager().getArenaByName(arenaName) != null;
+        return ArenaManager.get().getArenaByName(arenaName) != null;
     }
 }

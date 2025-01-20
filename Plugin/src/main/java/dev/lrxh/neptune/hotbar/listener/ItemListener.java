@@ -1,11 +1,13 @@
 package dev.lrxh.neptune.hotbar.listener;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,7 +23,7 @@ public class ItemListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile.getState().equals(ProfileState.IN_GAME)) return;
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
 
@@ -47,7 +49,7 @@ public class ItemListener implements Listener {
         }
 
         profile.cooldown = true;
-        plugin.getTaskScheduler().startTaskLater(new NeptuneRunnable() {
+        TaskScheduler.get().startTaskLater(new NeptuneRunnable() {
             @Override
             public void run() {
                 profile.cooldown = false;

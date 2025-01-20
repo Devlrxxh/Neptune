@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -19,7 +20,6 @@ public enum SettingsLocale implements IDataAccessor {
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
     REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30"),
-    MODE("MODE", "PERFORMANCE/SPEED. This can affect server performance if you have issues with SPEED then switch to performance", DataType.STRING, "SPEED"),
     ARENA_COPY_DISTANCE("ARENA_COPY_DISTANCE", "Distance between each standalone arena copy", DataType.INT, "300");
 
     private final String path;
@@ -48,7 +48,7 @@ public enum SettingsLocale implements IDataAccessor {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getMainConfig();
+        return ConfigManager.get().getMainConfig();
     }
 
 }

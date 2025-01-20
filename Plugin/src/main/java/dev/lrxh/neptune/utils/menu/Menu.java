@@ -16,7 +16,7 @@ public abstract class Menu {
     public Map<Integer, Button> buttons = new TreeMap<>();
 
     public static void remove(UUID playerUUID) {
-        plugin.getMenuManager().openedMenus.remove(playerUUID);
+        MenuManager.get().openedMenus.remove(playerUUID);
     }
 
     public String getUUID() {
@@ -84,8 +84,8 @@ public abstract class Menu {
     }
 
     public void changeMenu(UUID playerUUID) {
-        plugin.getMenuManager().openedMenus.remove(playerUUID);
-        plugin.getMenuManager().openedMenus.put(playerUUID, this);
+        MenuManager.get().openedMenus.remove(playerUUID);
+        MenuManager.get().openedMenus.put(playerUUID, this);
     }
 
     private void addBorder(Inventory inventory) {
@@ -131,7 +131,7 @@ public abstract class Menu {
     }
 
     public void update() {
-        Map<UUID, Menu> openedMenusCopy = new HashMap<>(plugin.getMenuManager().openedMenus);
+        Map<UUID, Menu> openedMenusCopy = new HashMap<>(MenuManager.get().openedMenus);
         for (Map.Entry<UUID, Menu> entry : openedMenusCopy.entrySet()) {
             if (entry.getValue().getUUID().equals(getUUID())) {
                 UUID uuid = entry.getKey();

@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.tasks;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
@@ -51,7 +52,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
 
     private void checkFollowings() {
         for (Participant participant : match.getParticipants()) {
-            SettingData settingData = plugin.getAPI().getProfile(participant.getPlayerUUID()).getSettingData();
+            SettingData settingData = API.getProfile(participant.getPlayerUUID()).getSettingData();
             if (settingData.getFollowings().isEmpty()) continue;
 
             for (UUID uuid : settingData.getFollowings()) {

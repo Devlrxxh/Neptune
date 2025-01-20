@@ -1,11 +1,16 @@
 package dev.lrxh.neptune.profile.impl;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.cosmetics.CosmeticManager;
 import dev.lrxh.neptune.cosmetics.impl.KillEffect;
+import dev.lrxh.neptune.database.DatabaseManager;
 import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.duel.DuelRequest;
+import dev.lrxh.neptune.hotbar.HotbarManager;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.*;
@@ -39,7 +44,7 @@ public class Profile {
         this.username = name;
         this.playerUUID = uuid;
         this.state = ProfileState.IN_LOBBY;
-        this.gameData = new GameData(plugin);
+        this.gameData = new GameData();
         this.settingData = new SettingData(plugin);
         this.visibility = new Visibility(plugin, playerUUID);
 
@@ -67,7 +72,7 @@ public class Profile {
     public void setState(ProfileState profileState) {
         state = profileState;
         handleVisibility();
-        plugin.getHotbarManager().giveItems(getPlayer());
+        HotbarManager.get().giveItems(getPlayer());
     }
 
     public Player getPlayer() {
@@ -75,7 +80,7 @@ public class Profile {
     }
 
     public void load() {
-        DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);
+        DataDocument dataDocument = DatabaseManager.get().getDatabase().getUserData(playerUUID);
 
         if (dataDocument == null) {
             save();
@@ -88,7 +93,7 @@ public class Profile {
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
         DataDocument settings = dataDocument.getDataDocument("settings");
 
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitManager.get().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
             if (kitDocument == null) return;
             KitData profileKitData = gameData.getKitData().get(kit);
@@ -111,7 +116,7 @@ public class Profile {
         settingData.setMaxPing(settings.getInteger("maxPing", 350));
         settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
         settingData.setMenuSound(settings.getBoolean("menuSound", false));
-        settingData.setKillMessagePackage(plugin.getCosmeticManager().getDeathMessagePackage(settings.getString("deathMessagePackage")));
+        settingData.setKillMessagePackage(CosmeticManager.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
         gameData.setLastKit(settings.getString("lastKit", ""));
     }
 
@@ -126,7 +131,7 @@ public class Profile {
         dataDocument.put("history", gameData.serializeHistory());
 
 
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitManager.get().kits) {
             DataDocument kitStatisticsDocument = new DataDocument();
             KitData entry = gameData.getKitData().get(kit);
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
@@ -157,7 +162,7 @@ public class Profile {
 
         dataDocument.put("settings", settingsDoc);
 
-        plugin.getDatabaseManager().getDatabase().replace(playerUUID, dataDocument);
+        DatabaseManager.get().getDatabase().replace(playerUUID, dataDocument);
     }
 
     public void sendDuel(DuelRequest duelRequest) {
@@ -198,7 +203,7 @@ public class Profile {
             return;
         }
 
-        plugin.getAPI().getProfile(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
+        API.getProfile(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
         MessagesLocale.PARTY_CREATE.send(playerUUID);
     }
 

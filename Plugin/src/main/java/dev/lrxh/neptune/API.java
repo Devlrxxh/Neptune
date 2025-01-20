@@ -8,21 +8,16 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class API {
-    private final ProfileManager profileManager;
 
-    public API(Neptune plugin) {
-        this.profileManager = plugin.getProfileManager();
+    public static Profile getProfile(UUID playerUUID) {
+        return ProfileManager.get().getByUUID(playerUUID);
     }
 
-    public Profile getProfile(UUID playerUUID) {
-        return profileManager.getByUUID(playerUUID);
+    public static Profile getProfile(Player player) {
+        return ProfileManager.get().getByUUID(player.getUniqueId());
     }
 
-    public Profile getProfile(Player player) {
-        return profileManager.getByUUID(player.getUniqueId());
-    }
-
-    public Profile getProfile(OfflinePlayer player) {
-        return profileManager.getByUUID(player.getUniqueId());
+    public static Profile getProfile(OfflinePlayer player) {
+        return ProfileManager.get().getByUUID(player.getUniqueId());
     }
 }

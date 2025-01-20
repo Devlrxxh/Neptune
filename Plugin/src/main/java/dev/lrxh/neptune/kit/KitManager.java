@@ -1,7 +1,8 @@
 package dev.lrxh.neptune.kit;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.ArenaManager;
+import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.providers.manager.IManager;
 import dev.lrxh.neptune.providers.manager.Value;
@@ -15,16 +16,17 @@ import java.util.*;
 
 @Getter
 public class KitManager implements IManager {
+    private static KitManager instance;
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
-    private final Neptune plugin;
 
-    public KitManager() {
-        this.plugin = Neptune.get();
-        loadKits();
+    public static KitManager get() {
+        if (instance == null) instance = new KitManager();
+
+        return instance;
     }
 
     public void loadKits() {
-        FileConfiguration config = plugin.getConfigManager().getKitsConfig().getConfiguration();
+        FileConfiguration config = ConfigManager.get().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {
             for (String kitName : getKeys("kits")) {
                 String path = "kits." + kitName + ".";
@@ -37,7 +39,7 @@ public class KitManager implements IManager {
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
                     for (String arenaName : config.getStringList(path + "arenas")) {
-                        arenas.add(plugin.getArenaManager().getArenaByName(arenaName));
+                        arenas.add(ArenaManager.get().getArenaByName(arenaName));
                     }
                 }
 
@@ -46,7 +48,7 @@ public class KitManager implements IManager {
                     rules.put(kitRule, config.getBoolean(path + kitRule.getSaveName(), false));
                 }
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, plugin));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot));
             }
         }
     }
@@ -98,6 +100,6 @@ public class KitManager implements IManager {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getKitsConfig();
+        return ConfigManager.get().getKitsConfig();
     }
 }

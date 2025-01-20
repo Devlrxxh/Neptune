@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.providers.scoreboard;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.match.Match;
@@ -26,7 +27,7 @@ public class ScoreboardAdapter implements AssembleAdapter {
     }
 
     public List<String> getLines(Player player) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return new ArrayList<>();
 
         ProfileState state = profile.getState();

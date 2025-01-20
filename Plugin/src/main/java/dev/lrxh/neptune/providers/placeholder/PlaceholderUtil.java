@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.providers.placeholder;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.participant.Participant;
@@ -12,6 +14,7 @@ import dev.lrxh.neptune.profile.data.GlobalStats;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -28,13 +31,13 @@ public class PlaceholderUtil {
 
     public List<String> format(List<String> lines, Player player) {
         List<String> formattedLines = new ArrayList<>();
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return formattedLines;
         ProfileState state = profile.getState();
         for (String line : lines) {
             line = line.replaceAll("<online>", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
-            line = line.replaceAll("<queued>", String.valueOf(plugin.getQueueManager().queues.size()));
-            line = line.replaceAll("<in-match>", String.valueOf(plugin.getMatchManager().matches.size()));
+            line = line.replaceAll("<queued>", String.valueOf(QueueManager.get().queues.size()));
+            line = line.replaceAll("<in-match>", String.valueOf(MatchManager.get().matches.size()));
             line = line.replaceAll("<player>", player.getName());
             line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player.getUniqueId()))));
 
@@ -44,7 +47,7 @@ public class PlaceholderUtil {
             line = line.replaceAll("<currentStreak>", String.valueOf(globalStats.getCurrentStreak()));
 
             if (state.equals(ProfileState.IN_QUEUE)) {
-                Queue queue = plugin.getQueueManager().queues.get(player.getUniqueId());
+                Queue queue = QueueManager.get().queues.get(player.getUniqueId());
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
                 line = line.replaceAll("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()));
             }

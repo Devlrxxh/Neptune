@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.match.impl.participant;
 
 import com.mongodb.lang.Nullable;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
@@ -86,7 +87,7 @@ public class Participant {
         if (lastAttacker == null) return;
         UUID attckerUUID = lastAttacker.getPlayerUUID();
         if (attckerUUID == null) return;
-        Profile profile = plugin.getAPI().getProfile(attckerUUID);
+        Profile profile = API.getProfile(attckerUUID);
         Player player = Bukkit.getPlayer(playerUUID);
         Player killer = Bukkit.getPlayer(attckerUUID);
         if (profile == null || player == null || killer == null) return;
@@ -134,7 +135,7 @@ public class Participant {
                     break;
             }
         }
-        Match match = plugin.getAPI().getProfile(playerUUID).getMatch();
+        Match match = API.getProfile(playerUUID).getMatch();
         if (match.getKit().is(KitRule.BOXING)) {
             if (match instanceof TeamFightMatch teamFightMatch ? hits >= teamFightMatch.getTeamA().getParticipants().size() * 100 : hits >= 100) {
                 opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
@@ -154,7 +155,7 @@ public class Participant {
     }
 
     public String getDeathMessage() {
-        Profile profile = plugin.getAPI().getProfile(playerUUID);
+        Profile profile = API.getProfile(playerUUID);
         if (profile == null) {
             return "";
         }
@@ -169,7 +170,7 @@ public class Participant {
             return "";
         }
 
-        Profile attackerProfile = plugin.getAPI().getProfile(lastAttacker.getPlayerUUID());
+        Profile attackerProfile = API.getProfile(lastAttacker.getPlayerUUID());
         if (attackerProfile == null || attackerProfile.getSettingData().getKillMessagePackage() == null) {
             return "";
         }

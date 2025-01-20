@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.arena;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.kit.KitManager;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,12 +15,11 @@ public class Arena {
     private Location redSpawn;
     private Location blueSpawn;
     private boolean enabled;
-    private Neptune plugin;
 
     public void delete() {
-        plugin.getKitManager().removeArenasFromKits(this);
-        plugin.getArenaManager().arenas.remove(this);
-        plugin.getArenaManager().saveArenas();
+        KitManager.get().removeArenasFromKits(this);
+        ArenaManager.get().arenas.remove(this);
+        ArenaManager.get().saveArenas();
     }
 
     public boolean isSetup() {

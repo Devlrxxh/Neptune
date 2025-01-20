@@ -38,23 +38,18 @@ import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.match.commands.SpectateCommand;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
-import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
-import dev.lrxh.neptune.providers.generation.GenerationManager;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
 import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
-import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
-import dev.lrxh.neptune.utils.menu.MenuManager;
-import dev.lrxh.neptune.utils.menu.listener.MenuListener;
 import dev.lrxh.versioncontroll.VersionControll;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -71,29 +66,13 @@ import java.util.stream.Collectors;
 
 @Getter
 public final class Neptune extends JavaPlugin {
-
     private static Neptune instance;
-    private TaskScheduler taskScheduler;
-    private QueueManager queueManager;
-    private MatchManager matchManager;
-    private ArenaManager arenaManager;
-    private ProfileManager profileManager;
-    private KitManager kitManager;
     private PaperCommandManager paperCommandManager;
-    private ConfigManager configManager;
     private Cache cache;
     private Assemble assemble;
     private boolean placeholder = false;
-    private HotbarManager hotbarManager;
-    private LeaderboardManager leaderboardManager;
     private VersionHandler versionHandler;
-    //private Version version;
-    private MenuManager menuManager;
-    private GenerationManager generationManager;
     private EntityHider entityHider;
-    private DivisionManager divisionManager;
-    private DatabaseManager databaseManager;
-    private CosmeticManager cosmeticManager;
     private API api;
     private BlockChanger blockChanger;
 
@@ -117,28 +96,24 @@ public final class Neptune extends JavaPlugin {
         if (!isEnabled()) return;
         //this.version = versionControll.getVersion();
         this.blockChanger = new BlockChanger(this, false);
+
         loadExtensions();
         if (!isEnabled()) return;
-        this.configManager = new ConfigManager();
-        this.configManager.load();
-        this.taskScheduler = new TaskScheduler(this);
-        this.queueManager = new QueueManager();
-        this.matchManager = new MatchManager();
-        this.arenaManager = new ArenaManager();
-        this.kitManager = new KitManager();
+        ConfigManager.get().load();
+        ArenaManager.get().loadArenas();
+        KitManager.get().loadKits();
         this.cache = new Cache();
-        this.hotbarManager = new HotbarManager();
-        this.databaseManager = new DatabaseManager(this);
-        if (!isEnabled()) return;
+        HotbarManager.get().loadItems();
 
-        this.cosmeticManager = new CosmeticManager();
-        this.divisionManager = new DivisionManager();
-        this.profileManager = new ProfileManager();
-        this.leaderboardManager = new LeaderboardManager();
-        this.menuManager = new MenuManager();
-        this.generationManager = new GenerationManager();
+        new DatabaseManager();
+        if (!isEnabled()) return;
+        CosmeticManager.get().load();
+
+        DivisionManager.get().loadDivisions();
+
+        LeaderboardManager.get().load();
+
         this.assemble = new Assemble(new ScoreboardAdapter());
-        this.api = new API(this);
 
         registerListeners();
         loadCommandManager();
@@ -165,7 +140,6 @@ public final class Neptune extends JavaPlugin {
                 new MatchListener(),
                 new LobbyListener(),
                 new ItemListener(),
-                new MenuListener(),
                 new EntityCache(),
                 new ItemCache(),
                 new BukkitListener()
@@ -228,8 +202,8 @@ public final class Neptune extends JavaPlugin {
     private void loadCommandCompletions() {
         CommandCompletions<BukkitCommandCompletionContext> commandCompletions = getPaperCommandManager().getCommandCompletions();
         commandCompletions.registerCompletion("names", c -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
-        commandCompletions.registerCompletion("arenas", c -> arenaManager.getArenasWithoutDupes().stream().map(Arena::getName).collect(Collectors.toList()));
-        commandCompletions.registerCompletion("kits", c -> kitManager.kits.stream().map(Kit::getName).collect(Collectors.toList()));
+        commandCompletions.registerCompletion("arenas", c -> ArenaManager.get().getArenasWithoutDupes().stream().map(Arena::getName).collect(Collectors.toList()));
+        commandCompletions.registerCompletion("kits", c -> KitManager.get().kits.stream().map(Kit::getName).collect(Collectors.toList()));
     }
 
     @Override
@@ -238,10 +212,10 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void disableManagers() {
-        stopService(kitManager, KitManager::saveKits);
-        stopService(arenaManager, ArenaManager::saveArenas);
-        stopService(matchManager, MatchManager::stopAllGames);
-        stopService(taskScheduler, ts -> ts.stopAllTasks(this));
+        stopService(KitManager.get(), KitManager::saveKits);
+        stopService(ArenaManager.get(), ArenaManager::saveArenas);
+        stopService(MatchManager.get(), MatchManager::stopAllGames);
+        stopService(TaskScheduler.get(), ts -> ts.stopAllTasks(this));
         stopService(cache, Cache::save);
     }
 

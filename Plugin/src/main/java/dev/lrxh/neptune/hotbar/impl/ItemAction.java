@@ -1,13 +1,16 @@
 package dev.lrxh.neptune.hotbar.impl;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.divisions.menu.DivisionsMenu;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.kit.menu.stats.StatsMenu;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.menu.MatchListMenu;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.menu.PartySettingsMenu;
@@ -16,6 +19,7 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import org.bukkit.entity.Player;
@@ -32,8 +36,8 @@ public enum ItemAction {
     QUEUE_LEAVE() {
         @Override
         public void execute(Player player) {
-            Neptune.get().getAPI().getProfile(player.getUniqueId()).setState(ProfileState.IN_LOBBY);
-            Neptune.get().getQueueManager().remove(player.getUniqueId());
+            API.getProfile(player.getUniqueId()).setState(ProfileState.IN_LOBBY);
+            QueueManager.get().remove(player.getUniqueId());
             MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId());
         }
     },
@@ -52,7 +56,7 @@ public enum ItemAction {
     SPECTATE_MENU {
         @Override
         public void execute(Player player) {
-            if (Neptune.get().getMatchManager().matches.isEmpty()) {
+            if (MatchManager.get().matches.isEmpty()) {
                 MessagesLocale.SPECTATE_MENU_NO_MATCH.send(player.getUniqueId());
                 return;
             }
@@ -69,14 +73,14 @@ public enum ItemAction {
     PARTY_CREATE() {
         @Override
         public void execute(Player player) {
-            Profile profile = Neptune.get().getAPI().getProfile(player.getUniqueId());
+            Profile profile = API.getProfile(player.getUniqueId());
             profile.createParty();
         }
     },
     PARTY_INFO() {
         @Override
         public void execute(Player player) {
-            Profile profile = Neptune.get().getAPI().getProfile(player.getUniqueId());
+            Profile profile = API.getProfile(player.getUniqueId());
             if (profile.getGameData().getParty() == null) {
                 MessagesLocale.PARTY_NOT_IN.send(player.getUniqueId());
                 return;
@@ -93,13 +97,13 @@ public enum ItemAction {
     PARTY_DISBAND() {
         @Override
         public void execute(Player player) {
-            Neptune.get().getAPI().getProfile(player.getUniqueId()).disband();
+            API.getProfile(player.getUniqueId()).disband();
         }
     },
     PARTY_EVENTS() {
         @Override
         public void execute(Player player) {
-            Party party = Neptune.get().getAPI().getProfile(player.getUniqueId()).getGameData().getParty();
+            Party party = API.getProfile(player.getUniqueId()).getGameData().getParty();
             if (!party.getLeader().equals(player.getUniqueId())) {
                 MessagesLocale.PARTY_NO_PERMISSION.send(player.getUniqueId());
                 return;
@@ -108,13 +112,13 @@ public enum ItemAction {
                 MessagesLocale.PARTY_NOT_ENOUGH_MEMBERS.send(player.getUniqueId());
                 return;
             }
-            new PartyEventsMenu(Neptune.get().getAPI().getProfile(player.getUniqueId()).getGameData().getParty()).openMenu(player.getUniqueId());
+            new PartyEventsMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).openMenu(player.getUniqueId());
         }
     },
     PARTY_SETTINGS() {
         @Override
         public void execute(Player player) {
-            Party party = Neptune.get().getAPI().getProfile(player.getUniqueId()).getGameData().getParty();
+            Party party = API.getProfile(player.getUniqueId()).getGameData().getParty();
             if (!party.getLeader().equals(player.getUniqueId())) {
                 MessagesLocale.PARTY_NO_PERMISSION.send(player.getUniqueId());
                 return;
@@ -132,9 +136,9 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             final Neptune plugin = Neptune.get();
-            Kit kit = plugin.getKitManager().getKitByName(plugin.getAPI().getProfile(player).getGameData().getLastKit());
+            Kit kit = KitManager.get().getKitByName(API.getProfile(player).getGameData().getLastKit());
             if (kit != null) {
-                plugin.getQueueManager().add(player.getUniqueId(), new Queue(kit));
+                QueueManager.get().add(player.getUniqueId(), new Queue(kit));
             }
         }
     },

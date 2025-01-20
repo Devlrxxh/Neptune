@@ -2,6 +2,7 @@ package dev.lrxh.neptune.kit.menu.editor;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.editor.buttons.KitEditorSelectButton;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -39,7 +40,7 @@ public class KitEditorMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitManager.get().kits) {
             if (kit.is(KitRule.ALL0W_KIT_EDITOR)) {
                 buttons.put(kit.getSlot(), new KitEditorSelectButton(kit));
             }

@@ -5,6 +5,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.match.MatchManager;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.utils.CC;
@@ -35,7 +36,7 @@ public enum EventType {
                 standAloneArena.setUsed(true);
             }
 
-            plugin.getMatchManager().startMatch(participants, kit, arena);
+            MatchManager.get().startMatch(participants, kit, arena);
         }
     },
     TEAM(MenusLocale.PARTY_EVENTS_SPLIT_SLOT.getInt()) {
@@ -67,7 +68,7 @@ public enum EventType {
                 standAloneArena.setUsed(true);
             }
 
-            plugin.getMatchManager().startMatch(teamA, teamB, kit, arena);
+            MatchManager.get().startMatch(teamA, teamB, kit, arena);
         }
     };
 

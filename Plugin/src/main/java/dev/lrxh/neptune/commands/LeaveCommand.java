@@ -4,7 +4,7 @@ import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.CommandAlias;
 import co.aikar.commands.annotation.Default;
 import co.aikar.commands.annotation.Description;
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ public class LeaveCommand extends BaseCommand {
 
     @Default
     public void leave(Player player) {
-        Profile profile = Neptune.get().getAPI().getProfile(player.getUniqueId());
+        Profile profile = API.getProfile(player.getUniqueId());
         ProfileState state = profile.getState();
 
         switch (state) {

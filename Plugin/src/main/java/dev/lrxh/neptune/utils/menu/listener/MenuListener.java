@@ -1,9 +1,11 @@
 package dev.lrxh.neptune.utils.menu.listener;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Menu;
+import dev.lrxh.neptune.utils.menu.MenuManager;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,7 +20,7 @@ public class MenuListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
-        plugin.getMenuManager().openedMenus.remove(event.getPlayer().getUniqueId());
+        MenuManager.get().openedMenus.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -30,7 +32,7 @@ public class MenuListener implements Listener {
     public void onButtonPress(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
-        Menu menu = plugin.getMenuManager().openedMenus.get(player.getUniqueId());
+        Menu menu = MenuManager.get().openedMenus.get(player.getUniqueId());
         if (menu == null) return;
         Button button = menu.buttons.get(event.getSlot());
         if (button == null) return;
@@ -41,12 +43,12 @@ public class MenuListener implements Listener {
         }
 
         button.onClick(player, event.getClick());
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile != null && profile.getSettingData().isMenuSound() && button.isSound()) {
             player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1, 1);
         }
 
-        Menu currentMenu = plugin.getMenuManager().openedMenus.get(player.getUniqueId());
+        Menu currentMenu = MenuManager.get().openedMenus.get(player.getUniqueId());
         if (menu.isUpdateOnClick() && (currentMenu != null && currentMenu.getUUID().equals(menu.getUUID()))) {
             menu.update();
         }

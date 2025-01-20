@@ -1,9 +1,12 @@
 package dev.lrxh.neptune.profile.listener;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.hotbar.HotbarManager;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.Participant;
+import dev.lrxh.neptune.profile.ProfileManager;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -24,8 +27,8 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Profile profile = plugin.getProfileManager().getByUUID(player.getUniqueId());
-        if (profile == null) plugin.getProfileManager().createProfile(player);
+        Profile profile = ProfileManager.get().getByUUID(player.getUniqueId());
+        if (profile == null) ProfileManager.get().createProfile(player);
 
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
@@ -35,13 +38,13 @@ public class ProfileListener implements Listener {
         }
 
         PlayerUtil.reset(player.getUniqueId());
-        plugin.getHotbarManager().giveItems(player);
+        HotbarManager.get().giveItems(player);
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
 
@@ -56,13 +59,13 @@ public class ProfileListener implements Listener {
             ServerUtils.broadcast(MessagesLocale.LEAVE_MESSAGE, new Replacement("<player>", player.getName()));
         }
 
-        plugin.getProfileManager().removeProfile(player.getUniqueId());
+        ProfileManager.get().removeProfile(player.getUniqueId());
     }
 
     @EventHandler
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return;
         if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
             profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKitLoadout

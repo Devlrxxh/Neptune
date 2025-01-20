@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.commands;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -30,14 +31,14 @@ public class SpectateCommand extends BaseCommand {
             return;
         }
 
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
 
         if (profile.getMatch() != null) {
             player.sendMessage(CC.error("You can't spectate while in a match!"));
             return;
         }
 
-        Profile targetProfile = plugin.getAPI().getProfile(target);
+        Profile targetProfile = API.getProfile(target);
         if (targetProfile.getMatch() == null) {
             player.sendMessage(CC.error("Player isn't in a match!"));
             return;
@@ -53,19 +54,19 @@ public class SpectateCommand extends BaseCommand {
 
     @Subcommand("leave")
     public void leave(Player player) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
 
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            plugin.getAPI().getProfile(player).getMatch().removeSpectator(player.getUniqueId(), true);
+            API.getProfile(player).getMatch().removeSpectator(player.getUniqueId(), true);
         }
     }
 
     @Subcommand("quit")
     public void quit(Player player) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
 
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            plugin.getAPI().getProfile(player).getMatch().removeSpectator(player.getUniqueId(), true);
+            API.getProfile(player).getMatch().removeSpectator(player.getUniqueId(), true);
         }
     }
 }

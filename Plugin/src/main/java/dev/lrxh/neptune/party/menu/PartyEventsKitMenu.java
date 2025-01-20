@@ -2,6 +2,7 @@ package dev.lrxh.neptune.party.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.impl.EventType;
@@ -40,7 +41,7 @@ public class PartyEventsKitMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
 
 
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitManager.get().kits) {
             if (kit.is(KitRule.ALLOW_PARTY) || !kit.is(KitRule.BEDWARS)) {
                 buttons.put(kit.getSlot(), new PartyTeamKitButton(party, kit, eventType));
             }

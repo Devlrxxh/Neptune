@@ -2,10 +2,12 @@ package dev.lrxh.neptune.queue.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -38,13 +40,13 @@ public class QueueSelectButton extends Button {
                 return;
             }
 
-            List<PlayerEntry> leaderboard = plugin.getLeaderboardManager().getPlayerEntries(kit, leaderboardType);
+            List<PlayerEntry> leaderboard = LeaderboardManager.get().getPlayerEntries(kit, leaderboardType);
 
             int i = Integer.parseInt(split[2]);
             PlayerEntry playerEntry = null;
 
             if (i <= leaderboard.size()) {
-                playerEntry = plugin.getLeaderboardManager().getLeaderboardSlot(kit, leaderboardType, i);
+                playerEntry = LeaderboardManager.get().getLeaderboardSlot(kit, leaderboardType, i);
             }
 
             if (playerEntry == null) {
@@ -72,7 +74,7 @@ public class QueueSelectButton extends Button {
 
     @Override
     public void onClick(Player player, ClickType clickType) {
-        plugin.getQueueManager().add(player.getUniqueId(), new Queue(kit));
+        QueueManager.get().add(player.getUniqueId(), new Queue(kit));
         player.closeInventory();
     }
 }

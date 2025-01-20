@@ -15,7 +15,7 @@ public class ConfigFile {
 
 
     public ConfigFile(String name) {
-        File dataFolder = new File(plugin.get().getDataFolder().getParentFile(), "Neptune");
+        File dataFolder = new File(Neptune.get().getDataFolder().getParentFile(), "Neptune");
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }

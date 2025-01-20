@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.arena.menu;
 
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.menu.button.ArenaManagmentButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.PaginatedMenu;
@@ -25,7 +26,7 @@ public class ArenaManagmentMenu extends PaginatedMenu {
     public Map<Integer, Button> getAllButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
         int i = 0;
-        for (Arena arena : plugin.getArenaManager().arenas) {
+        for (Arena arena : ArenaManager.get().arenas) {
             if (arena.getName().contains("#")) continue;
             buttons.put(i++, new ArenaManagmentButton(arena, this));
         }
