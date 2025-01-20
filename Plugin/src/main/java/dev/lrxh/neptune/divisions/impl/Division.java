@@ -11,4 +11,5 @@ public class Division {
     private final String displayName;
     private final int winsRequired;
     private final Material material;
+    private int slot;
 }

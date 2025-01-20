@@ -37,8 +37,9 @@ public class DivisionManager implements IManager {
                 String displayName = config.getString(path + "DISPLAY-NAME");
                 int winsRequired = config.getInt(path + "WINS");
                 Material material = Material.getMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL")));
+                int slot = config.getInt(path + "SLOT", divisions.size());
 
-                divisions.add(new Division(divisionName, displayName, winsRequired, material));
+                divisions.add(new Division(divisionName, displayName, winsRequired, material, slot));
             }
         }
 

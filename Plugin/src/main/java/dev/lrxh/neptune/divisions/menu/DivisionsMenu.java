@@ -33,13 +33,11 @@ public class DivisionsMenu extends Menu {
     @Override
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
-        int i = MenusLocale.DIVISIONS_STARTING_SLOT.getInt();
-
         ArrayList<Division> divisions = new ArrayList<>(DivisionManager.get().divisions);
         Collections.reverse(divisions);
 
         for (Division division : divisions) {
-            buttons.put(i++, new DivisionsButton(division));
+            buttons.put(division.getSlot(), new DivisionsButton(division));
         }
 
         return buttons;
