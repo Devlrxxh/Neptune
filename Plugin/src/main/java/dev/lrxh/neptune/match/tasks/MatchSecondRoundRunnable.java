@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.MatchManager;

@@ -3,7 +3,6 @@ package dev.lrxh.neptune.match.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -15,7 +14,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("spectate|spec")
 @Description("Spectate a match.")
 public class SpectateCommand extends BaseCommand {
-    
+
 
     @Default
     @Syntax("<name>")

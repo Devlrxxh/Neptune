@@ -4,7 +4,6 @@ import dev.lrxh.neptune.Neptune;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
-import net.kyori.adventure.title.Title;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
@@ -20,23 +19,23 @@ import java.util.UUID;
 public class PlayerUtil {
 
     public void reset(Player player) {
-            player.setHealth(20.0D);
-            player.setSaturation(20.0F);
-            player.setFallDistance(0.0F);
-            player.setFoodLevel(20);
-            player.setFireTicks(0);
-            player.setMaximumNoDamageTicks(20);
-            player.setExp(0.0F);
-            player.setLevel(0);
-            player.setAllowFlight(false);
-            player.setFlying(false);
-            player.setGameMode(GameMode.SURVIVAL);
-            player.getInventory().setArmorContents(new ItemStack[4]);
-            player.getInventory().setContents(new ItemStack[36]);
-            player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-            player.getInventory().setHeldItemSlot(0);
-            player.updateInventory();
-            player.resetTitle();
+        player.setHealth(20.0D);
+        player.setSaturation(20.0F);
+        player.setFallDistance(0.0F);
+        player.setFoodLevel(20);
+        player.setFireTicks(0);
+        player.setMaximumNoDamageTicks(20);
+        player.setExp(0.0F);
+        player.setLevel(0);
+        player.setAllowFlight(false);
+        player.setFlying(false);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.getInventory().setArmorContents(new ItemStack[4]);
+        player.getInventory().setContents(new ItemStack[36]);
+        player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+        player.getInventory().setHeldItemSlot(0);
+        player.updateInventory();
+        player.resetTitle();
     }
 
     public void kick(Player player, String message) {

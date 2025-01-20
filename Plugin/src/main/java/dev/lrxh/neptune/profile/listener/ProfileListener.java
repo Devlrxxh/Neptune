@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.profile.listener;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.hotbar.HotbarManager;
 import dev.lrxh.neptune.match.Match;
@@ -22,7 +21,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.Arrays;
 
 public class ProfileListener implements Listener {
-    
+
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

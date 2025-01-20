@@ -27,7 +27,7 @@ import java.util.List;
 
 @UtilityClass
 public class PlaceholderUtil {
-    
+
 
     public List<String> format(List<String> lines, Player player) {
         List<String> formattedLines = new ArrayList<>();

@@ -4,7 +4,6 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
@@ -15,7 +14,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockMultiPlaceEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
@@ -85,16 +87,15 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEndCrystalExplosion(EntityExplodeEvent event) {
-        if (event.getEntity() instanceof EnderCrystal endCrystal) {
-            Player player = getPlayer(endCrystal);
-            if (player == null) return;
-            Profile profile = API.getProfile(player);
-            Match match = profile.getMatch();
-            if (match == null) return;
-
-            for (Block block : event.blockList()) {
-                match.getChanges().put(block.getLocation(), block.getBlockData());
-            }
+        if (!(event.getEntity() instanceof EnderCrystal endCrystal)) return;
+        Player player = getPlayer(endCrystal);
+        if (player == null) return;
+        Profile profile = API.getProfile(player);
+        Match match = profile.getMatch();
+        if (match == null) return;
+        for (Block block : event.blockList()) {
+            block.getDrops().clear();
+            match.getChanges().put(block.getLocation(), block.getBlockData());
         }
     }
 

@@ -31,7 +31,6 @@ public class QueueMenu extends Menu {
     }
 
 
-
     @Override
     public Filter getFilter() {
         return Filter.valueOf(MenusLocale.QUEUE_SELECT_FILTER.getString());

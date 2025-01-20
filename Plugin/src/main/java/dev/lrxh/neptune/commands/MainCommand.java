@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("neptune.admin.main")
 @Description("Main Command for Neptune Practice Core.")
 public class MainCommand extends BaseCommand {
-    
+
 
     @Default
     @Subcommand("help")

@@ -3,7 +3,6 @@ package dev.lrxh.neptune.queue.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.queue.Queue;
@@ -14,7 +13,7 @@ import org.bukkit.entity.Player;
 @CommandAlias("queue")
 @Description("Queue Selection command.")
 public class QueueCommand extends BaseCommand {
-    
+
 
     @Default
     @Syntax("<kit>")

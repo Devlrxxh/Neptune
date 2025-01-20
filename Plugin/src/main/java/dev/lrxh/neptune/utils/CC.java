@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.utils;
 
 import com.iridium.iridiumcolorapi.IridiumColorAPI;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;

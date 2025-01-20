@@ -3,7 +3,6 @@ package dev.lrxh.neptune.kit.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
@@ -19,7 +18,7 @@ import java.util.Arrays;
 @CommandAlias("kiteditor")
 @Description("Kit Editor command")
 public class KitEditorCommand extends BaseCommand {
-    
+
 
     @Default
     public void open(Player player) {

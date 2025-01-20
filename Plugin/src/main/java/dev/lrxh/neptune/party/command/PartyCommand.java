@@ -3,7 +3,6 @@ package dev.lrxh.neptune.party.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.impl.PartyRequest;
@@ -19,7 +18,7 @@ import java.util.UUID;
 @CommandAlias("party|p")
 @Description("Party Command.")
 public class PartyCommand extends BaseCommand {
-    
+
 
     @Default
     @Subcommand("help")

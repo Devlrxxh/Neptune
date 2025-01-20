@@ -26,7 +26,6 @@ public class StatsMenu extends Menu {
     }
 
 
-
     @Override
     public int getSize() {
         return MenusLocale.STAT_SIZE.getInt();

@@ -3,7 +3,6 @@ package dev.lrxh.neptune.duel.command;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.duel.menu.KitSelectMenu;
@@ -20,7 +19,7 @@ import java.util.UUID;
 @CommandAlias("duel|1v1")
 @Description("Duel other players.")
 public class DuelCommand extends BaseCommand {
-    
+
 
     @Default
     @Syntax("<name>")

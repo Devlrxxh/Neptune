@@ -3,7 +3,6 @@ package dev.lrxh.neptune.commands;
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -15,7 +14,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("neptune.admin.follow")
 @Description("Follow Command for Neptune Practice Core.")
 public class FollowCommand extends BaseCommand {
-    
+
 
     @Default
     @Syntax("<player>")

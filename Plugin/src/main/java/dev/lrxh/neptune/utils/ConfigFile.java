@@ -11,7 +11,6 @@ import java.io.IOException;
 public class ConfigFile {
     private final File file;
     private final YamlConfiguration configuration;
-    
 
 
     public ConfigFile(String name) {

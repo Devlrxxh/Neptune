@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.hotbar.listener;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -18,7 +17,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 
 public class ItemListener implements Listener {
-    
+
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {

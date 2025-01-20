@@ -2,7 +2,6 @@ package dev.lrxh.neptune.arena.command;
 
 import co.aikar.commands.BaseCommand;
 import co.aikar.commands.annotation.*;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
 import dev.lrxh.neptune.arena.impl.ArenaType;
@@ -18,7 +17,7 @@ import org.bukkit.entity.Player;
 @CommandPermission("neptune.admin.arena")
 @Description("Command to manage and create new Arena.")
 public class ArenaCommand extends BaseCommand {
-    
+
 
     @Subcommand("list")
     public void list(Player player) {
