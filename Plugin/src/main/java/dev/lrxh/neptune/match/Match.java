@@ -142,6 +142,8 @@ public abstract class Match {
                 world.setBlockData(entry.getKey(), entry.getValue());
             }
         }
+
+        removeEntities();
     }
 
     public List<String> getScoreboard(UUID playerUUID) {

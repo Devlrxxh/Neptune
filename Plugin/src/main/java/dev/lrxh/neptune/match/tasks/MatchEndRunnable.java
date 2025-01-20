@@ -59,7 +59,8 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 match.resetArena();
                 stop(plugin);
             }
-            match.removeEntities();
+            match.resetArena();
+
             MatchManager.get().matches.remove(match);
         }
         endTimer--;

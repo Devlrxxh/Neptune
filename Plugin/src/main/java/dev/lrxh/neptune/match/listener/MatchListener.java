@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.match.listener;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
@@ -39,7 +38,7 @@ import org.bukkit.projectiles.ProjectileSource;
 
 
 public class MatchListener implements Listener {
-    
+
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
