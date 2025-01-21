@@ -24,7 +24,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.*;
-import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -130,11 +129,11 @@ public abstract class Match {
     }
 
     public void resetArena() {
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                World world = entry.getKey().getWorld();
+        for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+            World world = entry.getKey().getWorld();
 
-                world.setBlockData(entry.getKey(), entry.getValue());
-            }
+            world.setBlockData(entry.getKey(), entry.getValue());
+        }
 
         for (Location location : liquids) {
             World world = location.getWorld();
