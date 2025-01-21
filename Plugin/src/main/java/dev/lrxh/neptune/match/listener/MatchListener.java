@@ -352,7 +352,6 @@ public class MatchListener implements Listener {
         if (blockType.name().contains("BED")) return;
         if (!(match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation))) {
             event.setCancelled(true);
-            return;
         }
 
         if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {

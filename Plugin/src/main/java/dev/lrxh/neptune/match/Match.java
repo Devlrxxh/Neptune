@@ -42,6 +42,7 @@ public abstract class Match {
     public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
     private final HashMap<Location, BlockData> changes = new HashMap<>();
+    private final Set<Location> liquids = new HashSet<>();
     private final HashSet<Location> placedBlocks = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
     public MatchState state;
@@ -60,12 +61,6 @@ public abstract class Match {
             return arena.getRedSpawn();
         } else {
             return arena.getBlueSpawn();
-        }
-    }
-
-    public void addChange(Location location, Block block, boolean place) {
-        if (placedBlocks.contains(location) && !place) {
-            changes.put(location, block.getBlockData());
         }
     }
 
@@ -135,13 +130,18 @@ public abstract class Match {
     }
 
     public void resetArena() {
-        if (kit.is(KitRule.BUILD)) {
             for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
                 World world = entry.getKey().getWorld();
 
                 world.setBlockData(entry.getKey(), entry.getValue());
             }
+
+        for (Location location : liquids) {
+            World world = location.getWorld();
+
+            world.setBlockData(location, Material.AIR.createBlockData());
         }
+
 
         removeEntities();
     }
@@ -263,7 +263,6 @@ public abstract class Match {
             }
         });
     }
-
 
     private void showHealth(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
