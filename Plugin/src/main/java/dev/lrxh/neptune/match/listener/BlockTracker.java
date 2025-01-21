@@ -5,6 +5,8 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -134,7 +136,8 @@ public class BlockTracker implements Listener {
         Profile profile = API.getProfile(player);
         Match match = profile.getMatch();
         if (match == null) return;
-
-        match.getChanges().put(event.getBlock().getLocation(), event.getBlock().getBlockData());
+        for (BlockState blockState : event.getReplacedBlockStates()) {
+            match.getChanges().put(blockState.getLocation(), blockState.getBlockData());
+        }
     }
 }
