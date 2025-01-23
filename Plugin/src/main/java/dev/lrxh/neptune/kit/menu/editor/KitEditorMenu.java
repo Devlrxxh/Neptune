@@ -5,40 +5,28 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.editor.buttons.KitEditorSelectButton;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Filter;
-import dev.lrxh.neptune.utils.menu.Menu;
-import lombok.AllArgsConstructor;
+import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.providers.menu.Filter;
+import dev.lrxh.neptune.providers.menu.Menu;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
 public class KitEditorMenu extends Menu {
 
-    @Override
-    public String getTitle(Player player) {
-        return MenusLocale.KIT_EDITOR_SELECT_TITLE.getString();
-    }
-
-    @Override
-    public int getSize() {
-        return MenusLocale.KIT_EDITOR_SELECT_SIZE.getInt();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return Filter.valueOf(MenusLocale.KIT_EDITOR_SELECT_FILTER.getString());
+    public KitEditorMenu() {
+        super(MenusLocale.KIT_EDITOR_SELECT_TITLE.getString(), MenusLocale.KIT_EDITOR_SELECT_SIZE.getInt(), Filter.valueOf(MenusLocale.KIT_EDITOR_SELECT_FILTER.getString()));
     }
 
 
     @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
+    public List<Button> getButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
+
         for (Kit kit : KitManager.get().kits) {
             if (kit.is(KitRule.ALL0W_KIT_EDITOR)) {
-                buttons.put(kit.getSlot(), new KitEditorSelectButton(kit));
+                buttons.add(new KitEditorSelectButton(kit.getSlot(), kit));
             }
         }
         return buttons;

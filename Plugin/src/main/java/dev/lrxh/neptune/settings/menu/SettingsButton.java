@@ -3,21 +3,24 @@ package dev.lrxh.neptune.settings.menu;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.settings.Setting;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
-import dev.lrxh.neptune.utils.menu.Button;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-@AllArgsConstructor
 public class SettingsButton extends Button {
-    private Setting setting;
+    private final Setting setting;
+
+    public SettingsButton(int slot, Setting setting) {
+        super(slot);
+        this.setting = setting;
+    }
 
     @Override
-    public ItemStack getButtonItem(Player player) {
+    public ItemStack getItemStack(Player player) {
         Profile profile = API.getProfile(player);
 
         return new ItemBuilder(setting.getMaterial(), player.getUniqueId())
@@ -31,7 +34,7 @@ public class SettingsButton extends Button {
     }
 
     @Override
-    public void onClick(Player player, ClickType clickType) {
-        setting.execute(player, clickType);
+    public void onClick(ClickType type, Player player) {
+        setting.execute(player, type);
     }
 }

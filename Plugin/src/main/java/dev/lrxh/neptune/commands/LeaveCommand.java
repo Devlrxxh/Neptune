@@ -1,19 +1,14 @@
 package dev.lrxh.neptune.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Description;
+import com.jonahseguin.drink.annotation.Command;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.entity.Player;
 
-@CommandAlias("leave")
-@Description("Leave command.")
-public class LeaveCommand extends BaseCommand {
+public class LeaveCommand {
 
-    @Default
+    @Command(name = "", desc = "")
     public void leave(Player player) {
         Profile profile = API.getProfile(player.getUniqueId());
         ProfileState state = profile.getState();

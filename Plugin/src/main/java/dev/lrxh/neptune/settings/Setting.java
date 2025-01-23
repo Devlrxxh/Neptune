@@ -99,7 +99,7 @@ public enum Setting {
             MenusLocale.SETTINGS_COSMETICS_SLOT.getInt()) {
         @Override
         public void execute(Player player, ClickType clicktype) {
-            new CosmeticsManageMenu().openMenu(player.getUniqueId());
+            new CosmeticsManageMenu().open(player);
         }
     },
     MENU_SOUNDS(MenusLocale.SETTINGS_MENU_SOUNDS_TITLE.getString(),

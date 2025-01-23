@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.duel;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
@@ -26,15 +25,13 @@ public class DuelRequest extends Request {
     private final Arena arena;
     private final boolean party;
     private final int rounds;
-    private final Neptune plugin;
 
-    public DuelRequest(UUID sender, Kit kit, Arena arena, boolean party, int rounds, Neptune plugin) {
+    public DuelRequest(UUID sender, Kit kit, Arena arena, boolean party, int rounds) {
         super(sender);
         this.kit = kit;
         this.arena = arena;
         this.party = party;
         this.rounds = rounds;
-        this.plugin = plugin;
     }
 
     public void start(UUID receiver) {
@@ -52,10 +49,10 @@ public class DuelRequest extends Request {
         if (reciverPlayer == null || sender == null) return;
 
         Participant participant1 =
-                new Participant(sender, plugin);
+                new Participant(sender);
 
         Participant participant2 =
-                new Participant(reciverPlayer, plugin);
+                new Participant(reciverPlayer);
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 
@@ -76,7 +73,7 @@ public class DuelRequest extends Request {
             Player player = Bukkit.getPlayer(userUUID);
             if (player == null) continue;
 
-            Participant participant = new Participant(player, plugin);
+            Participant participant = new Participant(player);
             teamAList.add(participant);
             participants.add(participant);
         }
@@ -87,7 +84,7 @@ public class DuelRequest extends Request {
             Player player = Bukkit.getPlayer(userUUID);
             if (player == null) continue;
 
-            Participant participant = new Participant(player, plugin);
+            Participant participant = new Participant(player);
             teamBList.add(participant);
             participants.add(participant);
         }

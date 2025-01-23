@@ -30,7 +30,7 @@ public enum ItemAction {
     UNRANKED() {
         @Override
         public void execute(Player player) {
-            new QueueMenu().openMenu(player.getUniqueId());
+            new QueueMenu().open(player);
         }
     },
     QUEUE_LEAVE() {
@@ -44,13 +44,13 @@ public enum ItemAction {
     KIT_EDITOR() {
         @Override
         public void execute(Player player) {
-            new KitEditorMenu().openMenu(player.getUniqueId());
+            new KitEditorMenu().open(player);
         }
     },
     STATS() {
         @Override
         public void execute(Player player) {
-            new StatsMenu(player.getName()).openMenu(player.getUniqueId());
+            new StatsMenu(player.getName()).open(player);
         }
     },
     SPECTATE_MENU {
@@ -61,28 +61,28 @@ public enum ItemAction {
                 return;
             }
 
-            new MatchListMenu().openMenu(player.getUniqueId());
+            new MatchListMenu().open(player);
         }
     },
     LEADERBOARDS() {
         @Override
         public void execute(Player player) {
-            new LeaderboardMenu(LeaderboardType.WINS).openMenu(player.getUniqueId());
+            new LeaderboardMenu(LeaderboardType.WINS).open(player);
         }
     },
     PARTY_CREATE() {
         @Override
         public void execute(Player player) {
-            Profile profile = API.getProfile(player.getUniqueId());
+            Profile profile = API.getProfile(player);
             profile.createParty();
         }
     },
     PARTY_INFO() {
         @Override
         public void execute(Player player) {
-            Profile profile = API.getProfile(player.getUniqueId());
+            Profile profile = API.getProfile(player);
             if (profile.getGameData().getParty() == null) {
-                MessagesLocale.PARTY_NOT_IN.send(player.getUniqueId());
+                MessagesLocale.PARTY_NOT_IN.send(player);
                 return;
             }
             Party party = profile.getGameData().getParty();
@@ -112,7 +112,7 @@ public enum ItemAction {
                 MessagesLocale.PARTY_NOT_ENOUGH_MEMBERS.send(player.getUniqueId());
                 return;
             }
-            new PartyEventsMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).openMenu(player.getUniqueId());
+            new PartyEventsMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).open(player);
         }
     },
     PARTY_SETTINGS() {
@@ -123,13 +123,13 @@ public enum ItemAction {
                 MessagesLocale.PARTY_NO_PERMISSION.send(player.getUniqueId());
                 return;
             }
-            new PartySettingsMenu(party).openMenu(player.getUniqueId());
+            new PartySettingsMenu(party).open(player);
         }
     },
     DIVISIONS() {
         @Override
         public void execute(Player player) {
-            new DivisionsMenu().openMenu(player.getUniqueId());
+            new DivisionsMenu().open(player);
         }
     },
     PLAY_AGAIN() {
@@ -145,7 +145,7 @@ public enum ItemAction {
     SETTINGS() {
         @Override
         public void execute(Player player) {
-            new SettingsMenu().openMenu(player.getUniqueId());
+            new SettingsMenu().open(player);
         }
     };
 

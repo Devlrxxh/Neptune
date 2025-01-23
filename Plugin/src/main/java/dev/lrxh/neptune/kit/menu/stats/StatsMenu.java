@@ -4,20 +4,26 @@ import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.menu.stats.button.StatButton;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Filter;
-import dev.lrxh.neptune.utils.menu.Menu;
+import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.providers.menu.Filter;
+import dev.lrxh.neptune.providers.menu.Menu;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class StatsMenu extends Menu {
     private final Player target;
 
     public StatsMenu(String name) {
+        super(MenusLocale.STAT_SIZE.getInt(), Filter.valueOf((MenusLocale.STAT_FILTER.getString())));
         this.target = Bukkit.getPlayer(name);
+    }
+
+    public StatsMenu(Player player) {
+        super(MenusLocale.STAT_SIZE.getInt(), Filter.valueOf((MenusLocale.STAT_FILTER.getString())));
+        this.target = player;
     }
 
     @Override
@@ -25,22 +31,11 @@ public class StatsMenu extends Menu {
         return MenusLocale.STAT_TITLE.getString().replace("<player>", target.equals(player) ? "Your" : target.getName());
     }
 
-
     @Override
-    public int getSize() {
-        return MenusLocale.STAT_SIZE.getInt();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return Filter.valueOf((MenusLocale.STAT_FILTER.getString()));
-    }
-
-    @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
+    public List<Button> getButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
         for (Kit kit : KitManager.get().kits) {
-            buttons.put(kit.getSlot(), new StatButton(kit, target));
+            buttons.add(new StatButton(kit.getSlot(), kit, target));
         }
         return buttons;
     }

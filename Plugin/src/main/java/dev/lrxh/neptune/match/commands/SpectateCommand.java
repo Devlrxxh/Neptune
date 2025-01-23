@@ -1,31 +1,20 @@
 package dev.lrxh.neptune.match.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+
+import com.jonahseguin.drink.annotation.Command;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-@CommandAlias("spectate|spec")
-@Description("Spectate a match.")
-public class SpectateCommand extends BaseCommand {
+public class SpectateCommand {
 
-
-    @Default
-    @Syntax("<name>")
-    @CommandCompletion("@names")
-    public void spectate(Player player, String otherPlayer) {
-        Player target = Bukkit.getPlayer(otherPlayer);
-        if (target == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
-        if (player.getName().equalsIgnoreCase(otherPlayer)) {
+    @Command(name = "", desc = "", usage = "<player>")
+    public void spectate(Player player, Player target) {
+        if (player.getName().equalsIgnoreCase(target.getName())) {
             player.sendMessage(CC.error("You can't spectate yourself!"));
             return;
         }
@@ -51,17 +40,8 @@ public class SpectateCommand extends BaseCommand {
         targetProfile.getMatch().addSpectator(player, target, true);
     }
 
-    @Subcommand("leave")
+    @Command(name = "leave", aliases = "quit", desc = "")
     public void leave(Player player) {
-        Profile profile = API.getProfile(player);
-
-        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            API.getProfile(player).getMatch().removeSpectator(player.getUniqueId(), true);
-        }
-    }
-
-    @Subcommand("quit")
-    public void quit(Player player) {
         Profile profile = API.getProfile(player);
 
         if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {

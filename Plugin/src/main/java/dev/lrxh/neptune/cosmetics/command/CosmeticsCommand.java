@@ -1,31 +1,25 @@
 package dev.lrxh.neptune.cosmetics.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Description;
-import co.aikar.commands.annotation.Subcommand;
+import com.jonahseguin.drink.annotation.Command;
 import dev.lrxh.neptune.cosmetics.menu.CosmeticsManageMenu;
 import dev.lrxh.neptune.cosmetics.menu.killEffects.KillEffectsMenu;
 import dev.lrxh.neptune.cosmetics.menu.killMessages.KillMessagesMenu;
 import org.bukkit.entity.Player;
 
-@CommandAlias("cosmetics")
-@Description("Cosmetics command.")
-public class CosmeticsCommand extends BaseCommand {
+public class CosmeticsCommand {
 
-    @Default
+    @Command(name = "", desc = "")
     public void cosmeticsMenu(Player player) {
-        new CosmeticsManageMenu().openMenu(player.getUniqueId());
+        new CosmeticsManageMenu().open(player);
     }
 
-    @Subcommand("killEffects")
+    @Command(name = "killEffects", desc = "")
     public void killEffects(Player player) {
-        new KillEffectsMenu().openMenu(player.getUniqueId());
+        new KillEffectsMenu().open(player);
     }
 
-    @Subcommand("killMessages")
+    @Command(name = "killMessages", desc = "")
     public void killMessages(Player player) {
-        new KillMessagesMenu().openMenu(player.getUniqueId());
+        new KillMessagesMenu().open(player);
     }
 }

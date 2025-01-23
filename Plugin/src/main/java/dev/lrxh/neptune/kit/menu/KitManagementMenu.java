@@ -3,40 +3,28 @@ package dev.lrxh.neptune.kit.menu;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.button.KitManagementButton;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Filter;
-import dev.lrxh.neptune.utils.menu.Menu;
-import lombok.AllArgsConstructor;
+import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.providers.menu.Filter;
+import dev.lrxh.neptune.providers.menu.Menu;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
 public class KitManagementMenu extends Menu {
-    private Kit kit;
+    private final Kit kit;
 
-    @Override
-    public Filter getFilter() {
-        return Filter.FILL;
+    public KitManagementMenu(Kit kit) {
+        super(kit.getDisplayName() + "&7 | Management" + "&7 | Management", 36, Filter.FILL);
+        this.kit = kit;
     }
 
     @Override
-    public String getTitle(Player player) {
-        return kit.getDisplayName() + "&7 | Management";
-    }
-
-    @Override
-    public int getSize() {
-        return 36;
-    }
-
-    @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
+    public List<Button> getButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
         int i = 10;
         for (KitRule kitRule : KitRule.values()) {
-            buttons.put(i++, new KitManagementButton(kitRule, kit));
+            buttons.add(new KitManagementButton(i++, kitRule, kit));
         }
 
         return buttons;

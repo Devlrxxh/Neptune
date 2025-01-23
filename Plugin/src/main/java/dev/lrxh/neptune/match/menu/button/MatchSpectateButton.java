@@ -3,21 +3,28 @@ package dev.lrxh.neptune.match.menu.button;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
-import dev.lrxh.neptune.utils.menu.Button;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-@AllArgsConstructor
 public class MatchSpectateButton extends Button {
     private final SoloFightMatch match;
 
-    @Override
-    public ItemStack getButtonItem(Player player) {
+    public MatchSpectateButton(int slot, SoloFightMatch match) {
+        super(slot);
+        this.match = match;
+    }
 
+    @Override
+    public void onClick(ClickType type, Player player) {
+        player.chat("/spec " + match.getParticipantA().getNameUnColored());
+    }
+
+    @Override
+    public ItemStack getItemStack(Player player) {
         return new ItemBuilder(match.kit.getIcon())
                 .name(MenusLocale.MATCH_LIST_ITEM_NAME.getString()
                         .replace("<playerRed_name>", match.getParticipantA().getNameUnColored())
@@ -27,10 +34,5 @@ public class MatchSpectateButton extends Button {
                         new Replacement("<kit>", match.getKit().getDisplayName())), player)
                 .clearFlags()
                 .build();
-    }
-
-    @Override
-    public void onClick(Player player, ClickType clickType) {
-        player.chat("/spec " + match.getParticipantA().getNameUnColored());
     }
 }

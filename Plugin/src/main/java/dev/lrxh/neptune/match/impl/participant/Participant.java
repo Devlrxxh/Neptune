@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.match.impl.participant;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
@@ -35,14 +34,12 @@ public class Participant {
     private boolean loser;
     private boolean disconnected = false;
     private int roundsWon = 0;
-    private Neptune plugin;
     private boolean frozen = false;
     private boolean bedBroken;
 
-    public Participant(Player player, Neptune plugin) {
+    public Participant(Player player) {
         this.playerUUID = player.getUniqueId();
         this.name = player.getName();
-        this.plugin = plugin;
     }
 
     public void toggleFreeze() {

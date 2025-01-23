@@ -92,6 +92,16 @@ public class KitManager implements IManager {
         return null;
     }
 
+    public List<String> getKitNames() {
+        List<String> names = new ArrayList<>();
+        for (Kit kit : kits) {
+            names.add(kit.getName());
+        }
+
+        return names;
+    }
+
+
     public void removeArenasFromKits(Arena arena) {
         for (Kit kit : kits) {
             kit.getArenas().remove(arena);

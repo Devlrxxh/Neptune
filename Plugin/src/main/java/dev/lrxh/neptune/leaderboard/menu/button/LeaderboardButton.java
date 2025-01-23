@@ -5,22 +5,26 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
+import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;
-import dev.lrxh.neptune.utils.menu.Button;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 public class LeaderboardButton extends Button {
     private final Kit kit;
     private final LeaderboardType leaderboardType;
 
+    public LeaderboardButton(int slot, Kit kit, LeaderboardType leaderboardType) {
+        super(slot);
+        this.kit = kit;
+        this.leaderboardType = leaderboardType;
+    }
+
     @Override
-    public ItemStack getButtonItem(Player player) {
+    public ItemStack getItemStack(Player player) {
         List<String> lore = new ArrayList<>();
 
         List<PlayerEntry> leaderboard = LeaderboardManager.get().getPlayerEntries(kit, leaderboardType);

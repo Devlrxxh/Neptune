@@ -1,30 +1,20 @@
 package dev.lrxh.neptune.kit.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+
+import com.jonahseguin.drink.annotation.Command;
 import dev.lrxh.neptune.kit.menu.stats.StatsMenu;
-import dev.lrxh.neptune.utils.CC;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-@CommandAlias("stats")
-@Description("Display player stats.")
-public class StatsCommand extends BaseCommand {
+public class StatsCommand {
 
-    @Default
+    @Command(name = "", desc = "")
     public void open(Player player) {
-        new StatsMenu(player.getName()).openMenu(player.getUniqueId());
+        new StatsMenu(player.getName()).open(player);
 
     }
 
-    @Default
-    @Syntax("<name>")
-    @CommandCompletion("@names")
-    public void statsOthers(Player player, String otherPlayer) {
-        if (Bukkit.getPlayer(otherPlayer) == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
-        new StatsMenu(otherPlayer).openMenu(player.getUniqueId());
+    @Command(name = "", desc = "", usage = "<player>")
+    public void statsOthers(Player player, Player target) {
+        new StatsMenu(target).open(player);
     }
 }

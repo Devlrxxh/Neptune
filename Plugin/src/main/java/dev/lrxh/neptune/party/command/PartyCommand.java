@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.party.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+
+import com.jonahseguin.drink.annotation.Command;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.party.Party;
@@ -10,38 +10,27 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandAlias("party|p")
-@Description("Party Command.")
-public class PartyCommand extends BaseCommand {
+public class PartyCommand {
 
 
-    @Default
-    @Subcommand("help")
+    @Command(name = "help", desc = "")
     public void help(Player player) {
         MessagesLocale.PARTY_HELP.send(player.getUniqueId());
     }
 
-    @Subcommand("create")
+    @Command(name = "create", desc = "")
     public void create(Player player) {
         Profile profile = API.getProfile(player);
         profile.createParty();
     }
 
-    @Subcommand("join")
-    @Syntax("<player>")
-    @CommandCompletion("@names")
-    public void join(Player player, String otherPlayer) {
-        Player target = Bukkit.getPlayer(otherPlayer);
-        if (target == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
 
+    @Command(name = "join", desc = "", usage = "<player>")
+    public void join(Player player, Player target) {
         Party party = API.getProfile(target).getGameData().getParty();
         if (party == null) {
             player.sendMessage(CC.error("Player isn't in any party"));
@@ -64,25 +53,18 @@ public class PartyCommand extends BaseCommand {
         party.accept(player.getUniqueId());
     }
 
-    @Subcommand("disband")
+    @Command(name = "disband", desc = "")
     public void disband(Player player) {
         API.getProfile(player).disband();
     }
 
-    @Subcommand("leave")
+    @Command(name = "leave", desc = "")
     public void leave(Player player) {
         API.getProfile(player).disband();
     }
 
-    @Subcommand("invite")
-    @Syntax("<player>")
-    @CommandCompletion("@names")
-    public void invite(Player player, String otherPlayer) {
-        Player target = Bukkit.getPlayer(otherPlayer);
-        if (target == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
+    @Command(name = "invite", desc = "", usage = "<player>")
+    public void invite(Player player, Player target) {
         Profile targetProfile = API.getProfile(target);
         Profile profile = API.getProfile(player);
         Party party = profile.getGameData().getParty();
@@ -127,35 +109,22 @@ public class PartyCommand extends BaseCommand {
         MessagesLocale.PARTY_INVITED.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
     }
 
-    @Subcommand("accept")
-    @Syntax("<uuid>")
-    public void accept(Player player, String otherString) {
+    @Command(name = "accept", desc = "", usage = "<uuid>")
+    public void accept(Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         if (!profile.getState().equals(ProfileState.IN_LOBBY)) return;
-        try {
-            if (profile.getGameData().getParty() != null) {
-                MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
-                return;
-            }
-            UUID otherUUID = UUID.fromString(otherString);
-            PartyRequest request = (PartyRequest) profile.getGameData().getRequests().get(otherUUID);
-            if (request != null) {
-                request.getParty().accept(player.getUniqueId());
-            }
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(CC.error("Invalid UUID!"));
+        if (profile.getGameData().getParty() != null) {
+            MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
+            return;
+        }
+        PartyRequest request = (PartyRequest) profile.getGameData().getRequests().get(uuid);
+        if (request != null) {
+            request.getParty().accept(player.getUniqueId());
         }
     }
 
-    @Subcommand("kick")
-    @Syntax("<player>")
-    @CommandCompletion("@names")
-    public void kick(Player player, String otherPlayer) {
-        Player target = Bukkit.getPlayer(otherPlayer);
-        if (target == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
+    @Command(name = "kick", desc = "", usage = "<player>")
+    public void kick(Player player, Player target) {
         Party party = API.getProfile(target).getGameData().getParty();
         if (party == null || !party.getLeader().equals(player.getUniqueId())) {
             MessagesLocale.PARTY_NOT_IN_PARTY.send(player.getUniqueId(), new Replacement("<player>", player.getName()));

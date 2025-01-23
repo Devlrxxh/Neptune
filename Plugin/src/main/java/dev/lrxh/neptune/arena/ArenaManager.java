@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Getter
 public class ArenaManager implements IManager {
@@ -58,10 +57,13 @@ public class ArenaManager implements IManager {
         }
     }
 
-    public List<Arena> getArenasWithoutDupes() {
-        return arenas.stream()
-                .filter(arena -> !(arena instanceof StandAloneArena))
-                .collect(Collectors.toList());
+    public List<String> getArenaNames() {
+        List<String> names = new ArrayList<>();
+        for (Arena arena : arenas) {
+            names.add(arena.getName());
+        }
+
+        return names;
     }
 
     public void saveArenas() {

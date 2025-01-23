@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.duel.command;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+
+import com.jonahseguin.drink.annotation.Command;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
@@ -11,32 +11,20 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-@CommandAlias("duel|1v1")
-@Description("Duel other players.")
-public class DuelCommand extends BaseCommand {
+public class DuelCommand {
 
-
-    @Default
-    @Syntax("<name>")
-    @CommandCompletion("@names")
-    public void duel(Player player, String otherPlayer) {
-        Player target = Bukkit.getPlayer(otherPlayer);
-        if (target == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
-
+    @Command(name = "", desc = "", usage = "<player>")
+    public void duel(Player player, Player target) {
         if (API.getProfile(player).getMatch() != null) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
             return;
         }
 
-        if (player.getName().equalsIgnoreCase(otherPlayer)) {
+        if (player.getName().equalsIgnoreCase(player.getName())) {
             player.sendMessage(CC.error("You can't duel yourself!"));
             return;
         }
@@ -63,12 +51,11 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        new KitSelectMenu(target.getUniqueId(), userProfile.getState().equals(ProfileState.IN_PARTY)).openMenu(player.getUniqueId());
+        new KitSelectMenu(target.getUniqueId(), userProfile.getState().equals(ProfileState.IN_PARTY)).open(player);
     }
 
-    @Subcommand("accept")
-    @Syntax("<uuid>")
-    public void accept(Player player, String otherString) {
+    @Command(name = "accept", desc = "", usage = "<uuid>")
+    public void accept(Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = API.getProfile(player).getGameData();
 
@@ -76,10 +63,9 @@ public class DuelCommand extends BaseCommand {
             player.sendMessage(CC.error("You can't accept duel requests right now!"));
             return;
         }
-        UUID targetUUID = UUID.fromString(otherString);
-        Profile targetProfile = API.getProfile(targetUUID);
+        Profile targetProfile = API.getProfile(uuid);
 
-        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(targetUUID);
+        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(uuid);
 
         if (duelRequest == null) {
             player.sendMessage(CC.error("You don't have any duel request from this player!"));
@@ -91,18 +77,15 @@ public class DuelCommand extends BaseCommand {
             return;
         }
 
-        profile.acceptDuel(targetUUID);
+        profile.acceptDuel(uuid);
     }
 
-    @Subcommand("deny")
-    @Syntax("<uuid>")
-    public void deny(Player player, String otherString) {
+    @Command(name = "deny", desc = "", usage = "<uuid>")
+    public void deny(Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = profile.getGameData();
 
-        UUID otherUUID = UUID.fromString(otherString);
-
-        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(otherUUID);
+        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(uuid);
 
         if (duelRequest == null) {
             player.sendMessage(CC.error("You don't have any duel request from this player!"));
@@ -110,9 +93,9 @@ public class DuelCommand extends BaseCommand {
         }
 
         MessagesLocale.DUEL_DENY_SENDER.send(player.getUniqueId());
-        MessagesLocale.DUEL_DENY_RECEIVER.send(otherUUID,
+        MessagesLocale.DUEL_DENY_RECEIVER.send(uuid,
                 new Replacement("<player>", player.getName()));
 
-        playerGameData.removeRequest(otherUUID);
+        playerGameData.removeRequest(uuid);
     }
 }

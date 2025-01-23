@@ -4,44 +4,27 @@ import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.menu.buttons.settings.PartyLimitButton;
 import dev.lrxh.neptune.party.menu.buttons.settings.PartyPrivacyButton;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Filter;
-import dev.lrxh.neptune.utils.menu.Menu;
-import lombok.AllArgsConstructor;
+import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.providers.menu.Filter;
+import dev.lrxh.neptune.providers.menu.Menu;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
 public class PartySettingsMenu extends Menu {
     private final Party party;
 
-    @Override
-    public String getTitle(Player player) {
-        return MenusLocale.PARTY_SETTINGS_TITLE.getString();
+    public PartySettingsMenu(Party party) {
+        super(MenusLocale.PARTY_SETTINGS_TITLE.getString(), MenusLocale.PARTY_SETTINGS_SIZE.getInt(), Filter.valueOf(MenusLocale.PARTY_SETTINGS_FILTER.getString()), true);
+        this.party = party;
     }
 
     @Override
-    public int getSize() {
-        return MenusLocale.PARTY_SETTINGS_SIZE.getInt();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return Filter.valueOf(MenusLocale.PARTY_SETTINGS_FILTER.getString());
-    }
-
-    @Override
-    public boolean isUpdateOnClick() {
-        return true;
-    }
-
-    @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
-        buttons.put(MenusLocale.PARTY_SETTINGS_PRIVACY_SLOT.getInt(), new PartyPrivacyButton(party));
-        buttons.put(MenusLocale.PARTY_SETTINGS_MAX_SIZE_SLOT.getInt(), new PartyLimitButton(party));
+    public List<Button> getButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
+        buttons.add(new PartyPrivacyButton(MenusLocale.PARTY_SETTINGS_PRIVACY_SLOT.getInt(), party));
+        buttons.add(new PartyLimitButton(MenusLocale.PARTY_SETTINGS_MAX_SIZE_SLOT.getInt(), party));
 
         return buttons;
     }

@@ -1,12 +1,9 @@
 package dev.lrxh.neptune;
 
-import co.aikar.commands.BukkitCommandCompletionContext;
-import co.aikar.commands.CommandCompletions;
-import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
-import dev.lrxh.neptune.arena.Arena;
+import com.jonahseguin.drink.CommandService;
+import com.jonahseguin.drink.Drink;
 import dev.lrxh.neptune.arena.ArenaManager;
-import dev.lrxh.neptune.arena.command.ArenaCommand;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
@@ -26,6 +23,7 @@ import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitManager;
 import dev.lrxh.neptune.kit.command.KitCommand;
 import dev.lrxh.neptune.kit.command.KitEditorCommand;
+import dev.lrxh.neptune.kit.command.KitProvider;
 import dev.lrxh.neptune.kit.command.StatsCommand;
 import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.leaderboard.command.LeaderboardCommand;
@@ -41,6 +39,7 @@ import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
 import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
+import dev.lrxh.neptune.providers.menu.MenuListener;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
@@ -48,25 +47,20 @@ import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
-import dev.lrxh.neptune.utils.menu.listener.MenuListener;
 import lombok.Getter;
-import org.bukkit.Bukkit;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Getter
 public final class Neptune extends JavaPlugin {
     private static Neptune instance;
-    private PaperCommandManager paperCommandManager;
     private Cache cache;
     private Assemble assemble;
     private boolean placeholder = false;
@@ -165,36 +159,21 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadCommandManager() {
-        paperCommandManager = new PaperCommandManager(this);
-        registerCommands();
-        loadCommandCompletions();
-    }
-
-    private void registerCommands() {
-        Arrays.asList(
-                new KitCommand(),
-                new ArenaCommand(),
-                new QueueCommand(),
-                new MainCommand(),
-                new StatsCommand(),
-                new DuelCommand(),
-                new SpectateCommand(),
-                new DuelCommand(),
-                new LeaveCommand(),
-                new MatchHistoryCommand(),
-                new PartyCommand(),
-                new LeaderboardCommand(),
-                new KitEditorCommand(),
-                new CosmeticsCommand(),
-                new FollowCommand()
-        ).forEach(command -> paperCommandManager.registerCommand(command));
-    }
-
-    private void loadCommandCompletions() {
-        CommandCompletions<BukkitCommandCompletionContext> commandCompletions = getPaperCommandManager().getCommandCompletions();
-        commandCompletions.registerCompletion("names", c -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
-        commandCompletions.registerCompletion("arenas", c -> ArenaManager.get().getArenasWithoutDupes().stream().map(Arena::getName).collect(Collectors.toList()));
-        commandCompletions.registerCompletion("kits", c -> KitManager.get().kits.stream().map(Kit::getName).collect(Collectors.toList()));
+        CommandService drink = Drink.get(this);
+        drink.bind(Kit.class).toProvider(new KitProvider());
+        drink.register(new KitEditorCommand(), "kiteditor");
+        drink.register(new StatsCommand(), "stats");
+        drink.register(new PartyCommand(), "party");
+        drink.register(new KitCommand(), "kit");
+        drink.register(new FollowCommand(), "follow");
+        drink.register(new QueueCommand(), "queue");
+        drink.register(new DuelCommand(), "duel", "1v1");
+        drink.register(new LeaveCommand(), "leave");
+        drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard");
+        drink.register(new SpectateCommand(), "spec", "spectate");
+        drink.register(new MainCommand(), "neptune");
+        drink.register(new CosmeticsCommand(), "cosmetics");
+        drink.register(new MatchHistoryCommand(), "matchhistory");
     }
 
     @Override

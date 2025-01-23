@@ -3,40 +3,28 @@ package dev.lrxh.neptune.party.menu.buttons.events;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.impl.EventType;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Filter;
-import dev.lrxh.neptune.utils.menu.Menu;
-import lombok.AllArgsConstructor;
+import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.providers.menu.Filter;
+import dev.lrxh.neptune.providers.menu.Menu;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
-@AllArgsConstructor
 public class PartyEventsMenu extends Menu {
     private final Party party;
 
-    @Override
-    public String getTitle(Player player) {
-        return MenusLocale.PARTY_EVENTS_TITLE.getString();
+    public PartyEventsMenu(Party party) {
+        super(MenusLocale.PARTY_EVENTS_TITLE.getString(), MenusLocale.PARTY_EVENTS_SIZE.getInt(), Filter.valueOf(MenusLocale.PARTY_EVENTS_FILTER.getString()));
+        this.party = party;
     }
 
     @Override
-    public int getSize() {
-        return MenusLocale.PARTY_EVENTS_SIZE.getInt();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return Filter.valueOf(MenusLocale.PARTY_EVENTS_FILTER.getString());
-    }
-
-    @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
+    public List<Button> getButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
 
         for (EventType eventType : EventType.values()) {
-            buttons.put(eventType.getSlot(), new PartyFightButton(party, eventType));
+            buttons.add(new PartyFightButton(eventType.getSlot(), party, eventType));
         }
 
         return buttons;

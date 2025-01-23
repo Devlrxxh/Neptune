@@ -1,8 +1,6 @@
 package dev.lrxh.neptune.match.listener;
 
-import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.match.MatchManager;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -24,23 +22,16 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public class BlockTracker implements Listener {
 
     private final Map<UUID, EnderCrystal> crystalOwners = new HashMap<>();
 
-    private Optional<Match> getMatchForPlayer(Player player) {
-        Profile profile = API.getProfile(player);
-        return Optional.ofNullable(profile)
-                .map(Profile::getMatch);
-    }
-
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        getMatchForPlayer(player).ifPresent(match -> {
+        MatchManager.get().getMatch(player).ifPresent(match -> {
             match.getChanges().put(event.getBlock().getLocation(), event.getBlockReplacedState().getBlockData());
         });
     }
@@ -57,7 +48,7 @@ public class BlockTracker implements Listener {
                 .orElse(null);
         if (player == null) return;
 
-        getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(crystal));
+        MatchManager.get().getMatch(player).ifPresent(match -> match.getEntities().add(crystal));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -81,7 +72,7 @@ public class BlockTracker implements Listener {
 
         if (player == null) return;
 
-        getMatchForPlayer(player).ifPresent(match -> {
+        MatchManager.get().getMatch(player).ifPresent(match -> {
             for (Block block : event.blockList()) {
                 block.getDrops().clear();
                 match.getChanges().put(block.getLocation(), block.getBlockData());
@@ -94,7 +85,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
-        getMatchForPlayer(player).ifPresent(match -> {
+        MatchManager.get().getMatch(player).ifPresent(match -> {
             match.getLiquids().add(event.getBlock().getLocation());
         });
     }
@@ -107,7 +98,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        getMatchForPlayer(player).ifPresent(match -> {
+        MatchManager.get().getMatch(player).ifPresent(match -> {
             if (!match.getPlacedBlocks().contains(event.getBlock().getLocation())) {
                 match.getChanges().put(event.getBlock().getLocation(), event.getBlock().getBlockData());
             }
@@ -117,7 +108,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onMultiPlace(BlockMultiPlaceEvent event) {
         Player player = event.getPlayer();
-        getMatchForPlayer(player).ifPresent(match -> {
+        MatchManager.get().getMatch(player).ifPresent(match -> {
             for (BlockState blockState : event.getReplacedBlockStates()) {
                 match.getChanges().put(blockState.getLocation(), blockState.getBlockData());
             }

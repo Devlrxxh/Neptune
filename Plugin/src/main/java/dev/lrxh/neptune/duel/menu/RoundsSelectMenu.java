@@ -2,46 +2,36 @@ package dev.lrxh.neptune.duel.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Filter;
-import dev.lrxh.neptune.utils.menu.Menu;
-import lombok.AllArgsConstructor;
+import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.providers.menu.Filter;
+import dev.lrxh.neptune.providers.menu.Menu;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
-@AllArgsConstructor
 public class RoundsSelectMenu extends Menu {
     private final Kit kit;
     private final UUID receiver;
-    private boolean party;
+    private final boolean party;
 
-    @Override
-    public String getTitle(Player player) {
-        return MenusLocale.ROUNDS_TITLE.getString();
+    public RoundsSelectMenu(Kit kit, UUID receiver, boolean party) {
+        super(MenusLocale.ROUNDS_TITLE.getString(), MenusLocale.ROUNDS_SIZE.getInt(), Filter.valueOf(MenusLocale.ROUNDS_FILTER.getString()));
+        this.kit = kit;
+        this.receiver = receiver;
+        this.party = party;
     }
 
     @Override
-    public int getSize() {
-        return MenusLocale.ROUNDS_SIZE.getInt();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return Filter.valueOf(MenusLocale.ROUNDS_FILTER.getString());
-    }
-
-    @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
+    public List<Button> getButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
         int i = MenusLocale.ROUNDS_STARTING_SLOT.getInt();
 
         String[] parts = MenusLocale.ROUNDS_LIST.getString().replace(" ", "").split(",");
 
         for (String round : parts) {
-            buttons.put(i++, new RoundSelectButton(kit, receiver, party, Integer.parseInt(round)));
+            buttons.add(new RoundSelectButton(i++, kit, receiver, party, Integer.parseInt(round)));
         }
 
         return buttons;

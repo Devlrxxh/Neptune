@@ -6,12 +6,11 @@ import dev.lrxh.neptune.leaderboard.LeaderboardManager;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.queue.QueueManager;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
-import dev.lrxh.neptune.utils.menu.Button;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -19,12 +18,16 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
 public class QueueSelectButton extends Button {
     private final Kit kit;
 
+    public QueueSelectButton(int slot, Kit kit) {
+        super(slot);
+        this.kit = kit;
+    }
+
     @Override
-    public ItemStack getButtonItem(Player player) {
+    public ItemStack getItemStack(Player player) {
         List<String> lore = new ArrayList<>();
 
         MenusLocale.QUEUE_SELECT_LORE.getStringList().forEach(line -> {
@@ -73,7 +76,7 @@ public class QueueSelectButton extends Button {
     }
 
     @Override
-    public void onClick(Player player, ClickType clickType) {
+    public void onClick(ClickType type, Player player) {
         QueueManager.get().add(player.getUniqueId(), new Queue(kit));
         player.closeInventory();
     }

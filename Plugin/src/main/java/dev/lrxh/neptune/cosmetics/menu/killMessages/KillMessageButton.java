@@ -5,22 +5,31 @@ import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
-import dev.lrxh.neptune.utils.menu.Button;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-@AllArgsConstructor
 public class KillMessageButton extends Button {
     private final KillMessagePackage killMessagePackage;
 
+    public KillMessageButton(int slot, KillMessagePackage killMessagePackage) {
+        super(slot);
+        this.killMessagePackage = killMessagePackage;
+    }
+
     @Override
-    public ItemStack getButtonItem(Player player) {
+    public void onClick(ClickType type, Player player) {
+        if (!player.hasPermission(killMessagePackage.permission())) return;
+        API.getProfile(player).getSettingData().setKillMessagePackage(killMessagePackage);
+    }
+
+    @Override
+    public ItemStack getItemStack(Player player) {
         Profile profile = API.getProfile(player);
         if (profile == null) return null;
         boolean selected = profile.getSettingData().getKillMessagePackage().equals(killMessagePackage);
@@ -39,11 +48,5 @@ public class KillMessageButton extends Button {
                         new Replacement("<messages>", ItemUtils.getLore(killMessagePackage.getMessages(), new Replacement("<player>", player.getName()), new Replacement("<killer>", player.getName())))), player)
                 .clearFlags()
                 .build();
-    }
-
-    @Override
-    public void onClick(Player player, ClickType clickType) {
-        if (!player.hasPermission(killMessagePackage.permission())) return;
-        API.getProfile(player).getSettingData().setKillMessagePackage(killMessagePackage);
     }
 }

@@ -4,21 +4,30 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.cosmetics.impl.KillEffect;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;
-import dev.lrxh.neptune.utils.menu.Button;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
 
-@AllArgsConstructor
 public class KillEffectButton extends Button {
     private final KillEffect killEffect;
 
+    public KillEffectButton(int slot, KillEffect killEffect) {
+        super(slot);
+        this.killEffect = killEffect;
+    }
+
     @Override
-    public ItemStack getButtonItem(Player player) {
+    public void onClick(ClickType type, Player player) {
+        if (!player.hasPermission(killEffect.permission())) return;
+        API.getProfile(player).getSettingData().setKillEffect(killEffect);
+    }
+
+    @Override
+    public ItemStack getItemStack(Player player) {
         Profile profile = API.getProfile(player);
         if (profile == null) return null;
         boolean selected = profile.getSettingData().getKillEffect().equals(killEffect);
@@ -35,11 +44,5 @@ public class KillEffectButton extends Button {
                 .lore(lore, player)
                 .clearFlags()
                 .build();
-    }
-
-    @Override
-    public void onClick(Player player, ClickType clickType) {
-        if (!player.hasPermission(killEffect.permission())) return;
-        API.getProfile(player).getSettingData().setKillEffect(killEffect);
     }
 }

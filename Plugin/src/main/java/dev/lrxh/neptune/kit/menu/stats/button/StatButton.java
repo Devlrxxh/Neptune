@@ -5,20 +5,24 @@ import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
-import dev.lrxh.neptune.utils.menu.Button;
-import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-@AllArgsConstructor
 public class StatButton extends Button {
     private final Kit kit;
     private final Player target;
 
+    public StatButton(int slot, Kit kit, Player target) {
+        super(slot);
+        this.kit = kit;
+        this.target = target;
+    }
+
     @Override
-    public ItemStack getButtonItem(Player player) {
+    public ItemStack getItemStack(Player player) {
         KitData data = API.getProfile(target).getGameData().getKitData().get(kit);
 
         return new ItemBuilder(kit.getIcon())

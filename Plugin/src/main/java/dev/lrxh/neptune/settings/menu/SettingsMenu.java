@@ -1,42 +1,26 @@
 package dev.lrxh.neptune.settings.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.providers.menu.Filter;
+import dev.lrxh.neptune.providers.menu.Menu;
 import dev.lrxh.neptune.settings.Setting;
-import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.Filter;
-import dev.lrxh.neptune.utils.menu.Menu;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SettingsMenu extends Menu {
-    @Override
-    public String getTitle(Player player) {
-        return MenusLocale.SETTINGS_TITLE.getString();
+    public SettingsMenu() {
+        super(MenusLocale.SETTINGS_TITLE.getString(), MenusLocale.SETTINGS_SIZE.getInt(), Filter.valueOf(MenusLocale.SETTINGS_FILTER.getString()), true);
     }
 
     @Override
-    public int getSize() {
-        return MenusLocale.SETTINGS_SIZE.getInt();
-    }
-
-    @Override
-    public Filter getFilter() {
-        return Filter.valueOf(MenusLocale.SETTINGS_FILTER.getString());
-    }
-
-    @Override
-    public boolean isUpdateOnClick() {
-        return true;
-    }
-
-    @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> buttons = new HashMap<>();
+    public List<Button> getButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
 
         for (Setting setting : Setting.values()) {
-            buttons.put(setting.getSlot(), new SettingsButton(setting));
+            buttons.add(new SettingsButton(setting.getSlot(), setting));
         }
 
         return buttons;

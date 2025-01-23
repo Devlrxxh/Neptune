@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.*;
+
+import com.jonahseguin.drink.annotation.Command;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.cosmetics.CosmeticManager;
@@ -9,14 +9,9 @@ import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
 
-@CommandAlias("neptune")
-@CommandPermission("neptune.admin.main")
-@Description("Main Command for Neptune Practice Core.")
-public class MainCommand extends BaseCommand {
+public class MainCommand {
 
-
-    @Default
-    @Subcommand("help")
+    @Command(name = "help", aliases = "", desc = "")
     public void help(Player player) {
         player.sendMessage(CC.color("&7&m-----------------------------------------"));
         player.sendMessage(CC.color("&9Neptune Core"));
@@ -27,14 +22,14 @@ public class MainCommand extends BaseCommand {
         player.sendMessage(CC.color("&7&m-----------------------------------------"));
     }
 
-    @Subcommand("setspawn")
+    @Command(name = "setspawn", desc = "")
     public void setspawn(Player player) {
         Neptune.get().getCache().setSpawn(player.getLocation());
         player.sendMessage(CC.color("&aSuccessfully set spawn!"));
     }
 
 
-    @Subcommand("reload")
+    @Command(name = "reload", desc = "")
     public void reload(Player player) {
         ConfigManager.get().load();
         CosmeticManager.get().load();

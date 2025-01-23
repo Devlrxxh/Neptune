@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
@@ -10,10 +11,10 @@ import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
+import dev.lrxh.neptune.profile.impl.Profile;
+import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 public class MatchManager {
     private static MatchManager instance;
@@ -116,6 +117,18 @@ public class MatchManager {
 
         //Start match start runnable
         new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
+    }
+
+    public Optional<Match> getMatch(Player player) {
+        Profile profile = API.getProfile(player);
+        return Optional.ofNullable(profile)
+                .map(Profile::getMatch);
+    }
+
+    public Optional<Match> getMatch(UUID uuid) {
+        Profile profile = API.getProfile(uuid);
+        return Optional.ofNullable(profile)
+                .map(Profile::getMatch);
     }
 
     public void stopAllGames() {
