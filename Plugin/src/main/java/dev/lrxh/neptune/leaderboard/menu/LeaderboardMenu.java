@@ -23,7 +23,7 @@ public class LeaderboardMenu extends Menu {
     private final LeaderboardType leaderboardType;
 
     public LeaderboardMenu(LeaderboardType leaderboardType) {
-        super(MenusLocale.LEADERBOARD_TITLE.getString().replace("<type>", leaderboardType.getName()), MenusLocale.LEADERBOARD_SIZE.getInt(), Filter.valueOf(MenusLocale.LEADERBOARD_FILTER.getString()), true);
+        super(MenusLocale.LEADERBOARD_TITLE.getString().replace("<type>", leaderboardType.getName()), MenusLocale.LEADERBOARD_SIZE.getInt(), Filter.valueOf(MenusLocale.LEADERBOARD_FILTER.getString()));
         this.leaderboardType = leaderboardType;
     }
 

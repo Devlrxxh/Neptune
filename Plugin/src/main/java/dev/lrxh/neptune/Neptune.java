@@ -3,7 +3,9 @@ package dev.lrxh.neptune;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
+import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaManager;
+import dev.lrxh.neptune.arena.command.ArenaProvider;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
@@ -161,6 +163,8 @@ public final class Neptune extends JavaPlugin {
     private void loadCommandManager() {
         CommandService drink = Drink.get(this);
         drink.bind(Kit.class).toProvider(new KitProvider());
+        drink.bind(Arena.class).toProvider(new ArenaProvider());
+
         drink.register(new KitEditorCommand(), "kiteditor");
         drink.register(new StatsCommand(), "stats");
         drink.register(new PartyCommand(), "party");

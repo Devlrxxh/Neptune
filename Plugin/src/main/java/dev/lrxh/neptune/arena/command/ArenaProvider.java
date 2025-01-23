@@ -1,4 +1,4 @@
-package com.jonahseguin.drink.provider.spigot;
+package dev.lrxh.neptune.arena.command;
 
 import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
@@ -13,12 +13,6 @@ import java.lang.annotation.Annotation;
 import java.util.List;
 
 public class ArenaProvider extends DrinkProvider<Arena> {
-
-    private final Plugin plugin;
-
-    public ArenaProvider(Plugin plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean doesConsumeArgument() {

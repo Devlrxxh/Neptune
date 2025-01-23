@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.leaderboard.menu.button;
 
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import org.bukkit.Material;
@@ -26,7 +27,7 @@ public class LeaderboardSwitchButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-
+        new LeaderboardMenu(leaderboardType).open(player);
     }
 
     @Override
