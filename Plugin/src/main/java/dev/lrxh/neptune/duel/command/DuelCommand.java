@@ -2,6 +2,7 @@ package dev.lrxh.neptune.duel.command;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
@@ -18,7 +19,7 @@ import java.util.UUID;
 public class DuelCommand {
 
     @Command(name = "", desc = "", usage = "<player>")
-    public void duel(Player player, Player target) {
+    public void duel(@Sender Player player, Player target) {
         if (API.getProfile(player).getMatch() != null) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
             return;
@@ -55,7 +56,7 @@ public class DuelCommand {
     }
 
     @Command(name = "accept", desc = "", usage = "<uuid>")
-    public void accept(Player player, UUID uuid) {
+    public void accept(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = API.getProfile(player).getGameData();
 
@@ -81,7 +82,7 @@ public class DuelCommand {
     }
 
     @Command(name = "deny", desc = "", usage = "<uuid>")
-    public void deny(Player player, UUID uuid) {
+    public void deny(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = profile.getGameData();
 

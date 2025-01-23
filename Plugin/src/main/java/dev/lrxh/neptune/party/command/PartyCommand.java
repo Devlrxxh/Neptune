@@ -2,6 +2,7 @@ package dev.lrxh.neptune.party.command;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.party.Party;
@@ -18,19 +19,19 @@ public class PartyCommand {
 
 
     @Command(name = "help", desc = "")
-    public void help(Player player) {
+    public void help(@Sender Player player) {
         MessagesLocale.PARTY_HELP.send(player.getUniqueId());
     }
 
     @Command(name = "create", desc = "")
-    public void create(Player player) {
+    public void create(@Sender Player player) {
         Profile profile = API.getProfile(player);
         profile.createParty();
     }
 
 
     @Command(name = "join", desc = "", usage = "<player>")
-    public void join(Player player, Player target) {
+    public void join(@Sender Player player, Player target) {
         Party party = API.getProfile(target).getGameData().getParty();
         if (party == null) {
             player.sendMessage(CC.error("Player isn't in any party"));
@@ -54,17 +55,17 @@ public class PartyCommand {
     }
 
     @Command(name = "disband", desc = "")
-    public void disband(Player player) {
+    public void disband(@Sender Player player) {
         API.getProfile(player).disband();
     }
 
     @Command(name = "leave", desc = "")
-    public void leave(Player player) {
+    public void leave(@Sender Player player) {
         API.getProfile(player).disband();
     }
 
     @Command(name = "invite", desc = "", usage = "<player>")
-    public void invite(Player player, Player target) {
+    public void invite(@Sender Player player, Player target) {
         Profile targetProfile = API.getProfile(target);
         Profile profile = API.getProfile(player);
         Party party = profile.getGameData().getParty();
@@ -110,7 +111,7 @@ public class PartyCommand {
     }
 
     @Command(name = "accept", desc = "", usage = "<uuid>")
-    public void accept(Player player, UUID uuid) {
+    public void accept(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         if (!profile.getState().equals(ProfileState.IN_LOBBY)) return;
         if (profile.getGameData().getParty() != null) {
@@ -124,7 +125,7 @@ public class PartyCommand {
     }
 
     @Command(name = "kick", desc = "", usage = "<player>")
-    public void kick(Player player, Player target) {
+    public void kick(@Sender Player player, Player target) {
         Party party = API.getProfile(target).getGameData().getParty();
         if (party == null || !party.getLeader().equals(player.getUniqueId())) {
             MessagesLocale.PARTY_NOT_IN_PARTY.send(player.getUniqueId(), new Replacement("<player>", player.getName()));

@@ -178,6 +178,7 @@ public final class Neptune extends JavaPlugin {
         drink.register(new MainCommand(), "neptune");
         drink.register(new CosmeticsCommand(), "cosmetics");
         drink.register(new MatchHistoryCommand(), "matchhistory");
+        drink.registerCommands();
     }
 
     @Override

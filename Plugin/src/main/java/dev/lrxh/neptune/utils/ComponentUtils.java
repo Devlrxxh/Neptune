@@ -10,7 +10,7 @@ public class ComponentUtils {
     @SuppressWarnings("unchecked")
     public <T> T create(String text, String hoverEvent, String clickEvent) {
         return (T) Component.text(CC.color(text))
-                .clickEvent(ClickEvent.runCommand(CC.color(hoverEvent)))
-                .hoverEvent(HoverEvent.showText(Component.text(clickEvent)));
+                .clickEvent(ClickEvent.runCommand(clickEvent))
+                .hoverEvent(HoverEvent.showText(Component.text(CC.color(hoverEvent))));
     }
 }

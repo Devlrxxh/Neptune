@@ -2,6 +2,7 @@ package dev.lrxh.neptune.commands;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.SettingData;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player;
 public class FollowCommand {
 
     @Command(name = "", desc = "", usage = "<player>")
-    public void follow(Player player, Player target) {
+    public void follow(@Sender Player player, Player target) {
         SettingData followingSettingData = API.getProfile(target.getUniqueId()).getSettingData();
 
         if (followingSettingData.getFollowings().contains(player.getUniqueId())) {

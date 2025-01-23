@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.match.listener;
 
 import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -9,10 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockMultiPlaceEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
@@ -41,14 +39,23 @@ public class BlockTracker implements Listener {
         if (!(event.getEntity() instanceof EnderCrystal crystal)) return;
 
         if (!event.getEntity().getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.DEFAULT)) return;
-
-        Player player = crystal.getWorld().getPlayers().stream()
-                .filter(p -> p.getLocation().distance(crystal.getLocation()) < 5)
-                .findFirst()
-                .orElse(null);
+        Player player = PlayerUtil.getNearestPlayer(crystal.getLocation());
         if (player == null) return;
 
         MatchManager.get().getMatch(player).ifPresent(match -> match.getEntities().add(crystal));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockExplode(BlockExplodeEvent event) {
+        Player player = PlayerUtil.getNearestPlayer(event.getBlock().getLocation());
+        if (player == null) return;
+
+        MatchManager.get().getMatch(player).ifPresent(match -> {
+            for (Block block : event.blockList()) {
+                block.getDrops().clear();
+                match.getChanges().put(block.getLocation(), block.getBlockData());
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

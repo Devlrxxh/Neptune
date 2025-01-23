@@ -1,11 +1,13 @@
 package dev.lrxh.neptune.utils;
 
+import com.mongodb.lang.Nullable;
 import dev.lrxh.neptune.Neptune;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +15,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @UtilityClass
@@ -36,6 +39,15 @@ public class PlayerUtil {
         player.getInventory().setHeldItemSlot(0);
         player.updateInventory();
         player.resetTitle();
+    }
+
+    @Nullable
+    public Player getNearestPlayer(Location location) {
+        double radiusSquared = 25;
+        return location.getWorld().getPlayers().stream()
+                .filter(p -> p.getLocation().distanceSquared(location) < radiusSquared)
+                .findFirst()
+                .orElse(null);
     }
 
     public void kick(Player player, String message) {

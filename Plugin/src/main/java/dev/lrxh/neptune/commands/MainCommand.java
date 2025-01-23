@@ -2,6 +2,7 @@ package dev.lrxh.neptune.commands;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.ConfigManager;
 import dev.lrxh.neptune.cosmetics.CosmeticManager;
@@ -12,7 +13,7 @@ import org.bukkit.entity.Player;
 public class MainCommand {
 
     @Command(name = "help", aliases = "", desc = "")
-    public void help(Player player) {
+    public void help(@Sender Player player) {
         player.sendMessage(CC.color("&7&m-----------------------------------------"));
         player.sendMessage(CC.color("&9Neptune Core"));
         player.sendMessage(" ");
@@ -23,14 +24,14 @@ public class MainCommand {
     }
 
     @Command(name = "setspawn", desc = "")
-    public void setspawn(Player player) {
+    public void setspawn(@Sender Player player) {
         Neptune.get().getCache().setSpawn(player.getLocation());
         player.sendMessage(CC.color("&aSuccessfully set spawn!"));
     }
 
 
     @Command(name = "reload", desc = "")
-    public void reload(Player player) {
+    public void reload(@Sender Player player) {
         ConfigManager.get().load();
         CosmeticManager.get().load();
         player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));

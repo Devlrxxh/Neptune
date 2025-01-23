@@ -2,6 +2,7 @@ package dev.lrxh.neptune.kit.command;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.database.DatabaseManager;
 import dev.lrxh.neptune.database.impl.DataDocument;
@@ -15,12 +16,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class KitCommand {
 
     @Command(name = "list", desc = "")
-    public void list(Player player) {
+    public void list(@Sender Player player) {
         if (player == null)
             return;
         if (KitManager.get().kits.isEmpty()) {
@@ -35,12 +37,12 @@ public class KitCommand {
     }
 
     @Command(name = "manage", desc = "", usage = "<kit>")
-    public void manage(Player player, Kit kit) {
+    public void manage(@Sender Player player, Kit kit) {
         new KitManagementMenu(kit).open(player);
     }
 
     @Command(name = "create", desc = "", usage = "<name>")
-    public void create(Player player, String kitName) {
+    public void create(@Sender Player player, String kitName) {
         if (checkKit(kitName)) {
             player.sendMessage(CC.error("Kit already exists!"));
             return;
@@ -54,14 +56,14 @@ public class KitCommand {
     }
 
     @Command(name = "getinv", desc = "", usage = "<kit>")
-    public void getinv(Player player, Kit kit) {
+    public void getinv(@Sender Player player, Kit kit) {
         player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
         player.sendMessage(CC.color("&aSuccessfully given kit load out!"));
     }
 
 
     @Command(name = "setinv", desc = "", usage = "<kit>")
-    public void setinv(Player player, Kit kit) {
+    public void setinv(@Sender Player player, Kit kit) {
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
 
         KitManager.get().saveKits();
@@ -72,7 +74,7 @@ public class KitCommand {
 
 
     @Command(name = "rename", desc = "", usage = "<kit> <name>")
-    public void rename(Player player, Kit kit, String name) {
+    public void rename(@Sender Player player, Kit kit, String name) {
         kit.setDisplayName(name);
 
         KitManager.get().saveKits();
@@ -82,7 +84,7 @@ public class KitCommand {
 
 
     @Command(name = "delete", desc = "", usage = "<kit>")
-    public void delete(Player player, Kit kit) {
+    public void delete(@Sender Player player, Kit kit) {
         kit.delete();
 
         KitManager.get().saveKits();
@@ -91,11 +93,7 @@ public class KitCommand {
     }
 
     @Command(name = "updateDB", desc = "", usage = "<kit>")
-    public void updateDB(Player player, Kit kit) {
-        for (Player onlinePlayer : Bukkit.getOnlinePlayers()) {
-            PlayerUtil.kick(onlinePlayer, "&cUpdating player data...");
-        }
-
+    public void updateDB(@Sender Player player, Kit kit) {
         int i = 0;
         for (DataDocument document : DatabaseManager.get().getDatabase().getAll()) {
             DataDocument kitStatistics = document.getDataDocument("kitData");
@@ -112,7 +110,7 @@ public class KitCommand {
     }
 
     @Command(name = "setIcon", desc = "", usage = "<kit>")
-    public void setIcon(Player player, Kit kit) {
+    public void setIcon(@Sender Player player, Kit kit) {
         kit.setIcon(player.getInventory().getItemInMainHand());
 
         KitManager.get().saveKits();
@@ -120,7 +118,7 @@ public class KitCommand {
     }
 
     @Command(name = "setSlot", desc = "", usage = "<kit> <slot>")
-    public void setSlot(Player player, Kit kit, int slot) {
+    public void setSlot(@Sender Player player, Kit kit, int slot) {
         kit.setSlot(slot);
 
         KitManager.get().saveKits();
@@ -128,7 +126,7 @@ public class KitCommand {
     }
 
     @Command(name = "setIcon", desc = "", usage = "<kit> <arena>")
-    public void addArena(Player player, Kit kit, Arena arena) {
+    public void addArena(@Sender Player player, Kit kit, Arena arena) {
         if (kit.getArenas().contains(arena)) {
             player.sendMessage(CC.error("Arena is already added!"));
             return;
@@ -141,7 +139,7 @@ public class KitCommand {
     }
 
     @Command(name = "removeArena", desc = "", usage = "<kit> <arena>")
-    public void removeArena(Player player, Kit kit, Arena arena) {
+    public void removeArena(@Sender Player player, Kit kit, Arena arena) {
         if (!kit.getArenas().contains(arena)) {
             player.sendMessage(CC.error("Arena isn't added to the kit!"));
             return;

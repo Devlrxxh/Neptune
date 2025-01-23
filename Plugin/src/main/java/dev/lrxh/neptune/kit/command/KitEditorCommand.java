@@ -2,6 +2,7 @@ package dev.lrxh.neptune.kit.command;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 public class KitEditorCommand {
 
     @Command(name = "", desc = "")
-    public void open(Player player) {
+    public void open(@Sender Player player) {
         Profile profile = API.getProfile(player);
         if (profile == null) return;
         if (profile.hasState(ProfileState.IN_LOBBY, ProfileState.IN_PARTY)) {
@@ -25,7 +26,7 @@ public class KitEditorCommand {
     }
 
     @Command(name = "", desc = "", usage = "<kit>")
-    public void reset(Player player, Kit kit) {
+    public void reset(@Sender Player player, Kit kit) {
         if (player == null) return;
         Profile profile = API.getProfile(player);
 
