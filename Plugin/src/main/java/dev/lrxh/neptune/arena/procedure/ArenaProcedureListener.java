@@ -6,7 +6,6 @@ import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.menu.ArenaCreateMenu;
 import dev.lrxh.neptune.arena.menu.ArenaManagementMenu;
-import dev.lrxh.neptune.arena.menu.ArenasManagementMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import lombok.AllArgsConstructor;
@@ -72,13 +71,22 @@ public class ArenaProcedureListener implements Listener {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-                if (!profile.getArenaProcedure().getArena().isSetup()) {
-                    player.sendMessage(CC.success("Arena setup complete"));
+                Arena arena = profile.getArenaProcedure().getArena();
+                if (!arena.isSetup()) {
+                    if (arena instanceof StandAloneArena) {
+                        arena.setBlueSpawn(player.getLocation());
+                        profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MIN);
+                        player.sendMessage(CC.info("Go to the lowest edge of the arena and type &aDone"));
+                        return;
+                    } else {
+                        player.sendMessage(CC.success("Arena setup complete"));
+                    }
                 } else {
                     player.sendMessage(CC.success("Set arena blue spawn"));
                 }
-                profile.getArenaProcedure().getArena().setBlueSpawn(player.getLocation());
-                new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+
+                arena.setBlueSpawn(player.getLocation());
+                new ArenaManagementMenu(arena).open(player);
                 profile.getArenaProcedure().setArena(null);
             }
             case SET_SPAWN_MAX -> {
@@ -86,8 +94,12 @@ public class ArenaProcedureListener implements Listener {
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
                 StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
+                if (!arena.isSetup()) {
+                    player.sendMessage(CC.success("Arena setup complete"));
+                } else {
+                    player.sendMessage(CC.success("Set arena max position"));
+                }
                 arena.setMax(player.getLocation());
-                player.sendMessage(CC.success("Set arena max position"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
                 profile.getArenaProcedure().setArena(null);
             }
@@ -96,6 +108,12 @@ public class ArenaProcedureListener implements Listener {
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
                 StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
+                if (!arena.isSetup()) {
+                    arena.setMin(player.getLocation());
+                    profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MAX);
+                    player.sendMessage(CC.info("Go to the highest edge of the arena and type &aDone"));
+                    return;
+                }
                 arena.setMin(player.getLocation());
                 player.sendMessage(CC.success("Set arena min position"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
