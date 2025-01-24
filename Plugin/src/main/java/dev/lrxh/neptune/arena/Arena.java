@@ -23,6 +23,6 @@ public class Arena {
     }
 
     public boolean isSetup() {
-        return (getRedSpawn() == null || getBlueSpawn() == null);
+        return !(redSpawn == null || blueSpawn == null);
     }
 }

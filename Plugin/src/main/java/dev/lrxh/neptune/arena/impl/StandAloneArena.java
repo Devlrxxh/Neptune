@@ -35,7 +35,7 @@ public class StandAloneArena extends Arena {
 
     @Override
     public boolean isSetup() {
-        return (getRedSpawn() == null || getBlueSpawn() == null || min == null || max == null);
+        return !(getRedSpawn() == null || getBlueSpawn() == null || min == null || max == null);
     }
 
 }

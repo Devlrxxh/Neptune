@@ -19,6 +19,14 @@ public class CC {
         return color(MessagesLocale.ERROR_MESSAGE.getString().replace("<error>", message));
     }
 
+    public String success(String text) {
+        return color("&a[+] " + text);
+    }
+
+    public String info(String text) {
+        return color("&7[~] " + text);
+    }
+
     public String color(String text) {
         return IridiumColorAPI.process(text);
     }

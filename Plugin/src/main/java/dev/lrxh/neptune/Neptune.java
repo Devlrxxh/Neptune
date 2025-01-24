@@ -6,12 +6,12 @@ import com.jonahseguin.drink.Drink;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.command.ArenaProvider;
+import dev.lrxh.neptune.arena.procedure.ArenaProcedureListener;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
-import dev.lrxh.neptune.commands.MainCommand;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.cosmetics.CosmeticService;
@@ -31,6 +31,7 @@ import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.leaderboard.task.LeaderboardTask;
 import dev.lrxh.neptune.listeners.LobbyListener;
+import dev.lrxh.neptune.main.MainCommand;
 import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.match.commands.SpectateCommand;
@@ -125,7 +126,8 @@ public final class Neptune extends JavaPlugin {
                 new ItemCache(),
                 new BukkitListener(),
                 new MenuListener(),
-                new BlockTracker()
+                new BlockTracker(),
+                new ArenaProcedureListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

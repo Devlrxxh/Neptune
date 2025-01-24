@@ -15,7 +15,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 @UtilityClass

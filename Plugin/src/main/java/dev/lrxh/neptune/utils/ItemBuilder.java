@@ -100,16 +100,14 @@ public class ItemBuilder {
         return this;
     }
 
-
-    public ItemBuilder lore(String name) {
+    public ItemBuilder lore(String... lore) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            List<String> lore = meta.getLore();
-            if (lore == null) {
-                lore = new ArrayList<>();
+            List<String> toSet = new ArrayList<>();
+            for (String string : lore) {
+                toSet.add(CC.color(string));
             }
-            lore.add(CC.color(name));
-            meta.setLore(lore);
+            meta.setLore(toSet);
             item.setItemMeta(meta);
         }
         return this;

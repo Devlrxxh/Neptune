@@ -2,6 +2,7 @@ package dev.lrxh.neptune.profile.impl;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.arena.procedure.ArenaProcedure;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.cosmetics.CosmeticService;
 import dev.lrxh.neptune.cosmetics.impl.KillEffect;
@@ -38,6 +39,7 @@ public class Profile {
     private GameData gameData;
     private SettingData settingData;
     private Visibility visibility;
+    private ArenaProcedure arenaProcedure;
 
     public Profile(String name, UUID uuid, Neptune plugin) {
         this.plugin = plugin;
@@ -47,6 +49,7 @@ public class Profile {
         this.gameData = new GameData();
         this.settingData = new SettingData(plugin);
         this.visibility = new Visibility(playerUUID);
+        this.arenaProcedure = new ArenaProcedure();
 
         load();
     }

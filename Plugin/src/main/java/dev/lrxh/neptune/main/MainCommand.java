@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.commands;
+package dev.lrxh.neptune.main;
 
 
 import com.jonahseguin.drink.annotation.Command;
@@ -12,15 +12,9 @@ import org.bukkit.entity.Player;
 
 public class MainCommand {
 
-    @Command(name = "help", aliases = "", desc = "")
+    @Command(name = "", desc = "")
     public void help(@Sender Player player) {
-        player.sendMessage(CC.color("&7&m-----------------------------------------"));
-        player.sendMessage(CC.color("&9Neptune Core"));
-        player.sendMessage(" ");
-        player.sendMessage(CC.color("&7* &9/neptune setspawn &7- &fSet server spawn"));
-        player.sendMessage(CC.color("&7* &9/neptune reload &7- &fReload all configs"));
-        player.sendMessage(" ");
-        player.sendMessage(CC.color("&7&m-----------------------------------------"));
+        new MainMenu().open(player);
     }
 
     @Command(name = "setspawn", desc = "")
