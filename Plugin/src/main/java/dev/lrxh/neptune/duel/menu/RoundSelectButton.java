@@ -1,11 +1,13 @@
 package dev.lrxh.neptune.duel.menu;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.menu.Button;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -41,7 +43,12 @@ public class RoundSelectButton extends Button {
     public void onClick(ClickType type, Player player) {
         Profile profile = API.getProfile(receiver);
         if (profile == null) return;
-        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, round);
+        Arena arena = kit.getRandomArena();
+        if (arena == null) {
+            player.sendMessage(CC.error("No arena found"));
+            return;
+        }
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, party, round);
         profile.sendDuel(duelRequest);
         player.closeInventory();
     }
