@@ -9,11 +9,11 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 
 @Getter
-public class DatabaseManager {
-    private static DatabaseManager instance;
+public class DatabaseService {
+    private static DatabaseService instance;
     private IDatabase database = null;
 
-    public DatabaseManager() {
+    public DatabaseService() {
         String uri = SettingsLocale.URI.getString();
         if (uri != null && (uri.isEmpty() || uri.equals("NONE"))) {
             ServerUtils.error("URI is missing or empty");
@@ -27,8 +27,8 @@ public class DatabaseManager {
         }
     }
 
-    public static DatabaseManager get() {
-        if (instance == null) instance = new DatabaseManager();
+    public static DatabaseService get() {
+        if (instance == null) instance = new DatabaseService();
 
         return instance;
     }

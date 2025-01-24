@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.providers.request.Request;
@@ -38,7 +38,7 @@ public class GameData {
         this.matchHistories = new ArrayList<>();
         this.gson = new GsonBuilder().setPrettyPrinting().create();
 
-        for (Kit kit : KitManager.get().kits) {
+        for (Kit kit : KitService.get().kits) {
             kitData.put(kit, new KitData());
         }
         this.globalStats = new GlobalStats();

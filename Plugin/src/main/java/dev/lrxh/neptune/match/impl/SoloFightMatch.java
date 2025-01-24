@@ -5,7 +5,7 @@ import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
-import dev.lrxh.neptune.leaderboard.LeaderboardManager;
+import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
@@ -84,7 +84,7 @@ public class SoloFightMatch extends Match {
         winnerProfile.getGameData().run(kit, true);
         loserProfile.getGameData().run(kit, false);
 
-        forEachParticipant(participant -> LeaderboardManager.get().addChange
+        forEachParticipant(participant -> LeaderboardService.get().addChange
                 (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
     }
 

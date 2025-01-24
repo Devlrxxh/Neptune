@@ -4,8 +4,8 @@ package dev.lrxh.neptune.commands;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.configs.ConfigManager;
-import dev.lrxh.neptune.cosmetics.CosmeticManager;
+import dev.lrxh.neptune.configs.ConfigService;
+import dev.lrxh.neptune.cosmetics.CosmeticService;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
@@ -32,8 +32,8 @@ public class MainCommand {
 
     @Command(name = "reload", desc = "")
     public void reload(@Sender Player player) {
-        ConfigManager.get().load();
-        CosmeticManager.get().load();
+        ConfigService.get().load();
+        CosmeticService.get().load();
         player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 }

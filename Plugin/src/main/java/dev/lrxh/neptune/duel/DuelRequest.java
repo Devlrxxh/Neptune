@@ -4,7 +4,7 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -56,7 +56,7 @@ public class DuelRequest extends Request {
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 
-        MatchManager.get().startMatch(participants, kit,
+        MatchService.get().startMatch(participants, kit,
                 arena, true, rounds);
     }
 
@@ -104,6 +104,6 @@ public class DuelRequest extends Request {
             standAloneArena.setUsed(true);
         }
 
-        MatchManager.get().startMatch(teamA, teamB, kit, arena);
+        MatchService.get().startMatch(teamA, teamB, kit, arena);
     }
 }

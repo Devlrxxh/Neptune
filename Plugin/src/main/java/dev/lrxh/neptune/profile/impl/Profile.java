@@ -3,14 +3,14 @@ package dev.lrxh.neptune.profile.impl;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.cosmetics.CosmeticManager;
+import dev.lrxh.neptune.cosmetics.CosmeticService;
 import dev.lrxh.neptune.cosmetics.impl.KillEffect;
-import dev.lrxh.neptune.database.DatabaseManager;
+import dev.lrxh.neptune.database.DatabaseService;
 import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.duel.DuelRequest;
-import dev.lrxh.neptune.hotbar.HotbarManager;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.*;
@@ -72,7 +72,7 @@ public class Profile {
     public void setState(ProfileState profileState) {
         state = profileState;
         handleVisibility();
-        HotbarManager.get().giveItems(getPlayer());
+        HotbarService.get().giveItems(getPlayer());
     }
 
     public Player getPlayer() {
@@ -80,7 +80,7 @@ public class Profile {
     }
 
     public void load() {
-        DataDocument dataDocument = DatabaseManager.get().getDatabase().getUserData(playerUUID);
+        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(playerUUID);
 
         if (dataDocument == null) {
             save();
@@ -93,7 +93,7 @@ public class Profile {
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
         DataDocument settings = dataDocument.getDataDocument("settings");
 
-        for (Kit kit : KitManager.get().kits) {
+        for (Kit kit : KitService.get().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
             if (kitDocument == null) return;
             KitData profileKitData = gameData.getKitData().get(kit);
@@ -116,7 +116,7 @@ public class Profile {
         settingData.setMaxPing(settings.getInteger("maxPing", 350));
         settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
         settingData.setMenuSound(settings.getBoolean("menuSound", false));
-        settingData.setKillMessagePackage(CosmeticManager.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
+        settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
         gameData.setLastKit(settings.getString("lastKit", ""));
     }
 
@@ -131,7 +131,7 @@ public class Profile {
         dataDocument.put("history", gameData.serializeHistory());
 
 
-        for (Kit kit : KitManager.get().kits) {
+        for (Kit kit : KitService.get().kits) {
             DataDocument kitStatisticsDocument = new DataDocument();
             KitData entry = gameData.getKitData().get(kit);
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
@@ -162,7 +162,7 @@ public class Profile {
 
         dataDocument.put("settings", settingsDoc);
 
-        DatabaseManager.get().getDatabase().replace(playerUUID, dataDocument);
+        DatabaseService.get().getDatabase().replace(playerUUID, dataDocument);
     }
 
     public void sendDuel(DuelRequest duelRequest) {

@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.kit;
 
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.ArenaManager;
-import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.arena.ArenaService;
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.kit.impl.KitRule;
-import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.ItemUtils;
@@ -15,18 +15,18 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 @Getter
-public class KitManager implements IManager {
-    private static KitManager instance;
+public class KitService implements IService {
+    private static KitService instance;
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
 
-    public static KitManager get() {
-        if (instance == null) instance = new KitManager();
+    public static KitService get() {
+        if (instance == null) instance = new KitService();
 
         return instance;
     }
 
     public void loadKits() {
-        FileConfiguration config = ConfigManager.get().getKitsConfig().getConfiguration();
+        FileConfiguration config = ConfigService.get().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {
             for (String kitName : getKeys("kits")) {
                 String path = "kits." + kitName + ".";
@@ -39,7 +39,7 @@ public class KitManager implements IManager {
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
                     for (String arenaName : config.getStringList(path + "arenas")) {
-                        arenas.add(ArenaManager.get().getArenaByName(arenaName));
+                        arenas.add(ArenaService.get().getArenaByName(arenaName));
                     }
                 }
 
@@ -110,6 +110,6 @@ public class KitManager implements IManager {
 
     @Override
     public ConfigFile getConfigFile() {
-        return ConfigManager.get().getKitsConfig();
+        return ConfigService.get().getKitsConfig();
     }
 }

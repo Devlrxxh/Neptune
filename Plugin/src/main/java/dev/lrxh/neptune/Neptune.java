@@ -4,7 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.ArenaManager;
+import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.command.ArenaProvider;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
@@ -12,26 +12,26 @@ import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
 import dev.lrxh.neptune.commands.MainCommand;
-import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
-import dev.lrxh.neptune.cosmetics.CosmeticManager;
+import dev.lrxh.neptune.cosmetics.CosmeticService;
 import dev.lrxh.neptune.cosmetics.command.CosmeticsCommand;
-import dev.lrxh.neptune.database.DatabaseManager;
-import dev.lrxh.neptune.divisions.DivisionManager;
+import dev.lrxh.neptune.database.DatabaseService;
+import dev.lrxh.neptune.divisions.DivisionService;
 import dev.lrxh.neptune.duel.command.DuelCommand;
-import dev.lrxh.neptune.hotbar.HotbarManager;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.hotbar.listener.ItemListener;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.command.KitCommand;
 import dev.lrxh.neptune.kit.command.KitEditorCommand;
 import dev.lrxh.neptune.kit.command.KitProvider;
 import dev.lrxh.neptune.kit.command.StatsCommand;
-import dev.lrxh.neptune.leaderboard.LeaderboardManager;
+import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.leaderboard.task.LeaderboardTask;
 import dev.lrxh.neptune.listeners.LobbyListener;
-import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.match.commands.SpectateCommand;
 import dev.lrxh.neptune.match.listener.BlockTracker;
@@ -83,19 +83,19 @@ public final class Neptune extends JavaPlugin {
 
         loadExtensions();
         if (!isEnabled()) return;
-        ConfigManager.get().load();
-        ArenaManager.get().loadArenas();
-        KitManager.get().loadKits();
+        ConfigService.get().load();
+        ArenaService.get().loadArenas();
+        KitService.get().loadKits();
         this.cache = new Cache();
-        HotbarManager.get().loadItems();
+        HotbarService.get().loadItems();
 
-        new DatabaseManager();
+        new DatabaseService();
         if (!isEnabled()) return;
-        CosmeticManager.get().load();
+        CosmeticService.get().load();
 
-        DivisionManager.get().loadDivisions();
+        DivisionService.get().loadDivisions();
 
-        LeaderboardManager.get().load();
+        LeaderboardService.get().load();
 
         this.assemble = new Assemble(new ScoreboardAdapter());
 
@@ -104,9 +104,6 @@ public final class Neptune extends JavaPlugin {
         loadTasks();
         loadWorlds();
         initAPIs();
-
-        System.gc();
-        Runtime.getRuntime().freeMemory();
 
         ServerUtils.info("Loaded Successfully");
     }
@@ -187,9 +184,9 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void disableManagers() {
-        stopService(KitManager.get(), KitManager::saveKits);
-        stopService(ArenaManager.get(), ArenaManager::saveArenas);
-        stopService(MatchManager.get(), MatchManager::stopAllGames);
+        stopService(KitService.get(), KitService::saveKits);
+        stopService(ArenaService.get(), ArenaService::saveArenas);
+        stopService(MatchService.get(), MatchService::stopAllGames);
         stopService(TaskScheduler.get(), ts -> ts.stopAllTasks(this));
         stopService(cache, Cache::save);
     }

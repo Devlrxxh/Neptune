@@ -10,7 +10,7 @@ import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
-import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -69,7 +69,7 @@ public class MatchListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onBedBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        Profile profile = ProfileManager.get().getByUUID(player.getUniqueId());
+        Profile profile = ProfileService.get().getByUUID(player.getUniqueId());
         Match match = profile.getMatch();
         Material blockType = event.getBlock().getType();
 

@@ -2,7 +2,7 @@ package dev.lrxh.neptune.kit.menu.editor;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.editor.buttons.KitEditorSelectButton;
 import dev.lrxh.neptune.providers.menu.Button;
@@ -24,7 +24,7 @@ public class KitEditorMenu extends Menu {
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
-        for (Kit kit : KitManager.get().kits) {
+        for (Kit kit : KitService.get().kits) {
             if (kit.is(KitRule.ALL0W_KIT_EDITOR)) {
                 buttons.add(new KitEditorSelectButton(kit.getSlot(), kit));
             }

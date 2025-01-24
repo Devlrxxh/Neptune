@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.profile.data;
 
-import dev.lrxh.neptune.divisions.DivisionManager;
+import dev.lrxh.neptune.divisions.DivisionService;
 import dev.lrxh.neptune.divisions.impl.Division;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,7 +31,7 @@ public class KitData {
     }
 
     public void updateDivision() {
-        division = DivisionManager.get().getDivisionByWinCount(wins);
+        division = DivisionService.get().getDivisionByWinCount(wins);
     }
 }
 

@@ -3,8 +3,8 @@ package dev.lrxh.neptune.arena;
 import dev.lrxh.neptune.arena.impl.ArenaType;
 import dev.lrxh.neptune.arena.impl.SharedArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
-import dev.lrxh.neptune.configs.ConfigManager;
-import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.configs.ConfigService;
+import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.LocationUtil;
@@ -18,18 +18,18 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 @Getter
-public class ArenaManager implements IManager {
-    private static ArenaManager instance;
+public class ArenaService implements IService {
+    private static ArenaService instance;
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
 
-    public static ArenaManager get() {
-        if (instance == null) instance = new ArenaManager();
+    public static ArenaService get() {
+        if (instance == null) instance = new ArenaService();
 
         return instance;
     }
 
     public void loadArenas() {
-        FileConfiguration config = ConfigManager.get().getArenasConfig().getConfiguration();
+        FileConfiguration config = ConfigService.get().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
             for (String arenaName : getKeys("arenas")) {
                 String path = "arenas." + arenaName + ".";
@@ -103,6 +103,6 @@ public class ArenaManager implements IManager {
 
     @Override
     public ConfigFile getConfigFile() {
-        return ConfigManager.get().getArenasConfig();
+        return ConfigService.get().getArenasConfig();
     }
 }

@@ -5,7 +5,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -28,7 +28,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
     @Override
     public void run() {
-        if (!MatchManager.get().matches.contains(match)) {
+        if (!MatchService.get().matches.contains(match)) {
             stop(plugin);
 
             return;
@@ -61,7 +61,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
             }
             match.resetArena();
 
-            MatchManager.get().matches.remove(match);
+            MatchService.get().matches.remove(match);
         }
         endTimer--;
     }

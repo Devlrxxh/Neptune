@@ -2,16 +2,16 @@ package dev.lrxh.neptune.hotbar;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Hotbar;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.hotbar.impl.ItemAction;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -21,18 +21,18 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class HotbarManager implements IManager {
-    private static HotbarManager instance;
+public class HotbarService implements IService {
+    private static HotbarService instance;
     private final Map<ProfileState, Hotbar> items = new HashMap<>();
     private final Neptune plugin;
 
-    public HotbarManager() {
+    public HotbarService() {
         this.plugin = Neptune.get();
         loadItems();
     }
 
-    public static HotbarManager get() {
-        if (instance == null) instance = new HotbarManager();
+    public static HotbarService get() {
+        if (instance == null) instance = new HotbarService();
 
         return instance;
     }
@@ -61,7 +61,7 @@ public class HotbarManager implements IManager {
                 if (item != null && item.isEnabled()) {
                     if (!(item instanceof CustomItem)) {
                         if (item.getAction().equals(ItemAction.PLAY_AGAIN)) {
-                            Kit kit = KitManager.get().getKitByName(API.getProfile(player).getGameData().getLastKit());
+                            Kit kit = KitService.get().getKitByName(API.getProfile(player).getGameData().getLastKit());
                             if (kit != null) {
                                 player.getInventory().setItem(item.getSlot(), item.constructItem(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName())));
                             }
@@ -79,7 +79,7 @@ public class HotbarManager implements IManager {
     }
 
     public void loadItems() {
-        FileConfiguration config = ConfigManager.get().getHotbarConfig().getConfiguration();
+        FileConfiguration config = ConfigService.get().getHotbarConfig().getConfiguration();
         if (config.getConfigurationSection("ITEMS") != null) {
             for (String section : getKeys("ITEMS")) {
                 Hotbar inventory = new Hotbar();
@@ -122,6 +122,6 @@ public class HotbarManager implements IManager {
 
     @Override
     public ConfigFile getConfigFile() {
-        return ConfigManager.get().getHotbarConfig();
+        return ConfigService.get().getHotbarConfig();
     }
 }

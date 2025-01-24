@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.divisions;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.divisions.impl.Division;
-import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.utils.ConfigFile;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -13,24 +13,24 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class DivisionManager implements IManager {
-    private static DivisionManager instance;
+public class DivisionService implements IService {
+    private static DivisionService instance;
     private final Neptune plugin;
     public LinkedHashSet<Division> divisions;
 
-    public DivisionManager() {
+    public DivisionService() {
         this.plugin = Neptune.get();
         divisions = new LinkedHashSet<>();
     }
 
-    public static DivisionManager get() {
-        if (instance == null) instance = new DivisionManager();
+    public static DivisionService get() {
+        if (instance == null) instance = new DivisionService();
 
         return instance;
     }
 
     public void loadDivisions() {
-        FileConfiguration config = ConfigManager.get().getDivisionsConfig().getConfiguration();
+        FileConfiguration config = ConfigService.get().getDivisionsConfig().getConfiguration();
         if (config.contains("DIVISIONS")) {
             for (String divisionName : getKeys("DIVISIONS")) {
                 String path = "DIVISIONS." + divisionName + ".";
@@ -59,6 +59,6 @@ public class DivisionManager implements IManager {
 
     @Override
     public ConfigFile getConfigFile() {
-        return ConfigManager.get().getDivisionsConfig();
+        return ConfigService.get().getDivisionsConfig();
     }
 }

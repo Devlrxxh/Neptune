@@ -2,7 +2,7 @@ package dev.lrxh.neptune.kit.menu.stats;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.menu.stats.button.StatButton;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.providers.menu.Filter;
@@ -34,7 +34,7 @@ public class StatsMenu extends Menu {
     @Override
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
-        for (Kit kit : KitManager.get().kits) {
+        for (Kit kit : KitService.get().kits) {
             buttons.add(new StatButton(kit.getSlot(), kit, target));
         }
         return buttons;

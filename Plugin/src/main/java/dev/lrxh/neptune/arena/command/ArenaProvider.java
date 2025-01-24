@@ -4,8 +4,7 @@ import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.ArenaManager;
-import org.bukkit.plugin.Plugin;
+import dev.lrxh.neptune.arena.ArenaService;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,7 +38,7 @@ public class ArenaProvider extends DrinkProvider<Arena> {
     @Override
     public Arena provide(@Nonnull CommandArg arg, @Nonnull List<? extends Annotation> annotations) throws CommandExitMessage {
         String name = arg.get();
-        Arena arena = ArenaManager.get().getArenaByName(name);
+        Arena arena = ArenaService.get().getArenaByName(name);
         if (arena == null) throw new CommandExitMessage("Arena doesn't exist");
 
         return arena;
@@ -52,6 +51,6 @@ public class ArenaProvider extends DrinkProvider<Arena> {
 
     @Override
     public List<String> getSuggestions(@Nonnull String prefix) {
-        return ArenaManager.get().getArenaNames();
+        return ArenaService.get().getArenaNames();
     }
 }

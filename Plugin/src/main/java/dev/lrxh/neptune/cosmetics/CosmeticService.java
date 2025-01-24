@@ -1,8 +1,8 @@
 package dev.lrxh.neptune.cosmetics;
 
-import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
-import dev.lrxh.neptune.providers.manager.IManager;
+import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.utils.ConfigFile;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -12,23 +12,23 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class CosmeticManager implements IManager {
-    private static CosmeticManager instance;
+public class CosmeticService implements IService {
+    private static CosmeticService instance;
     public final Map<String, KillMessagePackage> deathMessages;
 
-    public CosmeticManager() {
+    public CosmeticService() {
         this.deathMessages = new HashMap<>();
         load();
     }
 
-    public static CosmeticManager get() {
-        if (instance == null) instance = new CosmeticManager();
+    public static CosmeticService get() {
+        if (instance == null) instance = new CosmeticService();
 
         return instance;
     }
 
     public void load() {
-        FileConfiguration config = ConfigManager.get().getCosmeticsConfig().getConfiguration();
+        FileConfiguration config = ConfigService.get().getCosmeticsConfig().getConfiguration();
         if (config.contains("KILL_MESSAGES")) {
             for (String deathPackageName : getKeys("KILL_MESSAGES")) {
                 String path = "KILL_MESSAGES." + deathPackageName + ".";
@@ -45,7 +45,7 @@ public class CosmeticManager implements IManager {
 
     @Override
     public ConfigFile getConfigFile() {
-        return ConfigManager.get().getCosmeticsConfig();
+        return ConfigService.get().getCosmeticsConfig();
     }
 
     public KillMessagePackage getDeathMessagePackage(String packageName) {

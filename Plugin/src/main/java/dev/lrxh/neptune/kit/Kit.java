@@ -4,9 +4,9 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
-import dev.lrxh.neptune.leaderboard.LeaderboardManager;
+import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.match.impl.participant.Participant;
-import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -58,7 +58,7 @@ public class Kit {
         this.icon = icon.getType().equals(Material.AIR) ? new ItemStack(Material.BARRIER) : new ItemStack(icon);
         this.queue = 0;
         this.playing = 0;
-        this.slot = KitManager.get().kits.size() + 1;
+        this.slot = KitService.get().kits.size() + 1;
 
         checkMissing();
     }
@@ -74,13 +74,13 @@ public class Kit {
 
 
     private void checkMissing() {
-        LeaderboardManager.get().getLeaderboards().put(this, new ArrayList<>());
+        LeaderboardService.get().getLeaderboards().put(this, new ArrayList<>());
 
         addToProfiles();
     }
 
     private void addToProfiles() {
-        for (Map.Entry<UUID, Profile> profile : ProfileManager.get().profiles.entrySet()) {
+        for (Map.Entry<UUID, Profile> profile : ProfileService.get().profiles.entrySet()) {
             profile.getValue().getGameData().getKitData().put(this, new KitData());
         }
     }
@@ -171,7 +171,7 @@ public class Kit {
     }
 
     public void delete() {
-        KitManager.get().kits.remove(this);
+        KitService.get().kits.remove(this);
     }
 }
 

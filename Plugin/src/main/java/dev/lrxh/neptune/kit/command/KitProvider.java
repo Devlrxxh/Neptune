@@ -4,7 +4,7 @@ import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,7 +38,7 @@ public class KitProvider extends DrinkProvider<Kit> {
     @Override
     public Kit provide(@Nonnull CommandArg arg, @Nonnull List<? extends Annotation> annotations) throws CommandExitMessage {
         String name = arg.get();
-        Kit kit = KitManager.get().getKitByName(name);
+        Kit kit = KitService.get().getKitByName(name);
         if (kit != null) {
             return kit;
         }
@@ -52,6 +52,6 @@ public class KitProvider extends DrinkProvider<Kit> {
 
     @Override
     public List<String> getSuggestions(@Nonnull String prefix) {
-        return KitManager.get().getKitNames();
+        return KitService.get().getKitNames();
     }
 }

@@ -2,10 +2,10 @@ package dev.lrxh.neptune.profile.listener;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.hotbar.HotbarManager;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.Participant;
-import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -26,8 +26,8 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Profile profile = ProfileManager.get().getByUUID(player.getUniqueId());
-        if (profile == null) ProfileManager.get().createProfile(player);
+        Profile profile = ProfileService.get().getByUUID(player.getUniqueId());
+        if (profile == null) ProfileService.get().createProfile(player);
 
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
@@ -37,7 +37,7 @@ public class ProfileListener implements Listener {
         }
 
         PlayerUtil.reset(player);
-        HotbarManager.get().giveItems(player);
+        HotbarService.get().giveItems(player);
     }
 
     @EventHandler
@@ -58,7 +58,7 @@ public class ProfileListener implements Listener {
             ServerUtils.broadcast(MessagesLocale.LEAVE_MESSAGE, new Replacement("<player>", player.getName()));
         }
 
-        ProfileManager.get().removeProfile(player.getUniqueId());
+        ProfileService.get().removeProfile(player.getUniqueId());
     }
 
     @EventHandler

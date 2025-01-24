@@ -3,7 +3,7 @@ package dev.lrxh.neptune.match.menu;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -44,7 +44,7 @@ public class MatchHistoryMenu extends Menu {
     }
 
     public ItemStack getButtonItem(Player player, MatchHistory matchHistory) {
-        Kit kit = KitManager.get().getKitByDisplay(matchHistory.getKitName());
+        Kit kit = KitService.get().getKitByDisplay(matchHistory.getKitName());
         if (kit == null) {
             return new ItemBuilder(Material.COMPASS)
                     .name(MenusLocale.MATCH_HISTORY_ITEM_NAME.getString()

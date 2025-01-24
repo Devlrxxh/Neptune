@@ -2,8 +2,8 @@ package dev.lrxh.neptune.leaderboard.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
-import dev.lrxh.neptune.leaderboard.LeaderboardManager;
+import dev.lrxh.neptune.kit.KitService;
+import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.leaderboard.menu.button.LeaderboardSwitchButton;
@@ -31,7 +31,7 @@ public class LeaderboardMenu extends Menu {
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
-        for (Kit kit : KitManager.get().kits) {
+        for (Kit kit : KitService.get().kits) {
             buttons.add(new DisplayButton(kit.getSlot(), getButtonItem(player, kit)));
         }
         switch (leaderboardType) {
@@ -91,13 +91,13 @@ public class LeaderboardMenu extends Menu {
     public ItemStack getButtonItem(Player player, Kit kit) {
         List<String> lore = new ArrayList<>();
 
-        List<PlayerEntry> leaderboard = LeaderboardManager.get().getPlayerEntries(kit, leaderboardType);
+        List<PlayerEntry> leaderboard = LeaderboardService.get().getPlayerEntries(kit, leaderboardType);
 
         MenusLocale.LEADERBOARD_LORE.getStringList().forEach(line -> {
             for (int i = 1; i <= 10; i++) {
                 PlayerEntry playerEntry = null;
                 if (i <= leaderboard.size()) {
-                    playerEntry = LeaderboardManager.get().getLeaderboardSlot(kit, leaderboardType, i);
+                    playerEntry = LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, i);
                 }
 
                 if (playerEntry == null) {

@@ -10,12 +10,12 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class QueueManager {
-    private static QueueManager instance;
+public class QueueService {
+    private static QueueService instance;
     public final Map<UUID, Queue> queues = new ConcurrentHashMap<>();
 
-    public static QueueManager get() {
-        if (instance == null) instance = new QueueManager();
+    public static QueueService get() {
+        if (instance == null) instance = new QueueService();
 
         return instance;
     }

@@ -3,10 +3,10 @@ package dev.lrxh.neptune.leaderboard;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.database.DatabaseManager;
+import dev.lrxh.neptune.database.DatabaseService;
 import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
@@ -22,24 +22,24 @@ import java.util.List;
 import java.util.UUID;
 
 @Getter
-public class LeaderboardManager {
-    private static LeaderboardManager instance;
+public class LeaderboardService {
+    private static LeaderboardService instance;
     private final List<LeaderboardPlayerEntry> changes = new ArrayList<>();
     private final Neptune plugin;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
 
-    public LeaderboardManager() {
+    public LeaderboardService() {
         this.plugin = Neptune.get();
     }
 
-    public static LeaderboardManager get() {
-        if (instance == null) instance = new LeaderboardManager();
+    public static LeaderboardService get() {
+        if (instance == null) instance = new LeaderboardService();
 
         return instance;
     }
 
     private void checkIfMissing() {
-        for (Kit kit : KitManager.get().kits) {
+        for (Kit kit : KitService.get().kits) {
             if (leaderboards.containsKey(kit)) continue;
 
             List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
@@ -92,8 +92,8 @@ public class LeaderboardManager {
     }
 
     private void loadType(LeaderboardType leaderboardType) {
-        for (Kit kit : KitManager.get().kits) {
-            for (DataDocument document : DatabaseManager.get().getDatabase().getAll()) {
+        for (Kit kit : KitService.get().kits) {
+            for (DataDocument document : DatabaseService.get().getDatabase().getAll()) {
                 String username = document.getString("username");
                 UUID uuid = UUID.fromString(document.getString("uuid"));
                 KitData kitData = getKitData(uuid, kit);
@@ -130,7 +130,7 @@ public class LeaderboardManager {
             return API.getProfile(player).getGameData().getKitData().get(kit);
         }
 
-        DataDocument dataDocument = DatabaseManager.get().getDatabase().getUserData(playerUUID);
+        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(playerUUID);
         if (dataDocument == null) return null;
 
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");

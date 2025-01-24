@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.divisions.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.divisions.DivisionManager;
+import dev.lrxh.neptune.divisions.DivisionService;
 import dev.lrxh.neptune.divisions.impl.Division;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.menu.Button;
@@ -26,7 +26,7 @@ public class DivisionsMenu extends Menu {
     @Override
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
-        ArrayList<Division> divisions = new ArrayList<>(DivisionManager.get().divisions);
+        ArrayList<Division> divisions = new ArrayList<>(DivisionService.get().divisions);
         Collections.reverse(divisions);
 
         for (Division division : divisions) {

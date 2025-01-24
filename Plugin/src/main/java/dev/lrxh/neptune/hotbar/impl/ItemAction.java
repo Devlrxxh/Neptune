@@ -5,12 +5,12 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.divisions.menu.DivisionsMenu;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.kit.menu.stats.StatsMenu;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
-import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.menu.MatchListMenu;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.menu.PartySettingsMenu;
@@ -19,7 +19,7 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.Queue;
-import dev.lrxh.neptune.queue.QueueManager;
+import dev.lrxh.neptune.queue.QueueService;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import org.bukkit.entity.Player;
@@ -37,7 +37,7 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             API.getProfile(player.getUniqueId()).setState(ProfileState.IN_LOBBY);
-            QueueManager.get().remove(player.getUniqueId());
+            QueueService.get().remove(player.getUniqueId());
             MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId());
         }
     },
@@ -56,7 +56,7 @@ public enum ItemAction {
     SPECTATE_MENU {
         @Override
         public void execute(Player player) {
-            if (MatchManager.get().matches.isEmpty()) {
+            if (MatchService.get().matches.isEmpty()) {
                 MessagesLocale.SPECTATE_MENU_NO_MATCH.send(player.getUniqueId());
                 return;
             }
@@ -136,9 +136,9 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             final Neptune plugin = Neptune.get();
-            Kit kit = KitManager.get().getKitByName(API.getProfile(player).getGameData().getLastKit());
+            Kit kit = KitService.get().getKitByName(API.getProfile(player).getGameData().getLastKit());
             if (kit != null) {
-                QueueManager.get().add(player.getUniqueId(), new Queue(kit));
+                QueueService.get().add(player.getUniqueId(), new Queue(kit));
             }
         }
     },

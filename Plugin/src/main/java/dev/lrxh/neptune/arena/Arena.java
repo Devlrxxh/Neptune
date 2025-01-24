@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.arena;
 
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,9 +17,9 @@ public class Arena {
     private boolean enabled;
 
     public void delete() {
-        KitManager.get().removeArenasFromKits(this);
-        ArenaManager.get().arenas.remove(this);
-        ArenaManager.get().saveArenas();
+        KitService.get().removeArenasFromKits(this);
+        ArenaService.get().arenas.remove(this);
+        ArenaService.get().saveArenas();
     }
 
     public boolean isSetup() {

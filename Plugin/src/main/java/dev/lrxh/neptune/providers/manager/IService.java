@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-public interface IManager {
+public interface IService {
     ConfigFile getConfigFile();
 
     default void save(List<Value> values, String path) {

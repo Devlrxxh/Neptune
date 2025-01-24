@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.kit.menu.button;
 
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.providers.menu.Button;
@@ -35,8 +35,8 @@ public class KitManagementButton extends Button {
     @Override
     public void onClick(ClickType type, Player player) {
         kit.set(rule);
-        KitManager.get().kits.add(kit);
-        KitManager.get().saveKits();
+        KitService.get().kits.add(kit);
+        KitService.get().saveKits();
         new KitManagementMenu(kit).open(player);
 
         player.sendMessage(CC.color("&7" + rule.getName() + " has been set to " + (kit.is(rule) ? "&aenabled" : "&cdisabled")));

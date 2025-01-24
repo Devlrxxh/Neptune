@@ -6,8 +6,8 @@ import lombok.Getter;
 
 
 @Getter
-public class ConfigManager {
-    private static ConfigManager instance;
+public class ConfigService {
+    private static ConfigService instance;
     private ConfigFile messagesConfig;
     private ConfigFile arenasConfig;
     private ConfigFile kitsConfig;
@@ -18,8 +18,8 @@ public class ConfigManager {
     private ConfigFile divisionsConfig;
     private ConfigFile cosmeticsConfig;
 
-    public static ConfigManager get() {
-        if (instance == null) instance = new ConfigManager();
+    public static ConfigService get() {
+        if (instance == null) instance = new ConfigService();
 
         return instance;
     }

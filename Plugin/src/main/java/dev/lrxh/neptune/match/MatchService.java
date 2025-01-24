@@ -16,17 +16,17 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class MatchManager {
-    private static MatchManager instance;
+public class MatchService {
+    private static MatchService instance;
     public final HashSet<Match> matches = new HashSet<>();
     private final Neptune plugin;
 
-    public MatchManager() {
+    public MatchService() {
         this.plugin = Neptune.get();
     }
 
-    public static MatchManager get() {
-        if (instance == null) instance = new MatchManager();
+    public static MatchService get() {
+        if (instance == null) instance = new MatchService();
 
         return instance;
     }

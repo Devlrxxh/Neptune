@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.hotbar.impl;
 
-import dev.lrxh.neptune.hotbar.HotbarManager;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
@@ -25,7 +25,7 @@ public class Item {
     private byte slot;
 
     public static Item getByItemStack(ItemStack itemStack, UUID playerUUID) {
-        for (Map.Entry<ProfileState, Hotbar> entry : HotbarManager.get().getItems().entrySet()) {
+        for (Map.Entry<ProfileState, Hotbar> entry : HotbarService.get().getItems().entrySet()) {
             Hotbar inventory = entry.getValue();
             Item foundItem = getItemFromInventory(itemStack, inventory, playerUUID);
             if (foundItem != null) {
@@ -41,7 +41,7 @@ public class Item {
 
         if (inventory != null) {
             for (int slot = 0; slot <= 8; slot++) {
-                Item item = HotbarManager.get().getItemForSlot(inventory, slot);
+                Item item = HotbarService.get().getItemForSlot(inventory, slot);
                 if (item != null && item.constructItem(playerUUID).isSimilar(itemStack)) {
                     return item;
                 }

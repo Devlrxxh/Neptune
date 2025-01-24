@@ -4,19 +4,16 @@ package dev.lrxh.neptune.kit.command;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.database.DatabaseManager;
+import dev.lrxh.neptune.database.DatabaseService;
 import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class KitCommand {
@@ -25,14 +22,14 @@ public class KitCommand {
     public void list(@Sender Player player) {
         if (player == null)
             return;
-        if (KitManager.get().kits.isEmpty()) {
+        if (KitService.get().kits.isEmpty()) {
             player.sendMessage(CC.error("No kits found!"));
             return;
         }
         player.sendMessage(CC.color("&7&m----------------------------------"));
         player.sendMessage(CC.color("&9Kits: "));
         player.sendMessage(" ");
-        KitManager.get().kits.forEach(kit -> player.sendMessage(CC.color("&7- &9" + kit.getName() + " &7 | " + kit.getDisplayName())));
+        KitService.get().kits.forEach(kit -> player.sendMessage(CC.color("&7- &9" + kit.getName() + " &7 | " + kit.getDisplayName())));
         player.sendMessage(CC.color("&7&m----------------------------------"));
     }
 
@@ -50,8 +47,8 @@ public class KitCommand {
 
         Kit kit = new Kit(kitName, Arrays.asList(player.getInventory().getContents()), player.getInventory().getItemInMainHand());
 
-        KitManager.get().kits.add(kit);
-        KitManager.get().saveKits();
+        KitService.get().kits.add(kit);
+        KitService.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully created new Kit!"));
     }
 
@@ -66,7 +63,7 @@ public class KitCommand {
     public void setinv(@Sender Player player, Kit kit) {
         kit.setItems(Arrays.asList(player.getInventory().getContents()));
 
-        KitManager.get().saveKits();
+        KitService.get().saveKits();
 
         player.sendMessage(CC.color("&aSuccessfully set kit load out!"));
         player.sendMessage(CC.color("&4IMPORTANT &8- &cMake sure to run /kit updateDB " + kit.getName()));
@@ -77,7 +74,7 @@ public class KitCommand {
     public void rename(@Sender Player player, Kit kit, String name) {
         kit.setDisplayName(name);
 
-        KitManager.get().saveKits();
+        KitService.get().saveKits();
 
         player.sendMessage(CC.color("&aSuccessfully renamed kit display name!"));
     }
@@ -87,7 +84,7 @@ public class KitCommand {
     public void delete(@Sender Player player, Kit kit) {
         kit.delete();
 
-        KitManager.get().saveKits();
+        KitService.get().saveKits();
 
         player.sendMessage(CC.color("&aSuccessfully deleted kit!"));
     }
@@ -95,7 +92,7 @@ public class KitCommand {
     @Command(name = "updateDB", desc = "", usage = "<kit>")
     public void updateDB(@Sender Player player, Kit kit) {
         int i = 0;
-        for (DataDocument document : DatabaseManager.get().getDatabase().getAll()) {
+        for (DataDocument document : DatabaseService.get().getDatabase().getAll()) {
             DataDocument kitStatistics = document.getDataDocument("kitData");
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
 
@@ -104,7 +101,7 @@ public class KitCommand {
 
             kitStatistics.put("kitData", kitDocument);
 
-            DatabaseManager.get().getDatabase().replace(document.getString("uuid"), document);
+            DatabaseService.get().getDatabase().replace(document.getString("uuid"), document);
         }
         ServerUtils.info("Updated kit for " + i + " players!");
     }
@@ -113,7 +110,7 @@ public class KitCommand {
     public void setIcon(@Sender Player player, Kit kit) {
         kit.setIcon(player.getInventory().getItemInMainHand());
 
-        KitManager.get().saveKits();
+        KitService.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit icon!"));
     }
 
@@ -121,7 +118,7 @@ public class KitCommand {
     public void setSlot(@Sender Player player, Kit kit, int slot) {
         kit.setSlot(slot);
 
-        KitManager.get().saveKits();
+        KitService.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully set kit slot!"));
     }
 
@@ -134,7 +131,7 @@ public class KitCommand {
 
         kit.getArenas().add(arena);
 
-        KitManager.get().saveKits();
+        KitService.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully added arena &7(" + arena.getDisplayName() + "&7) for kit &7(" + kit.getDisplayName() + "&7)!"));
     }
 
@@ -146,11 +143,11 @@ public class KitCommand {
         }
 
         kit.getArenas().remove(arena);
-        KitManager.get().saveKits();
+        KitService.get().saveKits();
         player.sendMessage(CC.color("&aSuccessfully removed arena &7(" + arena.getDisplayName() + "&7) from kit &7(" + kit.getDisplayName() + "&7)!"));
     }
 
     private boolean checkKit(String kitName) {
-        return KitManager.get().getKitByName(kitName) != null;
+        return KitService.get().getKitByName(kitName) != null;
     }
 }

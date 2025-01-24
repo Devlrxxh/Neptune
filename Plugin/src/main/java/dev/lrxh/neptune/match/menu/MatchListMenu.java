@@ -2,7 +2,7 @@ package dev.lrxh.neptune.match.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.MatchManager;
+import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.menu.button.MatchSpectateButton;
 import dev.lrxh.neptune.providers.menu.Button;
@@ -24,7 +24,7 @@ public class MatchListMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
         int i = MenusLocale.MATCH_LIST_STARTING_SLOT.getInt();
 
-        for (Match match : MatchManager.get().matches) {
+        for (Match match : MatchService.get().matches) {
             if (match instanceof SoloFightMatch) {
                 buttons.add(new MatchSpectateButton(i++, (SoloFightMatch) match));
             }
