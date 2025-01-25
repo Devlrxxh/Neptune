@@ -40,10 +40,11 @@ public class KitProcedureListener implements Listener {
                 profile.getKitProcedure().setType(KitProcedureType.NONE);
                 Kit kit = new Kit(input, player);
 
-                if (KitService.get().kits.add(kit)) {
+                if (KitService.get().add(kit)) {
                     player.sendMessage(CC.error("Kit already exists"));
                     return;
                 }
+
                 player.sendMessage(CC.success("Created kit"));
                 new KitsManagementMenu().open(player);
             }

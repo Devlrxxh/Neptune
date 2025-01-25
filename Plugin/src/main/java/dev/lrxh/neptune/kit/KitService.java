@@ -53,6 +53,14 @@ public class KitService implements IService {
         }
     }
 
+    public boolean add(Kit kit) {
+        for (Kit k : kits) {
+            if (k.equals(kit)) return true;
+        }
+        kits.add(kit);
+        return false;
+    }
+
     public void saveKits() {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         kits.forEach(kit -> {

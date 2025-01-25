@@ -198,6 +198,7 @@ public class Kit {
 
     public void delete() {
         KitService.get().kits.remove(this);
+        KitService.get().saveKits();
     }
 }
 
