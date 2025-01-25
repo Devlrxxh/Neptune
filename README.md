@@ -1,6 +1,6 @@
-# Neptune | 1.20 Practice Core
+# Neptune | 1.19 - 1.21 Practice Core
 
-![pfp](https://github.com/Devlrxxh/Neptune/assets/125221056/c9ec6441-34c8-472e-9fe3-1bd20a3b31db)
+![Nevtelen (1)](https://github.com/user-attachments/assets/d044e94d-2e6f-4495-a7ed-c997b305eb4a)
 
 📖**Features:**  
 • Arena System (Shared, Standalone)  
