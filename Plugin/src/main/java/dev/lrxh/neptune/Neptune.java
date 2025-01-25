@@ -27,6 +27,7 @@ import dev.lrxh.neptune.kit.command.KitCommand;
 import dev.lrxh.neptune.kit.command.KitEditorCommand;
 import dev.lrxh.neptune.kit.command.KitProvider;
 import dev.lrxh.neptune.kit.command.StatsCommand;
+import dev.lrxh.neptune.kit.procedure.KitProcedureListener;
 import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.leaderboard.task.LeaderboardTask;
@@ -127,7 +128,8 @@ public final class Neptune extends JavaPlugin {
                 new BukkitListener(),
                 new MenuListener(),
                 new BlockTracker(),
-                new ArenaProcedureListener()
+                new ArenaProcedureListener(),
+                new KitProcedureListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

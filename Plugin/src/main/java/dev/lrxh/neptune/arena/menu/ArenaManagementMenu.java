@@ -9,6 +9,7 @@ import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.providers.menu.Filter;
 import dev.lrxh.neptune.providers.menu.Menu;
 import dev.lrxh.neptune.providers.menu.impl.DisplayButton;
+import dev.lrxh.neptune.providers.menu.impl.ReturnButton;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -43,7 +44,7 @@ public class ArenaManagementMenu extends Menu {
             }
         }
 
-        buttons.add(new ArenaReturnButton(size - 9));
+        buttons.add(new ReturnButton(size - 9, new ArenasManagementMenu()));
         return buttons;
     }
 }

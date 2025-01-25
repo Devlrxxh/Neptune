@@ -42,14 +42,14 @@ public class KitSelectButton extends Button {
             if (profile == null) return;
             Arena arena = kit.getRandomArena();
             if (arena == null) {
-                player.sendMessage(CC.error("No arena found"));
+                player.sendMessage(CC.error("No arena found, please contact and admin"));
                 return;
             }
-            DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, party, 1);
+            DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, true, 1);
             profile.sendDuel(duelRequest);
             player.closeInventory();
         } else {
-            new RoundsSelectMenu(kit, receiver, false).open(player);
+            new RoundsSelectMenu(kit, receiver).open(player);
         }
     }
 }

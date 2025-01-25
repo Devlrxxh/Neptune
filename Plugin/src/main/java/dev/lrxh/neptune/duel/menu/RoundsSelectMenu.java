@@ -14,13 +14,11 @@ import java.util.UUID;
 public class RoundsSelectMenu extends Menu {
     private final Kit kit;
     private final UUID receiver;
-    private final boolean party;
 
-    public RoundsSelectMenu(Kit kit, UUID receiver, boolean party) {
+    public RoundsSelectMenu(Kit kit, UUID receiver) {
         super(MenusLocale.ROUNDS_TITLE.getString(), MenusLocale.ROUNDS_SIZE.getInt(), Filter.valueOf(MenusLocale.ROUNDS_FILTER.getString()));
         this.kit = kit;
         this.receiver = receiver;
-        this.party = party;
     }
 
     @Override
@@ -31,7 +29,7 @@ public class RoundsSelectMenu extends Menu {
         String[] parts = MenusLocale.ROUNDS_LIST.getString().replace(" ", "").split(",");
 
         for (String round : parts) {
-            buttons.add(new RoundSelectButton(i++, kit, receiver, party, Integer.parseInt(round)));
+            buttons.add(new RoundSelectButton(i++, kit, receiver, Integer.parseInt(round)));
         }
 
         return buttons;

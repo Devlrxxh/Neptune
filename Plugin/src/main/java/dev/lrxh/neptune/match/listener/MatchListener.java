@@ -75,7 +75,7 @@ public class MatchListener implements Listener {
 
         if (match == null) return;
 
-        if (match.getKit().is(KitRule.BEDWARS)) {
+        if (match.getKit().is(KitRule.BED_WARS)) {
             if (blockType == Material.OAK_PLANKS || blockType == Material.END_STONE) {
                 event.setCancelled(false);
             }

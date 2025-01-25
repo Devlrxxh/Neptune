@@ -49,6 +49,20 @@ public class Kit {
         checkMissing();
     }
 
+    public Kit(String name, Player player) {
+        this.name = name;
+        this.displayName = "&7" + name;
+        this.items = Arrays.stream(player.getInventory().getContents()).toList();
+        this.arenas = new HashSet<>();
+        this.icon = new ItemStack(Material.DIAMOND_SWORD);
+        this.rules = rules();
+        this.queue = 0;
+        this.playing = 0;
+        this.slot = KitService.get().kits.size() + 1;
+
+        checkMissing();
+    }
+
     public Kit(String name, List<ItemStack> items, ItemStack icon) {
         this.name = name;
         this.displayName = name;
@@ -72,6 +86,17 @@ public class Kit {
         return rules;
     }
 
+    public void addArena(Arena arena) {
+        if (arenas.contains(arena)) {
+            arenas.remove(arena);
+            return;
+        }
+        arenas.add(arena);
+    }
+
+    public boolean isArenaAdded(Arena arena) {
+        return arenas.contains(arena);
+    }
 
     private void checkMissing() {
         LeaderboardService.get().getLeaderboards().put(this, new ArrayList<>());
@@ -89,6 +114,7 @@ public class Kit {
         List<String> arenasString = new ArrayList<>();
         if (!arenas.isEmpty()) {
             for (Arena arena : arenas) {
+                if (arena == null) continue;
                 arenasString.add(arena.getName());
             }
         }
@@ -99,7 +125,7 @@ public class Kit {
         return rules.get(kitRule);
     }
 
-    public void set(KitRule kitRule) {
+    public void toggle(KitRule kitRule) {
         rules.put(kitRule, !rules.get(kitRule));
     }
 

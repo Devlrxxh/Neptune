@@ -136,7 +136,7 @@ public class SoloFightMatch extends Match {
         sendDeathMessage(participant);
 
         if (!participant.isDisconnected()) {
-            if (kit.is(KitRule.BEDWARS)) {
+            if (kit.is(KitRule.BED_WARS)) {
                 if (!participant.isBedBroken()) {
                     participantKiller.setCombo(0);
                     new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);

@@ -19,14 +19,12 @@ import java.util.UUID;
 public class RoundSelectButton extends Button {
     private final Kit kit;
     private final UUID receiver;
-    private final boolean party;
     private final int round;
 
-    public RoundSelectButton(int slot, Kit kit, UUID receiver, boolean party, int round) {
+    public RoundSelectButton(int slot, Kit kit, UUID receiver, int round) {
         super(slot);
         this.kit = kit;
         this.receiver = receiver;
-        this.party = party;
         this.round = round;
     }
 
@@ -45,10 +43,10 @@ public class RoundSelectButton extends Button {
         if (profile == null) return;
         Arena arena = kit.getRandomArena();
         if (arena == null) {
-            player.sendMessage(CC.error("No arena found"));
+            player.sendMessage(CC.error("No arena found, please contact and admin"));
             return;
         }
-        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, party, round);
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, false, round);
         profile.sendDuel(duelRequest);
         player.closeInventory();
     }

@@ -18,6 +18,7 @@ public class MainMenu extends Menu {
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
+        buttons.add(new KitsManagementButton(12));
         buttons.add(new ArenasManagementButton(14));
         buttons.add(new CloseMenuButton(size - 9));
 

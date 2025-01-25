@@ -1,11 +1,13 @@
 package dev.lrxh.neptune.kit.menu;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.impl.KitRule;
-import dev.lrxh.neptune.kit.menu.button.KitManagementButton;
+import dev.lrxh.neptune.kit.menu.button.*;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.providers.menu.Filter;
 import dev.lrxh.neptune.providers.menu.Menu;
+import dev.lrxh.neptune.providers.menu.impl.DisplayButton;
+import dev.lrxh.neptune.providers.menu.impl.ReturnButton;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -15,17 +17,25 @@ public class KitManagementMenu extends Menu {
     private final Kit kit;
 
     public KitManagementMenu(Kit kit) {
-        super(kit.getDisplayName() + "&7 | Management" + "&7 | Management", 36, Filter.FILL);
+        super("&eManage Kit", 45, Filter.FILL);
         this.kit = kit;
     }
 
     @Override
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
-        int i = 10;
-        for (KitRule kitRule : KitRule.values()) {
-            buttons.add(new KitManagementButton(i++, kitRule, kit));
-        }
+
+        buttons.add(new KitSetInvButton(0, kit));
+
+        buttons.add(new KitArenaManageButton(31, kit));
+        buttons.add(new KitRenameButton(20, kit));
+        buttons.add(new KitDeleteButton(21, kit));
+        buttons.add(new DisplayButton(22, kit.getIcon(), "&7Current Icon"));
+        buttons.add(new KitRulesButton(13, kit));
+        buttons.add(new KitSetSlotButton(23, kit));
+        buttons.add(new KitSetIconButton(24, kit));
+
+        buttons.add(new ReturnButton(size - 9, new KitsManagementMenu()));
 
         return buttons;
     }

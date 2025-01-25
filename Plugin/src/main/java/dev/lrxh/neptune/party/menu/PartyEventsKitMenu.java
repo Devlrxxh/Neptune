@@ -31,7 +31,7 @@ public class PartyEventsKitMenu extends Menu {
 
 
         for (Kit kit : KitService.get().kits) {
-            if (kit.is(KitRule.ALLOW_PARTY) || !kit.is(KitRule.BEDWARS)) {
+            if (kit.is(KitRule.ALLOW_PARTY) || !kit.is(KitRule.BED_WARS)) {
                 buttons.add(new PartyTeamKitButton(kit.getSlot(), party, kit, eventType));
             }
         }

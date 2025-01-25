@@ -82,7 +82,7 @@ public class TeamFightMatch extends Match {
 
         participant.setDead(true);
 
-        if (kit.is(KitRule.BEDWARS)) {
+        if (kit.is(KitRule.BED_WARS)) {
             if (!participant.isBedBroken()) {
                 new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
                 return;

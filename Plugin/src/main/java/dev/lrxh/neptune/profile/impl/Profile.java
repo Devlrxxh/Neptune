@@ -12,6 +12,7 @@ import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
+import dev.lrxh.neptune.kit.procedure.KitProcedure;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.*;
@@ -40,6 +41,7 @@ public class Profile {
     private SettingData settingData;
     private Visibility visibility;
     private ArenaProcedure arenaProcedure;
+    private KitProcedure kitProcedure;
 
     public Profile(String name, UUID uuid, Neptune plugin) {
         this.plugin = plugin;
@@ -50,6 +52,7 @@ public class Profile {
         this.settingData = new SettingData(plugin);
         this.visibility = new Visibility(playerUUID);
         this.arenaProcedure = new ArenaProcedure();
+        this.kitProcedure = new KitProcedure();
 
         load();
     }
