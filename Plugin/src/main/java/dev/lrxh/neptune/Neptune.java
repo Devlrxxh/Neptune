@@ -52,6 +52,7 @@ import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -69,6 +70,8 @@ public final class Neptune extends JavaPlugin {
     private Assemble assemble;
     private boolean placeholder = false;
     private EntityHider entityHider;
+    @Setter
+    private boolean allowJoin;
 
     public static Neptune get() {
         return instance;
@@ -77,6 +80,7 @@ public final class Neptune extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        allowJoin = true;
         loadManager();
     }
 

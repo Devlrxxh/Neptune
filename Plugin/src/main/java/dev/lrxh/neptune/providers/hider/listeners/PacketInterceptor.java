@@ -7,8 +7,10 @@ import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntitySoundEffect;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoRemove;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
+import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
@@ -30,18 +32,18 @@ public class PacketInterceptor extends PacketListenerAbstract {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
+        if (event.getUser() == null) {
+            return;
+        }
+        if (event.getUser().getUUID() == null) {
+            return;
+        }
+        Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
+        if (receiver == null) {
+            return;
+        }
 
         if (event.getPacketType() == PacketType.Play.Server.SPAWN_ENTITY) {
-            if (event.getUser() == null) {
-                return;
-            }
-            if (event.getUser().getUUID() == null) {
-                return;
-            }
-            Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
-            if (receiver == null) {
-                return;
-            }
             WrapperPlayServerSpawnEntity wrapper = new WrapperPlayServerSpawnEntity(event);
             int entityID = wrapper.getEntityId();
             Entity entity = EntityCache.getEntityById(entityID);
@@ -63,16 +65,7 @@ public class PacketInterceptor extends PacketListenerAbstract {
                 event.setCancelled(true);
             }
         } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_SOUND_EFFECT) {
-            if (event.getUser() == null) {
-                return;
-            }
-            if (event.getUser().getUUID() == null) {
-                return;
-            }
-            Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
-            if (receiver == null) {
-                return;
-            }
+
             WrapperPlayServerEntitySoundEffect wrapper = new WrapperPlayServerEntitySoundEffect(event);
             if (EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
                 if (receiver.canSee(player)) return;

@@ -86,7 +86,7 @@ public class Kit {
         return rules;
     }
 
-    public void addArena(Arena arena) {
+    public void toggleArena(Arena arena) {
         if (arenas.contains(arena)) {
             arenas.remove(arena);
             return;

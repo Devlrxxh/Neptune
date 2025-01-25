@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.kit.menu.button;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
@@ -24,7 +23,7 @@ public class KitArenaButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-        kit.addArena(arena);
+        kit.toggleArena(arena);
         KitService.get().saveKits();
         new KitArenaManagmentMenu(kit).open(player);
     }
