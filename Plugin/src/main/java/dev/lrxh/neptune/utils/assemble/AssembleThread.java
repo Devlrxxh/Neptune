@@ -5,7 +5,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-
+import dev.lrxh.neptune.utils.CC;
 import java.util.Collections;
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class AssembleThread extends Thread {
 
                         // Just make a variable so we don't have to
                         // process the same thing twice.
-                        String title = ChatColor.translateAlternateColorCodes('&', assemble.getAdapter().getTitle(player));
+                        String title = CC.color(assemble.getAdapter().getTitle(player));
 
                         // Update the title if needed.
                         if (!objective.getDisplayName().equals(title)) {
@@ -103,7 +103,7 @@ public class AssembleThread extends Thread {
                                 AssembleBoardEntry entry = board.getEntryAtPosition(i);
 
                                 // Translate any colors.
-                                String line = ChatColor.translateAlternateColorCodes('&', newLines.get(i));
+                                String line = CC.color(newLines.get(i));
 
                                 // If the entry is null, just create a new one.
                                 // Creating a new AssembleBoardEntry instance will add
