@@ -49,7 +49,7 @@ public class ItemBuilder {
 
     public ItemBuilder(ItemStack itemStack) {
         if (itemStack != null) {
-            item = itemStack;
+            item = new ItemStack(itemStack);
         } else {
             item = new ItemStack(Material.BARRIER);
         }
