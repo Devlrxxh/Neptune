@@ -16,7 +16,7 @@ public enum SettingsLocale implements IDataAccessor {
     SPAWN_LOCATION("SPAWN.LOCATION", DataType.STRING, "NONE"),
     QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "60"),
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "20"),
-    DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL", DataType.STRING, "MONGO"),
+    DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL, SQLITE", DataType.STRING, "SQLITE"),
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
     REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30");

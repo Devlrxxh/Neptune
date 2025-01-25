@@ -11,16 +11,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class MySQLDatabase implements IDatabase {
+public class SQLiteDatabase implements IDatabase {
     private Connection connection;
+    private final String dbPath;
+
+    public SQLiteDatabase() {
+        this.dbPath = "jdbc:sqlite:" + Neptune.get().getDataFolder() + "/neptune.db";
+    }
 
     @Override
     public IDatabase load() {
         try {
-            connection = DriverManager.getConnection(uri);
+            connection = DriverManager.getConnection(dbPath);
             createTableIfNotExists();
         } catch (SQLException e) {
-            ServerUtils.error("Failed to connect to MySQL database: " + e.getMessage());
+            ServerUtils.error("Failed to connect to SQLite database: " + e.getMessage());
             Bukkit.getPluginManager().disablePlugin(Neptune.get());
         }
         return this;
@@ -41,7 +46,7 @@ public class MySQLDatabase implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            ServerUtils.error("Error fetching user data from MySQL: " + e.getMessage());
+            ServerUtils.error("Error fetching user data from SQLite: " + e.getMessage());
         }
         return null;
     }
@@ -54,7 +59,7 @@ public class MySQLDatabase implements IDatabase {
             statement.setString(2, newDocument.toDocument().toJson());
             statement.executeUpdate();
         } catch (SQLException e) {
-            ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
+            ServerUtils.error("Error replacing user data in SQLite: " + e.getMessage());
         }
     }
 
@@ -66,7 +71,7 @@ public class MySQLDatabase implements IDatabase {
             statement.setString(2, newDocument.toDocument().toJson());
             statement.executeUpdate();
         } catch (SQLException e) {
-            ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
+            ServerUtils.error("Error replacing user data in SQLite: " + e.getMessage());
         }
     }
 
@@ -85,7 +90,7 @@ public class MySQLDatabase implements IDatabase {
                 }
             }
         } catch (SQLException e) {
-            ServerUtils.error("Error retrieving all documents from MySQL: " + e.getMessage());
+            ServerUtils.error("Error retrieving all documents from SQLite: " + e.getMessage());
         }
         return allDocuments;
     }
