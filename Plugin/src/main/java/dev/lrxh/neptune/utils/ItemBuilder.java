@@ -120,6 +120,7 @@ public class ItemBuilder {
     }
 
     public ItemStack build() {
+        clearFlags();
         return item;
     }
 }

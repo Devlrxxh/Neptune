@@ -15,7 +15,8 @@ public class DatabaseService {
 
     public DatabaseService() {
         String uri = SettingsLocale.URI.getString();
-        if (uri != null && (uri.isEmpty() || uri.equals("NONE"))) {
+        if (uri != null && (uri.isEmpty() || uri.equals("NONE")) &&
+                !SettingsLocale.DATABASE_TYPE.getString().equalsIgnoreCase("SQLITE")) {
             ServerUtils.error("URI is missing or empty");
             Bukkit.getPluginManager().disablePlugin(Neptune.get());
         }
