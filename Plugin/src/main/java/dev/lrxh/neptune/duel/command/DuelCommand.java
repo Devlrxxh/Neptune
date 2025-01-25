@@ -25,7 +25,7 @@ public class DuelCommand {
             return;
         }
 
-        if (player.getName().equalsIgnoreCase(player.getName())) {
+        if (player.getName().equalsIgnoreCase(target.getName())) {
             player.sendMessage(CC.error("You can't duel yourself!"));
             return;
         }
