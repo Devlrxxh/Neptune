@@ -23,7 +23,6 @@ import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.hotbar.listener.ItemListener;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
-import dev.lrxh.neptune.kit.command.KitCommand;
 import dev.lrxh.neptune.kit.command.KitEditorCommand;
 import dev.lrxh.neptune.kit.command.KitProvider;
 import dev.lrxh.neptune.kit.command.StatsCommand;
@@ -173,7 +172,6 @@ public final class Neptune extends JavaPlugin {
         drink.register(new KitEditorCommand(), "kiteditor");
         drink.register(new StatsCommand(), "stats");
         drink.register(new PartyCommand(), "party");
-        drink.register(new KitCommand(), "kit");
         drink.register(new FollowCommand(), "follow");
         drink.register(new QueueCommand(), "queue");
         drink.register(new DuelCommand(), "duel", "1v1");
