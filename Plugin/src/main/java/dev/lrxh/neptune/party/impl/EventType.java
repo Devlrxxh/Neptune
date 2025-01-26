@@ -20,11 +20,9 @@ public enum EventType {
     FFA(MenusLocale.PARTY_EVENTS_FFA_SLOT.getInt()) {
         @Override
         public void start(List<Participant> participants, Kit kit) {
-            Neptune plugin = Neptune.get();
-
             Arena arena = kit.getRandomArena();
 
-            if (arena != null && arena.isSetup()) {
+            if (arena != null && !arena.isSetup()) {
 
                 for (Participant participant : participants) {
                     participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
@@ -42,8 +40,6 @@ public enum EventType {
     TEAM(MenusLocale.PARTY_EVENTS_SPLIT_SLOT.getInt()) {
         @Override
         public void start(List<Participant> participants, Kit kit) {
-            Neptune plugin = Neptune.get();
-
             Collections.shuffle(participants);
 
             int halfSize = participants.size() / 2;
@@ -56,7 +52,7 @@ public enum EventType {
 
             Arena arena = kit.getRandomArena();
 
-            if (arena != null && arena.isSetup()) {
+            if (arena != null && !arena.isSetup()) {
 
                 for (Participant participant : participants) {
                     participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));

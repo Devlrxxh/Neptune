@@ -92,7 +92,7 @@ public class DuelRequest extends Request {
         MatchTeam teamA = new MatchTeam(teamAList);
         MatchTeam teamB = new MatchTeam(teamBList);
 
-        if (arena != null && arena.isSetup()) {
+        if (arena != null && !arena.isSetup()) {
 
             for (Participant participant : participants) {
                 participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
