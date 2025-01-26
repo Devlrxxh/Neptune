@@ -276,6 +276,8 @@ public abstract class Match {
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
             } catch (IllegalStateException ignored) {
             }
+
+            player.damage(0.1);
         });
     }
 
