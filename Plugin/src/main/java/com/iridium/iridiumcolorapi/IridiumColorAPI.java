@@ -80,7 +80,7 @@ public class IridiumColorAPI {
             string = pattern.process(string);
         }
 
-        return ChatColor.translateAlternateColorCodes('&', string);
+        return string.replace("&", "§");
     }
 
     /**

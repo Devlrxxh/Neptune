@@ -271,8 +271,10 @@ public class MatchListener implements Listener {
 
             if (!profile.getState().equals(ProfileState.IN_GAME) && (match != null && !match.getKit().is(KitRule.HUNGER))) {
                 event.setCancelled(true);
+                return;
             }
         }
+        event.setCancelled(true);
     }
 
     @EventHandler
@@ -280,6 +282,7 @@ public class MatchListener implements Listener {
         if (event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(player);
             if (profile == null) return;
+
             Match match = profile.getMatch();
             if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
                 if (match != null && !match.getKit().is(KitRule.SATURATION_HEAL)) {

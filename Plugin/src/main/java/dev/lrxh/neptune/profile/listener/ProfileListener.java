@@ -31,7 +31,6 @@ public class ProfileListener implements Listener {
         if (!Neptune.get().isAllowJoin()) event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Component.text(CC.color("&cDatabasing updating...")));
     }
 
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();

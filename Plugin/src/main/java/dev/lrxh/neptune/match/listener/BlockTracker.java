@@ -59,6 +59,11 @@ public class BlockTracker implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockDropEvent(BlockDropItemEvent event) {
+        event.setCancelled(true);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof EnderCrystal && event.getDamager() instanceof Player player) {
             crystalOwners.put(player.getUniqueId(), (EnderCrystal) event.getEntity());

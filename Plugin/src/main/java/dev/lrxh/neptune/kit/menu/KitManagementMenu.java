@@ -30,7 +30,7 @@ public class KitManagementMenu extends Menu {
         buttons.add(new KitArenaManageButton(31, kit));
         buttons.add(new KitRenameButton(20, kit));
         buttons.add(new KitDeleteButton(21, kit));
-        buttons.add(new DisplayButton(22, kit.getIcon(), "&7Current Icon"));
+        buttons.add(new DisplayButton(22, kit.getIcon(), " "));
         buttons.add(new KitRulesButton(13, kit));
         buttons.add(new KitSetSlotButton(23, kit));
         buttons.add(new KitSetIconButton(24, kit));
