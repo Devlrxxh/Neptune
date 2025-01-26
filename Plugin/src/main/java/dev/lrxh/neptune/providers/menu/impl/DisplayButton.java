@@ -30,7 +30,7 @@ public class DisplayButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        if (name != null) return new ItemBuilder(itemStack).name(name).clearFlags().build();
-        return new ItemBuilder(itemStack).clearFlags().build();
+        if (name != null) return new ItemBuilder(itemStack).name(name).build();
+        return new ItemBuilder(itemStack).build();
     }
 }

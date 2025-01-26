@@ -200,5 +200,14 @@ public class Kit {
         KitService.get().kits.remove(this);
         KitService.get().saveKits();
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Kit kit) {
+            return kit.getName().equals(name);
+        }
+
+        return false;
+    }
 }
 

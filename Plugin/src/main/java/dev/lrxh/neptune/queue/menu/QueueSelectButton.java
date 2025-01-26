@@ -70,7 +70,7 @@ public class QueueSelectButton extends Button {
                         new Replacement("<kitName>", kit.getName()),
                         new Replacement("<playing>", String.valueOf(kit.getPlaying())),
                         new Replacement("<queue>", String.valueOf(kit.getQueue()))), player)
-                .clearFlags()
+                
                 .amount(kit.getPlaying())
                 .build();
     }

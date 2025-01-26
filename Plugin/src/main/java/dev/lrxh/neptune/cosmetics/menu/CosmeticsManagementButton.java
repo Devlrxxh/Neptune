@@ -37,6 +37,6 @@ public class CosmeticsManagementButton extends Button {
     public ItemStack getItemStack(Player player) {
         Profile profile = API.getProfile(player);
         return new ItemBuilder(material).name(title).lore(ItemUtils.getLore(lore, new Replacement("<kill-effect>", profile.getSettingData().getKillEffect().getDisplayName()), new Replacement("<kill-message>", profile.getSettingData().getKillMessagePackage().getDisplayName()
-        )), player).clearFlags().build();
+        )), player).build();
     }
 }

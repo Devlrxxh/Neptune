@@ -34,7 +34,7 @@ public class PartyLimitButton extends Button {
                 .name(MenusLocale.PARTY_SETTINGS_MAX_SIZE_TITLE.getString())
                 .lore(ItemUtils.getLore(MenusLocale.PARTY_SETTINGS_MAX_SIZE_LORE.getStringList(),
                         new Replacement("<size>", String.valueOf(party.getMaxUsers()))), player)
-                .clearFlags()
+                
                 .build();
     }
 }

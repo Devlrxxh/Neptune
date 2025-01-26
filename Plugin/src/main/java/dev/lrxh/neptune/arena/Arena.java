@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.arena;
 
+import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,5 +25,14 @@ public class Arena {
 
     public boolean isSetup() {
         return !(redSpawn == null || blueSpawn == null);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Arena arena) {
+            return arena.getName().equals(name);
+        }
+
+        return false;
     }
 }

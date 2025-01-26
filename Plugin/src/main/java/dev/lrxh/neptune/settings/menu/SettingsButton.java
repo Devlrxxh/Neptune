@@ -29,7 +29,7 @@ public class SettingsButton extends Button {
                         new Replacement("<ping>", profile.getSettingData().getMaxPing()),
                         new Replacement("<kill-effect>", profile.getSettingData().getKillEffect().getDisplayName()),
                         new Replacement("<kill-message>", profile.getSettingData().getKillMessagePackage().getDisplayName())), player)
-                .clearFlags()
+                
                 .build();
     }
 

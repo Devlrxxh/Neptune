@@ -45,7 +45,7 @@ public class PartyTeamKitButton extends Button {
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.PARTY_EVENTS_KIT_SELECT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .lore(MenusLocale.PARTY_EVENTS_KIT_SELECT_LORE.getStringList(), player)
-                .clearFlags()
+                
                 .build();
     }
 }

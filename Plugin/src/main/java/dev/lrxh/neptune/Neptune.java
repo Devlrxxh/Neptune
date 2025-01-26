@@ -162,7 +162,7 @@ public final class Neptune extends JavaPlugin {
 
     private void loadTasks() {
         new QueueCheckTask(this).start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
-        new LeaderboardTask(this).start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
+        new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
     }
 
     private void loadCommandManager() {

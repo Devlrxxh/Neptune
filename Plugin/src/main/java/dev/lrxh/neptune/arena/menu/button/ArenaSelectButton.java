@@ -25,6 +25,6 @@ public class ArenaSelectButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return new ItemBuilder(Material.MAP).name("&f" + arena.getName() + " &7(" + arena.getDisplayName() + "&7)").lore("&7Press to manage arena", "&7Type: " + (arena instanceof StandAloneArena ? "&eStandalone" : "&9Shared")).clearFlags().build();
+        return new ItemBuilder(Material.MAP).name("&f" + arena.getName() + " &7(" + arena.getDisplayName() + "&7)").lore("&7Press to manage arena", "&7Type: " + (arena instanceof StandAloneArena ? "&eStandalone" : "&9Shared")).build();
     }
 }

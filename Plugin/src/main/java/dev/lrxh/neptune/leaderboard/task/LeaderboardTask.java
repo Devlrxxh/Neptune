@@ -8,7 +8,7 @@ import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 public class LeaderboardTask extends NeptuneRunnable {
     private final LeaderboardService manager;
 
-    public LeaderboardTask(Neptune plugin) {
+    public LeaderboardTask() {
         this.manager = LeaderboardService.get();
     }
 

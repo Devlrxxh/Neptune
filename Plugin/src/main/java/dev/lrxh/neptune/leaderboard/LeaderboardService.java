@@ -25,12 +25,7 @@ import java.util.UUID;
 public class LeaderboardService {
     private static LeaderboardService instance;
     private final List<LeaderboardPlayerEntry> changes = new ArrayList<>();
-    private final Neptune plugin;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
-
-    public LeaderboardService() {
-        this.plugin = Neptune.get();
-    }
 
     public static LeaderboardService get() {
         if (instance == null) instance = new LeaderboardService();
@@ -40,14 +35,12 @@ public class LeaderboardService {
 
     private void checkIfMissing() {
         for (Kit kit : KitService.get().kits) {
-            if (leaderboards.containsKey(kit)) continue;
 
             List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
 
             for (LeaderboardType leaderboardType : LeaderboardType.values()) {
                 leaderboardEntries.add(new LeaderboardEntry(leaderboardType, new ArrayList<>()));
             }
-
             leaderboards.put(kit, leaderboardEntries);
         }
     }

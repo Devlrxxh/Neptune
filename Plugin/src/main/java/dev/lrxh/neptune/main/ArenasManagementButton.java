@@ -21,6 +21,6 @@ public class ArenasManagementButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return new ItemBuilder(Material.RED_BED).name("&bArenas Management").lore("&7Click to manage all arenas").clearFlags().build();
+        return new ItemBuilder(Material.RED_BED).name("&bArenas Management").lore("&7Click to manage all arenas").build();
     }
 }

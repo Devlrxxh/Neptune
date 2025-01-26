@@ -29,7 +29,7 @@ public class KitRuleButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return kit.is(kitRule) ? new ItemBuilder(kitRule.getIcon()).name("&a" + kitRule.getName()).lore("&7" + kitRule.getDescription()).clearFlags().build()
-                : new ItemBuilder(kitRule.getIcon()).name("&c" + kitRule.getName()).lore("&7" + kitRule.getDescription()).clearFlags().build();
+        return kit.is(kitRule) ? new ItemBuilder(kitRule.getIcon()).name("&a" + kitRule.getName()).lore("&7" + kitRule.getDescription()).build()
+                : new ItemBuilder(kitRule.getIcon()).name("&c" + kitRule.getName()).lore("&7" + kitRule.getDescription()).build();
     }
 }

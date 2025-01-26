@@ -54,7 +54,7 @@ public class Item {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ItemStack(Material.BARRIER);
 
-        return new ItemBuilder(material, playerUUID).name(displayName).clearFlags().makeUnbreakable().build();
+        return new ItemBuilder(material, playerUUID).name(displayName).makeUnbreakable().build();
     }
 
     public ItemStack constructItem(UUID playerUUID, Replacement... replacements) {
@@ -67,6 +67,6 @@ public class Item {
             }
         }
 
-        return new ItemBuilder(material, playerUUID).name(displayName).clearFlags().makeUnbreakable().build();
+        return new ItemBuilder(material, playerUUID).name(displayName).makeUnbreakable().build();
     }
 }

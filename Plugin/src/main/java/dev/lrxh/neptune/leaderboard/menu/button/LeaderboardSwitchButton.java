@@ -35,7 +35,7 @@ public class LeaderboardSwitchButton extends Button {
         return new ItemBuilder(material)
                 .name(title)
                 .lore(lore, player)
-                .clearFlags()
+                
                 .build();
     }
 }
