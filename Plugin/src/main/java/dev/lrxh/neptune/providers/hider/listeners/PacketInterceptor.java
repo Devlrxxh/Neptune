@@ -76,11 +76,10 @@ public class PacketInterceptor extends PacketListenerAbstract {
              * PLAYER_INFO_REMOVE removes player from tablist, but its fired by both hidePlayer() & on Player quit.
              * We need to cancel the packet only if its fired by hidePlayer() ie only if the player is online.
              * */
-        } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
-            WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
-            Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));
-            if (player != null) event.setCancelled(true);
+//        } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
+//            WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
+//            Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));
+//            if (player != null) event.setCancelled(true);
         }
-
     }
 }

@@ -23,8 +23,6 @@ public class Arena {
     }
 
     public boolean isSetup() {
-        System.out.println(redSpawn == null);
-        System.out.println(blueSpawn == null);
         return !(redSpawn == null || blueSpawn == null);
     }
 }

@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.kit.menu.button;
 
 import dev.lrxh.neptune.kit.Kit;
+import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.KitRulesMenu;
 import dev.lrxh.neptune.providers.menu.Button;
@@ -22,6 +23,7 @@ public class KitRuleButton extends Button {
     @Override
     public void onClick(ClickType type, Player player) {
         kit.toggle(kitRule);
+        KitService.get().saveKits();
         new KitRulesMenu(kit).open(player);
     }
 

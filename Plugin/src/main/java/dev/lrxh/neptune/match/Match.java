@@ -23,10 +23,12 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
@@ -226,7 +228,7 @@ public abstract class Match {
             }
             if (kit.is(KitRule.SHOW_HP)) {
                 if (state.equals(MatchState.STARTING)) {
-                    showHealth(participant.getPlayerUUID());
+                    showHealth();
                 }
             }
 
@@ -263,19 +265,12 @@ public abstract class Match {
         });
     }
 
-    private void showHealth(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
-        forEachParticipant(participant -> {
-            if (playerUUID.equals(participant.getPlayerUUID())) return;
-
-            Player viewer = participant.getPlayer();
-            if (viewer == null) return;
-
-            Objective objective = viewer.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
+    private void showHealth() {
+        forEachPlayer(player -> {
+            Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
 
             if (objective == null) {
-                objective = viewer.getScoreboard().registerNewObjective("neptune_health", "health", CC.color("&c❤"));
+                objective = player.getScoreboard().registerNewObjective("neptune_health", Criteria.HEALTH, Component.text(CC.color("&c❤")));
             }
             try {
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
