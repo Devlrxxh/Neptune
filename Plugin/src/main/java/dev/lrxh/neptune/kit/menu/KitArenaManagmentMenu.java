@@ -27,13 +27,14 @@ public class KitArenaManagmentMenu extends Menu {
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
+        int i = 0;
         for (Arena arena : ArenaService.get().getArenas()) {
             if (kit.is(KitRule.BUILD)) {
                 if (arena instanceof StandAloneArena) {
-                    buttons.add(new KitArenaButton(0, kit, arena));
+                    buttons.add(new KitArenaButton(i++, kit, arena));
                 }
             } else {
-                buttons.add(new KitArenaButton(0, kit, arena));
+                buttons.add(new KitArenaButton(i++, kit, arena));
             }
         }
 
