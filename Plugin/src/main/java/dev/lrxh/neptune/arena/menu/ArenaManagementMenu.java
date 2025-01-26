@@ -33,6 +33,7 @@ public class ArenaManagementMenu extends Menu {
         } else {
             buttons.add(new ArenaSetspawnButton(0, arena, ParticipantColor.BLUE));
             buttons.add(new ArenaSetspawnButton(1, arena, ParticipantColor.RED));
+            buttons.add(new ArenaEnableButton(8, arena));
 
             buttons.add(new ArenaRenameButton(23, arena));
             buttons.add(new DisplayButton(22, Material.MAP, " "));

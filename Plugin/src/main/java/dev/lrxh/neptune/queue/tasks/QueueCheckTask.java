@@ -91,7 +91,7 @@ public class QueueCheckTask extends NeptuneRunnable {
                 }
 
                 //If arena locations weren't setup
-                if (arena != null && arena.isSetup()) {
+                if (!arena.isSetup()) {
 
                     removeFromQueue(uuid1);
                     removeFromQueue(uuid2);

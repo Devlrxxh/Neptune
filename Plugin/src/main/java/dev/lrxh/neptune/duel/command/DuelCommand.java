@@ -60,7 +60,7 @@ public class DuelCommand {
         Profile profile = API.getProfile(player);
         GameData playerGameData = API.getProfile(player).getGameData();
 
-        if (profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.hasState(ProfileState.IN_KIT_EDITOR)) {
+        if (profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.hasState(ProfileState.IN_KIT_EDITOR) || profile.hasState(ProfileState.IN_QUEUE)) {
             player.sendMessage(CC.error("You can't accept duel requests right now!"));
             return;
         }
