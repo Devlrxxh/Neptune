@@ -217,13 +217,13 @@ public class MatchListener implements Listener {
                 }
             }
 
-            if (match.getArena() instanceof StandAloneArena arena) {
-                if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
-                    participant.setDeathCause(DeathCause.DIED);
-                    match.onDeath(participant);
-                    return;
-                }
-            }
+//            if (match.getArena() instanceof StandAloneArena arena) {
+//                if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
+//                    participant.setDeathCause(DeathCause.DIED);
+//                    match.onDeath(participant);
+//                    return;
+//                }
+//            }
 
             if (match.getState().equals(MatchState.IN_ROUND)) {
                 Location playerLocation = player.getLocation();

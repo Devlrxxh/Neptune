@@ -33,6 +33,7 @@ public class ArenaManagementMenu extends Menu {
         } else {
             buttons.add(new ArenaSetspawnButton(0, arena, ParticipantColor.BLUE));
             buttons.add(new ArenaSetspawnButton(1, arena, ParticipantColor.RED));
+
             buttons.add(new ArenaEnableButton(size - 1, arena));
 
             buttons.add(new ArenaRenameButton(23, arena));
@@ -40,6 +41,7 @@ public class ArenaManagementMenu extends Menu {
             buttons.add(new ArenaDeleteButton(21, arena));
 
             if (arena instanceof StandAloneArena standAloneArena) {
+                buttons.add(new ArenaSetLimitButton(4, arena));
                 buttons.add(new ArenaSetedgeButton(8, standAloneArena, EdgeType.MAX));
                 buttons.add(new ArenaSetedgeButton(7, standAloneArena, EdgeType.MIN));
             }

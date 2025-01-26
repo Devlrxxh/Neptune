@@ -8,5 +8,6 @@ public enum ArenaProcedureType {
     SET_SPAWN_RED,
     SET_SPAWN_BLUE,
     SET_SPAWN_MAX,
-    SET_SPAWN_MIN
+    SET_SPAWN_MIN,
+    SET_BUILD_LIMIT
 }

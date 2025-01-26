@@ -11,16 +11,14 @@ import org.bukkit.Location;
 public class StandAloneArena extends Arena {
     private Location min;
     private Location max;
-    private double deathY;
     private double limit;
     private boolean used;
 
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double deathY, double limit, boolean enabled) {
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled) {
         super(name, displayName, redSpawn, blueSpawn, enabled);
         this.min = min;
         this.max = max;
         this.limit = limit;
-        this.deathY = deathY;
         this.used = false;
     }
 
@@ -29,7 +27,6 @@ public class StandAloneArena extends Arena {
         this.min = null;
         this.max = null;
         this.limit = 68321;
-        this.deathY = 0;
         this.used = false;
     }
 

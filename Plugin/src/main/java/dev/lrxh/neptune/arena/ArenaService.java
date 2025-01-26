@@ -44,10 +44,9 @@ public class ArenaService implements IService {
                     Location edge1 = LocationUtil.deserialize(config.getString(path + "min"));
                     Location edge2 = LocationUtil.deserialize(config.getString(path + "max"));
 
-                    double deathZone = config.getDouble(path + "deathZone");
                     double limit = config.getDouble(path + "limit");
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, deathZone, limit, enabled);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
@@ -81,7 +80,6 @@ public class ArenaService implements IService {
                         new Value("type", "STANDALONE"),
                         new Value("min", LocationUtil.serialize(standAloneArena.getMin())),
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
-                        new Value("deathZone", standAloneArena.getDeathY()),
                         new Value("limit", standAloneArena.getLimit())
                 ));
             } else {
