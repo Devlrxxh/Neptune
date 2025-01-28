@@ -55,6 +55,12 @@
         </dependency>
 
         <dependency>
+            <groupId>dev.lrxh.knockback</groupId>
+            <artifactId>KnockbackController</artifactId>
+            <version>1.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
@@ -96,19 +102,13 @@
                     <shadedArtifactAttached>false</shadedArtifactAttached>
                     <artifactSet>
                         <includes>
-                            <include>co.aikar:acf-paper</include>
+                            <include>dev.lrxh.knockback:KnockbackController</include>
                             <include>dev.lrxh:Build</include>
                             <include>org.mongodb:mongodb-driver-core</include>
                             <include>org.mongodb:mongodb-driver-sync</include>
                             <include>org.mongodb:bson</include>
                         </includes>
                     </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>dev.lrxh.acf</shadedPattern>
-                        </relocation>
-                    </relocations>
                 </configuration>
                 <executions>
                     <execution>

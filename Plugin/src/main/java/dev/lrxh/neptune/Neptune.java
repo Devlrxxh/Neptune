@@ -3,6 +3,8 @@ package dev.lrxh.neptune;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
+import dev.lrxh.knockback.KnockBack;
+import dev.lrxh.knockback.KnockbackController;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.command.ArenaProvider;

@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.tasks;
 
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientInteractEntity;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.match.Match;
@@ -30,10 +31,12 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
 
             return;
         }
+
         if (participant.getPlayer() == null) return;
         if (respawnTimer == 0) {
-
-            MessagesLocale.MATCH_RESPAWNED.send(participant.getPlayerUUID());
+            match.sendMessage(MessagesLocale.MATCH_STARTED);
+            match.teleportToPositions();
+            match.showParticipant(participant);
             match.startMatch();
             stop(plugin);
             return;
@@ -53,11 +56,7 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
                 match.setupPlayer(p.getPlayerUUID());
             }
 
-            match.teleportToPositions();
-
-            match.resetArena();
-
-            match.checkRules();
+            match.hideParticipant(participant);
         }
         respawnTimer--;
     }

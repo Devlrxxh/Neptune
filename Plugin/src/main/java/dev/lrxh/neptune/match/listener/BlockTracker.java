@@ -52,13 +52,26 @@ public class BlockTracker implements Listener {
 
         MatchService.get().getMatch(player).ifPresent(match -> {
             for (Block block : event.blockList()) {
-                block.getDrops().clear();
                 match.getChanges().put(block.getLocation(), block.getBlockData());
             }
         });
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockExplode2(BlockExplodeEvent event) {
+        for (Block block : event.blockList()) {
+            block.getDrops().clear();
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onEntityExplode(EntityExplodeEvent event) {
+        for (Block block : event.blockList()) {
+            block.getDrops().clear();
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onBlockDropEvent(BlockDropItemEvent event) {
         event.setCancelled(true);
     }
@@ -86,7 +99,6 @@ public class BlockTracker implements Listener {
 
         MatchService.get().getMatch(player).ifPresent(match -> {
             for (Block block : event.blockList()) {
-                block.getDrops().clear();
                 match.getChanges().put(block.getLocation(), block.getBlockData());
             }
         });
