@@ -37,7 +37,11 @@ public class KitEditorCommand {
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());
-            profile.setState(ProfileState.IN_LOBBY);
+            if (profile.getGameData().getParty() == null) {
+                profile.setState(ProfileState.IN_LOBBY);
+            } else {
+                profile.setState(ProfileState.IN_PARTY);
+            }
         }
 
         MessagesLocale.KIT_EDITOR_RESET.send(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName()));

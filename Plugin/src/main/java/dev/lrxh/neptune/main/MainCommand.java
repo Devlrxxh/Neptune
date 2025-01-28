@@ -9,6 +9,7 @@ import dev.lrxh.knockback.KnockbackController;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.cosmetics.CosmeticService;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -40,6 +41,12 @@ public class MainCommand {
     public void reload(@Sender Player player) {
         ConfigService.get().load();
         CosmeticService.get().load();
+        HotbarService.get().loadItems();
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            HotbarService.get().giveItems(p);
+        }
+
         player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 }

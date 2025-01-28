@@ -22,6 +22,8 @@ import dev.lrxh.neptune.queue.Queue;
 import dev.lrxh.neptune.queue.QueueService;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
+import dev.lrxh.neptune.utils.CC;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
@@ -30,6 +32,12 @@ public enum ItemAction {
     UNRANKED() {
         @Override
         public void execute(Player player) {
+            Profile profile = API.getProfile(player);
+
+            if (profile.getState().equals(ProfileState.IN_PARTY)) {
+                player.sendMessage(Component.text(CC.color("&cYou can't queue while in a party.")));
+                return;
+            }
             new QueueMenu().open(player);
         }
     },
