@@ -12,7 +12,7 @@ import java.util.List;
 
 public class SettingsMenu extends Menu {
     public SettingsMenu() {
-        super(MenusLocale.SETTINGS_TITLE.getString(), MenusLocale.SETTINGS_SIZE.getInt(), Filter.valueOf(MenusLocale.SETTINGS_FILTER.getString()), true);
+        super(MenusLocale.SETTINGS_TITLE.getString(), MenusLocale.SETTINGS_SIZE.getInt(), Filter.valueOf(MenusLocale.SETTINGS_FILTER.getString()));
     }
 
     @Override

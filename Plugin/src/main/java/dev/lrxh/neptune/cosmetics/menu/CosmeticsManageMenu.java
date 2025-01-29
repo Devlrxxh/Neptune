@@ -14,7 +14,7 @@ import java.util.List;
 
 public class CosmeticsManageMenu extends Menu {
     public CosmeticsManageMenu() {
-        super(MenusLocale.COSMETICS_TITLE.getString(), MenusLocale.COSMETICS_SIZE.getInt(), Filter.valueOf(MenusLocale.COSMETICS_FILTER.getString()), true);
+        super(MenusLocale.COSMETICS_TITLE.getString(), MenusLocale.COSMETICS_SIZE.getInt(), Filter.valueOf(MenusLocale.COSMETICS_FILTER.getString()));
     }
 
     @Override
