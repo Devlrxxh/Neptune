@@ -103,7 +103,6 @@
                     <artifactSet>
                         <includes>
                             <include>dev.lrxh.knockback:KnockbackController</include>
-                            <include>dev.lrxh:Build</include>
                             <include>org.mongodb:mongodb-driver-core</include>
                             <include>org.mongodb:mongodb-driver-sync</include>
                             <include>org.mongodb:bson</include>

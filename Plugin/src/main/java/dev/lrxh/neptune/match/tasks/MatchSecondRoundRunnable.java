@@ -52,6 +52,7 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         }
 
         if (respawnTimer == 3) {
+            match.resetArena();
             for (Participant p : match.participants) {
                 match.setupPlayer(p.getPlayerUUID());
             }

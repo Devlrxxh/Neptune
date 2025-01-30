@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -42,8 +43,6 @@ public abstract class Match {
     public final List<UUID> spectators = new ArrayList<>();
     public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
-    private final HashMap<Location, BlockData> changes = new HashMap<>();
-    private final Set<Location> liquids = new HashSet<>();
     private final HashSet<Location> placedBlocks = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
     public MatchState state;
@@ -55,6 +54,13 @@ public abstract class Match {
 
     public void playSound(Sound sound) {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
+    }
+
+    public Set<Player> getPlayers() {
+        Set<Player> players = new HashSet<>();
+        forEachPlayer(players::add);
+
+        return players;
     }
 
     public Location getSpawn(Participant participant) {
@@ -131,18 +137,9 @@ public abstract class Match {
     }
 
     public void resetArena() {
-        for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-            World world = entry.getKey().getWorld();
-
-            world.setBlockData(entry.getKey(), entry.getValue());
+        if (arena instanceof StandAloneArena standAloneArena) {
+            standAloneArena.restoreSnapshot();
         }
-
-        for (Location location : liquids) {
-            World world = location.getWorld();
-
-            world.setBlockData(location, Material.AIR.createBlockData());
-        }
-
 
         removeEntities();
     }

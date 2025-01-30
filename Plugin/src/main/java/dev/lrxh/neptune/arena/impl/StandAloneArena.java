@@ -1,9 +1,17 @@
 package dev.lrxh.neptune.arena.impl;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.providers.tasks.TaskScheduler;
+import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.scheduler.BukkitScheduler;
 
 
 @Getter
@@ -13,6 +21,7 @@ public class StandAloneArena extends Arena {
     private Location max;
     private double limit;
     private boolean used;
+    private BlockChanger.Snapshot snapshot;
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled) {
         super(name, displayName, redSpawn, blueSpawn, enabled);
@@ -20,6 +29,8 @@ public class StandAloneArena extends Arena {
         this.max = max;
         this.limit = limit;
         this.used = false;
+
+        takeSnapshot();
     }
 
     public StandAloneArena(String arenaName) {
@@ -28,6 +39,21 @@ public class StandAloneArena extends Arena {
         this.max = null;
         this.limit = 68321;
         this.used = false;
+
+        takeSnapshot();
+    }
+
+    public void takeSnapshot() {
+        if (min == null || max == null) return;
+        snapshot = Neptune.get().getBlockChanger().capture(min, max);
+    }
+
+    public void restoreSnapshot() {
+        Neptune.get().getBlockChanger().revert(snapshot);
+    }
+
+    public World getWorld() {
+        return max.getWorld();
     }
 
     @Override

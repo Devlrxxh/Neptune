@@ -3,8 +3,6 @@ package dev.lrxh.neptune;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
-import dev.lrxh.knockback.KnockBack;
-import dev.lrxh.knockback.KnockbackController;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.command.ArenaProvider;
@@ -38,7 +36,6 @@ import dev.lrxh.neptune.main.MainCommand;
 import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.match.commands.SpectateCommand;
-import dev.lrxh.neptune.match.listener.BlockTracker;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
@@ -51,6 +48,7 @@ import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
+import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.assemble.Assemble;
 import lombok.Getter;
@@ -74,6 +72,7 @@ public final class Neptune extends JavaPlugin {
     private EntityHider entityHider;
     @Setter
     private boolean allowJoin;
+    private BlockChanger blockChanger;
 
     public static Neptune get() {
         return instance;
@@ -91,6 +90,9 @@ public final class Neptune extends JavaPlugin {
 
         loadExtensions();
         if (!isEnabled()) return;
+
+        blockChanger = new BlockChanger(this, false);
+
         ConfigService.get().load();
         ArenaService.get().loadArenas();
         KitService.get().loadKits();
@@ -136,7 +138,6 @@ public final class Neptune extends JavaPlugin {
                 new ItemCache(),
                 new BukkitListener(),
                 new MenuListener(),
-                new BlockTracker(),
                 new ArenaProcedureListener(),
                 new KitProcedureListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
