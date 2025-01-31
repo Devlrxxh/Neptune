@@ -2,16 +2,12 @@ package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
-import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.entity.Player;
 
 
 @Getter

@@ -58,7 +58,7 @@ public class MatchHistoryMenu extends Menu {
                             new Replacement("<winner>", matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
                             new Replacement("<loser>", !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
                             new Replacement("<date>", matchHistory.getDate())), player)
-                    
+
                     .build();
         } else {
             return new ItemBuilder(kit.getIcon())
@@ -73,7 +73,7 @@ public class MatchHistoryMenu extends Menu {
                             new Replacement("<winner>", matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
                             new Replacement("<loser>", !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
                             new Replacement("<date>", matchHistory.getDate())), player)
-                    
+
                     .build();
         }
 

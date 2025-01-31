@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.main;
 
-import dev.lrxh.neptune.arena.menu.ArenasManagementMenu;
 import dev.lrxh.neptune.kit.menu.KitsManagementMenu;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;

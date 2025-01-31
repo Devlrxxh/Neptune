@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.tasks;
 
-import dev.lrxh.knockback.KnockbackController;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;

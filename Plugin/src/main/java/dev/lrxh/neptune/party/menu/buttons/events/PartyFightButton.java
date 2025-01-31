@@ -27,13 +27,13 @@ public class PartyFightButton extends Button {
             return new ItemBuilder(MenusLocale.PARTY_EVENTS_SPLIT_MATERIAL.getString())
                     .name(MenusLocale.PARTY_EVENTS_SPLIT_TITLE.getString())
                     .lore(MenusLocale.PARTY_EVENTS_SPLIT_LORE.getStringList(), player)
-                    
+
                     .build();
         } else {
             return new ItemBuilder(MenusLocale.PARTY_EVENTS_FFA_MATERIAL.getString())
                     .name(MenusLocale.PARTY_EVENTS_FFA_TITLE.getString())
                     .lore(MenusLocale.PARTY_EVENTS_FFA_LORE.getStringList(), player)
-                    
+
                     .build();
         }
     }

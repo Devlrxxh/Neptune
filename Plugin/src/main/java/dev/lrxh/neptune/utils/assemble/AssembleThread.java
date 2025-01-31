@@ -1,11 +1,11 @@
 package dev.lrxh.neptune.utils.assemble;
 
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
-import org.bukkit.ChatColor;
+import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
-import dev.lrxh.neptune.utils.CC;
+
 import java.util.Collections;
 import java.util.List;
 

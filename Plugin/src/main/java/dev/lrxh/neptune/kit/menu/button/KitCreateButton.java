@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.kit.menu.button;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.procedure.KitProcedureType;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.menu.Button;

@@ -30,7 +30,6 @@ public class MatchEndRunnable extends NeptuneRunnable {
     public void run() {
         if (!MatchService.get().matches.contains(match)) {
             stop(plugin);
-
             return;
         }
         if (endTimer == 0) {
@@ -56,11 +55,9 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
             if (match.arena instanceof StandAloneArena standAloneArena) {
                 standAloneArena.setUsed(false);
-                match.resetArena();
                 stop(plugin);
             }
             match.resetArena();
-
             MatchService.get().matches.remove(match);
         }
         endTimer--;

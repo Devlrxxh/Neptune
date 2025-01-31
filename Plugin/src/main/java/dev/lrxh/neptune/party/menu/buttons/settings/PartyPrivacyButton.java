@@ -28,7 +28,7 @@ public class PartyPrivacyButton extends Button {
         return new ItemBuilder(MenusLocale.PARTY_SETTINGS_PRIVACY_MATERIAL.getString())
                 .name(MenusLocale.PARTY_SETTINGS_PRIVACY_TITLE.getString())
                 .lore(party.isOpen() ? MenusLocale.PARTY_SETTINGS_PRIVACY_ENABLED_LORE.getStringList() : MenusLocale.PARTY_SETTINGS_PRIVACY_DISABLED_LORE.getStringList(), player)
-                
+
                 .build();
     }
 }

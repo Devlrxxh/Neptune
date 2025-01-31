@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.leaderboard.task;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 

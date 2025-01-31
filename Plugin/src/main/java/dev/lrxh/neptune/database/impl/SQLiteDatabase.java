@@ -12,8 +12,8 @@ import java.util.List;
 import java.util.UUID;
 
 public class SQLiteDatabase implements IDatabase {
-    private Connection connection;
     private final String dbPath;
+    private Connection connection;
 
     public SQLiteDatabase() {
         this.dbPath = "jdbc:sqlite:" + Neptune.get().getDataFolder() + "/neptune.db";

@@ -52,7 +52,7 @@ public class LeaderboardButton extends Button {
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.LEADERBOARD_ITEM_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .lore(lore, player)
-                
+
                 .build();
     }
 }

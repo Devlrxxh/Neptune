@@ -32,7 +32,7 @@ public class MatchSpectateButton extends Button {
                 .lore(ItemUtils.getLore(MenusLocale.MATCH_LIST_ITEM_LORE.getStringList(),
                         new Replacement("<arena>", match.getArena().getDisplayName()),
                         new Replacement("<kit>", match.getKit().getDisplayName())), player)
-                
+
                 .build();
     }
 }

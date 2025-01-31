@@ -46,7 +46,7 @@ public class KillMessageButton extends Button {
                 .lore(ItemUtils.getLore(lore,
                         new Replacement("<description>", killMessagePackage.getDescription()),
                         new Replacement("<messages>", ItemUtils.getLore(killMessagePackage.getMessages(), new Replacement("<player>", player.getName()), new Replacement("<killer>", player.getName())))), player)
-                
+
                 .build();
     }
 }

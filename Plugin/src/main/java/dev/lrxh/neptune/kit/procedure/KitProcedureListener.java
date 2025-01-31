@@ -4,7 +4,6 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.database.DatabaseService;
 import dev.lrxh.neptune.database.impl.DataDocument;
-import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
@@ -15,7 +14,6 @@ import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
-import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -77,8 +75,8 @@ public class KitProcedureListener implements Listener {
             case SET_INV -> {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
-                    profile.getKitProcedure().setType(KitProcedureType.NONE);
-                    profile.getKitProcedure().getKit().setItems(Arrays.stream(player.getInventory().getContents()).toList());
+                profile.getKitProcedure().setType(KitProcedureType.NONE);
+                profile.getKitProcedure().getKit().setItems(Arrays.stream(player.getInventory().getContents()).toList());
 
                 int i = 0;
                 Neptune.get().setAllowJoin(false);

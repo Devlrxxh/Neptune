@@ -33,7 +33,7 @@ public class RoundSelectButton extends Button {
         return new ItemBuilder(Material.MAP)
                 .name(MenusLocale.ROUNDS_ITEM_NAME.getString().replace("<rounds>", String.valueOf(round)))
                 .lore(MenusLocale.ROUNDS_LORE.getStringList(), player)
-                
+
                 .build();
     }
 

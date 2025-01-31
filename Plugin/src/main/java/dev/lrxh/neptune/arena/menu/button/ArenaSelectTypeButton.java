@@ -43,7 +43,8 @@ public class ArenaSelectTypeButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        if (standlealone) return new ItemBuilder(Material.LAVA_BUCKET).name("&eStandalone").lore("&7Use this if blocks can be placed in your arena.").build();
+        if (standlealone)
+            return new ItemBuilder(Material.LAVA_BUCKET).name("&eStandalone").lore("&7Use this if blocks can be placed in your arena.").build();
 
         return new ItemBuilder(Material.DIAMOND_SWORD).name("&9Shared").lore("&7Use this if blocks can't be placed in your arena.").build();
     }

@@ -28,7 +28,8 @@ public class ProfileListener implements Listener {
 
     @EventHandler
     public void onPreJoin(PlayerLoginEvent event) {
-        if (!Neptune.get().isAllowJoin()) event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Component.text(CC.color("&cDatabasing updating...")));
+        if (!Neptune.get().isAllowJoin())
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Component.text(CC.color("&cDatabasing updating...")));
     }
 
     @EventHandler

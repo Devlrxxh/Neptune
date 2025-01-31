@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.arena;
 
-import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

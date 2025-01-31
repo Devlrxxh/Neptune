@@ -2,7 +2,6 @@ package dev.lrxh.neptune.match.impl;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;

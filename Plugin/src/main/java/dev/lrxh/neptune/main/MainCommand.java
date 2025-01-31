@@ -4,24 +4,16 @@ package dev.lrxh.neptune.main;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
-import dev.lrxh.knockback.KnockBack;
-import dev.lrxh.knockback.KnockbackController;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.cosmetics.CosmeticService;
 import dev.lrxh.neptune.hotbar.HotbarService;
-import dev.lrxh.neptune.utils.BlockChanger;
+import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.LocationUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class MainCommand {
 
@@ -38,13 +30,6 @@ public class MainCommand {
         player.sendMessage(CC.color("&aSuccessfully set spawn!"));
     }
 
-    @Command(name = "setkb", desc = "")
-    public void setkb(@Sender Player player, double horzi, double vert, double horzi2, double vert2) {
-        for (Player p : Bukkit.getOnlinePlayers()) {
-            KnockbackController.getInstance().add(p, new KnockBack(horzi, vert, horzi2, vert2));
-        }
-    }
-
     @Command(name = "reload", desc = "")
     @Require("neptune.admin")
     public void reload(@Sender Player player) {
@@ -53,6 +38,8 @@ public class MainCommand {
         HotbarService.get().loadItems();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
+            Profile profile = API.getProfile(player);
+            if (profile.getState().equals(ProfileState.IN_GAME) || profile.getState().equals(ProfileState.IN_KIT_EDITOR)) return;
             HotbarService.get().giveItems(p);
         }
 

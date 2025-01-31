@@ -91,7 +91,7 @@ public final class Neptune extends JavaPlugin {
         loadExtensions();
         if (!isEnabled()) return;
 
-        blockChanger = new BlockChanger(this, false);
+        blockChanger = new BlockChanger(this, true);
 
         ConfigService.get().load();
         ArenaService.get().loadArenas();

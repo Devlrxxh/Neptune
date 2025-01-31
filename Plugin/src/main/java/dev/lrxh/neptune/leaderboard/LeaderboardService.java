@@ -2,7 +2,6 @@ package dev.lrxh.neptune.leaderboard;
 
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.database.DatabaseService;
 import dev.lrxh.neptune.database.impl.DataDocument;
 import dev.lrxh.neptune.kit.Kit;

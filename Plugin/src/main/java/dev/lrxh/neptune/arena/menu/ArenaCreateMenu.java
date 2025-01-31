@@ -1,13 +1,9 @@
 package dev.lrxh.neptune.arena.menu;
 
-import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.menu.button.*;
-import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
+import dev.lrxh.neptune.arena.menu.button.ArenaSelectTypeButton;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.providers.menu.Filter;
 import dev.lrxh.neptune.providers.menu.Menu;
-import dev.lrxh.neptune.providers.menu.impl.DisplayButton;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

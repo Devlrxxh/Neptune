@@ -31,7 +31,7 @@ public class KitSelectButton extends Button {
     public ItemStack getItemStack(Player player) {
         return new ItemBuilder(kit.getIcon()).name(MenusLocale.QUEUE_SELECT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .lore(MenusLocale.DUEL_LORE.getStringList(), player)
-                
+
                 .build();
     }
 
