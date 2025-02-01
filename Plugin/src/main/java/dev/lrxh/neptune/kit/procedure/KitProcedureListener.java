@@ -11,13 +11,8 @@ import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.kit.menu.KitsManagementMenu;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
-import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.PlayerUtil;
-import dev.lrxh.neptune.utils.ServerUtils;
 import org.apache.commons.lang3.math.NumberUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -77,6 +72,8 @@ public class KitProcedureListener implements Listener {
             case SET_INV -> {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
+                Neptune.get().setAllowJoin(false);
+
                 Kit kit = profile.getKitProcedure().getKit();
 
                 profile.getKitProcedure().setType(KitProcedureType.NONE);
@@ -86,10 +83,22 @@ public class KitProcedureListener implements Listener {
                     p.getGameData().getKitData().get(kit).setKitLoadout(kit.getItems());
                 }
 
+                for (DataDocument document : DatabaseService.get().getDatabase().getAll()) {
+                    DataDocument kitStatistics = document.getDataDocument("kitData");
+                    DataDocument kitDocument = kitStatistics.getDataDocument(profile.getKitProcedure().getKit().getName());
+
+                    kitDocument.put("kit", "");
+
+                    kitStatistics.put("kitData", kitDocument);
+
+                    DatabaseService.get().getDatabase().replace(document.getString("uuid"), document);
+                }
+
                 player.sendMessage(CC.success("Set new inv"));
                 new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
 
                 HotbarService.get().giveItems(player);
+                Neptune.get().setAllowJoin(true);
             }
             case SET_ICON -> {
                 if (!input.equalsIgnoreCase("Done")) return;

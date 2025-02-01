@@ -39,7 +39,8 @@ public class MainCommand {
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             Profile profile = API.getProfile(player);
-            if (profile.getState().equals(ProfileState.IN_GAME) || profile.getState().equals(ProfileState.IN_KIT_EDITOR)) return;
+            if (profile.getState().equals(ProfileState.IN_GAME) || profile.getState().equals(ProfileState.IN_KIT_EDITOR))
+                return;
             HotbarService.get().giveItems(p);
         }
 

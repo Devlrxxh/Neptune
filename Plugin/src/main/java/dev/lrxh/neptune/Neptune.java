@@ -13,7 +13,6 @@ import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
 import dev.lrxh.neptune.configs.ConfigService;
-import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.cosmetics.CosmeticService;
 import dev.lrxh.neptune.cosmetics.command.CosmeticsCommand;

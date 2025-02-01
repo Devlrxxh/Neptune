@@ -37,6 +37,7 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
             match.teleportToPositions();
             match.showParticipant(participant);
             match.startMatch();
+            match.setupParticipants();
             stop(plugin);
             return;
         }
@@ -52,10 +53,6 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
 
         if (respawnTimer == 3) {
             match.resetArena();
-            for (Participant p : match.participants) {
-                match.setupPlayer(p.getPlayerUUID());
-            }
-
             match.hideParticipant(participant);
         }
         respawnTimer--;

@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.profile;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.queue.QueueService;
