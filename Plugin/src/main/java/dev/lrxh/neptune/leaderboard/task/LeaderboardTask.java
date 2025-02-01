@@ -9,6 +9,7 @@ public class LeaderboardTask extends NeptuneRunnable {
 
     public LeaderboardTask() {
         this.manager = LeaderboardService.get();
+        manager.load();
     }
 
     @Override

@@ -4,7 +4,6 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
-import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.GameData;
@@ -46,7 +45,7 @@ public class Kit {
         this.playing = 0;
         this.slot = slot;
 
-        checkMissing();
+        addToProfiles();
     }
 
     public Kit(String name, Player player) {
@@ -60,7 +59,7 @@ public class Kit {
         this.playing = 0;
         this.slot = KitService.get().kits.size() + 1;
 
-        checkMissing();
+        addToProfiles();
     }
 
     public Kit(String name, List<ItemStack> items, ItemStack icon) {
@@ -74,7 +73,7 @@ public class Kit {
         this.playing = 0;
         this.slot = KitService.get().kits.size() + 1;
 
-        checkMissing();
+        addToProfiles();
     }
 
     private HashMap<KitRule, Boolean> rules() {
@@ -96,12 +95,6 @@ public class Kit {
 
     public boolean isArenaAdded(Arena arena) {
         return arenas.contains(arena);
-    }
-
-    private void checkMissing() {
-        LeaderboardService.get().getLeaderboards().put(this, new ArrayList<>());
-
-        addToProfiles();
     }
 
     private void addToProfiles() {

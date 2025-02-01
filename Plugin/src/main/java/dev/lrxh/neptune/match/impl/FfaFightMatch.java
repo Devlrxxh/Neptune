@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.impl;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -7,6 +8,8 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
+import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -28,6 +31,7 @@ public class FfaFightMatch extends Match {
     @Override
     public void end(Participant loser) {
         state = MatchState.ENDING;
+        loser.setLoser(true);
 
         forEachParticipant(participant -> {
             if (winner == null) return;
@@ -78,12 +82,23 @@ public class FfaFightMatch extends Match {
     }
 
     @Override
-    public void onLeave(Participant participant) {
+    public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
-        participant.setDisconnected(true);
-        onDeath(participant);
-    }
+        if (quit) {
+            participant.setDisconnected(true);
+            onDeath(participant);
+            return;
+        } else {
+            participant.setLeft(true);
+        }
+        PlayerUtil.reset(participant.getPlayer());
+        PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+        Profile profile = API.getProfile(participant.getPlayerUUID());
+        profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+        profile.setMatch(null);
 
+        end(participant);
+    }
     @Override
     public void startMatch() {
         state = MatchState.IN_ROUND;

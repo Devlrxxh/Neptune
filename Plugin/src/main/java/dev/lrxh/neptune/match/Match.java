@@ -140,13 +140,23 @@ public abstract class Match {
 
     public void forEachParticipant(Consumer<Participant> action) {
         for (Participant participant : participants) {
-            if (participant.isDisconnected()) continue;
+            if (participant.isDisconnected() || participant.isLeft()) continue;
             Player player = participant.getPlayer();
             if (player != null) {
                 action.accept(participant);
             }
         }
     }
+
+    public void forEachParticipantForce(Consumer<Participant> action) {
+        for (Participant participant : participants) {
+            Player player = participant.getPlayer();
+            if (player != null) {
+                action.accept(participant);
+            }
+        }
+    }
+
 
     public void resetArena() {
         if (arena instanceof StandAloneArena standAloneArena) {
@@ -339,7 +349,7 @@ public abstract class Match {
 
     public abstract void onDeath(Participant participant);
 
-    public abstract void onLeave(Participant participant);
+    public abstract void onLeave(Participant participant, boolean quit);
 
     public abstract void startMatch();
 

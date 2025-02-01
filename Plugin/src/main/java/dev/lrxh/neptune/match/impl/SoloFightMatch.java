@@ -15,6 +15,7 @@ import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.match.tasks.MatchSecondRoundRunnable;
 import dev.lrxh.neptune.profile.data.MatchHistory;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -44,6 +45,7 @@ public class SoloFightMatch extends Match {
     @Override
     public void end(Participant loser) {
         state = MatchState.ENDING;
+        loser.setLoser(true);
 
         if (!isDuel()) {
             addStats();
@@ -86,7 +88,7 @@ public class SoloFightMatch extends Match {
         winnerProfile.getGameData().run(kit, true);
         loserProfile.getGameData().run(kit, false);
 
-        forEachParticipant(participant -> LeaderboardService.get().addChange
+        forEachParticipantForce(participant -> LeaderboardService.get().addChange
                 (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
     }
 
@@ -137,7 +139,7 @@ public class SoloFightMatch extends Match {
         Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
         sendDeathMessage(participant);
 
-        if (!participant.isDisconnected()) {
+        if (!participant.isDisconnected() && !participant.isLeft()) {
             if (kit.is(KitRule.BED_WARS)) {
                 if (!participant.isBedBroken()) {
                     participantKiller.setCombo(0);
@@ -164,8 +166,6 @@ public class SoloFightMatch extends Match {
 
         participant.setSpectator();
 
-        participant.setLoser(true);
-
         PlayerUtil.reset(participant.getPlayer());
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
@@ -174,9 +174,22 @@ public class SoloFightMatch extends Match {
     }
 
     @Override
-    public void onLeave(Participant participant) {
+    public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
-        onDeath(participant);
+        if (quit) {
+            participant.setDisconnected(true);
+            onDeath(participant);
+            return;
+        } else {
+            participant.setLeft(true);
+        }
+        PlayerUtil.reset(participant.getPlayer());
+        PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+        Profile profile = API.getProfile(participant.getPlayerUUID());
+        profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+        profile.setMatch(null);
+
+        end(participant);
     }
 
     @Override

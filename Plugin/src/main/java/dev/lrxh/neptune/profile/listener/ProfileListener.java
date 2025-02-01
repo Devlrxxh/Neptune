@@ -59,7 +59,7 @@ public class ProfileListener implements Listener {
         if (match != null) {
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant == null) return;
-            match.onLeave(match.getParticipant(player.getUniqueId()));
+            match.onLeave(match.getParticipant(player), true);
         }
 
         event.quitMessage(null);

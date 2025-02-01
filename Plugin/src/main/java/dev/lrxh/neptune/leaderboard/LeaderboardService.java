@@ -23,8 +23,8 @@ import java.util.UUID;
 @Getter
 public class LeaderboardService {
     private static LeaderboardService instance;
-    private final List<LeaderboardPlayerEntry> changes = new ArrayList<>();
-    private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards = new LinkedHashMap<>();
+    private final List<LeaderboardPlayerEntry> changes;
+    private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards;
 
     public static LeaderboardService get() {
         if (instance == null) instance = new LeaderboardService();
@@ -32,14 +32,23 @@ public class LeaderboardService {
         return instance;
     }
 
+    public LeaderboardService() {
+        leaderboards = new LinkedHashMap<>();
+        changes = new ArrayList<>();
+    }
+
     private void checkIfMissing() {
         for (Kit kit : KitService.get().kits) {
-
+            if (leaderboards.containsKey(kit)) {
+                continue;
+            }
             List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
+
 
             for (LeaderboardType leaderboardType : LeaderboardType.values()) {
                 leaderboardEntries.add(new LeaderboardEntry(leaderboardType, new ArrayList<>()));
             }
+
             leaderboards.put(kit, leaderboardEntries);
         }
     }
@@ -64,7 +73,6 @@ public class LeaderboardService {
         return newLeaderboard;
     }
 
-
     public void load() {
         checkIfMissing();
         for (LeaderboardType leaderboardType : LeaderboardType.values()) {
@@ -84,12 +92,16 @@ public class LeaderboardService {
     }
 
     private void loadType(LeaderboardType leaderboardType) {
+
         for (Kit kit : KitService.get().kits) {
+
             for (DataDocument document : DatabaseService.get().getDatabase().getAll()) {
+
                 String username = document.getString("username");
                 UUID uuid = UUID.fromString(document.getString("uuid"));
                 KitData kitData = getKitData(uuid, kit);
                 if (kitData == null) continue;
+
                 PlayerEntry playerEntry = new PlayerEntry(username, uuid, leaderboardType.get(kitData));
                 addPlayerEntry(kit, playerEntry, leaderboardType);
             }

@@ -104,7 +104,7 @@ public final class Neptune extends JavaPlugin {
 
         DivisionService.get().loadDivisions();
 
-        LeaderboardService.get().load();
+        LeaderboardService.get();
 
         this.assemble = new Assemble(new ScoreboardAdapter());
 

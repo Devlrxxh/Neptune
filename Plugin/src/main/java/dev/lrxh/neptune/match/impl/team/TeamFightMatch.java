@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.impl.team;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -10,6 +11,8 @@ import dev.lrxh.neptune.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.match.tasks.MatchRespawnRunnable;
+import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
@@ -82,28 +85,31 @@ public class TeamFightMatch extends Match {
 
         participant.setDead(true);
 
-        if (kit.is(KitRule.BED_WARS)) {
-            if (!participant.isBedBroken()) {
-                new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
-                return;
+        if (!participant.isDisconnected() && !participant.isLeft()) {
+            if (kit.is(KitRule.BED_WARS)) {
+                if (!participant.isBedBroken()) {
+                    new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+                    return;
+                }
             }
+            participant.setSpectator();
+
+            PlayerUtil.reset(participant.getPlayer());
+
+            if (participant.getLastAttacker() != null) {
+                participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
+            }
+
+            sendDeathMessage(participant);
+
+            MatchTeam team = getParticipantTeam(participant);
+            team.getDeadParticipants().add(participant);
+
+            if (!team.isLoser()) return;
+
+            PlayerUtil.doVelocityChange(participant.getPlayerUUID());
         }
-        participant.setSpectator();
 
-        PlayerUtil.reset(participant.getPlayer());
-
-        if (participant.getLastAttacker() != null) {
-            participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
-        }
-
-        sendDeathMessage(participant);
-
-        MatchTeam team = getParticipantTeam(participant);
-        team.getDeadParticipants().add(participant);
-
-        if (!team.isLoser()) return;
-
-        PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         end(participant);
     }
@@ -116,10 +122,22 @@ public class TeamFightMatch extends Match {
     }
 
     @Override
-    public void onLeave(Participant participant) {
+    public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
-        participant.setDisconnected(true);
-        onDeath(participant);
+        if (quit) {
+            participant.setDisconnected(true);
+            onDeath(participant);
+            return;
+        } else {
+            participant.setLeft(true);
+        }
+        PlayerUtil.reset(participant.getPlayer());
+        PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+        Profile profile = API.getProfile(participant.getPlayerUUID());
+        profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+        profile.setMatch(null);
+
+        end(participant);
     }
 
     @Override
