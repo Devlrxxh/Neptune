@@ -33,15 +33,13 @@ public class MatchEndRunnable extends NeptuneRunnable {
             return;
         }
         if (endTimer == 0) {
-            for (Participant participant : match.participants) {
-                if (participant.getPlayer() == null) continue;
+            match.forEachParticipant(participant -> {
                 Profile profile = API.getProfile(participant.getPlayerUUID());
-                if (profile.getMatch() == null) continue;
                 PlayerUtil.reset(participant.getPlayer());
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
                 profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
                 profile.setMatch(null);
-            }
+            });
 
             match.sendEndMessage();
 

@@ -2,7 +2,6 @@ package dev.lrxh.neptune.providers.placeholder;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.MatchService;
@@ -65,10 +64,6 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                     case "color":
                         Match match = profile.getMatch();
                         return match != null ? "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar() : "";
-                    case "lastKit":
-                        Kit kit = KitService.get().getKitByName(profile.getGameData().getLastKit());
-                        if (kit == null) break;
-                        return kit.getDisplayName();
                 }
                 break;
             case 2:

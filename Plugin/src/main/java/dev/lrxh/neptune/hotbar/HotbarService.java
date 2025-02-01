@@ -49,7 +49,6 @@ public class HotbarService implements IService {
     public void giveItems(Player player) {
         player.getInventory().clear();
         ProfileState profileState = API.getProfile(player).getState();
-        if (profileState.equals(ProfileState.IN_GAME)) return;
         if (profileState.equals(ProfileState.IN_KIT_EDITOR)) return;
 
         Hotbar inventory = items.get(profileState);
@@ -59,15 +58,6 @@ public class HotbarService implements IService {
                 Item item = getItemForSlot(inventory, slot);
 
                 if (item != null && item.isEnabled()) {
-                    if (!(item instanceof CustomItem)) {
-                        if (item.getAction().equals(ItemAction.PLAY_AGAIN)) {
-                            Kit kit = KitService.get().getKitByName(API.getProfile(player).getGameData().getLastKit());
-                            if (kit != null) {
-                                player.getInventory().setItem(item.getSlot(), item.constructItem(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName())));
-                            }
-                            return;
-                        }
-                    }
                     player.getInventory().setItem(item.getSlot(), item.constructItem(player.getUniqueId()));
                 }
             }

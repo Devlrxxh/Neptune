@@ -82,6 +82,15 @@ public abstract class Match {
         return null;
     }
 
+    public Participant getParticipant(Player player) {
+        for (Participant participant : participants) {
+            if (participant.getPlayerUUID().equals(player.getUniqueId())) {
+                return participant;
+            }
+        }
+        return null;
+    }
+
     public void sendTitle(String header, String footer, int duration) {
         forEachParticipant(participant -> PlayerUtil.sendTitle(participant.getPlayer(), header, footer, duration));
     }

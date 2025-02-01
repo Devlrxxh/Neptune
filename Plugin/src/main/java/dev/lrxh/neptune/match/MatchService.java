@@ -51,14 +51,14 @@ public class MatchService {
 
         matches.add(match);
 
+        //Teleport the Players to their spawn
+        match.teleportToPositions();
+
         //Setup players
         match.setupParticipants();
 
         //Apply kit rules for players
         match.checkRules();
-
-        //Teleport the Players to their spawn
-        match.teleportToPositions();
 
         //Start match start runnable
         new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);

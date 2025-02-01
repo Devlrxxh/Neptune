@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match.impl;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.leaderboard.LeaderboardService;
@@ -46,6 +47,7 @@ public class SoloFightMatch extends Match {
 
         if (!isDuel()) {
             addStats();
+            forEachPlayer(player -> HotbarService.get().giveItems(player));
         }
 
         Participant winner = getWinner();

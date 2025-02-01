@@ -30,7 +30,6 @@ public class GameData {
     private Gson gson;
     private Kit kitEditor;
     private Party party;
-    private String lastKit = "";
     private GlobalStats globalStats;
 
     public GameData() {
@@ -69,7 +68,6 @@ public class GameData {
     }
 
     public void run(Kit kit, boolean won) {
-        setLastKit(kit.getName());
         KitData kitData = this.kitData.get(kit);
         if (won) {
             updateWin(kitData);

@@ -10,7 +10,9 @@ import dev.lrxh.neptune.kit.menu.KitEditorMenu;
 import dev.lrxh.neptune.kit.menu.StatsMenu;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.menu.LeaderboardMenu;
+import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.MatchService;
+import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.match.menu.MatchListMenu;
 import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.party.menu.PartySettingsMenu;
@@ -23,7 +25,9 @@ import dev.lrxh.neptune.queue.QueueService;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import net.kyori.adventure.text.Component;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
@@ -143,11 +147,17 @@ public enum ItemAction {
     PLAY_AGAIN() {
         @Override
         public void execute(Player player) {
-            final Neptune plugin = Neptune.get();
-            Kit kit = KitService.get().getKitByName(API.getProfile(player).getGameData().getLastKit());
-            if (kit != null) {
-                QueueService.get().add(player.getUniqueId(), new Queue(kit));
-            }
+            Profile profile = API.getProfile(player);
+            Match match = profile.getMatch();
+            if (match == null) return;
+            Participant participant = match.getParticipant(player);
+            participant.setDisconnected(true);
+            PlayerUtil.reset(participant.getPlayer());
+            PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+            profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+            profile.setMatch(null);
+
+            QueueService.get().add(player.getUniqueId(), new Queue(match.getKit()));
         }
     },
     SETTINGS() {
