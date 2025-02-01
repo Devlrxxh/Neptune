@@ -4,10 +4,12 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.database.DatabaseService;
 import dev.lrxh.neptune.database.impl.DataDocument;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.kit.menu.KitsManagementMenu;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
@@ -75,32 +77,19 @@ public class KitProcedureListener implements Listener {
             case SET_INV -> {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
+                Kit kit = profile.getKitProcedure().getKit();
+
                 profile.getKitProcedure().setType(KitProcedureType.NONE);
-                profile.getKitProcedure().getKit().setItems(Arrays.stream(player.getInventory().getContents()).toList());
+                kit.setItems(Arrays.stream(player.getInventory().getContents()).toList());
 
-                int i = 0;
-                Neptune.get().setAllowJoin(false);
-                TaskScheduler.get().startTask(new NeptuneRunnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.getOnlinePlayers().forEach(p -> {
-                            PlayerUtil.kick(p, "&cUpdating Database, please rejoin");
-                        });
-                    }
-                });
-                for (DataDocument document : DatabaseService.get().getDatabase().getAll()) {
-                    DataDocument kitStatistics = document.getDataDocument("kitData");
-                    DataDocument kitDocument = kitStatistics.getDataDocument(profile.getKitProcedure().getKit().getName());
-
-                    kitDocument.put("kit", "");
-                    i++;
-
-                    kitStatistics.put("kitData", kitDocument);
-
-                    DatabaseService.get().getDatabase().replace(document.getString("uuid"), document);
+                for (Profile p : ProfileService.get().profiles.values()) {
+                    p.getGameData().getKitData().get(kit).setKitLoadout(kit.getItems());
                 }
-                Neptune.get().setAllowJoin(true);
-                ServerUtils.info("Updated kit for " + i + " players!");
+
+                player.sendMessage(CC.success("Set new inv"));
+                new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
+
+                HotbarService.get().giveItems(player);
             }
             case SET_ICON -> {
                 if (!input.equalsIgnoreCase("Done")) return;

@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.match;
 
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateHealth;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
@@ -114,7 +116,6 @@ public abstract class Match {
 
     public void forEachPlayer(Consumer<Player> action) {
         for (Participant participant : participants) {
-            if (participant.isDisconnected()) continue;
             Player player = participant.getPlayer();
             if (player != null) {
                 action.accept(player);
