@@ -34,6 +34,7 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 
@@ -53,6 +54,17 @@ public class MatchListener implements Listener {
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = ProfileService.get().getByUUID(player.getUniqueId());
+        Match match = profile.getMatch();
+        if (match == null) return;
+
+        Participant participant = match.getParticipant(player.getUniqueId());
+        match.teleportPlayerToPosition(participant);
     }
 
     @EventHandler

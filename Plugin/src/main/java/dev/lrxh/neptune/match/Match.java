@@ -113,6 +113,7 @@ public abstract class Match {
 
     public void forEachPlayer(Consumer<Player> action) {
         for (Participant participant : participants) {
+            if (participant.isDisconnected()) continue;
             Player player = participant.getPlayer();
             if (player != null) {
                 action.accept(player);
@@ -131,6 +132,7 @@ public abstract class Match {
 
     public void forEachParticipant(Consumer<Participant> action) {
         for (Participant participant : participants) {
+            if (participant.isDisconnected()) continue;
             Player player = participant.getPlayer();
             if (player != null) {
                 action.accept(participant);
@@ -309,13 +311,17 @@ public abstract class Match {
 
     public void teleportToPositions() {
         for (Participant participant : participants) {
-            Player player = participant.getPlayer();
-            if (player == null) continue;
-            if (participant.getColor().equals(ParticipantColor.RED)) {
-                player.teleport(arena.getRedSpawn());
-            } else {
-                player.teleport(arena.getBlueSpawn());
-            }
+            teleportPlayerToPosition(participant);
+        }
+    }
+
+    public void teleportPlayerToPosition(Participant participant) {
+        Player player = participant.getPlayer();
+        if (player == null) return;
+        if (participant.getColor().equals(ParticipantColor.RED)) {
+            player.teleport(arena.getRedSpawn());
+        } else {
+            player.teleport(arena.getBlueSpawn());
         }
     }
 

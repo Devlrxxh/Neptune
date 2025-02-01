@@ -105,7 +105,7 @@ public class SoloFightMatch extends Match {
                 new Replacement("<loser>", loser.getNameUnColored()),
                 new Replacement("<winner>", winner.getNameUnColored()));
 
-        for (Participant participant : participants) {
+        forEachParticipant(participant -> {
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
                 TextComponent playMessage = new ClickableComponent(MessagesLocale.MATCH_PLAY_AGAIN.getString(),
                         "/queue " + kit.getName(),
@@ -113,7 +113,7 @@ public class SoloFightMatch extends Match {
 
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
             }
-        }
+        });
     }
 
     @Override

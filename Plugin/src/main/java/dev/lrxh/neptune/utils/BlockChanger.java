@@ -81,7 +81,6 @@ public final class BlockChanger {
         }
         debug("I_BLOCK_DATA Loaded");
 
-        // NMS Classes
         Class<?> CHUNK;
         if (MINOR_VERSION != 16) {
             CHUNK = loadClass(NET_MINECRAFT + "world.level.chunk.Chunk");
@@ -121,9 +120,6 @@ public final class BlockChanger {
         }
 
         debug("LEVEL_HEIGHT_ACCESSOR Loaded");
-
-        Class<?> CRAFT_CHUNK = loadClass(CRAFT_BUKKIT + "CraftChunk");
-        debug("CRAFT_CHUNK Loaded");
 
         CRAFT_WORLD = loadClass(CRAFT_BUKKIT + "CraftWorld");
         debug("CRAFT_WORLD Loaded");
@@ -244,7 +240,7 @@ public final class BlockChanger {
 
         Object nmsChunk = getChunkNMS(nmsWorld, chunk, cache);
 
-        Object cs; // ORG.BUKKIT.CHUNKSECTION
+        Object cs;
         if (LEVEL_HEIGHT_ACCESSOR != null) {
             Object LevelHeightAccessor = getLevelHeightAccessor(nmsChunk);
 
@@ -263,14 +259,14 @@ public final class BlockChanger {
             if ((Short) NON_EMPTY_BLOCK_COUNT.get(cs) == 0 && blockData.getMaterial().isAir()) return;
         }
 
-        Object result = SET_BLOCK_STATE.invoke(cs, x & 15, y & 15, z & 15, nmsBlockData); // ORG.BUKKIT.CHUNKSECTION
+        Object result = SET_BLOCK_STATE.invoke(cs, x & 15, y & 15, z & 15, nmsBlockData);
 
         if (result == null) return;
 
         if (result == getBlockDataNMS(blockData)) return;
 
         for (Player player : chunk.getWorld().getPlayers()) {
-            player.sendBlockChange(location, blockData);
+            if (isPlayerSeeingChunk(player, chunk)) player.sendBlockChange(location, blockData);
         }
     }
 
@@ -336,6 +332,22 @@ public final class BlockChanger {
         return result;
     }
 
+    public boolean isPlayerSeeingChunk(Player player, Chunk chunk) {
+        if (!chunk.isLoaded()) return false;
+
+        int viewDistance = player.getWorld().getViewDistance();
+        int playerX = player.getLocation().getBlockX();
+        int playerZ = player.getLocation().getBlockZ();
+
+        int chunkX = chunk.getX() * 16;
+        int chunkZ = chunk.getZ() * 16;
+
+        int distanceX = Math.abs(playerX - chunkX);
+        int distanceZ = Math.abs(playerZ - chunkZ);
+
+        return distanceX <= viewDistance * 16 && distanceZ <= viewDistance * 16;
+    }
+
     @SneakyThrows
     private Object getChunkNMS(Object world, Chunk chunk, boolean cache) {
         if (cache) {
@@ -343,8 +355,7 @@ public final class BlockChanger {
             if (c != null) return c;
         }
 
-
-        Object nmsChunk = GET_CHUNK_AT.invoke(world, chunk.getX(), chunk.getZ()); // NET.MC.CHUNK
+        Object nmsChunk = GET_CHUNK_AT.invoke(world, chunk.getX(), chunk.getZ());
 
         if (cache) chunkCache.put(chunk, nmsChunk);
 
@@ -389,7 +400,7 @@ public final class BlockChanger {
     public static class Snapshot {
         protected List<BlockSnapshot> snapshots;
 
-        public Snapshot() {
+        protected Snapshot() {
             snapshots = new ArrayList<>();
         }
 
