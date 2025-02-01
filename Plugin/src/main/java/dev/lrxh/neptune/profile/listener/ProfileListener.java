@@ -40,7 +40,7 @@ public class ProfileListener implements Listener {
 
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
-        event.setJoinMessage(null);
+        event.joinMessage(null);
         if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
             ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE, new Replacement("<player>", player.getName()));
         }
@@ -62,7 +62,7 @@ public class ProfileListener implements Listener {
             match.onLeave(match.getParticipant(player.getUniqueId()));
         }
 
-        event.setQuitMessage(null);
+        event.quitMessage(null);
         if (!MessagesLocale.LEAVE_MESSAGE.getString().equals("NONE")) {
             ServerUtils.broadcast(MessagesLocale.LEAVE_MESSAGE, new Replacement("<player>", player.getName()));
         }

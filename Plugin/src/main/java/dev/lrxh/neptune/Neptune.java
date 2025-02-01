@@ -91,7 +91,7 @@ public final class Neptune extends JavaPlugin {
         loadExtensions();
         if (!isEnabled()) return;
 
-        blockChanger = new BlockChanger(this, true);
+        blockChanger = new BlockChanger(this, false);
 
         ConfigService.get().load();
         ArenaService.get().loadArenas();
@@ -108,9 +108,6 @@ public final class Neptune extends JavaPlugin {
         LeaderboardService.get().load();
 
         this.assemble = new Assemble(new ScoreboardAdapter());
-
-
-        System.out.println(MessagesLocale.MATCH_DEATH_KILLED.getString());
 
         registerListeners();
         loadCommandManager();

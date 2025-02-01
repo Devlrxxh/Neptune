@@ -24,10 +24,6 @@ public class ProfileService {
         return instance;
     }
 
-    public void createProfile(PlayerProfile playerProfile) {
-        profiles.put(playerProfile.getId(), new Profile(playerProfile.getName(), playerProfile.getId(), plugin));
-    }
-
     public void createProfile(Player player) {
         profiles.put(player.getUniqueId(), new Profile(player.getName(), player.getUniqueId(), plugin));
     }

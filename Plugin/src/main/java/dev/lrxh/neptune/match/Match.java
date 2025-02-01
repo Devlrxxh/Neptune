@@ -29,6 +29,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.block.data.type.Bed;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
@@ -205,7 +206,9 @@ public abstract class Match {
         Profile profile = API.getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
-        kit.giveLoadout(getParticipant(playerUUID));
+        Participant participant = getParticipant(playerUUID);
+        participant.setLastAttacker(null);
+        kit.giveLoadout(participant);
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {

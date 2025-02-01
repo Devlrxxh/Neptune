@@ -98,6 +98,7 @@ public enum MessagesLocale implements IDataAccessor {
     DUEL_ALREADY_SENT("DUEL.ALREADY_SENT", DataType.STRING, "&cYou have already sent <player> a duel request."),
     DUEL_EXPIRED("DUEL.EXPIRED", DataType.STRING_LIST, "&cYour duel request to <player> has expired."),
     SPECTATE_START("MATCH.SPECTATE.START", DataType.STRING_LIST, "&b<player> &fstarted spectating match."),
+    MATCH_FORFEIT("MATCH.FORFEIT", DataType.STRING_LIST, "&cSomeone rage quit"),
     SPECTATE_STOP("MATCH.SPECTATE.STOP", DataType.STRING_LIST, "&b<player> &fstopped spectating match."),
     SPECTATE_NOT_ALLOWED("MATCH.SPECTATE.SPECTATE_NOT_ALLOWED", DataType.STRING_LIST, "&c<player> has spectating disabled."),
     ERROR_MESSAGE("ERROR_MESSAGE", DataType.STRING, "&c<error>"),

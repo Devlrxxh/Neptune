@@ -3,6 +3,7 @@ package dev.lrxh.neptune.commands;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.entity.Player;
@@ -20,6 +21,7 @@ public class LeaveCommand {
                 break;
             case IN_GAME:
                 profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()));
+                MessagesLocale.MATCH_FORFEIT.send(player);
         }
     }
 }

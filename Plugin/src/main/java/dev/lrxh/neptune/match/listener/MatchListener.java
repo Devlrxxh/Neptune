@@ -44,7 +44,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
-        event.setDeathMessage(null);
+        event.deathMessage(null);
         event.getDrops().clear();
         Profile profile = API.getProfile(player);
         if (profile == null) return;
@@ -59,12 +59,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event) {
         Player player = event.getPlayer();
-        Profile profile = ProfileService.get().getByUUID(player.getUniqueId());
-        Match match = profile.getMatch();
-        if (match == null) return;
-
-        Participant participant = match.getParticipant(player.getUniqueId());
-        match.teleportPlayerToPosition(participant);
+        event.setRespawnLocation(player.getLocation());
     }
 
     @EventHandler
