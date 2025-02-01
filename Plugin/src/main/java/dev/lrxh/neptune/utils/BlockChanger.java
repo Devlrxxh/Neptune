@@ -325,10 +325,10 @@ public final class BlockChanger {
 
     @SneakyThrows
     private Object getBlockDataNMS(BlockData blockData) {
-        Object c = blockDataCache.get(blockData.getMaterial().toString());
+        Object c = blockDataCache.get(blockData);
         if (c != null) return c;
         Object result = GET_STATE.invoke(CRAFT_BLOCK_DATA.cast(blockData));
-        blockDataCache.put(blockData.getMaterial().toString(), result);
+        blockDataCache.put(blockData, result);
         return result;
     }
 

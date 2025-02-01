@@ -176,7 +176,6 @@ public class SoloFightMatch extends Match {
     @Override
     public void onLeave(Participant participant) {
         participant.setDeathCause(DeathCause.DISCONNECT);
-        participant.setDisconnected(true);
         onDeath(participant);
     }
 
