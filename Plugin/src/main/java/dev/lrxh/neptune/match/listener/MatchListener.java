@@ -384,8 +384,8 @@ public class MatchListener implements Listener {
                 TaskScheduler.get().startTaskLater(new NeptuneRunnable() {
                     @Override
                     public void run() {
-                        profile.getMatch().getEntities().add(projectile);
-                    }
+                        projectile.remove();
+                      }
                 }, 20);
             }
         }
