@@ -3,10 +3,12 @@ package dev.lrxh.neptune.hotbar.listener;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Item;
+import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
+import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,6 +25,7 @@ public class ItemListener implements Listener {
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
+        if (profile.getMatch() != null && profile.getMatch().getState().equals(MatchState.IN_ROUND)) return;
         if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) return;
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
 
