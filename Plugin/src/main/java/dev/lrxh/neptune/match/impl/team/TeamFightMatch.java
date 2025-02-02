@@ -32,7 +32,7 @@ public class TeamFightMatch extends Match {
 
     public TeamFightMatch(Arena arena, Kit kit, List<Participant> participants,
                           MatchTeam teamA, MatchTeam teamB) {
-        super(MatchState.STARTING, arena, kit, participants, 1, true);
+        super(MatchState.STARTING, arena, kit, participants, 1, true, false);
         this.teamA = teamA;
         this.teamB = teamB;
     }
@@ -99,6 +99,8 @@ public class TeamFightMatch extends Match {
             if (participant.getLastAttacker() != null) {
                 participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
             }
+
+            this.setEnded(true);
 
             sendDeathMessage(participant);
 

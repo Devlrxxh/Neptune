@@ -35,7 +35,6 @@ public class PlayerUtil {
         player.getInventory().setArmorContents(new ItemStack[4]);
         player.getInventory().setContents(new ItemStack[36]);
         player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-        player.getInventory().setHeldItemSlot(0);
         player.updateInventory();
         player.resetTitle();
     }

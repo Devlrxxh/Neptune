@@ -8,6 +8,7 @@ import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 
 public class MatchSecondRoundRunnable extends NeptuneRunnable {
@@ -31,12 +32,18 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
             return;
         }
 
+        if (match.isEnded()) {
+            stop(plugin);
+            return;
+        }
+
         if (participant.getPlayer() == null) return;
         if (respawnTimer == 0) {
             match.sendMessage(MessagesLocale.ROUND_STARTED);
             match.showParticipant(participant);
-            match.startMatch();
             match.setupParticipants();
+            match.teleportToPositions();
+            match.startMatch();
             stop(plugin);
             return;
         }
@@ -53,7 +60,8 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         if (respawnTimer == 3) {
             match.resetArena();
             match.hideParticipant(participant);
-            match.teleportToPositions();
+            match.setupParticipants();
+            participant.getPlayer().setGameMode(GameMode.SPECTATOR);
         }
         respawnTimer--;
     }

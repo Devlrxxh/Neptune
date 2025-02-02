@@ -35,7 +35,10 @@ import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
@@ -53,6 +56,7 @@ public abstract class Match {
     public List<Participant> participants;
     public int rounds;
     private boolean duel;
+    private boolean ended;
 
     public void playSound(Sound sound) {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));

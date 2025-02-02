@@ -23,7 +23,7 @@ public class FfaFightMatch extends Match {
     private Participant winner;
 
     public FfaFightMatch(Arena arena, Kit kit, List<Participant> participants) {
-        super(MatchState.STARTING, arena, kit, participants, 1, true);
+        super(MatchState.STARTING, arena, kit, participants, 1, true, false);
         this.winner = null;
         this.deadParticipants = new ArrayList<>();
     }
@@ -64,6 +64,7 @@ public class FfaFightMatch extends Match {
         if (!isLastPlayerStanding()) return;
 
         winner = getLastPlayerStanding();
+        this.setEnded(true);
 
         end(participant);
     }

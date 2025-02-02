@@ -25,6 +25,7 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class SoloFightMatch extends Match {
     private final Participant participantB;
 
     public SoloFightMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB, int rounds) {
-        super(MatchState.STARTING, arena, kit, participants, rounds, duel);
+        super(MatchState.STARTING, arena, kit, participants, rounds, duel, false);
         this.participantA = participantA;
         this.participantB = participantB;
     }
@@ -132,6 +133,7 @@ public class SoloFightMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
         hideParticipant(participant);
+        participant.getPlayer().setGameMode(GameMode.SPECTATOR);
 
         participant.setDead(true);
 
@@ -163,6 +165,8 @@ public class SoloFightMatch extends Match {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
         }
 
+        this.setEnded(true);
+
         participant.setSpectator();
 
         PlayerUtil.reset(participant.getPlayer());
@@ -175,6 +179,7 @@ public class SoloFightMatch extends Match {
     @Override
     public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
+        setEnded(true);
         if (quit) {
             participant.setDisconnected(true);
             onDeath(participant);
