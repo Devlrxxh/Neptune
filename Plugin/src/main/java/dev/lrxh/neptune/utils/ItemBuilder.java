@@ -64,14 +64,13 @@ public class ItemBuilder {
         return this;
     }
 
-    public ItemBuilder clearFlags() {
+    public void clearFlags() {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.addItemFlags(ItemFlag.values());
             item.setItemMeta(meta);
         }
         resetAmount();
-        return this;
     }
 
     public ItemBuilder makeUnbreakable() {

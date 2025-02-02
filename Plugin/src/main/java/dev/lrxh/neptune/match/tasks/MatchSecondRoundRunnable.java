@@ -34,7 +34,6 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         if (participant.getPlayer() == null) return;
         if (respawnTimer == 0) {
             match.sendMessage(MessagesLocale.ROUND_STARTED);
-            match.teleportToPositions();
             match.showParticipant(participant);
             match.startMatch();
             match.setupParticipants();
@@ -54,6 +53,7 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         if (respawnTimer == 3) {
             match.resetArena();
             match.hideParticipant(participant);
+            match.teleportToPositions();
         }
         respawnTimer--;
     }

@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.hotbar.listener;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.match.impl.MatchState;
@@ -20,7 +21,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class ItemListener implements Listener {
 
-
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         Player player = event.getPlayer();
@@ -36,10 +36,11 @@ public class ItemListener implements Listener {
         if (!(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)))
             return;
 
-        Item clickedItem = Item.getByItemStack(event.getItem(), player.getUniqueId());
+        Item clickedItem = Item.getByItemStack(profile.getState(), event.getItem(), player.getUniqueId());
         if (clickedItem == null) return;
 
         if (profile.cooldown) return;
+
 
         if (clickedItem instanceof CustomItem customItem) {
             String command = customItem.getCommand();

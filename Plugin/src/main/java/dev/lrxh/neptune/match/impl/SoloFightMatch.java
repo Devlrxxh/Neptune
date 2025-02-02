@@ -68,9 +68,8 @@ public class SoloFightMatch extends Match {
     }
 
     private void removePlaying() {
-        for (Participant ignored : participants) {
+        for (Participant ignored : participants)
             kit.removePlaying();
-        }
     }
 
     public void addStats() {

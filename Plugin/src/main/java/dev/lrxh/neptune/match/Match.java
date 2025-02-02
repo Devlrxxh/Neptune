@@ -58,13 +58,6 @@ public abstract class Match {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
     }
 
-    public Set<Player> getPlayers() {
-        Set<Player> players = new HashSet<>();
-        forEachPlayer(players::add);
-
-        return players;
-    }
-
     public Location getSpawn(Participant participant) {
         if (participant.getColor().equals(ParticipantColor.RED)) {
             return arena.getRedSpawn();
@@ -172,6 +165,10 @@ public abstract class Match {
 
         if (this instanceof SoloFightMatch) {
             MatchState matchState = this.getState();
+
+            if (kit.is(KitRule.BEST_OF_THREE) && matchState.equals(MatchState.STARTING)) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
+            }
 
             switch (matchState) {
                 case STARTING:

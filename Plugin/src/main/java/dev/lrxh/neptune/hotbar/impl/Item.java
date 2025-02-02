@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.hotbar.impl;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import lombok.AllArgsConstructor;
@@ -24,15 +26,9 @@ public class Item {
     private boolean enabled;
     private byte slot;
 
-    public static Item getByItemStack(ItemStack itemStack, UUID playerUUID) {
-        for (Map.Entry<ProfileState, Hotbar> entry : HotbarService.get().getItems().entrySet()) {
-            Hotbar inventory = entry.getValue();
-            Item foundItem = getItemFromInventory(itemStack, inventory, playerUUID);
-            if (foundItem != null) {
-                return foundItem;
-            }
-        }
-        return null;
+    public static Item getByItemStack(ProfileState profileState , ItemStack itemStack, UUID playerUUID) {
+            Hotbar inventory = HotbarService.get().getItems().get(profileState);
+        return getItemFromInventory(itemStack, inventory, playerUUID);
     }
 
     private static Item getItemFromInventory(ItemStack itemStack, Hotbar inventory, UUID playerUUID) {
