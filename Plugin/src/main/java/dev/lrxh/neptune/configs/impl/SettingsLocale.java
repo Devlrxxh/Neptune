@@ -19,6 +19,7 @@ public enum SettingsLocale implements IDataAccessor {
     DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL, SQLITE", DataType.STRING, "SQLITE"),
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
+    ENABLED_SCOREBOARD("SCOREBOARD.ENABLE", "Enable scoreboard in game", DataType.BOOLEAN, "false"),
     REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30");
     private final String path;
     private final String comment;

@@ -21,7 +21,15 @@ public enum EventType {
         public void start(List<Participant> participants, Kit kit) {
             Arena arena = kit.getRandomArena();
 
-            if (arena != null && !arena.isSetup()) {
+            if (arena == null) {
+
+                for (Participant participant : participants) {
+                    participant.sendMessage(CC.error("No arenas were found!"));
+                }
+                return;
+            }
+
+            if (!arena.isSetup()) {
 
                 for (Participant participant : participants) {
                     participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
@@ -51,7 +59,15 @@ public enum EventType {
 
             Arena arena = kit.getRandomArena();
 
-            if (arena != null && !arena.isSetup()) {
+            if (arena == null) {
+
+                for (Participant participant : participants) {
+                    participant.sendMessage(CC.error("No arenas were found!"));
+                }
+                return;
+            }
+
+            if (!arena.isSetup()) {
 
                 for (Participant participant : participants) {
                     participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));

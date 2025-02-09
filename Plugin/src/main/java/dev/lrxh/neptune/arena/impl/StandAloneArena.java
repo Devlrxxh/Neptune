@@ -1,13 +1,11 @@
 package dev.lrxh.neptune.arena.impl;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
-
 
 @Getter
 @Setter
@@ -40,11 +38,11 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         if (min == null || max == null) return;
-        snapshot = Neptune.get().getBlockChanger().capture(min, max);
+        snapshot = BlockChanger.capture(min, max);
     }
 
     public void restoreSnapshot() {
-        Neptune.get().getBlockChanger().revert(snapshot);
+        BlockChanger.revert(getWorld(), snapshot);
     }
 
     public World getWorld() {

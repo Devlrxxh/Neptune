@@ -71,7 +71,6 @@ public final class Neptune extends JavaPlugin {
     private EntityHider entityHider;
     @Setter
     private boolean allowJoin;
-    private BlockChanger blockChanger;
 
     public static Neptune get() {
         return instance;
@@ -90,7 +89,7 @@ public final class Neptune extends JavaPlugin {
         loadExtensions();
         if (!isEnabled()) return;
 
-        blockChanger = new BlockChanger(this, false);
+        BlockChanger.load(this, true);
 
         ConfigService.get().load();
         ArenaService.get().loadArenas();
@@ -106,7 +105,10 @@ public final class Neptune extends JavaPlugin {
 
         LeaderboardService.get();
 
-        this.assemble = new Assemble(new ScoreboardAdapter());
+
+        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
+            this.assemble = new Assemble(new ScoreboardAdapter());
+        }
 
         registerListeners();
         loadCommandManager();
