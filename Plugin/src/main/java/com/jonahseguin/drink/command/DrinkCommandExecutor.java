@@ -42,13 +42,15 @@ public class DrinkCommandExecutor implements CommandExecutor {
                     } else {
                         if (container.isDefaultCommandIsHelp()) {
                             commandService.getHelpService().sendHelpFor(sender, container);
-                        } else {
+                        }
+                        else {
                             sender.sendMessage(ChatColor.RED + "Please choose a sub-command.  Use '/" + label + " help' for available commands.");
                         }
                     }
                 }
                 return true;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex) {
                 sender.sendMessage(ChatColor.RED + "An exception occurred while performing this command.");
                 ex.printStackTrace();
             }

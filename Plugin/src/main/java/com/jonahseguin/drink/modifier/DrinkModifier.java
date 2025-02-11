@@ -6,6 +6,7 @@ import com.jonahseguin.drink.parametric.CommandParameter;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.annotation.Annotation;
 import java.util.Optional;
 
 public interface DrinkModifier<T> {

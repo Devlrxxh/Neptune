@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
+import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,7 +49,8 @@ public class BooleanProvider extends DrinkProvider<Boolean> {
         }
         try {
             return Boolean.parseBoolean(s);
-        } catch (NumberFormatException ex) {
+        }
+        catch (NumberFormatException ex) {
             throw new CommandExitMessage("Required: Boolean (true/false), Given: '" + s + "'");
         }
     }
@@ -66,9 +68,11 @@ public class BooleanProvider extends DrinkProvider<Boolean> {
         }
         if ("true".startsWith(prefix)) {
             return SUGGEST_TRUE;
-        } else if ("false".startsWith(prefix)) {
+        }
+        else if ("false".startsWith(prefix)) {
             return SUGGEST_FALSE;
-        } else {
+        }
+        else {
             return Collections.emptyList();
         }
     }

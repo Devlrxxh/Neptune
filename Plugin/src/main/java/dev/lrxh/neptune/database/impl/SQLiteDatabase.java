@@ -17,7 +17,6 @@ public class SQLiteDatabase implements IDatabase {
 
     public SQLiteDatabase() {
         this.dbPath = "jdbc:sqlite:" + Neptune.get().getDataFolder() + "/neptune.db";
-        ServerUtils.error(dbPath);
     }
 
     @Override

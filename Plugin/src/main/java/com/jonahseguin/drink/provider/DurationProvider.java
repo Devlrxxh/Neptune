@@ -3,16 +3,49 @@ package com.jonahseguin.drink.provider;
 import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
+import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 public class DurationProvider extends DrinkProvider<Date> {
 
     public static final DurationProvider INSTANCE = new DurationProvider();
+
+    @Override
+    public boolean doesConsumeArgument() {
+        return true;
+    }
+
+    @Override
+    public boolean isAsync() {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public Date provide(@Nonnull CommandArg arg, @Nonnull List<? extends Annotation> annotations) throws CommandExitMessage {
+        String s = arg.get();
+        try {
+            long l = smartParseDuration(s);
+            if (l != -1) {
+                return new Date(l);
+            } else {
+                throw new CommandExitMessage("Duration must be in format hh:mm or hh:mm:ss or 1h2m3s");
+            }
+        } catch (Exception ex) {
+            throw new CommandExitMessage("Duration must be in format hh:mm or hh:mm:ss or 1h2m3s");
+        }
+    }
+
+    @Override
+    public String argumentDescription() {
+        return "duration";
+    }
 
     public static long smartParseDuration(String s) {
         if (s.contains(":")) {
@@ -26,7 +59,7 @@ public class DurationProvider extends DrinkProvider<Date> {
                     int h = Integer.parseInt(hours);
                     int m = Integer.parseInt(minutes);
                     int sec = Integer.parseInt(seconds);
-                    return ((long) h * 60 * 60 * 1000) + ((long) m * 60 * 1000) + (sec * 1000L);
+                    return (h * 60 * 60 * 1000) + (m * 60 * 1000) + (sec * 1000);
                 } catch (NumberFormatException ex) {
                     return 0;
                 }
@@ -35,7 +68,7 @@ public class DurationProvider extends DrinkProvider<Date> {
                 try {
                     int h = Integer.parseInt(hours);
                     int m = Integer.parseInt(minutes);
-                    return ((long) h * 60 * 60 * 1000) + ((long) m * 60 * 1000);
+                    return (h * 60 * 60 * 1000) + (m * 60 * 1000);
                 } catch (NumberFormatException ex) {
                     return 0;
                 }
@@ -54,9 +87,9 @@ public class DurationProvider extends DrinkProvider<Date> {
             return -1;
         }
 
-        long hoursToMS = ((long) h * 60 * 60 * 1000);
-        long minutesToMS = ((long) m * 60 * 1000);
-        long secondsToMS = (s * 1000L);
+        long hoursToMS = (h * 60 * 60 * 1000);
+        long minutesToMS = (m * 60 * 1000);
+        long secondsToMS = (s * 1000);
 
         return hoursToMS + minutesToMS + secondsToMS;
     }
@@ -115,37 +148,6 @@ public class DurationProvider extends DrinkProvider<Date> {
 
     public static boolean isTimeModifier(char c) {
         return c == 'h' || c == 'm' || c == 's';
-    }
-
-    @Override
-    public boolean doesConsumeArgument() {
-        return true;
-    }
-
-    @Override
-    public boolean isAsync() {
-        return false;
-    }
-
-    @Nullable
-    @Override
-    public Date provide(@Nonnull CommandArg arg, @Nonnull List<? extends Annotation> annotations) throws CommandExitMessage {
-        String s = arg.get();
-        try {
-            long l = smartParseDuration(s);
-            if (l != -1) {
-                return new Date(l);
-            } else {
-                throw new CommandExitMessage("Duration must be in format hh:mm or hh:mm:ss or 1h2m3s");
-            }
-        } catch (Exception ex) {
-            throw new CommandExitMessage("Duration must be in format hh:mm or hh:mm:ss or 1h2m3s");
-        }
-    }
-
-    @Override
-    public String argumentDescription() {
-        return "duration";
     }
 
 }

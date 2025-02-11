@@ -43,7 +43,8 @@ public class DrinkTabCompleter implements TabCompleter {
                             suggestions.addAll(container.getCommandSuggestions(tC));
                         }
                         return suggestions;
-                    } else {
+                    }
+                    else {
                         if (args.length == 0 || args.length == 1) {
                             String tC = "";
                             if (args.length > 0) {
@@ -52,7 +53,8 @@ public class DrinkTabCompleter implements TabCompleter {
                             return container.getCommandSuggestions(tC);
                         }
                     }
-                } else {
+                }
+                else {
                     if (args.length == 0 || args.length == 1) {
                         String tC = "";
                         if (args.length > 0) {
@@ -61,7 +63,8 @@ public class DrinkTabCompleter implements TabCompleter {
                         return container.getCommandSuggestions(tC);
                     }
                 }
-            } else {
+            }
+            else {
                 if (args.length == 0 || args.length == 1) {
                     String tC = "";
                     if (args.length > 0) {

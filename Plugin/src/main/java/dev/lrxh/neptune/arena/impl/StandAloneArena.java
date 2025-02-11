@@ -36,6 +36,11 @@ public class StandAloneArena extends Arena {
         takeSnapshot();
     }
 
+    public void duplicate() {
+        if (min == null || max == null) return;
+        BlockChanger.duplicate(getWorld(), snapshot, 200, 0);
+    }
+
     public void takeSnapshot() {
         if (min == null || max == null) return;
         snapshot = BlockChanger.capture(min, max);

@@ -3,6 +3,7 @@ package dev.lrxh.neptune;
 import com.github.retrooper.packetevents.PacketEvents;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
+import com.jonahseguin.drink.provider.spigot.UUIDProvider;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.command.ArenaProvider;
@@ -54,12 +55,15 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @Getter
@@ -89,8 +93,7 @@ public final class Neptune extends JavaPlugin {
         loadExtensions();
         if (!isEnabled()) return;
 
-        BlockChanger.load(this, true);
-
+        BlockChanger.load(this, false);
         ConfigService.get().load();
         ArenaService.get().loadArenas();
         KitService.get().loadKits();
@@ -173,6 +176,7 @@ public final class Neptune extends JavaPlugin {
         CommandService drink = Drink.get(this);
         drink.bind(Kit.class).toProvider(new KitProvider());
         drink.bind(Arena.class).toProvider(new ArenaProvider());
+        drink.bind(UUID.class).toProvider(new UUIDProvider());
 
         drink.register(new KitEditorCommand(), "kiteditor");
         drink.register(new StatsCommand(), "stats");

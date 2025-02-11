@@ -14,12 +14,6 @@ import java.util.UUID;
 
 public class UUIDProvider extends DrinkProvider<UUID> {
 
-    private final Plugin plugin;
-
-    public UUIDProvider(Plugin plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public boolean doesConsumeArgument() {
         return true;

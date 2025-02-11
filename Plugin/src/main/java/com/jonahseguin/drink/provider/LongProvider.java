@@ -3,10 +3,12 @@ package com.jonahseguin.drink.provider;
 import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
+import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.List;
 
 public class LongProvider extends DrinkProvider<Long> {
@@ -39,7 +41,8 @@ public class LongProvider extends DrinkProvider<Long> {
         String s = arg.get();
         try {
             return Long.parseLong(s);
-        } catch (NumberFormatException ex) {
+        }
+        catch (NumberFormatException ex) {
             throw new CommandExitMessage("Required: Long Number, Given: '" + s + "'");
         }
     }

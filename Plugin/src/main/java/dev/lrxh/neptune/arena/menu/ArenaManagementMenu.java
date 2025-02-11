@@ -38,9 +38,11 @@ public class ArenaManagementMenu extends Menu {
 
             buttons.add(new ArenaRenameButton(23, arena));
             buttons.add(new DisplayButton(22, Material.MAP, "&aTeleport to arena", o -> player.teleport(arena.getBlueSpawn())));
+
             buttons.add(new ArenaDeleteButton(21, arena));
 
             if (arena instanceof StandAloneArena standAloneArena) {
+                buttons.add(new DisplayButton(9, Material.LIGHT_BLUE_STAINED_GLASS, "&aDuplicate Arena", o -> standAloneArena.duplicate()));
                 buttons.add(new ArenaSetLimitButton(4, arena));
                 buttons.add(new ArenaSetedgeButton(8, standAloneArena, EdgeType.MAX));
                 buttons.add(new ArenaSetedgeButton(7, standAloneArena, EdgeType.MIN));

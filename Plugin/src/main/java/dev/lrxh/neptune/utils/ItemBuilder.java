@@ -18,15 +18,11 @@ public class ItemBuilder {
     private final ItemStack item;
 
     public ItemBuilder(Material material) {
-        item = new ItemStack(Objects.requireNonNullElse(material, Material.BARRIER));
+        item = new ItemStack(Objects.requireNonNullElse(material, Material.AIR));
     }
 
     public ItemBuilder(String material) {
-        if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(Material.valueOf(material)));
-        } else {
-            item = new ItemStack(Material.BARRIER);
-        }
+        item = new ItemStack(Objects.requireNonNullElse(Material.valueOf(material), Material.AIR));
     }
 
     public ItemBuilder(String material, UUID playerUUID) {
@@ -41,9 +37,9 @@ public class ItemBuilder {
         if (nMaterial != null && player != null) {
             item = nMaterial.getItem(player);
         } else if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(Material.valueOf(material)));
+            item = new ItemStack(Objects.requireNonNullElse(Material.valueOf(material), Material.AIR));
         } else {
-            item = new ItemStack(Material.BARRIER);
+            item = new ItemStack(Material.AIR);
         }
     }
 
@@ -51,7 +47,7 @@ public class ItemBuilder {
         if (itemStack != null) {
             item = new ItemStack(itemStack);
         } else {
-            item = new ItemStack(Material.BARRIER);
+            item = new ItemStack(Material.AIR);
         }
     }
 
@@ -64,7 +60,7 @@ public class ItemBuilder {
         return this;
     }
 
-    public void clearFlags() {
+    private void clearFlags() {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.addItemFlags(ItemFlag.values());

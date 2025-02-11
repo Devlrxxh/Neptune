@@ -40,7 +40,7 @@ public class DrinkHelpService {
     }
 
     public String getUsageMessage(DrinkCommandContainer container, DrinkCommand command) {
-        String usage = ChatColor.RED + "Usage: /" + container.getName() + " ";
+        String usage = ChatColor.RED + "Command Usage: /" + container.getName() + " ";
         if (command.getName().length() > 0) {
             usage += command.getName() + " ";
         }

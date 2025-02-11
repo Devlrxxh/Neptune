@@ -41,25 +41,28 @@ public class CommandArgs {
         lock.lock();
         try {
             return args.size() > index;
-        } finally {
+        }
+        finally {
             lock.unlock();
         }
     }
 
-    public void skip() {
-        lock.lock();
-        try {
-            index--;
-        } finally {
-            lock.unlock();
-        }
-    }
+	public void skip() {
+		lock.lock();
+		try {
+			index--;
+		}
+		finally {
+			lock.unlock();
+		}
+	}
 
     public String next() {
         lock.lock();
         try {
             return args.get(index++);
-        } finally {
+        }
+        finally {
             lock.unlock();
         }
     }
@@ -71,6 +74,7 @@ public class CommandArgs {
     public Player getSenderAsPlayer() {
         return (Player) sender;
     }
+
 
 
 }
