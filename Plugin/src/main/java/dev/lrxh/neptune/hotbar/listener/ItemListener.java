@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.hotbar.listener;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.impl.CustomItem;
 import dev.lrxh.neptune.hotbar.impl.Item;
 import dev.lrxh.neptune.match.impl.MatchState;
@@ -9,7 +8,6 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
-import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

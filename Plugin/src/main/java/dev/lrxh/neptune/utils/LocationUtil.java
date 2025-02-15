@@ -20,8 +20,8 @@ public class LocationUtil {
         return "NONE";
     }
 
-    public Location addOffsetToLocation(Location oldLoc, int offset) {
-        return new Location(oldLoc.getWorld(), oldLoc.getX(), oldLoc.getY(), oldLoc.getZ() + offset);
+    public Location addOffsetX(Location location, int offset) {
+        return new Location(location.getWorld(), location.getX() + offset, location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
     public Location deserialize(String source) {

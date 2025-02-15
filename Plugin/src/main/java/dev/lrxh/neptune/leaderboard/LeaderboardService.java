@@ -26,15 +26,15 @@ public class LeaderboardService {
     private final List<LeaderboardPlayerEntry> changes;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards;
 
+    public LeaderboardService() {
+        leaderboards = new LinkedHashMap<>();
+        changes = new ArrayList<>();
+    }
+
     public static LeaderboardService get() {
         if (instance == null) instance = new LeaderboardService();
 
         return instance;
-    }
-
-    public LeaderboardService() {
-        leaderboards = new LinkedHashMap<>();
-        changes = new ArrayList<>();
     }
 
     private void checkIfMissing() {

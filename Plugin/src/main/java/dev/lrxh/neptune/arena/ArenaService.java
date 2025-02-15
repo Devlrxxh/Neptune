@@ -45,8 +45,9 @@ public class ArenaService implements IService {
                     Location edge2 = LocationUtil.deserialize(config.getString(path + "max"));
 
                     double limit = config.getDouble(path + "limit");
+                    int dupeCount = config.getInt(path + "dupeCount", 5);
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, dupeCount, enabled, false);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
@@ -80,7 +81,8 @@ public class ArenaService implements IService {
                         new Value("type", "STANDALONE"),
                         new Value("min", LocationUtil.serialize(standAloneArena.getMin())),
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
-                        new Value("limit", standAloneArena.getLimit())
+                        new Value("limit", standAloneArena.getLimit()),
+                        new Value("dupeCount", standAloneArena.getDuplicateCount())
                 ));
             } else {
                 values.add(new Value("type", "SHARED"));

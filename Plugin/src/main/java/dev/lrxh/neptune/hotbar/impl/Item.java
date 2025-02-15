@@ -1,9 +1,7 @@
 package dev.lrxh.neptune.hotbar.impl;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.profile.data.ProfileState;
-import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import lombok.AllArgsConstructor;
@@ -13,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Map;
 import java.util.UUID;
 
 
@@ -26,8 +23,8 @@ public class Item {
     private boolean enabled;
     private byte slot;
 
-    public static Item getByItemStack(ProfileState profileState , ItemStack itemStack, UUID playerUUID) {
-            Hotbar inventory = HotbarService.get().getItems().get(profileState);
+    public static Item getByItemStack(ProfileState profileState, ItemStack itemStack, UUID playerUUID) {
+        Hotbar inventory = HotbarService.get().getItems().get(profileState);
         return getItemFromInventory(itemStack, inventory, playerUUID);
     }
 

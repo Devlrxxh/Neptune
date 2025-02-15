@@ -385,7 +385,7 @@ public class MatchListener implements Listener {
                     @Override
                     public void run() {
                         projectile.remove();
-                      }
+                    }
                 }, 20);
             }
         }

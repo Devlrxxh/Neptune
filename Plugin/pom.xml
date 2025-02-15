@@ -55,12 +55,6 @@
         </dependency>
 
         <dependency>
-            <groupId>dev.lrxh.knockback</groupId>
-            <artifactId>KnockbackController</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
@@ -75,16 +69,10 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.14</version>
-        </dependency>
-
-
-        <dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>4.11.1</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
@@ -107,14 +95,6 @@
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <artifactSet>
-                        <includes>
-                            <include>dev.lrxh.knockback:KnockbackController</include>
-                            <include>org.mongodb:mongodb-driver-core</include>
-                            <include>org.mongodb:mongodb-driver-sync</include>
-                            <include>org.mongodb:bson</include>
-                        </includes>
-                    </artifactSet>
                 </configuration>
                 <executions>
                     <execution>

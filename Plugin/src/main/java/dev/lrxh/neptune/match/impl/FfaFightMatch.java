@@ -100,6 +100,7 @@ public class FfaFightMatch extends Match {
 
         end(participant);
     }
+
     @Override
     public void startMatch() {
         state = MatchState.IN_ROUND;

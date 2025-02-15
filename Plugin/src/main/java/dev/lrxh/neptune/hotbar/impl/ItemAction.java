@@ -1,11 +1,8 @@
 package dev.lrxh.neptune.hotbar.impl;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.divisions.menu.DivisionsMenu;
-import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitService;
 import dev.lrxh.neptune.kit.menu.KitEditorMenu;
 import dev.lrxh.neptune.kit.menu.StatsMenu;
 import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
@@ -27,7 +24,6 @@ import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
