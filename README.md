@@ -6,17 +6,19 @@
 • Arena System (Shared, Standalone)  
 • Kit System (Boxing, Crystal, Axe, etc.)  
 • Kit Editor with Inventories  
-• View match System  
-• Queue Ping Range System (Soon)  
+• View Match System  
+• View Match History  
+• Queue Ping Range System  
 • Animated Scoreboard System  
 • Placeholder API (Compatibility)  
 • All hotbars items configurable  
 • All messages configurable  
 • Advanced Arena system  
 • Player Statistics  
-• Player Particle Death Effects (Soon)  
+• Player Particle Death Effects  
 • Nearly everything is customizable (Menus, scoreboard, etc.)  
-• Easy to use managment menus
+• Easy to use management menus  
+• Leaderboards (Wins, Deaths, Best Win Streak)  
 
 📎**Requirements:**  
 • (Optional) FastAsyncWorldEdit  
@@ -31,6 +33,3 @@
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/9957b2a0-8292-4cb3-9e80-ca7c8442a70c)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/cd7adf54-f4b3-425c-add5-99cad13b6174)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/f2b0436a-3d37-47b1-839b-588ead692227)
-
-🖥️**Test Server:**
-IP: aegis.rip
