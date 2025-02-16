@@ -160,11 +160,11 @@ public class Kit {
         if (player == null) return;
         Profile profile = API.getProfile(playerUUID);
         GameData gameData = profile.getGameData();
-        if (gameData.getKitData() == null || gameData.getKitData().get(this) == null ||
-                gameData.getKitData().get(this).getKitLoadout().isEmpty()) {
+        if (gameData.getKitData() == null || gameData.get(this) == null ||
+                gameData.get(this).getKitLoadout().isEmpty()) {
             player.getInventory().setContents(items.toArray(new ItemStack[0]));
         } else {
-            player.getInventory().setContents(gameData.getKitData().get(this).getKitLoadout().toArray(new ItemStack[0]));
+            player.getInventory().setContents(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]));
         }
 
         player.updateInventory();
@@ -175,11 +175,11 @@ public class Kit {
         if (player == null) return;
         Profile profile = API.getProfile(participant.getPlayerUUID());
         GameData gameData = profile.getGameData();
-        if (gameData.getKitData() == null || gameData.getKitData().get(this) == null ||
-                gameData.getKitData().get(this).getKitLoadout().isEmpty()) {
+        if (gameData.getKitData() == null || gameData.get(this) == null ||
+                gameData.get(this).getKitLoadout().isEmpty()) {
             player.getInventory().setContents(ItemUtils.color(items.toArray(new ItemStack[0]), participant.getColor().getContentColor()));
         } else {
-            player.getInventory().setContents(ItemUtils.color(gameData.getKitData().get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor()));
+            player.getInventory().setContents(ItemUtils.color(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor()));
         }
 
         player.updateInventory();

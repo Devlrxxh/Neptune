@@ -102,7 +102,7 @@ public class Profile {
         for (Kit kit : KitService.get().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
             if (kitDocument == null) return;
-            KitData profileKitData = gameData.getKitData().get(kit);
+            KitData profileKitData = gameData.get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
@@ -138,7 +138,7 @@ public class Profile {
 
         for (Kit kit : KitService.get().kits) {
             DataDocument kitStatisticsDocument = new DataDocument();
-            KitData entry = gameData.getKitData().get(kit);
+            KitData entry = gameData.get(kit);
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
             kitStatisticsDocument.put("WINS", entry.getWins());
             kitStatisticsDocument.put("LOSSES", entry.getLosses());

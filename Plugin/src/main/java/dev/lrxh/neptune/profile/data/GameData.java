@@ -43,6 +43,14 @@ public class GameData {
         this.globalStats = new GlobalStats();
     }
 
+    public KitData get(Kit kit) {
+        if (kitData.get(kit) == null) {
+            kitData.put(kit, new KitData());
+        }
+
+        return kitData.get(kit);
+    }
+
     public int countGlobalWins() {
         int value = 0;
         for (KitData kitData : kitData.values()) {

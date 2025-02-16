@@ -30,10 +30,10 @@ public class KitEditorCommand {
         if (player == null) return;
         Profile profile = API.getProfile(player);
 
-        profile.getGameData().getKitData().get(kit).setKitLoadout(kit.getItems());
+        profile.getGameData().get(kit).setKitLoadout(kit.getItems());
 
         if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
-            profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKitLoadout
+            profile.getGameData().get(profile.getGameData().getKitEditor()).setKitLoadout
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());

@@ -67,7 +67,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                 }
                 break;
             case 2:
-                KitData data = profile.getGameData().getKitData().get(KitService.get().getKitByName(parts[0]));
+                KitData data = profile.getGameData().get(KitService.get().getKitByName(parts[0]));
                 switch (parts[1]) {
                     case "division":
                         return data == null ? "" : data.getDivision().getDisplayName();

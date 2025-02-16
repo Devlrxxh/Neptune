@@ -23,7 +23,7 @@ public class StatButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        KitData data = API.getProfile(target).getGameData().getKitData().get(kit);
+        KitData data = API.getProfile(target).getGameData().get(kit);
 
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.STAT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))

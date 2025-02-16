@@ -11,8 +11,8 @@ public class DuplicateArena extends StandAloneArena {
     public DuplicateArena(StandAloneArena parent, int offset) {
         super(parent.getName() + "#" + offset, parent.getDisplayName(), LocationUtil.addOffsetX(parent.getRedSpawn(), offset),  LocationUtil.addOffsetX(parent.getBlueSpawn(), offset), LocationUtil.addOffsetX(parent.getMin(), offset), LocationUtil.addOffsetX(parent.getMax(), offset), parent.getLimit(), 0, true, false);
         this.offset = offset;
+        restoreSnapshot();
     }
-
 
     @Override
     public void restoreSnapshot() {

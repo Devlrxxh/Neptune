@@ -80,7 +80,7 @@ public class KitProcedureListener implements Listener {
                 kit.setItems(Arrays.stream(player.getInventory().getContents()).toList());
 
                 for (Profile p : ProfileService.get().profiles.values()) {
-                    p.getGameData().getKitData().get(kit).setKitLoadout(kit.getItems());
+                    p.getGameData().get(kit).setKitLoadout(kit.getItems());
                 }
 
                 for (DataDocument document : DatabaseService.get().getDatabase().getAll()) {

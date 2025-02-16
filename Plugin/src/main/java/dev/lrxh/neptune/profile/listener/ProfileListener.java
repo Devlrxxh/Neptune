@@ -76,7 +76,7 @@ public class ProfileListener implements Listener {
         Profile profile = API.getProfile(player);
         if (profile == null) return;
         if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
-            profile.getGameData().getKitData().get(profile.getGameData().getKitEditor()).setKitLoadout
+            profile.getGameData().get(profile.getGameData().getKitEditor()).setKitLoadout
                     (Arrays.asList(player.getInventory().getContents()));
 
             MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());

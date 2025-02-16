@@ -131,7 +131,7 @@ public class LeaderboardService {
     private KitData getKitData(UUID playerUUID, Kit kit) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
-            return API.getProfile(player).getGameData().getKitData().get(kit);
+            return API.getProfile(player).getGameData().get(kit);
         }
 
         DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(playerUUID);
