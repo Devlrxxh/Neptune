@@ -104,7 +104,7 @@ public final class Neptune extends JavaPlugin implements Listener {
         loadExtensions();
         if (!isEnabled()) return;
 
-        BlockChanger.load(this, true);
+        BlockChanger.load(this, false);
         ConfigService.get().load();
 
         ArenaService.get().loadArenas();
@@ -120,10 +120,9 @@ public final class Neptune extends JavaPlugin implements Listener {
 
         LeaderboardService.get();
 
-
-//        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
-//            this.assemble = new Assemble(new ScoreboardAdapter());
-//        }
+        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
+            this.assemble = new Assemble(new ScoreboardAdapter());
+        }
 
         registerListeners();
         loadCommandManager();
