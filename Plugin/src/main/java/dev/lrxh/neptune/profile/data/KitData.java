@@ -21,7 +21,6 @@ public class KitData {
     private List<ItemStack> kitLoadout = new ArrayList<>();
     private Division division;
 
-
     public double getKdr() {
         if (losses == 0) return wins;
         double kd = (double) wins / losses;

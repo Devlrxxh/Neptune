@@ -1,6 +1,7 @@
 package dev.lrxh.neptune;
 
 import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;
@@ -103,7 +104,7 @@ public final class Neptune extends JavaPlugin implements Listener {
         loadExtensions();
         if (!isEnabled()) return;
 
-        BlockChanger.load(this, false);
+        BlockChanger.load(this, true);
         ConfigService.get().load();
 
         ArenaService.get().loadArenas();
@@ -120,9 +121,9 @@ public final class Neptune extends JavaPlugin implements Listener {
         LeaderboardService.get();
 
 
-        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
-            this.assemble = new Assemble(new ScoreboardAdapter());
-        }
+//        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
+//            this.assemble = new Assemble(new ScoreboardAdapter());
+//        }
 
         registerListeners();
         loadCommandManager();

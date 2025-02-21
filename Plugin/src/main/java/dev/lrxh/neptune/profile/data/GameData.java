@@ -44,7 +44,7 @@ public class GameData {
     }
 
     public KitData get(Kit kit) {
-        if (kitData.get(kit) == null) {
+        if (!kitData.containsKey(kit)) {
             kitData.put(kit, new KitData());
         }
 
@@ -137,11 +137,11 @@ public class GameData {
             return new ArrayList<>();
         }
 
-        ArrayList<MatchHistory> punishments = new ArrayList<>();
+        ArrayList<MatchHistory> deserialized = new ArrayList<>();
         for (String serialized : historySerialized) {
-            punishments.add(deserialize(serialized));
+            deserialized.add(deserialize(serialized));
         }
-        return punishments;
+        return deserialized;
     }
 
     public void addHistory(MatchHistory matchHistory) {

@@ -135,7 +135,6 @@ public class Profile {
 
         dataDocument.put("history", gameData.serializeHistory());
 
-
         for (Kit kit : KitService.get().kits) {
             DataDocument kitStatisticsDocument = new DataDocument();
             KitData entry = gameData.get(kit);

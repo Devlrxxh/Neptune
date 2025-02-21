@@ -37,7 +37,6 @@ public class StandAloneArena extends Arena {
             this.duplicates = new ArrayList<>();
 
             takeSnapshot();
-            loadDupes();
         }
     }
 
@@ -55,8 +54,9 @@ public class StandAloneArena extends Arena {
     }
 
     public void loadDupes() {
-        this.duplicates = new ArrayList<>();
+        this.duplicates.clear();
         if (min == null || max == null) return;
+
         for (int i = 0; i < duplicateCount; i++) {
             int offset = i * 350;
 
@@ -64,6 +64,12 @@ public class StandAloneArena extends Arena {
 
             duplicates.add(dupe);
         }
+
+        Bukkit.getScheduler().runTaskAsynchronously(Neptune.get(), () -> {
+            for (DuplicateArena duplicateArena : duplicates) {
+                duplicateArena.restoreSnapshot();
+            }
+        });
     }
 
     public StandAloneArena get() {
