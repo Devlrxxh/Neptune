@@ -1,11 +1,9 @@
 package dev.lrxh.neptune.arena.impl;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
@@ -54,7 +52,7 @@ public class StandAloneArena extends Arena {
     }
 
     public void loadDupes() {
-        this.duplicates.clear();
+        this.duplicates = new ArrayList<>();
         if (min == null || max == null) return;
 
         for (int i = 0; i < duplicateCount; i++) {
@@ -64,12 +62,6 @@ public class StandAloneArena extends Arena {
 
             duplicates.add(dupe);
         }
-
-        Bukkit.getScheduler().runTaskAsynchronously(Neptune.get(), () -> {
-            for (DuplicateArena duplicateArena : duplicates) {
-                duplicateArena.restoreSnapshot();
-            }
-        });
     }
 
     public StandAloneArena get() {
@@ -82,12 +74,14 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         if (min == null || max == null) return;
-        snapshot = BlockChanger.capture(min, max);
-        loadDupes();
+        BlockChanger.captureAsync(min, max).thenAccept(snapshot -> {
+            this.snapshot = snapshot;
+            loadDupes();
+        });
     }
 
     public void restoreSnapshot() {
-        Bukkit.getScheduler().runTaskAsynchronously(Neptune.get(), () -> BlockChanger.revert(getWorld(), snapshot));
+        BlockChanger.revertAsync(getWorld(), snapshot);
     }
 
     public World getWorld() {

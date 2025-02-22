@@ -21,7 +21,8 @@ public class LocationUtil {
     }
 
     public Location addOffsetX(Location location, int offset) {
-        return new Location(location.getWorld(), location.getX() + offset, location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+        return location.clone().add(offset, 0, 0);
+//        return new Location(location.getWorld(), location.getX() + offset, location.getY(), location.getZ(), location.getYaw(), location.getPitch());
     }
 
     public Location deserialize(String source) {

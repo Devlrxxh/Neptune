@@ -1,7 +1,6 @@
 package dev.lrxh.neptune;
 
 import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerScoreboardObjective;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;

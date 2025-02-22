@@ -16,6 +16,7 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author Devlrxxh
@@ -42,21 +43,21 @@ public class BlockChanger {
     private static MethodHandle GET_HANDLE_WORLD;
     private static MethodHandle GET_COMBINED_ID;
     private static MethodHandle SET_TYPE;
+    private static MethodHandle GET_BLOCK_DATA;
     // NMS Constructors
     private static Constructor<?> CHUNK_SECTION_CONSTRUCTOR;
 
     public static void load(JavaPlugin instance, boolean debug) {
-        plugin = instance;
-        MINOR_VERSION = getMinorVersion();
+        BlockChanger.plugin = instance;
+        BlockChanger.MINOR_VERSION = getMinorVersion();
         BlockChanger.debug = debug;
-        worldCache = new HashMap<>();
+        BlockChanger.worldCache = new HashMap<>();
 
         init();
     }
 
     /**
      * Sets blocks block-data's using NMS.
-     * This is suggested to be run async.
      *
      * @param world  World to set block in.
      * @param blocks Map of locations and ItemStacks to be set
@@ -78,8 +79,32 @@ public class BlockChanger {
     }
 
     /**
+     * Sets blocks block-data's using NMS.
+     *
+     * @param world  World to set block in.
+     * @param blocks Map of locations and ItemStacks to be set
+     * @return A CompletableFuture that completes when the paste operation is done.
+     */
+    public static CompletableFuture<Void> setBlocksAsync(World world, List<BlockSnapshot> blocks) {
+        return CompletableFuture.runAsync(() -> {
+            long startTime = System.currentTimeMillis();
+            HashMap<Chunk, Object> chunkCache = new HashMap<>();
+
+            for (BlockSnapshot block : blocks) {
+                setBlock(block, chunkCache);
+            }
+
+            for (Chunk chunk : chunkCache.keySet()) {
+                world.refreshChunk(chunk.getX(), chunk.getZ());
+            }
+            long endTime = System.currentTimeMillis();
+            long duration = endTime - startTime;
+            debug("Pasted blocks time: " + duration + " ms (" + blocks.size() + ")");
+        });
+    }
+
+    /**
      * Paste a snapshot and allowing an offset
-     * This is suggested to be run async.
      *
      * @param snapshot Captured Snapshot.
      * @param offsetX  The offset to apply to the X coordinate of each block.
@@ -99,7 +124,29 @@ public class BlockChanger {
 
     /**
      * Paste a snapshot and allowing an offset
-     * This is suggested to be run async.
+     *
+     * @param snapshot Captured Snapshot.
+     * @param offsetX  The offset to apply to the X coordinate of each block.
+     * @param offsetZ  The offset to apply to the Z coordinate of each block.
+     * @return A CompletableFuture that completes when the paste operation is done.
+     */
+    public static CompletableFuture<Void> pasteAsync(Snapshot snapshot, int offsetX, int offsetZ) {
+        return CompletableFuture.runAsync(() -> {
+            List<BlockSnapshot> blocks = new ArrayList<>();
+
+            for (BlockSnapshot blockSnapshot : snapshot.blocks) {
+                BlockSnapshot b1 = blockSnapshot.clone();
+                b1.addOffset(offsetX, offsetZ);
+                blocks.add(b1);
+            }
+
+            setBlocks(snapshot.world, blocks);
+        });
+    }
+
+
+    /**
+     * Paste a snapshot and allowing an offset
      *
      * @param snapshot Captured Snapshot.
      * @param pos New location to paste snapshot at.
@@ -108,6 +155,8 @@ public class BlockChanger {
         List<BlockSnapshot> blocks = new ArrayList<>();
         int offsetX = (int) (snapshot.pos.getX() - pos.getX());
         int offsetZ = (int) (snapshot.pos.getZ() - pos.getZ());
+
+        debug(pos.toString());
 
         for (BlockSnapshot blockSnapshot : snapshot.blocks) {
             BlockSnapshot b1 = blockSnapshot.clone();
@@ -120,16 +169,43 @@ public class BlockChanger {
     }
 
     /**
+     * Paste a snapshot and allowing an offset
+     *
+     * @param snapshot Captured Snapshot.
+     * @param pos      New location to paste snapshot at.
+     * @return A CompletableFuture that completes when the paste operation is done.
+     */
+    public static CompletableFuture<Void> pasteAsync(Snapshot snapshot, Location pos) {
+        return CompletableFuture.runAsync(() -> {
+            List<BlockSnapshot> blocks = new ArrayList<>();
+            int offsetX = (int) (snapshot.pos.getX() - pos.getX());
+            int offsetZ = (int) (snapshot.pos.getZ() - pos.getZ());
+
+            debug(pos.toString());
+
+            for (BlockSnapshot blockSnapshot : snapshot.blocks) {
+                BlockSnapshot b1 = blockSnapshot.clone();
+
+                b1.addOffset(offsetX, offsetZ);
+                blocks.add(b1);
+            }
+
+            setBlocks(pos.getWorld(), blocks);
+        });
+    }
+
+    /**
      * Capture all blocks between 2 positions
      *
      * @param pos1 Position 1
      * @param pos2 Position 2
-     * @return Snapshot This is needed to revert captured snapshot
+     * @return Snapshot captured snapshot
      */
     public static Snapshot capture(Location pos1, Location pos2) {
         Location max = new Location(pos1.getWorld(), Math.max(pos1.getX(), pos2.getX()), Math.max(pos1.getY(), pos2.getY()), Math.max(pos1.getZ(), pos2.getZ()));
         Location min = new Location(pos1.getWorld(), Math.min(pos1.getX(), pos2.getX()), Math.min(pos1.getY(), pos2.getY()), Math.min(pos1.getZ(), pos2.getZ()));
         World world = max.getWorld();
+        HashMap<Chunk, Object> chunkCache = new HashMap<>();
 
         Snapshot snapshot = new Snapshot(world, pos1);
         int minX = Math.min(min.getBlockX(), max.getBlockX());
@@ -144,26 +220,56 @@ public class BlockChanger {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
                     Location location = new Location(world, x, y, z);
-                    if (MINOR_VERSION != 8) {
-                        BlockData blockData = world.getBlockData(x, y, z);
-                        snapshot.add(new BlockSnapshot(location, blockData));
-                    } else {
-                        Block block = world.getBlockAt(location);
-                        ItemStack itemStack = new ItemStack(block.getType());
-                        itemStack.setData(block.getState().getData());
-
-                        snapshot.add(new BlockSnapshot(location, itemStack));
-                    }
+                    snapshot.add(new BlockSnapshot(location, getNMSBlockData(location.getChunk(), world, location, chunkCache)));
                 }
             }
         }
-
+        debug("Captured Snapshot (" + snapshot.blocks.size() + ")");
         return snapshot;
+    }
+
+
+    /**
+     * Capture all blocks between 2 positions
+     *
+     * @param pos1 Position 1
+     * @param pos2 Position 2
+     * @return A CompletableFuture containing the Snapshot object.
+     * The snapshot can be used to revert the captured blocks at a later time.
+     */
+    public static CompletableFuture<Snapshot> captureAsync(Location pos1, Location pos2) {
+        return CompletableFuture.supplyAsync(() -> {
+            Location max = new Location(pos1.getWorld(), Math.max(pos1.getX(), pos2.getX()), Math.max(pos1.getY(), pos2.getY()), Math.max(pos1.getZ(), pos2.getZ()));
+            Location min = new Location(pos1.getWorld(), Math.min(pos1.getX(), pos2.getX()), Math.min(pos1.getY(), pos2.getY()), Math.min(pos1.getZ(), pos2.getZ()));
+            World world = max.getWorld();
+            HashMap<Chunk, Object> chunkCache = new HashMap<>();
+
+            Snapshot snapshot = new Snapshot(world, pos1);
+            int minX = Math.min(min.getBlockX(), max.getBlockX());
+            int minY = Math.min(min.getBlockY(), max.getBlockY());
+            int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
+
+            int maxX = Math.max(min.getBlockX(), max.getBlockX());
+            int maxY = Math.max(min.getBlockY(), max.getBlockY());
+            int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
+
+            for (int x = minX; x <= maxX; x++) {
+                for (int y = minY; y <= maxY; y++) {
+                    for (int z = minZ; z <= maxZ; z++) {
+                        Location location = new Location(world, x, y, z);
+                        snapshot.add(new BlockSnapshot(location, getNMSBlockData(location.getChunk(), world, location, chunkCache)));
+                    }
+                }
+            }
+
+
+            debug("Captured Snapshot (" + snapshot.blocks.size() + ")");
+            return snapshot;
+        });
     }
 
     /**
      * Revert all changes from the snapshot.
-     * This is suggested to be run async.
      *
      * @param snapshot Snapshot you have captured
      */
@@ -174,6 +280,23 @@ public class BlockChanger {
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
         debug("Snapshot revert time: " + duration + " ms (" + snapshot.blocks.size() + ")");
+    }
+
+    /**
+     * Revert all changes from the snapshot.
+     *
+     * @param snapshot Snapshot you have captured
+     * @return A CompletableFuture that completes when the paste operation is done.
+     */
+    public static CompletableFuture<Void> revertAsync(World world, Snapshot snapshot) {
+        return CompletableFuture.runAsync(() -> {
+            long startTime = System.currentTimeMillis();
+
+            setBlocks(world, snapshot.blocks);
+            long endTime = System.currentTimeMillis();
+            long duration = endTime - startTime;
+            debug("Snapshot revert time: " + duration + " ms (" + snapshot.blocks.size() + ")");
+        });
     }
 
     /**
@@ -245,7 +368,7 @@ public class BlockChanger {
 
             return nmsChunk;
         } catch (Throwable e) {
-            debug("Error occurred while at #getChunkNMS(Object, Chunk, boolean) " + e.getMessage());
+            debug("Error occurred while at #getChunkNMS(Object, Chunk, HashMap) " + e.getMessage());
         }
         return null;
     }
@@ -296,14 +419,37 @@ public class BlockChanger {
         }
     }
 
-    private static void init() {
-        String CRAFT_BUKKIT;
-        String NET_MINECRAFT = "net.minecraft.";
+    private static Object getNMSBlockData(Chunk chunk, World world, Location location, HashMap<Chunk, Object> chunkCache) {
+        try {
+            plugin.getServer().getScheduler().runTask(plugin, () -> {
+                if (!chunk.isLoaded()) chunk.load();
+            });
+            Object nmsWorld = getWorldNMS(world);
+            Object nmsChunk = getChunkNMS(nmsWorld, chunk, chunkCache);
 
+            int x = (int) location.getX();
+            int y = location.getBlockY();
+            int z = (int) location.getZ();
+
+            Object cs = getSection(nmsChunk, y);
+            if (cs == null) return null;
+
+            return GET_BLOCK_DATA.invoke(cs, x & 15, y & 15, z & 15);
+        } catch (Throwable e) {
+            debug("Error occurred while at #getNMSBlockData(Chunk, World, Location, HashMap) " + e.getMessage());
+        }
+
+        return null;
+    }
+
+    private static void init() {
         if (!supports(8)) {
             plugin.getLogger().info("Version Unsupported by BlockChanger");
             return;
         }
+
+        String CRAFT_BUKKIT;
+        String NET_MINECRAFT = "net.minecraft.";
 
         if (MINOR_VERSION == 16 || MINOR_VERSION == 8) {
             NET_MINECRAFT = "net.minecraft.server." + plugin.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3] + ".";
@@ -325,7 +471,6 @@ public class BlockChanger {
         } else {
             I_BLOCK_DATA = loadClass(NET_MINECRAFT + "IBlockData");
         }
-        debug("I_BLOCK_DATA Loaded");
 
         Class<?> CHUNK;
         if (MINOR_VERSION != 16 && MINOR_VERSION != 8) {
@@ -333,7 +478,6 @@ public class BlockChanger {
         } else {
             CHUNK = loadClass(NET_MINECRAFT + "Chunk");
         }
-        debug("CHUNK Loaded");
 
         Class<?> CHUNK_SECTION;
 
@@ -342,14 +486,12 @@ public class BlockChanger {
         } else {
             CHUNK_SECTION = loadClass(NET_MINECRAFT + "ChunkSection");
         }
-        debug("CHUNK_SECTION Loaded");
 
         if (MINOR_VERSION != 16 && MINOR_VERSION != 8) {
             WORLD_SERVER = loadClass(NET_MINECRAFT + "server.level.WorldServer");
         } else {
             WORLD_SERVER = loadClass(NET_MINECRAFT + "WorldServer");
         }
-        debug("WORLD_SERVER Loaded");
 
         Class<?> WORLD;
         if (MINOR_VERSION != 16 && MINOR_VERSION != 8) {
@@ -357,7 +499,6 @@ public class BlockChanger {
         } else {
             WORLD = loadClass(NET_MINECRAFT + "World");
         }
-        debug("WORLD Loaded");
 
         if (MINOR_VERSION != 8) {
             if (MINOR_VERSION != 16) {
@@ -365,11 +506,9 @@ public class BlockChanger {
             } else {
                 LEVEL_HEIGHT_ACCESSOR = loadClass(NET_MINECRAFT + "LevelHeightAccessor");
             }
-            debug("LEVEL_HEIGHT_ACCESSOR Loaded");
         }
 
         CRAFT_WORLD = loadClass(CRAFT_BUKKIT + "CraftWorld");
-        debug("CRAFT_WORLD Loaded");
 
         Class<?> i_CHUNK_ACCESS = null;
 
@@ -379,11 +518,9 @@ public class BlockChanger {
             } else {
                 i_CHUNK_ACCESS = loadClass(NET_MINECRAFT + "IChunkAccess");
             }
-            debug("I_CHUNK_ACCESS Loaded");
         }
 
         CRAFT_BLOCK_DATA = loadClass(CRAFT_BUKKIT + "block.data.CraftBlockData");
-        debug("CRAFT_BLOCK_DATA Loaded");
 
         if (MINOR_VERSION != 8) {
             try {
@@ -470,6 +607,13 @@ public class BlockChanger {
                 debug("SET_TYPE didn't load " + e.getCause().getMessage());
             }
         }
+
+        try {
+            GET_BLOCK_DATA = getMethodHandle(CHUNK_SECTION, "a", I_BLOCK_DATA, int.class, int.class, int.class);
+            debug("GET_BLOCK_DATA Loaded");
+        } catch (Throwable e) {
+            debug("GET_BLOCK_DATA didn't load " + e.getCause().getMessage());
+        }
     }
 
     private static MethodHandle getMethodHandle(Class<?> clazz, String methodName, Class<?> rtype, Class<?>... parameterTypes) throws NoSuchMethodException, IllegalAccessException {
@@ -494,9 +638,10 @@ public class BlockChanger {
 
     private static Class<?> loadClass(String className) {
         try {
+            debug(className + " Loaded");
             return Class.forName(className);
         } catch (ClassNotFoundException e) {
-            debug("Error occurred while at #loadClass(String) " + e.getMessage());
+            debug(className + " failed to load " + e.getMessage());
         }
         return null;
     }
@@ -591,7 +736,7 @@ public class BlockChanger {
         /**
          * BlockChanger representation of blocks for multi version support
          * <p>
-         * This is 1.16 - 1.21 use the other constructor for 1.8
+         * This is only works for 1.16 - 1.21 use the other constructors for 1.8
          *
          * @param blockData itemStack
          */
@@ -603,7 +748,7 @@ public class BlockChanger {
         /**
          * BlockChanger representation of blocks for multi-version support
          * <p>
-         * This is for all versions.
+         * This is works for all versions.
          *
          * @param location The location of the block
          * @param material The material of the block
@@ -628,19 +773,23 @@ public class BlockChanger {
         /**
          * BlockChanger representation of blocks for multi version support
          * <p>
-         * This is only for 1.8 use the other constructor for 1.16 and higher
+         * This is works for all versions.
          *
          * @param itemStack itemStack
          */
         public BlockSnapshot(Location location, ItemStack itemStack) {
-            Object dataNMS = null;
-            try {
-                dataNMS = GET_COMBINED_ID.invoke(itemStack.getType().getId() + (itemStack.getData().getData() << 12));
-            } catch (Throwable throwable) {
-                System.err.println("Error initializing blockDataNMS: " + throwable.getMessage());
+            if (MINOR_VERSION == 8) {
+                Object dataNMS = null;
+                try {
+                    dataNMS = GET_COMBINED_ID.invoke(itemStack.getType().getId() + (itemStack.getData().getData() << 12));
+                } catch (Throwable throwable) {
+                    System.err.println("Error initializing blockDataNMS: " + throwable.getMessage());
+                }
+                this.blockDataNMS = dataNMS != null ? dataNMS : new Object();
+                this.location = location;
+            } else {
+                this.blockDataNMS = getBlockDataNMS(itemStack.getType().createBlockData());
             }
-            this.blockDataNMS = dataNMS != null ? dataNMS : new Object();
-            this.location = location;
         }
 
         protected BlockSnapshot(Location location, Object blockDataNMS) {
