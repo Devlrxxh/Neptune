@@ -33,3 +33,6 @@
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/9957b2a0-8292-4cb3-9e80-ca7c8442a70c)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/cd7adf54-f4b3-425c-add5-99cad13b6174)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/f2b0436a-3d37-47b1-839b-588ead692227)
+
+
+## Maintained by [DevLrxxh](https://github.com/Devlrxxh)
