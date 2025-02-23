@@ -12,7 +12,7 @@ public class DuplicateArena extends StandAloneArena {
         this.offset = offset;
         this.parent = parent;
 
-        restoreSnapshot();
+        BlockChanger.paste(parent.getSnapshot(), offset, 0);
     }
 
     @Override

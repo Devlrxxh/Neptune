@@ -9,6 +9,7 @@ import org.bukkit.World;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
@@ -55,13 +56,15 @@ public class StandAloneArena extends Arena {
         this.duplicates = new ArrayList<>();
         if (min == null || max == null) return;
 
-        for (int i = 0; i < duplicateCount; i++) {
-            int offset = i * 350;
+        CompletableFuture.runAsync(() -> {
+            for (int i = 0; i < duplicateCount; i++) {
+                int offset = i * 350;
 
-            DuplicateArena dupe = new DuplicateArena(this, offset);
+                DuplicateArena dupe = new DuplicateArena(this, offset);
 
-            duplicates.add(dupe);
-        }
+                duplicates.add(dupe);
+            }
+        });
     }
 
     public StandAloneArena get() {
