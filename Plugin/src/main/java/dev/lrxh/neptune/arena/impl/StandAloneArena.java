@@ -17,7 +17,6 @@ public class StandAloneArena extends Arena {
     private Location min;
     private Location max;
     private double limit;
-    private boolean used;
     private BlockChanger.Snapshot snapshot;
     private final boolean dupe;
     private int duplicateCount;
@@ -29,7 +28,6 @@ public class StandAloneArena extends Arena {
         this.max = max;
         this.limit = limit;
         this.dupe = dupe;
-        this.used = false;
         this.duplicateCount = duplicateCount;
 
         if (!dupe) {
@@ -45,11 +43,9 @@ public class StandAloneArena extends Arena {
         this.min = null;
         this.max = null;
         this.limit = 68321;
-        this.used = false;
         this.duplicates = new ArrayList<>();
         this.duplicateCount = 0;
     }
-
 
     public CompletableFuture<DuplicateArena> loadDupe() {
         duplicateCount++;
@@ -61,14 +57,12 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         if (min == null || max == null) return;
-        BlockChanger.captureAsync(min, max).thenAccept(snapshot -> {
+        BlockChanger.captureAsync(min, max, false).thenAccept(snapshot -> {
             this.snapshot = snapshot;
         });
     }
 
-    public void restoreSnapshot() {
-        BlockChanger.revertAsync(getWorld(), snapshot);
-    }
+    public void restoreSnapshot() {}
 
     public World getWorld() {
         return max.getWorld();
@@ -78,5 +72,4 @@ public class StandAloneArena extends Arena {
     public boolean isSetup() {
         return !(getRedSpawn() == null || getBlueSpawn() == null || min == null || max == null);
     }
-
 }

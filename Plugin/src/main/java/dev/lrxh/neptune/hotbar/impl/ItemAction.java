@@ -44,6 +44,10 @@ public enum ItemAction {
     QUEUE_LEAVE() {
         @Override
         public void execute(Player player) {
+            if (QueueService.get().queues.get(player.getUniqueId()).isArenaLoading()) {
+                player.sendMessage(Component.text(CC.color("&cYou can't leave queue while generating arena.")));
+                return;
+            }
             API.getProfile(player.getUniqueId()).setState(ProfileState.IN_LOBBY);
             QueueService.get().remove(player.getUniqueId());
             MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId());

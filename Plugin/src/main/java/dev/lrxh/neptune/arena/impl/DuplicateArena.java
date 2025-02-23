@@ -17,7 +17,7 @@ public class DuplicateArena extends StandAloneArena {
     }
 
     public CompletableFuture<Void> load() {
-        return BlockChanger.pasteAsync(parent.getSnapshot(), offset, 0);
+        return BlockChanger.pasteAsync(parent.getSnapshot(), offset, 0, true);
     }
 
     public void destroy() {
@@ -27,6 +27,6 @@ public class DuplicateArena extends StandAloneArena {
 
     @Override
     public void restoreSnapshot() {
-        BlockChanger.pasteAsync(parent.getSnapshot(), offset, 0);
+        BlockChanger.pasteAsync(parent.getSnapshot(), offset, 0, false);
     }
 }

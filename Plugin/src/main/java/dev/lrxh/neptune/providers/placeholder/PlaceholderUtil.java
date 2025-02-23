@@ -48,6 +48,7 @@ public class PlaceholderUtil {
 
             if (state.equals(ProfileState.IN_QUEUE)) {
                 Queue queue = QueueService.get().queues.get(player.getUniqueId());
+                if (queue == null) continue;
                 line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
                 line = line.replaceAll("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()));
             }

@@ -37,10 +37,6 @@ public enum EventType {
                 return;
             }
 
-            if (arena instanceof StandAloneArena standAloneArena) {
-                standAloneArena.setUsed(true);
-            }
-
             MatchService.get().startMatch(participants, kit, arena);
         }
     },
@@ -73,10 +69,6 @@ public enum EventType {
                     participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                 }
                 return;
-            }
-
-            if (arena instanceof StandAloneArena standAloneArena) {
-                standAloneArena.setUsed(true);
             }
 
             MatchService.get().startMatch(teamA, teamB, kit, arena);

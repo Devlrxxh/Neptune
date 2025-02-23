@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match;
 
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateLight;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
@@ -26,16 +27,20 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
+import org.bukkit.entity.Display;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.util.Transformation;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -155,7 +160,6 @@ public abstract class Match {
         }
     }
 
-
     public void resetArena() {
         if(state == MatchState.ENDING) {
             if (arena instanceof DuplicateArena duplicateArena) {
@@ -170,6 +174,75 @@ public abstract class Match {
         }
 
         removeEntities();
+    }
+
+    public void spawnImageScreen(Player player, String imageUrl, double scaleFactor) {
+        BufferedImage image;
+        try {
+            // Load image from URL
+            image = ImageIO.read(new URL(imageUrl));
+        } catch (IOException e) {
+            player.sendMessage("Error loading image: " + e.getMessage());
+            return;
+        }
+
+        // Get real image width & height
+        int originalWidth = image.getWidth();
+        int originalHeight = image.getHeight();
+
+        // Set max pixels to prevent lag (you can tweak this)
+        int maxPixels = 25_000;
+
+        // Scale the image size while maintaining aspect ratio
+        int scaledWidth = (int) (originalWidth * scaleFactor);
+        int scaledHeight = (int) (originalHeight * scaleFactor);
+
+        // Calculate the downscaling factor to ensure we stay within maxPixels
+        double resolutionFactor = Math.sqrt((double) maxPixels / (scaledWidth * scaledHeight));
+
+        // Final adjusted width & height, ensuring we don't exceed max pixels
+        int finalWidth = (int) (scaledWidth * resolutionFactor);
+        int finalHeight = (int) (scaledHeight * resolutionFactor);
+
+        // Adjust pixel size dynamically
+        double pixelSize = 0.1F / resolutionFactor;
+        double spacingDivider = 8;
+
+        Location location = player.getLocation();
+        location.setPitch(0);
+        location.setYaw(0);
+
+        for (int x = 0; x < finalWidth; x++) {
+            for (int y = 0; y < finalHeight; y++) {
+                // Get color from the image
+                int rgb = image.getRGB((x * originalWidth) / finalWidth, ((finalHeight - 1 - y) * originalHeight) / finalHeight);
+                int red = (rgb >> 16) & 0xFF;
+                int green = (rgb >> 8) & 0xFF;
+                int blue = rgb & 0xFF;
+
+                Color color = Color.fromRGB(red, green, blue);
+
+                spawnPixel(
+                        color, // Bukkit Color
+                        location.clone().add(x * pixelSize / spacingDivider, y * pixelSize / spacingDivider, 0),
+                        pixelSize
+                );
+            }
+        }
+    }
+
+
+
+    private TextDisplay spawnPixel(Color color, Location location, double pixelSize) {
+        TextDisplay textDisplay = location.getWorld().spawn(location, TextDisplay.class);
+        textDisplay.setBackgroundColor(color);
+        textDisplay.setText(" ");
+        textDisplay.setBrightness(new Display.Brightness(15, 15));
+
+        Transformation transformation = textDisplay.getTransformation();
+        transformation.getScale().set(pixelSize, pixelSize / 2, pixelSize);
+        textDisplay.setTransformation(transformation);
+        return textDisplay;
     }
 
     public List<String> getScoreboard(UUID playerUUID) {
@@ -308,7 +381,7 @@ public abstract class Match {
             } catch (IllegalStateException ignored) {
             }
 
-            player.damage(0.1);
+            player.sendHealthUpdate();
         });
     }
 

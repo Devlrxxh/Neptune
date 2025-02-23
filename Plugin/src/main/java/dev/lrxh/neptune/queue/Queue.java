@@ -5,9 +5,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@AllArgsConstructor
 @Getter
 @Setter
 public class Queue {
     private Kit kit;
+    private boolean arenaLoading;
+
+    public Queue(Kit kit) {
+        this.kit = kit;
+        this.arenaLoading = false;
+    }
 }

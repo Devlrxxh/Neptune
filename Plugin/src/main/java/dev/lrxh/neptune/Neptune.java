@@ -178,7 +178,7 @@ public final class Neptune extends JavaPlugin implements Listener {
     }
 
     private void loadTasks() {
-        new QueueCheckTask(this).start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
+        new QueueCheckTask().start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
     }
 

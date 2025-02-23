@@ -26,12 +26,6 @@ import java.util.Map;
 import java.util.UUID;
 
 public class QueueCheckTask extends NeptuneRunnable {
-    private final Neptune plugin;
-
-    public QueueCheckTask(Neptune plugin) {
-        this.plugin = plugin;
-    }
-
     @Override
     public void run() {
         if (QueueService.get().queues.isEmpty()) return;
@@ -41,6 +35,7 @@ public class QueueCheckTask extends NeptuneRunnable {
             UUID uuid1 = entry1.getKey();
             Profile profile1 = API.getProfile(uuid1);
             Queue queue1 = entry1.getValue();
+            if (queue1.isArenaLoading()) continue;
 
             if (MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) {
                 MessagesLocale.QUEUE_REPEAT.send(uuid1,
@@ -52,6 +47,7 @@ public class QueueCheckTask extends NeptuneRunnable {
             for (Map.Entry<UUID, Queue> entry2 : QueueService.get().queues.entrySet()) {
                 UUID uuid2 = entry2.getKey();
                 Queue queue2 = entry2.getValue();
+                if (queue2.isArenaLoading()) continue;
 
                 if ((uuid1.equals(uuid2))) continue;
                 if (!QueueService.get().compare(queue1, queue2)) continue;
@@ -101,11 +97,6 @@ public class QueueCheckTask extends NeptuneRunnable {
                     continue;
                 }
 
-                //Set arena as being used
-                if (arena instanceof StandAloneArena standAloneArena) {
-                    standAloneArena.setUsed(true);
-                }
-
                 //Send match found message
                 MessagesLocale.MATCH_FOUND.send(uuid1,
                         new Replacement("<opponent>", participant2.getNameUnColored()),
@@ -121,14 +112,14 @@ public class QueueCheckTask extends NeptuneRunnable {
                         new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid1))),
                         new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
 
+                if (arena instanceof StandAloneArena) {
+                    queue1.setArenaLoading(true);
+                    queue2.setArenaLoading(true);
+                }
+
                 //Start match
                 MatchService.get().startMatch(participants, queue1.getKit(),
                         arena, false, queue1.getKit().is(KitRule.BEST_OF_THREE) ? 3 : 1);
-
-                //Remove the players from queue
-                QueueService.get().remove(uuid1);
-                QueueService.get().remove(uuid2);
-
             }
         }
     }

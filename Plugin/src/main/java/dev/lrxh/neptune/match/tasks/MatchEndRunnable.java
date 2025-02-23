@@ -50,10 +50,6 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 match.removeSpectator(spectator, false);
             }
 
-            if (match.arena instanceof StandAloneArena standAloneArena) {
-                standAloneArena.setUsed(false);
-                stop(plugin);
-            }
             match.resetArena();
             MatchService.get().matches.remove(match);
         }

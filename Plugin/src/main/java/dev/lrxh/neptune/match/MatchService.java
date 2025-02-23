@@ -14,6 +14,7 @@ import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.queue.QueueService;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -41,9 +42,8 @@ public class MatchService {
             }
             standAloneArena.loadDupe().thenAccept(dupe -> Bukkit.getServer().getScheduler().runTask(Neptune.get(), () -> {
                 for (Participant participant : participants) {
+                    QueueService.get().remove(participant.getPlayerUUID());
                     participant.sendMessage(MessagesLocale.CREATED_ARENA);
-                }
-                for (Participant ignored : participants) {
                     kit.addPlaying();
                 }
 
@@ -74,6 +74,45 @@ public class MatchService {
                 //Start match start runnable
                 new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
             }));
+        } else {
+            for (Participant participant : participants) {
+                QueueService.get().remove(participant.getPlayerUUID());
+                participant.sendMessage(MessagesLocale.CREATED_ARENA);
+                kit.addPlaying();
+            }
+
+            //Create teams
+            Participant playerRed = participants.get(0);
+            Participant playerBlue = participants.get(1);
+
+            playerRed.setOpponent(playerBlue);
+            playerRed.setColor(ParticipantColor.RED);
+
+            playerBlue.setOpponent(playerRed);
+            playerBlue.setColor(ParticipantColor.BLUE);
+
+            //Create match
+            SoloFightMatch match = new SoloFightMatch(arena, kit, duel, participants, playerRed, playerBlue, rounds);
+
+            matches.add(match);
+
+            //Teleport the Players to their spawn
+            match.teleportToPositions();
+
+            //Setup players
+            match.setupParticipants();
+
+            //Apply kit rules for players
+            match.checkRules();
+
+            for (Participant participant : participants) {
+                QueueService.get().remove(participant.getPlayerUUID());
+                participant.sendMessage(MessagesLocale.CREATED_ARENA);
+                kit.addPlaying();
+            }
+
+            //Start match start runnable
+            new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
         }
     }
 
@@ -121,6 +160,35 @@ public class MatchService {
                 //Start match start runnable
                 new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
             }));
+        } else {
+            for (Participant participant : teamA.getParticipants()) {
+                for (Participant opponent : teamB.getParticipants()) {
+                    participant.setOpponent(opponent);
+                    participant.setColor(ParticipantColor.RED);
+                    opponent.setOpponent(participant);
+                    opponent.setColor(ParticipantColor.BLUE);
+                }
+            }
+
+            List<Participant> participants = new ArrayList<>(teamA.getParticipants());
+            participants.addAll(teamB.getParticipants());
+
+            //Create match
+            TeamFightMatch match = new TeamFightMatch(arena, kit, participants, teamA, teamB);
+
+            matches.add(match);
+
+            //Setup players
+            match.setupParticipants();
+
+            //Apply kit rules for players
+            match.checkRules();
+
+            //Teleport the Players to their spawn
+            match.teleportToPositions();
+
+            //Start match start runnable
+            new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
         }
     }
 
@@ -154,6 +222,27 @@ public class MatchService {
                 //Start match start runnable
                 new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
             }));
+        } else {
+            for (Participant participant : participants) {
+                participant.setColor(ParticipantColor.RED);
+            }
+
+            //Create match
+            FfaFightMatch match = new FfaFightMatch(arena, kit, participants);
+
+            matches.add(match);
+
+            //Setup players
+            match.setupParticipants();
+
+            //Apply kit rules for players
+            match.checkRules();
+
+            //Teleport the Players to their spawn
+            match.teleportToPositions();
+
+            //Start match start runnable
+            new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
         }
     }
 
