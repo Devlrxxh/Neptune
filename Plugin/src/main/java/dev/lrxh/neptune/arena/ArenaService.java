@@ -67,9 +67,7 @@ public class ArenaService implements IService {
     }
 
     public void saveArenas() {
-        for (Arena arena : arenas) {
-            if (arena instanceof StandAloneArena standAloneArena) standAloneArena.loadDupes();
-        }
+
 
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         arenas.forEach(arena -> {

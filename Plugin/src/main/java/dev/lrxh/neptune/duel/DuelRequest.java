@@ -2,7 +2,6 @@ package dev.lrxh.neptune.duel;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.impl.participant.Participant;
@@ -106,10 +105,6 @@ public class DuelRequest extends Request {
                 participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
             }
             return;
-        }
-
-        if (arena instanceof StandAloneArena standAloneArena) {
-            standAloneArena.setUsed(true);
         }
 
         MatchService.get().startMatch(teamA, teamB, kit, arena);

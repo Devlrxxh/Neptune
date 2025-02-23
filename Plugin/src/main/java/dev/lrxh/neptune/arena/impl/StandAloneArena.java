@@ -47,39 +47,22 @@ public class StandAloneArena extends Arena {
         this.limit = 68321;
         this.used = false;
         this.duplicates = new ArrayList<>();
-        this.duplicateCount = 5;
-
-        takeSnapshot();
+        this.duplicateCount = 0;
     }
 
-    public void loadDupes() {
-        this.duplicates = new ArrayList<>();
-        if (min == null || max == null) return;
 
-        CompletableFuture.runAsync(() -> {
-            for (int i = 0; i < duplicateCount; i++) {
-                int offset = i * 350;
+    public CompletableFuture<DuplicateArena> loadDupe() {
+        duplicateCount++;
+        int offset = duplicateCount * 350;
+        DuplicateArena duplicateArena = new DuplicateArena(this, offset);
 
-                DuplicateArena dupe = new DuplicateArena(this, offset);
-
-                duplicates.add(dupe);
-            }
-        });
-    }
-
-    public StandAloneArena get() {
-        for (StandAloneArena dupe : duplicates) {
-            if (!dupe.isUsed()) return dupe;
-        }
-
-        return this;
+        return duplicateArena.load().thenApplyAsync(v -> duplicateArena);
     }
 
     public void takeSnapshot() {
         if (min == null || max == null) return;
         BlockChanger.captureAsync(min, max).thenAccept(snapshot -> {
             this.snapshot = snapshot;
-            loadDupes();
         });
     }
 

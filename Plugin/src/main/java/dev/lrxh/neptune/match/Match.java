@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
+import dev.lrxh.neptune.arena.impl.DuplicateArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
@@ -156,8 +157,16 @@ public abstract class Match {
 
 
     public void resetArena() {
-        if (arena instanceof StandAloneArena standAloneArena) {
-            standAloneArena.restoreSnapshot();
+        if(state == MatchState.ENDING) {
+            if (arena instanceof DuplicateArena duplicateArena) {
+                duplicateArena.destroy();
+            } else if (arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.restoreSnapshot();
+            }
+        } else {
+            if (arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.restoreSnapshot();
+            }
         }
 
         removeEntities();

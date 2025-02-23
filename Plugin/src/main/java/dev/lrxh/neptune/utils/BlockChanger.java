@@ -104,6 +104,83 @@ public class BlockChanger {
     }
 
     /**
+     * Sets blocks block-data's using NMS.
+     *
+     * @param world    World to set block in.
+     * @param pos1     Position 1
+     * @param pos2     Position 2
+     * @param material Material to fill all blocks between pos1 and pos2
+     */
+    public static void setBlocks(World world, Location pos1, Location pos2, Material material) {
+        HashMap<Chunk, Object> chunkCache = new HashMap<>();
+
+        Location max = new Location(pos1.getWorld(), Math.max(pos1.getX(), pos2.getX()), Math.max(pos1.getY(), pos2.getY()), Math.max(pos1.getZ(), pos2.getZ()));
+        Location min = new Location(pos1.getWorld(), Math.min(pos1.getX(), pos2.getX()), Math.min(pos1.getY(), pos2.getY()), Math.min(pos1.getZ(), pos2.getZ()));
+
+        Snapshot snapshot = new Snapshot(world, pos1);
+        int minX = Math.min(min.getBlockX(), max.getBlockX());
+        int minY = Math.min(min.getBlockY(), max.getBlockY());
+        int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
+
+        int maxX = Math.max(min.getBlockX(), max.getBlockX());
+        int maxY = Math.max(min.getBlockY(), max.getBlockY());
+        int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    Location location = new Location(world, x, y, z);
+                    setBlock(new BlockSnapshot(location, material), chunkCache);
+                }
+            }
+        }
+
+        for (Chunk chunk : chunkCache.keySet()) {
+            world.refreshChunk(chunk.getX(), chunk.getZ());
+        }
+    }
+
+    /**
+     * Sets blocks block-data's using NMS.
+     *
+     * @param world    World to set block in.
+     * @param pos1     Position 1
+     * @param pos2     Position 2
+     * @param material Material to fill all blocks between pos1 and pos2
+     * @return A CompletableFuture that completes operation is done.
+     */
+    public static CompletableFuture<Void> setBlocksAsync(World world, Location pos1, Location pos2, Material material) {
+        return CompletableFuture.runAsync(() -> {
+            HashMap<Chunk, Object> chunkCache = new HashMap<>();
+
+            Location max = new Location(pos1.getWorld(), Math.max(pos1.getX(), pos2.getX()), Math.max(pos1.getY(), pos2.getY()), Math.max(pos1.getZ(), pos2.getZ()));
+            Location min = new Location(pos1.getWorld(), Math.min(pos1.getX(), pos2.getX()), Math.min(pos1.getY(), pos2.getY()), Math.min(pos1.getZ(), pos2.getZ()));
+
+            Snapshot snapshot = new Snapshot(world, pos1);
+            int minX = Math.min(min.getBlockX(), max.getBlockX());
+            int minY = Math.min(min.getBlockY(), max.getBlockY());
+            int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
+
+            int maxX = Math.max(min.getBlockX(), max.getBlockX());
+            int maxY = Math.max(min.getBlockY(), max.getBlockY());
+            int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
+
+            for (int x = minX; x <= maxX; x++) {
+                for (int y = minY; y <= maxY; y++) {
+                    for (int z = minZ; z <= maxZ; z++) {
+                        Location location = new Location(world, x, y, z);
+                        setBlock(new BlockSnapshot(location, material), chunkCache);
+                    }
+                }
+            }
+
+            for (Chunk chunk : chunkCache.keySet()) {
+                world.refreshChunk(chunk.getX(), chunk.getZ());
+            }
+        });
+    }
+
+    /**
      * Paste a snapshot and allowing an offset
      *
      * @param snapshot Captured Snapshot.

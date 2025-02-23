@@ -103,7 +103,7 @@ public final class Neptune extends JavaPlugin implements Listener {
         loadExtensions();
         if (!isEnabled()) return;
 
-        BlockChanger.load(this, false);
+        BlockChanger.load(this, true);
         ConfigService.get().load();
 
         ArenaService.get().loadArenas();
