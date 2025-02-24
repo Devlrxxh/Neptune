@@ -6,6 +6,7 @@ import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.MatchService;
+import dev.lrxh.neptune.match.impl.MatchState;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
@@ -32,6 +33,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
             return;
         }
         if (endTimer == 0) {
+            match.setState(MatchState.ENDING);
             match.forEachParticipant(participant -> {
                 Profile profile = API.getProfile(participant.getPlayerUUID());
                 PlayerUtil.reset(participant.getPlayer());

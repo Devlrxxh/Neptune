@@ -168,81 +168,12 @@ public abstract class Match {
                 standAloneArena.restoreSnapshot();
             }
         } else {
-            if (arena instanceof StandAloneArena standAloneArena) {
-                standAloneArena.restoreSnapshot();
+            if (arena instanceof DuplicateArena duplicateArena) {
+                duplicateArena.restoreSnapshot();
             }
         }
 
         removeEntities();
-    }
-
-    public void spawnImageScreen(Player player, String imageUrl, double scaleFactor) {
-        BufferedImage image;
-        try {
-            // Load image from URL
-            image = ImageIO.read(new URL(imageUrl));
-        } catch (IOException e) {
-            player.sendMessage("Error loading image: " + e.getMessage());
-            return;
-        }
-
-        // Get real image width & height
-        int originalWidth = image.getWidth();
-        int originalHeight = image.getHeight();
-
-        // Set max pixels to prevent lag (you can tweak this)
-        int maxPixels = 25_000;
-
-        // Scale the image size while maintaining aspect ratio
-        int scaledWidth = (int) (originalWidth * scaleFactor);
-        int scaledHeight = (int) (originalHeight * scaleFactor);
-
-        // Calculate the downscaling factor to ensure we stay within maxPixels
-        double resolutionFactor = Math.sqrt((double) maxPixels / (scaledWidth * scaledHeight));
-
-        // Final adjusted width & height, ensuring we don't exceed max pixels
-        int finalWidth = (int) (scaledWidth * resolutionFactor);
-        int finalHeight = (int) (scaledHeight * resolutionFactor);
-
-        // Adjust pixel size dynamically
-        double pixelSize = 0.1F / resolutionFactor;
-        double spacingDivider = 8;
-
-        Location location = player.getLocation();
-        location.setPitch(0);
-        location.setYaw(0);
-
-        for (int x = 0; x < finalWidth; x++) {
-            for (int y = 0; y < finalHeight; y++) {
-                // Get color from the image
-                int rgb = image.getRGB((x * originalWidth) / finalWidth, ((finalHeight - 1 - y) * originalHeight) / finalHeight);
-                int red = (rgb >> 16) & 0xFF;
-                int green = (rgb >> 8) & 0xFF;
-                int blue = rgb & 0xFF;
-
-                Color color = Color.fromRGB(red, green, blue);
-
-                spawnPixel(
-                        color, // Bukkit Color
-                        location.clone().add(x * pixelSize / spacingDivider, y * pixelSize / spacingDivider, 0),
-                        pixelSize
-                );
-            }
-        }
-    }
-
-
-
-    private TextDisplay spawnPixel(Color color, Location location, double pixelSize) {
-        TextDisplay textDisplay = location.getWorld().spawn(location, TextDisplay.class);
-        textDisplay.setBackgroundColor(color);
-        textDisplay.setText(" ");
-        textDisplay.setBrightness(new Display.Brightness(15, 15));
-
-        Transformation transformation = textDisplay.getTransformation();
-        transformation.getScale().set(pixelSize, pixelSize / 2, pixelSize);
-        textDisplay.setTransformation(transformation);
-        return textDisplay;
     }
 
     public List<String> getScoreboard(UUID playerUUID) {

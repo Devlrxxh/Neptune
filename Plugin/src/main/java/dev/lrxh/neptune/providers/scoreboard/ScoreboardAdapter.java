@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.providers.scoreboard;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
@@ -9,19 +8,13 @@ import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
-import dev.lrxh.neptune.utils.assemble.AssembleAdapter;
+import fr.mrmicky.fastboard.FastAdapter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreboardAdapter implements AssembleAdapter {
-    private final Neptune plugin;
-
-    public ScoreboardAdapter() {
-        this.plugin = Neptune.get();
-    }
-
+public class ScoreboardAdapter implements FastAdapter {
     public String getTitle(Player player) {
         return getAnimatedText();
     }

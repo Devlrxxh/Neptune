@@ -16,6 +16,7 @@ import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -156,15 +157,21 @@ public class BlockChanger {
      * @param offsetZ  The offset to apply to the Z coordinate of each block.
      */
     public static void paste(Snapshot snapshot, int offsetX, int offsetZ, boolean ignoreAir) {
-        List<BlockSnapshot> blocks = new ArrayList<>();
-        for (BlockSnapshot blockSnapshot : snapshot.blocks) {
-            if (ignoreAir) if (blockSnapshot.blockDataNMS.toString().toLowerCase().contains("air")) continue;
-            BlockSnapshot b1 = blockSnapshot.clone();
-            b1.addOffset(offsetX, offsetZ);
-            blocks.add(b1);
+        HashMap<Object, List<Location>> data = new HashMap<>();
+
+        for (Map.Entry<Object, List<Location>> entry : snapshot.data.entrySet()) {
+            if (ignoreAir) if (entry.getKey().toString().toLowerCase().contains("air")) continue;
+            List<Location> locations = new ArrayList<>();
+
+            data.put(entry.getKey(), locations);
+
+            for (Location location : entry.getValue()) {
+                data.get(entry.getKey()).add(cloneLocation(location).add(offsetX, 0, offsetZ));
+            }
+
         }
 
-        setBlocks(snapshot.world, blocks);
+        setBlocks(snapshot.world, data);
     }
 
     /**
@@ -177,38 +184,6 @@ public class BlockChanger {
      */
     public static CompletableFuture<Void> pasteAsync(Snapshot snapshot, int offsetX, int offsetZ, boolean ignoreAir) {
         return CompletableFuture.runAsync(() -> paste(snapshot, offsetX, offsetZ, ignoreAir));
-    }
-
-    /**
-     * Paste a snapshot and allowing an offset
-     *
-     * @param snapshot Captured Snapshot.
-     * @param pos New location to paste snapshot at.
-     */
-    public static void paste(Snapshot snapshot, Location pos) {
-        List<BlockSnapshot> blocks = new ArrayList<>();
-        int offsetX = (int) (snapshot.pos.getX() - pos.getX());
-        int offsetZ = (int) (snapshot.pos.getZ() - pos.getZ());
-
-        for (BlockSnapshot blockSnapshot : snapshot.blocks) {
-            BlockSnapshot b1 = blockSnapshot.clone();
-
-            b1.addOffset(offsetX, offsetZ);
-            blocks.add(b1);
-        }
-
-        setBlocks(pos.getWorld(), blocks);
-    }
-
-    /**
-     * Paste a snapshot and allowing an offset
-     *
-     * @param snapshot Captured Snapshot.
-     * @param pos      New location to paste snapshot at.
-     * @return A CompletableFuture that completes when the operation is done.
-     */
-    public static CompletableFuture<Void> pasteAsync(Snapshot snapshot, Location pos) {
-        return CompletableFuture.runAsync(() -> paste(snapshot, pos));
     }
 
     /**
@@ -233,18 +208,31 @@ public class BlockChanger {
         int maxY = Math.max(min.getBlockY(), max.getBlockY());
         int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
 
-        for (int x = minX; x <= maxX; x++) {
-            for (int y = minY; y <= maxY; y++) {
-                for (int z = minZ; z <= maxZ; z++) {
-                    Location location = new Location(world, x, y, z);
-                    Object nmsBlockData = getNMSBlockData(location.getChunk(), world, location, chunkCache);
-                    if (nmsBlockData == null) continue;
-                    if (ignoreAir) if (nmsBlockData.toString().toLowerCase().contains("air")) continue;
-                    snapshot.add(new BlockSnapshot(location, getNMSBlockData(location.getChunk(), world, location, chunkCache)));
+        int chunkSize = 100;
+
+        for (int xStart = minX; xStart <= maxX; xStart += chunkSize) {
+            for (int yStart = minY; yStart <= maxY; yStart += chunkSize) {
+                for (int zStart = minZ; zStart <= maxZ; zStart += chunkSize) {
+
+                    int xEnd = Math.min(xStart + chunkSize - 1, maxX);
+                    int yEnd = Math.min(yStart + chunkSize - 1, maxY);
+                    int zEnd = Math.min(zStart + chunkSize - 1, maxZ);
+
+                    for (int x = xStart; x <= xEnd; x++) {
+                        for (int y = yStart; y <= yEnd; y++) {
+                            for (int z = zStart; z <= zEnd; z++) {
+                                Location location = new Location(world, x, y, z);
+                                snapshot.add(new BlockSnapshot(location, getNMSBlockData(location.getChunk(), world, location, chunkCache)));
+                            }
+                        }
+                    }
+
+                    System.gc();
                 }
             }
         }
-        debug("Captured Snapshot (" + snapshot.blocks.size() + ")");
+
+        debug("Captured Snapshot");
         return snapshot;
     }
 
@@ -267,10 +255,10 @@ public class BlockChanger {
     public static void revert(World world, Snapshot snapshot) {
         long startTime = System.currentTimeMillis();
 
-        setBlocks(world, snapshot.blocks);
+        setBlocks(world, snapshot.data);
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
-        debug("Snapshot revert time: " + duration + " ms (" + snapshot.blocks.size() + ")");
+        debug("Snapshot revert time: " + duration + " ms");
     }
 
     /**
@@ -298,6 +286,24 @@ public class BlockChanger {
         return itemStack;
     }
 
+    private static void setBlocks(World world, HashMap<Object, List<Location>> data) {
+        long startTime = System.currentTimeMillis();
+        HashMap<Chunk, Object> chunkCache = new HashMap<>();
+
+        for (Map.Entry<Object, List<Location>> entry : data.entrySet()) {
+            for (Location location : entry.getValue()) {
+                setBlock(world, entry.getKey(), location, chunkCache);
+            }
+        }
+
+        for (Chunk chunk : chunkCache.keySet()) {
+            world.refreshChunk(chunk.getX(), chunk.getZ());
+        }
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        debug("Pasted blocks time: " + duration + " ms");
+    }
+
     private static void setBlock(BlockSnapshot snapshot, HashMap<Chunk, Object> chunkCache) {
         try {
             Object nmsBlockData = snapshot.blockDataNMS;
@@ -308,6 +314,27 @@ public class BlockChanger {
             Object nmsChunk = getChunkNMS(nmsWorld, chunk, chunkCache);
 
             if (nmsBlockData.equals(getNMSBlockData(chunk, snapshot.location.getWorld(), location, chunkCache))) return;
+
+            int x = (int) location.getX();
+            int y = location.getBlockY();
+            int z = (int) location.getZ();
+
+            Object cs = getSection(nmsChunk, y);
+            if (cs == null) return;
+
+            SET_TYPE.invoke(cs, x & 15, y & 15, z & 15, nmsBlockData);
+        } catch (Throwable e) {
+            debug("Error occurred while at #setBlock(BlockSnapshot, HashMap) " + e.getMessage());
+        }
+    }
+
+    private static void setBlock(World world, Object nmsBlockData, Location location, HashMap<Chunk, Object> chunkCache) {
+        try {
+            Chunk chunk = location.getChunk();
+            Object nmsWorld = getWorldNMS(world);
+            Object nmsChunk = getChunkNMS(nmsWorld, chunk, chunkCache);
+
+            if (nmsBlockData.equals(getNMSBlockData(chunk, world, location, chunkCache))) return;
 
             int x = (int) location.getX();
             int y = location.getBlockY();
@@ -694,6 +721,9 @@ public class BlockChanger {
         }
         return 0;
     }
+    protected static Location cloneLocation(Location location) {
+        return new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
+    }
 
     private static void debug(String message) {
         if (debug) plugin.getLogger().info(message);
@@ -701,17 +731,26 @@ public class BlockChanger {
 
     public static class Snapshot {
         protected final World world;
-        protected final List<BlockSnapshot> blocks;
+        protected final HashMap<Object, List<Location>> data;
         protected final Location pos;
 
         protected Snapshot(World world, Location pos) {
             this.world = world;
             this.pos = pos;
-            this.blocks = new ArrayList<>();
+            this.data = new HashMap<>();
         }
 
         protected void add(BlockSnapshot blockData) {
-            blocks.add(blockData);
+            Object nmsBlockData = blockData.blockDataNMS;
+            Location location = blockData.location;
+
+            if(data.get(nmsBlockData) == null) {
+                List<Location> e = new ArrayList<>();
+                e.add(location);
+                data.put(nmsBlockData, e);
+            } else {
+                data.get(nmsBlockData).add(location);
+            }
         }
     }
 
@@ -780,14 +819,6 @@ public class BlockChanger {
         protected BlockSnapshot(Location location, Object blockDataNMS) {
             this.location = location;
             this.blockDataNMS = blockDataNMS;
-        }
-
-        protected BlockSnapshot clone() {
-            return new BlockSnapshot(new Location(location.getWorld(), location.getX(), location.getY(), location.getZ()), blockDataNMS);
-        }
-
-        protected void addOffset(int offsetX, int offsetZ) {
-            this.location.add(offsetX, 0, offsetZ);
         }
     }
 }

@@ -50,7 +50,7 @@ import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
-import dev.lrxh.neptune.utils.assemble.Assemble;
+import fr.mrmicky.fastboard.FastManager;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Difficulty;
@@ -71,7 +71,6 @@ import java.util.function.Consumer;
 public final class Neptune extends JavaPlugin implements Listener {
     private static Neptune instance;
     private Cache cache;
-    private Assemble assemble;
     private boolean placeholder = false;
     private EntityHider entityHider;
     @Setter
@@ -120,7 +119,7 @@ public final class Neptune extends JavaPlugin implements Listener {
         LeaderboardService.get();
 
         if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
-            this.assemble = new Assemble(new ScoreboardAdapter());
+            new FastManager(this, new ScoreboardAdapter());
         }
 
         registerListeners();

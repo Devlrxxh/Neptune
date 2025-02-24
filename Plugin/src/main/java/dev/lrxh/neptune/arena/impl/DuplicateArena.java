@@ -21,8 +21,9 @@ public class DuplicateArena extends StandAloneArena {
     }
 
     public void destroy() {
-        BlockChanger.setBlocksAsync(getWorld(), getMin(), getMax(), Material.AIR);
-        parent.setDuplicateCount(parent.getDuplicateCount() - 1);
+        BlockChanger.setBlocksAsync(getWorld(), getMin(), getMax(), Material.AIR).thenRun(() -> {
+            parent.setDuplicateCount(parent.getDuplicateCount() - 1);
+        });
     }
 
     @Override
