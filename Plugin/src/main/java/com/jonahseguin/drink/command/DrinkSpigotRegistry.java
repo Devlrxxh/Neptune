@@ -6,7 +6,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 
 import javax.annotation.Nonnull;
-import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +19,7 @@ public class DrinkSpigotRegistry {
         this.commandService = commandService;
         try {
             commandMap = (CommandMap) getPrivateField(Bukkit.getServer(), "commandMap", false);
-        }
-        catch (NoSuchFieldException | IllegalAccessException e) {
+        } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();
         }
     }
@@ -40,7 +38,7 @@ public class DrinkSpigotRegistry {
         try {
             objectField = clazz.getDeclaredField(field);
         } catch (NoSuchFieldException e) {
-            if(fallback) {
+            if (fallback) {
                 objectField = clazz.getSuperclass().getDeclaredField(field);
             } else {
                 throw new NoSuchFieldException(e.getMessage());
@@ -73,7 +71,6 @@ public class DrinkSpigotRegistry {
 
         return commandMap.register(container.getCommandService().getPlugin().getName(), container);
     }
-
 
 
 }

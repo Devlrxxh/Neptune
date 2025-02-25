@@ -8,7 +8,6 @@ import org.bukkit.command.CommandSender;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.Collections;
 import java.util.List;
 
 public class CommandSenderProvider extends DrinkProvider<CommandSender> {

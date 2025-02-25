@@ -4,7 +4,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 @UtilityClass

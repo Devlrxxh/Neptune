@@ -4,12 +4,10 @@ import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.argument.CommandArgs;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
-import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.Collections;
 import java.util.List;
 
 public class CommandArgsProvider extends DrinkProvider<CommandArgs> {

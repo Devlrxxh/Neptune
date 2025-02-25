@@ -5,7 +5,6 @@ import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.command.CommandSender;
 
 import javax.annotation.Nonnull;
 import java.lang.annotation.Annotation;
@@ -19,6 +18,10 @@ public class EnumProvider<T extends Enum<T>> extends DrinkProvider<T> {
 
     public EnumProvider(Class<T> enumClass) {
         this.enumClass = enumClass;
+    }
+
+    private static String simplify(String t) {
+        return NON_ALPHANUMERIC.matcher(t.toLowerCase()).replaceAll("");
     }
 
     @Override
@@ -41,7 +44,7 @@ public class EnumProvider<T extends Enum<T>> extends DrinkProvider<T> {
                 return entry;
             }
         }
-        throw new CommandExitMessage("No matching value found for " + argumentDescription() + ".  Available values: " + StringUtils.join(getSuggestions(arg.getSender(),""), ' '));
+        throw new CommandExitMessage("No matching value found for " + argumentDescription() + ".  Available values: " + StringUtils.join(getSuggestions(arg.getSender(), ""), ' '));
     }
 
     @Override
@@ -62,9 +65,5 @@ public class EnumProvider<T extends Enum<T>> extends DrinkProvider<T> {
         }
 
         return suggestions;
-    }
-
-    private static String simplify(String t) {
-        return NON_ALPHANUMERIC.matcher(t.toLowerCase()).replaceAll("");
     }
 }

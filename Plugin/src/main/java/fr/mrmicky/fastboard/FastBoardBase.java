@@ -47,10 +47,10 @@ import java.util.stream.Stream;
  */
 public abstract class FastBoardBase<T> {
 
-    private static final Map<Class<?>, Field[]> PACKETS = new HashMap<>(8);
     protected static final String[] COLOR_CODES = Arrays.stream(ChatColor.values())
             .map(Object::toString)
             .toArray(String[]::new);
+    private static final Map<Class<?>, Field[]> PACKETS = new HashMap<>(8);
     private static final VersionType VERSION_TYPE;
     // Packets and components
     private static final Class<?> CHAT_COMPONENT_CLASS;
@@ -115,7 +115,7 @@ public abstract class FastBoardBase<T> {
                     .filter(m -> m.getParameterCount() == 1 && m.getParameterTypes()[0] == packetClass)
                     .findFirst().orElseThrow(NoSuchMethodException::new);
             Optional<Class<?>> displaySlotEnum = FastReflection.nmsOptionalClass("world.scores", "DisplaySlot");
-            CHAT_COMPONENT_CLASS = FastReflection.nmsClass("network.chat", "IChatBaseComponent","Component");
+            CHAT_COMPONENT_CLASS = FastReflection.nmsClass("network.chat", "IChatBaseComponent", "Component");
             CHAT_FORMAT_ENUM = FastReflection.nmsClass(null, "EnumChatFormat", "ChatFormatting");
             DISPLAY_SLOT_TYPE = displaySlotEnum.orElse(int.class);
             RESET_FORMATTING = FastReflection.enumValueOf(CHAT_FORMAT_ENUM, "RESET", 21);
@@ -306,8 +306,8 @@ public abstract class FastBoardBase<T> {
      * Update a single scoreboard line including how its score is displayed.
      * The score will only be displayed on 1.20.3 and higher.
      *
-     * @param line the line number
-     * @param text the new line text
+     * @param line      the line number
+     * @param text      the new line text
      * @param scoreText the new line's score, if null will not change current value
      * @throws IndexOutOfBoundsException if the line is higher than {@link #size() size() + 1}
      */
@@ -392,7 +392,7 @@ public abstract class FastBoardBase<T> {
      * Update the lines and how their score is displayed on the scoreboard.
      * The scores will only be displayed for servers on 1.20.3 and higher.
      *
-     * @param lines the new scoreboard lines
+     * @param lines  the new scoreboard lines
      * @param scores the set for how each line's score should be, if null will fall back to default (blank)
      * @throws IllegalArgumentException if one line is longer than 30 chars on 1.12 or lower
      * @throws IllegalArgumentException if lines and scores are not the same size

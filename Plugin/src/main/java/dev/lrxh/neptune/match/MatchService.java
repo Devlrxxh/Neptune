@@ -33,37 +33,25 @@ public class MatchService {
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {
-            for (Participant participant : participants) {
-                QueueService.get().remove(participant.getPlayerUUID());
-                kit.addPlaying();
-            }
+        for (Participant participant : participants) {
+            QueueService.get().remove(participant.getPlayerUUID());
+            kit.addPlaying();
+        }
 
-            //Create teams
-            Participant playerRed = participants.get(0);
-            Participant playerBlue = participants.get(1);
+        //Create teams
+        Participant playerRed = participants.get(0);
+        Participant playerBlue = participants.get(1);
 
-            playerRed.setOpponent(playerBlue);
-            playerRed.setColor(ParticipantColor.RED);
+        playerRed.setOpponent(playerBlue);
+        playerRed.setColor(ParticipantColor.RED);
 
-            playerBlue.setOpponent(playerRed);
-            playerBlue.setColor(ParticipantColor.BLUE);
+        playerBlue.setOpponent(playerRed);
+        playerBlue.setColor(ParticipantColor.BLUE);
 
-            //Create match
-            SoloFightMatch match = new SoloFightMatch(arena, kit, duel, participants, playerRed, playerBlue, rounds);
+        SoloFightMatch match = new SoloFightMatch(arena, kit, duel, participants, playerRed, playerBlue, rounds);
 
-            matches.add(match);
-
-            //Teleport the Players to their spawn
-            match.teleportToPositions();
-
-            //Setup players
-            match.setupParticipants();
-
-            //Apply kit rules for players
-            match.checkRules();
-
-            //Start match start runnable
-            new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
+        matches.add(match);
+        new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
     }
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {
@@ -79,45 +67,21 @@ public class MatchService {
         List<Participant> participants = new ArrayList<>(teamA.getParticipants());
         participants.addAll(teamB.getParticipants());
 
-        //Create match
         TeamFightMatch match = new TeamFightMatch(arena, kit, participants, teamA, teamB);
 
         matches.add(match);
-
-        //Setup players
-        match.setupParticipants();
-
-        //Apply kit rules for players
-        match.checkRules();
-
-        //Teleport the Players to their spawn
-        match.teleportToPositions();
-
-        //Start match start runnable
         new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
-                for (Participant participant : participants) {
-                    participant.setColor(ParticipantColor.RED);
-                }
+        for (Participant participant : participants) {
+            participant.setColor(ParticipantColor.RED);
+        }
 
-                //Create match
         FfaFightMatch match = new FfaFightMatch(arena, kit, participants);
 
-                matches.add(match);
-
-                //Setup players
-                match.setupParticipants();
-
-                //Apply kit rules for players
-                match.checkRules();
-
-                //Teleport the Players to their spawn
-                match.teleportToPositions();
-
-                //Start match start runnable
-                new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
+        matches.add(match);
+        new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
     }
 
     public Optional<Match> getMatch(Player player) {

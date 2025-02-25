@@ -95,6 +95,7 @@ public class DrinkCommandContainer extends Command implements PluginIdentifiable
     /**
      * Gets a sub-command based on given arguments and also returns the new actual argument values
      * based on the arguments that were consumed for the sub-command key
+     *
      * @param args the original arguments passed in
      * @return the DrinkCommand (if present, Nullable) and the new argument array
      */

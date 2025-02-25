@@ -38,7 +38,7 @@ public class ArgumentParser {
                             if (endIndex != i) {
                                 builder.append(' ');
                             }
-                            builder.append(arg2.substring(endIndex == i ? 1 : 0, arg2.length() - 1));
+                            builder.append(arg2, endIndex == i ? 1 : 0, arg2.length() - 1);
                             break;
                         } else if (endIndex == i) {
                             builder.append(arg2.substring(1));

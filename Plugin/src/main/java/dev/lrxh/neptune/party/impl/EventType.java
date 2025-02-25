@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.party.impl;
 
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.MatchService;

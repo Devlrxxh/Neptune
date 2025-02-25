@@ -43,7 +43,7 @@ public class ModifierService {
     public <T> void registerModifier(@Nonnull Class<? extends Annotation> annotation, @Nonnull Class<T> type, @Nonnull DrinkModifier<T> modifier) {
         Preconditions.checkNotNull(annotation, "Annotation cannot be null");
         Preconditions.checkNotNull(type, "Type cannot be null");
-        Preconditions.checkNotNull(modifier,"Modifier cannot be null");
+        Preconditions.checkNotNull(modifier, "Modifier cannot be null");
         modifiers.computeIfAbsent(annotation, a -> new ModifierContainer()).getModifiers().computeIfAbsent(type, t -> new HashSet<>()).add(modifier);
     }
 

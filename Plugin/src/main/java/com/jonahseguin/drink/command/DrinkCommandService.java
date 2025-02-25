@@ -49,10 +49,9 @@ public class DrinkCommandService implements CommandService {
     private final ModifierService modifierService;
     private final DrinkSpigotRegistry spigotRegistry;
     private final FlagExtractor flagExtractor;
-    private DrinkAuthorizer authorizer;
-
     private final ConcurrentMap<String, DrinkCommandContainer> commands = new ConcurrentHashMap<>();
     private final ConcurrentMap<Class<?>, BindingContainer<?>> bindings = new ConcurrentHashMap<>();
+    private DrinkAuthorizer authorizer;
 
     public DrinkCommandService(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -175,8 +174,7 @@ public class DrinkCommandService implements CommandService {
                 sender.sendMessage(ChatColor.RED + "Could not perform command.  Notify an administrator");
                 throw new DrinkException("Failed to execute command '" + command.getName() + "' with arguments '" + StringUtils.join(Arrays.asList(args), ' ') + " for sender " + sender.getName(), ex);
             }
-        }
-        catch (CommandExitMessage ex) {
+        } catch (CommandExitMessage ex) {
             ex.print(sender);
         } catch (CommandArgumentException ex) {
             sender.sendMessage(ChatColor.RED + ex.getMessage());

@@ -10,11 +10,11 @@ import org.bukkit.World;
 @Getter
 @Setter
 public class StandAloneArena extends Arena {
+    private final boolean dupe;
     private Location min;
     private Location max;
     private double limit;
     private BlockChanger.Snapshot snapshot;
-    private final boolean dupe;
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean dupe) {
         super(name, displayName, redSpawn, blueSpawn, enabled);

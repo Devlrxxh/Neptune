@@ -1,12 +1,11 @@
 package dev.lrxh.neptune.utils;
 
-import com.github.retrooper.packetevents.PacketEvents;
-import com.github.retrooper.packetevents.protocol.world.chunk.LightData;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateLight;
-import org.bukkit.*;
+import org.bukkit.Chunk;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -702,6 +701,7 @@ public class BlockChanger {
         }
         return 0;
     }
+
     protected static Location cloneLocation(Location location) {
         return new Location(location.getWorld(), location.getX(), location.getY(), location.getZ());
     }
@@ -725,7 +725,7 @@ public class BlockChanger {
             Object nmsBlockData = blockData.blockDataNMS;
             Location location = blockData.location;
 
-            if(data.get(nmsBlockData) == null) {
+            if (data.get(nmsBlockData) == null) {
                 List<Location> e = new ArrayList<>();
                 e.add(location);
                 data.put(nmsBlockData, e);
@@ -738,6 +738,7 @@ public class BlockChanger {
     public static class BlockSnapshot {
         protected final Object blockDataNMS;
         protected Location location;
+
         /**
          * BlockChanger representation of blocks for multi version support
          * <p>

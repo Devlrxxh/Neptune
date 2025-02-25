@@ -55,8 +55,7 @@ public class DrinkCommand {
     public String getMostApplicableUsage() {
         if (usage.length() > 0) {
             return usage;
-        }
-        else {
+        } else {
             return generatedUsage;
         }
     }
@@ -64,8 +63,7 @@ public class DrinkCommand {
     public String getShortDescription() {
         if (description.length() > 24) {
             return description.substring(0, 21) + "...";
-        }
-        else {
+        } else {
             return description;
         }
     }
@@ -78,8 +76,7 @@ public class DrinkCommand {
             String description = parameter.getParameter().getName(); // provider.argumentDescription()
             if (parameter.isFlag()) {
                 sb.append("-").append(parameter.getFlag().value()).append(" ");
-            }
-            else {
+            } else {
                 if (provider.doesConsumeArgument()) {
                     if (parameter.isOptional()) {
                         sb.append("[").append(description);

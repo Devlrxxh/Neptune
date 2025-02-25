@@ -11,7 +11,6 @@ import dev.lrxh.neptune.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
-import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -28,6 +27,10 @@ public class MatchStartRunnable extends NeptuneRunnable {
         this.match = match;
         this.startTimer = match.getKit().is(KitRule.DENY_MOVEMENT) || !(match instanceof FfaFightMatch) ? 3 : 5;
         this.plugin = plugin;
+
+        match.setupParticipants();
+        match.checkRules();
+        match.teleportToPositions();
     }
 
     @Override

@@ -9,7 +9,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 @AllArgsConstructor
 public class FastListener implements Listener {
-private final FastManager manager;
+    private final FastManager manager;
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {

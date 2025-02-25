@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.kit.Kit;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
