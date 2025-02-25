@@ -118,15 +118,15 @@ public final class Neptune extends JavaPlugin implements Listener {
 
         LeaderboardService.get();
 
-        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
-            new FastManager(this, new ScoreboardAdapter());
-        }
-
         registerListeners();
         loadCommandManager();
         loadTasks();
         loadWorlds();
         initAPIs();
+
+        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
+            new FastManager(this, new ScoreboardAdapter());
+        }
 
         ServerUtils.info("Loaded Successfully");
     }

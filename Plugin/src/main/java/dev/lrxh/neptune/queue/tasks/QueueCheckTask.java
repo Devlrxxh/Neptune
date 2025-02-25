@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.queue.tasks;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;

@@ -4,25 +4,16 @@ import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntitySoundEffect;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfo;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerPlayerInfoUpdate;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
-import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.ServerUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
-import org.bukkit.Server;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -38,21 +29,6 @@ public class PacketInterceptor extends PacketListenerAbstract {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
-
-//        if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_UPDATE) {
-//            WrapperPlayServerPlayerInfoUpdate wrapper = new WrapperPlayServerPlayerInfoUpdate(event);
-//            List<WrapperPlayServerPlayerInfoUpdate.PlayerInfo> list = wrapper.getEntries();
-//
-//            for (WrapperPlayServerPlayerInfoUpdate.PlayerInfo data : list) {
-//                if (data == null) return;
-//
-//                data.getGameProfile().setName("dsaadsaadsaadwqsw");
-//            }
-//
-//            event.markForReEncode(true);
-//            return;
-//        }
-
         if (event.getUser() == null) {
             return;
         }

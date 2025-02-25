@@ -1,10 +1,8 @@
 package dev.lrxh.neptune.match;
 
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateLight;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.DuplicateArena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
@@ -27,20 +25,16 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.*;
-import org.bukkit.entity.Display;
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.TextDisplay;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
-import org.bukkit.util.Transformation;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -161,16 +155,8 @@ public abstract class Match {
     }
 
     public void resetArena() {
-        if(state == MatchState.ENDING) {
-            if (arena instanceof DuplicateArena duplicateArena) {
-                duplicateArena.destroy();
-            } else if (arena instanceof StandAloneArena standAloneArena) {
-                standAloneArena.restoreSnapshot();
-            }
-        } else {
-            if (arena instanceof DuplicateArena duplicateArena) {
-                duplicateArena.restoreSnapshot();
-            }
+        if (arena instanceof StandAloneArena standAloneArena) {
+            standAloneArena.restoreSnapshot();
         }
 
         removeEntities();

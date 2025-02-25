@@ -7,5 +7,4 @@ import java.util.List;
 public interface FastAdapter {
     String getTitle(Player player);
     List<String> getLines(Player player);
-
 }

@@ -1,11 +1,12 @@
 package dev.lrxh.neptune.utils;
 
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import com.github.retrooper.packetevents.PacketEvents;
+import com.github.retrooper.packetevents.protocol.world.chunk.LightData;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerUpdateLight;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -74,6 +75,7 @@ public class BlockChanger {
         for (Chunk chunk : chunkCache.keySet()) {
             world.refreshChunk(chunk.getX(), chunk.getZ());
         }
+
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
         debug("Pasted blocks time: " + duration + " ms (" + blocks.size() + ")");
@@ -286,6 +288,16 @@ public class BlockChanger {
         return itemStack;
     }
 
+    private static void updateChunkLightning(Chunk chunk) {
+        WrapperPlayServerUpdateLight packet = new WrapperPlayServerUpdateLight(chunk.getX(), chunk.getZ(), new LightData());
+
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            PacketEvents.getAPI().getPlayerManager().sendPacketSilently(player, packet);
+        }
+
+        chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
+    }
+
     private static void setBlocks(World world, HashMap<Object, List<Location>> data) {
         long startTime = System.currentTimeMillis();
         HashMap<Chunk, Object> chunkCache = new HashMap<>();
@@ -297,7 +309,7 @@ public class BlockChanger {
         }
 
         for (Chunk chunk : chunkCache.keySet()) {
-            world.refreshChunk(chunk.getX(), chunk.getZ());
+            updateChunkLightning(chunk);
         }
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
@@ -305,36 +317,16 @@ public class BlockChanger {
     }
 
     private static void setBlock(BlockSnapshot snapshot, HashMap<Chunk, Object> chunkCache) {
-        try {
-            Object nmsBlockData = snapshot.blockDataNMS;
-            Location location = snapshot.location;
-
-            Chunk chunk = location.getChunk();
-            Object nmsWorld = getWorldNMS(snapshot.location.getWorld());
-            Object nmsChunk = getChunkNMS(nmsWorld, chunk, chunkCache);
-
-            if (nmsBlockData.equals(getNMSBlockData(chunk, snapshot.location.getWorld(), location, chunkCache))) return;
-
-            int x = (int) location.getX();
-            int y = location.getBlockY();
-            int z = (int) location.getZ();
-
-            Object cs = getSection(nmsChunk, y);
-            if (cs == null) return;
-
-            SET_TYPE.invoke(cs, x & 15, y & 15, z & 15, nmsBlockData);
-        } catch (Throwable e) {
-            debug("Error occurred while at #setBlock(BlockSnapshot, HashMap) " + e.getMessage());
-        }
+        setBlock(snapshot.location.getWorld(), snapshot.blockDataNMS, snapshot.location, chunkCache);
     }
 
-    private static void setBlock(World world, Object nmsBlockData, Location location, HashMap<Chunk, Object> chunkCache) {
+    private static void setBlock(World world, Object blockDataNMS, Location location, HashMap<Chunk, Object> chunkCache) {
         try {
             Chunk chunk = location.getChunk();
             Object nmsWorld = getWorldNMS(world);
             Object nmsChunk = getChunkNMS(nmsWorld, chunk, chunkCache);
 
-            if (nmsBlockData.equals(getNMSBlockData(chunk, world, location, chunkCache))) return;
+            if (blockDataNMS.equals(getNMSBlockData(chunk, world, location, chunkCache))) return;
 
             int x = (int) location.getX();
             int y = location.getBlockY();
@@ -343,7 +335,7 @@ public class BlockChanger {
             Object cs = getSection(nmsChunk, y);
             if (cs == null) return;
 
-            SET_TYPE.invoke(cs, x & 15, y & 15, z & 15, nmsBlockData);
+            SET_TYPE.invoke(cs, x & 15, y & 15, z & 15, blockDataNMS);
         } catch (Throwable e) {
             debug("Error occurred while at #setBlock(BlockSnapshot, HashMap) " + e.getMessage());
         }
@@ -637,7 +629,6 @@ public class BlockChanger {
         MethodHandles.Lookup lookup = MethodHandles.lookup();
         return lookup.findStatic(clazz, methodName, MethodType.methodType(rtype, parameterTypes));
     }
-
 
     private static Object[] getSections(Object nmsChunk) {
         try {

@@ -7,10 +7,6 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.CompletableFuture;
-
 @Getter
 @Setter
 public class StandAloneArena extends Arena {
@@ -19,22 +15,13 @@ public class StandAloneArena extends Arena {
     private double limit;
     private BlockChanger.Snapshot snapshot;
     private final boolean dupe;
-    private int duplicateCount;
-    private List<DuplicateArena> duplicates;
 
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, int duplicateCount, boolean enabled, boolean dupe) {
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean dupe) {
         super(name, displayName, redSpawn, blueSpawn, enabled);
         this.min = min;
         this.max = max;
         this.limit = limit;
         this.dupe = dupe;
-        this.duplicateCount = duplicateCount;
-
-        if (!dupe) {
-            this.duplicates = new ArrayList<>();
-
-            takeSnapshot();
-        }
     }
 
     public StandAloneArena(String arenaName) {
@@ -43,16 +30,6 @@ public class StandAloneArena extends Arena {
         this.min = null;
         this.max = null;
         this.limit = 68321;
-        this.duplicates = new ArrayList<>();
-        this.duplicateCount = 0;
-    }
-
-    public CompletableFuture<DuplicateArena> loadDupe() {
-        duplicateCount++;
-        int offset = duplicateCount * 350;
-        DuplicateArena duplicateArena = new DuplicateArena(this, offset);
-
-        return duplicateArena.load().thenApplyAsync(v -> duplicateArena);
     }
 
     public void takeSnapshot() {
@@ -62,7 +39,9 @@ public class StandAloneArena extends Arena {
         });
     }
 
-    public void restoreSnapshot() {}
+    public void restoreSnapshot() {
+        BlockChanger.revertAsync(getWorld(), getSnapshot());
+    }
 
     public World getWorld() {
         return max.getWorld();

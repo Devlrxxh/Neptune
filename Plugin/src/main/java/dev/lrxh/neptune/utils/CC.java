@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.utils;
 
-import com.iridium.iridiumcolorapi.IridiumColorAPI;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 @UtilityClass
 public class CC {
     private final Pattern COLOR_PATTERN = Pattern.compile("&[0-9a-fA-Fk-oK-OrR]");
+    private final Pattern HEX_PATTERN = Pattern.compile("&#[a-fA-F0-9]{6}");
 
     public String error(String message) {
         return color(MessagesLocale.ERROR_MESSAGE.getString().replace("<error>", message));
@@ -28,8 +29,21 @@ public class CC {
     }
 
     public String color(String text) {
-        return IridiumColorAPI.process(text);
+        Matcher match = HEX_PATTERN.matcher(text);
+        StringBuilder result = new StringBuilder(text);
+
+        while (match.find()) {
+            String color = match.group();
+            String coloredText = ChatColor.valueOf(color).toString();
+            int start = match.start();
+            int end = match.end();
+
+            result.replace(start, end, coloredText);
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', result.toString());
     }
+
 
     public List<Object> color(List<Object> input) {
         return formatColors(input);

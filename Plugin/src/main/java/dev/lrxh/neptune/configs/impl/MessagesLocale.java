@@ -18,8 +18,6 @@ import java.util.UUID;
 
 @Getter
 public enum MessagesLocale implements IDataAccessor {
-    CREATING_ARENA("ARENA.CREATING", DataType.STRING_LIST, "&aCreating arena..."),
-    CREATED_ARENA("ARENA.CREATED", DataType.STRING_LIST, "&aArena Creation done!"),
     MATCH_YOU("MATCH.YOU", DataType.STRING, "You"),
     MATCH_OPPONENT_TEAM("MATCH.OPPONENT_TEAM", DataType.STRING, "Opponent Team"),
     MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", DataType.STRING_LIST, "<player> &7disconnected"),
