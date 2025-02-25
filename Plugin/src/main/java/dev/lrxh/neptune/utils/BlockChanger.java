@@ -288,16 +288,6 @@ public class BlockChanger {
         return itemStack;
     }
 
-    private static void updateChunkLightning(Chunk chunk) {
-        WrapperPlayServerUpdateLight packet = new WrapperPlayServerUpdateLight(chunk.getX(), chunk.getZ(), new LightData());
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            PacketEvents.getAPI().getPlayerManager().sendPacketSilently(player, packet);
-        }
-
-        chunk.getWorld().refreshChunk(chunk.getX(), chunk.getZ());
-    }
-
     private static void setBlocks(World world, HashMap<Object, List<Location>> data) {
         long startTime = System.currentTimeMillis();
         HashMap<Chunk, Object> chunkCache = new HashMap<>();
@@ -309,7 +299,7 @@ public class BlockChanger {
         }
 
         for (Chunk chunk : chunkCache.keySet()) {
-            updateChunkLightning(chunk);
+            world.refreshChunk(chunk.getX(), chunk.getZ());
         }
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
