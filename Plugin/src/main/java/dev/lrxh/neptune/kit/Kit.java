@@ -145,6 +145,7 @@ public class Kit {
             if (!arena.isEnabled()) continue;
             if (is(KitRule.BUILD)) {
                 if ((arena instanceof StandAloneArena standAloneArena)) {
+                    if (standAloneArena.isUsed()) continue;
                     kitArenas.add(standAloneArena);
                 }
             } else {

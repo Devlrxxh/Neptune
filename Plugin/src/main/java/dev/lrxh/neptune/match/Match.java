@@ -156,7 +156,11 @@ public abstract class Match {
 
     public void resetArena() {
         if (arena instanceof StandAloneArena standAloneArena) {
-            standAloneArena.restoreSnapshot();
+            standAloneArena.restoreSnapshot().thenRun(() -> {
+                if (state == MatchState.ENDING) {
+                    standAloneArena.setUsed(false);
+                }
+            });
         }
 
         removeEntities();

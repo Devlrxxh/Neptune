@@ -7,6 +7,8 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.util.concurrent.CompletableFuture;
+
 @Getter
 @Setter
 public class StandAloneArena extends Arena {
@@ -15,6 +17,7 @@ public class StandAloneArena extends Arena {
     private Location max;
     private double limit;
     private BlockChanger.Snapshot snapshot;
+    private boolean used;
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean dupe) {
         super(name, displayName, redSpawn, blueSpawn, enabled);
@@ -22,6 +25,7 @@ public class StandAloneArena extends Arena {
         this.max = max;
         this.limit = limit;
         this.dupe = dupe;
+        this.used = false;
     }
 
     public StandAloneArena(String arenaName) {
@@ -30,6 +34,7 @@ public class StandAloneArena extends Arena {
         this.min = null;
         this.max = null;
         this.limit = 68321;
+        this.used = false;
     }
 
     public void takeSnapshot() {
@@ -39,8 +44,8 @@ public class StandAloneArena extends Arena {
         });
     }
 
-    public void restoreSnapshot() {
-        BlockChanger.revertAsync(getWorld(), getSnapshot());
+    public CompletableFuture<Void> restoreSnapshot() {
+        return BlockChanger.revertAsync(getWorld(), getSnapshot());
     }
 
     public World getWorld() {

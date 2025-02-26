@@ -52,13 +52,10 @@ import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import fr.mrmicky.fastboard.FastManager;
 import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.server.ServerLoadEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -73,8 +70,6 @@ public final class Neptune extends JavaPlugin implements Listener {
     private Cache cache;
     private boolean placeholder = false;
     private EntityHider entityHider;
-    @Setter
-    private boolean allowJoin;
 
     public static Neptune get() {
         return instance;
@@ -83,16 +78,6 @@ public final class Neptune extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         instance = this;
-        allowJoin = false;
-        getServer().getPluginManager().registerEvents(this, this);
-        ServerUtils.info("Waiting for all worlds to load...");
-    }
-
-    @EventHandler
-    public void onServerLoad(ServerLoadEvent event) {
-        allowJoin = true;
-        ServerUtils.info("All worlds loaded. Plugin loading...");
-
         loadManager();
     }
 
@@ -102,7 +87,7 @@ public final class Neptune extends JavaPlugin implements Listener {
         loadExtensions();
         if (!isEnabled()) return;
 
-        BlockChanger.load(this, true);
+        BlockChanger.load(this, false);
         ConfigService.get().load();
 
         ArenaService.get().loadArenas();
