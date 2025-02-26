@@ -2,6 +2,7 @@ package dev.lrxh.neptune.match.tasks;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.MatchService;
@@ -52,6 +53,10 @@ public class MatchEndRunnable extends NeptuneRunnable {
             }
 
             match.resetArena();
+            if (match.arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.setUsed(false);
+            }
+
             MatchService.get().matches.remove(match);
         }
         endTimer--;

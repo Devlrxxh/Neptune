@@ -82,6 +82,7 @@ public final class Neptune extends JavaPlugin {
         instance = this;
         allowJoin = false;
         loadManager();
+        allowJoin = true;
     }
 
     private void loadManager() {

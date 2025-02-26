@@ -26,6 +26,8 @@ public class StandAloneArena extends Arena {
         this.limit = limit;
         this.dupe = dupe;
         this.used = false;
+
+        takeSnapshot();
     }
 
     public StandAloneArena(String arenaName) {
@@ -39,13 +41,11 @@ public class StandAloneArena extends Arena {
 
     public void takeSnapshot() {
         if (min == null || max == null) return;
-        BlockChanger.captureAsync(min, max, false).thenAccept(snapshot -> {
-            this.snapshot = snapshot;
-        });
+        BlockChanger.captureAsync(min, max, false).thenAccept(snapshot -> this.snapshot = snapshot);
     }
 
     public CompletableFuture<Void> restoreSnapshot() {
-        return BlockChanger.revertAsync(getWorld(), getSnapshot());
+        return BlockChanger.revertAsync(getWorld(), snapshot);
     }
 
     public World getWorld() {
