@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.profile.listener;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.match.Match;
@@ -9,18 +10,26 @@ import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
+import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Arrays;
 
 public class ProfileListener implements Listener {
+
+    @EventHandler
+    public void onPreJoin(PlayerLoginEvent event) {
+        event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Component.text(CC.color("&cDatabasing updating...")));
+    }
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event) {
