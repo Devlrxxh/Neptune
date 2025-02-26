@@ -1,5 +1,5 @@
 name: Neptune
-version: '1.8'
+version: '1.9'
 main: dev.lrxh.neptune.Neptune
 api-version: 1.19
 libraries:
