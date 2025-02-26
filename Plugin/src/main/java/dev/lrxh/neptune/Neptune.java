@@ -47,6 +47,7 @@ import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.command.QueueCommand;
+import dev.lrxh.neptune.queue.command.QuickQueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
@@ -186,6 +187,7 @@ public final class Neptune extends JavaPlugin {
         drink.register(new MainCommand(), "neptune");
         drink.register(new CosmeticsCommand(), "cosmetics");
         drink.register(new MatchHistoryCommand(), "matchhistory");
+        drink.register(new QuickQueueCommand(), "quickqueue");
         drink.registerCommands();
     }
 
