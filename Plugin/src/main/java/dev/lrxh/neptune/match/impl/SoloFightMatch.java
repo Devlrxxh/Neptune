@@ -135,8 +135,6 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
-        int entityId = EntityUtils.getFakeEntityId();
-
         hideParticipant(participant);
 
         participant.setDead(true);
