@@ -34,16 +34,6 @@ public class MatchEndRunnable extends NeptuneRunnable {
         }
         if (endTimer == 0) {
             match.setState(MatchState.ENDING);
-            match.forEachParticipant(participant -> {
-                Profile profile = API.getProfile(participant.getPlayerUUID());
-                PlayerUtil.reset(participant.getPlayer());
-                PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
-                profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
-                profile.setMatch(null);
-            });
-
-            match.sendEndMessage();
-
             if (match.getKit().is(KitRule.SHOW_HP)) {
                 match.hideHealth();
             }
@@ -51,6 +41,16 @@ public class MatchEndRunnable extends NeptuneRunnable {
             for (UUID spectator : new HashSet<>(match.spectators)) {
                 match.removeSpectator(spectator, false);
             }
+
+            match.forEachParticipant(participant -> {
+                Profile profile = API.getProfile(participant.getPlayerUUID());
+                PlayerUtil.reset(participant.getPlayer());
+                profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+                profile.setMatch(null);
+                PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+            });
+
+            match.sendEndMessage();
 
             match.resetArena();
             if (match.arena instanceof StandAloneArena standAloneArena) {

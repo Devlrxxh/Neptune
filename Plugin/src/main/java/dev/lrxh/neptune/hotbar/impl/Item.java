@@ -35,7 +35,7 @@ public class Item {
         if (inventory != null) {
             for (int slot = 0; slot <= 8; slot++) {
                 Item item = HotbarService.get().getItemForSlot(inventory, slot);
-                if (item != null && item.constructItem(playerUUID).isSimilar(itemStack)) {
+                if (item != null && item.constructItem(playerUUID).getItemMeta().getDisplayName().equals(itemStack.getItemMeta().getDisplayName())) {
                     return item;
                 }
             }
