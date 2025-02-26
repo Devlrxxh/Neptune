@@ -11,7 +11,7 @@
 • Queue Ping Range System  
 • Animated Scoreboard System  
 • Placeholder API (Compatibility)  
-• All hotbars items configurable  
+• All Hotbars items configurable  
 • All messages configurable  
 • Advanced Arena system  
 • Player Statistics  
@@ -20,9 +20,9 @@
 • Easy to use management menus  
 • Leaderboards (Wins, Deaths, Best Win Streak)  
 
-📎**Requirements:**  
-• (Optional) FastAsyncWorldEdit  
-• Mongo Database
+❓**Discord**: https://discord.gg/f6rUtpy6y4
+
+📎**Requirements**: https://www.spigotmc.org/resources/packetevents-api.80279/
 
 🖼️**Media:**
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/6e0d63dd-f0f0-4165-ac0e-1b7d6f66f588)
