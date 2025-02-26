@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.listener;
 
+import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -54,6 +55,11 @@ public class MatchListener implements Listener {
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
+    }
+
+    @EventHandler
+    public void onPreRespawn(PlayerRespawnEvent event) {
+        event.getPlayer().setGameMode(GameMode.SPECTATOR);
     }
 
     @EventHandler

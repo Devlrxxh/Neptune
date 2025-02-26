@@ -21,12 +21,15 @@ import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.DateUtils;
+import dev.lrxh.neptune.utils.EntityUtils;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -132,8 +135,9 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
+        int entityId = EntityUtils.getFakeEntityId();
+
         hideParticipant(participant);
-        participant.getPlayer().setGameMode(GameMode.SPECTATOR);
 
         participant.setDead(true);
 
@@ -168,8 +172,6 @@ public class SoloFightMatch extends Match {
         this.setEnded(true);
 
         participant.setSpectator();
-
-        PlayerUtil.reset(participant.getPlayer());
 
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 

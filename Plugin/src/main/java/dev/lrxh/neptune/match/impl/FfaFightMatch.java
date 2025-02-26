@@ -50,8 +50,6 @@ public class FfaFightMatch extends Match {
 
         participant.setSpectator();
 
-        PlayerUtil.reset(participant.getPlayer());
-
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
         }

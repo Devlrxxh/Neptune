@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 @UtilityClass
 public class EntityUtils {
+    private int currentFakeEntityId = -1;
 
     public Entity getEntityById(World world, int entityId) {
         for (Entity entity : world.getEntities()) {
@@ -28,5 +29,9 @@ public class EntityUtils {
             }
         }
         return 0;
+    }
+
+    public int getFakeEntityId() {
+        return currentFakeEntityId--;
     }
 }

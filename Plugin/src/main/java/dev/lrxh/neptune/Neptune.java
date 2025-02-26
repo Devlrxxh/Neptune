@@ -86,8 +86,6 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadManager() {
-        if (!isEnabled()) return;
-
         loadExtensions();
         if (!isEnabled()) return;
 
