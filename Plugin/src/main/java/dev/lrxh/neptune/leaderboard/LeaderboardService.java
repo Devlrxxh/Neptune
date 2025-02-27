@@ -27,7 +27,7 @@ public class LeaderboardService {
     private static LeaderboardService instance;
     private final List<LeaderboardPlayerEntry> changes;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards;
-    private final Pattern PATTERN = Pattern.compile("(WINS|BEST_WIN_STREAK|DEATHS)_(.*)_(10|[1-9])_(NAME|VALUE)");
+    private final Pattern PATTERN = Pattern.compile("(WINS|BEST_WIN_STREAK|DEATHS)_(.*)_(10|[1-9])_(name|value)");
 
     public LeaderboardService() {
         leaderboards = new LinkedHashMap<>();
