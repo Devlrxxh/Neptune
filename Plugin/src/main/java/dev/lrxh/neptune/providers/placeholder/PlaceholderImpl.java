@@ -3,6 +3,7 @@ package dev.lrxh.neptune.providers.placeholder;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.kit.KitService;
+import dev.lrxh.neptune.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.profile.data.GlobalStats;
@@ -63,7 +64,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return String.valueOf(globalStats.getCurrentStreak());
                     case "lastKit":
                         return profile.getGameData().getLastPlayedKit().isEmpty() ? "N/A" : profile.getGameData().getLastPlayedKit();
-                        case "color":
+                    case "color":
                         Match match = profile.getMatch();
                         return match != null ? "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar() : "";
                 }
@@ -83,6 +84,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return data == null ? "" : String.valueOf(data.getBestStreak());
                 }
         }
-        return "INVALID_PLACEHOLDER";
+
+        return LeaderboardService.get().getPlaceholder(identifier);
     }
 }

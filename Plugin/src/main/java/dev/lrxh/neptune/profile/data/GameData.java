@@ -42,6 +42,7 @@ public class GameData {
             kitData.put(kit, new KitData());
         }
         this.globalStats = new GlobalStats();
+        this.lastPlayedKit = "";
     }
 
     public KitData get(Kit kit) {

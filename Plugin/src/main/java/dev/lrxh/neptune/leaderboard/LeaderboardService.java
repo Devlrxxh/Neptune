@@ -19,12 +19,15 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Getter
 public class LeaderboardService {
     private static LeaderboardService instance;
     private final List<LeaderboardPlayerEntry> changes;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards;
+    private final Pattern PATTERN = Pattern.compile("(WINS|BEST_WIN_STREAK|DEATHS)_(.*)_(10|[1-9])_(NAME|VALUE)");
 
     public LeaderboardService() {
         leaderboards = new LinkedHashMap<>();
@@ -35,6 +38,31 @@ public class LeaderboardService {
         if (instance == null) instance = new LeaderboardService();
 
         return instance;
+    }
+
+    public String getPlaceholder(String placeholder) {
+        Matcher matcher = PATTERN.matcher(placeholder);
+
+        if (matcher.matches()) {
+            String type = matcher.group(1);
+            String kitName = matcher.group(2);
+            int entry = Integer.parseInt(matcher.group(3));
+            boolean name = matcher.group(4).equals("NAME");
+
+            Kit kit = KitService.get().getKitByDisplay(kitName);
+            if (kit == null) return "N/a";
+            LeaderboardType leaderboardType = LeaderboardType.value(type);
+
+            PlayerEntry playerEntry = LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, entry);
+
+            if (name) {
+                return playerEntry.getUsername();
+            } else {
+                return String.valueOf(playerEntry.getValue());
+            }
+        }
+
+        return "N/a";
     }
 
     private void checkIfMissing() {
