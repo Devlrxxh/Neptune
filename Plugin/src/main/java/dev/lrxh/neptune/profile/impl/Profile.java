@@ -114,6 +114,7 @@ public class Profile {
         gameData.getGlobalStats().setCurrentStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_CURRENT", gameData.countGlobalWins()));
         gameData.getGlobalStats().setWins(kitStatistics.getInteger("GLOBAL_WINS", gameData.countGlobalLosses()));
         gameData.getGlobalStats().setLosses(kitStatistics.getInteger("GLOBAL_LOSSES", gameData.countGlobalCurrentStreak()));
+        gameData.setLastPlayedKit(kitStatistics.getString("lastPlayedKit", ""));
 
         settingData.setPlayerVisibility(settings.getBoolean("showPlayers", true));
         settingData.setAllowSpectators(settings.getBoolean("allowSpectators", true));
@@ -150,6 +151,7 @@ public class Profile {
         kitStatsDoc.put("GLOBAL_WINS", gameData.getGlobalStats().getWins());
         kitStatsDoc.put("GLOBAL_LOSSES", gameData.getGlobalStats().getLosses());
         kitStatsDoc.put("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak());
+        kitStatsDoc.put("lastPlayedKit", gameData.getLastPlayedKit());
 
         dataDocument.put("kitData", kitStatsDoc);
 

@@ -31,6 +31,7 @@ public class GameData {
     private Kit kitEditor;
     private Party party;
     private GlobalStats globalStats;
+    private String lastPlayedKit;
 
     public GameData() {
         this.kitData = new HashMap<>();
@@ -76,6 +77,7 @@ public class GameData {
     }
 
     public void run(Kit kit, boolean won) {
+        lastPlayedKit = kit.getName();
         KitData kitData = this.kitData.get(kit);
         if (won) {
             updateWin(kitData);

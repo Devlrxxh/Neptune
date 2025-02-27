@@ -61,7 +61,9 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                         return String.valueOf(globalStats.getLosses());
                     case "currentStreak":
                         return String.valueOf(globalStats.getCurrentStreak());
-                    case "color":
+                    case "lastKit":
+                        return profile.getGameData().getLastPlayedKit().isEmpty() ? "N/A" : profile.getGameData().getLastPlayedKit();
+                        case "color":
                         Match match = profile.getMatch();
                         return match != null ? "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar() : "";
                 }
