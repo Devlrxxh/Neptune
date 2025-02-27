@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ScoreboardAdapter implements FastAdapter {
     public String getTitle(Player player) {
-        return getAnimatedText();
+        return PlaceholderUtil.format(getAnimatedText(), player);
     }
 
     public List<String> getLines(Player player) {
