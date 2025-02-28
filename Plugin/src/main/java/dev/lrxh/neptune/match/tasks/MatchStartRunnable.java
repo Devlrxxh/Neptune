@@ -43,6 +43,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
         if (startTimer == 0) {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.startMatch();
+            match.checkRules();
             checkFollowings();
             stop(plugin);
 

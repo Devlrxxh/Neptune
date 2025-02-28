@@ -22,6 +22,10 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         this.match = match;
         this.participant = participant;
         this.plugin = plugin;
+
+        match.setupParticipants();
+        match.checkRules();
+        match.teleportToPositions();
     }
 
     @Override
@@ -39,11 +43,11 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
 
         if (participant.getPlayer() == null) return;
         if (respawnTimer == 0) {
-            match.sendMessage(MessagesLocale.ROUND_STARTED);
             match.showParticipant(participant);
             match.setupParticipants();
             match.teleportToPositions();
             match.startMatch();
+            match.sendMessage(MessagesLocale.ROUND_STARTED);
             stop(plugin);
             return;
         }
@@ -60,7 +64,6 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         if (respawnTimer == 3) {
             match.resetArena();
             match.hideParticipant(participant);
-            match.setupParticipants();
             participant.getPlayer().setGameMode(GameMode.SPECTATOR);
         }
         respawnTimer--;
