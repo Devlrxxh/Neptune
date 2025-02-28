@@ -37,12 +37,8 @@ public class ItemUtils {
                 LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
                 meta.setColor(color);
                 itemStack.setItemMeta(meta);
-            } else if (itemStack.getType() == Material.WHITE_WOOL) {
-                if (color.equals(Color.BLUE)) {
-                    itemStack.setType(Material.BLUE_WOOL);
-                } else {
-                    itemStack.setType(Material.RED_WOOL);
-                }
+            } else if (itemStack.getType().name().contains("WOOL")) {
+                itemStack.setType(color.equals(Color.BLUE) ? Material.BLUE_WOOL : Material.RED_WOOL);
             }
 
             items[i] = itemStack;
