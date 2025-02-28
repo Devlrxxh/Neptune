@@ -65,13 +65,6 @@ public class Participant {
         player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
     }
 
-    public void setSpectator() {
-        Player player = getPlayer();
-        if (player == null) return;
-        player.setGameMode(GameMode.SPECTATOR);
-        player.updateInventory();
-    }
-
     public void teleport(Location location) {
         Player player = getPlayer();
         if (player == null) return;

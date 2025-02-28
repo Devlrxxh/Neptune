@@ -48,7 +48,7 @@ public class FfaFightMatch extends Match {
     public void onDeath(Participant participant) {
         hideParticipant(participant);
 
-        participant.setSpectator();
+        addSpectator(participant.getPlayer(), participant.getPlayer(), false);
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);

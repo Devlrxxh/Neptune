@@ -9,6 +9,7 @@ import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 
 public class MatchRespawnRunnable extends NeptuneRunnable {
@@ -35,7 +36,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
         if (respawnTimer == 3) {
             PlayerUtil.doVelocityChange(participant.getPlayerUUID());
             PlayerUtil.reset(participant.getPlayer());
-            participant.setSpectator();
+            participant.getPlayer().setGameMode(GameMode.SPECTATOR);
         }
 
         if (participant.getPlayer() == null) return;

@@ -4,6 +4,9 @@ import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.hotbar.HotbarService;
+import dev.lrxh.neptune.hotbar.impl.Hotbar;
+import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.MatchState;
@@ -58,8 +61,8 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
-    public void onPreRespawn(PlayerRespawnEvent event) {
-        event.getPlayer().setGameMode(GameMode.SPECTATOR);
+    public void onPostRespawn(PlayerPostRespawnEvent event) {
+        HotbarService.get().giveItems(event.getPlayer());
     }
 
     @EventHandler
@@ -71,6 +74,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
+            if (player.getGameMode().equals(GameMode.CREATIVE)) return;
             Profile profile = API.getProfile(player);
 
             if (!profile.getState().equals(ProfileState.IN_GAME)) {
@@ -260,18 +264,24 @@ public class MatchListener implements Listener {
             if (profile == null) return;
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
+            if (match == null) return;
+            Kit kit = match.getKit();
 
-            boolean inGame = profile.getState().equals(ProfileState.IN_GAME);
-            boolean allowDamage = match != null &&
-                    ((match.getKit().is(KitRule.FALL_DAMAGE) &&
-                            event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) ||
-                            match.getKit().is(KitRule.DAMAGE) ||
-                            match.getState().equals(MatchState.IN_ROUND));
-
-            if (!inGame || !allowDamage) {
+            if (match.getState().equals(MatchState.STARTING) || match.getState().equals(MatchState.ENDING)) {
                 event.setCancelled(true);
+                return;
             }
 
+            if ((!kit.is(KitRule.FALL_DAMAGE))
+                    && event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+                event.setCancelled(true);
+                return;
+            }
+
+            if (!kit.is(KitRule.DAMAGE)) {
+                event.setCancelled(true);
+                return;
+            }
         }
     }
 

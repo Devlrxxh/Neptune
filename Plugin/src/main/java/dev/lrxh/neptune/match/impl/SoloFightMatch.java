@@ -169,8 +169,6 @@ public class SoloFightMatch extends Match {
 
         this.setEnded(true);
 
-        participant.setSpectator();
-
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         end(participant);
@@ -179,6 +177,7 @@ public class SoloFightMatch extends Match {
     @Override
     public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
+        sendDeathMessage(participant);
         setEnded(true);
         if (quit) {
             participant.setDisconnected(true);

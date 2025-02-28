@@ -59,6 +59,8 @@ public class HotbarService implements IService {
                 }
             }
         }
+
+        player.updateInventory();
     }
 
     public Item getItemForSlot(Hotbar inventory, int slot) {
