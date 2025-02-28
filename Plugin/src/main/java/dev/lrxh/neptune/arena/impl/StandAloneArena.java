@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.arena.impl;
 
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -13,7 +12,6 @@ public class StandAloneArena extends Arena {
     private Location min;
     private Location max;
     private double limit;
-    private BlockChanger.Snapshot snapshot;
     private boolean used;
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean dupe) {

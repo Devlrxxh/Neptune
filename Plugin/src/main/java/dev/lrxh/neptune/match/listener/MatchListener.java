@@ -5,7 +5,6 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.hotbar.HotbarService;
-import dev.lrxh.neptune.hotbar.impl.Hotbar;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
@@ -280,7 +279,6 @@ public class MatchListener implements Listener {
 
             if (!kit.is(KitRule.DAMAGE)) {
                 event.setCancelled(true);
-                return;
             }
         }
     }

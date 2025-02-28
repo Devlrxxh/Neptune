@@ -142,7 +142,7 @@ public class Kit {
     public Arena getRandomArena() {
         List<Arena> kitArenas = new ArrayList<>();
         for (Arena arena : arenas) {
-            if (arena == null) continue;;
+            if (arena == null) continue;
             if (!arena.isEnabled()) continue;
             if (is(KitRule.BUILD)) {
                 if ((arena instanceof StandAloneArena standAloneArena)) {
