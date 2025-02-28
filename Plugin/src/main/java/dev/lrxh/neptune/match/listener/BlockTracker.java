@@ -42,9 +42,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        getMatchForPlayer(player).ifPresent(match -> {
-            match.getChanges().put(event.getBlock().getLocation(), event.getBlockReplacedState().getBlockData());
-        });
+        getMatchForPlayer(player).ifPresent(match -> match.getChanges().put(event.getBlock().getLocation(), event.getBlockReplacedState().getBlockData()));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -76,52 +74,69 @@ public class BlockTracker implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onEndCrystalExplosion(EntityExplodeEvent event) {
-        if (!(event.getEntity() instanceof EnderCrystal endCrystal)) return;
+    public void onExplosion(EntityExplodeEvent event) {
+        if (event.getEntity() instanceof EnderCrystal enderCrystal) {
+            Player player = crystalOwners.get(enderCrystal.getUniqueId()) != null
+                    ? Bukkit.getPlayer(crystalOwners.get(enderCrystal.getUniqueId()).getUniqueId()) : null;
 
-        Player player = crystalOwners.get(endCrystal.getUniqueId()) != null
-                ? Bukkit.getPlayer(crystalOwners.get(endCrystal.getUniqueId()).getUniqueId()) : null;
-
-        if (player == null) {
-            event.setCancelled(true);
-            return;
-        }
-
-        getMatchForPlayer(player).ifPresent(match -> {
-            for (Block block : event.blockList()) {
-                block.getDrops().clear();
-                match.getChanges().put(block.getLocation(), block.getBlockData());
+            if (player == null) {
+                event.setCancelled(true);
+                return;
             }
-        });
 
-        crystalOwners.remove(player.getUniqueId());
+            getMatchForPlayer(player).ifPresent(match -> {
+                for (Block block : event.blockList()) {
+                    block.getDrops().clear();
+                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                }
+            });
+
+            crystalOwners.remove(player.getUniqueId());
+        } else {
+            Player player = null;
+
+            for (Entity entity : event.getLocation().getNearbyEntities(5, 5, 5)) {
+                if (entity instanceof Player p) player = p;
+            }
+
+            if (player == null) {
+                event.setCancelled(true);
+                return;
+            }
+
+            getMatchForPlayer(player).ifPresent(match -> {
+                for (Block block : event.blockList()) {
+                    block.getDrops().clear();
+                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                }
+            });
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
-        getMatchForPlayer(player).ifPresent(match -> {
-            match.getLiquids().add(event.getBlock().getLocation());
-        });
+        getMatchForPlayer(player).ifPresent(match -> match.getLiquids().add(event.getBlock().getLocation()));
     }
-
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
-        Block block = event.getToBlock();
-        Player player = block.getWorld().getPlayers().stream()
-                .filter(p -> p.getLocation().distance(block.getLocation()) < 5)
-                .findFirst()
-                .orElse(null);
+        Block toBlock = event.getToBlock();
+        Player player = null;
+
+        for (Entity entity : toBlock.getLocation().getNearbyEntities(5, 5, 5)) {
+            if (entity instanceof Player p) player = p;
+        }
 
         if (player == null) {
             event.setCancelled(true);
-            block.getWorld().setBlockData(block.getLocation(), Material.AIR.createBlockData());
             return;
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            match.getLiquids().add(event.getBlock().getLocation());
+            if (!match.getPlacedBlocks().contains(toBlock.getLocation())) {
+                match.getChanges().put(toBlock.getLocation(), Material.AIR.createBlockData());
+            }
         });
     }
 

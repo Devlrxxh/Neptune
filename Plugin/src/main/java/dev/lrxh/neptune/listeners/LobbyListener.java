@@ -6,6 +6,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockSpreadEvent;
 import org.bukkit.event.block.LeavesDecayEvent;
+import org.bukkit.event.block.MoistureChangeEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -50,6 +51,11 @@ public class LobbyListener implements Listener {
         if (event.getItemDrop().getItemStack().getType().equals(Material.GLASS_BOTTLE)) {
             event.getItemDrop().remove();
         }
+    }
+
+    @EventHandler
+    public void onMoistureChange(MoistureChangeEvent event) {
+        event.setCancelled(true);
     }
 
     @EventHandler
