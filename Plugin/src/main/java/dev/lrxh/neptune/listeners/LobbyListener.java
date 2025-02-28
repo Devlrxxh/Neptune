@@ -1,6 +1,9 @@
 package dev.lrxh.neptune.listeners;
 
+import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -11,6 +14,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.weather.WeatherChangeEvent;
 
 import java.util.Objects;
@@ -56,6 +60,17 @@ public class LobbyListener implements Listener {
     @EventHandler
     public void onMoistureChange(MoistureChangeEvent event) {
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPostRespawn(PlayerPostRespawnEvent event) {
+        HotbarService.get().giveItems(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event) {
+        Player player = event.getPlayer();
+        event.setRespawnLocation(player.getLocation());
     }
 
     @EventHandler

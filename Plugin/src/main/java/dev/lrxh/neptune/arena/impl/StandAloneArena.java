@@ -13,6 +13,7 @@ public class StandAloneArena extends Arena {
     private Location max;
     private double limit;
     private boolean used;
+    private int deathY;
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean dupe) {
         super(name, displayName, redSpawn, blueSpawn, enabled);

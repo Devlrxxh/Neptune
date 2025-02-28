@@ -14,11 +14,11 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 
-public class ArenaSetspawnButton extends Button {
+public class ArenaSetSpawnButton extends Button {
     private final Arena arena;
     private final ParticipantColor participantColor;
 
-    public ArenaSetspawnButton(int slot, Arena arena, ParticipantColor participantColor) {
+    public ArenaSetSpawnButton(int slot, Arena arena, ParticipantColor participantColor) {
         super(slot, false);
         this.arena = arena;
         this.participantColor = participantColor;

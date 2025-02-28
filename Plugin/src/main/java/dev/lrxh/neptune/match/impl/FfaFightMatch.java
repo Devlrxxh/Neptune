@@ -102,8 +102,6 @@ public class FfaFightMatch extends Match {
     @Override
     public void startMatch() {
         state = MatchState.IN_ROUND;
-        checkRules();
-
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 20);

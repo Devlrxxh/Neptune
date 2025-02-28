@@ -14,11 +14,11 @@ import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 
-public class ArenaSetedgeButton extends Button {
+public class ArenaSetEdgeButton extends Button {
     private final StandAloneArena arena;
     private final EdgeType edgeType;
 
-    public ArenaSetedgeButton(int slot, StandAloneArena arena, EdgeType edgeType) {
+    public ArenaSetEdgeButton(int slot, StandAloneArena arena, EdgeType edgeType) {
         super(slot, false);
         this.arena = arena;
         this.edgeType = edgeType;
@@ -33,7 +33,7 @@ public class ArenaSetedgeButton extends Button {
             profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MIN);
             player.sendMessage(CC.info("Go to the lowest edge of the arena and type &aDone"));
         } else {
-            profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MIN);
+            profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MAX);
             player.sendMessage(CC.info("Go to the highest edge of the arena and type &aDone"));
         }
         player.closeInventory();

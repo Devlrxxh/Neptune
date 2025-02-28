@@ -31,8 +31,8 @@ public class ArenaManagementMenu extends Menu {
         if (!arena.isSetup()) {
             buttons.add(new ArenaSetupButton(22, arena));
         } else {
-            buttons.add(new ArenaSetspawnButton(0, arena, ParticipantColor.BLUE));
-            buttons.add(new ArenaSetspawnButton(1, arena, ParticipantColor.RED));
+            buttons.add(new ArenaSetSpawnButton(0, arena, ParticipantColor.BLUE));
+            buttons.add(new ArenaSetSpawnButton(1, arena, ParticipantColor.RED));
 
             buttons.add(new ArenaEnableButton(size - 1, arena));
 
@@ -43,8 +43,9 @@ public class ArenaManagementMenu extends Menu {
 
             if (arena instanceof StandAloneArena standAloneArena) {
                 buttons.add(new ArenaSetLimitButton(4, arena));
-                buttons.add(new ArenaSetedgeButton(8, standAloneArena, EdgeType.MAX));
-                buttons.add(new ArenaSetedgeButton(7, standAloneArena, EdgeType.MIN));
+                buttons.add(new ArenaSetDeathYButton(9, standAloneArena));
+                buttons.add(new ArenaSetEdgeButton(8, standAloneArena, EdgeType.MAX));
+                buttons.add(new ArenaSetEdgeButton(7, standAloneArena, EdgeType.MIN));
             }
         }
 

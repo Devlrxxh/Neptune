@@ -1,10 +1,8 @@
 package dev.lrxh.neptune.match.listener;
 
-import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
@@ -37,7 +35,6 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.projectiles.ProjectileSource;
 
 
@@ -57,17 +54,6 @@ public class MatchListener implements Listener {
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
-    }
-
-    @EventHandler
-    public void onPostRespawn(PlayerPostRespawnEvent event) {
-        HotbarService.get().giveItems(event.getPlayer());
-    }
-
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent event) {
-        Player player = event.getPlayer();
-        event.setRespawnLocation(player.getLocation());
     }
 
     @EventHandler
@@ -233,13 +219,13 @@ public class MatchListener implements Listener {
                 }
             }
 
-//            if (match.getArena() instanceof StandAloneArena arena) {
-//                if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
-//                    participant.setDeathCause(DeathCause.DIED);
-//                    match.onDeath(participant);
-//                    return;
-//                }
-//            }
+            if (match.getArena() instanceof StandAloneArena arena) {
+                if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
+                    participant.setDeathCause(DeathCause.DIED);
+                    match.onDeath(participant);
+                    return;
+                }
+            }
 
             if (match.getState().equals(MatchState.IN_ROUND)) {
                 Location playerLocation = player.getLocation();
