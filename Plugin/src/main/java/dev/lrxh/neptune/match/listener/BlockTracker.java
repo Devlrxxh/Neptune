@@ -144,6 +144,8 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onDestroy(BlockDestroyEvent event) {
         Block block = event.getBlock();
+        block.getDrops().clear();
+        event.setWillDrop(false);
         Player player = null;
 
         for (Entity entity : block.getLocation().getNearbyEntities(5, 5, 5)) {
