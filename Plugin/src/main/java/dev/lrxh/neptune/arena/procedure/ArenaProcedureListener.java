@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.arena.procedure;
 
+import com.jonahseguin.drink.annotation.Text;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaService;
@@ -9,7 +10,11 @@ import dev.lrxh.neptune.arena.menu.ArenaManagementMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.Component;
+import org.bukkit.entity.Display;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.TextDisplay;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
@@ -22,8 +27,6 @@ public class ArenaProcedureListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
         String input = event.getMessage();
-
-        if (profile.getArenaProcedure().getArena() == null) return;
 
         if (input.equalsIgnoreCase("Cancel") && !profile.getArenaProcedure().getType().equals(ArenaProcedureType.NONE)) {
             event.setCancelled(true);
