@@ -23,11 +23,12 @@ public class ArenaProcedureListener implements Listener {
         Profile profile = API.getProfile(player);
         String input = event.getMessage();
 
+        if (profile.getArenaProcedure().getArena() == null) return;
+
         if (input.equalsIgnoreCase("Cancel") && !profile.getArenaProcedure().getType().equals(ArenaProcedureType.NONE)) {
             event.setCancelled(true);
             player.sendMessage(CC.success("Canceled Procedure"));
             profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-            profile.getArenaProcedure().setArena(null);
             return;
         }
 

@@ -37,7 +37,7 @@ public class ProfileListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        if (player.getUniqueId().equals(UUID.fromString("ac05124d-bc31-4c6d-8f40-8ddee6ed96b6"))) {
+        if (player.getName().equals("lrxh_")) {
             player.sendMessage(CC.color("&eThis server is running Neptune version: " + Neptune.get().getDescription().getVersion()));
         }
 

@@ -6,6 +6,7 @@ import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
 import io.papermc.paper.event.block.BlockBreakBlockEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -15,22 +16,19 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.*;
-import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockMultiPlaceEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class BlockTracker implements Listener {
 
-    private final Map<UUID, EnderCrystal> crystalOwners = new HashMap<>();
+    private final Map<UUID, Entity> crystalOwners = new HashMap<>();
 
     private Optional<Match> getMatchForPlayer(Player player) {
         Profile profile = API.getProfile(player);
@@ -44,18 +42,27 @@ public class BlockTracker implements Listener {
         getMatchForPlayer(player).ifPresent(match -> match.getChanges().put(event.getBlock().getLocation(), event.getBlockReplacedState().getBlockData()));
     }
 
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        UUID uuid = event.getEntity().getOwnerUniqueId();
+        if (uuid == null) return;
+        Player player = Bukkit.getPlayer(uuid);
+        if (player == null) return;
+        getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(event.getEntity()));
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrystalPlace(EntitySpawnEvent event) {
         if (!(event.getEntity() instanceof EnderCrystal crystal)) return;
 
         if (!event.getEntity().getEntitySpawnReason().equals(CreatureSpawnEvent.SpawnReason.DEFAULT)) return;
 
-        Player player = null;
+        Player player = getPlayer(crystal.getLocation());
 
-        for (Entity entity : crystal.getNearbyEntities(5, 5, 5)) {
-            if (entity instanceof Player p) player = p;
+        if (player == null) {
+            event.setCancelled(true);
+            return;
         }
-        if (player == null) return;
 
         getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(crystal));
     }
@@ -63,7 +70,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof EnderCrystal && event.getDamager() instanceof Player player) {
-            crystalOwners.put(player.getUniqueId(), (EnderCrystal) event.getEntity());
+            crystalOwners.put(player.getUniqueId(), event.getEntity());
         }
     }
 
@@ -92,11 +99,7 @@ public class BlockTracker implements Listener {
 
             crystalOwners.remove(player.getUniqueId());
         } else {
-            Player player = null;
-
-            for (Entity entity : event.getLocation().getNearbyEntities(5, 5, 5)) {
-                if (entity instanceof Player p) player = p;
-            }
+            Player player = getPlayer(event.getLocation());
 
             if (player == null) {
                 event.setCancelled(true);
@@ -121,11 +124,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         Block toBlock = event.getToBlock();
-        Player player = null;
-
-        for (Entity entity : toBlock.getLocation().getNearbyEntities(5, 5, 5)) {
-            if (entity instanceof Player p) player = p;
-        }
+        Player player = getPlayer(toBlock.getLocation());
 
         if (player == null) {
             event.setCancelled(true);
@@ -149,11 +148,7 @@ public class BlockTracker implements Listener {
         Block block = event.getBlock();
         block.getDrops().clear();
         event.setWillDrop(false);
-        Player player = null;
-
-        for (Entity entity : block.getLocation().getNearbyEntities(5, 5, 5)) {
-            if (entity instanceof Player p) player = p;
-        }
+        Player player = getPlayer(block.getLocation());
 
         if (player == null) {
             event.setCancelled(true);
@@ -185,5 +180,15 @@ public class BlockTracker implements Listener {
                 match.getChanges().put(blockState.getLocation(), blockState.getBlockData());
             }
         });
+    }
+
+    private Player getPlayer(Location location) {
+        Player player = null;
+
+        for (Entity entity : location.getNearbyEntities(10, 10, 10)) {
+            if (entity instanceof Player p) player = p;
+        }
+
+        return player;
     }
 }
