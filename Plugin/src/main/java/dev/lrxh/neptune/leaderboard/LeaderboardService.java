@@ -47,13 +47,15 @@ public class LeaderboardService {
             String type = matcher.group(1);
             String kitName = matcher.group(2);
             int entry = Integer.parseInt(matcher.group(3));
-            boolean name = matcher.group(4).equals("NAME");
+            boolean name = matcher.group(4).equals("name");
 
             Kit kit = KitService.get().getKitByDisplay(kitName);
             if (kit == null) return "N/a";
             LeaderboardType leaderboardType = LeaderboardType.value(type);
 
             PlayerEntry playerEntry = LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, entry);
+
+            if (playerEntry == null) return "N/a";
 
             if (name) {
                 return playerEntry.getUsername();
@@ -82,8 +84,15 @@ public class LeaderboardService {
     }
 
     public PlayerEntry getLeaderboardSlot(Kit kit, LeaderboardType leaderboardType, int i) {
-        return getPlayerEntries(kit, leaderboardType).get(i - 1);
+        List<PlayerEntry> playerEntries = getPlayerEntries(kit, leaderboardType);
+
+        if (i <= 0 || i > playerEntries.size()) {
+            return null;
+        }
+
+        return playerEntries.get(i - 1);
     }
+
 
     public List<PlayerEntry> getPlayerEntries(Kit kit, LeaderboardType leaderboardType) {
         List<LeaderboardEntry> leaderboardEntries = leaderboards.get(kit);
