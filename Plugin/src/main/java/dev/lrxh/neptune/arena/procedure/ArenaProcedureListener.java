@@ -50,6 +50,7 @@ public class ArenaProcedureListener implements Listener {
                 profile.getArenaProcedure().getArena().setDisplayName(input);
                 player.sendMessage(CC.success("Renamed arena"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                profile.getArenaProcedure().setArena(null);
             }
             case SET_SPAWN_RED -> {
                 if (!input.equalsIgnoreCase("Done")) return;
@@ -64,6 +65,7 @@ public class ArenaProcedureListener implements Listener {
                     profile.getArenaProcedure().getArena().setRedSpawn(player.getLocation());
                     new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
                     player.sendMessage(CC.success("Set arena red &aspawn"));
+                    profile.getArenaProcedure().setArena(null);
                 }
             }
             case SET_SPAWN_BLUE -> {
@@ -86,6 +88,7 @@ public class ArenaProcedureListener implements Listener {
 
                 arena.setBlueSpawn(player.getLocation());
                 new ArenaManagementMenu(arena).open(player);
+                profile.getArenaProcedure().setArena(null);
             }
             case SET_SPAWN_MAX -> {
                 if (!input.equalsIgnoreCase("Done")) return;
@@ -99,6 +102,7 @@ public class ArenaProcedureListener implements Listener {
                 }
                 arena.setMax(player.getLocation());
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                profile.getArenaProcedure().setArena(null);
             }
             case SET_BUILD_LIMIT -> {
                 if (!input.equalsIgnoreCase("Done")) return;
@@ -108,6 +112,7 @@ public class ArenaProcedureListener implements Listener {
                 arena.setLimit(player.getLocation().getBlockY());
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
                 player.sendMessage(CC.success("Set arena build limit"));
+                profile.getArenaProcedure().setArena(null);
             }
             case SET_SPAWN_MIN -> {
                 if (!input.equalsIgnoreCase("Done")) return;
@@ -123,6 +128,7 @@ public class ArenaProcedureListener implements Listener {
                 arena.setMin(player.getLocation());
                 player.sendMessage(CC.success("Set arena min position"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                profile.getArenaProcedure().setArena(null);
             }
             case SET_DEATH_Y -> {
                 if (!input.equalsIgnoreCase("Done")) return;
@@ -133,10 +139,10 @@ public class ArenaProcedureListener implements Listener {
                 arena.setDeathY(player.getLocation().getBlockY());
                 player.sendMessage(CC.success("Set arena death Y position"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                profile.getArenaProcedure().setArena(null);
             }
         }
 
-        profile.getArenaProcedure().setArena(null);
         ArenaService.get().saveArenas();
     }
 }
