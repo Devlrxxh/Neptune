@@ -23,7 +23,6 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.Arrays;
-import java.util.UUID;
 
 public class ProfileListener implements Listener {
 

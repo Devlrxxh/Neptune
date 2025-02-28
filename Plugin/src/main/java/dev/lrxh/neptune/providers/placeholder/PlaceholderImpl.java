@@ -22,7 +22,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getIdentifier() {
-        return plugin.getName();
+        return "neptune";
     }
 
     @Override
@@ -32,7 +32,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getVersion() {
-        return "1.6";
+        return plugin.getDescription().getVersion();
     }
 
     @Override
