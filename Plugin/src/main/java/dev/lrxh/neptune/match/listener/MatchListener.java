@@ -249,7 +249,10 @@ public class MatchListener implements Listener {
             if (profile == null) return;
             if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
-            if (match == null) return;
+            if (match == null) {
+                event.setCancelled(true);
+                return;
+            }
             Kit kit = match.getKit();
 
             if (match.getState().equals(MatchState.STARTING) || match.getState().equals(MatchState.ENDING)) {

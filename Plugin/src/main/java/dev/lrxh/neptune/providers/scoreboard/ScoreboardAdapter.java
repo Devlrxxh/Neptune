@@ -3,6 +3,7 @@ package dev.lrxh.neptune.providers.scoreboard;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.match.Match;
+import dev.lrxh.neptune.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -43,6 +44,8 @@ public class ScoreboardAdapter implements FastAdapter {
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
                 } else if (match instanceof TeamFightMatch) {
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
+                } else if (match instanceof FfaFightMatch) {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_FFA.getStringList()), player);
                 }
                 break;
             default:

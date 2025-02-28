@@ -48,7 +48,7 @@ public class FfaFightMatch extends Match {
     public void onDeath(Participant participant) {
         hideParticipant(participant);
 
-        addSpectator(participant.getPlayer(), participant.getPlayer(), false);
+        addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
@@ -83,6 +83,7 @@ public class FfaFightMatch extends Match {
     @Override
     public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
+        sendDeathMessage(participant);
         if (quit) {
             participant.setDisconnected(true);
             onDeath(participant);

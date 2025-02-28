@@ -72,7 +72,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
                 Player particpiantPlayer = participant.getPlayer();
                 if (particpiantPlayer == null) continue;
 
-                match.addSpectator(follower, particpiantPlayer, false);
+                match.addSpectator(follower, particpiantPlayer, false, true);
             }
         }
     }

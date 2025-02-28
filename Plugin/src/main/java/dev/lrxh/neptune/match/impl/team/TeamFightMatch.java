@@ -93,7 +93,7 @@ public class TeamFightMatch extends Match {
                 }
             }
 
-            addSpectator(participant.getPlayer(), participant.getPlayer(), false);
+            addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
 
             if (participant.getLastAttacker() != null) {
                 participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
@@ -125,6 +125,7 @@ public class TeamFightMatch extends Match {
     @Override
     public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
+        sendDeathMessage(participant);
         if (quit) {
             participant.setDisconnected(true);
             onDeath(participant);

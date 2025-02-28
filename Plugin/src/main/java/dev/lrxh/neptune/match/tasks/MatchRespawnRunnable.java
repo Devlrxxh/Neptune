@@ -23,6 +23,8 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
         this.match = match;
         this.participant = participant;
         this.plugin = plugin;
+
+        match.hideParticipant(participant);
     }
 
     @Override
@@ -36,7 +38,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
         if (respawnTimer == 3) {
             PlayerUtil.doVelocityChange(participant.getPlayerUUID());
             PlayerUtil.reset(participant.getPlayer());
-            participant.getPlayer().setGameMode(GameMode.SPECTATOR);
+            participant.getPlayer().setGameMode(GameMode.ADVENTURE);
         }
 
         if (participant.getPlayer() == null) return;

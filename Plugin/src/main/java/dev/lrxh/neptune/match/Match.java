@@ -94,12 +94,12 @@ public abstract class Match {
         forEachParticipant(participant -> message.send(participant.getPlayerUUID(), replacements));
     }
 
-    public void addSpectator(Player player, Player target, boolean sendMessage) {
+    public void addSpectator(Player player, Player target, boolean sendMessage, boolean add) {
         Profile profile = API.getProfile(player);
 
         profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
-        spectators.add(player.getUniqueId());
+        if (add) spectators.add(player.getUniqueId());
 
         forEachPlayer(participiantPlayer -> player.showPlayer(Neptune.get(), participiantPlayer));
 

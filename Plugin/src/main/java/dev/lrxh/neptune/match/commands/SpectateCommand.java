@@ -38,7 +38,7 @@ public class SpectateCommand {
             return;
         }
 
-        targetProfile.getMatch().addSpectator(player, target, true);
+        targetProfile.getMatch().addSpectator(player, target, true, true);
     }
 
     @Command(name = "leave", aliases = "quit", desc = "")
