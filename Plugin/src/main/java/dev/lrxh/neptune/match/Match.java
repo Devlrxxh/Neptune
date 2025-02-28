@@ -19,26 +19,22 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
+import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
+import org.bukkit.block.data.BlockData;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 @AllArgsConstructor
@@ -49,6 +45,8 @@ public abstract class Match {
     public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
+    private final HashMap<Location, BlockData> changes = new HashMap<>();
+    private final Set<Location> liquids = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
     public MatchState state;
     public Arena arena;
@@ -156,7 +154,17 @@ public abstract class Match {
 
     public void resetArena() {
         if (arena instanceof StandAloneArena standAloneArena) {
-            standAloneArena.restoreSnapshot();
+            List<BlockChanger.BlockSnapshot> blocks = new ArrayList<>();
+
+            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+                blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
+            }
+
+            for (Location location : liquids) {
+                blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
+            }
+
+            BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
         }
 
         removeEntities();

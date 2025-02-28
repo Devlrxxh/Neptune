@@ -5,9 +5,6 @@ import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
-import org.bukkit.World;
-
-import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
@@ -26,8 +23,6 @@ public class StandAloneArena extends Arena {
         this.limit = limit;
         this.dupe = dupe;
         this.used = false;
-
-        takeSnapshot();
     }
 
     public StandAloneArena(String arenaName) {
@@ -37,19 +32,6 @@ public class StandAloneArena extends Arena {
         this.max = null;
         this.limit = 68321;
         this.used = false;
-    }
-
-    public void takeSnapshot() {
-        if (min == null || max == null) return;
-        BlockChanger.captureAsync(min, max, false).thenAccept(snapshot -> this.snapshot = snapshot);
-    }
-
-    public CompletableFuture<Void> restoreSnapshot() {
-        return BlockChanger.revertAsync(getWorld(), snapshot);
-    }
-
-    public World getWorld() {
-        return max.getWorld();
     }
 
     @Override

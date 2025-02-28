@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 @Getter
 @Setter
@@ -33,5 +34,9 @@ public class Arena {
         }
 
         return false;
+    }
+
+    public World getWorld() {
+        return getBlueSpawn().getWorld();
     }
 }

@@ -36,6 +36,7 @@ import dev.lrxh.neptune.main.MainCommand;
 import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.match.commands.SpectateCommand;
+import dev.lrxh.neptune.match.listener.BlockTracker;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
@@ -137,7 +138,8 @@ public final class Neptune extends JavaPlugin {
                 new BukkitListener(),
                 new MenuListener(),
                 new ArenaProcedureListener(),
-                new KitProcedureListener()
+                new KitProcedureListener(),
+                new BlockTracker()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

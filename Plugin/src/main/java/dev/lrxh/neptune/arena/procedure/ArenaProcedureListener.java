@@ -102,7 +102,6 @@ public class ArenaProcedureListener implements Listener {
                 arena.setMax(player.getLocation());
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
 
-                arena.takeSnapshot();
                 profile.getArenaProcedure().setArena(null);
             }
             case SET_BUILD_LIMIT -> {
@@ -130,7 +129,6 @@ public class ArenaProcedureListener implements Listener {
                 player.sendMessage(CC.success("Set arena min position"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
 
-                arena.takeSnapshot();
                 profile.getArenaProcedure().setArena(null);
             }
         }
