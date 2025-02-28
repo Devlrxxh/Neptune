@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.match.listener;
 
+import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -136,6 +137,27 @@ public class BlockTracker implements Listener {
         getMatchForPlayer(player).ifPresent(match -> {
             if (!match.getPlacedBlocks().contains(toBlock.getLocation())) {
                 match.getChanges().put(toBlock.getLocation(), Material.AIR.createBlockData());
+            }
+        });
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onDestroy(BlockDestroyEvent event) {
+        Block block = event.getBlock();
+        Player player = null;
+
+        for (Entity entity : block.getLocation().getNearbyEntities(5, 5, 5)) {
+            if (entity instanceof Player p) player = p;
+        }
+
+        if (player == null) {
+            event.setCancelled(true);
+            return;
+        }
+
+        getMatchForPlayer(player).ifPresent(match -> {
+            if (!match.getPlacedBlocks().contains(block.getLocation())) {
+                match.getChanges().put(block.getLocation(), block.getBlockData());
             }
         });
     }
