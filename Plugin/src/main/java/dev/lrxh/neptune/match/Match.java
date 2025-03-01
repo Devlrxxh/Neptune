@@ -106,7 +106,7 @@ public abstract class Match {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
         }
 
-        player.teleport(target);
+        player.teleportAsync(target.getLocation());
         player.setGameMode(GameMode.SPECTATOR);
     }
 
@@ -261,6 +261,10 @@ public abstract class Match {
                 Player player = participant.getPlayer();
                 if (player == null) return;
                 player.setSaturation(0.0F);
+            } else {
+                Player player = participant.getPlayer();
+                if (player == null) return;
+                player.setSaturation(20.0f);
             }
         });
     }
@@ -343,9 +347,9 @@ public abstract class Match {
         Player player = participant.getPlayer();
         if (player == null) return;
         if (participant.getColor().equals(ParticipantColor.RED)) {
-            player.teleport(arena.getRedSpawn());
+            player.teleportAsync(arena.getRedSpawn());
         } else {
-            player.teleport(arena.getBlueSpawn());
+            player.teleportAsync(arena.getBlueSpawn());
         }
     }
 

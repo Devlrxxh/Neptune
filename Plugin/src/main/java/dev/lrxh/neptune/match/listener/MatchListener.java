@@ -22,6 +22,7 @@ import dev.lrxh.neptune.utils.EntityUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -211,11 +212,13 @@ public class MatchListener implements Listener {
         if (match != null) {
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant.isFrozen()) {
-                Location to = event.getTo();
-                Location from = event.getFrom();
-                if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
-                    player.teleport(from);
-                    return;
+                if (event.hasChangedPosition()) {
+                    Location to = event.getTo();
+                    Location from = event.getFrom();
+                    if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
+                        player.teleportAsync(from);
+                        return;
+                    }
                 }
             }
 
@@ -279,12 +282,13 @@ public class MatchListener implements Listener {
             if (profile == null) return;
             Match match = profile.getMatch();
 
-            if (!profile.getState().equals(ProfileState.IN_GAME) && (match != null && !match.getKit().is(KitRule.HUNGER))) {
+            if (!profile.getState().equals(ProfileState.IN_GAME)) return;
+            if (match == null) return;
+
+            if (!match.getKit().is(KitRule.HUNGER)) {
                 event.setCancelled(true);
-                return;
             }
         }
-        event.setCancelled(true);
     }
 
     @EventHandler

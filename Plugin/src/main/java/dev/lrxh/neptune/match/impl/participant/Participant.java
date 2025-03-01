@@ -67,7 +67,7 @@ public class Participant {
     public void teleport(Location location) {
         Player player = getPlayer();
         if (player == null) return;
-        player.teleport(location);
+        player.teleportAsync(location);
     }
 
     public void playKillEffect() {

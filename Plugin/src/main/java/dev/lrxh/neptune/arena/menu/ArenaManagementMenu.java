@@ -37,7 +37,7 @@ public class ArenaManagementMenu extends Menu {
             buttons.add(new ArenaEnableButton(size - 1, arena));
 
             buttons.add(new ArenaRenameButton(23, arena));
-            buttons.add(new DisplayButton(22, Material.MAP, "&aTeleport to arena", o -> player.teleport(arena.getBlueSpawn())));
+            buttons.add(new DisplayButton(22, Material.MAP, "&aTeleport to arena", o -> player.teleportAsync(arena.getBlueSpawn())));
 
             buttons.add(new ArenaDeleteButton(21, arena));
 

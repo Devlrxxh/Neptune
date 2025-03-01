@@ -57,7 +57,7 @@ public class PlayerUtil {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         if (Neptune.get().getCache().getSpawn() != null) {
-            player.teleport(Neptune.get().getCache().getSpawn());
+            player.teleportAsync(Neptune.get().getCache().getSpawn());
         } else {
             player.sendMessage(CC.error("Make sure to set spawn location using /neptune setspawn!"));
         }
