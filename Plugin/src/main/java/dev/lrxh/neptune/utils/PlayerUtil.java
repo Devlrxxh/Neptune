@@ -21,7 +21,6 @@ import java.util.UUID;
 public class PlayerUtil {
 
     public void reset(Player player) {
-        player.setHealth(20.0D);
         player.setSaturation(20.0F);
         player.setFallDistance(0.0F);
         player.setFoodLevel(20);
@@ -37,6 +36,8 @@ public class PlayerUtil {
         player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
         player.updateInventory();
         player.resetTitle();
+        player.setMaxHealth(20.0f);
+        player.setHealth(20.0D);
     }
 
     @Nullable

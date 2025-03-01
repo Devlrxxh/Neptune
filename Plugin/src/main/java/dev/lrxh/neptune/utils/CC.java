@@ -33,17 +33,22 @@ public class CC {
         Matcher match = HEX_PATTERN.matcher(text);
         StringBuilder result = new StringBuilder(text);
 
+        int offset = 0;
+
         while (match.find()) {
             String color = match.group(1);
             String coloredText = getColor(color) + "";
             int start = match.start();
             int end = match.end();
 
-            result.replace(start, end, coloredText);
+            result.replace(start + offset, end + offset, coloredText);
+
+            offset += coloredText.length() - (end - start);
         }
 
         return result.toString().replace('&', '§');
     }
+
 
     public static ChatColor getColor(String string) {
         return ChatColor.of(new Color(Integer.parseInt(string, 16)));

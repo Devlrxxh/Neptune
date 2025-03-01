@@ -9,6 +9,7 @@ public class GlobalStats {
     private int wins = 0;
     private int losses = 0;
     private int currentStreak = 0;
+    private int bestStreak = 0;
 
     public void addWins(int value) {
         this.wins += value;
@@ -20,5 +21,9 @@ public class GlobalStats {
 
     public void addCurrentStreak(int value) {
         this.currentStreak += value;
+
+        if (currentStreak > bestStreak) {
+            this.bestStreak = currentStreak;
+        }
     }
 }

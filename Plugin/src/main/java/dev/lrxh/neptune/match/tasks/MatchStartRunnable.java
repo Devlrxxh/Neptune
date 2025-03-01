@@ -36,6 +36,11 @@ public class MatchStartRunnable extends NeptuneRunnable {
         if (match.arena instanceof StandAloneArena standAloneArena) {
             standAloneArena.setUsed(true);
         }
+
+        match.forEachPlayer(player -> {
+            player.setMaxHealth(match.getKit().getHealth());
+            player.setHealth(match.getKit().getHealth());
+        });
     }
 
     @Override
