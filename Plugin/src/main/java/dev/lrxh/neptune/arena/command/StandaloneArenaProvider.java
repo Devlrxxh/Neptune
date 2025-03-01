@@ -13,7 +13,7 @@ import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArenaProvider extends DrinkProvider<Arena> {
+public class StandaloneArenaProvider extends DrinkProvider<StandAloneArena> {
 
     @Override
     public boolean doesConsumeArgument() {
@@ -32,35 +32,32 @@ public class ArenaProvider extends DrinkProvider<Arena> {
 
     @Nullable
     @Override
-    public Arena defaultNullValue() {
+    public StandAloneArena defaultNullValue() {
         return null;
     }
 
     @Nullable
     @Override
-    public Arena provide(@Nonnull CommandArg arg, @Nonnull List<? extends Annotation> annotations) throws CommandExitMessage {
+    public StandAloneArena provide(@Nonnull CommandArg arg, @Nonnull List<? extends Annotation> annotations) throws CommandExitMessage {
         String name = arg.get();
         Arena arena = ArenaService.get().getArenaByName(name);
         if (arena == null) throw new CommandExitMessage("Arena doesn't exist");
+        if (!(arena instanceof StandAloneArena standAloneArena)) throw new CommandExitMessage("Arena isn't standalone");
 
-        return arena;
+        return standAloneArena;
     }
 
     @Override
     public String argumentDescription() {
-        return "arena";
+        return "standalone arena";
     }
 
     @Override
     public List<String> getSuggestions(@Nonnull String prefix) {
         List<String> arenas = new ArrayList<>();
-
         for (Arena arena : ArenaService.get().getArenas()) {
-            if (arena instanceof StandAloneArena standAloneArena) {
+            if (arena instanceof StandAloneArena standAloneArena)
                 if (!standAloneArena.isCopy()) arenas.add(arena.getName());
-            } else {
-                arenas.add(arena.getName());
-            }
         }
 
         return arenas;

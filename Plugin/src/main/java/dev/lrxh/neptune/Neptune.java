@@ -7,6 +7,8 @@ import com.jonahseguin.drink.provider.spigot.UUIDProvider;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.command.ArenaProvider;
+import dev.lrxh.neptune.arena.command.StandaloneArenaProvider;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.procedure.ArenaProcedureListener;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
@@ -175,6 +177,7 @@ public final class Neptune extends JavaPlugin {
         CommandService drink = Drink.get(this);
         drink.bind(Kit.class).toProvider(new KitProvider());
         drink.bind(Arena.class).toProvider(new ArenaProvider());
+        drink.bind(StandAloneArena.class).toProvider(new StandaloneArenaProvider());
         drink.bind(UUID.class).toProvider(new UUIDProvider());
 
         drink.register(new KitEditorCommand(), "kiteditor");

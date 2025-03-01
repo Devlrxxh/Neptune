@@ -29,9 +29,9 @@ public class MatchStartRunnable extends NeptuneRunnable {
         this.startTimer = match.getKit().is(KitRule.DENY_MOVEMENT) || !(match instanceof FfaFightMatch) ? 3 : 5;
         this.plugin = plugin;
 
+        match.teleportToPositions();
         match.setupParticipants();
         match.checkRules();
-        match.teleportToPositions();
 
         if (match.arena instanceof StandAloneArena standAloneArena) {
             standAloneArena.setUsed(true);

@@ -45,8 +45,10 @@ public class ArenaService implements IService {
                     Location edge2 = LocationUtil.deserialize(config.getString(path + "max"));
 
                     double limit = config.getDouble(path + "limit");
+                    List<String> copies = config.getStringList(path + "copies");
+                    boolean copy = config.getBoolean(path + "copy", false);
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, false);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copies);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
@@ -55,19 +57,7 @@ public class ArenaService implements IService {
             }
         }
     }
-
-    public List<String> getArenaNames() {
-        List<String> names = new ArrayList<>();
-        for (Arena arena : arenas) {
-            names.add(arena.getName());
-        }
-
-        return names;
-    }
-
     public void saveArenas() {
-
-
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         arenas.forEach(arena -> {
             String path = "arenas." + arena.getName() + ".";
@@ -82,7 +72,9 @@ public class ArenaService implements IService {
                         new Value("type", "STANDALONE"),
                         new Value("min", LocationUtil.serialize(standAloneArena.getMin())),
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
-                        new Value("limit", standAloneArena.getLimit())
+                        new Value("limit", standAloneArena.getLimit()),
+                        new Value("copies", standAloneArena.getCopies()),
+                        new Value("copy", standAloneArena.isCopy())
                 ));
             } else {
                 values.add(new Value("type", "SHARED"));

@@ -1,11 +1,11 @@
 package dev.lrxh.neptune.main;
 
-
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.cosmetics.CosmeticService;
 import dev.lrxh.neptune.hotbar.HotbarService;
@@ -28,6 +28,12 @@ public class MainCommand {
     public void setspawn(@Sender Player player) {
         Neptune.get().getCache().setSpawn(player.getLocation());
         player.sendMessage(CC.color("&aSuccessfully set spawn!"));
+    }
+
+    @Command(name = "generate", desc = "", usage = "<arena> <amount>")
+    public void generate(@Sender Player player, StandAloneArena arena, int amount) {
+        arena.generateCopies(amount);
+        player.sendMessage(CC.success("Done generating arenas! &7Check console for more info"));
     }
 
     @Command(name = "reload", desc = "")

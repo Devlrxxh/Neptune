@@ -3,7 +3,6 @@ package dev.lrxh.neptune.match;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.kit.Kit;
@@ -153,19 +152,16 @@ public abstract class Match {
     }
 
     public void resetArena() {
-        if (arena instanceof StandAloneArena standAloneArena) {
-            List<BlockChanger.BlockSnapshot> blocks = new ArrayList<>();
+        List<BlockChanger.BlockSnapshot> blocks = new ArrayList<>();
 
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
-            }
-
-            for (Location location : liquids) {
-                blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
-            }
-
-            BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
+        for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+            blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
         }
+
+        for (Location location : liquids) {
+            blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
+        }
+        BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
 
         removeEntities();
     }
