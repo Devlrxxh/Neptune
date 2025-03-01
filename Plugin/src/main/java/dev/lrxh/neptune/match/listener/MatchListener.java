@@ -22,7 +22,6 @@ import dev.lrxh.neptune.utils.EntityUtils;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -52,6 +51,7 @@ public class MatchListener implements Listener {
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
             Participant participant = match.getParticipant(player.getUniqueId());
+            if (participant == null) return;
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
@@ -88,6 +88,7 @@ public class MatchListener implements Listener {
             Location bed = event.getBlock().getLocation();
 
             Participant participant = match.getParticipant(player.getUniqueId());
+            if (participant == null) return;
             Location spawn = match.getSpawn(participant);
             Participant opponent = participant.getOpponent();
             Location opponentSpawn = match.getSpawn(opponent);
@@ -203,6 +204,21 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
+    public void onDamage(EntityDamageEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+
+        if (!(event.getFinalDamage() >= player.getHealth())) return;
+        Profile profile = API.getProfile(player);
+        if (profile == null) return;
+        Match match = profile.getMatch();
+        Participant participant = match.getParticipant(player.getUniqueId());
+        participant.setDeathCause(DeathCause.DIED);
+        match.onDeath(participant);
+        player.setHealth(20.0f);
+        event.setCancelled(true);
+    }
+
+    @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
@@ -211,12 +227,13 @@ public class MatchListener implements Listener {
 
         if (match != null) {
             Participant participant = match.getParticipant(player.getUniqueId());
+            if (participant == null) return;
             if (participant.isFrozen()) {
                 if (event.hasChangedPosition()) {
                     Location to = event.getTo();
                     Location from = event.getFrom();
                     if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
-                        player.teleportAsync(from);
+                        player.teleport(from);
                         return;
                     }
                 }

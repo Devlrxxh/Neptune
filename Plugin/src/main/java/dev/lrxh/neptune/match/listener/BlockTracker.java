@@ -24,7 +24,10 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class BlockTracker implements Listener {
 

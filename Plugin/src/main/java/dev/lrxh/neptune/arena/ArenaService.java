@@ -57,6 +57,7 @@ public class ArenaService implements IService {
             }
         }
     }
+
     public void saveArenas() {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         arenas.forEach(arena -> {

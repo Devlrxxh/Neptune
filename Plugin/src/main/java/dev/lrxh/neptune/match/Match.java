@@ -106,7 +106,7 @@ public abstract class Match {
             broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
         }
 
-        player.teleportAsync(target.getLocation());
+        player.teleport(target.getLocation());
         player.setGameMode(GameMode.SPECTATOR);
     }
 
@@ -347,9 +347,9 @@ public abstract class Match {
         Player player = participant.getPlayer();
         if (player == null) return;
         if (participant.getColor().equals(ParticipantColor.RED)) {
-            player.teleportAsync(arena.getRedSpawn());
+            player.teleport(arena.getRedSpawn());
         } else {
-            player.teleportAsync(arena.getBlueSpawn());
+            player.teleport(arena.getBlueSpawn());
         }
     }
 

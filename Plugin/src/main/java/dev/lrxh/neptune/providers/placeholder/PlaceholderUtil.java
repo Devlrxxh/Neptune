@@ -68,6 +68,7 @@ public class PlaceholderUtil {
 
                     if (profile.getState().equals(ProfileState.IN_GAME)) {
                         Participant participant = match.getParticipant(player.getUniqueId());
+                        if (participant == null) return formattedLines;
                         Participant opponent = participant.getOpponent();
                         Player opponentPlayer = participant.getOpponent().getPlayer();
                         line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
@@ -174,6 +175,7 @@ public class PlaceholderUtil {
 
                 if (profile.getState().equals(ProfileState.IN_GAME)) {
                     Participant participant = match.getParticipant(player.getUniqueId());
+                    if (participant == null) return "";
                     Participant opponent = participant.getOpponent();
                     Player opponentPlayer = participant.getOpponent().getPlayer();
                     line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());

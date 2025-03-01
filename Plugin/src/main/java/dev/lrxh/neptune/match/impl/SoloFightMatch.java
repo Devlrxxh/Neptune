@@ -49,8 +49,9 @@ public class SoloFightMatch extends Match {
 
         if (!isDuel()) {
             addStats();
-            forEachPlayer(player -> HotbarService.get().giveItems(player));
         }
+
+        forEachPlayer(player -> HotbarService.get().giveItems(player));
 
         Participant winner = getWinner();
 

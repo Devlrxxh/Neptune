@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match.impl.team;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
@@ -46,6 +47,8 @@ public class TeamFightMatch extends Match {
         state = MatchState.ENDING;
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = getParticipantTeam(loser);
+
+        forEachPlayer(player -> HotbarService.get().giveItems(player));
 
         winnerTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);

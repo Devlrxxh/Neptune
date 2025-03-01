@@ -49,15 +49,11 @@ public class PlayerUtil {
                 .orElse(null);
     }
 
-    public void kick(Player player, String message) {
-        player.kick(Component.text(CC.color(message)));
-    }
-
     public void teleportToSpawn(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
         if (Neptune.get().getCache().getSpawn() != null) {
-            player.teleportAsync(Neptune.get().getCache().getSpawn());
+            player.teleport(Neptune.get().getCache().getSpawn());
         } else {
             player.sendMessage(CC.error("Make sure to set spawn location using /neptune setspawn!"));
         }
