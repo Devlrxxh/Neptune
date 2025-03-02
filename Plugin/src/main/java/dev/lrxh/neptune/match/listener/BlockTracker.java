@@ -16,10 +16,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockFromToEvent;
-import org.bukkit.event.block.BlockMultiPlaceEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -78,6 +75,7 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
+        event.setYield(0);
         if (event.getEntity() instanceof EnderCrystal enderCrystal) {
             Player player = crystalOwners.get(enderCrystal.getUniqueId()) != null
                     ? Bukkit.getPlayer(crystalOwners.get(enderCrystal.getUniqueId()).getUniqueId()) : null;
@@ -89,8 +87,10 @@ public class BlockTracker implements Listener {
 
             getMatchForPlayer(player).ifPresent(match -> {
                 for (Block block : event.blockList()) {
-                    block.getDrops().clear();
-                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                    if (!match.getPlacedBlocks().contains(block.getLocation())) {
+                        block.getDrops().clear();
+                        match.getChanges().put(block.getLocation(), block.getBlockData());
+                    }
                 }
             });
 
@@ -105,8 +105,10 @@ public class BlockTracker implements Listener {
 
             getMatchForPlayer(player).ifPresent(match -> {
                 for (Block block : event.blockList()) {
-                    block.getDrops().clear();
-                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                    if (!match.getPlacedBlocks().contains(block.getLocation())) {
+                        block.getDrops().clear();
+                        match.getChanges().put(block.getLocation(), block.getBlockData());
+                    }
                 }
             });
         }
@@ -174,10 +176,37 @@ public class BlockTracker implements Listener {
         Player player = event.getPlayer();
         getMatchForPlayer(player).ifPresent(match -> {
             for (BlockState blockState : event.getReplacedBlockStates()) {
-                match.getChanges().put(blockState.getLocation(), blockState.getBlockData());
+                if (!match.getPlacedBlocks().contains(blockState.getLocation())) {
+                    match.getChanges().put(blockState.getLocation(), blockState.getBlockData());
+                }
             }
         });
     }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onExplosionPrime(ExplosionPrimeEvent event) {
+        event.setFire(false);
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onExplode(BlockExplodeEvent event) {
+        event.setYield(0);
+        Player player = getPlayer(event.getBlock().getLocation());
+
+        if (player == null) {
+            event.setCancelled(true);
+            return;
+        }
+
+        getMatchForPlayer(player).ifPresent(match -> {
+            for (Block block : event.blockList()) {
+                if (!match.getPlacedBlocks().contains(block.getLocation())) {
+                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                }
+            }
+        });
+    }
+
 
     private Player getPlayer(Location location) {
         Player player = null;

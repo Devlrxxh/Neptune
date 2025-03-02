@@ -2,6 +2,7 @@ package dev.lrxh.neptune.arena.menu;
 
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.ArenaService;
+import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.menu.button.ArenaCreateButton;
 import dev.lrxh.neptune.arena.menu.button.ArenaSelectButton;
 import dev.lrxh.neptune.main.MainMenu;
@@ -24,6 +25,7 @@ public class ArenasManagementMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
         int i = 0;
         for (Arena arena : ArenaService.get().getArenas()) {
+            if (arena instanceof StandAloneArena standAloneArena && standAloneArena.isCopy()) continue;
             buttons.add(new ArenaSelectButton(i++, arena));
         }
 
