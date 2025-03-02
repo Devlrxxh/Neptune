@@ -8,10 +8,10 @@ import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 @Getter
 @Setter
@@ -51,11 +51,14 @@ public class StandAloneArena extends Arena {
 
     public void deleteAllCopies() {
         for (String name : copies) {
-            Arena arena = ArenaService.get().getArenaByName(name);
+            StandAloneArena arena = (StandAloneArena) ArenaService.get().getArenaByName(name);
             if (arena == null) continue;
+
+            BlockChanger.setBlocksAsync(getWorld(), arena.getMin(), arena.getMax(), Material.AIR);
 
             arena.delete();
         }
+        copies.clear();
     }
 
     public void generateCopies(int amount) {
