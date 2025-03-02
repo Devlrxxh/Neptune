@@ -69,6 +69,18 @@ public class KitProcedureListener implements Listener {
                     return;
                 }
             }
+            case SET_KIT_EDITOR_SLOT -> {
+                event.setCancelled(true);
+                if (NumberUtils.isCreatable(input) && input.matches("-?\\d+")) {
+                    profile.getKitProcedure().setType(KitProcedureType.NONE);
+                    profile.getKitProcedure().getKit().setKitEditorSlot(Integer.parseInt(event.getMessage()));
+                    player.sendMessage(CC.success("New Kit editor slot set"));
+                    new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
+                } else {
+                    player.sendMessage(CC.error("Not a valid number, please re-enter"));
+                    return;
+                }
+            }
             case SET_INV -> {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
@@ -114,6 +126,7 @@ public class KitProcedureListener implements Listener {
                     return;
                 }
             }
+
         }
         profile.getKitProcedure().setKit(null);
         KitService.get().saveKits();

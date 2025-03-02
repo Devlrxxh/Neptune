@@ -6,5 +6,6 @@ public enum KitProcedureType {
     SET_SLOT,
     SET_ICON,
     SET_INV,
-    NONE
+    NONE,
+    SET_KIT_EDITOR_SLOT
 }

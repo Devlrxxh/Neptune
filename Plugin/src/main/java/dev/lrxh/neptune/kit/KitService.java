@@ -35,6 +35,7 @@ public class KitService implements IService {
 
                 List<ItemStack> items = ItemUtils.deserialize(config.getString(path + "items", ""));
                 int slot = config.getInt(path + "slot", kits.size() + 1);
+                int kitEditorSlot = config.getInt(path + "kitEditor-slot", slot);
                 double health = config.getDouble(path + "health", 20);
 
                 HashSet<Arena> arenas = new HashSet<>();
@@ -49,7 +50,7 @@ public class KitService implements IService {
                     rules.put(kitRule, config.getBoolean(path + kitRule.getSaveName(), false));
                 }
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, health));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, health, kitEditorSlot));
             }
         }
     }
@@ -74,6 +75,7 @@ public class KitService implements IService {
             values.add(new Value("icon", ItemUtils.serialize(kit.getIcon())));
             values.add(new Value("slot", kit.getSlot()));
             values.add(new Value("health", kit.getHealth()));
+            values.add(new Value("kitEditor-slot", kit.getKitEditorSlot()));
 
             for (Map.Entry<KitRule, Boolean> kitRuleEntry : kit.getRules().entrySet()) {
                 values.add(new Value(kitRuleEntry.getKey().getSaveName(), kit.is(kitRuleEntry.getKey())));

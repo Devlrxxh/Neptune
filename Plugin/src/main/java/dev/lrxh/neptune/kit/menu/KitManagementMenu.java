@@ -25,6 +25,7 @@ public class KitManagementMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
 
         buttons.add(new KitSetInvButton(0, kit));
+        buttons.add(new KitSetKitEditorSlotButton(8, kit));
 
         buttons.add(new KitArenaManageButton(31, kit));
         buttons.add(new KitRenameButton(20, kit));

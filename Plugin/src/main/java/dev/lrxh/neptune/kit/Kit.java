@@ -32,10 +32,10 @@ public class Kit {
     private HashSet<Arena> arenas;
     private ItemStack icon;
     private HashMap<KitRule, Boolean> rules;
-    private int queue, playing, slot;
+    private int queue, playing, slot, kitEditorSlot;
     private double health;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -46,6 +46,7 @@ public class Kit {
         this.playing = 0;
         this.slot = slot;
         this.health = health;
+        this.kitEditorSlot = kitEditorSlot;
 
         addToProfiles();
     }
@@ -61,6 +62,7 @@ public class Kit {
         this.playing = 0;
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
+        this.kitEditorSlot = slot;
 
         addToProfiles();
     }
@@ -76,6 +78,7 @@ public class Kit {
         this.playing = 0;
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
+        this.kitEditorSlot = slot;
 
         addToProfiles();
     }
