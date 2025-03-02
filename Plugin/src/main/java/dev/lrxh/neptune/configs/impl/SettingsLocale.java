@@ -13,6 +13,8 @@ import java.util.List;
 
 @Getter
 public enum SettingsLocale implements IDataAccessor {
+    COMMANDS_AFTER_MATCH_WINNER("COMMAND_AFTER_MATCH.WINNER", DataType.STRING_LIST, ""),
+    COMMANDS_AFTER_MATCH_LOSER("COMMAND_AFTER_MATCH.LOSER", DataType.STRING_LIST, ""),
     SPAWN_LOCATION("SPAWN.LOCATION", DataType.STRING, "NONE"),
     QUEUE_UPDATE_TIME("QUEUE.UPDATE_TIME", "How often queue should check in ticks.", DataType.INT, "60"),
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks.", DataType.INT, "20"),

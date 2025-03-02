@@ -3,6 +3,7 @@ package dev.lrxh.neptune.match.impl;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.kit.impl.KitRule;
@@ -25,6 +26,7 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
 import java.util.List;
@@ -46,14 +48,24 @@ public class SoloFightMatch extends Match {
     public void end(Participant loser) {
         state = MatchState.ENDING;
         loser.setLoser(true);
+        Participant winner = getWinner();
 
         if (!isDuel()) {
             addStats();
+
+            for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
+                command = command.replace("<player>", loser.getName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            }
+
+            for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_WINNER.getStringList()) {
+                command = command.replace("<player>", winner.getName());
+                Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
+            }
         }
 
         forEachPlayer(player -> HotbarService.get().giveItems(player));
 
-        Participant winner = getWinner();
 
         winner.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);
