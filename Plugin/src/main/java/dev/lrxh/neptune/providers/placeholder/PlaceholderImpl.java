@@ -56,7 +56,7 @@ public class PlaceholderImpl extends PlaceholderExpansion {
                     case "in-match":
                         return String.valueOf(MatchService.get().matches.size());
                     case "queued":
-                        return String.valueOf(QueueService.get().queues.size());
+                        return String.valueOf(QueueService.get().queue.size());
                     case "wins":
                         return String.valueOf(globalStats.getWins());
                     case "losses":

@@ -8,13 +8,12 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.queue.events.QueueJoinEvent;
 import org.bukkit.Bukkit;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class QueueService {
     private static QueueService instance;
-    public final Map<UUID, Queue> queues = new ConcurrentHashMap<>();
+    public final ConcurrentLinkedQueue<QueueEntry> queue = new ConcurrentLinkedQueue<>();
 
     public static QueueService get() {
         if (instance == null) instance = new QueueService();
@@ -22,31 +21,43 @@ public class QueueService {
         return instance;
     }
 
-    public void add(UUID playerUUID, Queue queue) {
-        QueueJoinEvent event = new QueueJoinEvent(playerUUID, queue);
+    public void add(QueueEntry queueEntry) {
+        UUID playerUUID = queueEntry.getUuid();
+        QueueJoinEvent event = new QueueJoinEvent(playerUUID, queueEntry);
         Bukkit.getPluginManager().callEvent(event);
 
         if (event.isCancelled()) return;
 
-        if (queues.containsKey(playerUUID)) return;
+        if (queue.contains(get(playerUUID))) return;
         Profile profile = API.getProfile(playerUUID);
         if (profile.hasState(ProfileState.IN_GAME)) return;
         if (profile.getGameData().getParty() != null) return;
-        queues.put(playerUUID, queue);
+
+        this.queue.offer(queueEntry);
+
         profile.setState(ProfileState.IN_QUEUE);
-        queue.getKit().addQueue();
+        queueEntry.getKit().addQueue();
         MessagesLocale.QUEUE_JOIN.send(playerUUID,
-                new Replacement("<kit>", queue.getKit().getDisplayName()),
+                new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
                 new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
     }
 
     public void remove(UUID playerUUID) {
-        if (!queues.containsKey(playerUUID)) return;
-        queues.get(playerUUID).getKit().removeQueue();
-        queues.remove(playerUUID);
+        if (!queue.contains(get(playerUUID))) return;
+        get(playerUUID).getKit().removeQueue();
+
+        queue.remove(get(playerUUID));
     }
 
-    public boolean compare(Queue queue1, Queue queue2) {
-        return queue1.getKit().getName().equals(queue2.getKit().getName());
+    public QueueEntry get(UUID uuid) {
+        for (QueueEntry queueEntry : queue) {
+            if (queueEntry.getUuid().equals(uuid)) return queueEntry;
+        }
+
+        return null;
+    }
+
+    public boolean compare(QueueEntry queueEntry1, QueueEntry queueEntry2) {
+        return queueEntry1.getKit().getName().equals(queueEntry2.getKit().getName());
     }
 }

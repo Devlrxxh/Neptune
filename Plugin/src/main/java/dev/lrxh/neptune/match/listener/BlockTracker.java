@@ -195,6 +195,7 @@ public class BlockTracker implements Listener {
             event.setCancelled(true);
         }
     }
+
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
         event.setCancelled(true);

@@ -3,7 +3,6 @@ package dev.lrxh.neptune.match.tasks;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
-import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.Match;
@@ -13,7 +12,6 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import org.bukkit.Bukkit;
 
 import java.util.HashSet;
 import java.util.UUID;
@@ -27,6 +25,9 @@ public class MatchEndRunnable extends NeptuneRunnable {
     public MatchEndRunnable(Match match, Neptune plugin) {
         this.match = match;
         this.plugin = plugin;
+
+        match.resetArena();
+
     }
 
     @Override
@@ -56,7 +57,6 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
             match.sendEndMessage();
 
-            match.resetArena();
             if (match.arena instanceof StandAloneArena standAloneArena) {
                 standAloneArena.setUsed(false);
             }

@@ -175,6 +175,8 @@ public class Participant {
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer(playerUUID);
+        Player p = Bukkit.getPlayer(playerUUID);
+        if (p != null) return p;
+        return Bukkit.getPlayer(getName());
     }
 }

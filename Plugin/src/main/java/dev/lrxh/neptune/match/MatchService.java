@@ -12,7 +12,6 @@ import dev.lrxh.neptune.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.queue.QueueService;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -33,8 +32,8 @@ public class MatchService {
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {
-        for (Participant participant : participants) {
-            QueueService.get().remove(participant.getPlayerUUID());
+        for (Participant ignore : participants) {
+            kit.removeQueue();
             kit.addPlaying();
         }
 

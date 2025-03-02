@@ -17,7 +17,7 @@ import dev.lrxh.neptune.party.menu.buttons.events.PartyEventsMenu;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueEntry;
 import dev.lrxh.neptune.queue.QueueService;
 import dev.lrxh.neptune.queue.menu.QueueMenu;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
@@ -153,7 +153,7 @@ public enum ItemAction {
             profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             profile.setMatch(null);
 
-            QueueService.get().add(player.getUniqueId(), new Queue(match.getKit()));
+            QueueService.get().add(new QueueEntry(match.getKit(), player.getUniqueId()));
         }
     },
     SETTINGS() {

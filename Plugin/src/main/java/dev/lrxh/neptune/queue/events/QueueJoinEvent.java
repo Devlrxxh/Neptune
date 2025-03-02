@@ -1,25 +1,28 @@
 package dev.lrxh.neptune.queue.events;
 
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueEntry;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.Cancellable;
 
 import java.util.UUID;
 
-public class QueueJoinEvent  extends Event implements Cancellable {
+public class QueueJoinEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
+    private final QueueEntry queueEntry;
+    private final UUID uuid;
     private boolean cancelled = false;
 
-    private final Queue queue;
-    private final UUID uuid;
-
-    public QueueJoinEvent(UUID uuid, Queue queue) {
-        this.queue = queue;
+    public QueueJoinEvent(UUID uuid, QueueEntry queueEntry) {
+        this.queueEntry = queueEntry;
         this.uuid = uuid;
+    }
+
+    public static HandlerList getHandlerList() {
+        return handlers;
     }
 
     public Player getPlayer() {
@@ -27,7 +30,7 @@ public class QueueJoinEvent  extends Event implements Cancellable {
     }
 
     public Kit getKit() {
-        return queue.getKit();
+        return queueEntry.getKit();
     }
 
     @Override
@@ -42,10 +45,6 @@ public class QueueJoinEvent  extends Event implements Cancellable {
 
     @Override
     public HandlerList getHandlers() {
-        return handlers;
-    }
-
-    public static HandlerList getHandlerList() {
         return handlers;
     }
 }

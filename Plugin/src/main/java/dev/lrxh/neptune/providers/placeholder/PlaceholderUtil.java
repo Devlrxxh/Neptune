@@ -13,7 +13,7 @@ import dev.lrxh.neptune.party.Party;
 import dev.lrxh.neptune.profile.data.GlobalStats;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueEntry;
 import dev.lrxh.neptune.queue.QueueService;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.experimental.UtilityClass;
@@ -36,7 +36,7 @@ public class PlaceholderUtil {
         ProfileState state = profile.getState();
         for (String line : lines) {
             line = line.replaceAll("<online>", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
-            line = line.replaceAll("<queued>", String.valueOf(QueueService.get().queues.size()));
+            line = line.replaceAll("<queued>", String.valueOf(QueueService.get().queue.size()));
             line = line.replaceAll("<in-match>", String.valueOf(MatchService.get().matches.size()));
             line = line.replaceAll("<player>", player.getName());
             line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player))));
@@ -47,9 +47,9 @@ public class PlaceholderUtil {
             line = line.replaceAll("<currentStreak>", String.valueOf(globalStats.getCurrentStreak()));
 
             if (state.equals(ProfileState.IN_QUEUE)) {
-                Queue queue = QueueService.get().queues.get(player.getUniqueId());
-                if (queue == null) continue;
-                line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
+                QueueEntry queueEntry = QueueService.get().get(player.getUniqueId());
+                if (queueEntry == null) continue;
+                line = line.replaceAll("<kit>", queueEntry.getKit().getDisplayName());
                 line = line.replaceAll("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()));
             }
 
@@ -143,7 +143,7 @@ public class PlaceholderUtil {
         ProfileState state = profile.getState();
 
         line = line.replaceAll("<online>", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
-        line = line.replaceAll("<queued>", String.valueOf(QueueService.get().queues.size()));
+        line = line.replaceAll("<queued>", String.valueOf(QueueService.get().queue.size()));
         line = line.replaceAll("<in-match>", String.valueOf(MatchService.get().matches.size()));
         line = line.replaceAll("<player>", player.getName());
         line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player))));
@@ -154,9 +154,9 @@ public class PlaceholderUtil {
         line = line.replaceAll("<currentStreak>", String.valueOf(globalStats.getCurrentStreak()));
 
         if (state.equals(ProfileState.IN_QUEUE)) {
-            Queue queue = QueueService.get().queues.get(player.getUniqueId());
-            if (queue == null) return line;
-            line = line.replaceAll("<kit>", queue.getKit().getDisplayName());
+            QueueEntry queueEntry = QueueService.get().get(player.getUniqueId());
+            if (queueEntry == null) return line;
+            line = line.replaceAll("<kit>", queueEntry.getKit().getDisplayName());
             line = line.replaceAll("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()));
         }
 

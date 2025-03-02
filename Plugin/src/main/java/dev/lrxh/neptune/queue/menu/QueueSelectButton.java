@@ -7,7 +7,7 @@ import dev.lrxh.neptune.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.menu.Button;
-import dev.lrxh.neptune.queue.Queue;
+import dev.lrxh.neptune.queue.QueueEntry;
 import dev.lrxh.neptune.queue.QueueService;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;
@@ -77,7 +77,7 @@ public class QueueSelectButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-        QueueService.get().add(player.getUniqueId(), new Queue(kit));
+        QueueService.get().add(new QueueEntry(kit, player.getUniqueId()));
         player.closeInventory();
     }
 }
