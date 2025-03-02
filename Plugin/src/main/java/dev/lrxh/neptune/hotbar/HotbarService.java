@@ -81,6 +81,8 @@ public class HotbarService implements IService {
                     boolean enabled = config.getBoolean(path + "ENABLED");
                     byte slot = (byte) config.getInt(path + "SLOT");
 
+                    if (!enabled) continue;
+
                     try {
                         Item item = new Item(ItemAction.valueOf(itemName), displayName, material, enabled, slot);
                         if (slot >= 0 && slot < inventory.getSlots().length) {
