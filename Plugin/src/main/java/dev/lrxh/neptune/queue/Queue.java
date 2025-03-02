@@ -8,10 +8,8 @@ import lombok.Setter;
 @Setter
 public class Queue {
     private Kit kit;
-    private boolean arenaLoading;
 
     public Queue(Kit kit) {
         this.kit = kit;
-        this.arenaLoading = false;
     }
 }

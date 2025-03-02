@@ -2,7 +2,6 @@ package dev.lrxh.neptune.queue.tasks;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.match.MatchService;
@@ -34,7 +33,6 @@ public class QueueCheckTask extends NeptuneRunnable {
             UUID uuid1 = entry1.getKey();
             Profile profile1 = API.getProfile(uuid1);
             Queue queue1 = entry1.getValue();
-            if (queue1.isArenaLoading()) continue;
 
             if (MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) {
                 MessagesLocale.QUEUE_REPEAT.send(uuid1,
@@ -46,7 +44,6 @@ public class QueueCheckTask extends NeptuneRunnable {
             for (Map.Entry<UUID, Queue> entry2 : QueueService.get().queues.entrySet()) {
                 UUID uuid2 = entry2.getKey();
                 Queue queue2 = entry2.getValue();
-                if (queue2.isArenaLoading()) continue;
 
                 if ((uuid1.equals(uuid2))) continue;
                 if (!QueueService.get().compare(queue1, queue2)) continue;
@@ -110,11 +107,6 @@ public class QueueCheckTask extends NeptuneRunnable {
                         new Replacement("<arena>", arena.getDisplayName()),
                         new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid1))),
                         new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
-
-                if (arena instanceof StandAloneArena) {
-                    queue1.setArenaLoading(true);
-                    queue2.setArenaLoading(true);
-                }
 
                 //Start match
                 MatchService.get().startMatch(participants, queue1.getKit(),

@@ -5,6 +5,8 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.queue.events.QueueJoinEvent;
+import org.bukkit.Bukkit;
 
 import java.util.Map;
 import java.util.UUID;
@@ -21,6 +23,11 @@ public class QueueService {
     }
 
     public void add(UUID playerUUID, Queue queue) {
+        QueueJoinEvent event = new QueueJoinEvent(playerUUID, queue);
+        Bukkit.getPluginManager().callEvent(event);
+
+        if (event.isCancelled()) return;
+
         if (queues.containsKey(playerUUID)) return;
         Profile profile = API.getProfile(playerUUID);
         if (profile.hasState(ProfileState.IN_GAME)) return;
