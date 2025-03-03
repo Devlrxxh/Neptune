@@ -25,6 +25,15 @@ import java.util.UUID;
 public class QueueCheckTask extends NeptuneRunnable {
     @Override
     public void run() {
+        for (QueueEntry queueEntry : QueueService.get().queue) {
+            Profile profile = API.getProfile(queueEntry.getUuid());
+            if (MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) {
+                MessagesLocale.QUEUE_REPEAT.send(queueEntry.getUuid(),
+                        new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
+                        new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
+            }
+        }
+
         if (QueueService.get().queue.size() < 2) return;
 
         QueueEntry queueEntry1 = QueueService.get().queue.poll();
@@ -34,12 +43,6 @@ public class QueueCheckTask extends NeptuneRunnable {
 
         UUID uuid1 = queueEntry1.getUuid();
         Profile profile1 = API.getProfile(uuid1);
-
-        if (MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) {
-            MessagesLocale.QUEUE_REPEAT.send(uuid1,
-                    new Replacement("<kit>", queueEntry1.getKit().getDisplayName()),
-                    new Replacement("<maxPing>", String.valueOf(profile1.getSettingData().getMaxPing())));
-        }
 
         UUID uuid2 = queueEntry2.getUuid();
 
