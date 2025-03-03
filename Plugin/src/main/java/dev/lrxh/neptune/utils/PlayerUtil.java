@@ -1,13 +1,14 @@
 package dev.lrxh.neptune.utils;
 
-import com.mongodb.lang.Nullable;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.impl.Profile;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -30,7 +31,17 @@ public class PlayerUtil {
         player.setLevel(0);
         player.setAllowFlight(false);
         player.setFlying(false);
-        player.setGameMode(GameMode.ADVENTURE);
+
+        Profile profile = API.getProfile(player);
+        if (profile.getState().equals(ProfileState.IN_LOBBY)
+                || profile.getState().equals(ProfileState.IN_KIT_EDITOR)
+                || profile.getState().equals(ProfileState.IN_PARTY)
+                || profile.getState().equals(ProfileState.IN_QUEUE)) {
+            player.setGameMode(GameMode.ADVENTURE);
+        } else {
+            player.setGameMode(GameMode.SURVIVAL);
+        }
+
         player.getInventory().setArmorContents(new ItemStack[4]);
         player.getInventory().setContents(new ItemStack[36]);
         player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
@@ -38,15 +49,6 @@ public class PlayerUtil {
         player.resetTitle();
         player.setMaxHealth(20.0f);
         player.setHealth(20.0D);
-    }
-
-    @Nullable
-    public Player getNearestPlayer(Location location) {
-        double radiusSquared = 25;
-        return location.getWorld().getPlayers().stream()
-                .filter(p -> p.getLocation().distanceSquared(location) < radiusSquared)
-                .findFirst()
-                .orElse(null);
     }
 
     public void teleportToSpawn(UUID playerUUID) {

@@ -48,8 +48,8 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
             match.forEachParticipant(participant -> {
                 Profile profile = API.getProfile(participant.getPlayerUUID());
-                PlayerUtil.reset(participant.getPlayer());
                 profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+                PlayerUtil.reset(participant.getPlayer());
                 profile.setMatch(null);
                 PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
                 match.forEachPlayer(player -> HotbarService.get().giveItems(player));

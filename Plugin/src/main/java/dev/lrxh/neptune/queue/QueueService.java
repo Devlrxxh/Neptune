@@ -23,7 +23,7 @@ public class QueueService {
 
     public void add(QueueEntry queueEntry) {
         UUID playerUUID = queueEntry.getUuid();
-        QueueJoinEvent event = new QueueJoinEvent(playerUUID, queueEntry);
+        QueueJoinEvent event = new QueueJoinEvent(queueEntry);
         Bukkit.getPluginManager().callEvent(event);
 
         if (event.isCancelled()) return;

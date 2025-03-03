@@ -8,17 +8,13 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-import java.util.UUID;
-
 public class QueueJoinEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     private final QueueEntry queueEntry;
-    private final UUID uuid;
     private boolean cancelled = false;
 
-    public QueueJoinEvent(UUID uuid, QueueEntry queueEntry) {
+    public QueueJoinEvent(QueueEntry queueEntry) {
         this.queueEntry = queueEntry;
-        this.uuid = uuid;
     }
 
     public static HandlerList getHandlerList() {
@@ -26,7 +22,7 @@ public class QueueJoinEvent extends Event implements Cancellable {
     }
 
     public Player getPlayer() {
-        return Bukkit.getPlayer(uuid);
+        return Bukkit.getPlayer(queueEntry.getUuid());
     }
 
     public Kit getKit() {

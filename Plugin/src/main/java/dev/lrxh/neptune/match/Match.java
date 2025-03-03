@@ -220,9 +220,9 @@ public abstract class Match {
         Profile profile = API.getProfile(playerUUID);
 
         if (profile.getMatch() == null) return;
+        profile.setState(ProfileState.IN_LOBBY);
         PlayerUtil.reset(player);
         PlayerUtil.teleportToSpawn(playerUUID);
-        profile.setState(ProfileState.IN_LOBBY);
         profile.setMatch(null);
 
         spectators.remove(playerUUID);
@@ -235,10 +235,10 @@ public abstract class Match {
     public void setupPlayer(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
-        PlayerUtil.reset(player);
         Profile profile = API.getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
+        PlayerUtil.reset(player);
         Participant participant = getParticipant(playerUUID);
         participant.setLastAttacker(null);
         kit.giveLoadout(participant);

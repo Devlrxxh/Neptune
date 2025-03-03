@@ -27,14 +27,11 @@ public class QueueCheckTask extends NeptuneRunnable {
     public void run() {
         if (QueueService.get().queue.size() < 2) return;
 
-        // preparing game to start, We found 2 players
-
         QueueEntry queueEntry1 = QueueService.get().queue.poll();
         QueueEntry queueEntry2 = QueueService.get().queue.poll();
 
         if (queueEntry2 == null || queueEntry1 == null) return;
 
-        //Check if 2 same queue were found in the queue
         UUID uuid1 = queueEntry1.getUuid();
         Profile profile1 = API.getProfile(uuid1);
 
@@ -46,7 +43,6 @@ public class QueueCheckTask extends NeptuneRunnable {
 
         UUID uuid2 = queueEntry2.getUuid();
 
-        if ((uuid1.equals(uuid2))) return;
         if (!QueueService.get().compare(queueEntry1, queueEntry2)) return;
         SettingData settings1 = profile1.getSettingData();
         SettingData settings2 = API.getProfile(uuid2).getSettingData();
@@ -61,7 +57,6 @@ public class QueueCheckTask extends NeptuneRunnable {
 
         if (player1 == null || player2 == null) return;
 
-        //Create participants
         Participant participant1 =
                 new Participant(player1);
 
@@ -72,22 +67,20 @@ public class QueueCheckTask extends NeptuneRunnable {
 
         Arena arena = queueEntry1.getKit().getRandomArena();
 
-        //If no arenas were found
         if (arena == null) {
 
-            removeFromQueue(uuid1);
-            removeFromQueue(uuid2);
+            API.getProfile(uuid1).setState(ProfileState.IN_LOBBY);
+            API.getProfile(uuid2).setState(ProfileState.IN_LOBBY);
 
             PlayerUtil.sendMessage(uuid1, CC.error("No arena was found!"));
             PlayerUtil.sendMessage(uuid2, CC.error("No arena was found!"));
             return;
         }
 
-        //If arena locations weren't setup
         if (!arena.isSetup()) {
 
-            removeFromQueue(uuid1);
-            removeFromQueue(uuid2);
+            API.getProfile(uuid1).setState(ProfileState.IN_LOBBY);
+            API.getProfile(uuid2).setState(ProfileState.IN_LOBBY);
 
             PlayerUtil.sendMessage(uuid1, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
             PlayerUtil.sendMessage(uuid2, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
@@ -111,9 +104,5 @@ public class QueueCheckTask extends NeptuneRunnable {
 
         MatchService.get().startMatch(participants, queueEntry1.getKit(),
                 arena, false, queueEntry1.getKit().is(KitRule.BEST_OF_THREE) ? 3 : 1);
-    }
-
-    private void removeFromQueue(UUID uuid) {
-        API.getProfile(uuid).setState(ProfileState.IN_LOBBY);
     }
 }

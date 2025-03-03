@@ -136,10 +136,10 @@ public class TeamFightMatch extends Match {
         } else {
             participant.setLeft(true);
         }
-        PlayerUtil.reset(participant.getPlayer());
         PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
         Profile profile = API.getProfile(participant.getPlayerUUID());
         profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+        PlayerUtil.reset(participant.getPlayer());
         profile.setMatch(null);
 
         end(participant);
