@@ -26,6 +26,7 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_DEATH_VOID("MATCH.DEATH.VOID", DataType.STRING_LIST, "<player> &7fell into the void while fighting <killer>"),
     QUEUE_JOIN("QUEUE.JOIN", DataType.STRING_LIST, "&7(&bDuels&7) Joined Queue"),
     QUEUE_LEAVE("QUEUE.LEAVE", DataType.STRING_LIST, "&7(&bDuels&7) Left queue"),
+    QUEUE_ACTION_BAR("QUEUE.ACTION_BAR", DataType.STRING, "&aLooking for opponent..."),
     QUEUE_REPEAT("QUEUE.REPEAT.MESSAGE", DataType.STRING_LIST, "&aSearching for other players in queue..."),
     QUEUE_REPEAT_TOGGLE("QUEUE.REPEAT.TOGGLE", DataType.BOOLEAN, "true"),
     MATCH_STARTED("MATCH.STARTED", DataType.STRING_LIST, "&aMatch Started!"),

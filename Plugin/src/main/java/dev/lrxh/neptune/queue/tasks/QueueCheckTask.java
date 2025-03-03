@@ -32,6 +32,11 @@ public class QueueCheckTask extends NeptuneRunnable {
                         new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
                         new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
             }
+
+            Player player = Bukkit.getPlayer(queueEntry.getUuid());
+            if (player == null) continue;
+
+            player.sendActionBar(CC.color(MessagesLocale.QUEUE_ACTION_BAR.getString()));
         }
 
         if (QueueService.get().queue.size() < 2) return;
