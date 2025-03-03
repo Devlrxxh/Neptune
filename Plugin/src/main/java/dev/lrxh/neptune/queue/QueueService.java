@@ -21,7 +21,7 @@ public class QueueService {
         return instance;
     }
 
-    public void add(QueueEntry queueEntry) {
+    public void add(QueueEntry queueEntry, boolean add) {
         UUID playerUUID = queueEntry.getUuid();
         QueueJoinEvent event = new QueueJoinEvent(queueEntry);
         Bukkit.getPluginManager().callEvent(event);
@@ -36,7 +36,7 @@ public class QueueService {
         this.queue.offer(queueEntry);
 
         profile.setState(ProfileState.IN_QUEUE);
-        queueEntry.getKit().addQueue();
+        if (add) queueEntry.getKit().addQueue();
         MessagesLocale.QUEUE_JOIN.send(playerUUID,
                 new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
                 new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
@@ -58,6 +58,6 @@ public class QueueService {
     }
 
     public boolean compare(QueueEntry queueEntry1, QueueEntry queueEntry2) {
-        return queueEntry1.getKit().getName().equals(queueEntry2.getKit().getName());
+        return queueEntry1.getKit().equals(queueEntry2.getKit());
     }
 }

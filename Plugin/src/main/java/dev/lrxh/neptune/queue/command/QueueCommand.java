@@ -18,6 +18,6 @@ public class QueueCommand {
 
     @Command(name = "", desc = "", usage = "<kit>")
     public void queue(@Sender Player player, Kit kit) {
-        QueueService.get().add(new QueueEntry(kit, player.getUniqueId()));
+        QueueService.get().add(new QueueEntry(kit, player.getUniqueId()), true);
     }
 }

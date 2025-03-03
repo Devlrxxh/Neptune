@@ -153,7 +153,7 @@ public enum ItemAction {
             PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
             profile.setMatch(null);
 
-            QueueService.get().add(new QueueEntry(match.getKit(), player.getUniqueId()));
+            QueueService.get().add(new QueueEntry(match.getKit(), player.getUniqueId()), true);
         }
     },
     SETTINGS() {

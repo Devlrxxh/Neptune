@@ -43,12 +43,19 @@ public class QueueCheckTask extends NeptuneRunnable {
 
         UUID uuid2 = queueEntry2.getUuid();
 
-        if (!QueueService.get().compare(queueEntry1, queueEntry2)) return;
+        if (!QueueService.get().compare(queueEntry1, queueEntry2)) {
+            QueueService.get().add(queueEntry1, false);
+            QueueService.get().add(queueEntry2, false);
+            return;
+        }
+
         SettingData settings1 = profile1.getSettingData();
         SettingData settings2 = API.getProfile(uuid2).getSettingData();
 
         if (!(PlayerUtil.getPing(uuid2) <= settings1.getMaxPing() &&
                 PlayerUtil.getPing(uuid1) <= settings2.getMaxPing())) {
+            QueueService.get().add(queueEntry1, false);
+            QueueService.get().add(queueEntry2, false);
             return;
         }
 
@@ -72,8 +79,12 @@ public class QueueCheckTask extends NeptuneRunnable {
             API.getProfile(uuid1).setState(ProfileState.IN_LOBBY);
             API.getProfile(uuid2).setState(ProfileState.IN_LOBBY);
 
+            queueEntry1.getKit().removeQueue();
+            queueEntry1.getKit().removeQueue();
+
             PlayerUtil.sendMessage(uuid1, CC.error("No arena was found!"));
             PlayerUtil.sendMessage(uuid2, CC.error("No arena was found!"));
+
             return;
         }
 
@@ -81,6 +92,9 @@ public class QueueCheckTask extends NeptuneRunnable {
 
             API.getProfile(uuid1).setState(ProfileState.IN_LOBBY);
             API.getProfile(uuid2).setState(ProfileState.IN_LOBBY);
+
+            queueEntry1.getKit().removeQueue();
+            queueEntry1.getKit().removeQueue();
 
             PlayerUtil.sendMessage(uuid1, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
             PlayerUtil.sendMessage(uuid2, CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));

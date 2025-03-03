@@ -25,9 +25,6 @@ public class MatchEndRunnable extends NeptuneRunnable {
     public MatchEndRunnable(Match match, Neptune plugin) {
         this.match = match;
         this.plugin = plugin;
-
-        match.resetArena();
-
     }
 
     @Override
@@ -46,6 +43,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 match.removeSpectator(spectator, false);
             }
 
+            match.resetArena();
             match.forEachParticipant(participant -> {
                 Profile profile = API.getProfile(participant.getPlayerUUID());
                 profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);

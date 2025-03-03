@@ -77,7 +77,7 @@ public class QueueSelectButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-        QueueService.get().add(new QueueEntry(kit, player.getUniqueId()));
+        QueueService.get().add(new QueueEntry(kit, player.getUniqueId()), true);
         player.closeInventory();
     }
 }

@@ -12,7 +12,7 @@ public class QuickQueueCommand {
     @Command(name = "", desc = "")
     public void queue(@Sender Player player) {
         for (QueueEntry entry : QueueService.get().queue) {
-            QueueService.get().add(new QueueEntry(entry.getKit(), player.getUniqueId()));
+            QueueService.get().add(new QueueEntry(entry.getKit(), player.getUniqueId()), true);
             break;
         }
     }
