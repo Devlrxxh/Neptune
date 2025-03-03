@@ -156,21 +156,20 @@ public abstract class Match {
         if (SettingsLocale.ARENA_RESET_EXPERIMENTAL.getBoolean()) {
             List<BlockChanger.BlockSnapshot> blocks = new ArrayList<>();
 
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
-            }
-
             for (Location location : liquids) {
                 blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
             }
+
+            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+                blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
+            }
             BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
         } else {
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
-            }
-
             for (Location location : liquids) {
                 arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
+            }
+            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+                arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
             }
         }
 
