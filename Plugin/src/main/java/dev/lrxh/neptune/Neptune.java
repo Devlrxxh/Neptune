@@ -76,6 +76,8 @@ public final class Neptune extends JavaPlugin {
     private EntityHider entityHider;
     @Setter
     private boolean allowJoin;
+    @Setter
+    private boolean allowMatches;
 
     public static Neptune get() {
         return instance;
@@ -87,6 +89,7 @@ public final class Neptune extends JavaPlugin {
         allowJoin = false;
         loadManager();
         allowJoin = true;
+        allowMatches = true;
     }
 
     private void loadManager() {

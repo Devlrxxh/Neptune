@@ -32,6 +32,7 @@ public class MatchService {
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {
+        if (!Neptune.get().isAllowMatches()) return;
         for (Participant ignore : participants) {
             kit.removeQueue();
             kit.addPlaying();
@@ -54,6 +55,7 @@ public class MatchService {
     }
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {
+        if (!Neptune.get().isAllowMatches()) return;
         for (Participant participant : teamA.getParticipants()) {
             for (Participant opponent : teamB.getParticipants()) {
                 participant.setOpponent(opponent);
@@ -73,6 +75,7 @@ public class MatchService {
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
+        if (!Neptune.get().isAllowMatches()) return;
         for (Participant participant : participants) {
             participant.setColor(ParticipantColor.RED);
         }
