@@ -29,7 +29,9 @@ public class PlaceholderManager {
                 new KitLossesPlaceholder(),
                 new KitCurrentStreakPlaceholder(),
                 new KitBestStreakPlaceholder(),
-                new LeaderboardPlaceholder()
+                new LeaderboardPlaceholder(),
+                new KitInMatchPlaceholder(),
+                new KitQueuedPlaceholder()
         ));
     }
 

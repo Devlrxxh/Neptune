@@ -22,6 +22,7 @@ public class KitLossesPlaceholder implements Placeholder {
         Matcher matcher = PATTERN.matcher(string);
         if (matcher.matches()) {
             KitData data = profile.getGameData().get(KitService.get().getKitByName(matcher.group(1)));
+            if (data == null) return string;
 
             return String.valueOf(data.getLosses());
         }
