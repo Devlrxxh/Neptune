@@ -31,17 +31,17 @@ public class BlockTracker implements Listener {
 
     private final Map<UUID, Entity> crystalOwners = new HashMap<>();
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         getMatchForPlayer(player).ifPresent(match -> {
-            if (!match.getPlacedBlocks().contains(event.getBlock().getLocation())) {
+            if (!match.getChanges().containsKey(event.getBlock().getLocation())) {
                 match.getChanges().put(event.getBlock().getLocation(), event.getBlockReplacedState().getBlockData());
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         UUID uuid = event.getEntity().getOwnerUniqueId();
         if (uuid == null) return;
@@ -50,7 +50,7 @@ public class BlockTracker implements Listener {
         getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(event.getEntity()));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onCrystalPlace(EntitySpawnEvent event) {
         if (!(event.getEntity() instanceof EnderCrystal crystal)) return;
 
@@ -66,19 +66,19 @@ public class BlockTracker implements Listener {
         getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(crystal));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof EnderCrystal && event.getDamager() instanceof Player player) {
             crystalOwners.put(player.getUniqueId(), event.getEntity());
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLeave(PlayerQuitEvent event) {
         crystalOwners.remove(event.getPlayer().getUniqueId());
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
         event.setYield(0);
         if (event.getEntity() instanceof EnderCrystal enderCrystal) {
@@ -94,7 +94,7 @@ public class BlockTracker implements Listener {
                 for (Block block : event.blockList()) {
                     block.getDrops().clear();
 
-                    if (!match.getPlacedBlocks().contains(block.getLocation())) {
+                    if (!match.getChanges().containsKey(block.getLocation())) {
                         match.getChanges().put(block.getLocation(), block.getBlockData());
                     }
                 }
@@ -113,7 +113,7 @@ public class BlockTracker implements Listener {
                 for (Block block : event.blockList()) {
                     block.getDrops().clear();
 
-                    if (!match.getPlacedBlocks().contains(block.getLocation())) {
+                    if (!match.getChanges().containsKey(block.getLocation())) {
                         match.getChanges().put(block.getLocation(), block.getBlockData());
                     }
                 }
@@ -121,13 +121,13 @@ public class BlockTracker implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
         getMatchForPlayer(player).ifPresent(match -> match.getLiquids().add(event.getBlock().getLocation()));
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         Block toBlock = event.getToBlock();
         Player player = getPlayer(toBlock.getLocation());
@@ -138,18 +138,18 @@ public class BlockTracker implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            if (!match.getPlacedBlocks().contains(toBlock.getLocation())) {
+            if (!match.getChanges().containsKey(toBlock.getLocation())) {
                 match.getChanges().put(toBlock.getLocation(), Material.AIR.createBlockData());
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockBreak(BlockBreakBlockEvent event) {
         event.getDrops().clear();
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDestroy(BlockDestroyEvent event) {
         Block block = event.getBlock();
         block.getDrops().clear();
@@ -162,35 +162,35 @@ public class BlockTracker implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            if (!match.getPlacedBlocks().contains(block.getLocation())) {
+            if (!match.getChanges().containsKey(block.getLocation())) {
                 match.getChanges().put(block.getLocation(), block.getBlockData());
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         getMatchForPlayer(player).ifPresent(match -> {
-            if (!match.getPlacedBlocks().contains(event.getBlock().getLocation())) {
+            if (!match.getChanges().containsKey(event.getBlock().getLocation())) {
                 match.getChanges().put(event.getBlock().getLocation(), event.getBlock().getBlockData());
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onMultiPlace(BlockMultiPlaceEvent event) {
         Player player = event.getPlayer();
         getMatchForPlayer(player).ifPresent(match -> {
             for (BlockState blockState : event.getReplacedBlockStates()) {
-                if (!match.getPlacedBlocks().contains(blockState.getLocation())) {
+                if (!match.getChanges().containsKey(blockState.getLocation())) {
                     match.getChanges().put(blockState.getLocation(), blockState.getBlockData());
                 }
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplode(BlockExplodeEvent event) {
         event.setYield(0);
         Player player = getPlayer(event.getBlock().getLocation());
@@ -202,41 +202,41 @@ public class BlockTracker implements Listener {
 
         getMatchForPlayer(player).ifPresent(match -> {
             for (Block block : event.blockList()) {
-                if (!match.getPlacedBlocks().contains(block.getLocation())) {
+                if (!match.getChanges().containsKey(block.getLocation())) {
                     match.getChanges().put(block.getLocation(), block.getBlockData());
                 }
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosionPrime(ExplosionPrimeEvent event) {
         event.setFire(false);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
         if (event.getCause() == BlockIgniteEvent.IgniteCause.LIGHTNING || event.getCause() == BlockIgniteEvent.IgniteCause.FIREBALL || event.getCause() == BlockIgniteEvent.IgniteCause.EXPLOSION) {
             event.setCancelled(true);
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onLeavesDecay(LeavesDecayEvent event) {
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onHangingBreak(HangingBreakEvent event) {
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
         event.setCancelled(true);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockSpread(BlockSpreadEvent event) {
         event.setCancelled(true);
     }

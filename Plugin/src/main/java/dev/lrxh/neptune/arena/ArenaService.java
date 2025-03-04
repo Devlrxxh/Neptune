@@ -10,6 +10,7 @@ import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.LocationUtil;
 import lombok.Getter;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
@@ -47,8 +48,13 @@ public class ArenaService implements IService {
                     double limit = config.getDouble(path + "limit");
                     List<String> copies = config.getStringList(path + "copies");
                     boolean copy = config.getBoolean(path + "copy", false);
+                    List<Material> whitelistedBlocks = new ArrayList<>();
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copies);
+                    for (String name : config.getStringList(path + "whitelistedBlocks")) {
+                        whitelistedBlocks.add(Material.getMaterial(name));
+                    }
+
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copies, whitelistedBlocks);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
@@ -75,7 +81,8 @@ public class ArenaService implements IService {
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
                         new Value("limit", standAloneArena.getLimit()),
                         new Value("copies", standAloneArena.getCopies()),
-                        new Value("copy", standAloneArena.isCopy())
+                        new Value("copy", standAloneArena.isCopy()),
+                        new Value("whitelistedBlocks", standAloneArena.getWhitelistedBlocksAsString())
                 ));
             } else {
                 values.add(new Value("type", "SHARED"));

@@ -6,9 +6,11 @@ import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.menu.ArenaCreateMenu;
 import dev.lrxh.neptune.arena.menu.ArenaManagementMenu;
+import dev.lrxh.neptune.arena.menu.WhitelistedBlocksMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import lombok.AllArgsConstructor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -137,6 +139,21 @@ public class ArenaProcedureListener implements Listener {
                 arena.setDeathY(player.getLocation().getBlockY());
                 player.sendMessage(CC.success("Set arena death Y position"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                profile.getArenaProcedure().setArena(null);
+            }
+            case ADD_BLOCK -> {
+                if (!input.equalsIgnoreCase("Done")) return;
+                event.setCancelled(true);
+                if (player.getInventory().getItemInMainHand().getType().equals(Material.AIR)) {
+                    player.sendMessage(CC.error("Item can't be air"));
+                    return;
+                }
+
+                profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
+                StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
+
+                arena.getWhitelistedBlocks().add(player.getInventory().getItemInMainHand().getType());
+                new WhitelistedBlocksMenu(arena).open(player);
                 profile.getArenaProcedure().setArena(null);
             }
         }

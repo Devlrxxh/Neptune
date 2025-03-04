@@ -47,6 +47,10 @@ public class ArenaManagementMenu extends Menu {
                 buttons.add(new DisplayButton(10, Material.REDSTONE, "&cDelete all copies", o -> {
                     standAloneArena.deleteAllCopies();
                 }));
+
+                buttons.add(new DisplayButton(size - 5, Material.GRASS_BLOCK, "&aManage Whitelisted Blocks", o -> {
+                    new WhitelistedBlocksMenu(standAloneArena).open(player);
+                }));
                 buttons.add(new ArenaSetEdgeButton(8, standAloneArena, EdgeType.MAX));
                 buttons.add(new ArenaSetEdgeButton(7, standAloneArena, EdgeType.MIN));
             }

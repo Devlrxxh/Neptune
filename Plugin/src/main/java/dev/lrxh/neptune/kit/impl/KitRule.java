@@ -19,7 +19,8 @@ public enum KitRule {
     ALLOW_KIT_EDITOR(Material.WOODEN_AXE, "If players should be able to modify this kit in kiteditor.", "Allow Kit Editor", "allowKitEditor"),
     ALLOW_PARTY(Material.PARROT_SPAWN_EGG, "If players should be able to play this kit in party events.", "Allow Party Events", "allowParty"),
     BED_WARS(Material.RED_BED, "Allow/Deny Bedwars", "Bedwars", "bedwars"),
-    SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "If Saturation should be disabled", "Saturation", "saturation");
+    WHITELISTED_BLOCK_BREAK(Material.GRASS_BLOCK, "Only Allow specfic blocks to be broken", "Whitelisted Block Break", "whitelistedBlockBreak"),
+    SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "Allow/Deny Saturation", "Saturation", "saturation");
 
     private final String description;
     private final String name;

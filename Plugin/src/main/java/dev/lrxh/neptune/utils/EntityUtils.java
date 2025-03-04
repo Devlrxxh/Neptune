@@ -18,6 +18,10 @@ public class EntityUtils {
         return null;
     }
 
+    public Entity getEntityByItemStack(World world, ItemStack itemStack) {
+        return getEntityById(world, getIdByItemStack(world, itemStack));
+    }
+
     public int getIdByItemStack(World world, ItemStack itemStack) {
         for (Entity entityEntry : world.getEntities()) {
             if (entityEntry instanceof Item item) {

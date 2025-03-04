@@ -23,8 +23,9 @@ public class StandAloneArena extends Arena {
     private double limit;
     private boolean used;
     private int deathY;
+    private List<Material> whitelistedBlocks;
 
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean copy, List<String> copies) {
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean copy, List<String> copies, List<Material> whitelistedBlocks) {
         super(name, displayName, redSpawn, blueSpawn, enabled);
         this.min = min;
         this.max = max;
@@ -32,6 +33,7 @@ public class StandAloneArena extends Arena {
         this.copy = copy;
         this.used = false;
         this.copies = copies;
+        this.whitelistedBlocks = whitelistedBlocks;
     }
 
     public StandAloneArena(String arenaName) {
@@ -42,6 +44,7 @@ public class StandAloneArena extends Arena {
         this.used = false;
         this.copy = false;
         this.copies = new ArrayList<>();
+        this.whitelistedBlocks = new ArrayList<>();
     }
 
     @Override
@@ -70,7 +73,7 @@ public class StandAloneArena extends Arena {
                 Location max = LocationUtil.addOffsetX(getMax(), offset);
                 Location redSpawn = LocationUtil.addOffsetX(getRedSpawn(), offset);
                 Location blueSpawn = LocationUtil.addOffsetX(getBlueSpawn(), offset);
-                StandAloneArena copy = new StandAloneArena(getName() + "#" + copies.size(), getDisplayName(), redSpawn, blueSpawn, min, max, getLimit(), isEnabled(), true, null);
+                StandAloneArena copy = new StandAloneArena(getName() + "#" + copies.size(), getDisplayName(), redSpawn, blueSpawn, min, max, getLimit(), isEnabled(), true, null, whitelistedBlocks);
                 copies.add(copy.getName());
                 ArenaService.get().getArenas().add(copy);
                 ServerUtils.info("#" + i + "Created copy " + redSpawn);
@@ -78,5 +81,15 @@ public class StandAloneArena extends Arena {
             ArenaService.get().saveArenas();
             ServerUtils.info("Created " + amount + " copies!");
         });
+    }
+
+    public List<String> getWhitelistedBlocksAsString() {
+        List<String> r = new ArrayList<>();
+
+        for (Material material : whitelistedBlocks) {
+            r.add(material.name());
+        }
+
+        return r;
     }
 }

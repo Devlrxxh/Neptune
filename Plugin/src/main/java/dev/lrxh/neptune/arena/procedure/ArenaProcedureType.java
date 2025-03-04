@@ -9,5 +9,6 @@ public enum ArenaProcedureType {
     SET_SPAWN_MAX,
     SET_SPAWN_MIN,
     SET_BUILD_LIMIT,
-    SET_DEATH_Y
+    SET_DEATH_Y,
+    ADD_BLOCK
 }
