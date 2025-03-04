@@ -2,15 +2,7 @@ package dev.lrxh.neptune.providers.placeholder;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.kit.KitService;
-import dev.lrxh.neptune.leaderboard.LeaderboardService;
-import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.MatchService;
-import dev.lrxh.neptune.profile.data.GlobalStats;
-import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.queue.QueueService;
-import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.AllArgsConstructor;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;

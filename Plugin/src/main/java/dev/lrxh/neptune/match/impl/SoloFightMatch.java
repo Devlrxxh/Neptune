@@ -54,11 +54,13 @@ public class SoloFightMatch extends Match {
             addStats();
 
             for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
+                if (command.equals("NONE")) continue;
                 command = command.replace("<player>", loser.getName());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
 
             for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_WINNER.getStringList()) {
+                if (command.equals("NONE")) continue;
                 command = command.replace("<player>", winner.getName());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }

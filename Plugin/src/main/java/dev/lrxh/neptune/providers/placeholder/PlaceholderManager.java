@@ -11,7 +11,7 @@ public class PlaceholderManager {
     private static PlaceholderManager instance;
     private final List<Placeholder> placeholders;
 
-    public PlaceholderManager () {
+    public PlaceholderManager() {
         this.placeholders = new ArrayList<>();
 
         placeholders.addAll(Arrays.asList(
