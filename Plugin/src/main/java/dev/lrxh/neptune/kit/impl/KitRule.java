@@ -16,7 +16,7 @@ public enum KitRule {
     BEST_OF_THREE(Material.GOLDEN_AXE, "If enabled Players would need to win 3 times", "Best of 3", "bestOfThree"),
     SATURATION_HEAL(Material.GOLDEN_APPLE, "If Players should regen from saturation", "Saturation Heal", "saturationHeal"),
     SHOW_HP(Material.APPLE, "If players should see their enemies health under their name", "Show Health", "showHP"),
-    ALLOW_KIT_EDITOR(Material.GOLDEN_SWORD, "If players should be able to modify this kit in kiteditor.", "Allow Kit Editor", "allowKitEditor"),
+    ALLOW_KIT_EDITOR(Material.WOODEN_AXE, "If players should be able to modify this kit in kiteditor.", "Allow Kit Editor", "allowKitEditor"),
     ALLOW_PARTY(Material.PARROT_SPAWN_EGG, "If players should be able to play this kit in party events.", "Allow Party Events", "allowParty"),
     BED_WARS(Material.RED_BED, "Allow/Deny Bedwars", "Bedwars", "bedwars"),
     SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "If Saturation should be disabled", "Saturation", "saturation");

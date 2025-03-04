@@ -50,12 +50,12 @@ public class LeaderboardService {
             boolean name = matcher.group(4).equals("name");
 
             Kit kit = KitService.get().getKitByDisplay(kitName);
-            if (kit == null) return "N/a";
+            if (kit == null) return placeholder;
             LeaderboardType leaderboardType = LeaderboardType.value(type);
 
             PlayerEntry playerEntry = LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, entry);
 
-            if (playerEntry == null) return "N/a";
+            if (playerEntry == null) return "???";
 
             if (name) {
                 return playerEntry.getUsername();
@@ -64,7 +64,7 @@ public class LeaderboardService {
             }
         }
 
-        return "N/a";
+        return placeholder;
     }
 
     private void checkIfMissing() {

@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.queue;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -24,7 +25,10 @@ public class QueueService {
     public void add(QueueEntry queueEntry, boolean add) {
         UUID playerUUID = queueEntry.getUuid();
         QueueJoinEvent event = new QueueJoinEvent(queueEntry);
-        Bukkit.getPluginManager().callEvent(event);
+
+        Bukkit.getScheduler().runTask(Neptune.get(), () -> {
+            Bukkit.getPluginManager().callEvent(event);
+        });
 
         if (event.isCancelled()) return;
 

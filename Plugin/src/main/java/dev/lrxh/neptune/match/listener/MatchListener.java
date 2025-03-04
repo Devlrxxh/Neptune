@@ -211,6 +211,7 @@ public class MatchListener implements Listener {
         Profile profile = API.getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
+        if (match == null) return;
         Participant participant = match.getParticipant(player.getUniqueId());
         participant.setDeathCause(DeathCause.DIED);
         match.onDeath(participant);

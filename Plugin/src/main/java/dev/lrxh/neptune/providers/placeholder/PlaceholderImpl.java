@@ -42,52 +42,11 @@ public class PlaceholderImpl extends PlaceholderExpansion {
 
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
-        if (player == null) return "";
+        if (player == null) return identifier;
         if (!player.isOnline()) return "Offline Player";
-        String[] parts = identifier.split("_");
         Profile profile = API.getProfile(player);
-        if (profile == null) return "";
-        switch (parts.length) {
-            case 1:
-                GlobalStats globalStats = profile.getGameData().getGlobalStats();
-                switch (parts[0]) {
-                    case "ping":
-                        return String.valueOf(PlayerUtil.getPing(player.getUniqueId()));
-                    case "in-match":
-                        return String.valueOf(MatchService.get().matches.size());
-                    case "queued":
-                        return String.valueOf(QueueService.get().queue.size());
-                    case "wins":
-                        return String.valueOf(globalStats.getWins());
-                    case "losses":
-                        return String.valueOf(globalStats.getLosses());
-                    case "currentStreak":
-                        return String.valueOf(globalStats.getCurrentStreak());
-                    case "bestStreak":
-                        return String.valueOf(globalStats.getBestStreak());
-                    case "lastKit":
-                        return profile.getGameData().getLastPlayedKit().isEmpty() ? "N/A" : profile.getGameData().getLastPlayedKit();
-                    case "color":
-                        Match match = profile.getMatch();
-                        return match != null ? "&" + match.getParticipant(player.getUniqueId()).getColor().getColor().getChar() : "";
-                }
-                break;
-            case 2:
-                KitData data = profile.getGameData().get(KitService.get().getKitByName(parts[0]));
-                switch (parts[1]) {
-                    case "division":
-                        return data == null ? "" : data.getDivision().getDisplayName();
-                    case "wins":
-                        return data == null ? "" : String.valueOf(data.getWins());
-                    case "losses":
-                        return data == null ? "" : String.valueOf(data.getLosses());
-                    case "currentStreak":
-                        return data == null ? "" : String.valueOf(data.getCurrentStreak());
-                    case "bestStreak":
-                        return data == null ? "" : String.valueOf(data.getBestStreak());
-                }
-        }
+        if (profile == null) return identifier;
 
-        return LeaderboardService.get().getPlaceholder(identifier);
+        return PlaceholderManager.get().parse(player, identifier);
     }
 }
