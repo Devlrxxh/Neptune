@@ -88,8 +88,9 @@ public class BlockTracker implements Listener {
 
             getMatchForPlayer(player).ifPresent(match -> {
                 for (Block block : event.blockList()) {
+                    block.getDrops().clear();
+
                     if (!match.getPlacedBlocks().contains(block.getLocation())) {
-                        block.getDrops().clear();
                         match.getChanges().put(block.getLocation(), block.getBlockData());
                     }
                 }
@@ -106,8 +107,9 @@ public class BlockTracker implements Listener {
 
             getMatchForPlayer(player).ifPresent(match -> {
                 for (Block block : event.blockList()) {
+                    block.getDrops().clear();
+
                     if (!match.getPlacedBlocks().contains(block.getLocation())) {
-                        block.getDrops().clear();
                         match.getChanges().put(block.getLocation(), block.getBlockData());
                     }
                 }

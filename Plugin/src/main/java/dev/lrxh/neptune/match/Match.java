@@ -166,10 +166,10 @@ public abstract class Match {
             BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
         } else {
             for (Location location : liquids) {
-                arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
+                arena.getWorld().getBlockAt(location).setBlockData(Material.AIR.createBlockData(), false);
             }
             for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
+                arena.getWorld().getBlockAt(entry.getKey()).setBlockData(entry.getValue(), false);
             }
         }
 
