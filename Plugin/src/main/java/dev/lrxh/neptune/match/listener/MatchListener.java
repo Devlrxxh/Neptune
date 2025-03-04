@@ -208,6 +208,9 @@ public class MatchListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
 
         if (!(event.getFinalDamage() >= player.getHealth())) return;
+        if (player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING) ||
+        player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
+
         Profile profile = API.getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
@@ -300,7 +303,10 @@ public class MatchListener implements Listener {
             if (profile == null) return;
             Match match = profile.getMatch();
 
-            if (!profile.getState().equals(ProfileState.IN_GAME)) return;
+            if (!profile.getState().equals(ProfileState.IN_GAME)) {
+                event.setCancelled(true);
+                return;
+            }
             if (match == null) return;
 
             if (!match.getKit().is(KitRule.HUNGER)) {
