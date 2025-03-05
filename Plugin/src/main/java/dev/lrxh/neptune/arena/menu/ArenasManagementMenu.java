@@ -5,6 +5,7 @@ import dev.lrxh.neptune.arena.ArenaService;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.menu.button.ArenaCreateButton;
 import dev.lrxh.neptune.arena.menu.button.ArenaSelectButton;
+import dev.lrxh.neptune.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.main.MainMenu;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.providers.menu.Filter;
@@ -32,6 +33,16 @@ public class ArenasManagementMenu extends PaginatedMenu {
         buttons.add(new ArenaCreateButton(size - 5));
         buttons.add(new ReturnButton(size - 9, new MainMenu()));
 
+        return buttons;
+    }
+
+    @Override
+    public List<Button> getGlobalButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
+
+        buttons.add(new ArenaCreateButton(size - 5));
+        buttons.add(new ReturnButton(size - 9, new MainMenu()));
+        
         return buttons;
     }
 }

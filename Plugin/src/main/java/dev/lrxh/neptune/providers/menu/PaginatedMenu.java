@@ -14,7 +14,7 @@ public abstract class PaginatedMenu extends Menu {
     private int page = 1;
 
     public PaginatedMenu(String title, int size, Filter filter) {
-        super(title, size, filter, true);
+        super(title, size, filter);
     }
 
     /**
@@ -55,6 +55,7 @@ public abstract class PaginatedMenu extends Menu {
 
             if (ind >= minIndex && ind < maxIndex) {
                 ind -= (int) ((double) (getMaxItemsPerPage()) * (page - 1)) - 9;
+                button.setSlot(ind);
                 buttons.add(button);
                 if (ind > topIndex) {
                     topIndex = ind;

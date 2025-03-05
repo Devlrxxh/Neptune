@@ -40,6 +40,14 @@ public class KitArenaManagementMenu extends PaginatedMenu {
             }
         }
 
+
+        return buttons;
+    }
+
+    @Override
+    public List<Button> getGlobalButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
+
         buttons.add(new ReturnButton(size - 9, new KitManagementMenu(kit)));
 
         return buttons;

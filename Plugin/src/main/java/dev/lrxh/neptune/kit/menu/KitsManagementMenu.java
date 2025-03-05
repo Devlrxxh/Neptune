@@ -31,4 +31,14 @@ public class KitsManagementMenu extends PaginatedMenu {
         buttons.add(new ReturnButton(size - 9, new MainMenu()));
         return buttons;
     }
+
+    @Override
+    public List<Button> getGlobalButtons(Player player) {
+        List<Button> buttons = new ArrayList<>();
+
+        buttons.add(new KitCreateButton(size - 5));
+        buttons.add(new ReturnButton(size - 9, new MainMenu()));
+
+        return buttons;
+    }
 }
