@@ -29,29 +29,24 @@ public class CC {
         return color("&7[~] " + text);
     }
 
-    public String color(String text) {
-        Matcher match = HEX_PATTERN.matcher(text);
-        StringBuilder result = new StringBuilder(text);
+    public String color(String message) {
+        final char colorChar = ChatColor.COLOR_CHAR;
 
-        int offset = 0;
+        final Matcher matcher = HEX_PATTERN.matcher(message);
+        final StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
 
-        while (match.find()) {
-            String color = match.group(1);
-            String coloredText = getColor(color) + "";
-            int start = match.start();
-            int end = match.end();
+        while (matcher.find()) {
+            final String group = matcher.group(1);
 
-            result.replace(start + offset, end + offset, coloredText);
-
-            offset += coloredText.length() - (end - start);
+            matcher.appendReplacement(buffer, colorChar + "x"
+                    + colorChar + group.charAt(0) + colorChar + group.charAt(1)
+                    + colorChar + group.charAt(2) + colorChar + group.charAt(3)
+                    + colorChar + group.charAt(4) + colorChar + group.charAt(5));
         }
 
-        return result.toString().replace('&', '§');
-    }
+        String r = matcher.appendTail(buffer).toString();
 
-
-    public static ChatColor getColor(String string) {
-        return ChatColor.of(new Color(Integer.parseInt(string, 16)));
+        return ChatColor.translateAlternateColorCodes('&', r);
     }
 
     public List<Object> color(List<Object> input) {
