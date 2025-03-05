@@ -7,20 +7,20 @@ import dev.lrxh.neptune.kit.menu.button.KitSelectButton;
 import dev.lrxh.neptune.main.MainMenu;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.providers.menu.Filter;
-import dev.lrxh.neptune.providers.menu.Menu;
+import dev.lrxh.neptune.providers.menu.PaginatedMenu;
 import dev.lrxh.neptune.providers.menu.impl.ReturnButton;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KitsManagementMenu extends Menu {
+public class KitsManagementMenu extends PaginatedMenu {
     public KitsManagementMenu() {
         super("&eKit Management", 54, Filter.FILL);
     }
 
     @Override
-    public List<Button> getButtons(Player player) {
+    public List<Button> getAllPagesButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
         int i = 0;
         for (Kit kit : KitService.get().getKits()) {

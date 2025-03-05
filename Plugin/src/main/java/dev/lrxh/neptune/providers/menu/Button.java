@@ -1,13 +1,15 @@
 package dev.lrxh.neptune.providers.menu;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 @Getter
 public abstract class Button {
-    private final int slot;
+    @Setter
+    private int slot;
     private final boolean moveAble;
 
     public Button(int slot) {

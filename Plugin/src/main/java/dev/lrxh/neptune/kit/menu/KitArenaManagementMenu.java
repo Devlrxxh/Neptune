@@ -8,23 +8,23 @@ import dev.lrxh.neptune.kit.impl.KitRule;
 import dev.lrxh.neptune.kit.menu.button.KitArenaButton;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.providers.menu.Filter;
-import dev.lrxh.neptune.providers.menu.Menu;
+import dev.lrxh.neptune.providers.menu.PaginatedMenu;
 import dev.lrxh.neptune.providers.menu.impl.ReturnButton;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class KitArenaManagmentMenu extends Menu {
+public class KitArenaManagementMenu extends PaginatedMenu {
     private final Kit kit;
 
-    public KitArenaManagmentMenu(Kit kit) {
+    public KitArenaManagementMenu(Kit kit) {
         super("&eManage Kit's arenas", 45, Filter.FILL);
         this.kit = kit;
     }
 
     @Override
-    public List<Button> getButtons(Player player) {
+    public List<Button> getAllPagesButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
         int i = 0;
@@ -34,7 +34,9 @@ public class KitArenaManagmentMenu extends Menu {
                     buttons.add(new KitArenaButton(i++, kit, arena));
                 }
             } else {
-                buttons.add(new KitArenaButton(i++, kit, arena));
+                if (!(arena instanceof StandAloneArena)) {
+                    buttons.add(new KitArenaButton(i++, kit, arena));
+                }
             }
         }
 

@@ -30,9 +30,9 @@ public class TaskScheduler {
         task.runTaskLater(Neptune.get(), delay);
     }
 
-    public void stopAllTasks(Neptune plugin) {
+    public void stopAllTasks() {
         for (NeptuneRunnable task : tasks) {
-            task.stop(plugin);
+            task.stop(Neptune.get());
         }
     }
 

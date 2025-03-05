@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.kit.menu.button;
 
 import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.menu.KitArenaManagmentMenu;
+import dev.lrxh.neptune.kit.menu.KitArenaManagementMenu;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import org.bukkit.Material;
@@ -19,7 +19,7 @@ public class KitArenaManageButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-        new KitArenaManagmentMenu(kit).open(player);
+        new KitArenaManagementMenu(kit).open(player);
     }
 
     @Override
