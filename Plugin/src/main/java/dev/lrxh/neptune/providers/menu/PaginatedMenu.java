@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.providers.menu;
 
+import dev.lrxh.neptune.providers.menu.impl.DisplayButton;
 import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -15,21 +17,12 @@ public abstract class PaginatedMenu extends Menu {
         super(title, size, filter);
     }
 
-    /**
-     * Changes the page number
-     *
-     * @param player player viewing the inventory
-     * @param mod    delta to modify the page number by
-     */
     public final void modPage(Player player, int mod) {
         page += mod;
         getButtons(player).clear();
         open(player);
     }
 
-    /**
-     * @param player player viewing the inventory
-     */
     public final int getPages(Player player) {
         int buttonAmount = getAllPagesButtons(player).size();
 
@@ -61,8 +54,9 @@ public abstract class PaginatedMenu extends Menu {
             }
         }
 
-        buttons.add(new PageButton(0, -1, this));
-        buttons.add(new PageButton(8, 1, this));
+        buttons.add(new DisplayButton(9 - 5, Material.BOOK, "&fPage: &e" + page + "/" + getPages(player)));
+        buttons.add(new PageButton(9 - 4, -1, this));
+        buttons.add(new PageButton(9 - 6, 1, this));
 
 
         List<Button> global = getGlobalButtons(player);
