@@ -3,6 +3,9 @@ package dev.lrxh.neptune.profile.data;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 @Getter
 @Setter
 public class GlobalStats {
@@ -25,5 +28,13 @@ public class GlobalStats {
         if (currentStreak > bestStreak) {
             this.bestStreak = currentStreak;
         }
+    }
+
+    public double getWinRatio() {
+        if (losses == 0) return wins;
+        double kd = (double) wins / losses;
+        BigDecimal bd = new BigDecimal(kd);
+        bd = bd.setScale(1, RoundingMode.HALF_UP);
+        return bd.doubleValue();
     }
 }

@@ -36,6 +36,12 @@ public class ProfileService {
         profiles.remove(playerUUID);
     }
 
+    public void saveAll() {
+        for (Profile profile : profiles.values()) {
+            profile.save();
+        }
+    }
+
     public Profile getByUUID(UUID playerUUID) {
         return profiles.get(playerUUID);
     }

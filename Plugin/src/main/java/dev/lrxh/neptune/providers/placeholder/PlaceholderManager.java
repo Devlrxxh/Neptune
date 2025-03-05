@@ -31,7 +31,8 @@ public class PlaceholderManager {
                 new KitBestStreakPlaceholder(),
                 new LeaderboardPlaceholder(),
                 new KitInMatchPlaceholder(),
-                new KitQueuedPlaceholder()
+                new KitQueuedPlaceholder(),
+                new WinRatePlaceholder()
         ));
     }
 

@@ -41,6 +41,7 @@ import dev.lrxh.neptune.match.commands.SpectateCommand;
 import dev.lrxh.neptune.match.listener.BlockTracker;
 import dev.lrxh.neptune.match.listener.MatchListener;
 import dev.lrxh.neptune.party.command.PartyCommand;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
@@ -205,6 +206,7 @@ public final class Neptune extends JavaPlugin {
         stopService(ArenaService.get(), ArenaService::saveArenas);
         stopService(MatchService.get(), MatchService::stopAllGames);
         stopService(TaskScheduler.get(), TaskScheduler::stopAllTasks);
+        stopService(ProfileService.get(), ProfileService::saveAll);
         stopService(cache, Cache::save);
     }
 
