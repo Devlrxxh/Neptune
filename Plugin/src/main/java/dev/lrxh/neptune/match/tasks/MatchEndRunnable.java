@@ -25,6 +25,8 @@ public class MatchEndRunnable extends NeptuneRunnable {
     public MatchEndRunnable(Match match, Neptune plugin) {
         this.match = match;
         this.plugin = plugin;
+
+        match.getTime().setStop(true);
     }
 
     @Override

@@ -41,6 +41,9 @@ public class MatchStartRunnable extends NeptuneRunnable {
             player.setMaxHealth(match.getKit().getHealth());
             player.setHealth(match.getKit().getHealth());
         });
+
+        match.getTime().setStop(true);
+        match.getTime().setZero();
     }
 
     @Override
@@ -50,6 +53,8 @@ public class MatchStartRunnable extends NeptuneRunnable {
             match.startMatch();
             match.checkRules();
             checkFollowings();
+            match.getTime().setStop(false);
+
             stop(plugin);
 
             return;
