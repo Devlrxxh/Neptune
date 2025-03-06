@@ -8,6 +8,7 @@ import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.EntityEffect;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -52,8 +53,14 @@ public class PlayerUtil {
         resetActionbar(player);
     }
 
+    public void playDeathAnimation(Player player) {
+        player.playEffect(EntityEffect.ENTITY_DEATH);
+        player.setHealth(20);
+        player.sendHealthUpdate();
+    }
+
     public void resetActionbar(Player player) {
-        player.sendActionBar("");
+        player.sendActionBar(" ");
     }
 
     public void teleportToSpawn(UUID playerUUID) {

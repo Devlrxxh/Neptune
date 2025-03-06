@@ -14,6 +14,7 @@ import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -23,6 +24,12 @@ public class MainCommand {
     @Require("neptune.admin")
     public void help(@Sender Player player) {
         new MainMenu().open(player);
+    }
+
+    @Command(name = "test", desc = "")
+    @Require("neptune.admin")
+    public void test(@Sender Player player) {
+        PlayerUtil.playDeathAnimation(player);
     }
 
     @Command(name = "setspawn", desc = "")
