@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.main;
 
+import com.github.retrooper.packetevents.util.Vector3d;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
@@ -26,12 +27,6 @@ public class MainCommand {
     @Require("neptune.admin")
     public void help(@Sender Player player) {
         new MainMenu().open(player);
-    }
-
-    @Command(name = "test", desc = "")
-    @Require("neptune.admin")
-    public void test(@Sender Player player) {
-        PlayerUtil.playDeathAnimation(player, Collections.singletonList(player));
     }
 
     @Command(name = "setspawn", desc = "")

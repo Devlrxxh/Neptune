@@ -7,7 +7,6 @@ import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -28,7 +27,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @UtilityClass
@@ -76,39 +74,15 @@ public class PlayerUtil {
                 p.getEntityId(), List.of(new EntityData(9, EntityDataTypes.FLOAT, 0.0f))
         );
 
-        Optional<WrapperPlayServerTeams.ScoreBoardTeamInfo> teamInfo = Optional.of(
-                new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-                        Component.text(p.getUsername() + "animation"),
-                        Component.text(""),
-                        Component.text(""),
-                        WrapperPlayServerTeams.NameTagVisibility.NEVER,
-                        WrapperPlayServerTeams.CollisionRule.ALWAYS,
-                        null,
-                        WrapperPlayServerTeams.OptionData.NONE
-                ));
-
-        WrapperPlayServerTeams addTeam = new WrapperPlayServerTeams(p.getUsername() + "animation",
-                WrapperPlayServerTeams.TeamMode.CREATE, teamInfo, p.getUsername());
-
-
-        WrapperPlayServerTeams removeTeam = new WrapperPlayServerTeams(p.getUsername() + "animation",
-                WrapperPlayServerTeams.TeamMode.REMOVE, teamInfo, p.getUsername());
-
         WrapperPlayServerEntityStatus deathPacket = new WrapperPlayServerEntityStatus(p.getEntityId(), 3);
 
         for (Player watcher : watchers) {
             p.addViewer(watcher.getUniqueId());
-            PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, addTeam);
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, healthPacket);
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, deathPacket);
         }
 
-        Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
-            p.remove();
-            for (Player watcher : watchers) {
-                PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, removeTeam);
-            }
-        }, 20L);
+        Bukkit.getScheduler().runTaskLater(Neptune.get(), p::remove, 20L);
     }
 
     public void resetActionbar(Player player) {

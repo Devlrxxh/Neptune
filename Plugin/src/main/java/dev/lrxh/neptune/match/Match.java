@@ -288,6 +288,11 @@ public abstract class Match {
                 player.setSaturation(20.0f);
             }
         });
+
+        forEachPlayer(player -> {
+            Profile profile = API.getProfile(player);
+            profile.handleVisibility();
+        });
     }
 
     public void hideHealth() {

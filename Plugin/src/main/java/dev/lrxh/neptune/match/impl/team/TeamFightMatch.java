@@ -81,6 +81,7 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void onDeath(Participant participant) {
+        if (isEnded()) return;
         hideParticipant(participant);
         PlayerUtil.playDeathAnimation(participant.getPlayer(), getPlayers());
 
