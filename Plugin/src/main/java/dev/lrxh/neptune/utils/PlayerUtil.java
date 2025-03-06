@@ -77,6 +77,7 @@ public class PlayerUtil {
         WrapperPlayServerEntityStatus deathPacket = new WrapperPlayServerEntityStatus(p.getEntityId(), 3);
 
         for (Player watcher : watchers) {
+            if (player.getUniqueId().equals(watcher.getUniqueId())) continue;
             p.addViewer(watcher.getUniqueId());
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, healthPacket);
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, deathPacket);
