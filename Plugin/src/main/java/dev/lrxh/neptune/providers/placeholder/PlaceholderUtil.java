@@ -89,6 +89,7 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
                     line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
                     line = line.replaceAll("<diffrence>", participant.getHitsDifference(opponent));
+                    line = line.replaceAll("<time>", match.getTime().formatTime());
 
                     if (match.getRounds() > 1) {
                         line = line.replaceAll("<maxPoints>", String.valueOf(soloFightMatch.getRounds()));

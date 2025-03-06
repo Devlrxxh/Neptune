@@ -22,6 +22,7 @@ import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.neptune.utils.Time;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -55,6 +56,7 @@ public abstract class Match {
     public int rounds;
     private boolean duel;
     private boolean ended;
+    private final Time time = new Time();
 
     public void playSound(Sound sound) {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));

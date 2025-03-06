@@ -31,7 +31,6 @@ public class QueueCheckTask extends NeptuneRunnable {
             if (player == null) continue;
 
             player.sendActionBar(CC.color(PlaceholderUtil.format(MessagesLocale.QUEUE_ACTION_BAR.getString(), player)));
-            queueEntry.time.incrementTime();
         }
 
         if (QueueService.get().queue.size() < 2) return;

@@ -1,23 +1,20 @@
 package dev.lrxh.neptune.utils;
 
 public class Time {
-    private int minutes;
-    private int seconds;
+    private final long oldTime;
 
     public Time() {
-        this.minutes = 0;
-        this.seconds = 0;
-    }
-
-    public void incrementTime() {
-        seconds++;
-        if (seconds == 60) {
-            seconds = 0;
-            minutes++;
-        }
+        this.oldTime = System.currentTimeMillis();
     }
 
     public String formatTime() {
+        long currentTime = System.currentTimeMillis();
+
+        long elapsedTime = currentTime - oldTime;
+
+        long minutes = (elapsedTime / 1000) / 60;
+        long seconds = (elapsedTime / 1000) % 60;
+
         return String.format("%02d:%02d", minutes, seconds);
     }
 }
