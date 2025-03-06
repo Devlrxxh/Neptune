@@ -18,6 +18,8 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.Collections;
+
 public class MainCommand {
 
     @Command(name = "", desc = "")
@@ -29,7 +31,7 @@ public class MainCommand {
     @Command(name = "test", desc = "")
     @Require("neptune.admin")
     public void test(@Sender Player player) {
-        PlayerUtil.playDeathAnimation(player);
+        PlayerUtil.playDeathAnimation(player, Collections.singletonList(player));
     }
 
     @Command(name = "setspawn", desc = "")

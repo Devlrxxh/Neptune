@@ -146,6 +146,7 @@ public class SoloFightMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
         hideParticipant(participant);
+        PlayerUtil.playDeathAnimation(participant.getPlayer(), getPlayers());
 
         participant.setDead(true);
 

@@ -68,6 +68,16 @@ public abstract class Match {
         }
     }
 
+    public List<Player> getPlayers() {
+        List<Player> players = new ArrayList<>();
+
+        for (Participant participant : participants) {
+            players.add(participant.getPlayer());
+        }
+
+        return players;
+    }
+
     public Participant getParticipant(UUID playerUUID) {
         for (Participant participant : participants) {
             if (participant.getPlayerUUID().equals(playerUUID)) {
