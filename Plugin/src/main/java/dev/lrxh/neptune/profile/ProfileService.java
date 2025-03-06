@@ -6,11 +6,12 @@ import dev.lrxh.neptune.queue.QueueService;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.IdentityHashMap;
 import java.util.UUID;
 
 public class ProfileService {
     private static ProfileService instance;
-    public final HashMap<UUID, Profile> profiles = new HashMap<>();
+    public final IdentityHashMap<UUID, Profile> profiles = new IdentityHashMap<>();
     private final Neptune plugin;
 
     public ProfileService() {

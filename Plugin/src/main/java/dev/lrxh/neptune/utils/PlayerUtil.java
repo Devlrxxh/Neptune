@@ -53,12 +53,6 @@ public class PlayerUtil {
         resetActionbar(player);
     }
 
-    public void playDeathAnimation(Player player) {
-        player.playEffect(EntityEffect.ENTITY_DEATH);
-        player.setHealth(20);
-        player.sendHealthUpdate();
-    }
-
     public void resetActionbar(Player player) {
         player.sendActionBar(" ");
     }
