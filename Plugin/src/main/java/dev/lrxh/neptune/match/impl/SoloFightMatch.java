@@ -64,10 +64,9 @@ public class SoloFightMatch extends Match {
                 command = command.replace("<player>", winner.getName());
                 Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command);
             }
+
+            forEachPlayer(player -> HotbarService.get().giveItems(player));
         }
-
-        forEachPlayer(player -> HotbarService.get().giveItems(player));
-
 
         winner.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
                 MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);
