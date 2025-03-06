@@ -3,7 +3,6 @@ package dev.lrxh.neptune.match.impl;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.hotbar.HotbarService;
 import dev.lrxh.neptune.kit.Kit;
 import dev.lrxh.neptune.match.Match;
 import dev.lrxh.neptune.match.impl.participant.DeathCause;
@@ -33,8 +32,6 @@ public class FfaFightMatch extends Match {
     public void end(Participant loser) {
         state = MatchState.ENDING;
         loser.setLoser(true);
-
-        forEachPlayer(player -> HotbarService.get().giveItems(player));
 
         forEachParticipant(participant -> {
             if (winner == null) return;
