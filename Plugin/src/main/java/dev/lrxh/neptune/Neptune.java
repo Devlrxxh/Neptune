@@ -53,6 +53,7 @@ import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.queue.command.QueueCommand;
 import dev.lrxh.neptune.queue.command.QuickQueueCommand;
 import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
+import dev.lrxh.neptune.queue.tasks.QueueMessageTask;
 import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import fr.mrmicky.fastboard.FastManager;
@@ -173,7 +174,8 @@ public final class Neptune extends JavaPlugin {
     }
 
     private void loadTasks() {
-        new QueueCheckTask().start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
+        new QueueCheckTask().start(20L, this);
+        new QueueMessageTask().start(100L, this);
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
     }
 

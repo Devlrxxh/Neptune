@@ -10,6 +10,7 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.queue.QueueEntry;
 import dev.lrxh.neptune.queue.QueueService;
@@ -26,17 +27,11 @@ public class QueueCheckTask extends NeptuneRunnable {
     @Override
     public void run() {
         for (QueueEntry queueEntry : QueueService.get().queue) {
-            Profile profile = API.getProfile(queueEntry.getUuid());
-            if (MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) {
-                MessagesLocale.QUEUE_REPEAT.send(queueEntry.getUuid(),
-                        new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
-                        new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
-            }
-
             Player player = Bukkit.getPlayer(queueEntry.getUuid());
             if (player == null) continue;
 
-            player.sendActionBar(CC.color(MessagesLocale.QUEUE_ACTION_BAR.getString()));
+            player.sendActionBar(CC.color(PlaceholderUtil.format(MessagesLocale.QUEUE_ACTION_BAR.getString(), player)));
+            queueEntry.time.incrementTime();
         }
 
         if (QueueService.get().queue.size() < 2) return;

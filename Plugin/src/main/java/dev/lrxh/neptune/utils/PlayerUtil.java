@@ -49,6 +49,11 @@ public class PlayerUtil {
         player.resetTitle();
         player.setMaxHealth(20.0f);
         player.setHealth(20.0D);
+        resetActionbar(player);
+    }
+
+    public void resetActionbar(Player player) {
+        player.sendActionBar("");
     }
 
     public void teleportToSpawn(UUID playerUUID) {
