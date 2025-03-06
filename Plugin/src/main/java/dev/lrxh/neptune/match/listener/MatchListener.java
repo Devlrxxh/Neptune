@@ -399,7 +399,10 @@ public class MatchListener implements Listener {
         Material blockType = event.getBlock().getType();
         if (match == null) return;
         if (blockType.name().contains("BED")) return;
-        event.setCancelled(!(match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation)));
+        if (match.getKit().is(KitRule.BUILD)) {
+            event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
+            return;
+        }
 
         if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
             if (match.getKit().is(KitRule.WHITELISTED_BLOCK_BREAK)) {
