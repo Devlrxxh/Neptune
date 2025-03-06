@@ -241,6 +241,11 @@ public class BlockTracker implements Listener {
         event.setCancelled(true);
     }
 
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockFade(BlockFadeEvent event) {
+        event.setCancelled(true);
+    }
+
     private Player getPlayer(Location location) {
         Player player = null;
 

@@ -7,6 +7,7 @@ import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityStatus;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -27,6 +28,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @UtilityClass
