@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.main;
 
-import dev.lrxh.neptune.providers.menu.Button;
-import dev.lrxh.neptune.providers.menu.Filter;
-import dev.lrxh.neptune.providers.menu.Menu;
-import dev.lrxh.neptune.providers.menu.impl.CloseMenuButton;
+import dev.lrxh.neptune.utils.menu.Button;
+import dev.lrxh.neptune.utils.menu.Filter;
+import dev.lrxh.neptune.utils.menu.Menu;
+import dev.lrxh.neptune.utils.menu.impl.CloseMenuButton;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

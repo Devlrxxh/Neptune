@@ -1,0 +1,6 @@
+package dev.lrxh.neptune.utils.menu;
+
+public enum Filter {
+    FILL,
+    NONE
+}

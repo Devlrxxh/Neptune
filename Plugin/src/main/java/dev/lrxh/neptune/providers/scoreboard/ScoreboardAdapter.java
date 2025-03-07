@@ -2,10 +2,10 @@ package dev.lrxh.neptune.providers.scoreboard;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
-import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.FfaFightMatch;
-import dev.lrxh.neptune.match.impl.SoloFightMatch;
-import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
+import dev.lrxh.neptune.game.match.Match;
+import dev.lrxh.neptune.game.match.impl.FfaFightMatch;
+import dev.lrxh.neptune.game.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;

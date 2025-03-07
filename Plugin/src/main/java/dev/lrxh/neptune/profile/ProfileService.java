@@ -1,8 +1,8 @@
 package dev.lrxh.neptune.profile;
 
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.queue.QueueService;
 import org.bukkit.entity.Player;
 
 import java.util.IdentityHashMap;

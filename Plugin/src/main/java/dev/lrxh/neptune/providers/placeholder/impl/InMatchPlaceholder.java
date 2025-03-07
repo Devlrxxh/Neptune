@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.providers.placeholder.impl;
 
-import dev.lrxh.neptune.match.MatchService;
+import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.providers.placeholder.Placeholder;
 import org.bukkit.OfflinePlayer;
 

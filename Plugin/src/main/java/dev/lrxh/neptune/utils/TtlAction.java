@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.utils;
 
-import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
-import dev.lrxh.neptune.providers.tasks.TaskScheduler;
+import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 

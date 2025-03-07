@@ -2,7 +2,7 @@ package dev.lrxh.neptune.settings;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.cosmetics.menu.CosmeticsManageMenu;
+import dev.lrxh.neptune.feature.cosmetics.menu.CosmeticsManageMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import lombok.Getter;

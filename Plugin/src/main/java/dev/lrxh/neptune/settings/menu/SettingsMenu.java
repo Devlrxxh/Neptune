@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.settings.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.providers.menu.Button;
-import dev.lrxh.neptune.providers.menu.Filter;
-import dev.lrxh.neptune.providers.menu.Menu;
 import dev.lrxh.neptune.settings.Setting;
+import dev.lrxh.neptune.utils.menu.Button;
+import dev.lrxh.neptune.utils.menu.Filter;
+import dev.lrxh.neptune.utils.menu.Menu;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;

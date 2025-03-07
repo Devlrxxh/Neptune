@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.profile.data;
 
-import dev.lrxh.neptune.divisions.DivisionService;
-import dev.lrxh.neptune.divisions.impl.Division;
+import dev.lrxh.neptune.game.divisions.DivisionService;
+import dev.lrxh.neptune.game.divisions.impl.Division;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.inventory.ItemStack;
