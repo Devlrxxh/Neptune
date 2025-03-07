@@ -20,7 +20,6 @@ import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.providers.tasks.TaskScheduler;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.EntityUtils;
-import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -401,7 +400,6 @@ public class MatchListener implements Listener {
         if (blockType.name().contains("BED")) return;
         if (match.getKit().is(KitRule.BUILD)) {
             event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
-            return;
         }
 
         if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
@@ -409,7 +407,6 @@ public class MatchListener implements Listener {
                 if (match.getArena() instanceof StandAloneArena standAloneArena) {
                     if (!standAloneArena.getWhitelistedBlocks().contains(blockType)) {
                         event.setCancelled(true);
-                        return;
                     }
                 }
             }
