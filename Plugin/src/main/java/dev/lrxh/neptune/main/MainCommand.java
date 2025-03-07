@@ -56,11 +56,13 @@ public class MainCommand {
     }
 
     @Command(name = "stop", desc = "")
-    public void generate(@Sender Player player) {
+    public void stop(@Sender Player player) {
         Neptune.get().setAllowMatches(false);
 
         for (Match match : MatchService.get().matches) {
             match.resetArena();
         }
+
+        Bukkit.getServer().shutdown();
     }
 }

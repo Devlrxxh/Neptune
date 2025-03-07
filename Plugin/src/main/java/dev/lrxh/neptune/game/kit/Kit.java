@@ -180,9 +180,9 @@ public class Kit {
     }
 
     public void giveLoadout(Participant participant) {
-        Player player = Bukkit.getPlayer(participant.getPlayerUUID());
+        Player player = participant.getPlayer();
         if (player == null) return;
-        Profile profile = API.getProfile(participant.getPlayerUUID());
+        Profile profile = API.getProfile(player);
         GameData gameData = profile.getGameData();
         if (gameData.getKitData() == null || gameData.get(this) == null ||
                 gameData.get(this).getKitLoadout().isEmpty()) {

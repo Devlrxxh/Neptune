@@ -1,7 +1,5 @@
 package dev.lrxh.neptune.providers.listeners;
 
-import com.destroystokyo.paper.event.player.PlayerPostRespawnEvent;
-import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -60,11 +58,6 @@ public class LobbyListener implements Listener {
     @EventHandler
     public void onMoistureChange(MoistureChangeEvent event) {
         event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onPostRespawn(PlayerPostRespawnEvent event) {
-        HotbarService.get().giveItems(event.getPlayer());
     }
 
     @EventHandler
