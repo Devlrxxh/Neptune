@@ -74,15 +74,14 @@ public class StandAloneArena extends Arena {
             Location redSpawn = LocationUtil.addOffsetX(getRedSpawn(), offset);
             Location blueSpawn = LocationUtil.addOffsetX(getBlueSpawn(), offset);
             BlockChanger.loadChunks(min, max);
-            BlockChanger.paste(snapshot, offset, 0, true);
+            BlockChanger.pasteAsync(snapshot, offset, 0, true);
             StandAloneArena copy = new StandAloneArena(getName() + "#" + copies.size(), getDisplayName(), redSpawn, blueSpawn, min, max, getLimit(), isEnabled(), true, null, whitelistedBlocks);
             copies.add(copy.getName());
             ArenaService.get().getArenas().add(copy);
-            ServerUtils.info("#" + i + "Created copy " + redSpawn);
+            ServerUtils.info("#" + i + " Created copy " + redSpawn);
 
             ArenaService.get().saveArenas();
         }
-        ServerUtils.info("Created " + amount + " copies!");
     }
 
     public List<String> getWhitelistedBlocksAsString() {
