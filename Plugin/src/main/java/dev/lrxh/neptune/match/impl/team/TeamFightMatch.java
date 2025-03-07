@@ -130,10 +130,10 @@ public class TeamFightMatch extends Match {
         sendDeathMessage(participant);
         if (quit) {
             participant.setDisconnected(true);
-            onDeath(participant);
-            return;
         } else {
             participant.setLeft(true);
+            onDeath(participant);
+            return;
         }
         PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
         Profile profile = API.getProfile(participant.getPlayerUUID());
