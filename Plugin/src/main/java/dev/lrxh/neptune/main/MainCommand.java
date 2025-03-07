@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.main;
 
-import com.github.retrooper.packetevents.util.Vector3d;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
@@ -15,11 +14,8 @@ import dev.lrxh.neptune.match.MatchService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-
-import java.util.Collections;
 
 public class MainCommand {
 

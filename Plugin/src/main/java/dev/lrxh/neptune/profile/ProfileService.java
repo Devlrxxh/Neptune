@@ -5,7 +5,6 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.queue.QueueService;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.UUID;
 

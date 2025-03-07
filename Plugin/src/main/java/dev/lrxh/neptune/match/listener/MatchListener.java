@@ -215,7 +215,7 @@ public class MatchListener implements Listener {
 
         if (!(event.getFinalDamage() >= player.getHealth())) return;
         if (player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING) ||
-        player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
+                player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
 
         Profile profile = API.getProfile(player);
         if (profile == null) return;

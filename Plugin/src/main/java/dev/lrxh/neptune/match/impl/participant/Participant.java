@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.match.impl.participant;
 
-import com.github.retrooper.packetevents.util.Vector3d;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.kit.impl.KitRule;

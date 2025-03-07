@@ -7,7 +7,6 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.duel.menu.KitSelectMenu;
-import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -69,7 +68,7 @@ public class DuelCommand {
 
         Player target = Bukkit.getPlayer(uuid);
 
-        if (target == null){
+        if (target == null) {
             player.sendMessage(CC.error("Player isn't online!"));
             return;
         }

@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.providers.menu;
 
 import dev.lrxh.neptune.utils.ItemBuilder;
-import lombok.AllArgsConstructor;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;

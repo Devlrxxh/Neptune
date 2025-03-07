@@ -10,9 +10,9 @@ import java.util.UUID;
 @Getter
 @Setter
 public class QueueEntry {
+    public final Time time;
     private final Kit kit;
     private final UUID uuid;
-    public final Time time;
 
     public QueueEntry(Kit kit, UUID uuid) {
         this.kit = kit;

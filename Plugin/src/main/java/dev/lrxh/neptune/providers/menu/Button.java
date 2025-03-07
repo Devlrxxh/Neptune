@@ -8,9 +8,9 @@ import org.bukkit.inventory.ItemStack;
 
 @Getter
 public abstract class Button {
+    private final boolean moveAble;
     @Setter
     private int slot;
-    private final boolean moveAble;
 
     public Button(int slot) {
         this.slot = slot;

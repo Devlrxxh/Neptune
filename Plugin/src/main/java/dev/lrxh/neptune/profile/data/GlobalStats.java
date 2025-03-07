@@ -3,9 +3,6 @@ package dev.lrxh.neptune.profile.data;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
-
 @Getter
 @Setter
 public class GlobalStats {
@@ -32,5 +29,6 @@ public class GlobalStats {
 
     public double getWinRatio() {
         int totalGames = wins + losses;
-        return Math.round(((double) wins / totalGames) * 100);    }
+        return Math.round(((double) wins / totalGames) * 100);
+    }
 }

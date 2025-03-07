@@ -1,10 +1,8 @@
 package dev.lrxh.neptune.arena.menu.button;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.arena.Arena;
 import dev.lrxh.neptune.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.arena.procedure.ArenaProcedureType;
-import dev.lrxh.neptune.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.menu.Button;
 import dev.lrxh.neptune.utils.CC;
@@ -28,8 +26,8 @@ public class AddWhitelistBlockButton extends Button {
         Profile profile = API.getProfile(player);
         profile.getArenaProcedure().setArena(arena);
 
-            profile.getArenaProcedure().setType(ArenaProcedureType.ADD_BLOCK);
-            player.sendMessage(CC.info("Hold the block you want to whitelist in main hand and type &aDone"));
+        profile.getArenaProcedure().setType(ArenaProcedureType.ADD_BLOCK);
+        player.sendMessage(CC.info("Hold the block you want to whitelist in main hand and type &aDone"));
         player.closeInventory();
     }
 

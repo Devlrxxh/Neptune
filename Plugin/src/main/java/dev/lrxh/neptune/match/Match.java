@@ -49,6 +49,7 @@ public abstract class Match {
     private final HashMap<Location, BlockData> changes = new HashMap<>();
     private final Set<Location> liquids = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
+    private final Time time = new Time();
     public MatchState state;
     public Arena arena;
     public Kit kit;
@@ -56,7 +57,6 @@ public abstract class Match {
     public int rounds;
     private boolean duel;
     private boolean ended;
-    private final Time time = new Time();
 
     public void playSound(Sound sound) {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
