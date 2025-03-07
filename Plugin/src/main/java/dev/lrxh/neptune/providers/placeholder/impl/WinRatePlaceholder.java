@@ -14,7 +14,7 @@ public class WinRatePlaceholder implements Placeholder {
         GlobalStats globalStats = profile.getGameData().getGlobalStats();
 
         if (string.equals("winRate")) {
-            return String.valueOf(globalStats.getWinRatio() * 100);
+            return String.valueOf(globalStats.getWinRatio());
         }
 
         return string;

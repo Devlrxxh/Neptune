@@ -7,11 +7,13 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.duel.DuelRequest;
 import dev.lrxh.neptune.duel.menu.KitSelectMenu;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -65,6 +67,11 @@ public class DuelCommand {
             return;
         }
         Profile targetProfile = API.getProfile(uuid);
+        if (targetProfile == null){
+            player.sendMessage(CC.error("Player isn't online anymore!"));
+
+            return;
+        }
 
         DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(uuid);
 

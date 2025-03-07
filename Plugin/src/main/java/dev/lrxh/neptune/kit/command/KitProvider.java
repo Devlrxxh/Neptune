@@ -20,7 +20,7 @@ public class KitProvider extends DrinkProvider<Kit> {
 
     @Override
     public boolean isAsync() {
-        return true;
+        return false;
     }
 
     @Override

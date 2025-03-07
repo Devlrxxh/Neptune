@@ -183,7 +183,7 @@ public class Profile {
         MessagesLocale.DUEL_REQUEST_SENDER.send(sender.getUniqueId(),
                 new Replacement("<receiver>", username),
                 new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
-                new Replacement("<rounds>", String.valueOf(1)),
+                new Replacement("<rounds>", String.valueOf(duelRequest.getRounds())),
                 new Replacement("<arena>", duelRequest.getArena().getDisplayName()));
 
         gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.DUEL_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));

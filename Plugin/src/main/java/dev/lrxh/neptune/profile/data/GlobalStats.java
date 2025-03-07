@@ -31,10 +31,6 @@ public class GlobalStats {
     }
 
     public double getWinRatio() {
-        if (losses == 0) return wins;
-        double kd = (double) wins / losses;
-        BigDecimal bd = new BigDecimal(kd);
-        bd = bd.setScale(1, RoundingMode.HALF_UP);
-        return bd.doubleValue();
-    }
+        int totalGames = wins + losses;
+        return Math.round(((double) wins / totalGames) * 100);    }
 }

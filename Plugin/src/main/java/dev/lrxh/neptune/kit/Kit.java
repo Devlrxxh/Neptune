@@ -105,8 +105,8 @@ public class Kit {
     }
 
     private void addToProfiles() {
-        for (Map.Entry<UUID, Profile> profile : ProfileService.get().profiles.entrySet()) {
-            profile.getValue().getGameData().getKitData().put(this, new KitData());
+        for (Profile profile : ProfileService.get().profiles.values()) {
+            profile.getGameData().getKitData().put(this, new KitData());
         }
     }
 
