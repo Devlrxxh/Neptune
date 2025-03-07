@@ -68,7 +68,7 @@ public class StandAloneArena extends Arena {
         BlockChanger.loadChunks(min, max);
         BlockChanger.Snapshot snapshot = BlockChanger.capture(min, max, true);
         for (int i = 0; i < amount; i++) {
-            int offset = copies.size() * 350;
+            int offset = copies.size() * 500;
             Location min = LocationUtil.addOffsetX(getMin(), offset);
             Location max = LocationUtil.addOffsetX(getMax(), offset);
             Location redSpawn = LocationUtil.addOffsetX(getRedSpawn(), offset);

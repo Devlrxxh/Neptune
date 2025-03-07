@@ -44,6 +44,9 @@ public class ProfileService {
     }
 
     public Profile getByUUID(UUID playerUUID) {
-        return profiles.get(playerUUID);
+        for (UUID uuid : profiles.keySet()) {
+            if (uuid.toString().equals(playerUUID.toString())) return profiles.get(uuid);
+        }
+        return null;
     }
 }
