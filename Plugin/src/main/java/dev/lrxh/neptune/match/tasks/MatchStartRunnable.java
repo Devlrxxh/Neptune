@@ -48,6 +48,11 @@ public class MatchStartRunnable extends NeptuneRunnable {
 
     @Override
     public void run() {
+        if (match.isEnded()) {
+            stop(plugin);
+            return;
+        }
+
         if (startTimer == 0) {
             match.sendMessage(MessagesLocale.MATCH_STARTED);
             match.startMatch();
@@ -56,7 +61,6 @@ public class MatchStartRunnable extends NeptuneRunnable {
             match.getTime().setStop(false);
 
             stop(plugin);
-
             return;
         }
         if (match.getState().equals(MatchState.STARTING)) {

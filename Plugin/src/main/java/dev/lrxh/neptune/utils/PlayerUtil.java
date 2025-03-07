@@ -64,6 +64,8 @@ public class PlayerUtil {
     }
 
     public void playDeathAnimation(Player player, List<Player> watchers) {
+        if (player == null) return;
+
         WrapperPlayer p = new WrapperPlayer(new UserProfile(UUID.randomUUID(), player.getName()),
                 EntityLib.getPlatform().getEntityIdProvider().provide(UUID.randomUUID(), EntityTypes.PLAYER));
         p.setInTablist(false);

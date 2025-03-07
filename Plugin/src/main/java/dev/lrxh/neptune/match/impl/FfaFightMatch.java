@@ -84,12 +84,10 @@ public class FfaFightMatch extends Match {
     @Override
     public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
-        sendDeathMessage(participant);
         if (quit) {
             participant.setDisconnected(true);
         } else {
             participant.setLeft(true);
-            onDeath(participant);
             PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
             Profile profile = API.getProfile(participant.getPlayerUUID());
             profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
@@ -97,8 +95,7 @@ public class FfaFightMatch extends Match {
             profile.setMatch(null);
         }
 
-
-        end(participant);
+        onDeath(participant);
     }
 
     @Override
