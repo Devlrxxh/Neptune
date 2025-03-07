@@ -66,12 +66,15 @@ public class DuelCommand {
             player.sendMessage(CC.error("You can't accept duel requests right now!"));
             return;
         }
-        Profile targetProfile = API.getProfile(uuid);
-        if (targetProfile == null){
-            player.sendMessage(CC.error("Player isn't online anymore!"));
 
+        Player target = Bukkit.getPlayer(uuid);
+
+        if (target == null){
+            player.sendMessage(CC.error("Player isn't online!"));
             return;
         }
+
+        Profile targetProfile = API.getProfile(target);
 
         DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(uuid);
 
