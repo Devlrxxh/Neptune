@@ -49,7 +49,9 @@ public class FfaFightMatch extends Match {
         hideParticipant(participant);
         PlayerUtil.playDeathAnimation(participant.getPlayer(), getPlayers());
 
-        addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
+        if (!participant.isLeft()) {
+            addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
+        }
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
