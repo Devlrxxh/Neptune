@@ -1,7 +1,5 @@
 package dev.lrxh.neptune.utils;
 
-import lombok.Setter;
-
 public class Time {
     private long oldTime;
     private long lastCurrentTime;

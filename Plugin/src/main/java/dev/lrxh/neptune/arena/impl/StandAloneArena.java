@@ -65,22 +65,24 @@ public class StandAloneArena extends Arena {
     }
 
     public void generateCopies(int amount) {
-        BlockChanger.captureAsync(min, max, true).thenAccept(snapshot -> {
-            for (int i = 0; i < amount; i++) {
-                int offset = copies.size() * 350;
-                BlockChanger.paste(snapshot, offset, 0, true);
-                Location min = LocationUtil.addOffsetX(getMin(), offset);
-                Location max = LocationUtil.addOffsetX(getMax(), offset);
-                Location redSpawn = LocationUtil.addOffsetX(getRedSpawn(), offset);
-                Location blueSpawn = LocationUtil.addOffsetX(getBlueSpawn(), offset);
-                StandAloneArena copy = new StandAloneArena(getName() + "#" + copies.size(), getDisplayName(), redSpawn, blueSpawn, min, max, getLimit(), isEnabled(), true, null, whitelistedBlocks);
-                copies.add(copy.getName());
-                ArenaService.get().getArenas().add(copy);
-                ServerUtils.info("#" + i + "Created copy " + redSpawn);
-            }
+        BlockChanger.loadChunks(min, max);
+        BlockChanger.Snapshot snapshot = BlockChanger.capture(min, max, true);
+        for (int i = 0; i < amount; i++) {
+            int offset = copies.size() * 350;
+            Location min = LocationUtil.addOffsetX(getMin(), offset);
+            Location max = LocationUtil.addOffsetX(getMax(), offset);
+            Location redSpawn = LocationUtil.addOffsetX(getRedSpawn(), offset);
+            Location blueSpawn = LocationUtil.addOffsetX(getBlueSpawn(), offset);
+            BlockChanger.loadChunks(min, max);
+            BlockChanger.paste(snapshot, offset, 0, true);
+            StandAloneArena copy = new StandAloneArena(getName() + "#" + copies.size(), getDisplayName(), redSpawn, blueSpawn, min, max, getLimit(), isEnabled(), true, null, whitelistedBlocks);
+            copies.add(copy.getName());
+            ArenaService.get().getArenas().add(copy);
+            ServerUtils.info("#" + i + "Created copy " + redSpawn);
+
             ArenaService.get().saveArenas();
-            ServerUtils.info("Created " + amount + " copies!");
-        });
+        }
+        ServerUtils.info("Created " + amount + " copies!");
     }
 
     public List<String> getWhitelistedBlocksAsString() {

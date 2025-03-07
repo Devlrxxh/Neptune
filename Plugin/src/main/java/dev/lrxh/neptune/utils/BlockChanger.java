@@ -124,6 +124,29 @@ public class BlockChanger {
         refreshChunks(world, minX, minZ, maxX, maxZ);
     }
 
+    public static void loadChunks(Location pos1, Location pos2) {
+        int minX = Math.min(pos1.getBlockX(), pos2.getBlockX());
+        int minZ = Math.min(pos1.getBlockZ(), pos2.getBlockZ());
+
+        int maxX = Math.max(pos1.getBlockX(), pos2.getBlockX());
+        int maxZ = Math.max(pos1.getBlockZ(), pos2.getBlockZ());
+
+        loadChunks(pos1.getWorld(), minX, minZ, maxX, maxZ);
+    }
+
+    private static void loadChunks(World world, int minX, int minZ, int maxX, int maxZ) {
+        int chunkStartX = minX >> 4;
+        int chunkStartZ = minZ >> 4;
+        int chunkEndX = maxX >> 4;
+        int chunkEndZ = maxZ >> 4;
+
+        for (int x = chunkStartX; x <= chunkEndX; x++) {
+            for (int z = chunkStartZ; z <= chunkEndZ; z++) {
+                world.loadChunk(x, z);
+            }
+        }
+    }
+
     private static void refreshChunks(World world, int minX, int minZ, int maxX, int maxZ) {
         int chunkStartX = minX >> 4;
         int chunkStartZ = minZ >> 4;
