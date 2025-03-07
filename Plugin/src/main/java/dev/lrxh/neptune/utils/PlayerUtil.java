@@ -86,23 +86,13 @@ public class PlayerUtil {
                         null,
                         WrapperPlayServerTeams.OptionData.NONE);
 
-        WrapperPlayServerTeams addTeam = new WrapperPlayServerTeams(p.getUsername() + "animation",
-                WrapperPlayServerTeams.TeamMode.CREATE, teamInfo, p.getUsername());
-
-        WrapperPlayServerTeams removeTeam = new WrapperPlayServerTeams(p.getUsername() + "animation",
-                WrapperPlayServerTeams.TeamMode.REMOVE, teamInfo, p.getUsername());
-
         for (Player watcher : watchers) {
             if (player.getUniqueId().equals(watcher.getUniqueId())) continue;
             p.addViewer(watcher.getUniqueId());
-            PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, addTeam);
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, healthPacket);
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), () -> {
-            p.remove();
-            for (Player watcher : watchers) PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, removeTeam);
-        }, 40L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), p::remove, 40L);
     }
 
 
