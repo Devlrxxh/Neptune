@@ -181,7 +181,7 @@ public class Kit {
         if (player == null) return;
         Profile profile = API.getProfile(playerUUID);
         GameData gameData = profile.getGameData();
-        
+
         ItemStack[] loadoutItems;
         if (gameData.getKitData() == null || gameData.get(this) == null ||
                 gameData.get(this).getKitLoadout().isEmpty()) {
@@ -189,7 +189,7 @@ public class Kit {
         } else {
             loadoutItems = gameData.get(this).getKitLoadout().toArray(new ItemStack[0]);
         }
-        
+
         // If INFINITE_DURABILITY is enabled, make all items unbreakable
         if (is(KitRule.INFINITE_DURABILITY)) {
             for (int i = 0; i < loadoutItems.length; i++) {
@@ -204,7 +204,7 @@ public class Kit {
                 }
             }
         }
-        
+
         player.getInventory().setContents(loadoutItems);
         player.updateInventory();
     }
@@ -214,7 +214,7 @@ public class Kit {
         if (player == null) return;
         Profile profile = API.getProfile(player);
         GameData gameData = profile.getGameData();
-        
+
         ItemStack[] loadoutItems;
         if (gameData.getKitData() == null || gameData.get(this) == null ||
                 gameData.get(this).getKitLoadout().isEmpty()) {
@@ -222,7 +222,7 @@ public class Kit {
         } else {
             loadoutItems = ItemUtils.color(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor());
         }
-        
+
         // If INFINITE_DURABILITY is enabled, make all items unbreakable
         if (is(KitRule.INFINITE_DURABILITY)) {
             for (int i = 0; i < loadoutItems.length; i++) {
@@ -237,7 +237,7 @@ public class Kit {
                 }
             }
         }
-        
+
         player.getInventory().setContents(loadoutItems);
         player.updateInventory();
     }

@@ -37,7 +37,7 @@ public class TeamFightMatch extends Match {
                           MatchTeam teamA, MatchTeam teamB) {
         this(arena, kit, participants, teamA, teamB, 1);
     }
-    
+
     public TeamFightMatch(Arena arena, Kit kit, List<Participant> participants,
                           MatchTeam teamA, MatchTeam teamB, int rounds) {
         super(MatchState.STARTING, arena, kit, participants, rounds, true, false);
@@ -87,29 +87,31 @@ public class TeamFightMatch extends Match {
 
     /**
      * Scores a point for the participant's team in portal goal matches
+     *
      * @param participant The participant who scored
      */
     public void scorePoint(Participant participant) {
         // Get the team for this participant
         MatchTeam team = getParticipantTeam(participant);
-        
+
         // Add a point to the team's score
         team.addPoint();
-        
+
         // Check if this team has scored enough points
         if (team.getPoints() >= rounds) {
             // End the match with the other team as the loser
             MatchTeam loserTeam = (team == teamA) ? teamB : teamA;
             loserTeam.setLoser(true);
-            
+
             // Choose a participant from the losing team to pass to end()
             Participant loser = loserTeam.getParticipants().get(0);
             end(loser);
         }
     }
-    
+
     /**
      * Gets the winning team if one exists
+     *
      * @return The winning team or null if no winner yet
      */
     public MatchTeam getWinner() {
@@ -132,16 +134,16 @@ public class TeamFightMatch extends Match {
         if (getState() != MatchState.IN_ROUND) {
             return;
         }
-        
+
         MatchTeam team = getParticipantTeam(participant);
         team.getDeadParticipants().add(participant);
-        
+
         // Set the participant as dead
         participant.setDead(true);
-        
+
         // Send the appropriate death message
         sendDeathMessage(participant);
-        
+
         // Play kill sound to the killer if this was a kill
         if (participant.getDeathCause() == DeathCause.KILL && participant.getLastAttacker() != null) {
             Player killer = participant.getLastAttacker().getPlayer();
@@ -149,7 +151,7 @@ public class TeamFightMatch extends Match {
                 killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
             }
         }
-        
+
         // Only score based on deaths if it's not a Bridges match
         if (!kit.is(KitRule.BRIDGES)) {
             // Check if the team is now a loser (all members dead)
@@ -160,7 +162,7 @@ public class TeamFightMatch extends Match {
             // For Bridges mode, handle respawning
             // Check if we should reset inventory for Bridges mode
             boolean shouldResetInventory = true; // Always reset inventory in Bridges mode
-            
+
             // Check if respawn delay is enabled
             if (kit.is(KitRule.RESPAWN_DELAY)) {
                 team.sendTitle("&cYou Died!", "&eRespawning in 5 seconds...", 40);
@@ -168,30 +170,30 @@ public class TeamFightMatch extends Match {
             } else {
                 // For Bridges mode, handle instant respawning
                 team.sendTitle("&cYou Died!", "&eRespawning...", 10);
-                
+
                 // Reset player inventory if needed
                 if (shouldResetInventory) {
                     PlayerUtil.reset(participant.getPlayer());
                     kit.giveLoadout(participant);
                 }
-                
+
                 // Ensure player entity is properly removed from all clients
                 Player deadPlayer = participant.getPlayer();
-                
+
                 // Fix ghost player bug - force player to be hidden from all players
                 forEachPlayer(otherPlayer -> {
                     if (otherPlayer != deadPlayer) {
                         otherPlayer.hidePlayer(Neptune.get(), deadPlayer);
                     }
                 });
-                
+
                 // Delay showing the player to ensure client sync
                 Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
                     // Teleport the player to their spawn
                     deadPlayer.teleport(getSpawn(participant));
                     participant.setDead(false);
                     team.getDeadParticipants().remove(participant);
-                    
+
                     // Show the player to everyone again after a brief delay
                     forEachPlayer(otherPlayer -> {
                         if (otherPlayer != deadPlayer) {
@@ -201,7 +203,7 @@ public class TeamFightMatch extends Match {
                 }, 2L); // Small delay to ensure client-server sync
             }
         }
-        
+
         // Check if we should reset inventory for other modes
         if (kit.is(KitRule.RESET_INVENTORY_AFTER_DEATH) && !kit.is(KitRule.BRIDGES)) {
             PlayerUtil.reset(participant.getPlayer());
@@ -220,10 +222,10 @@ public class TeamFightMatch extends Match {
     public void onLeave(Participant participant, boolean quit) {
         participant.setDeathCause(DeathCause.DISCONNECT);
         sendDeathMessage(participant);
-        
+
         // Ensure match state is set to ENDING
         state = MatchState.ENDING;
-        
+
         if (quit) {
             participant.setDisconnected(true);
         } else {
@@ -237,7 +239,7 @@ public class TeamFightMatch extends Match {
 
         // Always reset the arena when a player leaves to clean up placed blocks
         this.resetArena();
-        
+
         onDeath(participant);
     }
 

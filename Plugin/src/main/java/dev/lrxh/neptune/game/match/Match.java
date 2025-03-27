@@ -31,7 +31,6 @@ import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -47,7 +46,7 @@ public abstract class Match {
     public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
-    
+
     // Modified block tracking system with chunking
     private final Map<ChunkKey, Map<BlockPosition, BlockData>> chunkedChanges = new HashMap<>();
     private final Set<Location> liquids = new HashSet<>();
@@ -60,77 +59,22 @@ public abstract class Match {
     public int rounds;
     private boolean duel;
     private boolean ended;
-    
-    // New inner classes for more efficient block storage
-    @Getter
-    @AllArgsConstructor
-    public static class ChunkKey {
-        private final int x;
-        private final int z;
-        private final World world;
-        
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            ChunkKey chunkKey = (ChunkKey) o;
-            return x == chunkKey.x && z == chunkKey.z && world.equals(chunkKey.world);
-        }
-        
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, z, world.getName());
-        }
-        
-        public static ChunkKey fromLocation(Location location) {
-            return new ChunkKey(location.getBlockX() >> 4, location.getBlockZ() >> 4, location.getWorld());
-        }
-    }
-    
-    @Getter
-    @AllArgsConstructor
-    public static class BlockPosition {
-        private final int x;
-        private final int y;
-        private final int z;
-        
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            BlockPosition that = (BlockPosition) o;
-            return x == that.x && y == that.y && z == that.z;
-        }
-        
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, y, z);
-        }
-        
-        public static BlockPosition fromLocation(Location location) {
-            return new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        }
-        
-        public Location toLocation(World world) {
-            return new Location(world, x, y, z);
-        }
-    }
-    
+
     /**
      * Add a block change to the tracking system.
      * This method uses the new chunked storage system for better performance.
      *
-     * @param location The location of the block
+     * @param location  The location of the block
      * @param blockData The original block data to restore later
      */
     public void addBlockChange(Location location, BlockData blockData) {
         ChunkKey chunkKey = ChunkKey.fromLocation(location);
         BlockPosition blockPos = BlockPosition.fromLocation(location);
-        
+
         chunkedChanges.computeIfAbsent(chunkKey, k -> new HashMap<>())
                 .putIfAbsent(blockPos, blockData);
     }
-    
+
     /**
      * Check if a location has been changed
      *
@@ -140,11 +84,11 @@ public abstract class Match {
     public boolean hasBlockChange(Location location) {
         ChunkKey chunkKey = ChunkKey.fromLocation(location);
         BlockPosition blockPos = BlockPosition.fromLocation(location);
-        
+
         Map<BlockPosition, BlockData> chunkChanges = chunkedChanges.get(chunkKey);
         return chunkChanges != null && chunkChanges.containsKey(blockPos);
     }
-    
+
     /**
      * Get the original block data for a changed location
      *
@@ -154,11 +98,11 @@ public abstract class Match {
     public BlockData getOriginalBlockData(Location location) {
         ChunkKey chunkKey = ChunkKey.fromLocation(location);
         BlockPosition blockPos = BlockPosition.fromLocation(location);
-        
+
         Map<BlockPosition, BlockData> chunkChanges = chunkedChanges.get(chunkKey);
         return chunkChanges != null ? chunkChanges.get(blockPos) : null;
     }
-    
+
     // Compatibility method to get all changes (for legacy code)
     public Map<Location, BlockData> getChanges() {
         Map<Location, BlockData> allChanges = new HashMap<>();
@@ -296,14 +240,14 @@ public abstract class Match {
                     blocks.add(new BlockChanger.BlockSnapshot(location, blockEntry.getValue()));
                 }
             }
-            
+
             BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
         } else {
             // Standard reset process
             for (Location location : liquids) {
                 arena.getWorld().getBlockAt(location).setBlockData(Material.AIR.createBlockData(), false);
             }
-            
+
             // Reset blocks by chunk for better efficiency
             for (Map.Entry<ChunkKey, Map<BlockPosition, BlockData>> chunkEntry : chunkedChanges.entrySet()) {
                 World world = chunkEntry.getKey().getWorld();
@@ -321,7 +265,7 @@ public abstract class Match {
     /**
      * Checks if a location is protected from block placement/breaking due to being near an end portal
      * Used for portal goal kits to prevent griefing near portals
-     * 
+     *
      * @param location The location to check
      * @return True if protected, false if not
      */
@@ -329,14 +273,14 @@ public abstract class Match {
         // Only check if the kit has bridges enabled
         if (kit.is(KitRule.BRIDGES)) {
             // Get protection radius from kit (if PORTAL_PROTECTION_RADIUS is enabled) or use default
-            int protectionRadius = kit.is(KitRule.PORTAL_PROTECTION_RADIUS) ? 
+            int protectionRadius = kit.is(KitRule.PORTAL_PROTECTION_RADIUS) ?
                     kit.getPortalProtectionRadius() : 3;
-            
+
             // If radius is 0, portal protection is disabled
             if (protectionRadius <= 0) {
                 return false;
             }
-                    
+
             // Get the blocks around the location
             for (int x = -protectionRadius; x <= protectionRadius; x++) {
                 for (int y = -protectionRadius; y <= protectionRadius; y++) {
@@ -355,7 +299,7 @@ public abstract class Match {
     public List<String> getScoreboard(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ArrayList<>();
-        
+
         // Check global in-game scoreboard setting
         if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME.getBoolean()) return new ArrayList<>();
 
@@ -537,7 +481,7 @@ public abstract class Match {
         } else {
             broadcast(deathMessage);
         }
-        
+
         // Play kill sound to the attacker if this was a kill
         if (deadParticipant.getDeathCause() == DeathCause.KILL && deadParticipant.getLastAttacker() != null) {
             Player killer = deadParticipant.getLastAttacker().getPlayer();
@@ -558,34 +502,34 @@ public abstract class Match {
     public void teleportPlayerToPosition(Participant participant) {
         Player player = participant.getPlayer();
         if (player == null) return;
-        
+
         // Always reset player inventory for Bridges mode when a point is scored
         boolean isBridges = kit.is(KitRule.BRIDGES);
         if (isBridges) {
             // Reset player's inventory
             player.getInventory().clear();
             player.getInventory().setArmorContents(null);
-            
+
             // Reset health and saturation
             player.setHealth(player.getMaxHealth());
             player.setFoodLevel(20);
             player.setSaturation(20.0f);
-            
+
             // Clear any potion effects
-            player.getActivePotionEffects().forEach(effect -> 
-                player.removePotionEffect(effect.getType()));
-            
+            player.getActivePotionEffects().forEach(effect ->
+                    player.removePotionEffect(effect.getType()));
+
             // Give kit loadout again
             kit.giveLoadout(participant);
         }
-        
+
         // Teleport to appropriate spawn
         if (participant.getColor().equals(ParticipantColor.RED)) {
             player.teleport(arena.getRedSpawn());
         } else {
             player.teleport(arena.getBlueSpawn());
         }
-        
+
         // Update inventory to ensure changes are visible to the player
         if (isBridges) {
             player.updateInventory();
@@ -605,4 +549,59 @@ public abstract class Match {
     public abstract void breakBed(Participant participant);
 
     public abstract void sendTitle(Participant participant, String header, String footer, int duration);
+
+    // New inner classes for more efficient block storage
+    @Getter
+    @AllArgsConstructor
+    public static class ChunkKey {
+        private final int x;
+        private final int z;
+        private final World world;
+
+        public static ChunkKey fromLocation(Location location) {
+            return new ChunkKey(location.getBlockX() >> 4, location.getBlockZ() >> 4, location.getWorld());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ChunkKey chunkKey = (ChunkKey) o;
+            return x == chunkKey.x && z == chunkKey.z && world.equals(chunkKey.world);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, z, world.getName());
+        }
+    }
+
+    @Getter
+    @AllArgsConstructor
+    public static class BlockPosition {
+        private final int x;
+        private final int y;
+        private final int z;
+
+        public static BlockPosition fromLocation(Location location) {
+            return new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BlockPosition that = (BlockPosition) o;
+            return x == that.x && y == that.y && z == that.z;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y, z);
+        }
+
+        public Location toLocation(World world) {
+            return new Location(world, x, y, z);
+        }
+    }
 }

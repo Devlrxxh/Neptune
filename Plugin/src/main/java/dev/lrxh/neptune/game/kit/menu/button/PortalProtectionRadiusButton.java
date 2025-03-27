@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class PortalProtectionRadiusButton extends Button {
-    private final Kit kit;
     private static final Map<UUID, ChatListener> activeListeners = new HashMap<>();
+    private final Kit kit;
 
     public PortalProtectionRadiusButton(int slot, Kit kit) {
         super(slot, false);
@@ -40,24 +40,24 @@ public class PortalProtectionRadiusButton extends Button {
         if (!kit.is(KitRule.PORTAL_PROTECTION_RADIUS)) {
             kit.toggle(KitRule.PORTAL_PROTECTION_RADIUS);
         }
-        
+
         // Close the inventory to allow chat input
         player.closeInventory();
-        
+
         // Send instruction message
         player.sendMessage(CC.color("&aPlease enter the portal protection radius (0-10):"));
         player.sendMessage(CC.color("&7Set to 0 to disable protection, or 1-10 to set protection radius."));
-        
+
         // Create a chat listener for this player
         if (activeListeners.containsKey(player.getUniqueId())) {
             // Clean up any existing listeners
             activeListeners.get(player.getUniqueId()).cleanup();
         }
-        
+
         ChatListener chatListener = new ChatListener(player, kit);
         activeListeners.put(player.getUniqueId(), chatListener);
         Bukkit.getPluginManager().registerEvents(chatListener, Neptune.get());
-        
+
         // Save the changes
         KitService.get().saveKits();
     }
@@ -66,7 +66,7 @@ public class PortalProtectionRadiusButton extends Button {
     public ItemStack getItemStack(Player player) {
         String radiusText = String.valueOf(kit.getPortalProtectionRadius());
         boolean isDisabled = kit.getPortalProtectionRadius() <= 0;
-        
+
         if (kit.is(KitRule.PORTAL_PROTECTION_RADIUS)) {
             return new ItemBuilder(Material.BARRIER)
                     .name("&a" + KitRule.PORTAL_PROTECTION_RADIUS.getName())
@@ -74,9 +74,9 @@ public class PortalProtectionRadiusButton extends Button {
                             "&7" + KitRule.PORTAL_PROTECTION_RADIUS.getDescription(),
                             "&7",
                             "&aPortal Protection: " + (isDisabled ? "&cDisabled" : "&aEnabled"),
-                            isDisabled ? 
-                                "&7Protection radius: &e0 &7(disabled)" : 
-                                "&aProtection radius: &e" + radiusText + " &ablocks",
+                            isDisabled ?
+                                    "&7Protection radius: &e0 &7(disabled)" :
+                                    "&aProtection radius: &e" + radiusText + " &ablocks",
                             "&7",
                             "&eClick to " + (isDisabled ? "enable" : "change radius")
                     )
@@ -95,7 +95,7 @@ public class PortalProtectionRadiusButton extends Button {
                     .build();
         }
     }
-    
+
     /**
      * Listener class for handling chat input for portal protection radius
      */
@@ -103,11 +103,11 @@ public class PortalProtectionRadiusButton extends Button {
         private final UUID playerUuid;
         private final Kit kit;
         private BukkitTask timeoutTask;
-        
+
         public ChatListener(Player player, Kit kit) {
             this.playerUuid = player.getUniqueId();
             this.kit = kit;
-            
+
             // Set a timeout to cancel after 20 seconds
             this.timeoutTask = new BukkitRunnable() {
                 @Override
@@ -122,16 +122,16 @@ public class PortalProtectionRadiusButton extends Button {
                 }
             }.runTaskLater(Neptune.get(), 20 * 20); // 20 seconds timeout
         }
-        
+
         @EventHandler
         public void onChat(AsyncPlayerChatEvent event) {
             if (!event.getPlayer().getUniqueId().equals(playerUuid)) {
                 return;
             }
-            
+
             event.setCancelled(true);
             String message = event.getMessage();
-            
+
             // Process on the main thread
             Bukkit.getScheduler().runTask(Neptune.get(), () -> {
                 Player player = event.getPlayer();
@@ -139,26 +139,26 @@ public class PortalProtectionRadiusButton extends Button {
                     cleanup();
                     return;
                 }
-                
+
                 // Try to parse the input as a number
                 try {
                     int radius = Integer.parseInt(message);
-                    
+
                     if (radius < 0 || radius > 10) {
                         player.sendMessage(CC.color("&cInvalid number! Please enter a number between 0 and 10:"));
                         return;
                     }
-                    
+
                     // Set the portal protection radius value
                     kit.setPortalProtectionRadius(radius);
                     KitService.get().saveKits();
-                    
+
                     if (radius == 0) {
                         player.sendMessage(CC.color("&aPortal protection has been &cdisabled&a!"));
                     } else {
                         player.sendMessage(CC.color("&aSuccessfully set portal protection radius to &e" + radius + " &ablocks!"));
                     }
-                    
+
                     // Reopen the menu
                     new KitRulesMenu(kit).open(player);
                     cleanup();
@@ -167,20 +167,20 @@ public class PortalProtectionRadiusButton extends Button {
                 }
             });
         }
-        
+
         @EventHandler
         public void onPlayerQuit(PlayerQuitEvent event) {
             if (event.getPlayer().getUniqueId().equals(playerUuid)) {
                 cleanup();
             }
         }
-        
+
         public void cleanup() {
             if (timeoutTask != null) {
                 timeoutTask.cancel();
                 timeoutTask = null;
             }
-            
+
             HandlerList.unregisterAll(this);
             activeListeners.remove(playerUuid);
         }

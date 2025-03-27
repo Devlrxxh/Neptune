@@ -43,9 +43,9 @@ public class ItemUtils {
                 } else if (color.equals(Color.RED)) {
                     itemStack.setType(Material.RED_WOOL);
                 }
-            } else if (itemStack.getType().name().contains("TERRACOTTA") || 
-                      itemStack.getType() == Material.TERRACOTTA || 
-                      itemStack.getType() == Material.WHITE_TERRACOTTA) {
+            } else if (itemStack.getType().name().contains("TERRACOTTA") ||
+                    itemStack.getType() == Material.TERRACOTTA ||
+                    itemStack.getType() == Material.WHITE_TERRACOTTA) {
                 if (color.equals(Color.BLUE)) {
                     itemStack.setType(Material.BLUE_TERRACOTTA);
                 } else if (color.equals(Color.RED)) {

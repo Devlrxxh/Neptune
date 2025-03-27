@@ -62,7 +62,7 @@ public class KitService implements IService {
                 }
             }
         }
-        
+
         // Generate default whitelist entries for all kits if they don't already exist
         ensureWhitelistEntriesForAllKits();
     }

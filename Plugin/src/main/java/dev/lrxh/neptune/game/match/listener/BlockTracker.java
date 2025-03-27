@@ -2,11 +2,12 @@ package dev.lrxh.neptune.game.match.listener;
 
 import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.configs.KitConfiguration;
+import dev.lrxh.neptune.configs.KitConfiguration.KitConfigData;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
-import io.papermc.paper.event.block.BlockBreakBlockEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -30,9 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
-
-import dev.lrxh.neptune.configs.KitConfiguration;
-import dev.lrxh.neptune.configs.KitConfiguration.KitConfigData;
 
 public class BlockTracker implements Listener {
 
@@ -66,7 +64,7 @@ public class BlockTracker implements Listener {
         if (!match.hasBlockChange(blockLocation)) {
             match.addBlockChange(blockLocation, event.getBlockReplacedState().getBlockData());
         }
-        
+
         // Mark this as a player-placed block
         match.getPlacedBlocks().add(blockLocation);
     }
@@ -125,21 +123,21 @@ public class BlockTracker implements Listener {
                 if (match.getKit().is(KitRule.BRIDGES)) {
                     event.blockList().removeIf(b -> match.isLocationPortalProtected(b.getLocation()));
                 }
-                
+
                 // Handle LIMITED_BLOCK_BREAK rule with the config system
                 if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                     String kitName = match.getKit().getName();
                     KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
-                    
+
                     // Filter blocks based on the whitelist for this kit
                     event.blockList().removeIf(b -> !kitConfig.isBlockWhitelisted(b.getType()));
                 }
-                
+
                 // Handle ONLY_BREAK_PLAYER_PLACED rule
                 if (match.getKit().is(KitRule.ONLY_BREAK_PLAYER_PLACED)) {
                     event.blockList().removeIf(b -> !match.getPlacedBlocks().contains(b.getLocation()));
                 }
-                
+
                 for (Block block : event.blockList()) {
                     if (!match.hasBlockChange(block.getLocation())) {
                         match.addBlockChange(block.getLocation(), block.getBlockData());
@@ -161,16 +159,16 @@ public class BlockTracker implements Listener {
                 if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                     String kitName = match.getKit().getName();
                     KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
-                    
+
                     // Filter blocks based on the whitelist for this kit
                     event.blockList().removeIf(b -> !kitConfig.isBlockWhitelisted(b.getType()));
                 }
-                
+
                 // Handle ONLY_BREAK_PLAYER_PLACED rule
                 if (match.getKit().is(KitRule.ONLY_BREAK_PLAYER_PLACED)) {
                     event.blockList().removeIf(b -> !match.getPlacedBlocks().contains(b.getLocation()));
                 }
-                
+
                 for (Block block : event.blockList()) {
                     if (!match.hasBlockChange(block.getLocation())) {
                         match.addBlockChange(block.getLocation(), block.getBlockData());
@@ -207,7 +205,7 @@ public class BlockTracker implements Listener {
     public void onBreak(BlockBreakEvent event) {
         Block block = event.getBlock();
         Player player = event.getPlayer();
-        
+
         // Prevent block breaking in survival mode (unless player is in creative)
         if (!player.getGameMode().equals(GameMode.CREATIVE)) {
             getMatchForPlayer(player).ifPresent(match -> {
@@ -217,20 +215,20 @@ public class BlockTracker implements Listener {
                     player.sendMessage(CC.color("&cYou cannot break blocks near the goal portal!"));
                     return;
                 }
-                
+
                 // Track original block state for reset, regardless of whether the block can be broken
                 if (!match.hasBlockChange(block.getLocation())) {
                     match.addBlockChange(block.getLocation(), block.getBlockData());
                 }
-                
+
                 // Handle LIMITED_BLOCK_BREAK rule with the new config system
                 if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                     Material blockType = block.getType();
                     String kitName = match.getKit().getName();
-                    
+
                     // Get kit config from our unified configuration system
                     KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
-                    
+
                     // Check if this material is whitelisted for this kit
                     if (!kitConfig.isBlockWhitelisted(blockType)) {
                         event.setCancelled(true);
@@ -239,7 +237,7 @@ public class BlockTracker implements Listener {
                         return;
                     }
                 }
-                
+
                 // Handle ONLY_BREAK_PLAYER_PLACED rule
                 if (match.getKit().is(KitRule.ONLY_BREAK_PLAYER_PLACED)) {
                     if (!match.getPlacedBlocks().contains(block.getLocation())) {
@@ -248,11 +246,11 @@ public class BlockTracker implements Listener {
                         return;
                     }
                 }
-                
+
                 // Normal mode - Check if block is player-placed or arena break is allowed
-                if (!match.getKit().is(KitRule.BUILD) && 
-                    !match.getKit().is(KitRule.ALLOW_ARENA_BREAK) && 
-                    !match.getPlacedBlocks().contains(block.getLocation())) {
+                if (!match.getKit().is(KitRule.BUILD) &&
+                        !match.getKit().is(KitRule.ALLOW_ARENA_BREAK) &&
+                        !match.getPlacedBlocks().contains(block.getLocation())) {
                     event.setCancelled(true);
                     player.sendMessage(CC.color("&cYou cannot break this block!"));
                 }
@@ -276,22 +274,22 @@ public class BlockTracker implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            
+
             // Handle LIMITED_BLOCK_BREAK rule with the config system
             if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                 Material blockType = block.getType();
                 String kitName = match.getKit().getName();
-                
+
                 // Get kit config from our unified configuration system
                 KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
-                
+
                 // Check if this material is whitelisted for this kit
                 if (!kitConfig.isBlockWhitelisted(blockType)) {
                     event.setCancelled(true);
                     return;
                 }
             }
-            
+
             // Handle ONLY_BREAK_PLAYER_PLACED rule
             if (match.getKit().is(KitRule.ONLY_BREAK_PLAYER_PLACED)) {
                 if (!match.getPlacedBlocks().contains(block.getLocation())) {
@@ -299,7 +297,7 @@ public class BlockTracker implements Listener {
                     return;
                 }
             }
-            
+
             // Track original block state for reset
             if (!match.hasBlockChange(block.getLocation())) {
                 match.addBlockChange(block.getLocation(), block.getBlockData());
@@ -334,21 +332,21 @@ public class BlockTracker implements Listener {
             if (match.getKit().is(KitRule.BRIDGES)) {
                 event.blockList().removeIf(b -> match.isLocationPortalProtected(b.getLocation()));
             }
-            
+
             // Handle LIMITED_BLOCK_BREAK rule with the config system
             if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                 String kitName = match.getKit().getName();
                 KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
-                
+
                 // Filter blocks based on the whitelist for this kit
                 event.blockList().removeIf(b -> !kitConfig.isBlockWhitelisted(b.getType()));
             }
-            
+
             // Handle ONLY_BREAK_PLAYER_PLACED rule
             if (match.getKit().is(KitRule.ONLY_BREAK_PLAYER_PLACED)) {
                 event.blockList().removeIf(b -> !match.getPlacedBlocks().contains(b.getLocation()));
             }
-            
+
             for (Block block : event.blockList()) {
                 if (!match.hasBlockChange(block.getLocation())) {
                     match.addBlockChange(block.getLocation(), block.getBlockData());
@@ -397,7 +395,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = false)
     public void onItemDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        
+
         getMatchForPlayer(player).ifPresent(match -> {
             // Cancel the drop event if DISABLE_ITEM_DROP is enabled
             if (match.getKit().is(KitRule.DISABLE_ITEM_DROP)) {

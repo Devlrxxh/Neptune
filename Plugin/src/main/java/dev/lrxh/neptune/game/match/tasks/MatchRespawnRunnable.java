@@ -38,15 +38,15 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
         if (respawnTimer == 3) {
             PlayerUtil.doVelocityChange(participant.getPlayerUUID());
-            
+
             // Always reset the player first
             PlayerUtil.reset(participant.getPlayer());
-            
+
             // For Bridges mode and RESET_INVENTORY_AFTER_DEATH, we'll give the kit loadout again
             if (match.getKit().is(KitRule.BRIDGES) || match.getKit().is(KitRule.RESET_INVENTORY_AFTER_DEATH)) {
                 match.getKit().giveLoadout(participant);
             }
-            
+
             participant.getPlayer().setGameMode(GameMode.ADVENTURE);
         }
 

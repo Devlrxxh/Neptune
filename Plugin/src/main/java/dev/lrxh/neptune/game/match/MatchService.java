@@ -48,7 +48,7 @@ public class MatchService {
 
         playerBlue.setOpponent(playerRed);
         playerBlue.setColor(ParticipantColor.BLUE);
-        
+
         // Check for best of rounds setting
         if (kit.is(KitRule.BEST_OF_ROUNDS)) {
             // Get custom rounds from kit config (with a default of 3 if not specified)
@@ -77,7 +77,7 @@ public class MatchService {
 
         List<Participant> participants = new ArrayList<>(teamA.getParticipants());
         participants.addAll(teamB.getParticipants());
-        
+
         // Check for best of rounds setting for team matches
         int rounds = 1; // Default for team matches
         if (kit.is(KitRule.BEST_OF_ROUNDS)) {

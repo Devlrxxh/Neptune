@@ -26,8 +26,8 @@ import java.util.Map;
 import java.util.UUID;
 
 public class CustomRoundsButton extends Button {
-    private final Kit kit;
     private static final Map<UUID, ChatListener> activeListeners = new HashMap<>();
+    private final Kit kit;
 
     public CustomRoundsButton(int slot, Kit kit) {
         super(slot, false);
@@ -40,29 +40,29 @@ public class CustomRoundsButton extends Button {
         if (!kit.is(KitRule.BEST_OF_ROUNDS)) {
             kit.toggle(KitRule.BEST_OF_ROUNDS);
         }
-        
+
         // Close the inventory to allow chat input
         player.closeInventory();
-        
+
         // Send instruction message
         player.sendMessage(CC.color("&aPlease enter the number of rounds required to win (1-10):"));
         player.sendMessage(CC.color("&7Setting to 1 will disable Best of mode while keeping the setting enabled."));
-        
+
         // Create a chat listener for this player
         if (activeListeners.containsKey(player.getUniqueId())) {
             // Clean up any existing listeners
             activeListeners.get(player.getUniqueId()).cleanup();
         }
-        
+
         ChatListener chatListener = new ChatListener(player, kit);
         activeListeners.put(player.getUniqueId(), chatListener);
         Bukkit.getPluginManager().registerEvents(chatListener, Neptune.get());
-        
+
         // Set default value if not set
         if (kit.getCustomRounds() <= 0) {
             kit.setCustomRounds(3);
         }
-        
+
         // Save the changes
         KitService.get().saveKits();
     }
@@ -70,7 +70,7 @@ public class CustomRoundsButton extends Button {
     @Override
     public ItemStack getItemStack(Player player) {
         String roundsText = String.valueOf(kit.getCustomRounds());
-        
+
         if (kit.is(KitRule.BEST_OF_ROUNDS)) {
             return new ItemBuilder(Material.GOLDEN_AXE)
                     .name("&a" + KitRule.BEST_OF_ROUNDS.getName())
@@ -97,7 +97,7 @@ public class CustomRoundsButton extends Button {
                     .build();
         }
     }
-    
+
     /**
      * Listener class for handling chat input for custom rounds
      */
@@ -105,11 +105,11 @@ public class CustomRoundsButton extends Button {
         private final UUID playerUuid;
         private final Kit kit;
         private BukkitTask timeoutTask;
-        
+
         public ChatListener(Player player, Kit kit) {
             this.playerUuid = player.getUniqueId();
             this.kit = kit;
-            
+
             // Set a timeout to cancel after 20 seconds
             this.timeoutTask = new BukkitRunnable() {
                 @Override
@@ -124,16 +124,16 @@ public class CustomRoundsButton extends Button {
                 }
             }.runTaskLater(Neptune.get(), 20 * 20); // 20 seconds timeout
         }
-        
+
         @EventHandler
         public void onChat(AsyncPlayerChatEvent event) {
             if (!event.getPlayer().getUniqueId().equals(playerUuid)) {
                 return;
             }
-            
+
             event.setCancelled(true);
             String message = event.getMessage();
-            
+
             // Process on the main thread
             Bukkit.getScheduler().runTask(Neptune.get(), () -> {
                 Player player = event.getPlayer();
@@ -141,22 +141,22 @@ public class CustomRoundsButton extends Button {
                     cleanup();
                     return;
                 }
-                
+
                 // Try to parse the input as a number
                 try {
                     int rounds = Integer.parseInt(message);
-                    
+
                     if (rounds < 1 || rounds > 10) {
                         player.sendMessage(CC.color("&cInvalid number! Please enter a number between 1 and 10:"));
                         return;
                     }
-                    
+
                     // Set the custom rounds value
                     kit.setCustomRounds(rounds);
                     KitService.get().saveKits();
-                    
+
                     player.sendMessage(CC.color("&aSuccessfully set rounds to win to &e" + rounds + "&a!"));
-                    
+
                     // Reopen the menu
                     new KitRulesMenu(kit).open(player);
                     cleanup();
@@ -165,20 +165,20 @@ public class CustomRoundsButton extends Button {
                 }
             });
         }
-        
+
         @EventHandler
         public void onPlayerQuit(PlayerQuitEvent event) {
             if (event.getPlayer().getUniqueId().equals(playerUuid)) {
                 cleanup();
             }
         }
-        
+
         public void cleanup() {
             if (timeoutTask != null) {
                 timeoutTask.cancel();
                 timeoutTask = null;
             }
-            
+
             HandlerList.unregisterAll(this);
             activeListeners.remove(playerUuid);
         }

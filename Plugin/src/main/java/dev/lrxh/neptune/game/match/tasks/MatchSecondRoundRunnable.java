@@ -10,7 +10,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import org.bukkit.Sound;
-import org.bukkit.entity.Player;
 
 public class MatchSecondRoundRunnable extends NeptuneRunnable {
     private final Neptune plugin;
@@ -64,7 +63,7 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
             match.setupParticipants();
             match.teleportToPositions();
             match.resetArena();
-            
+
             // Explicitly reset everyone's inventory for Best of modes
             match.forEachParticipant(p -> {
                 if (p.getPlayer() != null) {

@@ -6,13 +6,12 @@ import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
+import dev.lrxh.neptune.cache.EntityCacheRunnable;
 import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
 import dev.lrxh.neptune.configs.ConfigService;
-import dev.lrxh.neptune.configs.impl.BlockWhitelistConfig;
-import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
+import dev.lrxh.neptune.configs.KitConfiguration;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
 import dev.lrxh.neptune.feature.cosmetics.command.CosmeticsCommand;
@@ -129,9 +128,8 @@ public final class Neptune extends JavaPlugin {
         if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
             new FastManager(this, new ScoreboardAdapter());
         }
-        
-        // Initialize the unified kit configuration system
-        new dev.lrxh.neptune.configs.KitConfiguration();
+
+        new KitConfiguration();
 
         ServerUtils.info("Loaded Successfully");
     }
@@ -190,6 +188,7 @@ public final class Neptune extends JavaPlugin {
     private void loadTasks() {
         new QueueCheckTask().start(20L, this);
         new QueueMessageTask().start(100L, this);
+        new EntityCacheRunnable().start(400L, this);
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
     }
 

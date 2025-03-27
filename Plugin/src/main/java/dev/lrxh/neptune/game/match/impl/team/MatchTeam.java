@@ -41,6 +41,7 @@ public class MatchTeam {
 
     /**
      * Get the current points for this team
+     *
      * @return The points scored
      */
     public int getPoints() {
