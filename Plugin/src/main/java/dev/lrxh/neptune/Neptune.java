@@ -153,7 +153,8 @@ public final class Neptune extends JavaPlugin {
                 new MenuListener(),
                 new ArenaProcedureListener(),
                 new KitProcedureListener(),
-                new BlockTracker()
+                new BlockTracker(),
+                new dev.lrxh.neptune.game.kit.listener.KitRuleListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

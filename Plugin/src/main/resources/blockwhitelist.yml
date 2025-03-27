@@ -1,0 +1,49 @@
+# Block Whitelist Configuration
+# 
+# This file controls which blocks can be broken when the LIMITED_BLOCK_BREAK rule is enabled
+# You can specify different block lists for each kit and customize error messages
+#
+# IMPORTANT: This file is automatically populated with default entries (Red/Blue/White terracotta)
+# for each kit when it is created. You can modify these entries as needed to customize
+# which blocks are breakable for each kit.
+#
+# Format:
+# kit_name:
+#   blocks:
+#     - BLOCK_TYPE_1
+#     - BLOCK_TYPE_2
+#   message: "Custom error message when breaking non-whitelisted blocks"
+
+# Default configuration used when a kit doesn't have specific settings
+default:
+  blocks:
+    - RED_TERRACOTTA
+    - BLUE_TERRACOTTA
+    - WHITE_TERRACOTTA
+  message: "&cYou can't break that block here"
+
+# Example kit configurations (customize as needed)
+bridges:
+  blocks:
+    - RED_TERRACOTTA
+    - BLUE_TERRACOTTA
+    - WHITE_TERRACOTTA
+  message: "&cYou can only break terracotta blocks in Bridges mode!"
+
+bedwars:
+  blocks:
+    - RED_BED
+    - BLUE_BED
+    - WHITE_BED
+    - YELLOW_BED
+    - GREEN_BED
+    - END_STONE
+    - WOOL
+  message: "&cYou can only break beds, end stone, and wool in Bedwars!"
+
+# Add more kit configurations as needed
+# kitname:
+#   blocks:
+#     - MATERIAL_NAME_1
+#     - MATERIAL_NAME_2
+#   message: "Custom message" 

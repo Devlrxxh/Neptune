@@ -119,6 +119,6 @@ public class QueueCheckTask extends NeptuneRunnable {
                 new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
 
         MatchService.get().startMatch(participants, queueEntry1.getKit(),
-                arena, false, queueEntry1.getKit().is(KitRule.BEST_OF_THREE) ? 3 : 1);
+                arena, false, queueEntry1.getKit().is(KitRule.BEST_OF) ? 3 : 1);
     }
 }

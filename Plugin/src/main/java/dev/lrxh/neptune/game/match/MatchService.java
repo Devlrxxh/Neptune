@@ -4,6 +4,7 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.game.match.impl.SoloFightMatch;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
@@ -47,6 +48,15 @@ public class MatchService {
 
         playerBlue.setOpponent(playerRed);
         playerBlue.setColor(ParticipantColor.BLUE);
+        
+        // Check for custom rounds in kit settings
+        if (kit.is(KitRule.CUSTOM_ROUNDS)) {
+            // Get custom rounds from kit config (with a default of 3 if not specified)
+            int customRounds = kit.getCustomRounds();
+            if (customRounds > 0) {
+                rounds = customRounds;
+            }
+        }
 
         SoloFightMatch match = new SoloFightMatch(arena, kit, duel, participants, playerRed, playerBlue, rounds);
 
@@ -67,8 +77,18 @@ public class MatchService {
 
         List<Participant> participants = new ArrayList<>(teamA.getParticipants());
         participants.addAll(teamB.getParticipants());
+        
+        // Check for custom rounds in kit settings for team matches
+        int rounds = 1; // Default for team matches
+        if (kit.is(KitRule.CUSTOM_ROUNDS)) {
+            // Get custom rounds from kit config (with a default of 1 if not specified)
+            int customRounds = kit.getCustomRounds();
+            if (customRounds > 0) {
+                rounds = customRounds;
+            }
+        }
 
-        TeamFightMatch match = new TeamFightMatch(arena, kit, participants, teamA, teamB);
+        TeamFightMatch match = new TeamFightMatch(arena, kit, participants, teamA, teamB, rounds);
 
         matches.add(match);
         new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);

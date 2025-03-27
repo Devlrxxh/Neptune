@@ -31,6 +31,7 @@ import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -189,6 +190,31 @@ public abstract class Match {
         removeEntities();
     }
 
+    /**
+     * Checks if a location is protected from block placement/breaking due to being near an end portal
+     * Used for portal goal kits to prevent griefing near portals
+     * 
+     * @param location The location to check
+     * @return True if protected, false if not
+     */
+    public boolean isLocationPortalProtected(Location location) {
+        // Only check if the kit has bridges enabled
+        if (kit.is(KitRule.BRIDGES)) {
+            // Get the blocks around the location
+            for (int x = -arena.getPortalProtectionRadius(); x <= arena.getPortalProtectionRadius(); x++) {
+                for (int y = -arena.getPortalProtectionRadius(); y <= arena.getPortalProtectionRadius(); y++) {
+                    for (int z = -arena.getPortalProtectionRadius(); z <= arena.getPortalProtectionRadius(); z++) {
+                        Location checkLoc = location.clone().add(x, y, z);
+                        if (checkLoc.getBlock().getType() == Material.END_PORTAL) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     public List<String> getScoreboard(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ArrayList<>();
@@ -199,7 +225,7 @@ public abstract class Match {
         if (this instanceof SoloFightMatch) {
             MatchState matchState = this.getState();
 
-            if (kit.is(KitRule.BEST_OF_THREE) && matchState.equals(MatchState.STARTING)) {
+            if (kit.is(KitRule.BEST_OF) && matchState.equals(MatchState.STARTING)) {
                 if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BESTOF.getBoolean()) return new ArrayList<>();
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
             }
@@ -377,6 +403,8 @@ public abstract class Match {
     }
 
     public void teleportToPositions() {
+        // This method is called when a score happens in Bridges mode
+        // It teleports players back to their spawn positions and resets their inventories
         for (Participant participant : participants) {
             teleportPlayerToPosition(participant);
         }
@@ -385,10 +413,28 @@ public abstract class Match {
     public void teleportPlayerToPosition(Participant participant) {
         Player player = participant.getPlayer();
         if (player == null) return;
+        
+        // Always reset player inventory for Bridges mode when a point is scored
+        boolean isBridges = kit.is(KitRule.BRIDGES);
+        if (isBridges) {
+            // Reset player's inventory
+            player.getInventory().clear();
+            player.getInventory().setArmorContents(null);
+            
+            // Give kit loadout again
+            kit.giveLoadout(participant);
+        }
+        
+        // Teleport to appropriate spawn
         if (participant.getColor().equals(ParticipantColor.RED)) {
             player.teleport(arena.getRedSpawn());
         } else {
             player.teleport(arena.getBlueSpawn());
+        }
+        
+        // Update inventory to ensure changes are visible to the player
+        if (isBridges) {
+            player.updateInventory();
         }
     }
 
