@@ -31,6 +31,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import dev.lrxh.neptune.configs.KitConfiguration;
+import dev.lrxh.neptune.configs.KitConfiguration.KitConfigData;
+
 public class BlockTracker implements Listener {
 
     private final Map<UUID, Entity> crystalOwners = new HashMap<>();
@@ -60,8 +63,8 @@ public class BlockTracker implements Listener {
         }
 
         // If the block is not already tracked, save the original state for reset
-        if (!match.getChanges().containsKey(blockLocation)) {
-            match.getChanges().put(blockLocation, event.getBlockReplacedState().getBlockData());
+        if (!match.hasBlockChange(blockLocation)) {
+            match.addBlockChange(blockLocation, event.getBlockReplacedState().getBlockData());
         }
         
         // Mark this as a player-placed block
@@ -121,9 +124,10 @@ public class BlockTracker implements Listener {
                 // Handle LIMITED_BLOCK_BREAK rule with the config system
                 if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                     String kitName = match.getKit().getName();
+                    KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
                     
                     // Filter blocks based on the whitelist for this kit
-                    event.blockList().removeIf(b -> !dev.lrxh.neptune.configs.impl.BlockWhitelistConfig.get().isWhitelisted(kitName, b.getType()));
+                    event.blockList().removeIf(b -> !kitConfig.isBlockWhitelisted(b.getType()));
                 }
                 
                 // Handle ONLY_BREAK_PLAYER_PLACED rule
@@ -132,8 +136,8 @@ public class BlockTracker implements Listener {
                 }
                 
                 for (Block block : event.blockList()) {
-                    if (!match.getChanges().containsKey(block.getLocation())) {
-                        match.getChanges().put(block.getLocation(), block.getBlockData());
+                    if (!match.hasBlockChange(block.getLocation())) {
+                        match.addBlockChange(block.getLocation(), block.getBlockData());
                     }
                 }
             });
@@ -151,9 +155,10 @@ public class BlockTracker implements Listener {
                 // Handle LIMITED_BLOCK_BREAK rule with the config system
                 if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                     String kitName = match.getKit().getName();
+                    KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
                     
                     // Filter blocks based on the whitelist for this kit
-                    event.blockList().removeIf(b -> !dev.lrxh.neptune.configs.impl.BlockWhitelistConfig.get().isWhitelisted(kitName, b.getType()));
+                    event.blockList().removeIf(b -> !kitConfig.isBlockWhitelisted(b.getType()));
                 }
                 
                 // Handle ONLY_BREAK_PLAYER_PLACED rule
@@ -162,8 +167,8 @@ public class BlockTracker implements Listener {
                 }
                 
                 for (Block block : event.blockList()) {
-                    if (!match.getChanges().containsKey(block.getLocation())) {
-                        match.getChanges().put(block.getLocation(), block.getBlockData());
+                    if (!match.hasBlockChange(block.getLocation())) {
+                        match.addBlockChange(block.getLocation(), block.getBlockData());
                     }
                 }
             });
@@ -187,8 +192,8 @@ public class BlockTracker implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            if (!match.getChanges().containsKey(toBlock.getLocation())) {
-                match.getChanges().put(toBlock.getLocation(), Material.AIR.createBlockData());
+            if (!match.hasBlockChange(toBlock.getLocation())) {
+                match.addBlockChange(toBlock.getLocation(), Material.AIR.createBlockData());
             }
         });
     }
@@ -202,8 +207,8 @@ public class BlockTracker implements Listener {
         if (!player.getGameMode().equals(GameMode.CREATIVE)) {
             getMatchForPlayer(player).ifPresent(match -> {
                 // Track original block state for reset, regardless of whether the block can be broken
-                if (!match.getChanges().containsKey(block.getLocation())) {
-                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                if (!match.hasBlockChange(block.getLocation())) {
+                    match.addBlockChange(block.getLocation(), block.getBlockData());
                 }
                 
                 // Handle LIMITED_BLOCK_BREAK rule with the new config system
@@ -211,11 +216,14 @@ public class BlockTracker implements Listener {
                     Material blockType = block.getType();
                     String kitName = match.getKit().getName();
                     
+                    // Get kit config from our unified configuration system
+                    KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
+                    
                     // Check if this material is whitelisted for this kit
-                    if (!dev.lrxh.neptune.configs.impl.BlockWhitelistConfig.get().isWhitelisted(kitName, blockType)) {
+                    if (!kitConfig.isBlockWhitelisted(blockType)) {
                         event.setCancelled(true);
-                        // Get custom message for this kit
-                        player.sendMessage(dev.lrxh.neptune.configs.impl.BlockWhitelistConfig.get().getErrorMessage(kitName));
+                        // Get custom message from the unified config
+                        player.sendMessage(kitConfig.getFormattedErrorMessage());
                         return;
                     }
                 }
@@ -256,8 +264,11 @@ public class BlockTracker implements Listener {
                 Material blockType = block.getType();
                 String kitName = match.getKit().getName();
                 
+                // Get kit config from our unified configuration system
+                KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
+                
                 // Check if this material is whitelisted for this kit
-                if (!dev.lrxh.neptune.configs.impl.BlockWhitelistConfig.get().isWhitelisted(kitName, blockType)) {
+                if (!kitConfig.isBlockWhitelisted(blockType)) {
                     event.setCancelled(true);
                     return;
                 }
@@ -272,8 +283,8 @@ public class BlockTracker implements Listener {
             }
             
             // Track original block state for reset
-            if (!match.getChanges().containsKey(block.getLocation())) {
-                match.getChanges().put(block.getLocation(), block.getBlockData());
+            if (!match.hasBlockChange(block.getLocation())) {
+                match.addBlockChange(block.getLocation(), block.getBlockData());
             }
         });
     }
@@ -283,8 +294,8 @@ public class BlockTracker implements Listener {
         Player player = event.getPlayer();
         getMatchForPlayer(player).ifPresent(match -> {
             for (BlockState blockState : event.getReplacedBlockStates()) {
-                if (!match.getChanges().containsKey(blockState.getLocation())) {
-                    match.getChanges().put(blockState.getLocation(), blockState.getBlockData());
+                if (!match.hasBlockChange(blockState.getLocation())) {
+                    match.addBlockChange(blockState.getLocation(), blockState.getBlockData());
                 }
             }
         });
@@ -304,9 +315,10 @@ public class BlockTracker implements Listener {
             // Handle LIMITED_BLOCK_BREAK rule with the config system
             if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                 String kitName = match.getKit().getName();
+                KitConfigData kitConfig = KitConfiguration.get().getKitConfig(kitName);
                 
                 // Filter blocks based on the whitelist for this kit
-                event.blockList().removeIf(b -> !dev.lrxh.neptune.configs.impl.BlockWhitelistConfig.get().isWhitelisted(kitName, b.getType()));
+                event.blockList().removeIf(b -> !kitConfig.isBlockWhitelisted(b.getType()));
             }
             
             // Handle ONLY_BREAK_PLAYER_PLACED rule
@@ -315,8 +327,8 @@ public class BlockTracker implements Listener {
             }
             
             for (Block block : event.blockList()) {
-                if (!match.getChanges().containsKey(block.getLocation())) {
-                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                if (!match.hasBlockChange(block.getLocation())) {
+                    match.addBlockChange(block.getLocation(), block.getBlockData());
                 }
             }
         });

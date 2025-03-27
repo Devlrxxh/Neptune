@@ -30,8 +30,8 @@ public class KitRulesMenu extends Menu {
         for (Map.Entry<KitRule, Boolean> entry : kit.getRules().entrySet()) {
             KitRule rule = entry.getKey();
             
-            // Special handling for CUSTOM_ROUNDS
-            if (rule == KitRule.CUSTOM_ROUNDS) {
+            // Special handling for BEST_OF_ROUNDS 
+            if (rule == KitRule.BEST_OF_ROUNDS) {
                 buttons.add(new CustomRoundsButton(i++, kit));
             } else {
                 buttons.add(new KitRuleButton(i++, kit, rule));

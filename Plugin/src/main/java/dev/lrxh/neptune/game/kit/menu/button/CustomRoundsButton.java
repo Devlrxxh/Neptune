@@ -37,15 +37,16 @@ public class CustomRoundsButton extends Button {
     @Override
     public void onClick(ClickType type, Player player) {
         // Enable the rule if it's not already
-        if (!kit.is(KitRule.CUSTOM_ROUNDS)) {
-            kit.toggle(KitRule.CUSTOM_ROUNDS);
+        if (!kit.is(KitRule.BEST_OF_ROUNDS)) {
+            kit.toggle(KitRule.BEST_OF_ROUNDS);
         }
         
         // Close the inventory to allow chat input
         player.closeInventory();
         
         // Send instruction message
-        player.sendMessage(CC.color("&aPlease enter the number of rounds required to win (0-10):"));
+        player.sendMessage(CC.color("&aPlease enter the number of rounds required to win (1-10):"));
+        player.sendMessage(CC.color("&7Setting to 1 will disable Best of mode while keeping the setting enabled."));
         
         // Create a chat listener for this player
         if (activeListeners.containsKey(player.getUniqueId())) {
@@ -68,28 +69,30 @@ public class CustomRoundsButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        String roundsText = kit.getCustomRounds() > 0 ? String.valueOf(kit.getCustomRounds()) : "3 (default)";
+        String roundsText = String.valueOf(kit.getCustomRounds());
         
-        if (kit.is(KitRule.CUSTOM_ROUNDS)) {
-            return new ItemBuilder(Material.NETHER_STAR)
-                    .name("&a" + KitRule.CUSTOM_ROUNDS.getName())
+        if (kit.is(KitRule.BEST_OF_ROUNDS)) {
+            return new ItemBuilder(Material.GOLDEN_AXE)
+                    .name("&a" + KitRule.BEST_OF_ROUNDS.getName())
                     .lore(
-                            "&7" + KitRule.CUSTOM_ROUNDS.getDescription(),
+                            "&7" + KitRule.BEST_OF_ROUNDS.getDescription(),
                             "&7",
-                            "&aCurrent value: &e" + roundsText + " &arounds",
+                            "&aBest of matches enabled",
+                            "&aRounds to win: &e" + roundsText,
                             "&7",
-                            "&eClick to change"
+                            "&eClick to change rounds"
                     )
                     .build();
         } else {
-            return new ItemBuilder(Material.NETHER_STAR)
-                    .name("&c" + KitRule.CUSTOM_ROUNDS.getName())
+            return new ItemBuilder(Material.GOLDEN_AXE)
+                    .name("&c" + KitRule.BEST_OF_ROUNDS.getName())
                     .lore(
-                            "&7" + KitRule.CUSTOM_ROUNDS.getDescription(),
+                            "&7" + KitRule.BEST_OF_ROUNDS.getDescription(),
                             "&7",
-                            "&7Current value: &e" + roundsText + " &7rounds (disabled)",
+                            "&cBest of matches disabled",
+                            "&7Rounds: &e" + roundsText + " &7(inactive)",
                             "&7",
-                            "&eClick to enable and change"
+                            "&eClick to enable and set rounds"
                     )
                     .build();
         }
@@ -113,7 +116,7 @@ public class CustomRoundsButton extends Button {
                 public void run() {
                     Player p = Bukkit.getPlayer(playerUuid);
                     if (p != null && p.isOnline()) {
-                        p.sendMessage(CC.color("&cTime expired. Using default value (3)."));
+                        p.sendMessage(CC.color("&cTime expired. Using previous value."));
                         // Reopen the menu
                         new KitRulesMenu(kit).open(p);
                     }
@@ -143,30 +146,22 @@ public class CustomRoundsButton extends Button {
                 try {
                     int rounds = Integer.parseInt(message);
                     
-                    if (rounds < 0 || rounds > 10) {
-                        player.sendMessage(CC.color("&cInvalid number! Please enter a number between 0 and 10:"));
+                    if (rounds < 1 || rounds > 10) {
+                        player.sendMessage(CC.color("&cInvalid number! Please enter a number between 1 and 10:"));
                         return;
-                    }
-                    
-                    // If rounds is set to 0, turn off Best Of mode
-                    if (rounds == 0) {
-                        if (kit.is(KitRule.BEST_OF)) {
-                            kit.toggle(KitRule.BEST_OF);
-                            player.sendMessage(CC.color("&eSetting rounds to 0 has disabled Best Of mode."));
-                        }
                     }
                     
                     // Set the custom rounds value
                     kit.setCustomRounds(rounds);
                     KitService.get().saveKits();
                     
-                    player.sendMessage(CC.color("&aSuccessfully set custom rounds to &e" + rounds + "&a!"));
+                    player.sendMessage(CC.color("&aSuccessfully set rounds to win to &e" + rounds + "&a!"));
                     
                     // Reopen the menu
                     new KitRulesMenu(kit).open(player);
                     cleanup();
                 } catch (NumberFormatException e) {
-                    player.sendMessage(CC.color("&cInvalid input! Please enter a number between 0 and 10:"));
+                    player.sendMessage(CC.color("&cInvalid input! Please enter a number between 1 and 10:"));
                 }
             });
         }

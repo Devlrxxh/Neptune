@@ -47,7 +47,9 @@ public abstract class Match {
     public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
-    private final HashMap<Location, BlockData> changes = new HashMap<>();
+    
+    // Modified block tracking system with chunking
+    private final Map<ChunkKey, Map<BlockPosition, BlockData>> chunkedChanges = new HashMap<>();
     private final Set<Location> liquids = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
     private final Time time = new Time();
@@ -58,6 +60,117 @@ public abstract class Match {
     public int rounds;
     private boolean duel;
     private boolean ended;
+    
+    // New inner classes for more efficient block storage
+    @Getter
+    @AllArgsConstructor
+    public static class ChunkKey {
+        private final int x;
+        private final int z;
+        private final World world;
+        
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ChunkKey chunkKey = (ChunkKey) o;
+            return x == chunkKey.x && z == chunkKey.z && world.equals(chunkKey.world);
+        }
+        
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, z, world.getName());
+        }
+        
+        public static ChunkKey fromLocation(Location location) {
+            return new ChunkKey(location.getBlockX() >> 4, location.getBlockZ() >> 4, location.getWorld());
+        }
+    }
+    
+    @Getter
+    @AllArgsConstructor
+    public static class BlockPosition {
+        private final int x;
+        private final int y;
+        private final int z;
+        
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            BlockPosition that = (BlockPosition) o;
+            return x == that.x && y == that.y && z == that.z;
+        }
+        
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y, z);
+        }
+        
+        public static BlockPosition fromLocation(Location location) {
+            return new BlockPosition(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        }
+        
+        public Location toLocation(World world) {
+            return new Location(world, x, y, z);
+        }
+    }
+    
+    /**
+     * Add a block change to the tracking system.
+     * This method uses the new chunked storage system for better performance.
+     *
+     * @param location The location of the block
+     * @param blockData The original block data to restore later
+     */
+    public void addBlockChange(Location location, BlockData blockData) {
+        ChunkKey chunkKey = ChunkKey.fromLocation(location);
+        BlockPosition blockPos = BlockPosition.fromLocation(location);
+        
+        chunkedChanges.computeIfAbsent(chunkKey, k -> new HashMap<>())
+                .putIfAbsent(blockPos, blockData);
+    }
+    
+    /**
+     * Check if a location has been changed
+     *
+     * @param location The location to check
+     * @return true if the location has been changed
+     */
+    public boolean hasBlockChange(Location location) {
+        ChunkKey chunkKey = ChunkKey.fromLocation(location);
+        BlockPosition blockPos = BlockPosition.fromLocation(location);
+        
+        Map<BlockPosition, BlockData> chunkChanges = chunkedChanges.get(chunkKey);
+        return chunkChanges != null && chunkChanges.containsKey(blockPos);
+    }
+    
+    /**
+     * Get the original block data for a changed location
+     *
+     * @param location The location to get data for
+     * @return The original BlockData or null if not found
+     */
+    public BlockData getOriginalBlockData(Location location) {
+        ChunkKey chunkKey = ChunkKey.fromLocation(location);
+        BlockPosition blockPos = BlockPosition.fromLocation(location);
+        
+        Map<BlockPosition, BlockData> chunkChanges = chunkedChanges.get(chunkKey);
+        return chunkChanges != null ? chunkChanges.get(blockPos) : null;
+    }
+    
+    // Compatibility method to get all changes (for legacy code)
+    public Map<Location, BlockData> getChanges() {
+        Map<Location, BlockData> allChanges = new HashMap<>();
+        for (Map.Entry<ChunkKey, Map<BlockPosition, BlockData>> chunkEntry : chunkedChanges.entrySet()) {
+            World world = chunkEntry.getKey().getWorld();
+            for (Map.Entry<BlockPosition, BlockData> blockEntry : chunkEntry.getValue().entrySet()) {
+                BlockPosition pos = blockEntry.getKey();
+                allChanges.put(pos.toLocation(world), blockEntry.getValue());
+            }
+        }
+        return allChanges;
+    }
 
     public void playSound(Sound sound) {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
@@ -169,23 +282,38 @@ public abstract class Match {
         if (SettingsLocale.ARENA_RESET_EXPERIMENTAL.getBoolean()) {
             List<BlockChanger.BlockSnapshot> blocks = new ArrayList<>();
 
+            // Add liquids to reset
             for (Location location : liquids) {
                 blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
             }
 
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
+            // Add changed blocks to reset using the chunked system
+            for (Map.Entry<ChunkKey, Map<BlockPosition, BlockData>> chunkEntry : chunkedChanges.entrySet()) {
+                World world = chunkEntry.getKey().getWorld();
+                for (Map.Entry<BlockPosition, BlockData> blockEntry : chunkEntry.getValue().entrySet()) {
+                    BlockPosition pos = blockEntry.getKey();
+                    Location location = pos.toLocation(world);
+                    blocks.add(new BlockChanger.BlockSnapshot(location, blockEntry.getValue()));
+                }
             }
+            
             BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
         } else {
+            // Standard reset process
             for (Location location : liquids) {
                 arena.getWorld().getBlockAt(location).setBlockData(Material.AIR.createBlockData(), false);
             }
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                arena.getWorld().getBlockAt(entry.getKey()).setBlockData(entry.getValue(), false);
+            
+            // Reset blocks by chunk for better efficiency
+            for (Map.Entry<ChunkKey, Map<BlockPosition, BlockData>> chunkEntry : chunkedChanges.entrySet()) {
+                World world = chunkEntry.getKey().getWorld();
+                for (Map.Entry<BlockPosition, BlockData> blockEntry : chunkEntry.getValue().entrySet()) {
+                    BlockPosition pos = blockEntry.getKey();
+                    Location location = pos.toLocation(world);
+                    world.getBlockAt(location).setBlockData(blockEntry.getValue(), false);
+                }
             }
         }
-
 
         removeEntities();
     }
@@ -225,7 +353,7 @@ public abstract class Match {
         if (this instanceof SoloFightMatch) {
             MatchState matchState = this.getState();
 
-            if (kit.is(KitRule.BEST_OF) && matchState.equals(MatchState.STARTING)) {
+            if (kit.is(KitRule.BEST_OF_ROUNDS) && matchState.equals(MatchState.STARTING)) {
                 if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BESTOF.getBoolean()) return new ArrayList<>();
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
             }
@@ -420,6 +548,15 @@ public abstract class Match {
             // Reset player's inventory
             player.getInventory().clear();
             player.getInventory().setArmorContents(null);
+            
+            // Reset health and saturation
+            player.setHealth(player.getMaxHealth());
+            player.setFoodLevel(20);
+            player.setSaturation(20.0f);
+            
+            // Clear any potion effects
+            player.getActivePotionEffects().forEach(effect -> 
+                player.removePotionEffect(effect.getType()));
             
             // Give kit loadout again
             kit.giveLoadout(participant);

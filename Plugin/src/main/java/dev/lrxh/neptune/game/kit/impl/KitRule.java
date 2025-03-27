@@ -13,7 +13,6 @@ public enum KitRule {
     BOXING(Material.DIAMOND_CHESTPLATE, "Allow/Deny Boxing", "Boxing", "boxing"),
     ALLOW_ARENA_BREAK(Material.WOODEN_AXE, "Allow Players to break blocks from the arena", "Arena Break", "arenaBreak"),
     DAMAGE(Material.DIAMOND_SWORD, "Allow/Deny Players to take Damage", "Damage", "damage"),
-    BEST_OF(Material.GOLDEN_AXE, "Enable best-of matches (rounds to win defined by Custom Rounds)", "Best of", "bestOf"),
     SATURATION_HEAL(Material.GOLDEN_APPLE, "If Players should regen from saturation", "Saturation Heal", "saturationHeal"),
     SHOW_HP(Material.APPLE, "If players should see their enemies health under their name", "Show Health", "showHP"),
     ALLOW_KIT_EDITOR(Material.WOODEN_AXE, "If players should be able to modify this kit in kiteditor.", "Allow Kit Editor", "allowKitEditor"),
@@ -33,12 +32,14 @@ public enum KitRule {
     // Additional Bridges configuration options
     RESET_ARENA_AFTER_SCORE(Material.CRAFTING_TABLE, "Reset arena blocks after a point is scored (timer is always applied)", "Reset After Score", "resetAfterScore"),
     RESPAWN_DELAY(Material.CLOCK, "Add a delay before respawning players", "Respawn Delay", "respawnDelay"),
-    CUSTOM_ROUNDS(Material.NETHER_STAR, "Customizable number of rounds (best of X) - click to set via chat", "Custom Rounds", "customRounds"),
     
     // Combat and gameplay features
     INSTANT_GAPPLE_HEAL(Material.GOLDEN_APPLE, "Immediately regenerate full health when eating a Golden Apple", "Instant Gapple Heal", "instantGappleHeal"),
     INFINITE_ARROWS(Material.ARROW, "Regenerate an arrow 5 seconds after shooting one", "Infinite Arrows", "infiniteArrows"),
-    INFINITE_DURABILITY(Material.ANVIL, "Makes all items unbreakable - they will never lose durability", "Infinite Durability", "infiniteDurability");
+    INFINITE_DURABILITY(Material.ANVIL, "Makes all items unbreakable - they will never lose durability", "Infinite Durability", "infiniteDurability"),
+    
+    // Unified Best of / Custom rounds setting
+    BEST_OF_ROUNDS(Material.GOLDEN_AXE, "Enable best-of matches with customizable rounds to win (click to set number)", "Best of Rounds", "bestOfRounds");
 
     private final String description;
     private final String name;

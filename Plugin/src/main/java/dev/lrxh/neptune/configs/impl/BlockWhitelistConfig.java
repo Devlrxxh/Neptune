@@ -156,6 +156,24 @@ public class BlockWhitelistConfig {
     }
     
     /**
+     * Get the whitelisted blocks for a kit
+     * 
+     * @param kitName The name of the kit (will be converted to lowercase)
+     * @return A set of whitelisted materials
+     */
+    public Set<Material> getWhitelistedBlocks(String kitName) {
+        // Get kit-specific blocks
+        Set<Material> kitBlocks = kitBlockWhitelists.get(kitName.toLowerCase());
+        
+        // If no kit-specific blocks, return a copy of the default list
+        if (kitBlocks == null || kitBlocks.isEmpty()) {
+            return new HashSet<>(defaultWhitelist);
+        }
+        
+        return new HashSet<>(kitBlocks);
+    }
+    
+    /**
      * Get the error message for a kit when breaking non-whitelisted blocks
      * 
      * @param kitName The name of the kit (will be converted to lowercase)
