@@ -328,10 +328,19 @@ public abstract class Match {
     public boolean isLocationPortalProtected(Location location) {
         // Only check if the kit has bridges enabled
         if (kit.is(KitRule.BRIDGES)) {
+            // Get protection radius from kit (if PORTAL_PROTECTION_RADIUS is enabled) or use default
+            int protectionRadius = kit.is(KitRule.PORTAL_PROTECTION_RADIUS) ? 
+                    kit.getPortalProtectionRadius() : 3;
+            
+            // If radius is 0, portal protection is disabled
+            if (protectionRadius <= 0) {
+                return false;
+            }
+                    
             // Get the blocks around the location
-            for (int x = -arena.getPortalProtectionRadius(); x <= arena.getPortalProtectionRadius(); x++) {
-                for (int y = -arena.getPortalProtectionRadius(); y <= arena.getPortalProtectionRadius(); y++) {
-                    for (int z = -arena.getPortalProtectionRadius(); z <= arena.getPortalProtectionRadius(); z++) {
+            for (int x = -protectionRadius; x <= protectionRadius; x++) {
+                for (int y = -protectionRadius; y <= protectionRadius; y++) {
+                    for (int z = -protectionRadius; z <= protectionRadius; z++) {
                         Location checkLoc = location.clone().add(x, y, z);
                         if (checkLoc.getBlock().getType() == Material.END_PORTAL) {
                             return true;
@@ -527,6 +536,14 @@ public abstract class Match {
             );
         } else {
             broadcast(deathMessage);
+        }
+        
+        // Play kill sound to the attacker if this was a kill
+        if (deadParticipant.getDeathCause() == DeathCause.KILL && deadParticipant.getLastAttacker() != null) {
+            Player killer = deadParticipant.getLastAttacker().getPlayer();
+            if (killer != null) {
+                killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+            }
         }
     }
 

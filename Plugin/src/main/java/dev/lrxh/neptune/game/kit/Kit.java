@@ -36,6 +36,7 @@ public class Kit {
     private int queue, playing, slot, kitEditorSlot;
     private double health;
     private int customRounds = 3; // Default to 3 rounds for Best of X
+    private int portalProtectionRadius = 3; // Default to 3 block radius for portal protection
 
     public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot) {
         this.name = name;
@@ -49,6 +50,7 @@ public class Kit {
         this.slot = slot;
         this.health = health;
         this.kitEditorSlot = kitEditorSlot;
+        this.portalProtectionRadius = 3; // Default value
 
         addToProfiles();
         // Create default block whitelist for this kit
@@ -67,6 +69,7 @@ public class Kit {
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
         this.kitEditorSlot = slot;
+        this.portalProtectionRadius = 3; // Default value
 
         addToProfiles();
         // Create default block whitelist for this kit
@@ -85,6 +88,7 @@ public class Kit {
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
         this.kitEditorSlot = slot;
+        this.portalProtectionRadius = 3; // Default value
 
         addToProfiles();
         // Create default block whitelist for this kit

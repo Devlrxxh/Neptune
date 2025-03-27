@@ -39,6 +39,7 @@ public class KitService implements IService {
                 int kitEditorSlot = config.getInt(path + "kitEditor-slot", slot);
                 double health = config.getDouble(path + "health", 20);
                 int customRounds = config.getInt(path + "customRounds", 3);
+                int portalProtectionRadius = config.getInt(path + "portalProtectionRadius", 3);
 
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
@@ -57,6 +58,7 @@ public class KitService implements IService {
                 Kit kit = getKitByName(kitName);
                 if (kit != null) {
                     kit.setCustomRounds(customRounds);
+                    kit.setPortalProtectionRadius(portalProtectionRadius);
                 }
             }
         }
@@ -97,6 +99,7 @@ public class KitService implements IService {
             values.add(new Value("health", kit.getHealth()));
             values.add(new Value("kitEditor-slot", kit.getKitEditorSlot()));
             values.add(new Value("customRounds", kit.getCustomRounds()));
+            values.add(new Value("portalProtectionRadius", kit.getPortalProtectionRadius()));
 
             for (Map.Entry<KitRule, Boolean> kitRuleEntry : kit.getRules().entrySet()) {
                 values.add(new Value(kitRuleEntry.getKey().getSaveName(), kit.is(kitRuleEntry.getKey())));

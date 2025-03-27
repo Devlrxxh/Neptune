@@ -196,8 +196,13 @@ public class MatchListener implements Listener {
                 }
             }
             match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
+            
+            // Check if this damage would kill the player (add kill sound)
+            if (event.getFinalDamage() >= player.getHealth()) {
+                // Play kill sound to the attacker
+                attacker.playSound(attacker.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+            }
         }
-
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -597,6 +602,13 @@ public class MatchListener implements Listener {
         Location blockLocation = event.getBlock().getLocation();
         Material blockType = event.getBlock().getType();
         if (match == null) return;
+        
+        // Check for portal protection in Bridges mode (highest priority check)
+        if (match.getKit().is(KitRule.BRIDGES) && match.isLocationPortalProtected(blockLocation)) {
+            event.setCancelled(true);
+            return;
+        }
+        
         if (blockType.name().contains("BED")) return;
         if (match.getKit().is(KitRule.BUILD)) {
             event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
@@ -655,6 +667,11 @@ public class MatchListener implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
+            // Remove blocks near portal in Bridges mode
+            if (match.getKit().is(KitRule.BRIDGES)) {
+                event.blockList().removeIf(b -> match.isLocationPortalProtected(b.getLocation()));
+            }
+            
             for (Block block : new ArrayList<>(event.blockList())) {
                 if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
                     if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {

@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.impl.team;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -18,7 +19,9 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -139,6 +142,14 @@ public class TeamFightMatch extends Match {
         // Send the appropriate death message
         sendDeathMessage(participant);
         
+        // Play kill sound to the killer if this was a kill
+        if (participant.getDeathCause() == DeathCause.KILL && participant.getLastAttacker() != null) {
+            Player killer = participant.getLastAttacker().getPlayer();
+            if (killer != null) {
+                killer.playSound(killer.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+            }
+        }
+        
         // Only score based on deaths if it's not a Bridges match
         if (!kit.is(KitRule.BRIDGES)) {
             // Check if the team is now a loser (all members dead)
@@ -164,10 +175,30 @@ public class TeamFightMatch extends Match {
                     kit.giveLoadout(participant);
                 }
                 
-                // Instantly respawn the player
-                participant.getPlayer().teleport(getSpawn(participant));
-                participant.setDead(false);
-                team.getDeadParticipants().remove(participant);
+                // Ensure player entity is properly removed from all clients
+                Player deadPlayer = participant.getPlayer();
+                
+                // Fix ghost player bug - force player to be hidden from all players
+                forEachPlayer(otherPlayer -> {
+                    if (otherPlayer != deadPlayer) {
+                        otherPlayer.hidePlayer(Neptune.get(), deadPlayer);
+                    }
+                });
+                
+                // Delay showing the player to ensure client sync
+                Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
+                    // Teleport the player to their spawn
+                    deadPlayer.teleport(getSpawn(participant));
+                    participant.setDead(false);
+                    team.getDeadParticipants().remove(participant);
+                    
+                    // Show the player to everyone again after a brief delay
+                    forEachPlayer(otherPlayer -> {
+                        if (otherPlayer != deadPlayer) {
+                            otherPlayer.showPlayer(Neptune.get(), deadPlayer);
+                        }
+                    });
+                }, 2L); // Small delay to ensure client-server sync
             }
         }
         

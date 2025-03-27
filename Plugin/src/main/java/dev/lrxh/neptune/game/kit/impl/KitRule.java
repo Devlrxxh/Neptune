@@ -32,6 +32,7 @@ public enum KitRule {
     // Additional Bridges configuration options
     RESET_ARENA_AFTER_SCORE(Material.CRAFTING_TABLE, "Reset arena blocks after a point is scored (timer is always applied)", "Reset After Score", "resetAfterScore"),
     RESPAWN_DELAY(Material.CLOCK, "Add a delay before respawning players", "Respawn Delay", "respawnDelay"),
+    PORTAL_PROTECTION_RADIUS(Material.BARRIER, "Configure the protection radius around portals (default: 3)", "Portal Protection", "portalProtectionRadius"),
     
     // Combat and gameplay features
     INSTANT_GAPPLE_HEAL(Material.GOLDEN_APPLE, "Immediately regenerate full health when eating a Golden Apple", "Instant Gapple Heal", "instantGappleHeal"),

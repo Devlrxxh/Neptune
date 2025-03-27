@@ -121,6 +121,11 @@ public class BlockTracker implements Listener {
             }
 
             getMatchForPlayer(player).ifPresent(match -> {
+                // Remove blocks near portal in Bridges mode
+                if (match.getKit().is(KitRule.BRIDGES)) {
+                    event.blockList().removeIf(b -> match.isLocationPortalProtected(b.getLocation()));
+                }
+                
                 // Handle LIMITED_BLOCK_BREAK rule with the config system
                 if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                     String kitName = match.getKit().getName();
@@ -206,6 +211,13 @@ public class BlockTracker implements Listener {
         // Prevent block breaking in survival mode (unless player is in creative)
         if (!player.getGameMode().equals(GameMode.CREATIVE)) {
             getMatchForPlayer(player).ifPresent(match -> {
+                // Check for portal protection in Bridges mode (highest priority check)
+                if (match.getKit().is(KitRule.BRIDGES) && match.isLocationPortalProtected(block.getLocation())) {
+                    event.setCancelled(true);
+                    player.sendMessage(CC.color("&cYou cannot break blocks near the goal portal!"));
+                    return;
+                }
+                
                 // Track original block state for reset, regardless of whether the block can be broken
                 if (!match.hasBlockChange(block.getLocation())) {
                     match.addBlockChange(block.getLocation(), block.getBlockData());
@@ -259,6 +271,12 @@ public class BlockTracker implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
+            // Check for portal protection in Bridges mode (highest priority check)
+            if (match.getKit().is(KitRule.BRIDGES) && match.isLocationPortalProtected(block.getLocation())) {
+                event.setCancelled(true);
+                return;
+            }
+            
             // Handle LIMITED_BLOCK_BREAK rule with the config system
             if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                 Material blockType = block.getType();
@@ -312,6 +330,11 @@ public class BlockTracker implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
+            // Remove blocks near portal in Bridges mode
+            if (match.getKit().is(KitRule.BRIDGES)) {
+                event.blockList().removeIf(b -> match.isLocationPortalProtected(b.getLocation()));
+            }
+            
             // Handle LIMITED_BLOCK_BREAK rule with the config system
             if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                 String kitName = match.getKit().getName();

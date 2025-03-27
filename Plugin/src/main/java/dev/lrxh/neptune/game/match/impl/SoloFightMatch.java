@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.impl;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
@@ -12,10 +13,10 @@ import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchSecondRoundRunnable;
-import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
@@ -28,7 +29,9 @@ import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Sound;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 
@@ -197,10 +200,29 @@ public class SoloFightMatch extends Match {
                         kit.giveLoadout(participant);
                     }
                     
-                    // Instantly respawn instead of waiting
-                    participant.getPlayer().teleport(getSpawn(participant));
-                    participant.setDead(false);
-                    showParticipant(participant);
+                    // Ensure player entity is properly removed from all clients
+                    Player deadPlayer = participant.getPlayer();
+                    
+                    // Fix ghost player bug - force player to be hidden from all players
+                    forEachPlayer(otherPlayer -> {
+                        if (otherPlayer != deadPlayer) {
+                            otherPlayer.hidePlayer(Neptune.get(), deadPlayer);
+                        }
+                    });
+                    
+                    // Delay showing the player to ensure client sync
+                    Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
+                        // Teleport the player to their spawn
+                        deadPlayer.teleport(getSpawn(participant));
+                        participant.setDead(false);
+                        
+                        // Show the player to everyone again after a brief delay
+                        forEachPlayer(otherPlayer -> {
+                            if (otherPlayer != deadPlayer) {
+                                otherPlayer.showPlayer(Neptune.get(), deadPlayer);
+                            }
+                        });
+                    }, 2L); // Small delay to ensure client-server sync
                 }
                 return;
             }
