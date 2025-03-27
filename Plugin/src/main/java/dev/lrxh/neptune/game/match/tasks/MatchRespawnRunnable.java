@@ -42,12 +42,16 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
             // Always reset player first regardless of cause
             PlayerUtil.reset(participant.getPlayer());
 
+            // Make sure player is in SURVIVAL mode for the kit
+            participant.getPlayer().setGameMode(GameMode.SURVIVAL);
+
             // Give kit loadout for Bridges mode or if inventory reset is required
             if (match.getKit().is(KitRule.BRIDGES) || match.getKit().is(KitRule.RESET_INVENTORY_AFTER_DEATH)) {
+                // Apply the original kit loadout
                 match.getKit().giveLoadout(participant);
+                // Update inventory to ensure changes are visible to the player
+                participant.getPlayer().updateInventory();
             }
-
-            participant.getPlayer().setGameMode(GameMode.ADVENTURE);
         }
 
         if (participant.getPlayer() == null) return;

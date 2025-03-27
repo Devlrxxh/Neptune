@@ -30,6 +30,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -65,6 +66,11 @@ public class MatchListener implements Listener {
             Match match = profile.getMatch();
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant == null) return;
+            
+            // Skip processing if the participant is already marked as dead
+            // This prevents duplicate death processing when we manually handle it in EntityDamageByEntityEvent
+            if (participant.isDead()) return;
+            
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
@@ -73,6 +79,12 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
+            // Check if the item being picked up is a bed item and cancel the pickup if it is
+            if (event.getItem().getItemStack().getType().name().contains("BED")) {
+                event.setCancelled(true);
+                return;
+            }
+            
             if (player.getGameMode().equals(GameMode.CREATIVE)) return;
             Profile profile = API.getProfile(player);
 
@@ -126,6 +138,9 @@ public class MatchListener implements Listener {
                 if (isOwnBed) {
                     participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
                 } else {
+                    // Play Ender Dragon roar sound to all players in the match
+                    match.forEachPlayer(p -> p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 1.0f));
+                    
                     // Break the opponent's bed
                     teamMatch.breakBed(participant);
                     
@@ -143,6 +158,9 @@ public class MatchListener implements Listener {
                 ParticipantColor color = participant.getColor();
 
                 if (bedLocation.distanceSquared(spawn) > bedLocation.distanceSquared(opponentSpawn)) {
+                    // Play Ender Dragon roar sound to all players in the match
+                    match.forEachPlayer(p -> p.playSound(p.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 1.0f));
+                    
                     match.breakBed(opponent);
                     match.sendTitle(opponent, MessagesLocale.BED_BREAK_TITLE.getString(), MessagesLocale.BED_BREAK_FOOTER.getString(), 20);
                     match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.BLUE_BED_BROKEN_MESSAGE : MessagesLocale.RED_BED_BROKEN_MESSAGE, 
@@ -250,6 +268,20 @@ public class MatchListener implements Listener {
 
             if (event.getFinalDamage() >= player.getHealth()) {
                 PlayerUtil.playDeathAnimation(player, attacker, match.getPlayers());
+                
+                // This is a lethal hit - explicitly handle player death to ensure proper reset 
+                Participant participant = match.getParticipant(player.getUniqueId());
+                if (participant != null && !participant.isDead()) {
+                    // Set the last attacker
+                    participant.setLastAttacker(match.getParticipant(attacker.getUniqueId()));
+                    // Set death cause explicitly to KILL for player kills
+                    participant.setDeathCause(DeathCause.KILL);
+                    // Call onDeath to process death, inventory reset, etc.
+                    match.onDeath(participant);
+                    // Cancel the damage event since we're handling death manually
+                    event.setCancelled(true);
+                    return;
+                }
             }
 
             if (match instanceof TeamFightMatch teamFightMatch) {
@@ -785,6 +817,16 @@ public class MatchListener implements Listener {
 
         if (match != null && match.getKit().is(KitRule.INFINITE_DURABILITY)) {
             // Cancel the event to prevent item from taking durability damage
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onItemSpawn(ItemSpawnEvent event) {
+        Item item = event.getEntity();
+        // Check if the spawned item is a bed
+        if (item != null && item.getItemStack().getType().name().contains("BED")) {
+            // Cancel the spawn of bed items
             event.setCancelled(true);
         }
     }

@@ -377,9 +377,14 @@ public abstract class Match {
         Profile profile = API.getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
+        
+        // Always reset the player's inventory and status first
         PlayerUtil.reset(player);
+        
         Participant participant = getParticipant(playerUUID);
         participant.setLastAttacker(null);
+        
+        // Give the appropriate kit loadout
         kit.giveLoadout(participant);
     }
 

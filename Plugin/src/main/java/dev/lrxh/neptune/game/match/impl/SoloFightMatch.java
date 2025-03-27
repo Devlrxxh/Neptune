@@ -28,6 +28,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 
@@ -141,6 +142,12 @@ public class SoloFightMatch extends Match {
     @Override
     public void breakBed(Participant participant) {
         participant.setBedBroken(true);
+        
+        // Play Ender Dragon roar sound to the participant whose bed was broken
+        Player player = participant.getPlayer();
+        if (player != null) {
+            player.playSound(player.getLocation(), Sound.ENTITY_ENDER_DRAGON_GROWL, 1.0f, 1.0f);
+        }
     }
 
     /**
@@ -179,6 +186,19 @@ public class SoloFightMatch extends Match {
         sendDeathMessage(participant);
 
         if (!participant.isDisconnected() && !participant.isLeft()) {
+            // Handle kit reset for RESET_INVENTORY_AFTER_DEATH first
+            // This ensures inventory reset always happens regardless of game mode
+            if (kit.is(KitRule.RESET_INVENTORY_AFTER_DEATH) && !kit.is(KitRule.BRIDGES)) {
+                // First fully reset the player's state
+                PlayerUtil.reset(participant.getPlayer());
+                // Make sure player is in SURVIVAL mode for the kit
+                participant.getPlayer().setGameMode(GameMode.SURVIVAL);
+                // Give them the original kit loadout they started with
+                kit.giveLoadout(participant);
+                // Update inventory to ensure changes are visible to the player
+                participant.getPlayer().updateInventory();
+            }
+            
             // Special handling for Bridges - just respawn the player without resetting the match
             if (kit.is(KitRule.BRIDGES)) {
                 // Always reset inventory in Bridges mode regardless of the respawn method
@@ -222,12 +242,6 @@ public class SoloFightMatch extends Match {
                     }, 2L); // Small delay to ensure client-server sync
                 }
                 return;
-            }
-
-            // Check if we should reset inventory for other modes
-            if (kit.is(KitRule.RESET_INVENTORY_AFTER_DEATH)) {
-                PlayerUtil.reset(participant.getPlayer());
-                kit.giveLoadout(participant);
             }
 
             // Original handling for BedWars
