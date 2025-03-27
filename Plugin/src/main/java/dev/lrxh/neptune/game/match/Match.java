@@ -303,6 +303,15 @@ public abstract class Match {
         // Check global in-game scoreboard setting
         if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME.getBoolean()) return new ArrayList<>();
 
+        // Check if this is a bedwars match first, since this is a special case regardless of match type
+        if (kit.is(KitRule.BED_WARS)) {
+            if (this instanceof SoloFightMatch) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS.getStringList()), player);
+            } else if (this instanceof TeamFightMatch) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS_TEAM.getStringList()), player);
+            }
+        }
+
         if (this instanceof SoloFightMatch) {
             MatchState matchState = this.getState();
 

@@ -5,6 +5,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.FfaFightMatch;
@@ -15,6 +16,7 @@ import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.GlobalStats;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
@@ -96,6 +98,15 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<points>", String.valueOf(participant.getRoundsWon()));
                         line = line.replaceAll("<opponent-points>", String.valueOf(opponent.getRoundsWon()));
                     }
+                    
+                    // Add bed status placeholders for bedwars
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        String bedStatus = participant.isBedBroken() ? CC.color("&c✘") : CC.color("&a✔");
+                        String opponentBedStatus = opponent.isBedBroken() ? CC.color("&c✘") : CC.color("&a✔");
+                        
+                        line = line.replaceAll("<bed-status>", bedStatus);
+                        line = line.replaceAll("<opponent-bed-status>", opponentBedStatus);
+                    }
                 }
 
                 if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
@@ -104,6 +115,15 @@ public class PlaceholderUtil {
 
                     line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(redPlayer.getPlayer())));
                     line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayer())));
+                    
+                    // Add bed status placeholders for spectators in bedwars
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        String redBedStatus = redPlayer.isBedBroken() ? CC.color("&c✘") : CC.color("&a✔");
+                        String blueBedStatus = bluePlayer.isBedBroken() ? CC.color("&c✘") : CC.color("&a✔");
+                        
+                        line = line.replaceAll("<red-bed-status>", redBedStatus);
+                        line = line.replaceAll("<blue-bed-status>", blueBedStatus);
+                    }
                 }
             }
             if (match instanceof TeamFightMatch teamFightMatch) {
@@ -115,6 +135,15 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<max>", String.valueOf(matchTeam.getParticipants().size()));
                     line = line.replaceAll("<alive-opponent>", String.valueOf(opponentTeam.getAliveParticipants()));
                     line = line.replaceAll("<max-opponent>", String.valueOf(opponentTeam.getParticipants().size()));
+                    
+                    // Add bed status placeholders for team bedwars
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        String teamBedStatus = matchTeam.isBedDestroyed() ? CC.color("&c✘") : CC.color("&a✔");
+                        String opponentTeamBedStatus = opponentTeam.isBedDestroyed() ? CC.color("&c✘") : CC.color("&a✔");
+                        
+                        line = line.replaceAll("<team-bed-status>", teamBedStatus);
+                        line = line.replaceAll("<opponent-team-bed-status>", opponentTeamBedStatus);
+                    }
                 }
 
                 if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
@@ -125,6 +154,15 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<max-red>", String.valueOf(redTeam.getParticipants().size()));
                     line = line.replaceAll("<alive-blue>", String.valueOf(blueTeam.getAliveParticipants()));
                     line = line.replaceAll("<max-blue>", String.valueOf(blueTeam.getParticipants().size()));
+                    
+                    // Add bed status placeholders for spectators in team bedwars
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        String redBedStatus = redTeam.isBedDestroyed() ? CC.color("&c✘") : CC.color("&a✔");
+                        String blueBedStatus = blueTeam.isBedDestroyed() ? CC.color("&c✘") : CC.color("&a✔");
+                        
+                        line = line.replaceAll("<red-bed-status>", redBedStatus);
+                        line = line.replaceAll("<blue-bed-status>", blueBedStatus);
+                    }
                 }
             }
 

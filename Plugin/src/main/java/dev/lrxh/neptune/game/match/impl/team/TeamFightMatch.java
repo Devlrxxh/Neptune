@@ -10,6 +10,7 @@ import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.MatchState;
 import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.game.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -82,7 +83,31 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void breakBed(Participant participant) {
-        getParticipantTeam(participant).forEachParticipant(participants -> participants.setBedBroken(true));
+        // Find which team's bed was broken - it should be the opponent's team
+        MatchTeam playerTeam = getParticipantTeam(participant);
+        MatchTeam opponentTeam = (playerTeam == teamA) ? teamB : teamA;
+        
+        // Set the bed as destroyed in the team
+        opponentTeam.setBedDestroyed(true);
+        
+        // Send sound effects to all players
+        playerTeam.forEachParticipant(p -> {
+            p.playSound(Sound.ENTITY_WITHER_DEATH);
+        });
+        
+        opponentTeam.forEachParticipant(p -> {
+            p.playSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
+        });
+        
+        // Send titles and messages about the bed being destroyed
+        opponentTeam.sendTitle(MessagesLocale.BED_BREAK_TITLE.getString(), MessagesLocale.BED_BREAK_FOOTER.getString(), 20);
+        
+        // Broadcast a message about who broke the bed
+        String message = playerTeam.getParticipants().get(0).getColor().equals(ParticipantColor.RED) ? 
+            MessagesLocale.BLUE_BED_BROKEN_MESSAGE.getString() : 
+            MessagesLocale.RED_BED_BROKEN_MESSAGE.getString();
+            
+        forEachParticipant(p -> p.sendMessage(message.replace("<player>", participant.getNameColored())));
     }
 
     /**
@@ -152,7 +177,25 @@ public class TeamFightMatch extends Match {
             }
         }
 
-        // Only score based on deaths if it's not a Bridges match
+        // Bedwars handling - respawn players if their bed is still intact
+        if (kit.is(KitRule.BED_WARS)) {
+            MatchTeam participantTeam = getParticipantTeam(participant);
+            
+            if (!participantTeam.isBedDestroyed()) {
+                // If the bed isn't broken, respawn the player
+                team.sendTitle("&cYou Died!", "&eRespawning in 5 seconds...", 40);
+                new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
+                
+                // If there's a killer, reset their combo
+                if (participant.getLastAttacker() != null) {
+                    participant.getLastAttacker().setCombo(0);
+                }
+                
+                return; // Don't continue with death processing
+            }
+        }
+        
+        // Only score based on deaths if it's not a Bridges or Bedwars match
         if (!kit.is(KitRule.BRIDGES)) {
             // Check if the team is now a loser (all members dead)
             if (team.isLoser()) {

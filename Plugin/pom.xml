@@ -49,18 +49,16 @@
 
     <dependencies>
         <dependency>
-            <groupId>dev.lrxh</groupId>
-            <artifactId>PetsAPI</artifactId>
-            <version>1.0.0</version>
+            <groupId>me.tofaa.entitylib</groupId>
+            <artifactId>spigot</artifactId>
+            <version>+6fba8ea-SNAPSHOT</version>
         </dependency>
-
         <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>1.19.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents-spigot</artifactId>
