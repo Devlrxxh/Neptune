@@ -40,11 +40,24 @@ public class SoloFightMatch extends Match {
 
     private final Participant participantA;
     private final Participant participantB;
+    // Cache player information for stats persistence when players disconnect
+    private String cachedPlayerAUsername;
+    private String cachedPlayerBUsername;
 
     public SoloFightMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB, int rounds) {
         super(MatchState.STARTING, arena, kit, participants, rounds, duel, false);
         this.participantA = participantA;
         this.participantB = participantB;
+        
+        // Cache player usernames at match start
+        Profile profileA = API.getProfile(participantA.getPlayerUUID());
+        Profile profileB = API.getProfile(participantB.getPlayerUUID());
+        if (profileA != null) {
+            this.cachedPlayerAUsername = profileA.getUsername();
+        }
+        if (profileB != null) {
+            this.cachedPlayerBUsername = profileB.getUsername();
+        }
     }
 
     @Override
@@ -98,6 +111,43 @@ public class SoloFightMatch extends Match {
         Profile winnerProfile = API.getProfile(winner.getPlayerUUID());
         Profile loserProfile = API.getProfile(loser.getPlayerUUID());
 
+        boolean hasWinnerProfile = (winnerProfile != null);
+        boolean hasLoserProfile = (loserProfile != null);
+        
+        // Handle cases where profiles are null due to disconnection
+        if (!hasWinnerProfile || !hasLoserProfile) {
+            plugin.getLogger().warning("Some profiles are null during stats recording: " + 
+                (!hasWinnerProfile ? "Winner profile is null" : "") + 
+                (!hasLoserProfile ? "Loser profile is null" : ""));
+            
+            // Try to use cached data for missing profiles
+            if (hasWinnerProfile && !hasLoserProfile) {
+                // Winner is still connected, but loser disconnected
+                String loserUsername = (loser == participantA) ? cachedPlayerAUsername : cachedPlayerBUsername;
+                if (loserUsername != null) {
+                    // We can still add stats for the winner at least
+                    winnerProfile.getGameData().addHistory(
+                            new MatchHistory(true, loserUsername, kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
+                    winnerProfile.getGameData().run(kit, true);
+                    plugin.getLogger().info("Recorded win stats for " + winnerProfile.getUsername() + " against disconnected player " + loserUsername);
+                }
+            } else if (!hasWinnerProfile && hasLoserProfile) {
+                // Loser is still connected, but winner disconnected
+                String winnerUsername = (winner == participantA) ? cachedPlayerAUsername : cachedPlayerBUsername;
+                if (winnerUsername != null) {
+                    // We can still add stats for the loser at least
+                    loserProfile.getGameData().addHistory(
+                            new MatchHistory(false, winnerUsername, kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
+                    loserProfile.getGameData().run(kit, false);
+                    plugin.getLogger().info("Recorded loss stats for " + loserProfile.getUsername() + " against disconnected player " + winnerUsername);
+                }
+            }
+            
+            // If both profiles are null, we can't do anything
+            return;
+        }
+
+        // Normal case - both profiles exist
         winnerProfile.getGameData().addHistory(
                 new MatchHistory(true, loserProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
 
