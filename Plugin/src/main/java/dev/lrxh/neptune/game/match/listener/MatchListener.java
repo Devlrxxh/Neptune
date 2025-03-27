@@ -18,6 +18,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.EntityUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import org.bukkit.Bukkit;
@@ -182,6 +183,10 @@ public class MatchListener implements Listener {
                 return;
             }
 
+            if (event.getFinalDamage() >= player.getHealth()) {
+                PlayerUtil.playDeathAnimation(player, attacker, match.getPlayers());
+            }
+
             if (match instanceof TeamFightMatch teamFightMatch) {
                 if (teamFightMatch.onSameTeam(player.getUniqueId(), attacker.getUniqueId())) {
                     event.setCancelled(true);
@@ -219,24 +224,22 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
-
-        if (!(event.getFinalDamage() >= player.getHealth())) return;
-        if (player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING) ||
-                player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
-
-        Profile profile = API.getProfile(player);
-        if (profile == null) return;
-        Match match = profile.getMatch();
-        if (match == null) return;
-        Participant participant = match.getParticipant(player.getUniqueId());
-        participant.setDeathCause(DeathCause.DIED);
-        match.onDeath(participant);
-        player.setHealth(20.0f);
-        event.setCancelled(true);
-    }
+//    @EventHandler
+//    public void onDamage(EntityDamageEvent event) {
+//        if (!(event.getEntity() instanceof Player player)) return;
+//
+//        if (!(event.getFinalDamage() >= player.getHealth())) return;
+//        if (player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING) ||
+//                player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
+//
+//        Profile profile = API.getProfile(player);
+//        if (profile == null) return;
+//        Match match = profile.getMatch();
+//        if (match == null) return;
+//        Participant participant = match.getParticipant(player.getUniqueId());
+//        participant.setDeathCause(DeathCause.DIED);
+//        match.onDeath(participant);
+//    }
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {

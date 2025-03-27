@@ -47,7 +47,6 @@ public class FfaFightMatch extends Match {
     public void onDeath(Participant participant) {
         if (isEnded()) return;
         hideParticipant(participant);
-        PlayerUtil.playDeathAnimation(participant.getPlayer(), getPlayers());
 
         if (!participant.isLeft()) {
             addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);

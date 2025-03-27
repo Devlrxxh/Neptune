@@ -5,8 +5,10 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityData;
 import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
+import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityTeleport;
+import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityVelocity;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -20,6 +22,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -63,11 +66,11 @@ public class PlayerUtil {
         resetActionbar(player);
     }
 
-    public void playDeathAnimation(Player player, List<Player> watchers) {
+    public void playDeathAnimation(Player player, Player attacker, List<Player> watchers) {
         if (player == null) return;
 
         WrapperPlayer p = new WrapperPlayer(new UserProfile(UUID.randomUUID(), player.getName()),
-                EntityLib.getPlatform().getEntityIdProvider().provide(UUID.randomUUID(), EntityTypes.PLAYER));
+                EntityLib.getPlatform().getEntityIdProvider().provide(UUID.randomUUID(), EntityTypes.ARMOR_STAND));
         p.setInTablist(false);
         p.setTextureProperties(ExtraConversionUtil.getProfileFromBukkitPlayer(player).getTextureProperties());
         p.spawn(SpigotConversionUtil.fromBukkitLocation(player.getLocation()));
@@ -76,25 +79,24 @@ public class PlayerUtil {
                 p.getEntityId(), List.of(new EntityData(9, EntityDataTypes.FLOAT, 0.0f))
         );
 
-        WrapperPlayServerTeams.ScoreBoardTeamInfo teamInfo =
-                new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-                        Component.text(""),
-                        Component.text(""),
-                        Component.text(""),
-                        WrapperPlayServerTeams.NameTagVisibility.NEVER,
-                        WrapperPlayServerTeams.CollisionRule.NEVER,
-                        null,
-                        WrapperPlayServerTeams.OptionData.NONE);
+        Vector v = attacker.getLocation().getDirection().multiply(2.5);
+        Vector3d vector3d = new Vector3d(v.getX(), v.getY(), v.getZ());
+        Location location = player.getLocation().add(v);
+
+
+        WrapperPlayServerEntityVelocity velocity = new WrapperPlayServerEntityVelocity(p.getEntityId(), vector3d);
+        WrapperPlayServerEntityTeleport teleport = new WrapperPlayServerEntityTeleport(p.getEntityId(), SpigotConversionUtil.fromBukkitLocation(location), true);
 
         for (Player watcher : watchers) {
             if (player.getUniqueId().equals(watcher.getUniqueId())) continue;
             p.addViewer(watcher.getUniqueId());
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, healthPacket);
+            PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, velocity);
+            PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, teleport);
         }
 
         Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), p::remove, 40L);
     }
-
 
     public void resetActionbar(Player player) {
         player.sendActionBar(" ");
