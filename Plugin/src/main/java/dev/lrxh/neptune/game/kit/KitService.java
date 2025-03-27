@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.kit;
 
 import dev.lrxh.neptune.configs.ConfigService;
+import dev.lrxh.neptune.configs.impl.BlockWhitelistConfig;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -37,6 +38,8 @@ public class KitService implements IService {
                 int slot = config.getInt(path + "slot", kits.size() + 1);
                 int kitEditorSlot = config.getInt(path + "kitEditor-slot", slot);
                 double health = config.getDouble(path + "health", 20);
+                int customRounds = config.getInt(path + "customRounds", 3);
+                int portalProtectionRadius = config.getInt(path + "portalProtectionRadius", 3);
 
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
@@ -51,7 +54,26 @@ public class KitService implements IService {
                 }
 
                 kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, health, kitEditorSlot));
+                // Set the loaded customRounds value
+                Kit kit = getKitByName(kitName);
+                if (kit != null) {
+                    kit.setCustomRounds(customRounds);
+                    kit.setPortalProtectionRadius(portalProtectionRadius);
+                }
             }
+        }
+        
+        // Generate default whitelist entries for all kits if they don't already exist
+        ensureWhitelistEntriesForAllKits();
+    }
+
+    /**
+     * Ensures that all kits have corresponding whitelist entries in blockwhitelist.yml
+     */
+    public void ensureWhitelistEntriesForAllKits() {
+        BlockWhitelistConfig whitelistConfig = ConfigService.get().getBlockWhitelistConfig();
+        for (Kit kit : kits) {
+            whitelistConfig.createDefaultWhitelistForKit(kit.getName());
         }
     }
 
@@ -76,6 +98,8 @@ public class KitService implements IService {
             values.add(new Value("slot", kit.getSlot()));
             values.add(new Value("health", kit.getHealth()));
             values.add(new Value("kitEditor-slot", kit.getKitEditorSlot()));
+            values.add(new Value("customRounds", kit.getCustomRounds()));
+            values.add(new Value("portalProtectionRadius", kit.getPortalProtectionRadius()));
 
             for (Map.Entry<KitRule, Boolean> kitRuleEntry : kit.getRules().entrySet()) {
                 values.add(new Value(kitRuleEntry.getKey().getSaveName(), kit.is(kitRuleEntry.getKey())));

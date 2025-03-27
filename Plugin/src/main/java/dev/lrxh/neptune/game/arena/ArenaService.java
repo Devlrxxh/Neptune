@@ -39,6 +39,7 @@ public class ArenaService implements IService {
                 Location redSpawn = LocationUtil.deserialize(config.getString(path + "redSpawn"));
                 Location blueSpawn = LocationUtil.deserialize(config.getString(path + "blueSpawn"));
                 boolean enabled = config.getBoolean(path + "enabled");
+                int portalProtectionRadius = config.getInt(path + "portalProtectionRadius", 3);
                 ArenaType arenaType = ArenaType.valueOf(config.getString(path + ".type"));
 
                 if (arenaType.equals(ArenaType.STANDALONE)) {
@@ -49,15 +50,19 @@ public class ArenaService implements IService {
                     List<String> copies = config.getStringList(path + "copies");
                     boolean copy = config.getBoolean(path + "copy", false);
                     List<Material> whitelistedBlocks = new ArrayList<>();
+                    int deathY = config.getInt(path + "deathY", 0);
 
                     for (String name : config.getStringList(path + "whitelistedBlocks")) {
                         whitelistedBlocks.add(Material.getMaterial(name));
                     }
 
                     StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copies, whitelistedBlocks);
+                    arena.setPortalProtectionRadius(portalProtectionRadius);
+                    arena.setDeathY(deathY);
                     arenas.add(arena);
                 } else {
                     SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
+                    arena.setPortalProtectionRadius(portalProtectionRadius);
                     arenas.add(arena);
                 }
             }
@@ -72,7 +77,8 @@ public class ArenaService implements IService {
                     new Value("displayName", arena.getDisplayName()),
                     new Value("redSpawn", LocationUtil.serialize(arena.getRedSpawn())),
                     new Value("blueSpawn", LocationUtil.serialize(arena.getBlueSpawn())),
-                    new Value("enabled", arena.isEnabled())
+                    new Value("enabled", arena.isEnabled()),
+                    new Value("portalProtectionRadius", arena.getPortalProtectionRadius())
             ));
             if (arena instanceof StandAloneArena standAloneArena) {
                 values.addAll(Arrays.asList(
@@ -82,6 +88,7 @@ public class ArenaService implements IService {
                         new Value("limit", standAloneArena.getLimit()),
                         new Value("copies", standAloneArena.getCopies()),
                         new Value("copy", standAloneArena.isCopy()),
+                        new Value("deathY", standAloneArena.getDeathY()),
                         new Value("whitelistedBlocks", standAloneArena.getWhitelistedBlocksAsString())
                 ));
             } else {

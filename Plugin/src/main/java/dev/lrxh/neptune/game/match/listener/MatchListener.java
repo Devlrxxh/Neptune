@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.listener;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -19,6 +20,7 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.EntityUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.tasks.TaskScheduler;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -39,6 +41,9 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.Sound;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.event.player.PlayerItemDamageEvent;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -131,7 +136,7 @@ public class MatchListener implements Listener {
                 player.sendMessage(CC.color("&cYou can't place blocks yet!"));
                 return;
             }
-            if (blockLocation.getY() >= ((StandAloneArena) match.arena).getLimit()) {
+            if (match.getArena() instanceof StandAloneArena arena && blockLocation.getY() >= arena.getLimit()) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou have reached build limit!"));
                 return;
@@ -191,8 +196,13 @@ public class MatchListener implements Listener {
                 }
             }
             match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
+            
+            // Check if this damage would kill the player (add kill sound)
+            if (event.getFinalDamage() >= player.getHealth()) {
+                // Play kill sound to the attacker
+                attacker.playSound(attacker.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, 1.0f, 1.0f);
+            }
         }
-
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -259,13 +269,197 @@ public class MatchListener implements Listener {
 
             if (match.getState().equals(MatchState.IN_ROUND)) {
                 Location playerLocation = player.getLocation();
+                Location to = event.getTo();
+                Block block = to.getBlock();
 
                 if (match.getKit().is(KitRule.SUMO)) {
-                    Block block = playerLocation.getBlock();
+                    Block waterBlock = playerLocation.getBlock();
 
-                    if (block.getType() == Material.WATER) {
+                    if (waterBlock.getType() == Material.WATER) {
                         participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                         match.onDeath(participant);
+                    }
+                }
+                
+                // Bridges (The Bridges) mode handling
+                if (match.getKit().is(KitRule.BRIDGES) && block.getType() == Material.END_PORTAL) {
+                    // Find which team the portal belongs to (closest to spawn point)
+                    ParticipantColor playerTeamColor = participant.getColor();
+                    
+                    // Determine which team the portal belongs to based on proximity to spawn points
+                    ParticipantColor portalBelongsTo;
+                    double distanceToRedSpawn = to.distance(match.getArena().getRedSpawn());
+                    double distanceToBlueSpawn = to.distance(match.getArena().getBlueSpawn());
+                    
+                    portalBelongsTo = (distanceToRedSpawn < distanceToBlueSpawn) ? 
+                        ParticipantColor.RED : ParticipantColor.BLUE;
+                    
+                    // If the player enters the opponent's portal, they score a point
+                    if (portalBelongsTo != playerTeamColor) {
+                        // Score a point for the player or team
+                        if (match instanceof dev.lrxh.neptune.game.match.impl.SoloFightMatch soloMatch) {
+                            // Score a point for the player
+                            soloMatch.scorePoint(participant);
+                            
+                            // Broadcast a message in Hypixel Bridges style
+                            match.broadcast(CC.color("&a" + participant.getNameColored() + " &escored for " + participant.getColor().toString().toLowerCase() + " team!"));
+                            
+                            // Play a sound to indicate scoring
+                            match.playSound(Sound.ENTITY_PLAYER_LEVELUP);
+                            
+                            // If player has enough points, end the match
+                            Participant opponent = null;
+                            for (Participant p : match.participants) {
+                                if (!p.equals(participant)) {
+                                    opponent = p;
+                                    break;
+                                }
+                            }
+                            
+                            if (opponent != null) {
+                                // Find out if the match is over
+                                if (participant.getRoundsWon() >= match.rounds) {
+                                    // End the match with the opponent as the loser
+                                    soloMatch.end(opponent);
+                                } else {
+                                    // Check if arena should be reset after scoring
+                                    if (match.getKit().is(KitRule.RESET_ARENA_AFTER_SCORE)) {
+                                        // Reset arena
+                                        match.resetArena();
+                                    }
+                                    
+                                    // Teleport players to their spawn positions 
+                                    // Note: This also resets player inventories in Bridges mode
+                                    match.teleportToPositions();
+                                    
+                                    // Freeze players temporarily and start countdown
+                                    match.broadcast(CC.color("&a" + participant.getNameColored() + " &escored! &7New round starting in &f3 &7seconds..."));
+                                    
+                                    // Make sure all players are frozen
+                                    match.forEachParticipant(p -> {
+                                        p.setFrozen(true); 
+                                        // Force teleport again to ensure they're in the right position
+                                        Player playerEntity = p.getPlayer();
+                                        if (playerEntity != null) {
+                                            playerEntity.teleport(match.getSpawn(p));
+                                        }
+                                    });
+                                    
+                                    // Start countdown for 3 seconds
+                                    new BukkitRunnable() {
+                                        private int countdown = 3;
+                                        
+                                        @Override
+                                        public void run() {
+                                            if (match.isEnded() || match.getState() == MatchState.ENDING) {
+                                                this.cancel();
+                                                return;
+                                            }
+                                            
+                                            if (countdown <= 0) {
+                                                // Unfreeze all players
+                                                match.forEachParticipant(p -> p.setFrozen(false));
+                                                match.broadcast(CC.color("&aRound started!"));
+                                                match.playSound(Sound.ENTITY_PLAYER_LEVELUP);
+                                                this.cancel();
+                                                return;
+                                            }
+                                            
+                                            // Send countdown
+                                            match.forEachPlayer(p -> p.sendTitle(
+                                                CC.color("&a&lNEW ROUND"),
+                                                CC.color("&7Starting in &f" + countdown + " &7second" + (countdown == 1 ? "" : "s")),
+                                                0, 20, 10));
+                                            countdown--;
+                                        }
+                                    }.runTaskTimer(Neptune.get(), 0, 20);
+                                }
+                            }
+                        } else if (match instanceof dev.lrxh.neptune.game.match.impl.team.TeamFightMatch teamMatch) {
+                            // Score a point for the player's team
+                            teamMatch.scorePoint(participant);
+                            
+                            // Broadcast a message in Hypixel Bridges style
+                            match.broadcast(CC.color("&a" + participant.getNameColored() + " &escored for " + participant.getColor().toString().toLowerCase() + " team!"));
+                            
+                            // Play a sound to indicate scoring
+                            match.playSound(Sound.ENTITY_PLAYER_LEVELUP);
+                            
+                            // Check if one of the teams is now marked as loser
+                            if (teamMatch.getTeamA().isLoser() || teamMatch.getTeamB().isLoser()) {
+                                // End the match by killing all players on the losing team
+                                for (Participant p : match.participants) {
+                                    if (p.getColor() != participant.getColor()) {
+                                        teamMatch.onDeath(p);
+                                    }
+                                }
+                            } else {
+                                // Check if arena should be reset after scoring
+                                if (match.getKit().is(KitRule.RESET_ARENA_AFTER_SCORE)) {
+                                    // Reset arena
+                                    match.resetArena();
+                                }
+                                
+                                // Teleport players to their spawn positions 
+                                // Note: This also resets player inventories in Bridges mode
+                                match.teleportToPositions();
+                                
+                                // Freeze players temporarily and start countdown
+                                match.broadcast(CC.color("&a" + participant.getNameColored() + " &escored! &7New round starting in &f3 &7seconds..."));
+                                
+                                // Make sure all players are frozen
+                                match.forEachParticipant(p -> {
+                                    p.setFrozen(true); 
+                                    // Force teleport again to ensure they're in the right position
+                                    Player playerEntity = p.getPlayer();
+                                    if (playerEntity != null) {
+                                        playerEntity.teleport(match.getSpawn(p));
+                                    }
+                                });
+                                
+                                // Start countdown for 3 seconds
+                                new BukkitRunnable() {
+                                    private int countdown = 3;
+                                    
+                                    @Override
+                                    public void run() {
+                                        if (match.isEnded() || match.getState() == MatchState.ENDING) {
+                                            this.cancel();
+                                            return;
+                                        }
+                                        
+                                        if (countdown <= 0) {
+                                            // Unfreeze all players
+                                            match.forEachParticipant(p -> p.setFrozen(false));
+                                            match.broadcast(CC.color("&aRound started!"));
+                                            match.playSound(Sound.ENTITY_PLAYER_LEVELUP);
+                                            this.cancel();
+                                            return;
+                                        }
+                                        
+                                        // Send countdown
+                                        match.forEachPlayer(p -> p.sendTitle(
+                                            CC.color("&a&lNEW ROUND"),
+                                            CC.color("&7Starting in &f" + countdown + " &7second" + (countdown == 1 ? "" : "s")),
+                                            0, 20, 10));
+                                        countdown--;
+                                    }
+                                }.runTaskTimer(Neptune.get(), 0, 20);
+                            }
+                        }
+                    } else {
+                        // Player tried to score in their own portal
+                        participant.setDeathCause(DeathCause.DIED);
+                        match.onDeath(participant);
+                    }
+                }
+                
+                // Check for falling off the map in Bridges mode
+                if (match.getKit().is(KitRule.BRIDGES) && match.getArena() instanceof StandAloneArena arena) {
+                    if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
+                        participant.setDeathCause(DeathCause.DIED);
+                        match.onDeath(participant);
+                        return;
                     }
                 }
             }
@@ -342,25 +536,37 @@ public class MatchListener implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = API.getProfile(player);
         if (profile == null) return;
+        Block block = event.getBlock();
+        Location blockLocation = block.getLocation();
         Match match = profile.getMatch();
-        Location blockLocation = event.getBlock().getLocation();
         if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
             event.setCancelled(true);
             player.sendMessage(CC.color("&cYou can't place blocks here!"));
             return;
         }
-        if (match != null && match.getKit().is(KitRule.BUILD)) {
-            if (match.getState().equals(MatchState.STARTING)) {
+        if (match != null) {
+            // Check if the location is protected due to being near an end portal for Bridges
+            if (match.getKit().is(KitRule.BRIDGES) && match.isLocationPortalProtected(blockLocation)) {
                 event.setCancelled(true);
-                player.sendMessage(CC.color("&cYou can't place blocks yet!"));
+                player.sendMessage(CC.color("&cYou cannot place blocks near the goal portal!"));
                 return;
             }
-            if (blockLocation.getY() >= ((StandAloneArena) match.arena).getLimit()) {
+            
+            if (match.getKit().is(KitRule.BUILD)) {
+                if (match.getState().equals(MatchState.STARTING)) {
+                    event.setCancelled(true);
+                    player.sendMessage(CC.color("&cYou can't place blocks yet!"));
+                    return;
+                }
+                if (match.getArena() instanceof StandAloneArena arena && blockLocation.getY() >= arena.getLimit()) {
+                    event.setCancelled(true);
+                    player.sendMessage(CC.color("&cYou have reached build limit!"));
+                    return;
+                }
+                match.getPlacedBlocks().add(blockLocation);
+            } else {
                 event.setCancelled(true);
-                player.sendMessage(CC.color("&cYou have reached build limit!"));
-                return;
             }
-            match.getPlacedBlocks().add(blockLocation);
         } else {
             event.setCancelled(true);
         }
@@ -396,13 +602,20 @@ public class MatchListener implements Listener {
         Location blockLocation = event.getBlock().getLocation();
         Material blockType = event.getBlock().getType();
         if (match == null) return;
+        
+        // Check for portal protection in Bridges mode (highest priority check)
+        if (match.getKit().is(KitRule.BRIDGES) && match.isLocationPortalProtected(blockLocation)) {
+            event.setCancelled(true);
+            return;
+        }
+        
         if (blockType.name().contains("BED")) return;
         if (match.getKit().is(KitRule.BUILD)) {
             event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
         }
 
         if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-            if (match.getKit().is(KitRule.WHITELISTED_BLOCK_BREAK)) {
+            if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                 if (match.getArena() instanceof StandAloneArena standAloneArena) {
                     if (!standAloneArena.getWhitelistedBlocks().contains(blockType)) {
                         event.setCancelled(true);
@@ -454,9 +667,14 @@ public class MatchListener implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
+            // Remove blocks near portal in Bridges mode
+            if (match.getKit().is(KitRule.BRIDGES)) {
+                event.blockList().removeIf(b -> match.isLocationPortalProtected(b.getLocation()));
+            }
+            
             for (Block block : new ArrayList<>(event.blockList())) {
                 if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-                    if (match.getKit().is(KitRule.WHITELISTED_BLOCK_BREAK)) {
+                    if (match.getKit().is(KitRule.LIMITED_BLOCK_BREAK)) {
                         if (match.getArena() instanceof StandAloneArena standAloneArena) {
                             if (!standAloneArena.getWhitelistedBlocks().contains(block.getType())) {
                                 event.blockList().remove(block);
@@ -487,6 +705,20 @@ public class MatchListener implements Listener {
                     profile.getMatch().getEntities().add(EntityUtils.getEntityById(player.getWorld(), event.getItemDrop().getEntityId()));
                 }
             }, 20);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onItemDamage(PlayerItemDamageEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = API.getProfile(player);
+        
+        if (profile == null) return;
+        Match match = profile.getMatch();
+        
+        if (match != null && match.getKit().is(KitRule.INFINITE_DURABILITY)) {
+            // Cancel the event to prevent item from taking durability damage
+            event.setCancelled(true);
         }
     }
 

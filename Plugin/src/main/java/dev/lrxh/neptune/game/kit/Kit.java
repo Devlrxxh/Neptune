@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.kit;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.configs.impl.BlockWhitelistConfig;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -34,6 +35,8 @@ public class Kit {
     private HashMap<KitRule, Boolean> rules;
     private int queue, playing, slot, kitEditorSlot;
     private double health;
+    private int customRounds = 3; // Default to 3 rounds for Best of X
+    private int portalProtectionRadius = 3; // Default to 3 block radius for portal protection
 
     public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot) {
         this.name = name;
@@ -47,8 +50,11 @@ public class Kit {
         this.slot = slot;
         this.health = health;
         this.kitEditorSlot = kitEditorSlot;
+        this.portalProtectionRadius = 3; // Default value
 
         addToProfiles();
+        // Create default block whitelist for this kit
+        BlockWhitelistConfig.get().createDefaultWhitelistForKit(name);
     }
 
     public Kit(String name, Player player) {
@@ -63,8 +69,11 @@ public class Kit {
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
         this.kitEditorSlot = slot;
+        this.portalProtectionRadius = 3; // Default value
 
         addToProfiles();
+        // Create default block whitelist for this kit
+        BlockWhitelistConfig.get().createDefaultWhitelistForKit(name);
     }
 
     public Kit(String name, List<ItemStack> items, ItemStack icon) {
@@ -79,8 +88,11 @@ public class Kit {
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
         this.kitEditorSlot = slot;
+        this.portalProtectionRadius = 3; // Default value
 
         addToProfiles();
+        // Create default block whitelist for this kit
+        BlockWhitelistConfig.get().createDefaultWhitelistForKit(name);
     }
 
     private HashMap<KitRule, Boolean> rules() {
@@ -169,13 +181,31 @@ public class Kit {
         if (player == null) return;
         Profile profile = API.getProfile(playerUUID);
         GameData gameData = profile.getGameData();
+        
+        ItemStack[] loadoutItems;
         if (gameData.getKitData() == null || gameData.get(this) == null ||
                 gameData.get(this).getKitLoadout().isEmpty()) {
-            player.getInventory().setContents(items.toArray(new ItemStack[0]));
+            loadoutItems = items.toArray(new ItemStack[0]);
         } else {
-            player.getInventory().setContents(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]));
+            loadoutItems = gameData.get(this).getKitLoadout().toArray(new ItemStack[0]);
         }
-
+        
+        // If INFINITE_DURABILITY is enabled, make all items unbreakable
+        if (is(KitRule.INFINITE_DURABILITY)) {
+            for (int i = 0; i < loadoutItems.length; i++) {
+                if (loadoutItems[i] != null) {
+                    ItemStack item = loadoutItems[i];
+                    org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+                    if (meta != null) {
+                        meta.setUnbreakable(true);
+                        item.setItemMeta(meta);
+                        loadoutItems[i] = item;
+                    }
+                }
+            }
+        }
+        
+        player.getInventory().setContents(loadoutItems);
         player.updateInventory();
     }
 
@@ -184,13 +214,31 @@ public class Kit {
         if (player == null) return;
         Profile profile = API.getProfile(player);
         GameData gameData = profile.getGameData();
+        
+        ItemStack[] loadoutItems;
         if (gameData.getKitData() == null || gameData.get(this) == null ||
                 gameData.get(this).getKitLoadout().isEmpty()) {
-            player.getInventory().setContents(ItemUtils.color(items.toArray(new ItemStack[0]), participant.getColor().getContentColor()));
+            loadoutItems = ItemUtils.color(items.toArray(new ItemStack[0]), participant.getColor().getContentColor());
         } else {
-            player.getInventory().setContents(ItemUtils.color(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor()));
+            loadoutItems = ItemUtils.color(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor());
         }
-
+        
+        // If INFINITE_DURABILITY is enabled, make all items unbreakable
+        if (is(KitRule.INFINITE_DURABILITY)) {
+            for (int i = 0; i < loadoutItems.length; i++) {
+                if (loadoutItems[i] != null) {
+                    ItemStack item = loadoutItems[i];
+                    org.bukkit.inventory.meta.ItemMeta meta = item.getItemMeta();
+                    if (meta != null) {
+                        meta.setUnbreakable(true);
+                        item.setItemMeta(meta);
+                        loadoutItems[i] = item;
+                    }
+                }
+            }
+        }
+        
+        player.getInventory().setContents(loadoutItems);
         player.updateInventory();
     }
 

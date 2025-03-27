@@ -16,6 +16,16 @@ public class Arena {
     private Location redSpawn;
     private Location blueSpawn;
     private boolean enabled;
+    private int portalProtectionRadius = 3; // Default value of 3 for portal protection radius
+
+    public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled) {
+        this.name = name;
+        this.displayName = displayName;
+        this.redSpawn = redSpawn;
+        this.blueSpawn = blueSpawn;
+        this.enabled = enabled;
+        this.portalProtectionRadius = 3; // Default value of 3
+    }
 
     public void delete() {
         KitService.get().removeArenasFromKits(this);

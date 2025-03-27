@@ -38,7 +38,19 @@ public class ItemUtils {
                 meta.setColor(color);
                 itemStack.setItemMeta(meta);
             } else if (itemStack.getType().name().contains("WOOL")) {
-                itemStack.setType(color.equals(Color.BLUE) ? Material.BLUE_WOOL : Material.RED_WOOL);
+                if (color.equals(Color.BLUE)) {
+                    itemStack.setType(Material.BLUE_WOOL);
+                } else if (color.equals(Color.RED)) {
+                    itemStack.setType(Material.RED_WOOL);
+                }
+            } else if (itemStack.getType().name().contains("TERRACOTTA") || 
+                      itemStack.getType() == Material.TERRACOTTA || 
+                      itemStack.getType() == Material.WHITE_TERRACOTTA) {
+                if (color.equals(Color.BLUE)) {
+                    itemStack.setType(Material.BLUE_TERRACOTTA);
+                } else if (color.equals(Color.RED)) {
+                    itemStack.setType(Material.RED_TERRACOTTA);
+                }
             }
 
             items[i] = itemStack;

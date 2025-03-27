@@ -15,11 +15,13 @@ public class MatchTeam {
     private final List<Participant> participants;
     private final List<Participant> deadParticipants;
     private boolean loser;
+    private int points; // Points for portal goal feature
 
     public MatchTeam(List<Participant> participants) {
         this.participants = participants;
         this.deadParticipants = new ArrayList<>();
         this.loser = false;
+        this.points = 0;
     }
 
     public boolean isLoser() {
@@ -28,6 +30,21 @@ public class MatchTeam {
 
     public int getAliveParticipants() {
         return participants.size() - deadParticipants.size();
+    }
+
+    /**
+     * Add a point to this team's score
+     */
+    public void addPoint() {
+        this.points++;
+    }
+
+    /**
+     * Get the current points for this team
+     * @return The points scored
+     */
+    public int getPoints() {
+        return this.points;
     }
 
     public void sendTitle(String header, String footer, int duration) {
