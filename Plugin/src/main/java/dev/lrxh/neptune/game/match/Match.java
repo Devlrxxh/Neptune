@@ -192,33 +192,44 @@ public abstract class Match {
     public List<String> getScoreboard(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ArrayList<>();
+        
+        // Check global in-game scoreboard setting
+        if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME.getBoolean()) return new ArrayList<>();
 
         if (this instanceof SoloFightMatch) {
             MatchState matchState = this.getState();
 
             if (kit.is(KitRule.BEST_OF_THREE) && matchState.equals(MatchState.STARTING)) {
+                if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BESTOF.getBoolean()) return new ArrayList<>();
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
             }
 
             switch (matchState) {
                 case STARTING:
+                    if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_STARTING.getBoolean()) return new ArrayList<>();
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
                 case IN_ROUND:
                     if (this.getRounds() > 1) {
+                        if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BESTOF.getBoolean()) return new ArrayList<>();
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
                     }
                     if (this.getKit().is(KitRule.BOXING)) {
+                        if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BOXING.getBoolean()) return new ArrayList<>();
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
                     }
+                    if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_REGULAR.getBoolean()) return new ArrayList<>();
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
                 case ENDING:
+                    if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_ENDED.getBoolean()) return new ArrayList<>();
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
                 default:
                     break;
             }
         } else if (this instanceof TeamFightMatch) {
+            if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_TEAM.getBoolean()) return new ArrayList<>();
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
         } else if (this instanceof FfaFightMatch) {
+            if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_FFA.getBoolean()) return new ArrayList<>();
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_FFA.getStringList()), player);
         }
 
