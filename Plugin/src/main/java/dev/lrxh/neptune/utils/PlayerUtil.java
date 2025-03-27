@@ -95,7 +95,10 @@ public class PlayerUtil {
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, teleport);
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), p::remove, 40L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), () -> {
+            p.despawn();
+            p.remove();
+        }, 40L);
     }
 
     public void resetActionbar(Player player) {
