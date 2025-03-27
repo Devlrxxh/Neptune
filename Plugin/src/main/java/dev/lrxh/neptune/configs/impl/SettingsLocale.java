@@ -29,6 +29,7 @@ public enum SettingsLocale implements IDataAccessor {
     ENABLED_SCOREBOARD_INGAME_STARTING("SCOREBOARD.ENABLE_INGAME_STARTING", "Enable starting match scoreboard", DataType.BOOLEAN, "true"),
     ENABLED_SCOREBOARD_INGAME_BESTOF("SCOREBOARD.ENABLE_INGAME_BESTOF", "Enable best-of match scoreboard", DataType.BOOLEAN, "true"),
     ENABLED_SCOREBOARD_INGAME_BOXING("SCOREBOARD.ENABLE_INGAME_BOXING", "Enable boxing match scoreboard", DataType.BOOLEAN, "true"),
+    ENABLED_SCOREBOARD_INGAME_BEDWARS("SCOREBOARD.ENABLE_INGAME_BEDWARS", "Enable bedwars match scoreboard", DataType.BOOLEAN, "true"),
     ENABLED_SCOREBOARD_INGAME_REGULAR("SCOREBOARD.ENABLE_INGAME_REGULAR", "Enable regular match scoreboard", DataType.BOOLEAN, "true"),
     ENABLED_SCOREBOARD_INGAME_ENDED("SCOREBOARD.ENABLE_INGAME_ENDED", "Enable ended match scoreboard", DataType.BOOLEAN, "true"),
     ENABLED_SCOREBOARD_INGAME_TEAM("SCOREBOARD.ENABLE_INGAME_TEAM", "Enable team match scoreboard", DataType.BOOLEAN, "true"),

@@ -181,22 +181,21 @@ public class SoloFightMatch extends Match {
         if (!participant.isDisconnected() && !participant.isLeft()) {
             // Special handling for Bridges - just respawn the player without resetting the match
             if (kit.is(KitRule.BRIDGES)) {
-                // Check if we should reset inventory for Bridges mode
-                boolean shouldResetInventory = true; // Always reset inventory in Bridges mode
-
+                // Always reset inventory in Bridges mode regardless of the respawn method
+                // This ensures consistent behavior between immediate respawns and delayed respawns
+                
                 // Check if respawn delay is enabled
                 if (kit.is(KitRule.RESPAWN_DELAY)) {
                     participant.sendTitle("&cYou Died!", "&eRespawning in 5 seconds...", 40);
+                    // The MatchRespawnRunnable will handle the inventory reset
                     new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
                 } else {
                     // Instant respawn
                     participant.sendTitle("&cYou Died!", "&eRespawning...", 10);
 
-                    // Reset player inventory if needed
-                    if (shouldResetInventory) {
-                        PlayerUtil.reset(participant.getPlayer());
-                        kit.giveLoadout(participant);
-                    }
+                    // Reset player inventory
+                    PlayerUtil.reset(participant.getPlayer());
+                    kit.giveLoadout(participant);
 
                     // Ensure player entity is properly removed from all clients
                     Player deadPlayer = participant.getPlayer();

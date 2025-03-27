@@ -203,22 +203,21 @@ public class TeamFightMatch extends Match {
             }
         } else {
             // For Bridges mode, handle respawning
-            // Check if we should reset inventory for Bridges mode
-            boolean shouldResetInventory = true; // Always reset inventory in Bridges mode
+            // Always reset inventory in Bridges mode
+            boolean shouldResetInventory = true; 
 
             // Check if respawn delay is enabled
             if (kit.is(KitRule.RESPAWN_DELAY)) {
                 team.sendTitle("&cYou Died!", "&eRespawning in 5 seconds...", 40);
+                // MatchRespawnRunnable will handle inventory reset and kit loadout
                 new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L, plugin);
             } else {
                 // For Bridges mode, handle instant respawning
                 team.sendTitle("&cYou Died!", "&eRespawning...", 10);
 
-                // Reset player inventory if needed
-                if (shouldResetInventory) {
-                    PlayerUtil.reset(participant.getPlayer());
-                    kit.giveLoadout(participant);
-                }
+                // Always reset player inventory in Bridges mode
+                PlayerUtil.reset(participant.getPlayer());
+                kit.giveLoadout(participant);
 
                 // Ensure player entity is properly removed from all clients
                 Player deadPlayer = participant.getPlayer();

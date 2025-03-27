@@ -305,6 +305,7 @@ public abstract class Match {
 
         // Check if this is a bedwars match first, since this is a special case regardless of match type
         if (kit.is(KitRule.BED_WARS)) {
+            if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BEDWARS.getBoolean()) return new ArrayList<>();
             if (this instanceof SoloFightMatch) {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS.getStringList()), player);
             } else if (this instanceof TeamFightMatch) {
