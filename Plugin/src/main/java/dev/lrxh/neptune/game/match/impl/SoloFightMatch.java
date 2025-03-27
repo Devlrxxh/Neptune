@@ -339,15 +339,26 @@ public class SoloFightMatch extends Match {
         // Ensure match state is set to ENDING
         state = MatchState.ENDING;
 
+        // Make sure cached username data is up-to-date before potential profile removal
+        Profile profile = API.getProfile(participant.getPlayerUUID());
+        if (profile != null) {
+            if (participant == participantA) {
+                cachedPlayerAUsername = profile.getUsername();
+            } else if (participant == participantB) {
+                cachedPlayerBUsername = profile.getUsername();
+            }
+        }
+
         if (quit) {
             participant.setDisconnected(true);
         } else {
             participant.setLeft(true);
             PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
-            Profile profile = API.getProfile(participant.getPlayerUUID());
-            profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
-            PlayerUtil.reset(participant.getPlayer());
-            profile.setMatch(null);
+            if (profile != null) {
+                profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+                PlayerUtil.reset(participant.getPlayer());
+                profile.setMatch(null);
+            }
         }
 
         // Always reset the arena when a player leaves to clean up placed blocks
