@@ -6,7 +6,6 @@ import com.github.retrooper.packetevents.protocol.entity.data.EntityDataTypes;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntityMetadata;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerTeams;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -76,23 +75,16 @@ public class PlayerUtil {
                 p.getEntityId(), List.of(new EntityData(9, EntityDataTypes.FLOAT, 0.0f))
         );
 
-        WrapperPlayServerTeams.ScoreBoardTeamInfo teamInfo =
-                new WrapperPlayServerTeams.ScoreBoardTeamInfo(
-                        Component.text(""),
-                        Component.text(""),
-                        Component.text(""),
-                        WrapperPlayServerTeams.NameTagVisibility.NEVER,
-                        WrapperPlayServerTeams.CollisionRule.NEVER,
-                        null,
-                        WrapperPlayServerTeams.OptionData.NONE);
-
         for (Player watcher : watchers) {
             if (player.getUniqueId().equals(watcher.getUniqueId())) continue;
             p.addViewer(watcher.getUniqueId());
             PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, healthPacket);
         }
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), p::remove, 40L);
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), () -> {
+            p.despawn();
+            p.remove();
+        }, 40L);
     }
 
 

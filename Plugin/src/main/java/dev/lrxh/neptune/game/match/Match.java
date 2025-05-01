@@ -166,7 +166,7 @@ public abstract class Match {
 
     public void resetArena() {
         if (SettingsLocale.ARENA_RESET_EXPERIMENTAL.getBoolean()) {
-            List<BlockChanger.BlockSnapshot> blocks = new ArrayList<>();
+            Set<BlockChanger.BlockSnapshot> blocks = new HashSet<>();
 
             for (Location location : liquids) {
                 blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
@@ -178,10 +178,10 @@ public abstract class Match {
             BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
         } else {
             for (Location location : liquids) {
-                arena.getWorld().getBlockAt(location).setBlockData(Material.AIR.createBlockData(), false);
+                arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
             }
             for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                arena.getWorld().getBlockAt(entry.getKey()).setBlockData(entry.getValue(), false);
+                arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
             }
         }
 

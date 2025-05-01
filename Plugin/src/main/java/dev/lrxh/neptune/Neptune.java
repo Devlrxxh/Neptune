@@ -6,6 +6,7 @@ import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
+import dev.lrxh.neptune.cache.EntityCacheRunnable;
 import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
@@ -184,6 +185,7 @@ public final class Neptune extends JavaPlugin {
         new QueueCheckTask().start(20L, this);
         new QueueMessageTask().start(100L, this);
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
+        new EntityCacheRunnable().start(400L, this);
     }
 
     private void loadCommandManager() {
