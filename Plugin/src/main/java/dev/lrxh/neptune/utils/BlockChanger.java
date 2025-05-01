@@ -20,6 +20,7 @@ import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
@@ -73,7 +74,7 @@ public class BlockChanger {
      * @param world  World to set block in.
      * @param blocks Set of locations and ItemStacks to be set
      */
-    private static void setBlocks(World world, Set<BlockSnapshot> blocks) {
+    public static void setBlocks(World world, Set<BlockSnapshot> blocks) {
         long startTime = System.currentTimeMillis();
         HashMap<Long, Object> chunkCache = new HashMap<>();
 
@@ -137,51 +138,74 @@ public class BlockChanger {
      *
      * @param pos1     Position 1
      * @param pos2     Position 2
-     * @param material Material to fill all blocks between pos1 and pos2
+     * @param material Material to fill all blocks between pos1 and pos2www
      * @return A CompletableFuture that completes when the operation is done.
      * @see BlockChanger#loadChunks(Location, Location);
      */
     public static CompletableFuture<Void> setBlocksAsync(Location pos1, Location pos2, Material material) {
         return CompletableFuture.runAsync(() -> setBlocks(pos1, pos2, material), executorService);
     }
-
     /**
-     * Paste a snapshot and allowing an offset
+     * Capture all blocks between 2 positions
      *
-     * @param snapshot Captured Snapshot.
-     * @param offsetX  The offset to apply to the X coordinate of each block.
-     * @param offsetZ  The offset to apply to the Z coordinate of each block.
-     * @see BlockChanger#loadChunks(Snapshot);
+     * @param pos1 Position 1
+     * @param pos2 Position 2
+     * @param ignoreAir Position If air should be ignored
+     * @return Snapshot captured snapshot
+     * @see BlockChanger#loadChunks(Location, Location);
      */
-    public static void paste(Snapshot snapshot, int offsetX, int offsetZ, boolean ignoreAir) {
-        Object2ObjectOpenHashMap<Object, ObjectOpenHashSet<BlockLocation>> data = new Object2ObjectOpenHashMap<>();
-
-        for (Map.Entry<Object, ObjectOpenHashSet<BlockLocation>> entry : snapshot.data.entrySet()) {
-            if (ignoreAir && isAir(entry.getKey())) continue;
-            ObjectOpenHashSet<BlockLocation> locations = new ObjectOpenHashSet<>();
-
-            data.put(entry.getKey(), locations);
-
-            for (BlockLocation location : entry.getValue()) {
-                data.get(entry.getKey()).add(location.add(offsetX, 0, offsetZ));
-            }
-
+    public static Set<BlockSnapshot> captureBlocks(Location pos1, Location pos2, boolean ignoreAir) {
+        if (pos1 == null) {
+            throw new IllegalArgumentException("pos1 must not be null");
         }
 
-        setBlocks(snapshot.world, data);
-    }
+        if (pos2 == null) {
+            throw new IllegalArgumentException("pos2 must not be null");
+        }
 
+        long startTime = System.currentTimeMillis();
+        Location max = new Location(pos1.getWorld(), Math.max(pos1.getX(), pos2.getX()), Math.max(pos1.getY(), pos2.getY()), Math.max(pos1.getZ(), pos2.getZ()));
+        Location min = new Location(pos1.getWorld(), Math.min(pos1.getX(), pos2.getX()), Math.min(pos1.getY(), pos2.getY()), Math.min(pos1.getZ(), pos2.getZ()));
+        World world = max.getWorld();
+        HashMap<Long, Object> chunkCache = new HashMap<>();
+
+        Set<BlockSnapshot> snapshots = new HashSet<>();
+        int minX = Math.min(min.getBlockX(), max.getBlockX());
+        int minY = Math.min(min.getBlockY(), max.getBlockY());
+        int minZ = Math.min(min.getBlockZ(), max.getBlockZ());
+
+        int maxX = Math.max(min.getBlockX(), max.getBlockX());
+        int maxY = Math.max(min.getBlockY(), max.getBlockY());
+        int maxZ = Math.max(min.getBlockZ(), max.getBlockZ());
+
+        for (int x = minX; x <= maxX; x++) {
+            for (int y = minY; y <= maxY; y++) {
+                for (int z = minZ; z <= maxZ; z++) {
+                    Location location = new Location(world, x, y, z);
+                    BlockSnapshot blockData = new BlockSnapshot(location, getNMSBlockData(location.getChunk(), world, location, chunkCache));
+                    if (ignoreAir && blockData.isAir()) continue;
+
+                    snapshots.add(blockData);
+                }
+            }
+        }
+
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+        debug("Captured blocks time: " + duration + " ms");
+        return snapshots;
+    }
     /**
-     * Paste a snapshot and allowing an offset
+     * Capture all blocks between 2 positions
      *
-     * @param snapshot Captured Snapshot.
-     * @param offsetX  The offset to apply to the X coordinate of each block.
-     * @param offsetZ  The offset to apply to the Z coordinate of each block.
-     * @return A CompletableFuture that completes when the operation is done.
-     * @see BlockChanger#loadChunks(Snapshot);
+     * @param pos1 Position 1
+     * @param pos2 Position 2
+     * @param ignoreAir Position If air should be ignored
+     * @return A CompletableFuture containing the blocks captured.
+     * @see BlockChanger#loadChunks(Location, Location);
      */
-    public static CompletableFuture<Void> pasteAsync(Snapshot snapshot, int offsetX, int offsetZ, boolean ignoreAir) {
-        return CompletableFuture.runAsync(() -> paste(snapshot, offsetX, offsetZ, ignoreAir), executorService);
+    public static CompletableFuture<Set<BlockSnapshot>> captureBlocksAsync(Location pos1, Location pos2, boolean ignoreAir) {
+        return CompletableFuture.supplyAsync(() -> captureBlocks(pos1, pos2, ignoreAir), executorService);
     }
 
     /**
@@ -189,6 +213,7 @@ public class BlockChanger {
      *
      * @param pos1 Position 1
      * @param pos2 Position 2
+     * @param ignoreAir Position If air should be ignored
      * @return Snapshot captured snapshot
      * @see BlockChanger#loadChunks(Location, Location);
      */
@@ -239,6 +264,7 @@ public class BlockChanger {
      *
      * @param pos1 Position 1
      * @param pos2 Position 2
+     * @param ignoreAir Position If air should be ignored
      * @return A CompletableFuture containing the Snapshot captured.
      * @see BlockChanger#loadChunks(Location, Location);
      */
@@ -852,13 +878,26 @@ public class BlockChanger {
             this.blockDataNMS = blockDataNMS;
         }
 
+        protected BlockSnapshot(BlockLocation location, Object blockDataNMS) {
+            this.location = location;
+            this.blockDataNMS = blockDataNMS;
+        }
+
         public boolean isAir() {
             return BlockChanger.isAir(blockDataNMS);
         }
+
+        public BlockLocation getLocation() {
+            return location;
+        }
+
+        public BlockSnapshot clone() {
+            return new BlockSnapshot(location, blockDataNMS);
+        }
     }
 
-    protected static class BlockLocation {
-        private final long packedCoords;
+    public static class BlockLocation {
+        private long packedCoords;
 
         protected BlockLocation(int x, int y, int z) {
             if (x < -33554432 || x > 33554431 ||
@@ -879,13 +918,19 @@ public class BlockChanger {
             );
         }
 
-        @SuppressWarnings("all")
-        protected BlockLocation add(int x, int y, int z) {
-            return new BlockLocation(
-                    (int)((packedCoords >> 38) + x),
-                    (int)((packedCoords & 0xFFF) + y),
-                    (int)((packedCoords << 26 >> 38) + z)
-            );
+        private void set(int x, int y, int z) {
+            if (x < -33554432 || x > 33554431 ||
+                    z < -33554432 || z > 33554431 ||
+                    y < -2048 || y > 2047) {
+                throw new IllegalArgumentException("Coordinates out of range for packing");
+            }
+            this.packedCoords = ((long)(x & 0x3FFFFFF) << 38) |
+                    ((long)(z & 0x3FFFFFF) << 12) |
+                    (y & 0xFFF);
+        }
+
+        public void add(int dx, int dy, int dz) {
+            set(x() + dx, y() + dy, z() + dz);
         }
 
         protected Location toLocation(World world) {
@@ -902,11 +947,11 @@ public class BlockChanger {
         }
 
         protected int y() {
-            return (int)(packedCoords & 0xFFF);
+            return (int)(packedCoords << 52 >> 52);
         }
 
         protected int z() {
-            return (int)(packedCoords << 26 >> 38);
+            return (int)((packedCoords >> 12) & 0x3FFFFFF) << 6 >> 6;
         }
 
         @Override

@@ -11,7 +11,9 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -65,20 +67,50 @@ public class StandAloneArena extends Arena {
     }
 
     public void generateCopies(int amount) {
-        BlockChanger.loadChunks(min, max);
-        for (int i = 0; i < amount; i++) {
-            int offset = copies.size() * 500;
-            Location min = LocationUtil.addOffsetX(getMin(), offset);
-            Location max = LocationUtil.addOffsetX(getMax(), offset);
-            Location redSpawn = LocationUtil.addOffsetX(getRedSpawn(), offset);
-            Location blueSpawn = LocationUtil.addOffsetX(getBlueSpawn(), offset);
+        int initialSize = copies.size();
 
+        BlockChanger.captureBlocksAsync(min, max, true).thenAccept(blocks -> {
+            for (int i = 0; i < amount; i++) {
+                int offset = (initialSize + i) * 500;
+                Set<BlockChanger.BlockSnapshot> newBlocks = new HashSet<>();
 
-            ServerUtils.info("#" + i + " Created copy " + redSpawn);
+                for (BlockChanger.BlockSnapshot block : blocks) {
+                    BlockChanger.BlockSnapshot newBlock = block.clone();
+                    newBlock.getLocation().add(offset, 0, 0);
+                    newBlocks.add(newBlock);
+                }
+
+                final int copyIndex = i;
+                final Location minCopy = LocationUtil.addOffsetX(getMin(), offset);
+                final Location maxCopy = LocationUtil.addOffsetX(getMax(), offset);
+                final Location redSpawnCopy = LocationUtil.addOffsetX(getRedSpawn(), offset);
+                final Location blueSpawnCopy = LocationUtil.addOffsetX(getBlueSpawn(), offset);
+
+                BlockChanger.setBlocksAsync(getWorld(), newBlocks).thenAccept(unused -> {
+                    StandAloneArena copy = new StandAloneArena(
+                            getName() + "#" + (initialSize + copyIndex),
+                            getDisplayName(),
+                            redSpawnCopy,
+                            blueSpawnCopy,
+                            minCopy,
+                            maxCopy,
+                            getLimit(),
+                            isEnabled(),
+                            true,
+                            null,
+                            whitelistedBlocks
+                    );
+
+                    copies.add(copy.getName());
+                    ArenaService.get().getArenas().add(copy);
+                    ServerUtils.info("#" + copyIndex + " Created copy " + redSpawnCopy);
+                });
+            }
 
             ArenaService.get().saveArenas();
-        }
+        });
     }
+
 
     public List<String> getWhitelistedBlocksAsString() {
         List<String> r = new ArrayList<>();
