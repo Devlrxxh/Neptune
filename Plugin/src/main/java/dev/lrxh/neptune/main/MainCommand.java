@@ -34,8 +34,10 @@ public class MainCommand {
 
     @Command(name = "generate", desc = "", usage = "<arena> <amount>")
     public void generate(@Sender Player player, StandAloneArena arena, int amount) {
-        arena.generateCopies(amount);
-        player.sendMessage(CC.success("Generated " + amount + " arenas! &7Check console for more info"));
+        player.sendMessage(CC.success("Generating " + amount + " arenas! &7Check console for more info"));
+        arena.generateCopies(amount).thenRun(() -> {
+            player.sendMessage(CC.success("Generated " + amount + " arenas! &7Check console for more info"));
+        });
     }
 
     @Command(name = "reload", desc = "")

@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
@@ -66,10 +67,12 @@ public class StandAloneArena extends Arena {
         copies.clear();
     }
 
-    public void generateCopies(int amount) {
+    public CompletableFuture<Void> generateCopies(int amount) {
         int initialSize = copies.size();
 
-        BlockChanger.captureBlocksAsync(min, max, true).thenAccept(blocks -> {
+        return BlockChanger.captureBlocksAsync(min, max, true).thenCompose(blocks -> {
+            List<CompletableFuture<Void>> futures = new ArrayList<>();
+
             for (int i = 0; i < amount; i++) {
                 int offset = (initialSize + i) * 500;
                 Set<BlockChanger.BlockSnapshot> newBlocks = new HashSet<>();
@@ -86,7 +89,7 @@ public class StandAloneArena extends Arena {
                 final Location redSpawnCopy = LocationUtil.addOffsetX(getRedSpawn(), offset);
                 final Location blueSpawnCopy = LocationUtil.addOffsetX(getBlueSpawn(), offset);
 
-                BlockChanger.setBlocksAsync(getWorld(), newBlocks).thenAccept(unused -> {
+                CompletableFuture<Void> future = BlockChanger.setBlocksAsync(getWorld(), newBlocks).thenAccept(unused -> {
                     StandAloneArena copy = new StandAloneArena(
                             getName() + "#" + (initialSize + copyIndex),
                             getDisplayName(),
@@ -105,12 +108,14 @@ public class StandAloneArena extends Arena {
                     ArenaService.get().getArenas().add(copy);
                     ServerUtils.info("#" + copyIndex + " Created copy " + redSpawnCopy);
                 });
+
+                futures.add(future);
             }
 
-            ArenaService.get().saveArenas();
+            return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]))
+                    .thenRun(ArenaService.get()::saveArenas);
         });
     }
-
 
     public List<String> getWhitelistedBlocksAsString() {
         List<String> r = new ArrayList<>();

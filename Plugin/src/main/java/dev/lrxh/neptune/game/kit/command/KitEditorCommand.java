@@ -25,7 +25,7 @@ public class KitEditorCommand {
         }
     }
 
-    @Command(name = "", desc = "", usage = "<kit>")
+    @Command(name = "reset", desc = "", usage = "<kit>")
     public void reset(@Sender Player player, Kit kit) {
         if (player == null) return;
         Profile profile = API.getProfile(player);
