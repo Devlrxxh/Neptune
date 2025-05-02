@@ -242,12 +242,12 @@ public abstract class Match {
         Profile profile = API.getProfile(playerUUID);
 
         if (profile.getMatch() == null) return;
-        profile.setState(ProfileState.IN_LOBBY);
         PlayerUtil.reset(player);
+        spectators.remove(playerUUID);
+        profile.setState(ProfileState.IN_LOBBY);
         PlayerUtil.teleportToSpawn(playerUUID);
         profile.setMatch(null);
 
-        spectators.remove(playerUUID);
 
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));

@@ -73,7 +73,7 @@ public class StandAloneArena extends Arena {
         return BlockChanger.captureBlocksAsync(min, max, true).thenCompose(blocks -> {
             List<CompletableFuture<Void>> futures = new ArrayList<>();
 
-            for (int i = 0; i < amount; i++) {
+            for (int i = 1; i < amount; i++) {
                 int offset = (initialSize + i) * 500;
                 Set<BlockChanger.BlockSnapshot> newBlocks = new HashSet<>();
 
