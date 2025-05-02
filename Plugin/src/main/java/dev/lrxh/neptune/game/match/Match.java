@@ -248,7 +248,6 @@ public abstract class Match {
         PlayerUtil.teleportToSpawn(playerUUID);
         profile.setMatch(null);
 
-
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
         }

@@ -49,7 +49,7 @@ public class LeaderboardService {
             int entry = Integer.parseInt(matcher.group(3));
             boolean name = matcher.group(4).equals("name");
 
-            Kit kit = KitService.get().getKitByDisplay(kitName);
+            Kit kit = KitService.get().getKitByName(kitName);
             if (kit == null) return placeholder;
             LeaderboardType leaderboardType = LeaderboardType.value(type);
 
