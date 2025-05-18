@@ -34,7 +34,7 @@
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/cd7adf54-f4b3-425c-add5-99cad13b6174)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/f2b0436a-3d37-47b1-839b-588ead692227)
 
-## Usage
+## 🧪 Usage:
 
 Use the `/neptune` command to create and edit arenas and kits.
 
