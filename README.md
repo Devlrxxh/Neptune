@@ -2,7 +2,7 @@
 
 ![Nevtelen (1)](https://github.com/user-attachments/assets/d044e94d-2e6f-4495-a7ed-c997b305eb4a)
 
-📖**Features:**  
+## 📖**Features:**
 • Arena System (Shared, Standalone)  
 • Kit System (Boxing, Crystal, Axe, etc.)  
 • Kit Editor with Inventories  
@@ -10,7 +10,7 @@
 • View Match History  
 • Queue Ping Range System  
 • Animated Scoreboard System  
-• Placeholder API (Compatibility)  
+• Placeholder API (Compatibility)
 • All Hotbars items configurable  
 • All messages configurable  
 • Advanced Arena system  
@@ -22,9 +22,9 @@
 
 ❓**Discord**: https://discord.gg/f6rUtpy6y4
 
-📎**Requirements**: https://www.spigotmc.org/resources/packetevents-api.80279/
+📎**Requirements**: [PacketEvents API](https://www.spigotmc.org/resources/80279/)
 
-🖼️**Media:**
+## 🖼️**Media:**
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/6e0d63dd-f0f0-4165-ac0e-1b7d6f66f588)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/bad14a9b-b742-45e1-923a-0317cd07d37e)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/f60d56fc-1b24-478b-9ccc-4ab2711f4b42)
@@ -34,5 +34,8 @@
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/cd7adf54-f4b3-425c-add5-99cad13b6174)
 ![image](https://github.com/Devlrxxh/Neptune/assets/125221056/f2b0436a-3d37-47b1-839b-588ead692227)
 
+## 🧪 Usage:
+
+Use the `/neptune` command to create and edit arenas and kits.
 
 ## Maintained by [DevLrxxh](https://github.com/Devlrxxh)
