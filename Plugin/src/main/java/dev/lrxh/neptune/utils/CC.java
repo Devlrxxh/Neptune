@@ -77,7 +77,7 @@ public class CC {
 
         for (Replacement replacement : replacements) {
             String placeholder = replacement.getPlaceholder();
-            String cleanPlaceholder = placeholder.replaceAll("^<|>$", "");
+            String cleanPlaceholder = placeholder.replaceAll("^<|>$", "").toLowerCase();
             resolverBuilder.tag(
                     cleanPlaceholder,
                     Placeholder.component(cleanPlaceholder, replacement.getReplacement()).tag()

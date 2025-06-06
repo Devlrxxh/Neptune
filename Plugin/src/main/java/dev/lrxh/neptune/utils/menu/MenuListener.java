@@ -23,7 +23,6 @@ public class MenuListener implements Listener {
         button.onClick(event.getClick(), player);
 
         if (menu.updateOnClick) {
-            if (button.isDontUpdate()) return;
             menu.open(player);
         }
     }
