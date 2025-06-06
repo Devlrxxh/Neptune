@@ -25,36 +25,36 @@ public class PageButton extends Button {
         if (this.mod > 0) {
             if (hasNext(player)) {
                 return new ItemBuilder(Material.PAPER)
-                        .name(ChatColor.GREEN + "Next Page")
+                        .name("&a" + "Next Page")
                         .lore(Arrays.asList(
-                                ChatColor.YELLOW + "Click here to jump",
-                                ChatColor.YELLOW + "to the next page."
+                                "&e" + "Click here to jump",
+                                "&e" + "to the next page."
                         ), player)
                         .build();
             } else {
                 return new ItemBuilder(Material.REDSTONE)
-                        .name(ChatColor.GRAY + "Next Page")
+                        .name("&7" + "Next Page")
                         .lore(Arrays.asList(
-                                ChatColor.YELLOW + "There is no available",
-                                ChatColor.YELLOW + "next page."
+                                "&e" + "There is no available",
+                                "&e" + "next page."
                         ), player)
                         .build();
             }
         } else {
             if (hasPrevious(player)) {
                 return new ItemBuilder(Material.PAPER)
-                        .name(ChatColor.GREEN + "Previous Page")
+                        .name("&a" + "Previous Page")
                         .lore(Arrays.asList(
-                                ChatColor.YELLOW + "Click here to jump",
-                                ChatColor.YELLOW + "to the previous page."
+                                "&e" + "Click here to jump",
+                                "&e" + "to the previous page."
                         ), player)
                         .build();
             } else {
                 return new ItemBuilder(Material.REDSTONE)
-                        .name(ChatColor.GRAY + "Previous Page")
+                        .name("&7" + "Previous Page")
                         .lore(Arrays.asList(
-                                ChatColor.YELLOW + "There is no available",
-                                ChatColor.YELLOW + "previous page."
+                                "&e" + "There is no available",
+                                "&e" + "previous page."
                         ), player)
                         .build();
             }

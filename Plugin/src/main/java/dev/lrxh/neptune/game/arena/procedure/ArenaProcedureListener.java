@@ -134,9 +134,8 @@ public class ArenaProcedureListener implements Listener {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-                StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
 
-                arena.setDeathY(player.getLocation().getBlockY());
+                profile.getArenaProcedure().getArena().setDeathY(player.getLocation().getBlockY());
                 player.sendMessage(CC.success("Set arena death Y position"));
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
                 profile.getArenaProcedure().setArena(null);

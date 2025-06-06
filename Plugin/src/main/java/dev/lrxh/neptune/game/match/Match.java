@@ -8,12 +8,12 @@ import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
-import dev.lrxh.neptune.game.match.impl.FfaFightMatch;
 import dev.lrxh.neptune.game.match.impl.MatchState;
-import dev.lrxh.neptune.game.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
 import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.impl.participant.ParticipantColor;
+import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
 import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -26,11 +26,14 @@ import dev.lrxh.neptune.utils.Time;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -98,7 +101,7 @@ public abstract class Match {
         return null;
     }
 
-    public void sendTitle(String header, String footer, int duration) {
+    public void sendTitle(TextComponent header, TextComponent footer, int duration) {
         forEachParticipant(participant -> PlayerUtil.sendTitle(participant.getPlayer(), header, footer, duration));
     }
 
@@ -114,13 +117,14 @@ public abstract class Match {
         if (add) spectators.add(player.getUniqueId());
 
         forEachPlayer(participiantPlayer -> player.showPlayer(Neptune.get(), participiantPlayer));
+        forEachPlayer(participiantPlayer -> participiantPlayer.hidePlayer(Neptune.get(), player));
 
-        if (sendMessage) {
-            broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
-        }
+        if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
+        player.setGameMode(GameMode.ADVENTURE);
         player.teleport(target.getLocation());
-        player.setGameMode(GameMode.SPECTATOR);
+        player.setAllowFlight(true);
+        player.setFlying(true);
     }
 
     public void showPlayerForSpectators() {
@@ -192,44 +196,40 @@ public abstract class Match {
     public List<String> getScoreboard(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ArrayList<>();
-        
-        // Check global in-game scoreboard setting
-        if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME.getBoolean()) return new ArrayList<>();
 
         if (this instanceof SoloFightMatch) {
             MatchState matchState = this.getState();
 
             if (kit.is(KitRule.BEST_OF_THREE) && matchState.equals(MatchState.STARTING)) {
-                if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BESTOF.getBoolean()) return new ArrayList<>();
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
             }
 
             switch (matchState) {
                 case STARTING:
-                    if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_STARTING.getBoolean()) return new ArrayList<>();
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
                 case IN_ROUND:
                     if (this.getRounds() > 1) {
-                        if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BESTOF.getBoolean()) return new ArrayList<>();
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
                     }
                     if (this.getKit().is(KitRule.BOXING)) {
-                        if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_BOXING.getBoolean()) return new ArrayList<>();
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
                     }
-                    if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_REGULAR.getBoolean()) return new ArrayList<>();
+                    if (this.getKit().is(KitRule.BED_WARS)) {
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS.getStringList()), player);
+                    }
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
                 case ENDING:
-                    if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_ENDED.getBoolean()) return new ArrayList<>();
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
                 default:
                     break;
             }
         } else if (this instanceof TeamFightMatch) {
-            if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_TEAM.getBoolean()) return new ArrayList<>();
+            if (this.getKit().is(KitRule.BED_WARS)) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS_TEAM.getStringList()), player);
+            }
+
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
         } else if (this instanceof FfaFightMatch) {
-            if (!SettingsLocale.ENABLED_SCOREBOARD_INGAME_FFA.getBoolean()) return new ArrayList<>();
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_FFA.getStringList()), player);
         }
 
@@ -272,7 +272,7 @@ public abstract class Match {
     }
 
     public void broadcast(String message) {
-        forEachParticipant(participant -> participant.sendMessage(message));
+        forEachParticipant(participant -> participant.sendMessage(CC.color(message)));
 
         forEachSpectator(player -> player.sendMessage(CC.color(message)));
     }
@@ -299,6 +299,8 @@ public abstract class Match {
                 if (player == null) return;
                 player.setSaturation(20.0f);
             }
+
+            participant.setDead(false);
         });
 
         forEachPlayer(player -> {
@@ -337,7 +339,7 @@ public abstract class Match {
             Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
 
             if (objective == null) {
-                objective = player.getScoreboard().registerNewObjective("neptune_health", Criteria.HEALTH, Component.text(CC.color("&c❤")));
+                objective = player.getScoreboard().registerNewObjective("neptune_health", Criteria.HEALTH, CC.color("&c❤"));
             }
             try {
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
@@ -382,14 +384,25 @@ public abstract class Match {
     }
 
     public void teleportPlayerToPosition(Participant participant) {
+        Location location = participant.getColor().equals(ParticipantColor.RED) ? arena.getRedSpawn() : arena.getBlueSpawn();
+
         Player player = participant.getPlayer();
         if (player == null) return;
-        if (participant.getColor().equals(ParticipantColor.RED)) {
-            player.teleport(arena.getRedSpawn());
-        } else {
-            player.teleport(arena.getBlueSpawn());
+        player.teleport(location);
+
+        if (kit.is(KitRule.HORSE_PVP)) {
+            Horse horse = (Horse) player.getWorld().spawnEntity(location, EntityType.HORSE);
+
+            horse.setTamed(true);
+            horse.setOwner(player);
+            horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
+            horse.setAdult();
+
+            horse.addPassenger(player);
         }
     }
+
+    public abstract void win(Participant winner);
 
     public abstract void end(Participant loser);
 
@@ -403,5 +416,5 @@ public abstract class Match {
 
     public abstract void breakBed(Participant participant);
 
-    public abstract void sendTitle(Participant participant, String header, String footer, int duration);
+    public abstract void sendTitle(Participant participant, TextComponent header, TextComponent footer, int duration);
 }

@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.utils.menu;
 
+import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.menu.impl.DisplayButton;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -62,14 +62,14 @@ public abstract class Menu {
             title = this.title;
         }
 
-        Inventory inventory = Bukkit.createInventory(player, size, Component.text(CC.color(title)));
+        Inventory inventory = Bukkit.createInventory(player, size, CC.color(title));
 
         buttons = getButtons(player);
         switch (filter) {
             case FILL -> {
                 for (int i = 0; i < inventory.getSize(); i++) {
                     if (getButton(i) == null) {
-                        buttons.add(new DisplayButton(i, Material.GRAY_STAINED_GLASS_PANE, ""));
+                        buttons.add(new DisplayButton(i, Material.getMaterial(MenusLocale.FILTER_MATERIAL.getString()), MenusLocale.FILTER_NAME.getString()));
                     }
                 }
             }

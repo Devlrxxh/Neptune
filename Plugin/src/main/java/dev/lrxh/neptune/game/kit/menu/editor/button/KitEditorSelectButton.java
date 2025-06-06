@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.kit.menu.button;
+package dev.lrxh.neptune.game.kit.menu.editor.button;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;

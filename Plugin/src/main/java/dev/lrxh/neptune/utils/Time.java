@@ -23,6 +23,19 @@ public class Time {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
+    public String formatDuration() {
+        if (!stop) {
+            lastCurrentTime = System.currentTimeMillis();
+        }
+
+        long elapsedTime = lastCurrentTime - oldTime;
+
+        long millis = (elapsedTime % 1000) / 10;
+        long seconds = (elapsedTime / 1000) % 60;
+
+        return String.format("%02d.%02ds", seconds, millis);
+    }
+
     public void setZero() {
         this.oldTime = 0;
         this.lastCurrentTime = 0;

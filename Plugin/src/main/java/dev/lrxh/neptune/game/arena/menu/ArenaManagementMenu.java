@@ -41,9 +41,11 @@ public class ArenaManagementMenu extends Menu {
 
             buttons.add(new ArenaDeleteButton(21, arena));
 
+            buttons.add(new ArenaSetDeathYButton(9, arena));
+
+
             if (arena instanceof StandAloneArena standAloneArena) {
                 buttons.add(new ArenaSetLimitButton(4, arena));
-                buttons.add(new ArenaSetDeathYButton(9, standAloneArena));
                 buttons.add(new DisplayButton(10, Material.REDSTONE, "&cDelete all copies", o -> {
                     standAloneArena.deleteAllCopies();
                 }));

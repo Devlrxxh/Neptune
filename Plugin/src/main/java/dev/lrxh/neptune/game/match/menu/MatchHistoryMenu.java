@@ -31,7 +31,7 @@ public class MatchHistoryMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
         Profile profile = API.getProfile(player);
 
-        int i = MenusLocale.MATCH_LIST_STARTING_SLOT.getInt();
+        int i = MenusLocale.MATCH_HISTORY_STARTING_SLOT.getInt();
 
         ArrayList<MatchHistory> matchHistories = new ArrayList<>(profile.getGameData().getMatchHistories());
         Collections.reverse(matchHistories);

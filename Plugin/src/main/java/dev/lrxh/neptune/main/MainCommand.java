@@ -8,7 +8,6 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -30,14 +29,6 @@ public class MainCommand {
     public void setspawn(@Sender Player player) {
         Neptune.get().getCache().setSpawn(player.getLocation());
         player.sendMessage(CC.color("&aSuccessfully set spawn!"));
-    }
-
-    @Command(name = "generate", desc = "", usage = "<arena> <amount>")
-    public void generate(@Sender Player player, StandAloneArena arena, int amount) {
-        player.sendMessage(CC.success("Generating " + amount + " arenas! &7Check console for more info"));
-        arena.generateCopies(amount).thenRun(() -> {
-            player.sendMessage(CC.success("Generated " + amount + " arenas! &7Check console for more info"));
-        });
     }
 
     @Command(name = "reload", desc = "")

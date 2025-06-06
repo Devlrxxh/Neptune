@@ -105,6 +105,11 @@ public class PartyCommand {
             return;
         }
 
+        if (targetProfile.getGameData().getParty() != null) {
+            MessagesLocale.PARTY_ALREADY_PARTY.send(player.getUniqueId());
+            return;
+        }
+
         party.invite(target.getUniqueId());
 
         MessagesLocale.PARTY_INVITED.send(player.getUniqueId(), new Replacement("<player>", target.getName()));

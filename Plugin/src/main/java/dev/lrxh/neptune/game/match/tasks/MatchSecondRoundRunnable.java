@@ -2,11 +2,13 @@ package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.MatchState;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import org.bukkit.Sound;
 
@@ -52,8 +54,8 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         if (match.getState().equals(MatchState.STARTING)) {
             match.playSound(Sound.UI_BUTTON_CLICK);
 
-            match.sendTitle(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(respawnTimer)),
-                    MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(respawnTimer)),
+            match.sendTitle(CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(respawnTimer))),
+                    CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(respawnTimer))),
                     100);
             match.sendMessage(MessagesLocale.ROUND_STARTING, new Replacement("<timer>", String.valueOf(respawnTimer)));
         }
@@ -61,7 +63,10 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         if (respawnTimer == 3) {
             match.setupParticipants();
             match.teleportToPositions();
-            match.resetArena();
+
+            if (match.getKit().is(KitRule.RESET_ARENA_AFTER_ROUND)) {
+                match.resetArena();
+            }
         }
         respawnTimer--;
     }

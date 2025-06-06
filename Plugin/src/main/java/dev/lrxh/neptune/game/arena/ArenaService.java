@@ -40,6 +40,7 @@ public class ArenaService implements IService {
                 Location blueSpawn = LocationUtil.deserialize(config.getString(path + "blueSpawn"));
                 boolean enabled = config.getBoolean(path + "enabled");
                 ArenaType arenaType = ArenaType.valueOf(config.getString(path + ".type"));
+                int deathY = config.getInt(path + "deathY", -68321);
 
                 if (arenaType.equals(ArenaType.STANDALONE)) {
                     Location edge1 = LocationUtil.deserialize(config.getString(path + "min"));
@@ -54,10 +55,10 @@ public class ArenaService implements IService {
                         whitelistedBlocks.add(Material.getMaterial(name));
                     }
 
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copies, whitelistedBlocks);
+                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copies, whitelistedBlocks, deathY);
                     arenas.add(arena);
                 } else {
-                    SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled);
+                    SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled, deathY);
                     arenas.add(arena);
                 }
             }
@@ -72,7 +73,8 @@ public class ArenaService implements IService {
                     new Value("displayName", arena.getDisplayName()),
                     new Value("redSpawn", LocationUtil.serialize(arena.getRedSpawn())),
                     new Value("blueSpawn", LocationUtil.serialize(arena.getBlueSpawn())),
-                    new Value("enabled", arena.isEnabled())
+                    new Value("enabled", arena.isEnabled()),
+                    new Value("deathY", arena.getDeathY())
             ));
             if (arena instanceof StandAloneArena standAloneArena) {
                 values.addAll(Arrays.asList(

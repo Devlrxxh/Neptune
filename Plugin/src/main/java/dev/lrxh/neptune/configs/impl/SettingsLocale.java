@@ -22,21 +22,11 @@ public enum SettingsLocale implements IDataAccessor {
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
     ENABLED_SCOREBOARD("SCOREBOARD.ENABLE", "Enable scoreboard in game", DataType.BOOLEAN, "false"),
-    ENABLED_SCOREBOARD_LOBBY("SCOREBOARD.ENABLE_LOBBY", "Enable lobby scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_PARTY("SCOREBOARD.ENABLE_PARTY", "Enable party scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_QUEUE("SCOREBOARD.ENABLE_QUEUE", "Enable queue scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME("SCOREBOARD.ENABLE_INGAME", "Enable in-game scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME_STARTING("SCOREBOARD.ENABLE_INGAME_STARTING", "Enable starting match scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME_BESTOF("SCOREBOARD.ENABLE_INGAME_BESTOF", "Enable best-of match scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME_BOXING("SCOREBOARD.ENABLE_INGAME_BOXING", "Enable boxing match scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME_REGULAR("SCOREBOARD.ENABLE_INGAME_REGULAR", "Enable regular match scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME_ENDED("SCOREBOARD.ENABLE_INGAME_ENDED", "Enable ended match scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME_TEAM("SCOREBOARD.ENABLE_INGAME_TEAM", "Enable team match scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_INGAME_FFA("SCOREBOARD.ENABLE_INGAME_FFA", "Enable FFA match scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_SPECTATOR("SCOREBOARD.ENABLE_SPECTATOR", "Enable spectator scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_SPECTATOR_TEAM("SCOREBOARD.ENABLE_SPECTATOR_TEAM", "Enable team spectator scoreboard", DataType.BOOLEAN, "true"),
-    ENABLED_SCOREBOARD_SPECTATOR_FFA("SCOREBOARD.ENABLE_SPECTATOR_FFA", "Enable FFA spectator scoreboard", DataType.BOOLEAN, "true"),
+    PARTICIPANT_COLOR_BLUE("PARTICIPANT.COLOR.BLUE", "", DataType.STRING, "&9"),
+    PARTICIPANT_COLOR_RED("PARTICIPANT.COLOR.RED", "", DataType.STRING, "&c"),
     REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30");
+
+
     private final String path;
     private final String comment;
     private final List<String> defaultValue = new ArrayList<>();

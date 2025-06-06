@@ -1,5 +1,6 @@
 package fr.mrmicky.fastboard;
 
+import fr.mrmicky.fastboard.adventure.FastBoard;
 import lombok.AllArgsConstructor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

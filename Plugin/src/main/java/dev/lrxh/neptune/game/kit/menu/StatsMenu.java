@@ -28,7 +28,7 @@ public class StatsMenu extends Menu {
 
     @Override
     public String getTitle(Player player) {
-        return MenusLocale.STAT_TITLE.getString().replace("<player>", target.equals(player) ? "Your" : target.getName());
+        return MenusLocale.STAT_TITLE.getString().replace("<player>", target.getName());
     }
 
     @Override

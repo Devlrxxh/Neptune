@@ -16,6 +16,7 @@ public class Arena {
     private Location redSpawn;
     private Location blueSpawn;
     private boolean enabled;
+    private int deathY;
 
     public void delete() {
         KitService.get().removeArenasFromKits(this);

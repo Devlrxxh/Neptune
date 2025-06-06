@@ -9,7 +9,7 @@ import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.feature.queue.menu.QueueMenu;
 import dev.lrxh.neptune.game.divisions.menu.DivisionsMenu;
-import dev.lrxh.neptune.game.kit.menu.KitEditorMenu;
+import dev.lrxh.neptune.game.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.game.kit.menu.StatsMenu;
 import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.game.leaderboard.menu.LeaderboardMenu;
@@ -23,7 +23,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 
 @SuppressWarnings("unused")
@@ -35,7 +34,7 @@ public enum ItemAction {
             Profile profile = API.getProfile(player);
 
             if (profile.getState().equals(ProfileState.IN_PARTY)) {
-                player.sendMessage(Component.text(CC.color("&cYou can't queue while in a party.")));
+                player.sendMessage(CC.color("&cYou can't queue while in a party."));
                 return;
             }
             new QueueMenu().open(player);

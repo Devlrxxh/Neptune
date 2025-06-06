@@ -121,19 +121,7 @@ public class ItemUtils {
         for (String line : lore) {
             boolean skip = false;
             for (Replacement replacement : replacements) {
-                if (replacement.getReplacement() instanceof String) {
-                    line = line.replaceAll(replacement.getPlaceholder(), (String) replacement.getReplacement());
-                } else if (replacement.getReplacement() instanceof List<?>) {
-                    if (line.contains(replacement.getPlaceholder())) {
-                        List<String> replacementList = (List<String>) replacement.getReplacement();
-                        for (String replacementLine : replacementList) {
-                            newLore.add(line.replaceAll(replacement.getPlaceholder(), replacementLine));
-                        }
-                        skip = true;
-                    }
-                } else if (replacement.getReplacement() instanceof Integer) {
-                    line = line.replaceAll(replacement.getPlaceholder(), String.valueOf(replacement.getReplacement()));
-                }
+                line = line.replaceAll(replacement.getPlaceholder(), replacement.getReplacement().content());
             }
             if (!skip) newLore.add(line);
         }

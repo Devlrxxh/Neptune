@@ -5,11 +5,12 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
-import dev.lrxh.neptune.game.match.impl.FfaFightMatch;
-import dev.lrxh.neptune.game.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
 import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.GlobalStats;
@@ -27,7 +28,6 @@ import java.util.List;
 
 @UtilityClass
 public class PlaceholderUtil {
-
 
     public List<String> format(List<String> lines, Player player) {
         List<String> formattedLines = new ArrayList<>();
@@ -96,6 +96,11 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<points>", String.valueOf(participant.getRoundsWon()));
                         line = line.replaceAll("<opponent-points>", String.valueOf(opponent.getRoundsWon()));
                     }
+
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        line = line.replaceAll("<bed-status>", !participant.isBedBroken() ? "&a✔" : "&c1");
+                        line = line.replaceAll("<opponent-bed-status>", !participant.isBedBroken() ? "&a✔" : "&c1");
+                    }
                 }
 
                 if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
@@ -104,6 +109,12 @@ public class PlaceholderUtil {
 
                     line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(redPlayer.getPlayer())));
                     line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayer())));
+
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        line = line.replaceAll("<red-bed-status>", !redPlayer.isBedBroken() ? "&a✔" : "&c1");
+                        line = line.replaceAll("<blue-bed-status>", !bluePlayer.isBedBroken() ? "&a✔" : "&c1");
+
+                    }
                 }
             }
             if (match instanceof TeamFightMatch teamFightMatch) {
@@ -115,6 +126,17 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<max>", String.valueOf(matchTeam.getParticipants().size()));
                     line = line.replaceAll("<alive-opponent>", String.valueOf(opponentTeam.getAliveParticipants()));
                     line = line.replaceAll("<max-opponent>", String.valueOf(opponentTeam.getParticipants().size()));
+
+                    if (match.getRounds() > 1) {
+                        line = line.replaceAll("<maxPoints>", String.valueOf(match.getRounds()));
+                        line = line.replaceAll("<points>", String.valueOf(matchTeam.getPoints()));
+                        line = line.replaceAll("<opponent-points>", String.valueOf(opponentTeam.getPoints()));
+                    }
+
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        line = line.replaceAll("<team-bed-status>", !matchTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
+                        line = line.replaceAll("<opponent-team-bed-status>", !opponentTeam.isBedBroken() ? "&a✔" : "&c" + opponentTeam.getAliveParticipants());
+                    }
                 }
 
                 if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
@@ -125,6 +147,11 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<max-red>", String.valueOf(redTeam.getParticipants().size()));
                     line = line.replaceAll("<alive-blue>", String.valueOf(blueTeam.getAliveParticipants()));
                     line = line.replaceAll("<max-blue>", String.valueOf(blueTeam.getParticipants().size()));
+
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        line = line.replaceAll("<red-bed-status>", !redTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
+                        line = line.replaceAll("<red-bed-status>", !blueTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
+                    }
                 }
             }
 

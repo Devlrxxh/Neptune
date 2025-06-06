@@ -20,7 +20,7 @@ import java.util.List;
 public class DivisionsMenu extends Menu {
 
     public DivisionsMenu() {
-        super(MenusLocale.DIVISIONS_TITLE.getString(), MenusLocale.DIVISIONS_SIZE.getInt(), Filter.valueOf(MenusLocale.LEADERBOARD_FILTER.getString()));
+        super(MenusLocale.DIVISIONS_TITLE.getString(), MenusLocale.DIVISIONS_SIZE.getInt(), Filter.valueOf(MenusLocale.DIVISIONS_FILTER.getString()));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class DivisionsMenu extends Menu {
     public ItemStack getItemStack(Player player, Division division) {
         return new ItemBuilder(division.getMaterial())
                 .name(MenusLocale.DIVISIONS_ITEM_NAME.getString().replace("<division>", division.getDisplayName()))
-                .lore(ItemUtils.getLore(MenusLocale.DIVISIONS_LORE.getStringList(), new Replacement("<wins>", division.getWinsRequired())), player)
+                .lore(ItemUtils.getLore(MenusLocale.DIVISIONS_LORE.getStringList(), new Replacement("<wins>", String.valueOf(division.getWinsRequired()))), player)
 
                 .build();
     }

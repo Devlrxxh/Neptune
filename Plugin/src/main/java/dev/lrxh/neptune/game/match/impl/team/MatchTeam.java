@@ -4,6 +4,7 @@ package dev.lrxh.neptune.game.match.impl.team;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import lombok.Data;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -16,10 +17,18 @@ public class MatchTeam {
     private final List<Participant> deadParticipants;
     private boolean loser;
 
+    private boolean bedBroken;
+    private int points;
+
     public MatchTeam(List<Participant> participants) {
         this.participants = participants;
         this.deadParticipants = new ArrayList<>();
         this.loser = false;
+    }
+
+    public void setBedBroken(boolean bedBroken) {
+        this.bedBroken = bedBroken;
+        forEachParticipant(participants -> participants.setBedBroken(bedBroken));
     }
 
     public boolean isLoser() {
@@ -30,7 +39,7 @@ public class MatchTeam {
         return participants.size() - deadParticipants.size();
     }
 
-    public void sendTitle(String header, String footer, int duration) {
+    public void sendTitle(TextComponent header, TextComponent footer, int duration) {
         forEachParticipant((participant) -> participant.sendTitle(header, footer, duration));
     }
 
@@ -52,5 +61,10 @@ public class MatchTeam {
                 action.accept(participant);
             }
         }
+    }
+
+    public void addPoint() {
+        points++;
+        forEachParticipant(Participant::addWin);
     }
 }

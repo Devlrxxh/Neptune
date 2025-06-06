@@ -3,7 +3,7 @@ package dev.lrxh.neptune.game.match.menu;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
-import dev.lrxh.neptune.game.match.impl.SoloFightMatch;
+import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
 import dev.lrxh.neptune.game.match.menu.button.MatchSpectateButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;

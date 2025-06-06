@@ -12,7 +12,7 @@ import java.util.function.Consumer;
 public class DisplayButton extends Button {
     private final ItemStack itemStack;
     private final String name;
-    private final Consumer<?> action;
+    private final Consumer<Player> action;
 
     public DisplayButton(int slot, Material itemStack, String name) {
         super(slot, false);
@@ -21,7 +21,7 @@ public class DisplayButton extends Button {
         this.action = null;
     }
 
-    public DisplayButton(int slot, Material itemStack, String name, Consumer<?> action) {
+    public DisplayButton(int slot, Material itemStack, String name, Consumer<Player> action) {
         super(slot, false);
         this.itemStack = new ItemStack(itemStack);
         this.name = name;
@@ -52,6 +52,6 @@ public class DisplayButton extends Button {
     public void onClick(ClickType type, Player player) {
         if (action == null) return;
 
-        action.accept(null);
+        action.accept(player);
     }
 }

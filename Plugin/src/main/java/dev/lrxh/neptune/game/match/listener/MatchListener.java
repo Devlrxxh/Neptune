@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.match.listener;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -17,6 +18,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.EntityUtils;
+import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import org.bukkit.GameMode;
@@ -24,18 +26,20 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockExplodeEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
@@ -43,10 +47,53 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.ArrayList;
 import java.util.Optional;
 
-
 public class MatchListener implements Listener {
 
+    @EventHandler
+    public void onBlockPlaceEvent(BlockPlaceEvent event) {
+        Player player = event.getPlayer();
+        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        Profile profile = API.getProfile(player);
+        if (profile == null) return;
+        Match match = profile.getMatch();
+        Location blockLocation = event.getBlock().getLocation();
 
+        if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
+            event.setCancelled(true);
+            player.sendMessage(CC.color("&cYou can't place blocks here!"));
+            return;
+        }
+
+        if (match != null && match.getKit().is(KitRule.BUILD)) {
+            if (match.getState().equals(MatchState.STARTING)) {
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou can't place blocks yet!"));
+                return;
+            }
+
+            StandAloneArena arena = (StandAloneArena) match.arena;
+
+            // Check height limit
+            if (blockLocation.getY() >= arena.getLimit()) {
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou have reached build limit!"));
+                return;
+            }
+
+            // Check arena boundaries
+            if (!LocationUtil.isInside(blockLocation, arena.getMin(), arena.getMax())) {
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou can't build outside the arena!"));
+                return;
+            }
+
+            match.getPlacedBlocks().add(blockLocation);
+        } else {
+            event.setCancelled(true);
+        }
+    }
+
+    // Rest of the class implementation remains unchanged
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
@@ -64,6 +111,50 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
+    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player) {
+            Profile profile = API.getProfile(attacker);
+            if (profile == null) return;
+            Match match = profile.getMatch();
+            if (match == null) return;
+
+            if (match.getKit().is(KitRule.PARKOUR)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPressurePlate(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if (event.getAction() == Action.PHYSICAL) {
+            Material blockType = event.getClickedBlock() != null ? event.getClickedBlock().getType() : null;
+            if (blockType == null) return;
+            Profile profile = API.getProfile(player);
+            if (profile == null) return;
+            Match match = profile.getMatch();
+            if (match == null) return;
+            if (!match.getKit().is(KitRule.PARKOUR)) return;
+            if (!match.getState().equals(MatchState.IN_ROUND)) return;
+            Participant participant = match.getParticipant(player);
+            if (participant == null) return;
+            if (blockType.equals(Material.HEAVY_WEIGHTED_PRESSURE_PLATE)) {
+                if (participant.setCurrentCheckPoint(event.getClickedBlock().getLocation().clone().add(0, 1, 0))) {
+                    match.broadcast(MessagesLocale.PARKOUR_CHECKPOINT,
+                            new Replacement("<player>", participant.getNameColored()),
+                            new Replacement("<checkpoint>", String.valueOf(participant.getCheckPoint())),
+                            new Replacement("<time>", participant.getTime().formatDuration()));
+                }
+            } else if (blockType.equals(Material.LIGHT_WEIGHTED_PRESSURE_PLATE)) {
+                match.win(participant);
+                match.broadcast(MessagesLocale.PARKOUR_END,
+                        new Replacement("<player>", participant.getNameColored()),
+                        new Replacement("<time>", participant.getTime().formatDuration()));
+            }
+        }
+    }
+
+    @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
             if (player.getGameMode().equals(GameMode.CREATIVE)) return;
@@ -74,43 +165,6 @@ public class MatchListener implements Listener {
             }
         }
     }
-
-    @EventHandler()
-    public void onBedBreak(BlockBreakEvent event) {
-        Player player = event.getPlayer();
-        Profile profile = ProfileService.get().getByUUID(player.getUniqueId());
-        Match match = profile.getMatch();
-        Material blockType = event.getBlock().getType();
-
-        if (match == null) return;
-
-        if (match.getKit().is(KitRule.BED_WARS)) {
-            if (blockType == Material.OAK_PLANKS || blockType == Material.END_STONE) {
-                event.setCancelled(false);
-            }
-        }
-
-        if (event.getBlock().getType().toString().contains("BED")) {
-            Location bed = event.getBlock().getLocation();
-
-            Participant participant = match.getParticipant(player.getUniqueId());
-            if (participant == null) return;
-            Location spawn = match.getSpawn(participant);
-            Participant opponent = participant.getOpponent();
-            Location opponentSpawn = match.getSpawn(opponent);
-            ParticipantColor color = participant.getColor();
-
-            if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
-                match.breakBed(opponent);
-                match.sendTitle(opponent, MessagesLocale.BED_BREAK_TITLE.getString(), MessagesLocale.BED_BREAK_FOOTER.getString(), 20);
-                match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.BLUE_BED_BROKEN_MESSAGE : MessagesLocale.RED_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
-            } else {
-                event.setCancelled(true);
-                participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
-            }
-        }
-    }
-
 
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
@@ -131,11 +185,22 @@ public class MatchListener implements Listener {
                 player.sendMessage(CC.color("&cYou can't place blocks yet!"));
                 return;
             }
-            if (blockLocation.getY() >= ((StandAloneArena) match.arena).getLimit()) {
+
+            StandAloneArena arena = (StandAloneArena) match.arena;
+
+            if (blockLocation.getY() >= arena.getLimit()) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou have reached build limit!"));
                 return;
             }
+
+            // Check arena boundaries for bucket empty
+            if (!LocationUtil.isInside(blockLocation, arena.getMin(), arena.getMax())) {
+                event.setCancelled(true);
+                player.sendMessage(CC.color("&cYou can't place water outside the arena!"));
+                return;
+            }
+
             match.getPlacedBlocks().add(blockLocation);
         } else {
             event.setCancelled(true);
@@ -161,7 +226,6 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onEntityDamageByEntityMonitor(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player player) {
-
             Profile attackerProfile = API.getProfile(attacker.getUniqueId());
             Profile profile = API.getProfile(player);
             if (profile == null) return;
@@ -175,6 +239,10 @@ public class MatchListener implements Listener {
             if (!attackerProfile.getMatch().getUuid().equals(match.getUuid())) {
                 event.setCancelled(true);
                 return;
+            }
+
+            if (match.getParticipant(attacker).isDead()) {
+                event.setCancelled(true);
             }
 
             if (match instanceof TeamFightMatch teamFightMatch) {
@@ -192,7 +260,6 @@ public class MatchListener implements Listener {
             }
             match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
         }
-
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -200,7 +267,7 @@ public class MatchListener implements Listener {
         if (event.getEntity() instanceof Player target && event.getDamager() instanceof Player damager) {
             Profile targetProfile = API.getProfile(target);
             Profile playerProfile = API.getProfile(damager.getUniqueId());
-            if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME) && event.isCritical() && damager.getAttackCooldown() == 1.0) {
+            if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME) && damager.getAttackCooldown() == 1.0) {
                 Match match = targetProfile.getMatch();
                 Participant opponent = match.getParticipant(target.getUniqueId());
                 match.getParticipant(damager.getUniqueId()).handleHit(opponent);
@@ -209,7 +276,7 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
@@ -248,17 +315,32 @@ public class MatchListener implements Listener {
                     }
                 }
             }
-
-            if (match.getArena() instanceof StandAloneArena arena) {
-                if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
+            Arena arena = match.getArena();
+            if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
+                if (match.getKit().is(KitRule.PARKOUR)) {
+                    if (participant.getCurrentCheckPoint() != null) {
+                        player.teleport(participant.getCurrentCheckPoint());
+                    } else {
+                        player.teleport(match.getSpawn(participant));
+                    }
+                } else {
                     participant.setDeathCause(DeathCause.DIED);
                     match.onDeath(participant);
-                    return;
                 }
+                return;
             }
-
             if (match.getState().equals(MatchState.IN_ROUND)) {
                 Location playerLocation = player.getLocation();
+
+                if (match.getKit().is(KitRule.DROPPER)) {
+                    Block block = playerLocation.getBlock();
+
+                    if (block.getType() == Material.WATER) {
+                        match.win(participant);
+                    }
+
+                    return;
+                }
 
                 if (match.getKit().is(KitRule.SUMO)) {
                     Block block = playerLocation.getBlock();
@@ -273,6 +355,62 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
+    public void onDismount(EntityDismountEvent event) {
+        if (event.getEntity() instanceof Player player && event.getDismounted() instanceof Horse) {
+            Profile profile = API.getProfile(player);
+            if (profile == null) return;
+            Match match = profile.getMatch();
+
+            if (match.getKit().is(KitRule.HORSE_PVP)) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onPlayerMove(PlayerMoveEvent event) {
+        Player player = event.getPlayer();
+        Location from = event.getFrom();
+        Location to = event.getTo();
+        if (to.getY() > from.getY()) {
+            Block currentBlock = player.getLocation().getBlock();
+
+            if (currentBlock.getType() == Material.END_PORTAL) {
+
+            }
+        }
+    }
+
+
+    @EventHandler
+    public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+
+        Block clickedBlock = event.getClickedBlock();
+        if (clickedBlock == null) return;
+
+        Material blockType = clickedBlock.getType();
+
+        if (isStrippable(blockType)) {
+            event.setCancelled(true);
+        }
+    }
+
+    private boolean isStrippable(Material material) {
+        return material == Material.OAK_LOG ||
+                material == Material.SPRUCE_LOG ||
+                material == Material.BIRCH_LOG ||
+                material == Material.JUNGLE_LOG ||
+                material == Material.ACACIA_LOG ||
+                material == Material.DARK_OAK_LOG ||
+                material == Material.MANGROVE_LOG ||
+                material == Material.CHERRY_LOG ||
+                material == Material.CRIMSON_STEM ||
+                material == Material.COPPER_BLOCK ||
+                material == Material.WARPED_STEM;
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(player);
@@ -290,8 +428,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if ((!kit.is(KitRule.FALL_DAMAGE))
-                    && event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+            if (!kit.is(KitRule.FALL_DAMAGE) && event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
                 event.setCancelled(true);
                 return;
             }
@@ -337,48 +474,6 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
-    public void onBlockPlaceEvent(BlockPlaceEvent event) {
-        Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
-        Profile profile = API.getProfile(player);
-        if (profile == null) return;
-        Match match = profile.getMatch();
-        Location blockLocation = event.getBlock().getLocation();
-        if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
-            event.setCancelled(true);
-            player.sendMessage(CC.color("&cYou can't place blocks here!"));
-            return;
-        }
-        if (match != null && match.getKit().is(KitRule.BUILD)) {
-            if (match.getState().equals(MatchState.STARTING)) {
-                event.setCancelled(true);
-                player.sendMessage(CC.color("&cYou can't place blocks yet!"));
-                return;
-            }
-            if (blockLocation.getY() >= ((StandAloneArena) match.arena).getLimit()) {
-                event.setCancelled(true);
-                player.sendMessage(CC.color("&cYou have reached build limit!"));
-                return;
-            }
-            match.getPlacedBlocks().add(blockLocation);
-        } else {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onPlayerInteract(EntityPlaceEvent event) {
-        if (!event.getEntity().getType().equals(EntityType.ENDER_CRYSTAL)) return;
-        if (event.getPlayer() == null) return;
-        Profile profile = API.getProfile(event.getPlayer().getUniqueId());
-        if (profile == null) return;
-        if (profile.getMatch() == null) return;
-
-        profile.getMatch().getEntities().add(event.getEntity());
-    }
-
-
-    @EventHandler()
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
@@ -397,27 +492,63 @@ public class MatchListener implements Listener {
         Material blockType = event.getBlock().getType();
         if (match == null) return;
         if (blockType.name().contains("BED")) return;
+        if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
+            if (match.getArena() instanceof StandAloneArena standAloneArena) {
+                if (!standAloneArena.getWhitelistedBlocks().contains(blockType)) {
+                    event.setCancelled(true);
+                }
+            }
+        }
+
         if (match.getKit().is(KitRule.BUILD)) {
             event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
         }
-
-        if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-            if (match.getKit().is(KitRule.WHITELISTED_BLOCK_BREAK)) {
-                if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                    if (!standAloneArena.getWhitelistedBlocks().contains(blockType)) {
-                        event.setCancelled(true);
-                    }
-                }
-            }
-
-            event.setCancelled(false);
-        }
-
 
         if (!event.isCancelled()) {
             for (ItemStack itemStack : event.getBlock().getDrops()) {
                 match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), itemStack));
             }
+        }
+    }
+
+    @EventHandler()
+    public void onBedBreak(BlockBreakEvent event) {
+        Player player = event.getPlayer();
+        Profile profile = ProfileService.get().getByUUID(player.getUniqueId());
+        Match match = profile.getMatch();
+        Material blockType = event.getBlock().getType();
+        if (match == null) return;
+
+        if (!match.getKit().is(KitRule.BED_WARS)) return;
+
+        if (match.getKit().is(KitRule.BED_WARS) || match.getKit().is(KitRule.MLG_RUSH)) {
+            if (blockType == Material.OAK_PLANKS || blockType == Material.END_STONE) {
+                event.setCancelled(false);
+            }
+        }
+
+        if (match.getKit().is(KitRule.BED_WARS)) {
+            if (event.getBlock().getType().toString().contains("BED")) {
+                Location bed = event.getBlock().getLocation();
+
+                Participant participant = match.getParticipant(player.getUniqueId());
+                if (participant == null) return;
+                Location spawn = match.getSpawn(participant);
+                Participant opponent = participant.getOpponent();
+                Location opponentSpawn = match.getSpawn(opponent);
+                ParticipantColor color = participant.getColor();
+
+                if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
+                    match.breakBed(opponent);
+                    match.sendTitle(opponent, CC.color(MessagesLocale.BED_BREAK_TITLE.getString()), CC.color(MessagesLocale.BED_BREAK_FOOTER.getString()), 20);
+                    match.broadcast(color.equals(ParticipantColor.RED) ? MessagesLocale.BLUE_BED_BROKEN_MESSAGE : MessagesLocale.RED_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
+                } else {
+                    event.setCancelled(true);
+                    participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
+                }
+            }
+        } else if (match.getKit().is(KitRule.MLG_RUSH)) {
+            //TODO: Implement MLG Rush bed breaking logic
         }
     }
 
@@ -456,11 +587,9 @@ public class MatchListener implements Listener {
         getMatchForPlayer(player).ifPresent(match -> {
             for (Block block : new ArrayList<>(event.blockList())) {
                 if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-                    if (match.getKit().is(KitRule.WHITELISTED_BLOCK_BREAK)) {
-                        if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                            if (!standAloneArena.getWhitelistedBlocks().contains(block.getType())) {
-                                event.blockList().remove(block);
-                            }
+                    if (match.getArena() instanceof StandAloneArena standAloneArena) {
+                        if (!standAloneArena.getWhitelistedBlocks().contains(block.getType())) {
+                            event.blockList().remove(block);
                         }
                     }
                 }
@@ -470,10 +599,6 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
-        if (event.getItemDrop().getItemStack().getType().name().contains("BED")) {
-            event.getItemDrop().remove();
-            return;
-        }
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = API.getProfile(player);
@@ -481,12 +606,7 @@ public class MatchListener implements Listener {
         if (!profile.getState().equals(ProfileState.IN_GAME)) {
             event.setCancelled(true);
         } else {
-            TaskScheduler.get().startTaskLater(new NeptuneRunnable() {
-                @Override
-                public void run() {
-                    profile.getMatch().getEntities().add(EntityUtils.getEntityById(player.getWorld(), event.getItemDrop().getEntityId()));
-                }
-            }, 20);
+            profile.getMatch().getEntities().add(event.getItemDrop());
         }
     }
 

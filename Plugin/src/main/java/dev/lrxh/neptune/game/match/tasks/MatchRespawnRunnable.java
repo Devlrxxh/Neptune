@@ -7,9 +7,11 @@ import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 
 public class MatchRespawnRunnable extends NeptuneRunnable {
@@ -38,16 +40,24 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
         if (respawnTimer == 3) {
             PlayerUtil.doVelocityChange(participant.getPlayerUUID());
             PlayerUtil.reset(participant.getPlayer());
-            participant.getPlayer().setGameMode(GameMode.ADVENTURE);
+            participant.getPlayer().setGameMode(GameMode.SPECTATOR);
         }
 
         if (participant.getPlayer() == null) return;
         if (respawnTimer == 0) {
+            Location location;
             if (participant.getColor().equals(ParticipantColor.RED)) {
-                participant.teleport(match.getArena().getRedSpawn());
+                location = match.getArena().getWorld().getHighestBlockAt(match.getArena().getRedSpawn()).getLocation().clone().add(0.5, 1, 0.5);
+                location.setPitch(match.getArena().getRedSpawn().getPitch());
+                location.setYaw(match.getArena().getRedSpawn().getYaw());
+
             } else {
-                participant.teleport(match.getArena().getBlueSpawn());
+                location = match.getArena().getWorld().getHighestBlockAt(match.getArena().getBlueSpawn()).getLocation().clone().add(0.5, 1, 0.5);
+                location.setPitch(match.getArena().getBlueSpawn().getPitch());
+                location.setYaw(match.getArena().getBlueSpawn().getYaw());
             }
+
+            participant.teleport(location);
 
             match.setupPlayer(participant.getPlayerUUID());
             participant.setDead(false);
@@ -56,10 +66,10 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
             return;
         }
 
-        match.playSound(Sound.UI_BUTTON_CLICK);
+        participant.playSound(Sound.UI_BUTTON_CLICK);
 
-        participant.sendTitle(MessagesLocale.MATCH_RESPAWN_TITLE_HEADER.getString().replace("<timer>", String.valueOf(respawnTimer)),
-                MessagesLocale.MATCH_RESPAWN_TITLE_FOOTER.getString().replace("<timer>", String.valueOf(respawnTimer)),
+        participant.sendTitle(CC.color(MessagesLocale.MATCH_RESPAWN_TITLE_HEADER.getString().replace("<timer>", String.valueOf(respawnTimer))),
+                CC.color(MessagesLocale.MATCH_RESPAWN_TITLE_FOOTER.getString().replace("<timer>", String.valueOf(respawnTimer))),
                 100);
         participant.sendMessage(MessagesLocale.MATCH_RESPAWN_TIMER, new Replacement("<timer>", String.valueOf(respawnTimer)));
 

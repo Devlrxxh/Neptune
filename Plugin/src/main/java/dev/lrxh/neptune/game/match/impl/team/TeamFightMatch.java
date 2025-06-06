@@ -11,6 +11,7 @@ import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
+import dev.lrxh.neptune.game.match.tasks.MatchSecondRoundRunnable;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -18,6 +19,7 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Sound;
 
 import java.util.List;
@@ -42,16 +44,25 @@ public class TeamFightMatch extends Match {
     }
 
     @Override
+    public void win(Participant winner) {
+        state = MatchState.ENDING;
+        MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
+        loserTeam.setLoser(true);
+
+        new MatchEndRunnable(this, plugin).start(0L, 20L, plugin);
+    }
+
+    @Override
     public void end(Participant loser) {
         state = MatchState.ENDING;
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = getParticipantTeam(loser);
 
-        winnerTeam.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);
+        winnerTeam.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE.getString()),
+                CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
 
-        loserTeam.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_OPPONENT_TEAM.getString()), 100);
+        loserTeam.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE.getString()),
+                CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_OPPONENT_TEAM.getString())), 100);
 
         loser.playKillEffect();
 
@@ -69,13 +80,28 @@ public class TeamFightMatch extends Match {
                 new Replacement("<winners>", winnerTeam.getTeamNames())));
     }
 
+
     @Override
     public void breakBed(Participant participant) {
-        getParticipantTeam(participant).forEachParticipant(participants -> participants.setBedBroken(true));
+        MatchTeam team = getParticipantTeam(participant);
+
+        team.setBedBroken(true);
+        playSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
+
+        MatchTeam enemy = team.equals(teamA) ? teamB : teamA;
+
+        if (rounds > 1) {
+            enemy.addPoint();
+            if (enemy.getPoints() < rounds) {
+
+                state = MatchState.STARTING;
+                new MatchSecondRoundRunnable(this, participant, plugin).start(0L, 20L, plugin);
+            }
+        }
     }
 
     @Override
-    public void sendTitle(Participant participant, String header, String footer, int duration) {
+    public void sendTitle(Participant participant, TextComponent header, TextComponent footer, int duration) {
         getParticipantTeam(participant).sendTitle(header, footer, duration);
     }
 
@@ -147,6 +173,6 @@ public class TeamFightMatch extends Match {
         state = MatchState.IN_ROUND;
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 10);
+        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), CC.color(MessagesLocale.MATCH_START_HEADER.getString()), 10);
     }
 }

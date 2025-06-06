@@ -191,6 +191,8 @@ public enum MenusLocale implements IDataAccessor {
             "&7till one is standing.",
             " ",
             "&a&lClick to start event!"),
+
+
     PARTY_EVENTS_KIT_SELECT_TITLE("PARTY.EVENTS.KIT.SELECT.TITLE", DataType.STRING, "&bKit Select"),
     PARTY_EVENTS_KIT_SELECT_NAME("PARTY.EVENTS.KIT.SELECT.ITEM-NAME", DataType.STRING, "&b<kit>"),
     PARTY_EVENTS_KIT_SELECT_LORE("PARTY.EVENTS.KIT.SELECT.LORE", DataType.STRING_LIST, " ", "&a&lClick to select kit"),

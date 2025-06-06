@@ -1,5 +1,6 @@
 package fr.mrmicky.fastboard;
 
+import fr.mrmicky.fastboard.adventure.FastBoard;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;

@@ -3,8 +3,8 @@ package dev.lrxh.neptune.configs.impl;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
-import dev.lrxh.neptune.providers.clickable.ClickableUtils;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
@@ -35,6 +35,8 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_STARTING("MATCH.START.TIMER", DataType.STRING_LIST, "&fMatch starting in &b<timer>&f..."),
     MATCH_STARTING_TITLE_HEADER("MATCH.START.TITLE-HEADER", DataType.STRING, "&e<countdown-time>"),
     MATCH_STARTING_TITLE_FOOTER("MATCH.START.TITLE-FOOTER", DataType.STRING, ""),
+    PARKOUR_CHECKPOINT("MATCH.PARKOUR.CHECKPOINT", DataType.STRING_LIST, "&a<player> finished checkpoint <checkpoint> in <time>!"),
+    PARKOUR_END("MATCH.PARKOUR.END", DataType.STRING_LIST, "&a<player> finished the parkour in <time>!"),
     ROUND_STARTING("MATCH.ROUND.START.TIMER", DataType.STRING_LIST, "&fRound starting in &b<timer>&f..."),
     MATCH_START_TITLE("MATCH.START.TITLE", DataType.STRING, "&aFight!"),
     MATCH_START_HEADER("MATCH.START.HEADER", DataType.STRING, ""),
@@ -185,23 +187,24 @@ public enum MessagesLocale implements IDataAccessor {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
         }
     }
+
 
     public void send(UUID playerUUID, Replacement... replacements) {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
         }
     }
 }

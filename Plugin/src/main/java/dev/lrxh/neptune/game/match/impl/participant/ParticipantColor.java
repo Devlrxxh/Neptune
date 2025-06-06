@@ -1,17 +1,17 @@
 package dev.lrxh.neptune.game.match.impl.participant;
 
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import lombok.Getter;
-import org.bukkit.ChatColor;
 import org.bukkit.Color;
 
 @Getter
 public enum ParticipantColor {
-    RED(ChatColor.RED),
-    BLUE(ChatColor.BLUE);
+    RED(SettingsLocale.PARTICIPANT_COLOR_RED.getString()),
+    BLUE(SettingsLocale.PARTICIPANT_COLOR_BLUE.getString());
 
-    private final ChatColor color;
+    private final String color;
 
-    ParticipantColor(ChatColor color) {
+    ParticipantColor(String color) {
         this.color = color;
     }
 

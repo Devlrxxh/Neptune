@@ -7,9 +7,11 @@ import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.neptune.utils.Time;
 import lombok.Data;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -37,9 +39,34 @@ public class Participant {
     private boolean frozen = false;
     private boolean bedBroken;
 
+    // PARKOUR GAME RULE
+    private Location currentCheckPoint;
+    private int checkPoint = 0;
+    private Time time;
+
     public Participant(Player player) {
         this.playerUUID = player.getUniqueId();
         this.name = player.getName();
+    }
+
+    public void setDead(boolean dead) {
+        this.dead = dead;
+        playSound(Sound.BLOCK_NOTE_BLOCK_PLING);
+    }
+
+    public boolean setCurrentCheckPoint(Location location) {
+        if (currentCheckPoint != null) {
+            if (location.getBlockX() == currentCheckPoint.getBlockX() &&
+                    location.getBlockY() == currentCheckPoint.getBlockY() &&
+                    location.getBlockZ() == currentCheckPoint.getBlockZ()) {
+                return false;
+            }
+        }
+
+        this.currentCheckPoint = location.add(0.5, 0, 0.5);
+        this.checkPoint++;
+
+        return true;
     }
 
     public void toggleFreeze() {
@@ -47,7 +74,7 @@ public class Participant {
     }
 
     public String getNameColored() {
-        return color.getColor() + name;
+        return PlaceholderUtil.format(color.getColor() + name, getPlayer());
     }
 
     public void addWin() {
@@ -82,11 +109,11 @@ public class Participant {
         profile.getSettingData().getKillEffect().execute(player, killer);
     }
 
-    public void sendTitle(String header, String footer, int duration) {
+    public void sendTitle(TextComponent header, TextComponent footer, int duration) {
         PlayerUtil.sendTitle(getPlayer(), header, footer, duration);
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(TextComponent message) {
         PlayerUtil.sendMessage(playerUUID, message);
     }
 
@@ -134,11 +161,11 @@ public class Participant {
 
     public String getHitsDifference(Participant otherParticipant) {
         if (hits - otherParticipant.getHits() > 0) {
-            return CC.color("&a(+" + (hits - otherParticipant.getHits()) + ")");
+            return "&a(+" + (hits - otherParticipant.getHits()) + ")";
         } else if (hits - otherParticipant.getHits() < 0) {
-            return CC.color("&c(" + (hits - otherParticipant.getHits()) + ")");
+            return "&c(" + (hits - otherParticipant.getHits()) + ")";
         } else {
-            return CC.color("&e(" + (hits - otherParticipant.getHits()) + ")");
+            return "&e(" + (hits - otherParticipant.getHits()) + ")";
         }
     }
 

@@ -13,7 +13,6 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
-import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -29,7 +28,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     public void onPreJoin(PlayerLoginEvent event) {
         if (!Neptune.get().isAllowJoin())
-            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, Component.text(CC.color("&cDatabasing updating...")));
+            event.disallow(PlayerLoginEvent.Result.KICK_OTHER, CC.color("&cDatabasing updating..."));
     }
 
     @EventHandler

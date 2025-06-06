@@ -4,8 +4,7 @@ import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerEntitySoundEffect;
-import com.github.retrooper.packetevents.wrapper.play.server.WrapperPlayServerSpawnEntity;
+import com.github.retrooper.packetevents.wrapper.play.server.*;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
 import org.bukkit.Bukkit;
@@ -73,10 +72,22 @@ public class PacketInterceptor extends PacketListenerAbstract {
              * PLAYER_INFO_REMOVE removes player from tablist, but its fired by both hidePlayer() & on Player quit.
              * We need to cancel the packet only if its fired by hidePlayer() ie only if the player is online.
              * */
-//        } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
-//            WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
-//            Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));
-//            if (player != null) event.setCancelled(true);
+        } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
+            WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
+            Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));
+            if (player != null) event.setCancelled(true);
+        } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_RELATIVE_MOVE) {
+            WrapperPlayServerEntityRelativeMove wrapper = new WrapperPlayServerEntityRelativeMove(event);
+            if (EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
+                if (receiver.canSee(player)) return;
+                event.setCancelled(true);
+            }
+        } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_RELATIVE_MOVE_AND_ROTATION) {
+            WrapperPlayServerEntityRelativeMoveAndRotation wrapper = new WrapperPlayServerEntityRelativeMoveAndRotation(event);
+            if (EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
+                if (receiver.canSee(player)) return;
+                event.setCancelled(true);
+            }
         }
     }
 }

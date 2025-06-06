@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.match.impl;
+package dev.lrxh.neptune.game.match.impl.solo;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -10,6 +10,7 @@ import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.game.match.Match;
+import dev.lrxh.neptune.game.match.impl.MatchState;
 import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
@@ -45,6 +46,17 @@ public class SoloFightMatch extends Match {
     }
 
     @Override
+    public void win(Participant winner) {
+        Participant loser = participantA == winner ? participantB : participantA;
+        state = MatchState.ENDING;
+        loser.setLoser(true);
+
+        removePlaying();
+
+        new MatchEndRunnable(this, plugin).start(0L, 20L, plugin);
+    }
+
+    @Override
     public void end(Participant loser) {
         state = MatchState.ENDING;
         loser.setLoser(true);
@@ -68,11 +80,12 @@ public class SoloFightMatch extends Match {
             forEachPlayer(player -> HotbarService.get().giveItems(player));
         }
 
-        winner.sendTitle(MessagesLocale.MATCH_WINNER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString()), 100);
+        winner.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE.getString()),
+                CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
 
-        if (!loser.isLeft() && !loser.isDisconnected()) loser.sendTitle(MessagesLocale.MATCH_LOSER_TITLE.getString(),
-                MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored()), 100);
+        if (!loser.isLeft() && !loser.isDisconnected())
+            loser.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE.getString()),
+                    CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored())), 100);
 
         removePlaying();
 
@@ -136,10 +149,22 @@ public class SoloFightMatch extends Match {
     @Override
     public void breakBed(Participant participant) {
         participant.setBedBroken(true);
+        playSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
+        Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
+
+        if (rounds > 1) {
+            participantKiller.addWin();
+            if (participantKiller.getRoundsWon() < rounds) {
+                participantKiller.setCombo(0);
+
+                state = MatchState.STARTING;
+                new MatchSecondRoundRunnable(this, participant, plugin).start(0L, 20L, plugin);
+            }
+        }
     }
 
     @Override
-    public void sendTitle(Participant participant, String header, String footer, int duration) {
+    public void sendTitle(Participant participant, TextComponent header, TextComponent footer, int duration) {
         participant.sendTitle(header, footer, duration);
     }
 
@@ -210,6 +235,6 @@ public class SoloFightMatch extends Match {
         state = MatchState.IN_ROUND;
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), MessagesLocale.MATCH_START_HEADER.getString(), 20);
+        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), CC.color(MessagesLocale.MATCH_START_HEADER.getString()), 20);
     }
 }
