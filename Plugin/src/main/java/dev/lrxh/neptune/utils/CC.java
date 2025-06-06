@@ -27,23 +27,20 @@ public class CC {
 
     public TextComponent color(String message) {
         String converted = convertLegacyToMiniMessage(message);
-
         Component parsed = MiniMessage.miniMessage().deserialize(converted);
 
-        Component fixed;
-        if (message.contains("<italic>")) {
-            fixed = parsed.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.TRUE);
-        } else {
-            fixed = parsed.decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE);
+        boolean hasItalic = message.contains("<italic>");
+        Component fixed = parsed.decorationIfAbsent(TextDecoration.ITALIC,
+                hasItalic ? TextDecoration.State.TRUE : TextDecoration.State.FALSE);
+
+        if (fixed instanceof TextComponent textComponent) {
+            return textComponent;
         }
 
-        if (fixed instanceof TextComponent) {
-            return (TextComponent) fixed;
-        } else {
-            return Component.text().append(fixed)
-                    .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)
-                    .build();
-        }
+        return Component.text()
+                .append(fixed)
+                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)
+                .build();
     }
 
     private String convertLegacyToMiniMessage(String text) {
