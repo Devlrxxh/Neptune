@@ -502,12 +502,6 @@ public class MatchListener implements Listener {
                 event.setCancelled(!standAloneArena.getWhitelistedBlocks().contains(blockType));
             }
         }
-
-        if (!event.isCancelled()) {
-            for (ItemStack itemStack : event.getBlock().getDrops()) {
-                match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), itemStack));
-            }
-        }
     }
 
     @EventHandler()

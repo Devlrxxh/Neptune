@@ -72,7 +72,7 @@ public class BlockTracker implements Listener {
         getMatchForPlayer(event.getPlayer()).ifPresent(match -> {
             for (Item item : new ArrayList<>(items)) {
                 if (match.getArena() instanceof StandAloneArena arena) {
-                    if (arena.getWhitelistedBlocks().contains(item.getItemStack().getType())) {
+                    if (!arena.getWhitelistedBlocks().contains(item.getItemStack().getType())) {
                         items.remove(item);
                     }
                 }
