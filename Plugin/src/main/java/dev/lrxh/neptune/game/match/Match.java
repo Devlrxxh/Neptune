@@ -288,7 +288,7 @@ public abstract class Match {
                 if (state.equals(MatchState.STARTING)) {
                     showHealth();
                 }
-            }
+            }       
 
             if (!kit.is(KitRule.SATURATION)) {
                 Player player = participant.getPlayer();
