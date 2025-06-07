@@ -72,6 +72,22 @@ public abstract class Menu {
                         buttons.add(new DisplayButton(i, Material.getMaterial(MenusLocale.FILTER_MATERIAL.getString()), MenusLocale.FILTER_NAME.getString()));
                     }
                 }
+            } case BORDER -> {
+                int rows = size / 9;
+                int columns = 9;
+
+                for (int i = 0; i < size; i++) {
+                    int row = i / columns;
+                    int column = i % columns;
+
+                    if (row == 0 || row == rows - 1 || column == 0 || column == columns - 1) {
+                        if (getButton(i) == null) {
+                            buttons.add(new DisplayButton(i, Material.getMaterial(MenusLocale.FILTER_MATERIAL.getString()), MenusLocale.FILTER_NAME.getString()));
+                        }
+                    }
+                }
+            }
+            case NONE -> {
             }
         }
 

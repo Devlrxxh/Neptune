@@ -23,7 +23,6 @@ public enum KitRule {
     PARKOUR(Material.ENDER_PEARL, "Allow/Deny Parkour", "Parkour", "parkour"),
     RESET_ARENA_AFTER_ROUND(Material.BARRIER, "If the arena should be reset after the match", "Reset Arena After Match", "resetArenaAfterMatch"),
     DROPPER(Material.DROPPER, "Allow/Deny Dropper", "Dropper", "dropper"),
-    MLG_RUSH(Material.WATER_BUCKET, "Allow/Deny MLG Rush", "MLG Rush", "mlgRush"),
     SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "Allow/Deny Saturation", "Saturation", "saturation");
 
     private final String description;

@@ -521,7 +521,7 @@ public class MatchListener implements Listener {
 
         if (!match.getKit().is(KitRule.BED_WARS)) return;
 
-        if (match.getKit().is(KitRule.BED_WARS) || match.getKit().is(KitRule.MLG_RUSH)) {
+        if (match.getKit().is(KitRule.BED_WARS)) {
             if (blockType == Material.OAK_PLANKS || blockType == Material.END_STONE) {
                 event.setCancelled(false);
             }
@@ -547,8 +547,6 @@ public class MatchListener implements Listener {
                     participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
                 }
             }
-        } else if (match.getKit().is(KitRule.MLG_RUSH)) {
-            //TODO: Implement MLG Rush bed breaking logic
         }
     }
 
