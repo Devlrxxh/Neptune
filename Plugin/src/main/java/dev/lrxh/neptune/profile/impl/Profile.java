@@ -111,7 +111,8 @@ public class Profile {
             profileKitData.updateDivision();
         }
 
-        gameData.getGlobalStats().setCurrentStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_CURRENT", gameData.countGlobalWins()));
+        gameData.getGlobalStats().setBestStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_BEST", gameData.getGlobalStats().getBestStreak()));
+        gameData.getGlobalStats().setCurrentStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak()));
         gameData.getGlobalStats().setWins(kitStatistics.getInteger("GLOBAL_WINS", gameData.countGlobalLosses()));
         gameData.getGlobalStats().setLosses(kitStatistics.getInteger("GLOBAL_LOSSES", gameData.countGlobalCurrentStreak()));
         gameData.setLastPlayedKit(kitStatistics.getString("lastPlayedKit", ""));
@@ -151,6 +152,7 @@ public class Profile {
         kitStatsDoc.put("GLOBAL_WINS", gameData.getGlobalStats().getWins());
         kitStatsDoc.put("GLOBAL_LOSSES", gameData.getGlobalStats().getLosses());
         kitStatsDoc.put("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak());
+        kitStatsDoc.put("GLOBAL_WIN_STREAK_BEST", gameData.getGlobalStats().getBestStreak());
         kitStatsDoc.put("lastPlayedKit", gameData.getLastPlayedKit());
 
         dataDocument.put("kitData", kitStatsDoc);
