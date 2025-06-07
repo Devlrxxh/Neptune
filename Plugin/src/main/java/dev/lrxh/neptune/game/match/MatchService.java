@@ -51,7 +51,7 @@ public class MatchService {
         SoloFightMatch match = new SoloFightMatch(arena, kit, duel, participants, playerRed, playerBlue, rounds);
 
         matches.add(match);
-        new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
+        new MatchStartRunnable(match, plugin).start(0L, 20L);
     }
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {
@@ -71,7 +71,7 @@ public class MatchService {
         TeamFightMatch match = new TeamFightMatch(arena, kit, participants, teamA, teamB);
 
         matches.add(match);
-        new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
+        new MatchStartRunnable(match, plugin).start(0L, 20L);
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
@@ -83,7 +83,7 @@ public class MatchService {
         FfaFightMatch match = new FfaFightMatch(arena, kit, participants);
 
         matches.add(match);
-        new MatchStartRunnable(match, plugin).start(0L, 20L, plugin);
+        new MatchStartRunnable(match, plugin).start(0L, 20L);
     }
 
     public Optional<Match> getMatch(Player player) {

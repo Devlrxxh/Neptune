@@ -399,6 +399,8 @@ public abstract class Match {
             horse.setAdult();
 
             horse.addPassenger(player);
+
+            getEntities().add(horse);
         }
     }
 

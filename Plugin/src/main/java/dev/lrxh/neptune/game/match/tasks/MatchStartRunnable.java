@@ -51,7 +51,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
     @Override
     public void run() {
         if (match.isEnded()) {
-            stop(plugin);
+            stop();
             return;
         }
 
@@ -66,7 +66,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
                 participant.setTime(new Time());
             }
 
-            stop(plugin);
+            stop();
             return;
         }
         if (match.getState().equals(MatchState.STARTING)) {

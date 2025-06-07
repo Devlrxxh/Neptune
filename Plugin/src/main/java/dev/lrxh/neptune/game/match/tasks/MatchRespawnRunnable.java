@@ -32,7 +32,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
     @Override
     public void run() {
         if (!MatchService.get().matches.contains(match)) {
-            stop(plugin);
+            stop();
 
             return;
         }
@@ -62,7 +62,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
             match.setupPlayer(participant.getPlayerUUID());
             participant.setDead(false);
             match.showParticipant(participant);
-            stop(plugin);
+            stop();
             return;
         }
 

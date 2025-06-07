@@ -9,7 +9,6 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 
 @UtilityClass
 public class CC {
@@ -72,6 +71,8 @@ public class CC {
     public Component returnMessage(String message, Replacement... replacements) {
         TagResolver.Builder resolverBuilder = TagResolver.builder();
 
+        String moderMessage = convertLegacyToMiniMessage(message);
+
         for (Replacement replacement : replacements) {
             String placeholder = replacement.getPlaceholder();
             String cleanPlaceholder = placeholder.replaceAll("^<|>$", "").toLowerCase();
@@ -82,11 +83,6 @@ public class CC {
         }
 
         TagResolver resolver = resolverBuilder.build();
-
-        Component parsed = MiniMessage.miniMessage().deserialize(message, resolver);
-
-        String legacyString = LegacyComponentSerializer.legacyAmpersand().serialize(parsed);
-
-        return LegacyComponentSerializer.legacyAmpersand().deserialize(legacyString);
+        return MiniMessage.miniMessage().deserialize(moderMessage, resolver);
     }
 }

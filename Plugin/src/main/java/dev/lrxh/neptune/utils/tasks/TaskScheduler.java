@@ -32,7 +32,7 @@ public class TaskScheduler {
 
     public void stopAllTasks() {
         for (NeptuneRunnable task : tasks) {
-            task.stop(Neptune.get());
+            task.stop();
         }
     }
 

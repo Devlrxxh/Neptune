@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.feature.cosmetics.impl;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.CosmeticsLocale;
 import dev.lrxh.neptune.utils.RandomUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
@@ -77,14 +76,14 @@ public enum KillEffect {
             @Override
             public void run() {
                 if (ticks >= maxTicks) {
-                    stop(Neptune.get());
+                    stop();
                     return;
                 }
 
                 player.spawnParticle(particle, location, amount, RandomUtils.getRandFloat(0, 0.7f), 1, RandomUtils.getRandFloat(0, 0.7f), 0.05, null);
                 ticks += 10;
             }
-        }.start(10, Neptune.get());
+        }.start(10);
     }
 
     public String permission() {

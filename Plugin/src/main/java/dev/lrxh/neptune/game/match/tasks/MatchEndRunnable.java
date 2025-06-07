@@ -32,7 +32,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
     @Override
     public void run() {
         if (!MatchService.get().matches.contains(match)) {
-            stop(plugin);
+            stop();
             return;
         }
         if (endTimer == 0) {

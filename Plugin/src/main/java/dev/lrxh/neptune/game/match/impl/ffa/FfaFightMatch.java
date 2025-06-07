@@ -36,7 +36,7 @@ public class FfaFightMatch extends Match {
         this.winner = winner;
         this.setEnded(true);
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L, plugin);
+        new MatchEndRunnable(this, plugin).start(0L, 20L);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class FfaFightMatch extends Match {
 
         loser.playKillEffect();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L, plugin);
+        new MatchEndRunnable(this, plugin).start(0L, 20L);
     }
 
     @Override

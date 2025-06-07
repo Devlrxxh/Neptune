@@ -32,13 +32,13 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
     @Override
     public void run() {
         if (!MatchService.get().matches.contains(match)) {
-            stop(plugin);
+            stop();
 
             return;
         }
 
         if (match.isEnded()) {
-            stop(plugin);
+            stop();
             return;
         }
 
@@ -47,7 +47,7 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
             match.startMatch();
             match.checkRules();
             match.sendMessage(MessagesLocale.ROUND_STARTED);
-            stop(plugin);
+            stop();
             return;
         }
 

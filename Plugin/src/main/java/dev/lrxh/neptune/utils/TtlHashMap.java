@@ -46,7 +46,7 @@ public class TtlHashMap<K, V> extends HashMap<K, V> {
         if (key != null && actions.containsKey(castKey)) {
             NeptuneRunnable runnable = actions.get(castKey).getRunnable();
             if (runnable != null) {
-                runnable.stop(plugin);
+                runnable.stop();
             }
             actions.remove(castKey);
         }
