@@ -18,6 +18,7 @@ import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.hotbar.listener.ItemListener;
 import dev.lrxh.neptune.feature.party.command.PartyCommand;
 import dev.lrxh.neptune.feature.queue.command.QueueCommand;
+import dev.lrxh.neptune.feature.queue.command.QueueMenuCommand;
 import dev.lrxh.neptune.feature.queue.command.QuickQueueCommand;
 import dev.lrxh.neptune.feature.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.feature.queue.tasks.QueueMessageTask;
@@ -204,6 +205,7 @@ public final class Neptune extends JavaPlugin {
         drink.register(new LeaveCommand(), "leave", "forfeit");
         drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard");
         drink.register(new SpectateCommand(), "spec", "spectate");
+        drink.register(new QueueMenuCommand(), "queuemenu", "qm");
         drink.register(new MainCommand(), "neptune");
         drink.register(new CosmeticsCommand(), "cosmetics");
         drink.register(new MatchHistoryCommand(), "matchhistory");
