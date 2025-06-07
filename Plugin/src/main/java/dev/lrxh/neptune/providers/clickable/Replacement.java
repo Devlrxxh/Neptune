@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.providers.clickable;
 
+import dev.lrxh.neptune.utils.CC;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -13,7 +14,7 @@ public class Replacement {
 
     public Replacement(String placeholder, String replacement) {
         this.placeholder = placeholder;
-        this.replacement = Component.text(replacement);
+        this.replacement = CC.color(replacement);
     }
 
     public Replacement(String placeholder, List<String> replacement) {
@@ -22,7 +23,7 @@ public class Replacement {
         TextComponent.Builder builder = Component.text();
 
         for (int i = 0; i < replacement.size(); i++) {
-            builder.append(Component.text(replacement.get(i)));
+            builder.append(CC.color(replacement.get(i)));
             if (i < replacement.size() - 1) {
                 builder.append(Component.newline());
             }
