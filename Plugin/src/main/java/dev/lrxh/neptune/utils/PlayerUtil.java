@@ -17,7 +17,6 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.util.Vector;
 
 import java.time.Duration;
-import java.util.List;
 import java.util.UUID;
 
 @UtilityClass

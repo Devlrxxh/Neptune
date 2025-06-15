@@ -34,7 +34,7 @@ public class Participant {
     private int combo;
     private boolean loser;
     private boolean disconnected = false;
-    private boolean left;
+    private boolean left = false;
     private int roundsWon = 0;
     private boolean frozen = false;
     private boolean bedBroken;
