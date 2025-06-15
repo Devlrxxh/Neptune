@@ -11,6 +11,7 @@ import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
 import dev.lrxh.neptune.configs.ConfigService;
+import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
 import dev.lrxh.neptune.feature.cosmetics.command.CosmeticsCommand;
@@ -122,7 +123,7 @@ public final class Neptune extends JavaPlugin {
         loadWorlds();
         initAPIs();
 
-        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
+        if (ScoreboardLocale.ENABLED_SCOREBOARD.getBoolean()) {
             new FastManager(this, new ScoreboardAdapter());
         }
 
