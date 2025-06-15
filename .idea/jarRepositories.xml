@@ -7,6 +7,11 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="jitpack.io" />
+      <option name="name" value="jitpack.io" />
+      <option name="url" value="https://jitpack.io" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="sonatype" />
       <option name="name" value="sonatype" />
       <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
@@ -15,6 +20,11 @@
       <option name="id" value="papermc-repo" />
       <option name="name" value="papermc-repo" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="github" />
+      <option name="name" value="github" />
+      <option name="url" value="https://maven.pkg.github.com/Devlrxxh/MCUI" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="placeholderapi" />
@@ -32,9 +42,19 @@
       <option name="url" value="https://mvnrepository.com/artifact/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="central" />
+      <option name="name" value="central" />
+      <option name="url" value="https://repo1.maven.org/maven2" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="papermc" />
       <option name="name" value="papermc" />
       <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="codemc-snapshots" />
+      <option name="name" value="codemc-snapshots" />
+      <option name="url" value="https://repo.codemc.io/repository/maven-snapshots/" />
     </remote-repository>
     <remote-repository>
       <option name="id" value="paper-api" />
