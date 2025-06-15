@@ -4,6 +4,7 @@ import com.destroystokyo.paper.event.block.BlockDestroyEvent;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.EntityUtils;
@@ -116,7 +117,7 @@ public class BlockTracker implements Listener {
             }
 
             getMatchForPlayer(player).ifPresent(match -> {
-                for (Block block : event.blockList()) {
+                for (Block block : new ArrayList<>(event.blockList())) {
 
                     for (ItemStack item : block.getDrops()) {
                         Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
@@ -124,7 +125,25 @@ public class BlockTracker implements Listener {
                         }, 5L);
                     }
 
-                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                    if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
+                        if (match.getArena() instanceof StandAloneArena arena) {
+                            if (!arena.getWhitelistedBlocks().contains(block.getType())) {
+                                match.getChanges().put(block.getLocation(), block.getBlockData());
+                            } else {
+                                if (!match.getChanges().containsKey(block.getLocation())) {
+                                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                                } else {
+                                    event.blockList().remove(block);
+                                }
+                            }
+                        }
+                    } else {
+                        if (!match.getChanges().containsKey(block.getLocation())) {
+                            match.getChanges().put(block.getLocation(), block.getBlockData());
+                        } else {
+                            event.blockList().remove(block);
+                        }
+                    }
                 }
             });
         } else {
@@ -136,7 +155,7 @@ public class BlockTracker implements Listener {
             }
 
             getMatchForPlayer(player).ifPresent(match -> {
-                for (Block block : event.blockList()) {
+                for (Block block : new ArrayList<>(event.blockList())) {
 
                     for (ItemStack item : block.getDrops()) {
                         Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
@@ -144,7 +163,25 @@ public class BlockTracker implements Listener {
                         }, 5L);
                     }
 
-                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                    if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
+                        if (match.getArena() instanceof StandAloneArena arena) {
+                            if (!arena.getWhitelistedBlocks().contains(block.getType())) {
+                                match.getChanges().put(block.getLocation(), block.getBlockData());
+                            } else {
+                                if (!match.getChanges().containsKey(block.getLocation())) {
+                                    match.getChanges().put(block.getLocation(), block.getBlockData());
+                                } else {
+                                    event.blockList().remove(block);
+                                }
+                            }
+                        }
+                    } else {
+                        if (!match.getChanges().containsKey(block.getLocation())) {
+                            match.getChanges().put(block.getLocation(), block.getBlockData());
+                        } else {
+                            event.blockList().remove(block);
+                        }
+                    }
                 }
             });
         }

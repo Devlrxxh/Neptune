@@ -147,9 +147,9 @@ public enum ItemAction {
             if (match == null) return;
             Participant participant = match.getParticipant(player);
             participant.setDisconnected(true);
-            profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             PlayerUtil.reset(participant.getPlayer());
             PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+            profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             profile.setMatch(null);
 
             QueueService.get().add(new QueueEntry(match.getKit(), player.getUniqueId()), true);

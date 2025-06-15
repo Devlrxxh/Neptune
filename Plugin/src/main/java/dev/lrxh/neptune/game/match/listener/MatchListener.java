@@ -91,7 +91,6 @@ public class MatchListener implements Listener {
         }
     }
 
-    // Rest of the class implementation remains unchanged
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {
         Player player = event.getEntity();
