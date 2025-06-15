@@ -31,6 +31,9 @@ public class KitData {
 
     public void updateDivision() {
         division = DivisionService.get().getDivisionByWinCount(wins);
+        if (division == null) {
+            division = DivisionService.get().getDivisionByWinCount(0);
+        }
     }
 }
 
