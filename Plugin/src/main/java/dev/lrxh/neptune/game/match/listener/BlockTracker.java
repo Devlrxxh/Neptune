@@ -6,6 +6,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.utils.EntityUtils;
 import io.papermc.paper.event.block.BlockBreakBlockEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -24,8 +25,12 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class BlockTracker implements Listener {
 
@@ -88,8 +93,8 @@ public class BlockTracker implements Listener {
         if (event.getEntity() instanceof EnderCrystal enderCrystal && event.getDamager() instanceof Player player) {
             enderCrystal.getPersistentDataContainer()
                     .set(new NamespacedKey(Neptune.get(),
-                    "neptune_crystal_owner"), org.bukkit.persistence.PersistentDataType.STRING,
-                    player.getUniqueId().toString());
+                                    "neptune_crystal_owner"), org.bukkit.persistence.PersistentDataType.STRING,
+                            player.getUniqueId().toString());
         }
     }
 
@@ -112,11 +117,14 @@ public class BlockTracker implements Listener {
 
             getMatchForPlayer(player).ifPresent(match -> {
                 for (Block block : event.blockList()) {
-                    block.getDrops().clear();
 
-                    if (!match.getChanges().containsKey(block.getLocation())) {
-                        match.getChanges().put(block.getLocation(), block.getBlockData());
+                    for (ItemStack item : block.getDrops()) {
+                        Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
+                            match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item));
+                        }, 5L);
                     }
+
+                    match.getChanges().put(block.getLocation(), block.getBlockData());
                 }
             });
         } else {
@@ -129,11 +137,14 @@ public class BlockTracker implements Listener {
 
             getMatchForPlayer(player).ifPresent(match -> {
                 for (Block block : event.blockList()) {
-                    block.getDrops().clear();
 
-                    if (!match.getChanges().containsKey(block.getLocation())) {
-                        match.getChanges().put(block.getLocation(), block.getBlockData());
+                    for (ItemStack item : block.getDrops()) {
+                        Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
+                            match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item));
+                        }, 5L);
                     }
+
+                    match.getChanges().put(block.getLocation(), block.getBlockData());
                 }
             });
         }

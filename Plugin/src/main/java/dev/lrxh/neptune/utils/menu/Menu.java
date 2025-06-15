@@ -72,7 +72,8 @@ public abstract class Menu {
                         buttons.add(new DisplayButton(i, Material.getMaterial(MenusLocale.FILTER_MATERIAL.getString()), MenusLocale.FILTER_NAME.getString()));
                     }
                 }
-            } case BORDER -> {
+            }
+            case BORDER -> {
                 int rows = size / 9;
                 int columns = 9;
 

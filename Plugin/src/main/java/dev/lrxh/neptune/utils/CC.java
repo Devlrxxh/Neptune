@@ -2,7 +2,6 @@ package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
