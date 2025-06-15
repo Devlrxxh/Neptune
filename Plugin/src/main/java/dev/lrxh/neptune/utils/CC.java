@@ -2,6 +2,7 @@ package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -38,7 +39,7 @@ public class CC {
 
         return Component.text()
                 .append(fixed)
-                .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE)
+                .decorationIfAbsent(TextDecoration.ITALIC, hasItalic ? TextDecoration.State.TRUE : TextDecoration.State.FALSE)
                 .build();
     }
 

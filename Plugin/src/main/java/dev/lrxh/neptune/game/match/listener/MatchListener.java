@@ -493,14 +493,16 @@ public class MatchListener implements Listener {
         if (match == null) return;
         if (blockType.name().contains("BED")) return;
 
-        if (match.getKit().is(KitRule.BUILD)) {
-            event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
-        }
-
         if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
             if (match.getArena() instanceof StandAloneArena standAloneArena) {
                 event.setCancelled(!standAloneArena.getWhitelistedBlocks().contains(blockType));
             }
+        }
+
+        if (match.getKit().is(KitRule.BUILD)) {
+            event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
+        } else {
+            event.setCancelled(true);
         }
     }
 
