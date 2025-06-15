@@ -1,156 +1,120 @@
 package dev.lrxh.neptune;
 
-import co.aikar.commands.BukkitCommandCompletionContext;
-import co.aikar.commands.CommandCompletions;
-import co.aikar.commands.PaperCommandManager;
 import com.github.retrooper.packetevents.PacketEvents;
-import dev.lrxh.VersionHandler;
-import dev.lrxh.client.InjectedPlugin;
-import dev.lrxh.gameRule.GameRule;
-import dev.lrxh.neptune.arena.Arena;
-import dev.lrxh.neptune.arena.ArenaManager;
-import dev.lrxh.neptune.arena.command.ArenaCommand;
+import com.jonahseguin.drink.CommandService;
+import com.jonahseguin.drink.Drink;
+import com.jonahseguin.drink.provider.spigot.UUIDProvider;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
+import dev.lrxh.neptune.cache.EntityCacheRunnable;
 import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
-import dev.lrxh.neptune.commands.MainCommand;
-import dev.lrxh.neptune.configs.ConfigManager;
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
-import dev.lrxh.neptune.cosmetics.CosmeticManager;
-import dev.lrxh.neptune.cosmetics.command.CosmeticsCommand;
-import dev.lrxh.neptune.database.DatabaseManager;
-import dev.lrxh.neptune.divisions.DivisionManager;
-import dev.lrxh.neptune.duel.command.DuelCommand;
-import dev.lrxh.neptune.hotbar.HotbarManager;
-import dev.lrxh.neptune.hotbar.listener.ItemListener;
-import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.kit.KitManager;
-import dev.lrxh.neptune.kit.command.KitCommand;
-import dev.lrxh.neptune.kit.command.KitEditorCommand;
-import dev.lrxh.neptune.kit.command.StatsCommand;
-import dev.lrxh.neptune.leaderboard.LeaderboardManager;
-import dev.lrxh.neptune.leaderboard.command.LeaderboardCommand;
-import dev.lrxh.neptune.leaderboard.task.LeaderboardTask;
-import dev.lrxh.neptune.listeners.LobbyListener;
-import dev.lrxh.neptune.match.MatchManager;
-import dev.lrxh.neptune.match.commands.MatchHistoryCommand;
-import dev.lrxh.neptune.match.commands.SpectateCommand;
-import dev.lrxh.neptune.match.listener.MatchListener;
-import dev.lrxh.neptune.party.command.PartyCommand;
-import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
+import dev.lrxh.neptune.feature.cosmetics.command.CosmeticsCommand;
+import dev.lrxh.neptune.feature.hotbar.HotbarService;
+import dev.lrxh.neptune.feature.hotbar.listener.ItemListener;
+import dev.lrxh.neptune.feature.party.command.PartyCommand;
+import dev.lrxh.neptune.feature.queue.command.QueueCommand;
+import dev.lrxh.neptune.feature.queue.command.QueueMenuCommand;
+import dev.lrxh.neptune.feature.queue.command.QuickQueueCommand;
+import dev.lrxh.neptune.feature.queue.tasks.QueueCheckTask;
+import dev.lrxh.neptune.feature.queue.tasks.QueueMessageTask;
+import dev.lrxh.neptune.game.arena.Arena;
+import dev.lrxh.neptune.game.arena.ArenaService;
+import dev.lrxh.neptune.game.arena.command.ArenaProvider;
+import dev.lrxh.neptune.game.arena.command.StandaloneArenaProvider;
+import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureListener;
+import dev.lrxh.neptune.game.divisions.DivisionService;
+import dev.lrxh.neptune.game.duel.command.DuelCommand;
+import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.game.kit.KitService;
+import dev.lrxh.neptune.game.kit.command.KitEditorCommand;
+import dev.lrxh.neptune.game.kit.command.KitProvider;
+import dev.lrxh.neptune.game.kit.command.StatsCommand;
+import dev.lrxh.neptune.game.kit.procedure.KitProcedureListener;
+import dev.lrxh.neptune.game.leaderboard.LeaderboardService;
+import dev.lrxh.neptune.game.leaderboard.command.LeaderboardCommand;
+import dev.lrxh.neptune.game.leaderboard.task.LeaderboardTask;
+import dev.lrxh.neptune.game.match.MatchService;
+import dev.lrxh.neptune.game.match.commands.MatchHistoryCommand;
+import dev.lrxh.neptune.game.match.commands.SpectateCommand;
+import dev.lrxh.neptune.game.match.listener.BlockTracker;
+import dev.lrxh.neptune.game.match.listener.MatchListener;
+import dev.lrxh.neptune.main.MainCommand;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
-import dev.lrxh.neptune.providers.generation.GenerationManager;
+import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
 import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
+import dev.lrxh.neptune.providers.listeners.LobbyListener;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
-import dev.lrxh.neptune.providers.tasks.TaskScheduler;
-import dev.lrxh.neptune.providers.tasks.WorkloadManager;
-import dev.lrxh.neptune.providers.tasks.WorkloadTask;
-import dev.lrxh.neptune.queue.QueueManager;
-import dev.lrxh.neptune.queue.command.QueueCommand;
-import dev.lrxh.neptune.queue.tasks.QueueCheckTask;
-import dev.lrxh.neptune.utils.PluginLogger;
+import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
-import dev.lrxh.neptune.utils.assemble.Assemble;
-import dev.lrxh.neptune.utils.menu.MenuManager;
-import dev.lrxh.neptune.utils.menu.listener.MenuListener;
-import dev.lrxh.versioncontroll.VersionControll;
+import dev.lrxh.neptune.utils.menu.MenuListener;
+import dev.lrxh.neptune.utils.tasks.TaskScheduler;
+import fr.mrmicky.fastboard.FastManager;
 import lombok.Getter;
-import org.bukkit.Bukkit;
+import lombok.Setter;
 import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
-import java.util.stream.Collectors;
 
 @Getter
-public final class Neptune implements InjectedPlugin {
-
+public final class Neptune extends JavaPlugin {
     private static Neptune instance;
-    private TaskScheduler taskScheduler;
-    private QueueManager queueManager;
-    private MatchManager matchManager;
-    private ArenaManager arenaManager;
-    private ProfileManager profileManager;
-    private KitManager kitManager;
-    private PaperCommandManager paperCommandManager;
-    private ConfigManager configManager;
     private Cache cache;
-    private Assemble assemble;
     private boolean placeholder = false;
-    private HotbarManager hotbarManager;
-    private LeaderboardManager leaderboardManager;
-    private VersionHandler versionHandler;
-    //private Version version;
-    private MenuManager menuManager;
-    private GenerationManager generationManager;
     private EntityHider entityHider;
-    private DivisionManager divisionManager;
-    private DatabaseManager databaseManager;
-    private CosmeticManager cosmeticManager;
-    private WorkloadManager workloadManager;
-    private API api;
-    private JavaPlugin plugin;
-    private PluginLogger logger;
+    @Setter
+    private boolean allowJoin;
+    @Setter
+    private boolean allowMatches;
 
     public static Neptune get() {
         return instance;
     }
 
-    public API getAPI() {
-        return api;
-    }
-
     @Override
-    public void onEnable(JavaPlugin plugin) {
+    public void onEnable() {
         instance = this;
-        this.plugin = plugin;
-        this.logger = new PluginLogger(this);
+        allowJoin = false;
         loadManager();
+        allowJoin = true;
+        allowMatches = true;
     }
 
     private void loadManager() {
-        VersionControll versionControll = new VersionControll(plugin);
-        this.versionHandler = versionControll.getHandler();
-        if (!isEnabled()) return;
-        //this.version = versionControll.getVersion();
-
         loadExtensions();
         if (!isEnabled()) return;
-        if (placeholder) {
-            ServerUtils.info("Placeholder API found, loading expansion.");
-            new PlaceholderImpl(this).register();
-        }
 
-        this.workloadManager = new WorkloadManager();
-        this.taskScheduler = new TaskScheduler(this);
-        this.configManager = new ConfigManager();
-        this.configManager.load();
-        this.queueManager = new QueueManager();
-        this.matchManager = new MatchManager();
-        this.arenaManager = new ArenaManager();
-        this.kitManager = new KitManager();
+        BlockChanger.load(this, false);
+        ConfigService.get().load();
+
+        ArenaService.get().loadArenas();
+        KitService.get().loadKits();
         this.cache = new Cache();
-        this.hotbarManager = new HotbarManager();
-        this.databaseManager = new DatabaseManager(this);
-        if (!isEnabled()) return;
+        HotbarService.get().loadItems();
 
-        this.cosmeticManager = new CosmeticManager();
-        this.divisionManager = new DivisionManager();
-        this.profileManager = new ProfileManager();
-        this.leaderboardManager = new LeaderboardManager();
-        this.menuManager = new MenuManager();
-        this.generationManager = new GenerationManager(versionHandler);
-        this.assemble = new Assemble(new ScoreboardAdapter());
-        this.api = new API(this);
+        new DatabaseService();
+        if (!isEnabled()) return;
+        CosmeticService.get().load();
+
+        DivisionService.get().loadDivisions();
+
+        LeaderboardService.get();
 
         registerListeners();
         loadCommandManager();
@@ -158,14 +122,15 @@ public final class Neptune implements InjectedPlugin {
         loadWorlds();
         initAPIs();
 
-        System.gc();
-        Runtime.getRuntime().freeMemory();
+        if (SettingsLocale.ENABLED_SCOREBOARD.getBoolean()) {
+            new FastManager(this, new ScoreboardAdapter());
+        }
 
         ServerUtils.info("Loaded Successfully");
     }
 
     private void initAPIs() {
-        entityHider = new EntityHider(plugin, EntityHider.Policy.BLACKLIST);
+        entityHider = new EntityHider(this, EntityHider.Policy.BLACKLIST);
 
         PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
         PacketEvents.getAPI().init();
@@ -177,15 +142,22 @@ public final class Neptune implements InjectedPlugin {
                 new MatchListener(),
                 new LobbyListener(),
                 new ItemListener(),
-                new MenuListener(),
                 new EntityCache(),
                 new ItemCache(),
-                new BukkitListener()
-        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, plugin));
+                new BukkitListener(),
+                new MenuListener(),
+                new ArenaProcedureListener(),
+                new KitProcedureListener(),
+                new BlockTracker()
+        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void loadExtensions() {
         placeholder = loadExtension("PlaceholderAPI");
+        if (placeholder) {
+            ServerUtils.info("Placeholder API found, loading expansion.");
+            new PlaceholderImpl(this).register();
+        }
     }
 
     private boolean loadExtension(String pluginName) {
@@ -195,71 +167,53 @@ public final class Neptune implements InjectedPlugin {
 
     private void loadWorlds() {
         for (World world : getServer().getWorlds()) {
-            versionHandler.getGameRule().setGameRule(world, GameRule.DO_WEATHER_CYCLE, false);
-            versionHandler.getGameRule().setGameRule(world, GameRule.DO_DAYLIGHT_CYCLE, false);
-            versionHandler.getGameRule().setGameRule(world, GameRule.DO_IMMEDIATE_RESPAWN, true);
+            world.setGameRule(GameRule.ANNOUNCE_ADVANCEMENTS, false);
+            world.setGameRule(GameRule.DO_WEATHER_CYCLE, false);
+            world.setGameRule(GameRule.DO_DAYLIGHT_CYCLE, false);
+            world.setGameRule(GameRule.DO_IMMEDIATE_RESPAWN, true);
             world.setDifficulty(Difficulty.HARD);
         }
     }
 
     private void loadTasks() {
-        new QueueCheckTask(this).start(SettingsLocale.QUEUE_UPDATE_TIME.getInt(), this);
-        new LeaderboardTask(this).start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt(), this);
-        new WorkloadTask(workloadManager).start(1,this);
+        new QueueCheckTask().start(20L);
+        new QueueMessageTask().start(100L);
+        new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
+        new EntityCacheRunnable().start(400L);
     }
 
     private void loadCommandManager() {
-        paperCommandManager = new PaperCommandManager(plugin);
-        registerCommands();
-        loadCommandCompletions();
-    }
+        CommandService drink = Drink.get(this);
+        drink.bind(Kit.class).toProvider(new KitProvider());
+        drink.bind(Arena.class).toProvider(new ArenaProvider());
+        drink.bind(StandAloneArena.class).toProvider(new StandaloneArenaProvider());
+        drink.bind(UUID.class).toProvider(new UUIDProvider());
 
-    private void registerCommands() {
-        Arrays.asList(
-                new KitCommand(),
-                new ArenaCommand(),
-                new QueueCommand(),
-                new MainCommand(),
-                new StatsCommand(),
-                new DuelCommand(),
-                new SpectateCommand(),
-                new DuelCommand(),
-                new LeaveCommand(),
-                new MatchHistoryCommand(),
-                new PartyCommand(),
-                new LeaderboardCommand(),
-                new KitEditorCommand(),
-                new CosmeticsCommand(),
-                new FollowCommand()
-        ).forEach(command -> paperCommandManager.registerCommand(command));
-    }
-
-    private void loadCommandCompletions() {
-        CommandCompletions<BukkitCommandCompletionContext> commandCompletions = getPaperCommandManager().getCommandCompletions();
-        commandCompletions.registerCompletion("names", c -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()));
-        commandCompletions.registerCompletion("arenas", c -> arenaManager.getArenasWithoutDupes().stream().map(Arena::getName).collect(Collectors.toList()));
-        commandCompletions.registerCompletion("kits", c -> kitManager.kits.stream().map(Kit::getName).collect(Collectors.toList()));
+        drink.register(new KitEditorCommand(), "kiteditor");
+        drink.register(new StatsCommand(), "stats");
+        drink.register(new PartyCommand(), "party", "p");
+        drink.register(new FollowCommand(), "follow");
+        drink.register(new QueueCommand(), "queue");
+        drink.register(new DuelCommand(), "duel", "1v1");
+        drink.register(new LeaveCommand(), "leave", "forfeit");
+        drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard");
+        drink.register(new SpectateCommand(), "spec", "spectate");
+        drink.register(new QueueMenuCommand(), "queuemenu", "qm");
+        drink.register(new MainCommand(), "neptune");
+        drink.register(new CosmeticsCommand(), "cosmetics");
+        drink.register(new MatchHistoryCommand(), "matchhistory");
+        drink.register(new QuickQueueCommand(), "quickqueue");
+        drink.registerCommands();
     }
 
     @Override
     public void onDisable() {
-        disableManagers();
-    }
-
-    private void disableManagers() {
-        stopService(kitManager, KitManager::saveKits);
-        stopService(arenaManager, ArenaManager::saveArenas);
-        stopService(matchManager, MatchManager::stopAllGames);
-        stopService(taskScheduler, ts -> ts.stopAllTasks(this));
+        stopService(KitService.get(), KitService::saveKits);
+        stopService(ArenaService.get(), ArenaService::saveArenas);
+        stopService(MatchService.get(), MatchService::stopAllGames);
+        stopService(TaskScheduler.get(), TaskScheduler::stopAllTasks);
+        stopService(ProfileService.get(), ProfileService::saveAll);
         stopService(cache, Cache::save);
-    }
-
-    public String getName() {
-        return "Neptune";
-    }
-
-    public String getVersion() {
-        return "1.6";
     }
 
     public <T> void stopService(T service, Consumer<T> consumer) {

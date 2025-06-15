@@ -1,9 +1,10 @@
 package dev.lrxh.neptune.settings;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.cosmetics.menu.CosmeticsManageMenu;
+import dev.lrxh.neptune.feature.cosmetics.menu.CosmeticsManageMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.settings.menu.SettingsMenu;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -22,6 +23,7 @@ public enum Setting {
             Profile profile = getProfile(player);
             profile.getSettingData().setPlayerVisibility(!profile.getSettingData().isPlayerVisibility());
             profile.handleVisibility();
+            new SettingsMenu().open(player);
         }
 
         @Override
@@ -38,6 +40,7 @@ public enum Setting {
         public void execute(Player player, ClickType clicktype) {
             Profile profile = getProfile(player);
             profile.getSettingData().setAllowSpectators(!profile.getSettingData().isAllowSpectators());
+            new SettingsMenu().open(player);
         }
 
         @Override
@@ -54,6 +57,7 @@ public enum Setting {
         public void execute(Player player, ClickType clicktype) {
             Profile profile = getProfile(player);
             profile.getSettingData().setAllowDuels(!profile.getSettingData().isAllowDuels());
+            new SettingsMenu().open(player);
         }
 
         @Override
@@ -70,6 +74,7 @@ public enum Setting {
         public void execute(Player player, ClickType clicktype) {
             Profile profile = getProfile(player);
             profile.getSettingData().setAllowParty(!profile.getSettingData().isAllowParty());
+            new SettingsMenu().open(player);
         }
 
         @Override
@@ -90,7 +95,7 @@ public enum Setting {
             } else if (clicktype.equals(ClickType.RIGHT)) {
                 profile.getSettingData().decreasePing();
             }
-
+            new SettingsMenu().open(player);
         }
     },
     COSMETICS(MenusLocale.SETTINGS_COSMETICS_TITLE.getString(),
@@ -99,7 +104,7 @@ public enum Setting {
             MenusLocale.SETTINGS_COSMETICS_SLOT.getInt()) {
         @Override
         public void execute(Player player, ClickType clicktype) {
-            new CosmeticsManageMenu().openMenu(player.getUniqueId());
+            new CosmeticsManageMenu().open(player);
         }
     },
     MENU_SOUNDS(MenusLocale.SETTINGS_MENU_SOUNDS_TITLE.getString(),
@@ -111,6 +116,7 @@ public enum Setting {
         public void execute(Player player, ClickType clicktype) {
             Profile profile = getProfile(player);
             profile.getSettingData().setMenuSound(!profile.getSettingData().isMenuSound());
+            new SettingsMenu().open(player);
         }
 
         @Override
@@ -141,7 +147,7 @@ public enum Setting {
     }
 
     public Profile getProfile(Player player) {
-        return Neptune.get().getAPI().getProfile(player.getUniqueId());
+        return API.getProfile(player.getUniqueId());
     }
 
     public abstract void execute(Player player, ClickType clickType);

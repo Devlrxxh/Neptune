@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -28,7 +29,7 @@ public enum CosmeticsLocale implements IDataAccessor {
     HEARTS_MATERIAL("KILL-EFFECTS.HEARTS.MATERIAL", DataType.STRING, "SUNFLOWER"),
     LAVA_DISPLAY_NAME("KILL-EFFECTS.LAVA.DISPLAY-NAME", DataType.STRING, "&bLava"),
     LAVA_SLOT("KILL-EFFECTS.LAVA.SLOT", DataType.INT, "15"),
-    LAVA_MATERIAL("KILL-EFFECTS.LAVA.MATERIAL", DataType.STRING, "LAVA"),
+    LAVA_MATERIAL("KILL-EFFECTS.LAVA.MATERIAL", DataType.STRING, "LAVA_BUCKET"),
     DEFAULT_MESSAGE("KILL_MESSAGES.DEFAULT.DISPLAY_NAME", DataType.STRING, "&7Default"),
     DEFAULT_MESSAGE_MATERIAL("KILL_MESSAGES.DEFAULT.MATERIAL", DataType.STRING, "BARRIER"),
     DEFAULT_MESSAGE_DESCRIPTION("KILL_MESSAGES.DEFAULT.DESCRIPTION", DataType.STRING_LIST, "&7Default kill message.", " "),
@@ -54,7 +55,7 @@ public enum CosmeticsLocale implements IDataAccessor {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getCosmeticsConfig();
+        return ConfigService.get().getCosmeticsConfig();
     }
 
 }

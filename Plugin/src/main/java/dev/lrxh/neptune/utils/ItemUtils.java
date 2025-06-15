@@ -21,31 +21,32 @@ import java.util.zip.GZIPOutputStream;
 @UtilityClass
 public class ItemUtils {
 
-    public List<ItemStack> color(List<ItemStack> itemStackList, Color color) {
-        List<ItemStack> items = new ArrayList<>();
-        for (ItemStack itemStack : itemStackList) {
+    public ItemStack[] color(ItemStack[] itemStackList, Color color) {
+        ItemStack[] items = new ItemStack[itemStackList.length];
+
+        for (int i = 0; i < itemStackList.length; i++) {
+            ItemStack itemStack = itemStackList[i];
+
             if (itemStack == null) {
                 continue;
-            } else {
-                itemStack.getType();
             }
+
             if (itemStack.getType() == Material.LEATHER_BOOTS || itemStack.getType() == Material.LEATHER_CHESTPLATE
                     || itemStack.getType() == Material.LEATHER_HELMET
                     || itemStack.getType() == Material.LEATHER_LEGGINGS) {
                 LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
                 meta.setColor(color);
                 itemStack.setItemMeta(meta);
-            } else if (itemStack.getType() == Material.WHITE_WOOL) {
-                if (color.equals(Color.BLUE)) {
-                    itemStack.setType(Material.BLUE_WOOL);
-                } else {
-                    itemStack.setType(Material.RED_WOOL);
-                }
+            } else if (itemStack.getType().name().contains("WOOL")) {
+                itemStack.setType(color.equals(Color.BLUE) ? Material.BLUE_WOOL : Material.RED_WOOL);
             }
-            items.add(itemStack);
+
+            items[i] = itemStack;
         }
+
         return items;
     }
+
 
     public String serialize(List<ItemStack> items) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
@@ -120,19 +121,7 @@ public class ItemUtils {
         for (String line : lore) {
             boolean skip = false;
             for (Replacement replacement : replacements) {
-                if (replacement.getReplacement() instanceof String) {
-                    line = line.replaceAll(replacement.getPlaceholder(), (String) replacement.getReplacement());
-                } else if (replacement.getReplacement() instanceof List<?>) {
-                    if (line.contains(replacement.getPlaceholder())) {
-                        List<String> replacementList = (List<String>) replacement.getReplacement();
-                        for (String replacementLine : replacementList) {
-                            newLore.add(line.replaceAll(replacement.getPlaceholder(), replacementLine));
-                        }
-                        skip = true;
-                    }
-                } else if (replacement.getReplacement() instanceof Integer) {
-                    line = line.replaceAll(replacement.getPlaceholder(), String.valueOf(replacement.getReplacement()));
-                }
+                line = line.replaceAll(replacement.getPlaceholder(), replacement.getReplacement().content());
             }
             if (!skip) newLore.add(line);
         }

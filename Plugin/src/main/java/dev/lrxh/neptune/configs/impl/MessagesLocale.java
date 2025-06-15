@@ -1,9 +1,10 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
-import dev.lrxh.neptune.providers.clickable.ClickableUtils;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
@@ -20,11 +21,12 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_YOU("MATCH.YOU", DataType.STRING, "You"),
     MATCH_OPPONENT_TEAM("MATCH.OPPONENT_TEAM", DataType.STRING, "Opponent Team"),
     MATCH_DEATH_DISCONNECT("MATCH.DEATH.DISCONNECT", DataType.STRING_LIST, "<player> &7disconnected"),
-    MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", DataType.STRING_LIST, "&c☠ <player> &7was killed by \uD83D\uDDE1 <killer>"),
-    MATCH_DEATH_DIED("MATCH.DEATH.DIED", DataType.STRING_LIST, "&c☠ <player> &7died"),
-    MATCH_DEATH_VOID("MATCH.DEATH.VOID", DataType.STRING_LIST, "&c☠ <player> &7fell into the void while fighting \uD83D\uDDE1 <killer>"),
+    MATCH_DEATH_KILLED("MATCH.DEATH.KILLED", DataType.STRING_LIST, "<player> &7was killed by <killer>"),
+    MATCH_DEATH_DIED("MATCH.DEATH.DIED", DataType.STRING_LIST, "<player> &7died"),
+    MATCH_DEATH_VOID("MATCH.DEATH.VOID", DataType.STRING_LIST, "<player> &7fell into the void while fighting <killer>"),
     QUEUE_JOIN("QUEUE.JOIN", DataType.STRING_LIST, "&7(&bDuels&7) Joined Queue"),
     QUEUE_LEAVE("QUEUE.LEAVE", DataType.STRING_LIST, "&7(&bDuels&7) Left queue"),
+    QUEUE_ACTION_BAR("QUEUE.ACTION_BAR", DataType.STRING, "&7<kit> 1v1 &8| &a<time>"),
     QUEUE_REPEAT("QUEUE.REPEAT.MESSAGE", DataType.STRING_LIST, "&aSearching for other players in queue..."),
     QUEUE_REPEAT_TOGGLE("QUEUE.REPEAT.TOGGLE", DataType.BOOLEAN, "true"),
     MATCH_STARTED("MATCH.STARTED", DataType.STRING_LIST, "&aMatch Started!"),
@@ -33,6 +35,8 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_STARTING("MATCH.START.TIMER", DataType.STRING_LIST, "&fMatch starting in &b<timer>&f..."),
     MATCH_STARTING_TITLE_HEADER("MATCH.START.TITLE-HEADER", DataType.STRING, "&e<countdown-time>"),
     MATCH_STARTING_TITLE_FOOTER("MATCH.START.TITLE-FOOTER", DataType.STRING, ""),
+    PARKOUR_CHECKPOINT("MATCH.PARKOUR.CHECKPOINT", DataType.STRING_LIST, "&a<player> finished checkpoint <checkpoint> in <time>!"),
+    PARKOUR_END("MATCH.PARKOUR.END", DataType.STRING_LIST, "&a<player> finished the parkour in <time>!"),
     ROUND_STARTING("MATCH.ROUND.START.TIMER", DataType.STRING_LIST, "&fRound starting in &b<timer>&f..."),
     MATCH_START_TITLE("MATCH.START.TITLE", DataType.STRING, "&aFight!"),
     MATCH_START_HEADER("MATCH.START.HEADER", DataType.STRING, ""),
@@ -57,6 +61,8 @@ public enum MessagesLocale implements IDataAccessor {
             " "),
     MATCH_RESPAWN_TIMER("MATCH.RESPAWN_TIMER", DataType.STRING_LIST, "&fRespawning in &b<timer>&f..."),
     MATCH_RESPAWNED("MATCH.RESPAWNED", DataType.STRING_LIST, "&aRespawned!"),
+    MATCH_RESPAWN_TITLE_HEADER("MATCH.RESPAWN_TITLE.HEADER", DataType.STRING, "&fRespawning in &b<timer>&f..."),
+    MATCH_RESPAWN_TITLE_FOOTER("MATCH.RESPAWNED_TITLE_FOOTER", DataType.STRING, ""),
     MATCH_PLAY_AGAIN_ENABLED("MATCH.PLAY_AGAIN.ENABLED", DataType.BOOLEAN, "true"),
     MATCH_PLAY_AGAIN("MATCH.PLAY_AGAIN.MESSAGE", DataType.STRING, "&bDo you want to play again? &a(Click here)"),
     MATCH_PLAY_AGAIN_HOVER("MATCH.PLAY_AGAIN.HOVER", DataType.STRING, "&aClick to play again!"),
@@ -95,6 +101,7 @@ public enum MessagesLocale implements IDataAccessor {
     DUEL_ALREADY_SENT("DUEL.ALREADY_SENT", DataType.STRING, "&cYou have already sent <player> a duel request."),
     DUEL_EXPIRED("DUEL.EXPIRED", DataType.STRING_LIST, "&cYour duel request to <player> has expired."),
     SPECTATE_START("MATCH.SPECTATE.START", DataType.STRING_LIST, "&b<player> &fstarted spectating match."),
+    MATCH_FORFEIT("MATCH.FORFEIT", DataType.STRING_LIST, "&cSomeone rage quit"),
     SPECTATE_STOP("MATCH.SPECTATE.STOP", DataType.STRING_LIST, "&b<player> &fstopped spectating match."),
     SPECTATE_NOT_ALLOWED("MATCH.SPECTATE.SPECTATE_NOT_ALLOWED", DataType.STRING_LIST, "&c<player> has spectating disabled."),
     ERROR_MESSAGE("ERROR_MESSAGE", DataType.STRING, "&c<error>"),
@@ -139,7 +146,12 @@ public enum MessagesLocale implements IDataAccessor {
     SPECTATE_MENU_NO_MATCH("SPECTATE.MENU.NO_MATCH_ONGOING", DataType.STRING_LIST, "&cThere are no ongoing matches!"),
     START_FOLLOW("FOLLOW.STARTED", DataType.STRING_LIST, "&bStarted following &f<player>"),
     STOP_FOLLOWING("FOLLOW.STOPPED", DataType.STRING_LIST, "&cStopped following <player>"),
-    NOT_ONLINE("NOT_ONLINE", DataType.STRING_LIST, "&c<player> isn't online!");
+    NOT_ONLINE("NOT_ONLINE", DataType.STRING_LIST, "&c<player> isn't online!"),
+    CANT_BREAK_OWN_BED("CANT.BREAK.OWN.BEAD", DataType.STRING_LIST, "&cYou can't break your own bed!"),
+    BED_BREAK_TITLE("BEDWARS.OWN_BREAK.TITLE", DataType.STRING, "&cBED DESTROYED!"),
+    BED_BREAK_FOOTER("BEDWARS.OWN_BREAK.FOOTER", DataType.STRING, "&fYou will no longer respawn!"),
+    BLUE_BED_BROKEN_MESSAGE("BEDWARS.BLUE_BREAK.MESSAGE", DataType.STRING, "&9Blue Bed &7was broken by <player>"),
+    RED_BED_BROKEN_MESSAGE("BEDWARS.RED_BREAK.MESSAGE", DataType.STRING, "&cRed Bed &7was broken by <player>");
 
     private final String path;
     private final String comment;
@@ -162,7 +174,7 @@ public enum MessagesLocale implements IDataAccessor {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getMessagesConfig();
+        return ConfigService.get().getMessagesConfig();
     }
 
     @Override
@@ -175,23 +187,24 @@ public enum MessagesLocale implements IDataAccessor {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
         }
     }
+
 
     public void send(UUID playerUUID, Replacement... replacements) {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, ClickableUtils.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
         }
     }
 }

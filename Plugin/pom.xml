@@ -18,16 +18,16 @@
 
     <repositories>
         <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
             <id>mvnrepo</id>
             <url>https://mvnrepository.com/artifact/</url>
         </repository>
         <repository>
             <id>aikar</id>
             <url>https://repo.aikar.co/content/groups/aikar/</url>
-        </repository>
-        <repository>
-            <id>placeholderapi</id>
-            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
             <id>papermc-repo</id>
@@ -37,26 +37,29 @@
             <id>codemc-releases</id>
             <url>https://repo.codemc.io/repository/maven-releases/</url>
         </repository>
+        <repository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>com.github.retrooper.packetevents</groupId>
-            <artifactId>spigot</artifactId>
-            <version>2.2.0</version>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.20.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
 
         <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.20.4-R0.1-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>net.md-5</groupId>
-                    <artifactId>bungeecord-chat</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>com.github.retrooper</groupId>
+            <artifactId>packetevents-spigot</artifactId>
+            <version>2.7.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -67,15 +70,9 @@
         </dependency>
 
         <dependency>
-            <groupId>co.aikar</groupId>
-            <artifactId>acf-paper</artifactId>
-            <version>0.5.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.11.2</version>
+            <version>2.11.5</version>
             <scope>provided</scope>
         </dependency>
 
@@ -83,18 +80,7 @@
             <groupId>org.mongodb</groupId>
             <artifactId>mongodb-driver-sync</artifactId>
             <version>4.11.1</version>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.lrxh</groupId>
-            <artifactId>Build</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>dev.lrxh</groupId>
-            <artifactId>Client</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
 
     </dependencies>
@@ -118,21 +104,6 @@
                 <configuration>
                     <createDependencyReducedPom>false</createDependencyReducedPom>
                     <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <artifactSet>
-                        <includes>
-                            <include>co.aikar:acf-paper</include>
-                            <include>dev.lrxh:Build</include>
-                            <include>org.mongodb:mongodb-driver-core</include>
-                            <include>org.mongodb:mongodb-driver-sync</include>
-                            <include>org.mongodb:bson</include>
-                        </includes>
-                    </artifactSet>
-                    <relocations>
-                        <relocation>
-                            <pattern>co.aikar.commands</pattern>
-                            <shadedPattern>dev.lrxh.acf</shadedPattern>
-                        </relocation>
-                    </relocations>
                 </configuration>
                 <executions>
                     <execution>

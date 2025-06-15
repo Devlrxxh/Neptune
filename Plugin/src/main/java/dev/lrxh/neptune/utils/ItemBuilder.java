@@ -2,6 +2,7 @@ package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.providers.material.NMaterial;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
+import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -18,15 +19,11 @@ public class ItemBuilder {
     private final ItemStack item;
 
     public ItemBuilder(Material material) {
-        item = new ItemStack(Objects.requireNonNullElse(material, Material.BARRIER));
+        item = new ItemStack(Objects.requireNonNullElse(material, Material.AIR));
     }
 
     public ItemBuilder(String material) {
-        if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(Material.valueOf(material)));
-        } else {
-            item = new ItemStack(Material.BARRIER);
-        }
+        item = new ItemStack(Objects.requireNonNullElse(Material.valueOf(material), Material.AIR));
     }
 
     public ItemBuilder(String material, UUID playerUUID) {
@@ -41,37 +38,36 @@ public class ItemBuilder {
         if (nMaterial != null && player != null) {
             item = nMaterial.getItem(player);
         } else if (material != null) {
-            item = new ItemStack(Objects.requireNonNull(Material.valueOf(material)));
+            item = new ItemStack(Objects.requireNonNullElse(Material.valueOf(material), Material.AIR));
         } else {
-            item = new ItemStack(Material.BARRIER);
+            item = new ItemStack(Material.AIR);
         }
     }
 
     public ItemBuilder(ItemStack itemStack) {
         if (itemStack != null) {
-            item = itemStack;
+            item = new ItemStack(itemStack);
         } else {
-            item = new ItemStack(Material.BARRIER);
+            item = new ItemStack(Material.AIR);
         }
     }
 
     public ItemBuilder name(String name) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            meta.setDisplayName(CC.color(name));
+            meta.displayName(CC.color(name));
             item.setItemMeta(meta);
         }
         return this;
     }
 
-    public ItemBuilder clearFlags() {
+    private void clearFlags() {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
             meta.addItemFlags(ItemFlag.values());
             item.setItemMeta(meta);
         }
         resetAmount();
-        return this;
     }
 
     public ItemBuilder makeUnbreakable() {
@@ -90,26 +86,24 @@ public class ItemBuilder {
     public ItemBuilder lore(List<String> lore, Player player) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            List<String> toSet = new ArrayList<>();
+            List<TextComponent> toSet = new ArrayList<>();
             for (String string : PlaceholderUtil.format(lore, player)) {
                 toSet.add(CC.color(string));
             }
-            meta.setLore(toSet);
+            meta.lore(toSet);
             item.setItemMeta(meta);
         }
         return this;
     }
 
-
-    public ItemBuilder lore(String name) {
+    public ItemBuilder lore(String... lore) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
-            List<String> lore = meta.getLore();
-            if (lore == null) {
-                lore = new ArrayList<>();
+            List<TextComponent> toSet = new ArrayList<>();
+            for (String string : lore) {
+                toSet.add(CC.color(string));
             }
-            lore.add(CC.color(name));
-            meta.setLore(lore);
+            meta.lore(toSet);
             item.setItemMeta(meta);
         }
         return this;
@@ -122,6 +116,7 @@ public class ItemBuilder {
     }
 
     public ItemStack build() {
+        clearFlags();
         return item;
     }
 }

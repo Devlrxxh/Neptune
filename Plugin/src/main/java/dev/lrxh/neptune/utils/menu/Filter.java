@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.utils.menu;
 
 public enum Filter {
-    NONE,
+    FILL,
     BORDER,
-    FILL
+    NONE
 }

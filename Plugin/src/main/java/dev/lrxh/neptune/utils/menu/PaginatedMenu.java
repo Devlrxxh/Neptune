@@ -1,68 +1,81 @@
 package dev.lrxh.neptune.utils.menu;
 
+import dev.lrxh.neptune.utils.menu.impl.DisplayButton;
 import lombok.Getter;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 public abstract class PaginatedMenu extends Menu {
+
     private int page = 1;
 
-    @Override
-    public boolean isUpdateOnClick() {
-        return true;
+    public PaginatedMenu(String title, int size, Filter filter) {
+        super(title, size, filter);
     }
 
-    @Override
-    public int getSize() {
-        return maxItemsPerPage() + 9;
+    public final void modPage(Player player, int mod) {
+        page += mod;
+        getButtons(player).clear();
+        open(player);
     }
 
-    public abstract int maxItemsPerPage();
+    public final int getPages(Player player) {
+        int buttonAmount = getAllPagesButtons(player).size();
 
-    public abstract Map<Integer, Button> getAllButtons(Player player);
-
-    public int getPages(Player player) {
-        int totalItems = getAllButtons(player).size();
-        return (int) Math.ceil((double) totalItems / maxItemsPerPage());
-    }
-
-    public void modPage(Player player, int mod) {
-        int newPage = page + mod;
-        int totalPages = getPages(player);
-        if (newPage > 0 && newPage <= totalPages) {
-            page = newPage;
-            openMenu(player.getUniqueId());
+        if (buttonAmount == 0) {
+            return 1;
         }
+
+        return (int) Math.ceil(buttonAmount / (double) getMaxItemsPerPage());
     }
 
     @Override
-    public Map<Integer, Button> getButtons(Player player) {
-        Map<Integer, Button> allButtons = getAllButtons(player);
-        int maxItems = maxItemsPerPage();
-        int totalItems = allButtons.size();
+    public final List<Button> getButtons(Player player) {
+        int minIndex = (int) ((double) (page - 1) * getMaxItemsPerPage());
+        int maxIndex = (int) ((double) (page) * getMaxItemsPerPage());
+        int topIndex = 0;
 
-        Map<Integer, Button> pageButtons = new HashMap<>();
+        List<Button> buttons = new ArrayList<>();
 
-        int start = (page - 1) * maxItems;
-        int end = Math.min(start + maxItems, totalItems);
+        for (Button button : getAllPagesButtons(player)) {
+            int ind = button.getSlot();
 
-        int index = 0;
-        int buttonSlot = 9;
-
-        for (Map.Entry<Integer, Button> entry : allButtons.entrySet()) {
-            if (index >= start && index < end) {
-                pageButtons.put(buttonSlot, entry.getValue());
-                buttonSlot++;
+            if (ind >= minIndex && ind < maxIndex) {
+                ind -= (int) ((double) (getMaxItemsPerPage()) * (page - 1)) - 9;
+                button.setSlot(ind);
+                buttons.add(button);
+                if (ind > topIndex) {
+                    topIndex = ind;
+                }
             }
-            index++;
         }
 
-        pageButtons.put(0, new PageButton(-1, this));
-        pageButtons.put(8, new PageButton(1, this));
+        buttons.add(new DisplayButton(9 - 5, Material.BOOK, "&fPage: &e" + page + "/" + getPages(player)));
+        buttons.add(new PageButton(9 - 4, -1, this));
+        buttons.add(new PageButton(9 - 6, 1, this));
 
-        return pageButtons;
+
+        List<Button> global = getGlobalButtons(player);
+
+        if (global != null) {
+            buttons.addAll(global);
+        }
+
+        return buttons;
     }
+
+    public int getMaxItemsPerPage() {
+        return 18;
+    }
+
+    public List<Button> getGlobalButtons(Player player) {
+        return null;
+    }
+
+    public abstract List<Button> getAllPagesButtons(Player player);
+
 }

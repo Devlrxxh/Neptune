@@ -1,6 +1,6 @@
 package dev.lrxh.neptune;
 
-import dev.lrxh.neptune.profile.ProfileManager;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -8,21 +8,16 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class API {
-    private final ProfileManager profileManager;
 
-    public API(Neptune plugin) {
-        this.profileManager = plugin.getProfileManager();
+    public static Profile getProfile(UUID playerUUID) {
+        return ProfileService.get().getByUUID(playerUUID);
     }
 
-    public Profile getProfile(UUID playerUUID) {
-        return profileManager.getByUUID(playerUUID);
+    public static Profile getProfile(Player player) {
+        return ProfileService.get().getByUUID(player.getUniqueId());
     }
 
-    public Profile getProfile(Player player) {
-        return profileManager.getByUUID(player.getUniqueId());
-    }
-
-    public Profile getProfile(OfflinePlayer player) {
-        return profileManager.getByUUID(player.getUniqueId());
+    public static Profile getProfile(OfflinePlayer player) {
+        return ProfileService.get().getByUUID(player.getUniqueId());
     }
 }

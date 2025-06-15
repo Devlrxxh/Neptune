@@ -1,7 +1,10 @@
 name: Neptune
-version: '1.6'
+version: '1.9.3'
 main: dev.lrxh.neptune.Neptune
-api-version: 1.16
+api-version: 1.19
+libraries:
+  - org.mongodb:mongodb-driver-sync:4.11.1
+load: POSTWORLD
 softdepend:
   - PlaceholderAPI
   - Multiverse-Core

@@ -1,21 +1,18 @@
 package dev.lrxh.neptune.commands;
 
-import co.aikar.commands.BaseCommand;
-import co.aikar.commands.annotation.CommandAlias;
-import co.aikar.commands.annotation.Default;
-import co.aikar.commands.annotation.Description;
-import dev.lrxh.neptune.Neptune;
+import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Sender;
+import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import org.bukkit.entity.Player;
 
-@CommandAlias("leave")
-@Description("Leave command.")
-public class LeaveCommand extends BaseCommand {
+public class LeaveCommand {
 
-    @Default
-    public void leave(Player player) {
-        Profile profile = Neptune.get().getAPI().getProfile(player.getUniqueId());
+    @Command(name = "", desc = "")
+    public void leave(@Sender Player player) {
+        Profile profile = API.getProfile(player.getUniqueId());
         ProfileState state = profile.getState();
 
         switch (state) {
@@ -23,7 +20,8 @@ public class LeaveCommand extends BaseCommand {
                 profile.getMatch().removeSpectator(player.getUniqueId(), true);
                 break;
             case IN_GAME:
-                profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()));
+                profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()), false);
+                MessagesLocale.MATCH_FORFEIT.send(player);
         }
     }
 }

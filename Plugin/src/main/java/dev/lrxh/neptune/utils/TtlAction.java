@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.utils;
 
-import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.providers.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
+import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -12,17 +12,15 @@ import java.util.function.Consumer;
 public class TtlAction {
     private final UUID playerUUID;
     private final Consumer<Player> consumer;
-    private final Neptune plugin;
     private NeptuneRunnable runnable;
 
-    public TtlAction(UUID playerUUID, Consumer<Player> consumer, Neptune plugin) {
+    public TtlAction(UUID playerUUID, Consumer<Player> consumer) {
         this.playerUUID = playerUUID;
         this.consumer = consumer;
-        this.plugin = plugin;
     }
 
     public void setRunnable(NeptuneRunnable runnable, long leaveTime) {
         this.runnable = runnable;
-        plugin.getTaskScheduler().startTaskLater(runnable, leaveTime * 20L);
+        TaskScheduler.get().startTaskLater(runnable, leaveTime * 20L);
     }
 }

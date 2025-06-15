@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -39,7 +40,7 @@ public enum MenusLocale implements IDataAccessor {
             " &f&7* &fCurrent Streak: &b<win_streak_current>",
             " &f&7* &fBest Streak: &b<win_streak_best>",
             " &f&7* &fDivision: &b<division>",
-            " &f&7* K/D &b<kill_death_ratio>"),
+            " &f&7* &fK/D &b<kill_death_ratio>"),
     MATCH_LIST_TITLE("MATCH.LIST.TITLE", DataType.STRING, "&7Select Match"),
     MATCH_LIST_SIZE("MATCH_LIST.SIZE", DataType.INT, "36"),
     MATCH_LIST_STARTING_SLOT("MATCH_LIST.STARTING-SLOT", DataType.INT, "10"),
@@ -53,7 +54,6 @@ public enum MenusLocale implements IDataAccessor {
             "&a&lClick to watch match!"),
     DUEL_TITLE("DUEL.TITLE", DataType.STRING, "&7Select Kit"),
     DUEL_SIZE("DUEL.SIZE", DataType.INT, "36"),
-    DUEL_STARTING_SLOT("DUEL.STARTING-SLOT", DataType.INT, "10"),
     DUEL_FILTER("DUEL.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
     DUEL_ITEM_NAME("DUEL.ITEM.NAME", DataType.STRING, "&b<kit>"),
     DUEL_LORE("DUEL.LORE", DataType.STRING_LIST,
@@ -191,19 +191,20 @@ public enum MenusLocale implements IDataAccessor {
             "&7till one is standing.",
             " ",
             "&a&lClick to start event!"),
+
+
     PARTY_EVENTS_KIT_SELECT_TITLE("PARTY.EVENTS.KIT.SELECT.TITLE", DataType.STRING, "&bKit Select"),
     PARTY_EVENTS_KIT_SELECT_NAME("PARTY.EVENTS.KIT.SELECT.ITEM-NAME", DataType.STRING, "&b<kit>"),
     PARTY_EVENTS_KIT_SELECT_LORE("PARTY.EVENTS.KIT.SELECT.LORE", DataType.STRING_LIST, " ", "&a&lClick to select kit"),
     PARTY_EVENTS_KIT_SELECT_SIZE("PARTY.EVENTS.KIT.SELECT.SIZE", DataType.INT, "27"),
     DIVISIONS_TITLE("DIVISIONS.TITLE", DataType.STRING, "&7Divisions"),
     DIVISIONS_SIZE("DIVISIONS.SIZE", DataType.INT, "36"),
-    DIVISIONS_STARTING_SLOT("DIVISIONS.STARTING-SLOT", DataType.INT, "10"),
     DIVISIONS_FILTER("DIVISIONS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
     DIVISIONS_ITEM_NAME("DIVISIONS.ITEM.NAME", DataType.STRING, "<division>"),
     DIVISIONS_LORE("DIVISIONS.LORE", DataType.STRING_LIST,
             "&7To reach this this rank you", "&7need <wins> wins."),
     SETTINGS_TITLE("SETTINGS.TITLE", DataType.STRING, "&7Profile Settings"),
-    SETTINGS_SIZE("SETTINGS.SIZE", DataType.INT, "36"),
+    SETTINGS_SIZE("SETTINGS.SIZE", DataType.INT, "27"),
     SETTINGS_FILTER("SETTINGS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
 
     SETTINGS_PLAYER_VISIBILITY_MATERIAL("SETTINGS.PLAYER-VISIBILITY.MATERIAL", DataType.STRING, "ENDER_EYE"),
@@ -391,6 +392,6 @@ public enum MenusLocale implements IDataAccessor {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getMenusConfig();
+        return ConfigService.get().getMenusConfig();
     }
 }

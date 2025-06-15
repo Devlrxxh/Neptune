@@ -11,11 +11,10 @@ import java.io.IOException;
 public class ConfigFile {
     private final File file;
     private final YamlConfiguration configuration;
-    private final Neptune plugin = Neptune.get();
 
 
     public ConfigFile(String name) {
-        File dataFolder = new File(plugin.getPlugin().getDataFolder().getParentFile(), "Neptune");
+        File dataFolder = new File(Neptune.get().getDataFolder().getParentFile(), "Neptune");
         if (!dataFolder.exists()) {
             dataFolder.mkdirs();
         }
@@ -33,7 +32,6 @@ public class ConfigFile {
             }
         }
 
-        // Load configuration
         this.configuration = YamlConfiguration.loadConfiguration(this.file);
     }
 

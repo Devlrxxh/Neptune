@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 
 @UtilityClass
 public class EntityUtils {
-
     public Entity getEntityById(World world, int entityId) {
         for (Entity entity : world.getEntities()) {
             if (entity.getEntityId() == entityId) {
@@ -17,6 +16,10 @@ public class EntityUtils {
             }
         }
         return null;
+    }
+
+    public Entity getEntityByItemStack(World world, ItemStack itemStack) {
+        return getEntityById(world, getIdByItemStack(world, itemStack));
     }
 
     public int getIdByItemStack(World world, ItemStack itemStack) {

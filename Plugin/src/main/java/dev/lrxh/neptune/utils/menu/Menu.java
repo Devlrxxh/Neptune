@@ -1,168 +1,113 @@
 package dev.lrxh.neptune.utils.menu;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.ItemBuilder;
-import net.kyori.adventure.text.Component;
+import dev.lrxh.neptune.utils.ServerUtils;
+import dev.lrxh.neptune.utils.menu.impl.DisplayButton;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.*;
+import java.util.List;
 
 public abstract class Menu {
-    public static Neptune plugin = Neptune.get();
-    public Map<Integer, Button> buttons = new TreeMap<>();
+    protected final int size;
+    protected final boolean updateOnClick;
+    private final String title;
+    private final Filter filter;
+    private List<Button> buttons;
 
-    public static void remove(UUID playerUUID) {
-        plugin.getMenuManager().openedMenus.remove(playerUUID);
+    public Menu(String title, int size, Filter filter) {
+        this.title = title;
+        this.size = size;
+        this.filter = filter;
+        this.updateOnClick = false;
     }
 
-    public String getUUID() {
-        return buttons.values().toString();
+    public Menu(int size, Filter filter) {
+        this.title = "";
+        this.size = size;
+        this.filter = filter;
+        this.updateOnClick = false;
     }
 
-    public void openMenu(UUID playerUUID) {
-        Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+    public Menu(String title, int size, Filter filter, boolean updateOnClick) {
+        this.title = title;
+        this.size = size;
+        this.filter = filter;
+        this.updateOnClick = updateOnClick;
+    }
 
-        Inventory inventory = Bukkit.createInventory(player, getSize(), Component.text(CC.color(getTitle(player))));
-        inventory.setContents(new ItemStack[inventory.getSize()]);
+    public abstract List<Button> getButtons(Player player);
 
-        buttons.clear();
-        buttons.putAll(getButtons(player));
-
-        if (getFilter() != Filter.NONE && fixPosition()) {
-            TreeSet<Map.Entry<Integer, Button>> sortedEntries = new TreeSet<>(Map.Entry.comparingByKey());
-            sortedEntries.addAll(buttons.entrySet());
-
-            TreeMap<Integer, Button> updatedButtons = new TreeMap<>();
-
-            for (Map.Entry<Integer, Button> buttonEntry : sortedEntries) {
-                int slot = buttonEntry.getKey();
-
-                if ((slot % 9 == 0 || slot % 9 == 8) && !(buttonEntry.getValue() instanceof PageButton && buttonEntry.getValue().isDisplay())) {
-                    slot += 2;
-                }
-
-                while (updatedButtons.containsKey(slot)) {
-                    slot++;
-                }
-
-                updatedButtons.put(slot, buttonEntry.getValue());
-            }
-
-            this.buttons = updatedButtons;
-        }
-
-
-        switch (getFilter()) {
-            case BORDER:
-                addBorder(inventory);
-                break;
-            case FILL:
-                addFilling(inventory);
-                break;
-            case NONE:
-                break;
-        }
-
-        for (Map.Entry<Integer, Button> buttonEntry : this.buttons.entrySet()) {
-            set(inventory, buttonEntry.getKey(), buttonEntry.getValue().getButtonItem(player));
-        }
-
-        player.openInventory(inventory);
-        player.updateInventory();
-        changeMenu(playerUUID);
+    public String getTitle(Player player) {
+        return "";
     }
 
     private void set(Inventory inventory, int slot, ItemStack itemStack) {
         if (slot < inventory.getSize()) {
             inventory.setItem(slot, itemStack);
+        } else {
+            ServerUtils.error("Menu: " + title + " slot (" + slot + ") is larger than inventory size: (" + inventory.getSize() + ")");
         }
     }
 
-    public void changeMenu(UUID playerUUID) {
-        plugin.getMenuManager().openedMenus.remove(playerUUID);
-        plugin.getMenuManager().openedMenus.put(playerUUID, this);
-    }
-
-    private void addBorder(Inventory inventory) {
-        int size = inventory.getSize();
-
-        if (size < 9) return;
-
-        for (int i = 1; i <= 7 && size >= 18; i++) {
-            Button button = new Button() {
-                @Override
-                public boolean isDisplay() {
-                    return true;
-                }
-
-                @Override
-                public ItemStack getButtonItem(Player player) {
-                    return getFilterItem();
-                }
-            };
-
-            buttons.put(i, button);
+    public void open(Player player) {
+        String title;
+        if (this.title.isEmpty()) {
+            title = getTitle(player);
+        } else {
+            title = this.title;
         }
-    }
 
-    private void addFilling(Inventory inventory) {
-        for (int i = 0; i < inventory.getSize(); i++) {
-            if (buttons.get(i) == null) {
-                Button button = new Button() {
-                    @Override
-                    public boolean isDisplay() {
-                        return true;
+        Inventory inventory = Bukkit.createInventory(player, size, CC.color(title));
+
+        buttons = getButtons(player);
+        switch (filter) {
+            case FILL -> {
+                for (int i = 0; i < inventory.getSize(); i++) {
+                    if (getButton(i) == null) {
+                        buttons.add(new DisplayButton(i, Material.getMaterial(MenusLocale.FILTER_MATERIAL.getString()), MenusLocale.FILTER_NAME.getString()));
                     }
+                }
+            }
+            case BORDER -> {
+                int rows = size / 9;
+                int columns = 9;
 
-                    @Override
-                    public ItemStack getButtonItem(Player player) {
-                        return getFilterItem();
+                for (int i = 0; i < size; i++) {
+                    int row = i / columns;
+                    int column = i % columns;
+
+                    if (row == 0 || row == rows - 1 || column == 0 || column == columns - 1) {
+                        if (getButton(i) == null) {
+                            buttons.add(new DisplayButton(i, Material.getMaterial(MenusLocale.FILTER_MATERIAL.getString()), MenusLocale.FILTER_NAME.getString()));
+                        }
                     }
-                };
-
-                buttons.put(i, button);
+                }
+            }
+            case NONE -> {
             }
         }
-    }
 
-    public void update() {
-        Map<UUID, Menu> openedMenusCopy = new HashMap<>(plugin.getMenuManager().openedMenus);
-        for (Map.Entry<UUID, Menu> entry : openedMenusCopy.entrySet()) {
-            if (entry.getValue().getUUID().equals(getUUID())) {
-                UUID uuid = entry.getKey();
-                openMenu(uuid);
-            }
+
+        for (Button button : buttons) {
+            set(inventory, button.getSlot(), button.getItemStack(player));
         }
+
+        player.openInventory(inventory);
+        player.updateInventory();
+
+        MenuService.get().add(player, this);
     }
 
-    public abstract String getTitle(Player player);
+    public Button getButton(int slot) {
+        for (Button button : buttons) {
+            if (button.getSlot() == slot) return button;
+        }
 
-    public abstract Map<Integer, Button> getButtons(Player player);
-
-    public int getSize() {
-        return 27;
-    }
-
-    public ItemStack getFilterItem() {
-        return new ItemBuilder(MenusLocale.FILTER_MATERIAL.getString())
-                .name(MenusLocale.FILTER_NAME.getString()).amount(1).build();
-    }
-
-    public boolean fixPosition() {
-        return true;
-    }
-
-    public Filter getFilter() {
-        return Filter.NONE;
-    }
-
-    public boolean isUpdateOnClick() {
-        return false;
+        return null;
     }
 }

@@ -1,32 +1,28 @@
 package dev.lrxh.neptune.providers.scoreboard;
 
-import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
-import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.match.impl.SoloFightMatch;
-import dev.lrxh.neptune.match.impl.team.TeamFightMatch;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
+import dev.lrxh.neptune.game.match.Match;
+import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
+import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
+import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
-import dev.lrxh.neptune.utils.assemble.AssembleAdapter;
+import fr.mrmicky.fastboard.FastAdapter;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreboardAdapter implements AssembleAdapter {
-    private final Neptune plugin;
-
-    public ScoreboardAdapter() {
-        this.plugin = Neptune.get();
-    }
-
+public class ScoreboardAdapter implements FastAdapter {
     public String getTitle(Player player) {
-        return getAnimatedText();
+        return PlaceholderUtil.format(getAnimatedText(), player);
     }
 
     public List<String> getLines(Player player) {
-        Profile profile = plugin.getAPI().getProfile(player);
+        Profile profile = API.getProfile(player);
         if (profile == null) return new ArrayList<>();
 
         ProfileState state = profile.getState();
@@ -46,9 +42,19 @@ public class ScoreboardAdapter implements AssembleAdapter {
             case IN_SPECTATOR:
                 match = profile.getMatch();
                 if (match instanceof SoloFightMatch) {
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_BEDWARS.getStringList()), player);
+                    }
+
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
                 } else if (match instanceof TeamFightMatch) {
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_BEDWARS.getStringList()), player);
+                    }
+
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
+                } else if (match instanceof FfaFightMatch) {
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_FFA.getStringList()), player);
                 }
                 break;
             default:

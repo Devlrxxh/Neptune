@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.configs.impl;
 
+import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.configs.impl.handler.DataType;
 import dev.lrxh.neptune.configs.impl.handler.IDataAccessor;
 import dev.lrxh.neptune.utils.ConfigFile;
@@ -92,6 +93,42 @@ public enum ScoreboardLocale implements IDataAccessor {
             " ",
             "&bserver.net",
             "&7&m--------------------"),
+    IN_GAME_BEDWARS("SCOREBOARDS.IN_GAME.BEDWARS", DataType.STRING_LIST,
+            "&7&m--------------------",
+            "&bFighting: &f<opponent>",
+            " ",
+            "&bBeds:",
+            "&a Your Bed: <bed-status>",
+            "&c Opponent Bed: <opponent-bed-status>",
+            " ",
+            "&aYour Ping: &f<ping>ms",
+            "&cTheir Ping: &f<opponent-ping>ms",
+            " ",
+            "&bserver.net",
+            "&7&m--------------------"),
+
+    IN_GAME_BEDWARS_TEAM("SCOREBOARDS.IN_GAME.BEDWARS-TEAM", DataType.STRING_LIST,
+            "&7&m--------------------",
+            "&bTeams:",
+            "&a Your Team: <alive>&f/&a<max>",
+            "&c Enemy Team: <alive-opponent>&f/&c<max-opponent>",
+            " ",
+            "&bBeds:",
+            "&a Your Bed: <team-bed-status>",
+            "&c Enemy Bed: <opponent-team-bed-status>",
+            " ",
+            "&bserver.net",
+            "&7&m--------------------"),
+    IN_SPECTATOR_BEDWARS("SCOREBOARDS.IN_GAME.SPECTATOR-BEDWARS", DataType.STRING_LIST,
+            "&7&m--------------------",
+            "&bKit: &f<kit>",
+            "&bArena: &f<arena>",
+            "",
+            "&a Red Bed: <red-bed-status>",
+            "&9 Blue Bed: <blue-bed-status>",
+            " ",
+            "&bserver.net",
+            "&7&m--------------------"),
     IN_SPECTATOR("SCOREBOARDS.IN_GAME.SPECTATOR", DataType.STRING_LIST,
             "&7&m--------------------",
             "&bKit: &f<kit>",
@@ -105,6 +142,13 @@ public enum ScoreboardLocale implements IDataAccessor {
             "&7&m--------------------",
             "&fRed: &a<alive-red>&f/&a<max-red>",
             "&fBlue: &c<alive-blue>&f/&c<max-blue>",
+            " ",
+            "&bserver.net",
+            "&7&m--------------------"),
+    IN_SPECTATOR_FFA("SCOREBOARDS.IN_GAME.SPECTATOR-FFA", DataType.STRING_LIST,
+            "&7&m--------------------",
+            "&bAlive: &f<alive>",
+            "&bYour Ping: &f<ping>ms",
             " ",
             "&bserver.net",
             "&7&m--------------------"),
@@ -144,7 +188,7 @@ public enum ScoreboardLocale implements IDataAccessor {
 
     @Override
     public ConfigFile getConfigFile() {
-        return plugin.getConfigManager().getScoreboardConfig();
+        return ConfigService.get().getScoreboardConfig();
     }
 
 }

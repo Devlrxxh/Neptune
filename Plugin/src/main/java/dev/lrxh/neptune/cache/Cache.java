@@ -16,6 +16,11 @@ public class Cache {
         load();
     }
 
+    public void setSpawn(Location location) {
+        spawn = location;
+        save();
+    }
+
     public void load() {
         spawn = LocationUtil.deserialize(SettingsLocale.SPAWN_LOCATION.getString());
     }

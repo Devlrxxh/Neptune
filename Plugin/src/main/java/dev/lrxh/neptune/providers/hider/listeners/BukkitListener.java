@@ -11,8 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.entity.PotionSplashEvent;
-import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 
@@ -21,7 +21,6 @@ import org.bukkit.event.world.ChunkUnloadEvent;
  * Package: me.athishh.lotus.core.user.hider.listeners
  * Created on: 1/21/2024
  */
-@SuppressWarnings("deprecation")
 public class BukkitListener implements Listener {
 
     @EventHandler
@@ -43,8 +42,8 @@ public class BukkitListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        Player receiver = event.getPlayer();
+    public void onPlayerPickupItem(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player receiver)) return;
         Item item = event.getItem();
 
         Player dropper = EntityHider.getPlayerWhoDropped(item);
@@ -57,8 +56,8 @@ public class BukkitListener implements Listener {
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPickup(PlayerPickupItemEvent event) {
-        Player receiver = event.getPlayer();
+    public void onPickup(EntityPickupItemEvent event) {
+        if (!(event.getEntity() instanceof Player receiver)) return;
 
         Item item = event.getItem();
         if (item.getItemStack().getType() != Material.ARROW) return;

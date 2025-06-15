@@ -1,27 +1,29 @@
 package dev.lrxh.neptune.utils.menu;
 
-import dev.lrxh.neptune.Neptune;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
 @Getter
-@Setter
-@NoArgsConstructor
 public abstract class Button {
-    public Neptune plugin = Neptune.get();
-    private boolean sound = true;
+    private final boolean moveAble;
+    @Setter
+    private int slot;
 
-    public void onClick(Player player, ClickType clickType) {
-        sound = false;
+    public Button(int slot) {
+        this.slot = slot;
+        this.moveAble = false;
     }
 
-    public abstract ItemStack getButtonItem(Player player);
-
-    public boolean isDisplay() {
-        return false;
+    public Button(int slot, boolean moveAble) {
+        this.slot = slot;
+        this.moveAble = moveAble;
     }
+
+    public void onClick(ClickType type, Player player) {
+    }
+
+    public abstract ItemStack getItemStack(Player player);
 }

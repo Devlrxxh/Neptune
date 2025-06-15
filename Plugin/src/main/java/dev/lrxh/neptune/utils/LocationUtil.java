@@ -1,47 +1,47 @@
 package dev.lrxh.neptune.utils;
 
-import dev.lrxh.neptune.Neptune;
-import lombok.experimental.UtilityClass;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-
-@UtilityClass
 public class LocationUtil {
-    public String serialize(Location location) {
-        if (location != null) {
-            return location.getWorld().getName() +
-                    ":" + location.getX() +
-                    ":" + location.getY() +
-                    ":" + location.getZ() +
-                    ":" + location.getYaw() +
-                    ":" + location.getPitch();
-        }
-        return "NONE";
+    public static Location addOffsetX(Location location, int offsetX) {
+        return location.clone().add(offsetX, 0, 0);
     }
 
-    public Location addOffsetToLocation(Location oldLoc, int offset) {
-        return oldLoc.add(0, 0, offset);
+    public static boolean isInside(Location location, Location min, Location max) {
+        double x = location.getX();
+        double y = location.getY();
+        double z = location.getZ();
+
+        return x >= Math.min(min.getX(), max.getX()) && x <= Math.max(min.getX(), max.getX())
+                && y >= Math.min(min.getY(), max.getY()) && y <= Math.max(min.getY(), max.getY())
+                && z >= Math.min(min.getZ(), max.getZ()) && z <= Math.max(min.getZ(), max.getZ());
     }
 
-    public Location deserialize(String source) {
-        if (source.equalsIgnoreCase("NONE")) {
+    public static String serialize(Location location) {
+        if (location == null) return "";
+        return location.getWorld().getName() + ";" + location.getX() + ";" + location.getY() + ";" + location.getZ() + ";" + location.getYaw() + ";" + location.getPitch();
+    }
+
+    public static Location deserialize(String input) {
+        if (input == null || input.isEmpty()) return null;
+        String[] parts = input.split(";");
+        if (parts.length < 6) return null;
+
+        World world = Bukkit.getWorld(parts[0]);
+        if (world == null) return null;
+
+        try {
+            double x = Double.parseDouble(parts[1]);
+            double y = Double.parseDouble(parts[2]);
+            double z = Double.parseDouble(parts[3]);
+            float yaw = Float.parseFloat(parts[4]);
+            float pitch = Float.parseFloat(parts[5]);
+
+            return new Location(world, x, y, z, yaw, pitch);
+        } catch (NumberFormatException e) {
             return null;
         }
-
-        String[] split = source.split(":");
-
-        World world = Neptune.get().getServer().getWorld(split[0]);
-        if (world == null) {
-            ServerUtils.error("World: " + split[0] + " not found!");
-            return null;
-        }
-
-        return new Location(world,
-                Double.parseDouble(split[1]),
-                Double.parseDouble(split[2]),
-                Double.parseDouble(split[3]),
-                Float.parseFloat(split[4]),
-                Float.parseFloat(split[5]));
     }
 }

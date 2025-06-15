@@ -1,16 +1,23 @@
 package dev.lrxh.neptune.profile.impl;
 
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.cosmetics.impl.KillEffect;
-import dev.lrxh.neptune.database.impl.DataDocument;
-import dev.lrxh.neptune.duel.DuelRequest;
-import dev.lrxh.neptune.kit.Kit;
-import dev.lrxh.neptune.match.Match;
-import dev.lrxh.neptune.party.Party;
+import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
+import dev.lrxh.neptune.feature.cosmetics.impl.KillEffect;
+import dev.lrxh.neptune.feature.hotbar.HotbarService;
+import dev.lrxh.neptune.feature.party.Party;
+import dev.lrxh.neptune.game.arena.procedure.ArenaProcedure;
+import dev.lrxh.neptune.game.duel.DuelRequest;
+import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.game.kit.KitService;
+import dev.lrxh.neptune.game.kit.procedure.KitProcedure;
+import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.profile.data.*;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.database.DatabaseService;
+import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.ItemUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,15 +40,19 @@ public class Profile {
     private GameData gameData;
     private SettingData settingData;
     private Visibility visibility;
+    private ArenaProcedure arenaProcedure;
+    private KitProcedure kitProcedure;
 
-    public Profile(Player player, Neptune plugin) {
+    public Profile(String name, UUID uuid, Neptune plugin) {
         this.plugin = plugin;
-        this.username = player.getName();
-        this.playerUUID = player.getUniqueId();
+        this.username = name;
+        this.playerUUID = uuid;
         this.state = ProfileState.IN_LOBBY;
-        this.gameData = new GameData(plugin);
+        this.gameData = new GameData();
         this.settingData = new SettingData(plugin);
-        this.visibility = new Visibility(plugin, playerUUID);
+        this.visibility = new Visibility(playerUUID);
+        this.arenaProcedure = new ArenaProcedure();
+        this.kitProcedure = new KitProcedure();
 
         load();
     }
@@ -57,7 +68,7 @@ public class Profile {
 
     public boolean hasState(ProfileState... profileStates) {
         for (ProfileState profileState : profileStates) {
-            if(profileState.equals(state)){
+            if (profileState.equals(state)) {
                 return true;
             }
         }
@@ -67,11 +78,15 @@ public class Profile {
     public void setState(ProfileState profileState) {
         state = profileState;
         handleVisibility();
-        plugin.getHotbarManager().giveItems(playerUUID);
+        HotbarService.get().giveItems(getPlayer());
+    }
+
+    public Player getPlayer() {
+        return Bukkit.getPlayer(playerUUID);
     }
 
     public void load() {
-        DataDocument dataDocument = plugin.getDatabaseManager().getDatabase().getUserData(playerUUID);
+        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(playerUUID);
 
         if (dataDocument == null) {
             save();
@@ -84,10 +99,10 @@ public class Profile {
         DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
         DataDocument settings = dataDocument.getDataDocument("settings");
 
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitService.get().kits) {
             DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
             if (kitDocument == null) return;
-            KitData profileKitData = gameData.getKitData().get(kit);
+            KitData profileKitData = gameData.get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
@@ -96,9 +111,11 @@ public class Profile {
             profileKitData.updateDivision();
         }
 
-        gameData.getGlobalStats().setCurrentStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_CURRENT", gameData.countGlobalWins()));
+        gameData.getGlobalStats().setBestStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_BEST", gameData.getGlobalStats().getBestStreak()));
+        gameData.getGlobalStats().setCurrentStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak()));
         gameData.getGlobalStats().setWins(kitStatistics.getInteger("GLOBAL_WINS", gameData.countGlobalLosses()));
         gameData.getGlobalStats().setLosses(kitStatistics.getInteger("GLOBAL_LOSSES", gameData.countGlobalCurrentStreak()));
+        gameData.setLastPlayedKit(kitStatistics.getString("lastPlayedKit", ""));
 
         settingData.setPlayerVisibility(settings.getBoolean("showPlayers", true));
         settingData.setAllowSpectators(settings.getBoolean("allowSpectators", true));
@@ -107,8 +124,7 @@ public class Profile {
         settingData.setMaxPing(settings.getInteger("maxPing", 350));
         settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
         settingData.setMenuSound(settings.getBoolean("menuSound", false));
-        settingData.setKillMessagePackage(plugin.getCosmeticManager().getDeathMessagePackage(settings.getString("deathMessagePackage")));
-        gameData.setLastKit(settings.getString("lastKit", ""));
+        settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
     }
 
     public void save() {
@@ -121,10 +137,9 @@ public class Profile {
 
         dataDocument.put("history", gameData.serializeHistory());
 
-
-        for (Kit kit : plugin.getKitManager().kits) {
+        for (Kit kit : KitService.get().kits) {
             DataDocument kitStatisticsDocument = new DataDocument();
-            KitData entry = gameData.getKitData().get(kit);
+            KitData entry = gameData.get(kit);
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
             kitStatisticsDocument.put("WINS", entry.getWins());
             kitStatisticsDocument.put("LOSSES", entry.getLosses());
@@ -137,6 +152,8 @@ public class Profile {
         kitStatsDoc.put("GLOBAL_WINS", gameData.getGlobalStats().getWins());
         kitStatsDoc.put("GLOBAL_LOSSES", gameData.getGlobalStats().getLosses());
         kitStatsDoc.put("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak());
+        kitStatsDoc.put("GLOBAL_WIN_STREAK_BEST", gameData.getGlobalStats().getBestStreak());
+        kitStatsDoc.put("lastPlayedKit", gameData.getLastPlayedKit());
 
         dataDocument.put("kitData", kitStatsDoc);
 
@@ -153,7 +170,7 @@ public class Profile {
 
         dataDocument.put("settings", settingsDoc);
 
-        plugin.getDatabaseManager().getDatabase().replace(playerUUID, dataDocument);
+        DatabaseService.get().getDatabase().replace(playerUUID, dataDocument);
     }
 
     public void sendDuel(DuelRequest duelRequest) {
@@ -165,11 +182,10 @@ public class Profile {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;
 
-
-        MessagesLocale.DUEL_REQUEST_SENDER.send(player.getUniqueId(),
+        MessagesLocale.DUEL_REQUEST_SENDER.send(sender.getUniqueId(),
                 new Replacement("<receiver>", username),
                 new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
-                new Replacement("<rounds>", String.valueOf(1)),
+                new Replacement("<rounds>", String.valueOf(duelRequest.getRounds())),
                 new Replacement("<arena>", duelRequest.getArena().getDisplayName()));
 
         gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.DUEL_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));
@@ -195,7 +211,7 @@ public class Profile {
             return;
         }
 
-        plugin.getAPI().getProfile(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
+        API.getProfile(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
         MessagesLocale.PARTY_CREATE.send(playerUUID);
     }
 

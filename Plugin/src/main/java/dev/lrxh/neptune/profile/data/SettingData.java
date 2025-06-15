@@ -1,8 +1,9 @@
 package dev.lrxh.neptune.profile.data;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.cosmetics.impl.KillEffect;
-import dev.lrxh.neptune.cosmetics.impl.KillMessagePackage;
+import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
+import dev.lrxh.neptune.feature.cosmetics.impl.KillEffect;
+import dev.lrxh.neptune.feature.cosmetics.impl.KillMessagePackage;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -26,7 +27,7 @@ public class SettingData {
 
     public SettingData(Neptune plugin) {
         this.plugin = plugin;
-        this.killMessagePackage = plugin.getCosmeticManager().getDefault();
+        this.killMessagePackage = CosmeticService.get().getDefault();
     }
 
     public void increasePing() {

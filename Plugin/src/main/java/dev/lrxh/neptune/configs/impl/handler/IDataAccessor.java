@@ -68,7 +68,7 @@ public interface IDataAccessor {
 
     default void comment(String path, String comment) {
         if (comment == null) return;
-        plugin.getVersionHandler().getConfig().addComment(getConfigFile().getConfiguration(), path, Collections.singletonList(comment));
+        getConfigFile().getConfiguration().setInlineComments(path, Collections.singletonList(comment));
         getConfigFile().save();
     }
 
