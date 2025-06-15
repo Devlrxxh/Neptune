@@ -61,9 +61,6 @@ import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import fr.mrmicky.fastboard.FastManager;
 import lombok.Getter;
 import lombok.Setter;
-import me.tofaa.entitylib.APIConfig;
-import me.tofaa.entitylib.EntityLib;
-import me.tofaa.entitylib.spigot.SpigotEntityLibPlatform;
 import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
@@ -137,10 +134,6 @@ public final class Neptune extends JavaPlugin {
 
         PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
         PacketEvents.getAPI().init();
-
-        EntityLib.init(
-                new SpigotEntityLibPlatform(this),
-                new APIConfig(PacketEvents.getAPI()));
     }
 
     private void registerListeners() {

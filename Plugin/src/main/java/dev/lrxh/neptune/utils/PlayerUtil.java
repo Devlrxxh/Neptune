@@ -54,32 +54,6 @@ public class PlayerUtil {
         resetActionbar(player);
     }
 
-    public void playDeathAnimation(Player player, List<Player> watchers) {
-//        if (player == null) return;
-//
-//        WrapperPlayer p = new WrapperPlayer(new UserProfile(UUID.randomUUID(), player.getName()),
-//                EntityLib.getPlatform().getEntityIdProvider().provide(UUID.randomUUID(), EntityTypes.PLAYER));
-//        p.setInTablist(false);
-//        p.setTextureProperties(ExtraConversionUtil.getProfileFromBukkitPlayer(player).getTextureProperties());
-//        p.spawn(SpigotConversionUtil.fromBukkitLocation(player.getLocation()));
-//
-//        WrapperPlayServerEntityMetadata healthPacket = new WrapperPlayServerEntityMetadata(
-//                p.getEntityId(), List.of(new EntityData(9, EntityDataTypes.FLOAT, 0.0f))
-//        );
-//
-//        for (Player watcher : watchers) {
-//            if (player.getUniqueId().equals(watcher.getUniqueId())) continue;
-//            p.addViewer(watcher.getUniqueId());
-//            PacketEvents.getAPI().getPlayerManager().sendPacket(watcher, healthPacket);
-//        }
-//
-//        Bukkit.getScheduler().runTaskLaterAsynchronously(Neptune.get(), () -> {
-//            p.despawn();
-//            p.remove();
-//        }, 40L);
-    }
-
-
     public void resetActionbar(Player player) {
         player.sendActionBar(" ");
     }

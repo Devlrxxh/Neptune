@@ -172,7 +172,6 @@ public class SoloFightMatch extends Match {
     public void onDeath(Participant participant) {
         if (isEnded()) return;
         hideParticipant(participant);
-        PlayerUtil.playDeathAnimation(participant.getPlayer(), getPlayers());
 
         participant.setDead(true);
 
