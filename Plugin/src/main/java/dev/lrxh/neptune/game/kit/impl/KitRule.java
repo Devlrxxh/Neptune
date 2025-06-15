@@ -8,7 +8,6 @@ public enum KitRule {
     BUILD(Material.LAVA_BUCKET, "Allow/Deny Players to place and break blocks placed by them.", "Build", "build"),
     HUNGER(Material.COOKED_BEEF, "Allow/Deny Players losing Hunger", "Hunger", "hunger"),
     SUMO(Material.LEAD, "Allow/Deny Sumo", "Sumo", "sumo"),
-    HORSE_PVP(Material.SADDLE, "Allow/Deny Horse PvP", "Horse PvP", "horsePVP"),
     FALL_DAMAGE(Material.DIAMOND, "Allow/Deny Player to take Fall Damage", "Fall Damage", "fallDamage"),
     DENY_MOVEMENT(Material.WATER_BUCKET, "Allow/Deny Movement on match start", "Deny Movement", "denyMovement"),
     BOXING(Material.DIAMOND_CHESTPLATE, "Allow/Deny Boxing", "Boxing", "boxing"),

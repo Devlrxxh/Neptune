@@ -25,7 +25,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -347,19 +346,6 @@ public class MatchListener implements Listener {
                         match.onDeath(participant);
                     }
                 }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onDismount(EntityDismountEvent event) {
-        if (event.getEntity() instanceof Player player && event.getDismounted() instanceof Horse) {
-            Profile profile = API.getProfile(player);
-            if (profile == null) return;
-            Match match = profile.getMatch();
-
-            if (match.getKit().is(KitRule.HORSE_PVP)) {
-                event.setCancelled(true);
             }
         }
     }

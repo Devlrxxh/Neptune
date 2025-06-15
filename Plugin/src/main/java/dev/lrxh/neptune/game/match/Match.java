@@ -30,10 +30,7 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -389,19 +386,6 @@ public abstract class Match {
         Player player = participant.getPlayer();
         if (player == null) return;
         player.teleport(location);
-
-        if (kit.is(KitRule.HORSE_PVP)) {
-            Horse horse = (Horse) player.getWorld().spawnEntity(location, EntityType.HORSE);
-
-            horse.setTamed(true);
-            horse.setOwner(player);
-            horse.getInventory().setSaddle(new ItemStack(Material.SADDLE));
-            horse.setAdult();
-
-            horse.addPassenger(player);
-
-            getEntities().add(horse);
-        }
     }
 
     public abstract void win(Participant winner);
