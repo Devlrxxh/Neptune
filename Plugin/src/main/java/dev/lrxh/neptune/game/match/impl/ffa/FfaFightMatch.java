@@ -130,7 +130,7 @@ public class FfaFightMatch extends Match {
     }
 
     @Override
-    public void sendTitle(Participant ignore, TextComponent header, TextComponent footer, int duration) {
-        forEachParticipant(participant -> participant.sendTitle(header, footer, duration));
+    public void sendTitle(Participant participant, TextComponent header, TextComponent footer, int duration) {
+        participant.sendTitle(header, footer, duration);
     }
 }
