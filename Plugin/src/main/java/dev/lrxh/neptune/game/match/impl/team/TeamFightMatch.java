@@ -129,12 +129,15 @@ public class TeamFightMatch extends Match {
                 participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
             }
 
-            this.setEnded(true);
-
             sendDeathMessage(participant);
 
             MatchTeam team = getParticipantTeam(participant);
             team.getDeadParticipants().add(participant);
+
+            if (team.getDeadParticipants().size() == team.getParticipants().size()) {
+                team.setLoser(true);
+                this.setEnded(true);
+            }
 
             if (!team.isLoser()) return;
 
