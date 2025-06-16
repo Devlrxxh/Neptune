@@ -11,11 +11,9 @@ import java.util.Map;
 public class TtlHashMap<K, V> extends HashMap<K, V> {
     private final Map<K, TtlAction> actions = new HashMap<>();
     private final long leaveTime;
-    private final Neptune plugin;
 
     public TtlHashMap(long delay) {
         this.leaveTime = delay;
-        this.plugin = Neptune.get();
     }
 
     public void put(K key, V value, TtlAction action) {
