@@ -10,22 +10,31 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 public class MenuListener implements Listener {
 
-    @EventHandler(ignoreCancelled = true, priority = EventPriority.MONITOR)
+    @EventHandler
     public void onButtonPress(InventoryClickEvent event) {
         if (!(event.getWhoClicked() instanceof Player player)) return;
 
         Menu menu = MenuService.get().get(player);
         if (menu == null) return;
-        Button button = menu.getButton(event.getSlot());
-        if (button == null) return;
-        if (!button.isMoveAble()) event.setCancelled(true);
 
-        button.onClick(event.getClick(), player);
+        if (event.getClickedInventory() != null && event.getClickedInventory().equals(player.getOpenInventory().getTopInventory())) {
+            Button button = menu.getButton(event.getSlot());
 
-        if (menu.updateOnClick) {
-            menu.open(player);
+            if (button == null || !button.isMoveAble()) {
+                event.setCancelled(true);
+            }
+
+            if (button != null) {
+                button.onClick(event.getClick(), player);
+                if (menu.updateOnClick) {
+                    menu.open(player);
+                }
+            }
+        } else {
+            event.setCancelled(true);
         }
     }
+
 
     @EventHandler
     public void onMenuClose(InventoryCloseEvent event) {

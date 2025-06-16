@@ -124,7 +124,6 @@ public class ItemUtils {
             String modifiedLine = line;
             for (Replacement replacement : replacements) {
                 if (modifiedLine.contains(replacement.getPlaceholder())) {
-                    Neptune.get().getLogger().info(replacement.getPlaceholder() + " -> " + MiniMessage.miniMessage().serialize(replacement.getReplacement()));
                     modifiedLine = modifiedLine.replace(
                             replacement.getPlaceholder(),
                             MiniMessage.miniMessage().serialize(replacement.getReplacement())
