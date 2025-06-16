@@ -35,7 +35,7 @@ public class Participant {
     private boolean loser;
     private boolean disconnected = false;
     private boolean left = false;
-    private int roundsWon = 0;
+    private int points = 0;
     private boolean frozen = false;
     private boolean bedBroken;
 
@@ -78,7 +78,7 @@ public class Participant {
     }
 
     public void addWin() {
-        roundsWon++;
+        points++;
     }
 
     public String getNameUnColored() {

@@ -77,6 +77,9 @@ public class TeamFightMatch extends Match {
 
         forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_TEAM.send(participant.getPlayerUUID(),
                 new Replacement("<losers>", loserTeam.getTeamNames()),
+                new Replacement("<kit>", kit.getDisplayName()),
+                new Replacement("<winners_points>", String.valueOf(winnerTeam.getPoints())),
+                new Replacement("<losers_points>", String.valueOf(loserTeam.getPoints())),
                 new Replacement("<winners>", winnerTeam.getTeamNames())));
     }
 

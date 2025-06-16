@@ -133,6 +133,9 @@ public class SoloFightMatch extends Match {
 
         broadcast(MessagesLocale.MATCH_END_DETAILS_SOLO,
                 new Replacement("<loser>", loser.getNameUnColored()),
+                new Replacement("<kit>", kit.getDisplayName()),
+                new Replacement("<winner_points>", String.valueOf(winner.getPoints())),
+                new Replacement("<loser_points>", String.valueOf(loser.getPoints())),
                 new Replacement("<winner>", winner.getNameUnColored()));
 
         forEachParticipant(participant -> {
@@ -154,7 +157,7 @@ public class SoloFightMatch extends Match {
 
         if (rounds > 1) {
             participantKiller.addWin();
-            if (participantKiller.getRoundsWon() < rounds) {
+            if (participantKiller.getPoints() < rounds) {
                 participantKiller.setCombo(0);
 
                 state = MatchState.STARTING;
@@ -189,7 +192,7 @@ public class SoloFightMatch extends Match {
 
             if (rounds > 1) {
                 participantKiller.addWin();
-                if (participantKiller.getRoundsWon() < rounds) {
+                if (participantKiller.getPoints() < rounds) {
                     participantKiller.setCombo(0);
 
                     state = MatchState.STARTING;

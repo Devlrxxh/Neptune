@@ -93,8 +93,8 @@ public class PlaceholderUtil {
 
                     if (match.getRounds() > 1) {
                         line = line.replaceAll("<maxPoints>", String.valueOf(soloFightMatch.getRounds()));
-                        line = line.replaceAll("<points>", String.valueOf(participant.getRoundsWon()));
-                        line = line.replaceAll("<opponent-points>", String.valueOf(opponent.getRoundsWon()));
+                        line = line.replaceAll("<points>", String.valueOf(participant.getPoints()));
+                        line = line.replaceAll("<opponent-points>", String.valueOf(opponent.getPoints()));
                     }
 
                     if (match.getKit().is(KitRule.BED_WARS)) {
