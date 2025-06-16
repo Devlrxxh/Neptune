@@ -45,7 +45,7 @@ public class PlaceholderUtil {
         ProfileState state = profile.getState();
 
         line = line.replaceAll("<online>", String.valueOf(Bukkit.getServer().getOnlinePlayers().size()));
-        line = line.replaceAll("<queued>", String.valueOf(QueueService.get().queue.size()));
+        line = line.replaceAll("<queued>", String.valueOf(QueueService.get().getQueueSize()));
         line = line.replaceAll("<in-match>", String.valueOf(MatchService.get().matches.size()));
         line = line.replaceAll("<player>", player.getName());
         line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player))));

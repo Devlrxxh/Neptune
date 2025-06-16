@@ -12,7 +12,7 @@ import java.util.List;
 
 @Getter
 public enum ScoreboardLocale implements IDataAccessor {
-    ENABLED_SCOREBOARD("SCOREBOARD.ENABLE",  DataType.BOOLEAN, "true"),
+    ENABLED_SCOREBOARD("SCOREBOARD.ENABLE", DataType.BOOLEAN, "true"),
     TITLE("SCOREBOARDS.TITLE", DataType.STRING_LIST,
             "&b&l&f&lP&b&lractice",
             "&b&lP&f&lr&b&lactice",

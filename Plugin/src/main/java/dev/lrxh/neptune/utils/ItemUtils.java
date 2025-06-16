@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.utils;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -137,8 +136,6 @@ public class ItemUtils {
 
         return newLore;
     }
-
-
 
 
     public ItemStack deserializeItem(String base64) {

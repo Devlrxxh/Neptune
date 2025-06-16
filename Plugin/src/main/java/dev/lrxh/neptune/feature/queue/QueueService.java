@@ -4,63 +4,85 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.feature.queue.events.QueueJoinEvent;
+import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import org.bukkit.Bukkit;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class QueueService {
+
     private static QueueService instance;
-    public final ConcurrentLinkedQueue<QueueEntry> queue = new ConcurrentLinkedQueue<>();
+
+    private final Map<Kit, Queue<QueueEntry>> kitQueues = new HashMap<>();
 
     public static QueueService get() {
         if (instance == null) instance = new QueueService();
-
         return instance;
     }
 
     public void add(QueueEntry queueEntry, boolean add) {
         UUID playerUUID = queueEntry.getUuid();
+        Kit kit = queueEntry.getKit();
+
         QueueJoinEvent event = new QueueJoinEvent(queueEntry);
-
         Bukkit.getScheduler().runTask(Neptune.get(), () -> Bukkit.getPluginManager().callEvent(event));
-
         if (event.isCancelled()) return;
 
-        if (queue.contains(get(playerUUID))) return;
+        if (get(playerUUID) != null) return;
+
         Profile profile = API.getProfile(playerUUID);
         if (profile.hasState(ProfileState.IN_GAME)) return;
         if (profile.getGameData().getParty() != null) return;
 
-        this.queue.offer(queueEntry);
+        kitQueues.computeIfAbsent(kit, k -> new ConcurrentLinkedQueue<>()).offer(queueEntry);
 
         profile.setState(ProfileState.IN_QUEUE);
-        if (add) queueEntry.getKit().addQueue();
+        if (add) kit.addQueue();
         MessagesLocale.QUEUE_JOIN.send(playerUUID,
-                new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
+                new Replacement("<kit>", kit.getDisplayName()),
                 new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
     }
 
     public void remove(UUID playerUUID) {
-        if (!queue.contains(get(playerUUID))) return;
-        get(playerUUID).getKit().removeQueue();
+        QueueEntry entry = get(playerUUID);
+        if (entry == null) return;
 
-        queue.remove(get(playerUUID));
+        Kit kit = entry.getKit();
+        Queue<QueueEntry> queue = kitQueues.get(kit);
+        if (queue != null) {
+            queue.remove(entry);
+            entry.getKit().removeQueue();
+        }
     }
 
     public QueueEntry get(UUID uuid) {
-        for (QueueEntry queueEntry : queue) {
-            if (Objects.equals(uuid, queueEntry.getUuid())) return queueEntry;
+        for (Queue<QueueEntry> queue : kitQueues.values()) {
+            for (QueueEntry entry : queue) {
+                if (entry.getUuid().equals(uuid)) return entry;
+            }
         }
-
         return null;
     }
 
-    public boolean compare(QueueEntry queueEntry1, QueueEntry queueEntry2) {
-        return queueEntry1.getKit().equals(queueEntry2.getKit());
+    public boolean compare(QueueEntry entry1, QueueEntry entry2) {
+        return entry1.getKit().equals(entry2.getKit());
+    }
+
+    public List<QueueEntry> getQueueForKit(Kit kit) {
+        return new ArrayList<>(kitQueues.getOrDefault(kit, new ConcurrentLinkedQueue<>()));
+    }
+
+    public int getQueueSize() {
+        return QueueService.get().getAllQueues().values().stream()
+                .mapToInt(Queue::size)
+                .sum();
+    }
+
+    public Map<Kit, Queue<QueueEntry>> getAllQueues() {
+        return kitQueues;
     }
 }

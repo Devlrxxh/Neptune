@@ -8,12 +8,16 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 
+import java.util.Queue;
+
 public class QueueMessageTask extends NeptuneRunnable {
     @Override
     public void run() {
-        for (QueueEntry queueEntry : QueueService.get().queue) {
-            Profile profile = API.getProfile(queueEntry.getUuid());
-            if (MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) {
+        if (!MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) return;
+
+        for (Queue<QueueEntry> queue : QueueService.get().getAllQueues().values()) {
+            for (QueueEntry queueEntry : queue) {
+                Profile profile = API.getProfile(queueEntry.getUuid());
                 MessagesLocale.QUEUE_REPEAT.send(queueEntry.getUuid(),
                         new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
                         new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
