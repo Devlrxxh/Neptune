@@ -19,7 +19,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 @Getter
-public class ArenaService implements IService {
+public class ArenaService extends IService {
     private static ArenaService instance;
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
 
@@ -29,7 +29,8 @@ public class ArenaService implements IService {
         return instance;
     }
 
-    public void loadArenas() {
+    @Override
+    public void load() {
         FileConfiguration config = ConfigService.get().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
             for (String arenaName : getKeys("arenas")) {
@@ -65,7 +66,8 @@ public class ArenaService implements IService {
         }
     }
 
-    public void saveArenas() {
+    @Override
+    public void stop() {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         arenas.forEach(arena -> {
             String path = "arenas." + arena.getName() + ".";

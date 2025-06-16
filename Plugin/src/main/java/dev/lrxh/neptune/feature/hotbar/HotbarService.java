@@ -18,14 +18,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter
-public class HotbarService implements IService {
+public class HotbarService extends IService {
     private static HotbarService instance;
     private final Map<ProfileState, Hotbar> items = new HashMap<>();
     private final Neptune plugin;
 
     public HotbarService() {
         this.plugin = Neptune.get();
-        loadItems();
     }
 
     public static HotbarService get() {
@@ -67,7 +66,8 @@ public class HotbarService implements IService {
         return getItem(inventory, slot);
     }
 
-    public void loadItems() {
+    @Override
+    public void load() {
         FileConfiguration config = ConfigService.get().getHotbarConfig().getConfiguration();
         if (config.getConfigurationSection("ITEMS") != null) {
             for (String section : getKeys("ITEMS")) {
@@ -109,6 +109,11 @@ public class HotbarService implements IService {
                 items.get(profileState).addItem(customItem, slot);
             }
         }
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     @Override

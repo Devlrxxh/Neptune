@@ -36,7 +36,7 @@ public class MainCommand {
     public void reload(@Sender Player player) {
         ConfigService.get().load();
         CosmeticService.get().load();
-        HotbarService.get().loadItems();
+        HotbarService.get().load();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
             Profile profile = API.getProfile(player);

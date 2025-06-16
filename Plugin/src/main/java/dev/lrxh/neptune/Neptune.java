@@ -104,16 +104,16 @@ public final class Neptune extends JavaPlugin {
         BlockChanger.load(this, false);
         ConfigService.get().load();
 
-        ArenaService.get().loadArenas();
-        KitService.get().loadKits();
+        ArenaService.get().load();
+        KitService.get().load();
         this.cache = new Cache();
-        HotbarService.get().loadItems();
+        HotbarService.get().load();
 
         new DatabaseService();
         if (!isEnabled()) return;
         CosmeticService.get().load();
 
-        DivisionService.get().loadDivisions();
+        DivisionService.get().load();
 
         LeaderboardService.get();
 
@@ -209,8 +209,8 @@ public final class Neptune extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        stopService(KitService.get(), KitService::saveKits);
-        stopService(ArenaService.get(), ArenaService::saveArenas);
+        stopService(KitService.get(), KitService::stop);
+        stopService(ArenaService.get(), ArenaService::stop);
         stopService(MatchService.get(), MatchService::stopAllGames);
         stopService(TaskScheduler.get(), TaskScheduler::stopAllTasks);
         stopService(ProfileService.get(), ProfileService::saveAll);

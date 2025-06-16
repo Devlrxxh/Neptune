@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class CosmeticService implements IService {
+public class CosmeticService extends IService {
     private static CosmeticService instance;
     public final Map<String, KillMessagePackage> deathMessages;
 
@@ -27,6 +27,7 @@ public class CosmeticService implements IService {
         return instance;
     }
 
+    @Override
     public void load() {
         FileConfiguration config = ConfigService.get().getCosmeticsConfig().getConfiguration();
         if (config.contains("KILL_MESSAGES")) {
@@ -41,6 +42,11 @@ public class CosmeticService implements IService {
                 deathMessages.put(deathPackageName, new KillMessagePackage(deathPackageName, displayName, material, description, slot, messages));
             }
         }
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     @Override

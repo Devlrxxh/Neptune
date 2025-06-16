@@ -38,7 +38,7 @@ public class ArenaSelectTypeButton extends Button {
         player.sendMessage(CC.success("Created arena"));
         new ArenasManagementMenu().open(player);
 
-        ArenaService.get().saveArenas();
+        ArenaService.get().stop();
     }
 
     @Override

@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.*;
 
 @Getter
-public class KitService implements IService {
+public class KitService extends IService {
     private static KitService instance;
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
 
@@ -25,7 +25,8 @@ public class KitService implements IService {
         return instance;
     }
 
-    public void loadKits() {
+    @Override
+    public void load() {
         FileConfiguration config = ConfigService.get().getKitsConfig().getConfiguration();
         if (config.contains("kits")) {
             for (String kitName : getKeys("kits")) {
@@ -63,7 +64,8 @@ public class KitService implements IService {
         return false;
     }
 
-    public void saveKits() {
+    @Override
+    public void stop() {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         kits.forEach(kit -> {
             String path = "kits." + kit.getName() + ".";

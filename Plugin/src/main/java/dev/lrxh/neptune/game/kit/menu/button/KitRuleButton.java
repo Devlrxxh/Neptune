@@ -23,7 +23,7 @@ public class KitRuleButton extends Button {
     @Override
     public void onClick(ClickType type, Player player) {
         kit.toggle(kitRule);
-        KitService.get().saveKits();
+        KitService.get().stop();
         new KitRulesMenu(kit).open(player);
     }
 

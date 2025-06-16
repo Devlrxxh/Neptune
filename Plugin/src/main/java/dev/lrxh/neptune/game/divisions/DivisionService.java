@@ -13,7 +13,7 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class DivisionService implements IService {
+public class DivisionService extends IService {
     private static DivisionService instance;
     private final Neptune plugin;
     public LinkedHashSet<Division> divisions;
@@ -29,7 +29,9 @@ public class DivisionService implements IService {
         return instance;
     }
 
-    public void loadDivisions() {
+
+    @Override
+    public void load() {
         FileConfiguration config = ConfigService.get().getDivisionsConfig().getConfiguration();
         if (config.contains("DIVISIONS")) {
             for (String divisionName : getKeys("DIVISIONS")) {
@@ -46,6 +48,11 @@ public class DivisionService implements IService {
         divisions = divisions.stream()
                 .sorted(Comparator.comparingInt(Division::getWinsRequired).reversed())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    @Override
+    public void stop() {
+
     }
 
     public Division getDivisionByWinCount(int winCount) {

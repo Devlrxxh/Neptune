@@ -157,6 +157,6 @@ public class ArenaProcedureListener implements Listener {
             }
         }
 
-        ArenaService.get().saveArenas();
+        ArenaService.get().stop();
     }
 }
