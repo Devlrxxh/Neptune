@@ -39,7 +39,7 @@ public class ArenaService implements IService {
                 Location redSpawn = LocationUtil.deserialize(config.getString(path + "redSpawn"));
                 Location blueSpawn = LocationUtil.deserialize(config.getString(path + "blueSpawn"));
                 boolean enabled = config.getBoolean(path + "enabled");
-                ArenaType arenaType = ArenaType.valueOf(config.getString(path + ".type"));
+                ArenaType arenaType = ArenaType.valueOf(config.getString(path + "type"));
                 int deathY = config.getInt(path + "deathY", -68321);
 
                 if (arenaType.equals(ArenaType.STANDALONE)) {
