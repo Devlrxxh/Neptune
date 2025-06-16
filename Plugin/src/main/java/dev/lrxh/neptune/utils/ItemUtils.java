@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.utils;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import lombok.experimental.UtilityClass;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
@@ -114,19 +117,30 @@ public class ItemUtils {
         return items;
     }
 
-    @SuppressWarnings("unchecked")
     public List<String> getLore(List<String> lore, Replacement... replacements) {
         List<String> newLore = new ArrayList<>();
 
         for (String line : lore) {
-            boolean skip = false;
+            String modifiedLine = line;
             for (Replacement replacement : replacements) {
-                line = line.replaceAll(replacement.getPlaceholder(), replacement.getReplacement().content());
+                if (modifiedLine.contains(replacement.getPlaceholder())) {
+                    Neptune.get().getLogger().info(replacement.getPlaceholder() + " -> " + MiniMessage.miniMessage().serialize(replacement.getReplacement()));
+                    modifiedLine = modifiedLine.replace(
+                            replacement.getPlaceholder(),
+                            MiniMessage.miniMessage().serialize(replacement.getReplacement())
+                    );
+                }
             }
-            if (!skip) newLore.add(line);
+
+            List<String> splitLines = Arrays.asList(modifiedLine.split("<br>"));
+            newLore.addAll(splitLines);
         }
+
         return newLore;
     }
+
+
+
 
     public ItemStack deserializeItem(String base64) {
         byte[] data = Base64.getDecoder().decode(base64);
