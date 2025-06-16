@@ -99,7 +99,7 @@ public class PlaceholderUtil {
 
                     if (match.getKit().is(KitRule.BED_WARS)) {
                         line = line.replaceAll("<bed-status>", !participant.isBedBroken() ? "&a✔" : "&c1");
-                        line = line.replaceAll("<opponent-bed-status>", !participant.isBedBroken() ? "&a✔" : "&c1");
+                        line = line.replaceAll("<opponent-bed-status>", !opponent.isBedBroken() ? "&a✔" : "&c1");
                     }
                 }
 
