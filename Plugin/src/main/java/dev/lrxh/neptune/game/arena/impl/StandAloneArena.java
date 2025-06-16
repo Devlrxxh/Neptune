@@ -23,7 +23,7 @@ public class StandAloneArena extends Arena {
     private List<Material> whitelistedBlocks;
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean copy, List<String> copies, List<Material> whitelistedBlocks, int deathY) {
-        super(name, displayName, redSpawn, blueSpawn, enabled, -68321);
+        super(name, displayName, redSpawn, blueSpawn, enabled, deathY);
         this.min = min;
         this.max = max;
         this.limit = limit;
