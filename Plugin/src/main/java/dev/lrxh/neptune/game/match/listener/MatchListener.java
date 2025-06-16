@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.listener;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
@@ -69,6 +70,8 @@ public class MatchListener implements Listener {
             }
 
             StandAloneArena arena = (StandAloneArena) match.arena;
+
+            Neptune.get().getPluginLoader().loadPlugin()
 
             // Check height limit
             if (blockLocation.getY() >= arena.getLimit()) {
@@ -480,12 +483,8 @@ public class MatchListener implements Listener {
             if (match.getArena() instanceof StandAloneArena standAloneArena) {
                 event.setCancelled(!standAloneArena.getWhitelistedBlocks().contains(blockType));
             }
-        }
-
-        if (match.getKit().is(KitRule.BUILD)) {
+        } else if (match.getKit().is(KitRule.BUILD)) {
             event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
-        } else {
-            event.setCancelled(true);
         }
     }
 

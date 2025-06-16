@@ -9,6 +9,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import org.bukkit.Bukkit;
 
+import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -26,9 +27,7 @@ public class QueueService {
         UUID playerUUID = queueEntry.getUuid();
         QueueJoinEvent event = new QueueJoinEvent(queueEntry);
 
-        Bukkit.getScheduler().runTask(Neptune.get(), () -> {
-            Bukkit.getPluginManager().callEvent(event);
-        });
+        Bukkit.getScheduler().runTask(Neptune.get(), () -> Bukkit.getPluginManager().callEvent(event));
 
         if (event.isCancelled()) return;
 
@@ -55,7 +54,7 @@ public class QueueService {
 
     public QueueEntry get(UUID uuid) {
         for (QueueEntry queueEntry : queue) {
-            if (queueEntry.getUuid().equals(uuid)) return queueEntry;
+            if (Objects.equals(uuid, queueEntry.getUuid())) return queueEntry;
         }
 
         return null;
