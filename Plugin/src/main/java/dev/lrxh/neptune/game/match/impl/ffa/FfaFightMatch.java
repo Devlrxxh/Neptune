@@ -58,6 +58,8 @@ public class FfaFightMatch extends Match {
     public void onDeath(Participant participant) {
         if (isEnded()) return;
         hideParticipant(participant);
+        participant.setDead(true);
+
 
         if (!participant.isLeft()) {
             addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
@@ -70,6 +72,9 @@ public class FfaFightMatch extends Match {
         sendDeathMessage(participant);
 
         participant.setLoser(true);
+
+        addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
+
         deadParticipants.add(participant);
 
         if (!isLastPlayerStanding()) return;

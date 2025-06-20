@@ -63,11 +63,6 @@ public enum ItemAction {
     SPECTATE_MENU {
         @Override
         public void execute(Player player) {
-            if (MatchService.get().matches.isEmpty()) {
-                MessagesLocale.SPECTATE_MENU_NO_MATCH.send(player.getUniqueId());
-                return;
-            }
-
             new MatchListMenu().open(player);
         }
     },
