@@ -28,10 +28,6 @@ public class QueueService {
         UUID playerUUID = queueEntry.getUuid();
         Kit kit = queueEntry.getKit();
 
-        QueueJoinEvent event = new QueueJoinEvent(queueEntry);
-        Bukkit.getScheduler().runTask(Neptune.get(), () -> Bukkit.getPluginManager().callEvent(event));
-        if (event.isCancelled()) return;
-
         if (get(playerUUID) != null) return;
 
         Profile profile = API.getProfile(playerUUID);
@@ -40,11 +36,16 @@ public class QueueService {
 
         kitQueues.computeIfAbsent(kit, k -> new ConcurrentLinkedQueue<>()).offer(queueEntry);
 
-        profile.setState(ProfileState.IN_QUEUE);
-        if (add) kit.addQueue();
-        MessagesLocale.QUEUE_JOIN.send(playerUUID,
-                new Replacement("<kit>", kit.getDisplayName()),
-                new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
+        if (add) {
+            QueueJoinEvent event = new QueueJoinEvent(queueEntry);
+            Bukkit.getScheduler().runTask(Neptune.get(), () -> Bukkit.getPluginManager().callEvent(event));
+            if (event.isCancelled()) return;
+            profile.setState(ProfileState.IN_QUEUE);
+            kit.addQueue();
+            MessagesLocale.QUEUE_JOIN.send(playerUUID,
+                    new Replacement("<kit>", kit.getDisplayName()),
+                    new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
+        }
     }
 
     public void remove(UUID playerUUID) {

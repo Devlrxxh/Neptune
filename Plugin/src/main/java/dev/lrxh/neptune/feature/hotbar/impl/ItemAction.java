@@ -14,7 +14,6 @@ import dev.lrxh.neptune.game.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.game.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.game.match.Match;
-import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.menu.MatchListMenu;
 import dev.lrxh.neptune.profile.data.ProfileState;

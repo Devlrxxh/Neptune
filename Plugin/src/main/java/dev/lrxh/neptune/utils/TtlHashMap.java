@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.utils;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

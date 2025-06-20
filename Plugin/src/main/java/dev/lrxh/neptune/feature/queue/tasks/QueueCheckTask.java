@@ -39,66 +39,70 @@ public class QueueCheckTask extends NeptuneRunnable {
             Kit kit = entry.getKey();
             Queue<QueueEntry> kitQueue = entry.getValue();
 
-            while (kitQueue.size() >= 2) {
-                QueueEntry queueEntry1 = kitQueue.poll();
-                QueueEntry queueEntry2 = kitQueue.poll();
+            if (kitQueue.size() < 2) continue;
 
-                if (queueEntry1 == null || queueEntry2 == null) break;
+            QueueEntry queueEntry1 = kitQueue.poll();
+            QueueEntry queueEntry2 = kitQueue.poll();
 
-                UUID uuid1 = queueEntry1.getUuid();
-                UUID uuid2 = queueEntry2.getUuid();
+            if (queueEntry1 == null || queueEntry2 == null) break;
 
-                Profile profile1 = API.getProfile(uuid1);
-                Profile profile2 = API.getProfile(uuid2);
+            UUID uuid1 = queueEntry1.getUuid();
+            UUID uuid2 = queueEntry2.getUuid();
 
-                SettingData settings1 = profile1.getSettingData();
-                SettingData settings2 = profile2.getSettingData();
+            Profile profile1 = API.getProfile(uuid1);
+            Profile profile2 = API.getProfile(uuid2);
 
-                // Ping check
-                if (!(PlayerUtil.getPing(uuid2) <= settings1.getMaxPing() &&
-                        PlayerUtil.getPing(uuid1) <= settings2.getMaxPing())) {
-                    QueueService.get().add(queueEntry1, false);
-                    QueueService.get().add(queueEntry2, false);
-                    continue;
-                }
-
-                Player player1 = Bukkit.getPlayer(uuid1);
-                Player player2 = Bukkit.getPlayer(uuid2);
-                if (player1 == null || player2 == null) continue;
-
-                Arena arena = kit.getRandomArena();
-                if (arena == null || !arena.isSetup()) {
-                    profile1.setState(ProfileState.IN_LOBBY);
-                    profile2.setState(ProfileState.IN_LOBBY);
-                    kit.removeQueue(); // Only call once per player if needed
-                    kit.removeQueue();
-                    PlayerUtil.sendMessage(uuid1, CC.error("No valid arena was found for this kit!"));
-                    PlayerUtil.sendMessage(uuid2, CC.error("No valid arena was found for this kit!"));
-                    continue;
-                }
-
-                Participant participant1 = new Participant(player1);
-                Participant participant2 = new Participant(player2);
-                List<Participant> participants = Arrays.asList(participant1, participant2);
-
-                // Notify players
-                MessagesLocale.MATCH_FOUND.send(uuid1,
-                        new Replacement("<opponent>", participant2.getNameUnColored()),
-                        new Replacement("<kit>", kit.getDisplayName()),
-                        new Replacement("<arena>", arena.getDisplayName()),
-                        new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid2))),
-                        new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid1))));
-
-                MessagesLocale.MATCH_FOUND.send(uuid2,
-                        new Replacement("<opponent>", participant1.getNameUnColored()),
-                        new Replacement("<kit>", kit.getDisplayName()),
-                        new Replacement("<arena>", arena.getDisplayName()),
-                        new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid1))),
-                        new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
-
-                MatchService.get().startMatch(participants, kit, arena, false,
-                        kit.is(KitRule.BEST_OF_THREE) ? 3 : 1);
+            if (!queueEntry1.getKit().equals(queueEntry2.getKit())) {
+                QueueService.get().add(queueEntry1, false);
+                QueueService.get().add(queueEntry2, false);
+                continue;
             }
+
+            SettingData settings1 = profile1.getSettingData();
+            SettingData settings2 = profile2.getSettingData();
+
+            // Ping check
+            if (!(PlayerUtil.getPing(uuid2) <= settings1.getMaxPing() &&
+                    PlayerUtil.getPing(uuid1) <= settings2.getMaxPing())) {
+                QueueService.get().add(queueEntry1, false);
+                QueueService.get().add(queueEntry2, false);
+                continue;
+            }
+
+            Player player1 = Bukkit.getPlayer(uuid1);
+            Player player2 = Bukkit.getPlayer(uuid2);
+            if (player1 == null || player2 == null) continue;
+
+            Arena arena = kit.getRandomArena();
+            if (arena == null || !arena.isSetup()) {
+                profile1.setState(ProfileState.IN_LOBBY);
+                profile2.setState(ProfileState.IN_LOBBY);
+                PlayerUtil.sendMessage(uuid1, CC.error("No valid arena was found for this kit!"));
+                PlayerUtil.sendMessage(uuid2, CC.error("No valid arena was found for this kit!"));
+                continue;
+            }
+
+            Participant participant1 = new Participant(player1);
+            Participant participant2 = new Participant(player2);
+            List<Participant> participants = Arrays.asList(participant1, participant2);
+
+            // Notify players
+            MessagesLocale.MATCH_FOUND.send(uuid1,
+                    new Replacement("<opponent>", participant2.getNameUnColored()),
+                    new Replacement("<kit>", kit.getDisplayName()),
+                    new Replacement("<arena>", arena.getDisplayName()),
+                    new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid2))),
+                    new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid1))));
+
+            MessagesLocale.MATCH_FOUND.send(uuid2,
+                    new Replacement("<opponent>", participant1.getNameUnColored()),
+                    new Replacement("<kit>", kit.getDisplayName()),
+                    new Replacement("<arena>", arena.getDisplayName()),
+                    new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid1))),
+                    new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
+
+            MatchService.get().startMatch(participants, kit, arena, false,
+                    kit.is(KitRule.BEST_OF_THREE) ? 3 : 1);
         }
     }
 }

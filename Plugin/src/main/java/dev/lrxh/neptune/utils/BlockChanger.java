@@ -338,8 +338,8 @@ public class BlockChanger {
 
     private static void refreshChunks(World world, HashMap<Long, Object> chunkCache) {
         for (long chunkKey : chunkCache.keySet()) {
-            int chunkX = (int)(chunkKey >> 32);
-            int chunkZ = (int)chunkKey;
+            int chunkX = (int) (chunkKey >> 32);
+            int chunkZ = (int) chunkKey;
             world.refreshChunk(chunkX, chunkZ);
         }
     }
@@ -866,8 +866,8 @@ public class BlockChanger {
                     y < -2048 || y > 2047) {
                 throw new IllegalArgumentException("Coordinates out of range for packing");
             }
-            this.packedCoords = ((long)(x & 0x3FFFFFF) << 38) |
-                    ((long)(z & 0x3FFFFFF) << 12) |
+            this.packedCoords = ((long) (x & 0x3FFFFFF) << 38) |
+                    ((long) (z & 0x3FFFFFF) << 12) |
                     (y & 0xFFF);
         }
 
@@ -882,31 +882,31 @@ public class BlockChanger {
         @SuppressWarnings("all")
         protected BlockLocation add(int x, int y, int z) {
             return new BlockLocation(
-                    (int)((packedCoords >> 38) + x),
-                    (int)((packedCoords & 0xFFF) + y),
-                    (int)((packedCoords << 26 >> 38) + z)
+                    (int) ((packedCoords >> 38) + x),
+                    (int) ((packedCoords & 0xFFF) + y),
+                    (int) ((packedCoords << 26 >> 38) + z)
             );
         }
 
         protected Location toLocation(World world) {
             return new Location(
                     world,
-                    (int)(packedCoords >> 38),  // X
-                    (int)(packedCoords & 0xFFF), // Y
-                    (int)(packedCoords << 26 >> 38) // Z
+                    (int) (packedCoords >> 38),  // X
+                    (int) (packedCoords & 0xFFF), // Y
+                    (int) (packedCoords << 26 >> 38) // Z
             );
         }
 
         protected int x() {
-            return (int)(packedCoords >> 38);
+            return (int) (packedCoords >> 38);
         }
 
         protected int y() {
-            return (int)(packedCoords & 0xFFF);
+            return (int) (packedCoords & 0xFFF);
         }
 
         protected int z() {
-            return (int)(packedCoords << 26 >> 38);
+            return (int) (packedCoords << 26 >> 38);
         }
 
         @Override
