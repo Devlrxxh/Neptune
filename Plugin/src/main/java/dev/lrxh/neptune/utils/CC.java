@@ -10,6 +10,9 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @UtilityClass
 public class CC {
     public TextComponent error(String message) {
@@ -69,20 +72,23 @@ public class CC {
     }
 
     public Component returnMessage(String message, Replacement... replacements) {
-        TagResolver.Builder resolverBuilder = TagResolver.builder();
-
         String moderMessage = convertLegacyToMiniMessage(message);
+        Set<String> added = new HashSet<>();
 
+        TagResolver.Builder resolverBuilder = TagResolver.builder();
         for (Replacement replacement : replacements) {
-            String placeholder = replacement.getPlaceholder();
-            String cleanPlaceholder = placeholder.replaceAll("^<|>$", "").toLowerCase();
-            resolverBuilder.tag(
-                    cleanPlaceholder,
-                    Placeholder.component(cleanPlaceholder, replacement.getReplacement()).tag()
-            );
+            String raw = replacement.getPlaceholder();
+            String clean = raw.replaceAll("^<|>$", "").toLowerCase();
+            if (added.add(clean)) {
+                resolverBuilder.tag(clean, Placeholder.component(clean, replacement.getReplacement()).tag());
+            }
         }
 
-        TagResolver resolver = resolverBuilder.build();
-        return MiniMessage.miniMessage().deserialize(moderMessage, resolver);
+        try {
+            return MiniMessage.miniMessage().deserialize(moderMessage, resolverBuilder.build());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return Component.text("[Invalid formatted message]");
+        }
     }
 }
