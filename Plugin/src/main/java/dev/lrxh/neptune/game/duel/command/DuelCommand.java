@@ -5,8 +5,11 @@ import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.duel.menu.KitSelectMenu;
+import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -88,6 +91,12 @@ public class DuelCommand {
         }
 
         profile.acceptDuel(uuid);
+    }
+
+    @Command(name = "", desc = "", usage = "<player> <kit> <rounds>")
+    public void duel(@Sender Player player, Player target, Kit kit, int rounds) {
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), true, rounds);
+        ProfileService.get().getByUUID(target.getUniqueId()).sendDuel(duelRequest);
     }
 
     @Command(name = "deny", desc = "", usage = "<uuid>")
