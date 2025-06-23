@@ -94,7 +94,14 @@ public class DuelCommand {
 
     @Command(name = "", desc = "", usage = "<player> <kit> <rounds>")
     public void duel(@Sender Player player, Player target, Kit kit, int rounds) {
-        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), true, rounds);
+        if (API.getProfile(player).getMatch() != null) {
+            player.sendMessage(CC.error("You can't send duel requests right now!"));
+            return;
+        }
+
+        boolean party = API.getProfile(player).getState().equals(ProfileState.IN_PARTY) && API.getProfile(target).getState().equals(ProfileState.IN_PARTY);
+
+        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, rounds);
         ProfileService.get().getByUUID(target.getUniqueId()).sendDuel(duelRequest);
     }
 
