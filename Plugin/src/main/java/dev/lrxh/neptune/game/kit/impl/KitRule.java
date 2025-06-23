@@ -20,7 +20,7 @@ public enum KitRule {
     ALLOW_PARTY(Material.PARROT_SPAWN_EGG, "If players should be able to play this kit in party events.", "Allow Party Events", "allowParty"),
     BED_WARS(Material.RED_BED, "Allow/Deny Bedwars", "Bedwars", "bedwars"),
     PARKOUR(Material.ENDER_PEARL, "Allow/Deny Parkour", "Parkour", "parkour"),
-    RESET_ARENA_AFTER_ROUND(Material.BARRIER, "If the arena should be reset after the match", "Reset Arena After Match", "resetArenaAfterMatch"),
+    RESET_ARENA_AFTER_ROUND(Material.BARRIER, "If the arena should be reset after the round", "Reset Arena After Round", "resetArenaAfterMatch"),
     DROPPER(Material.DROPPER, "Allow/Deny Dropper", "Dropper", "dropper"),
     SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "Allow/Deny Saturation", "Saturation", "saturation");
 
