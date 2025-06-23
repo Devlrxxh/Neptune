@@ -25,6 +25,7 @@ import java.util.*;
 public class QueueCheckTask extends NeptuneRunnable {
     @Override
     public void run() {
+
         for (Queue<QueueEntry> queue : QueueService.get().getAllQueues().values()) {
             for (QueueEntry entry : queue) {
                 Player player = Bukkit.getPlayer(entry.getUuid());
@@ -34,17 +35,21 @@ public class QueueCheckTask extends NeptuneRunnable {
             }
         }
 
-
         for (Map.Entry<Kit, Queue<QueueEntry>> entry : QueueService.get().getAllQueues().entrySet()) {
             Kit kit = entry.getKey();
             Queue<QueueEntry> kitQueue = entry.getValue();
 
-            if (kitQueue.size() < 2) continue;
+
+            if (kitQueue.size() < 2) {
+                continue;
+            }
 
             QueueEntry queueEntry1 = kitQueue.poll();
             QueueEntry queueEntry2 = kitQueue.poll();
 
-            if (queueEntry1 == null || queueEntry2 == null) break;
+            if (queueEntry1 == null || queueEntry2 == null) {
+                break;
+            }
 
             UUID uuid1 = queueEntry1.getUuid();
             UUID uuid2 = queueEntry2.getUuid();
@@ -61,9 +66,10 @@ public class QueueCheckTask extends NeptuneRunnable {
             SettingData settings1 = profile1.getSettingData();
             SettingData settings2 = profile2.getSettingData();
 
-            // Ping check
-            if (!(PlayerUtil.getPing(uuid2) <= settings1.getMaxPing() &&
-                    PlayerUtil.getPing(uuid1) <= settings2.getMaxPing())) {
+            int ping1 = PlayerUtil.getPing(uuid1);
+            int ping2 = PlayerUtil.getPing(uuid2);
+
+            if (!(ping2 <= settings1.getMaxPing() && ping1 <= settings2.getMaxPing())) {
                 QueueService.get().add(queueEntry1, false);
                 QueueService.get().add(queueEntry2, false);
                 continue;
@@ -71,7 +77,9 @@ public class QueueCheckTask extends NeptuneRunnable {
 
             Player player1 = Bukkit.getPlayer(uuid1);
             Player player2 = Bukkit.getPlayer(uuid2);
-            if (player1 == null || player2 == null) continue;
+            if (player1 == null || player2 == null) {
+                continue;
+            }
 
             Arena arena = kit.getRandomArena();
             if (arena == null || !arena.isSetup()) {
@@ -86,23 +94,23 @@ public class QueueCheckTask extends NeptuneRunnable {
             Participant participant2 = new Participant(player2);
             List<Participant> participants = Arrays.asList(participant1, participant2);
 
-            // Notify players
             MessagesLocale.MATCH_FOUND.send(uuid1,
                     new Replacement("<opponent>", participant2.getNameUnColored()),
                     new Replacement("<kit>", kit.getDisplayName()),
                     new Replacement("<arena>", arena.getDisplayName()),
-                    new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid2))),
-                    new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid1))));
+                    new Replacement("<opponent-ping>", String.valueOf(ping2)),
+                    new Replacement("<ping>", String.valueOf(ping1)));
 
             MessagesLocale.MATCH_FOUND.send(uuid2,
                     new Replacement("<opponent>", participant1.getNameUnColored()),
                     new Replacement("<kit>", kit.getDisplayName()),
                     new Replacement("<arena>", arena.getDisplayName()),
-                    new Replacement("<opponent-ping>", String.valueOf(PlayerUtil.getPing(uuid1))),
-                    new Replacement("<ping>", String.valueOf(PlayerUtil.getPing(uuid2))));
+                    new Replacement("<opponent-ping>", String.valueOf(ping1)),
+                    new Replacement("<ping>", String.valueOf(ping2)));
 
             MatchService.get().startMatch(participants, kit, arena, false,
                     kit.is(KitRule.BEST_OF_THREE) ? 3 : 1);
         }
     }
+
 }

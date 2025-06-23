@@ -8,6 +8,7 @@ import dev.lrxh.neptune.feature.cosmetics.impl.KillEffect;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedure;
+import dev.lrxh.neptune.game.divisions.DivisionService;
 import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
@@ -105,6 +106,7 @@ public class Profile {
             KitData profileKitData = gameData.get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
+            profileKitData.setDivision(DivisionService.get().getDivisionByWinCount(profileKitData.getWins()));
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));

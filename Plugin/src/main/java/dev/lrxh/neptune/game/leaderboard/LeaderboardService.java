@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.leaderboard;
 
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.game.divisions.DivisionService;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardEntry;
@@ -181,6 +182,7 @@ public class LeaderboardService {
         KitData profileKitData = new KitData();
         profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
         profileKitData.setWins(kitDocument.getInteger("WINS", 0));
+        profileKitData.setDivision(DivisionService.get().getDivisionByWinCount(profileKitData.getWins()));
         profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
         profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
 
