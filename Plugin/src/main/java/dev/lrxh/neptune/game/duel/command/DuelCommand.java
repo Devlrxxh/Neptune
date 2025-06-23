@@ -99,6 +99,33 @@ public class DuelCommand {
             return;
         }
 
+        if (player.getName().equalsIgnoreCase(target.getName())) {
+            player.sendMessage(CC.error("You can't duel yourself!"));
+            return;
+        }
+        Profile targetProfile = API.getProfile(target);
+
+        if (targetProfile.getMatch() != null || targetProfile.hasState(ProfileState.IN_KIT_EDITOR) || !targetProfile.getSettingData().isAllowDuels()) {
+            player.sendMessage(CC.error("Player can't accept duel requests!"));
+            return;
+        }
+
+        if (targetProfile.getGameData().getRequests().contains(player.getUniqueId())) {
+            MessagesLocale.DUEL_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
+            return;
+        }
+
+        Profile userProfile = API.getProfile(player);
+        if (userProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getState().equals(ProfileState.IN_PARTY) || targetProfile.getState().equals(ProfileState.IN_PARTY) && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
+            player.sendMessage(CC.error("You can't send duel requests right now!"));
+            return;
+        }
+
+        if (targetProfile.getState().equals(ProfileState.IN_PARTY) && !targetProfile.getGameData().getParty().isLeader(target.getUniqueId())) {
+            player.sendMessage(CC.error("Player can't accept duel requests!"));
+            return;
+        }
+
         boolean party = API.getProfile(player).getState().equals(ProfileState.IN_PARTY) && API.getProfile(target).getState().equals(ProfileState.IN_PARTY);
 
         DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, rounds);
