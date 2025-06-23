@@ -419,6 +419,10 @@ public class MatchListener implements Listener {
             if (!kit.is(KitRule.DAMAGE)) {
                 event.setCancelled(true);
             }
+
+            if (match.getParticipant(player).isDead()) {
+                event.setCancelled(true);
+            }
         }
     }
 
