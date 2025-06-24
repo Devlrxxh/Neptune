@@ -8,6 +8,7 @@ import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
+import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.Time;
 import lombok.Data;
@@ -111,6 +112,10 @@ public class Participant {
 
     public void sendTitle(TextComponent header, TextComponent footer, int duration) {
         PlayerUtil.sendTitle(getPlayer(), header, footer, duration);
+    }
+
+    public void sendTitle(MessagesLocale header, MessagesLocale footer, int duration) {
+        PlayerUtil.sendTitle(getPlayer(), CC.color(header.getString()), CC.color(footer.getString()), duration);
     }
 
     public void sendMessage(TextComponent message) {

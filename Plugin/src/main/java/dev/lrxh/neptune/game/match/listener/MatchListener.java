@@ -296,6 +296,7 @@ public class MatchListener implements Listener {
         Profile profile = API.getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
+        Arena arena = match.getArena();
 
         if (match != null) {
             Participant participant = match.getParticipant(player.getUniqueId());
@@ -310,7 +311,7 @@ public class MatchListener implements Listener {
                     }
                 }
             }
-            Arena arena = match.getArena();
+
             if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
                 if (match.getKit().is(KitRule.PARKOUR)) {
                     if (participant.getCurrentCheckPoint() != null) {
