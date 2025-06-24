@@ -44,12 +44,8 @@ public class QueueCheckTask extends NeptuneRunnable {
                 continue;
             }
 
-            QueueEntry queueEntry1 = kitQueue.poll();
-            QueueEntry queueEntry2 = kitQueue.poll();
-
-            if (queueEntry1 == null || queueEntry2 == null) {
-                break;
-            }
+            QueueEntry queueEntry1 = QueueService.get().poll(kit);
+            QueueEntry queueEntry2 = QueueService.get().poll(kit);
 
             UUID uuid1 = queueEntry1.getUuid();
             UUID uuid2 = queueEntry2.getUuid();
@@ -78,7 +74,6 @@ public class QueueCheckTask extends NeptuneRunnable {
             Player player1 = Bukkit.getPlayer(uuid1);
             Player player2 = Bukkit.getPlayer(uuid2);
             if (player1 == null || player2 == null) {
-                kit.removeQueue();
                 continue;
             }
 
@@ -88,8 +83,6 @@ public class QueueCheckTask extends NeptuneRunnable {
                 profile2.setState(ProfileState.IN_LOBBY);
                 PlayerUtil.sendMessage(uuid1, CC.error("No valid arena was found for this kit!"));
                 PlayerUtil.sendMessage(uuid2, CC.error("No valid arena was found for this kit!"));
-                kit.removeQueue();
-                kit.removeQueue();
                 continue;
             }
 

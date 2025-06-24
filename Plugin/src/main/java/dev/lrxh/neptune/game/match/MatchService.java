@@ -34,7 +34,6 @@ public class MatchService {
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {
         if (!Neptune.get().isAllowMatches()) return;
         for (Participant ignore : participants) {
-            kit.removeQueue();
             kit.addPlaying();
         }
 

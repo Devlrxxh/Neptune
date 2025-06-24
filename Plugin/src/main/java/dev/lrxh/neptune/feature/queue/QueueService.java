@@ -48,9 +48,9 @@ public class QueueService {
         }
     }
 
-    public void remove(UUID playerUUID) {
+    public QueueEntry remove(UUID playerUUID) {
         QueueEntry entry = get(playerUUID);
-        if (entry == null) return;
+        if (entry == null) return null;
 
         Kit kit = entry.getKit();
         Queue<QueueEntry> queue = kitQueues.get(kit);
@@ -58,6 +58,17 @@ public class QueueService {
             queue.remove(entry);
             entry.getKit().removeQueue();
         }
+
+        return entry;
+    }
+
+
+    public QueueEntry poll(Kit kit) {
+        Queue<QueueEntry> queue = kitQueues.get(kit);
+        if (queue == null || queue.isEmpty()) return null;
+
+        List<QueueEntry> entries = new ArrayList<>(queue);
+        return remove(entries.get(new Random().nextInt(entries.size())).getUuid());
     }
 
     public QueueEntry get(UUID uuid) {
@@ -67,14 +78,6 @@ public class QueueService {
             }
         }
         return null;
-    }
-
-    public boolean compare(QueueEntry entry1, QueueEntry entry2) {
-        return entry1.getKit().equals(entry2.getKit());
-    }
-
-    public List<QueueEntry> getQueueForKit(Kit kit) {
-        return new ArrayList<>(kitQueues.getOrDefault(kit, new ConcurrentLinkedQueue<>()));
     }
 
     public int getQueueSize() {

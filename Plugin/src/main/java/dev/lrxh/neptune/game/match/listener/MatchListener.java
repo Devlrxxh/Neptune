@@ -18,8 +18,6 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
-import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -293,6 +291,7 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
+        if (!event.hasChangedPosition()) return;
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
         if (profile == null) return;
@@ -480,12 +479,18 @@ public class MatchListener implements Listener {
         if (match == null) return;
         if (blockType.name().contains("BED")) return;
 
+        if (match.getKit().is(KitRule.BUILD)) {
+            event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
+        } else {
+            event.setCancelled(true);
+        }
+
         if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
             if (match.getArena() instanceof StandAloneArena standAloneArena) {
                 event.setCancelled(!standAloneArena.getWhitelistedBlocks().contains(blockType));
             }
-        } else if (match.getKit().is(KitRule.BUILD)) {
-            event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
+        } else {
+            event.setCancelled(true);
         }
     }
 

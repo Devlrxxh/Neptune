@@ -89,7 +89,6 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
-        event.setYield(0);
         if (event.getEntity() instanceof EnderCrystal enderCrystal) {
             final String uuid = enderCrystal.getPersistentDataContainer()
                     .get(new NamespacedKey(Neptune.get(), "neptune_crystal_owner"),
@@ -175,8 +174,10 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        getMatchForPlayer(event.getPlayer()).ifPresent(match ->
-                match.getLiquids().add(event.getBlock().getLocation())
+        getMatchForPlayer(event.getPlayer()).ifPresent(match -> {
+                    Location location = event.getBlockClicked().getRelative(event.getBlockFace()).getLocation();
+                    match.getLiquids().add(location);
+                }
         );
     }
 
@@ -233,8 +234,29 @@ public class BlockTracker implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockPhysics(BlockPhysicsEvent event) {
+        final Block block = event.getBlock();
+        final Player player = getPlayer(block.getLocation());
+
+        if (player != null) {
+            getMatchForPlayer(player).ifPresent(match ->
+                    match.getChanges().computeIfAbsent(block.getLocation(), loc -> block.getBlockData())
+            );
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    public void onBlockForm(BlockFormEvent event) {
+        final Player player = getPlayer(event.getBlock().getLocation());
+        if (player == null) return;
+
+        getMatchForPlayer(player).ifPresent(match ->
+                match.getChanges().computeIfAbsent(event.getBlock().getLocation(), loc -> event.getNewState().getBlockData())
+        );
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplode(BlockExplodeEvent event) {
-        event.setYield(0);
         final Player player = getPlayer(event.getBlock().getLocation());
         if (player == null) {
             event.setCancelled(true);

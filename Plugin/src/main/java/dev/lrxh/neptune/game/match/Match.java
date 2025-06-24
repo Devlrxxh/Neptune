@@ -186,7 +186,6 @@ public abstract class Match {
             }
         }
 
-
         removeEntities();
     }
 
