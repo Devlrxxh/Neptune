@@ -161,7 +161,7 @@ public class SoloFightMatch extends Match {
                 participantKiller.setCombo(0);
 
                 state = MatchState.STARTING;
-                new MatchSecondRoundRunnable(this, participant, plugin).start(0L, 20L);
+                new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
             }
         }
     }
@@ -185,7 +185,7 @@ public class SoloFightMatch extends Match {
             if (kit.is(KitRule.BED_WARS)) {
                 if (!participant.isBedBroken()) {
                     participantKiller.setCombo(0);
-                    new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L);
+                    new MatchRespawnRunnable(this, participant).start(0L, 20L);
                     return;
                 }
             }
@@ -196,7 +196,7 @@ public class SoloFightMatch extends Match {
                     participantKiller.setCombo(0);
 
                     state = MatchState.STARTING;
-                    new MatchSecondRoundRunnable(this, participant, plugin).start(0L, 20L);
+                    new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
                     return;
                 }
             }

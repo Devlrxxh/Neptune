@@ -57,7 +57,7 @@ public class BlockTracker implements Listener {
             return;
         }
 
-        final Player player = getPlayer(crystal.getLocation());
+        Player player = getPlayer(crystal.getLocation());
         if (player == null) {
             event.setCancelled(true);
             return;
@@ -69,7 +69,7 @@ public class BlockTracker implements Listener {
     @EventHandler
     public void onBlockDrop(BlockDropItemEvent event) {
         getMatchForPlayer(event.getPlayer()).ifPresent(match -> {
-            if (match.getArena() instanceof StandAloneArena standAloneArena) {
+            if (match.getArena() instanceof StandAloneArena standAloneArena && match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
                 event.getItems().removeIf(item -> !standAloneArena.getWhitelistedBlocks().contains(item.getItemStack().getType()));
             } else {
                 match.getEntities().addAll(event.getItems());
@@ -90,7 +90,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
         if (event.getEntity() instanceof EnderCrystal enderCrystal) {
-            final String uuid = enderCrystal.getPersistentDataContainer()
+            String uuid = enderCrystal.getPersistentDataContainer()
                     .get(new NamespacedKey(Neptune.get(), "neptune_crystal_owner"),
                             org.bukkit.persistence.PersistentDataType.STRING);
 
@@ -98,15 +98,15 @@ public class BlockTracker implements Listener {
                 return;
             }
 
-            final Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+            Player player = Bukkit.getPlayer(UUID.fromString(uuid));
             if (player == null) {
                 event.setCancelled(true);
                 return;
             }
 
             getMatchForPlayer(player).ifPresent(match -> {
-                for (final Block block : new ArrayList<>(event.blockList())) {
-                    for (final ItemStack item : block.getDrops()) {
+                for (Block block : new ArrayList<>(event.blockList())) {
+                    for (ItemStack item : block.getDrops()) {
                         Bukkit.getScheduler().runTaskLater(Neptune.get(), () ->
                                 match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item)), 5L
                         );
@@ -134,15 +134,15 @@ public class BlockTracker implements Listener {
                 }
             });
         } else {
-            final Player player = getPlayer(event.getLocation());
+            Player player = getPlayer(event.getLocation());
             if (player == null) {
                 event.setCancelled(true);
                 return;
             }
 
             getMatchForPlayer(player).ifPresent(match -> {
-                for (final Block block : new ArrayList<>(event.blockList())) {
-                    for (final ItemStack item : block.getDrops()) {
+                for (Block block : new ArrayList<>(event.blockList())) {
+                    for (ItemStack item : block.getDrops()) {
                         Bukkit.getScheduler().runTaskLater(Neptune.get(), () ->
                                 match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item)), 5L
                         );
@@ -183,8 +183,8 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
-        final Block toBlock = event.getToBlock();
-        final Player player = getPlayer(toBlock.getLocation());
+        Block toBlock = event.getToBlock();
+        Player player = getPlayer(toBlock.getLocation());
 
         if (player == null) {
             event.setCancelled(true);
@@ -203,10 +203,10 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onDestroy(BlockDestroyEvent event) {
-        final Block block = event.getBlock();
+        Block block = event.getBlock();
         block.getDrops().clear();
         event.setWillDrop(false);
-        final Player player = getPlayer(block.getLocation());
+        Player player = getPlayer(block.getLocation());
         if (player == null) {
             event.setCancelled(true);
             return;
@@ -227,7 +227,7 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onMultiPlace(BlockMultiPlaceEvent event) {
         getMatchForPlayer(event.getPlayer()).ifPresent(match -> {
-            for (final BlockState blockState : event.getReplacedBlockStates()) {
+            for (BlockState blockState : event.getReplacedBlockStates()) {
                 match.getChanges().computeIfAbsent(blockState.getLocation(), location -> blockState.getBlockData());
             }
         });
@@ -235,8 +235,8 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockPhysics(BlockPhysicsEvent event) {
-        final Block block = event.getBlock();
-        final Player player = getPlayer(block.getLocation());
+        Block block = event.getBlock();
+        Player player = getPlayer(block.getLocation());
 
         if (player != null) {
             getMatchForPlayer(player).ifPresent(match ->
@@ -247,7 +247,7 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onBlockForm(BlockFormEvent event) {
-        final Player player = getPlayer(event.getBlock().getLocation());
+        Player player = getPlayer(event.getBlock().getLocation());
         if (player == null) return;
 
         getMatchForPlayer(player).ifPresent(match ->
@@ -257,14 +257,14 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplode(BlockExplodeEvent event) {
-        final Player player = getPlayer(event.getBlock().getLocation());
+        Player player = getPlayer(event.getBlock().getLocation());
         if (player == null) {
             event.setCancelled(true);
             return;
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            for (final Block block : event.blockList()) {
+            for (Block block : event.blockList()) {
                 match.getChanges().computeIfAbsent(block.getLocation(), location -> block.getBlockData());
             }
         });
@@ -309,7 +309,7 @@ public class BlockTracker implements Listener {
 
     private Player getPlayer(Location location) {
         Player player = null;
-        for (final Entity entity : location.getNearbyEntities(10, 10, 10)) {
+        for (Entity entity : location.getNearbyEntities(10, 10, 10)) {
             if (entity instanceof Player p) {
                 player = p;
                 break;
@@ -319,7 +319,7 @@ public class BlockTracker implements Listener {
     }
 
     private Optional<Match> getMatchForPlayer(Player player) {
-        final Profile profile = API.getProfile(player);
+        Profile profile = API.getProfile(player);
         return Optional.ofNullable(profile)
                 .map(Profile::getMatch);
     }

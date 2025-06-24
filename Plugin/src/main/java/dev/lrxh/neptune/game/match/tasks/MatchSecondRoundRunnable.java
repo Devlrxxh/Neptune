@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.game.match.tasks;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
@@ -13,16 +12,14 @@ import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import org.bukkit.Sound;
 
 public class MatchSecondRoundRunnable extends NeptuneRunnable {
-    private final Neptune plugin;
 
     private final Match match;
     private final Participant participant;
     private int respawnTimer = 3;
 
-    public MatchSecondRoundRunnable(Match match, Participant participant, Neptune plugin) {
+    public MatchSecondRoundRunnable(Match match, Participant participant) {
         this.match = match;
         this.participant = participant;
-        this.plugin = plugin;
 
         match.setupParticipants();
         match.checkRules();

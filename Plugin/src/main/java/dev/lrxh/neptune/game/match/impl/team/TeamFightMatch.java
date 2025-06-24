@@ -98,7 +98,7 @@ public class TeamFightMatch extends Match {
             if (enemy.getPoints() < rounds) {
 
                 state = MatchState.STARTING;
-                new MatchSecondRoundRunnable(this, participant, plugin).start(0L, 20L);
+                new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
             }
         }
     }
@@ -118,7 +118,7 @@ public class TeamFightMatch extends Match {
         if (!participant.isDisconnected() && !participant.isLeft()) {
             if (kit.is(KitRule.BED_WARS)) {
                 if (!participant.isBedBroken()) {
-                    new MatchRespawnRunnable(this, participant, plugin).start(0L, 20L);
+                    new MatchRespawnRunnable(this, participant).start(0L, 20L);
                     return;
                 }
             }

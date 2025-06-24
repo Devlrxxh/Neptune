@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.game.match.tasks;
 
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
@@ -15,16 +14,14 @@ import org.bukkit.Location;
 import org.bukkit.Sound;
 
 public class MatchRespawnRunnable extends NeptuneRunnable {
-    private final Neptune plugin;
 
     private final Match match;
     private final Participant participant;
     private int respawnTimer = 3;
 
-    public MatchRespawnRunnable(Match match, Participant participant, Neptune plugin) {
+    public MatchRespawnRunnable(Match match, Participant participant) {
         this.match = match;
         this.participant = participant;
-        this.plugin = plugin;
 
         match.hideParticipant(participant);
     }

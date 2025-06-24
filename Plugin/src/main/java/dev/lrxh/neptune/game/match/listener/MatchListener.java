@@ -405,6 +405,11 @@ public class MatchListener implements Listener {
             }
             Kit kit = match.getKit();
 
+            if (profile.hasState(ProfileState.IN_SPECTATOR)) {
+                event.setCancelled(true);
+                return;
+            }
+
             if (match.getState().equals(MatchState.STARTING) || match.getState().equals(MatchState.ENDING)) {
                 event.setCancelled(true);
                 return;
@@ -417,10 +422,12 @@ public class MatchListener implements Listener {
 
             if (!kit.is(KitRule.DAMAGE)) {
                 event.setCancelled(true);
+                return;
             }
 
             if (match.getParticipant(player).isDead()) {
                 event.setCancelled(true);
+                return;
             }
         }
     }
