@@ -2,7 +2,10 @@ package dev.lrxh.neptune.providers.placeholder.impl;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.match.Match;
+import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
+import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
+import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.placeholder.Placeholder;
@@ -15,8 +18,15 @@ public class OpponentPointsPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("opponent-points")) {
-          if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch)) return "";
-          return String.valueOf(match.getParticipant(player.getUniqueId()).getOpponent().getPoints());
+          Participant playerParticipant = match.getParticipant(player.getUniqueId());
+          if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+          if (match instanceof SoloFightMatch) {
+            return String.valueOf(playerParticipant.getOpponent().getPoints());
+          }
+          else if (match instanceof TeamFightMatch teamFightMatch) {
+            MatchTeam opponentTeam = teamFightMatch.getParticipantTeam(playerParticipant).equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
+            return String.valueOf(opponentTeam.getPoints());
+          }
         }
 
         return string;
