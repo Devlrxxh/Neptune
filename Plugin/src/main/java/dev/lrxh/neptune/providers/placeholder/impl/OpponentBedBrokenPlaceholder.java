@@ -3,7 +3,10 @@ package dev.lrxh.neptune.providers.placeholder.impl;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
+import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
+import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
+import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.placeholder.Placeholder;
@@ -16,8 +19,15 @@ public class OpponentBedBrokenPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("opponent-bed-broken")) {
-          if(profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch) || !match.getKit().is(KitRule.BED_WARS)) return "";
-          return match.getParticipant(player.getUniqueId()).getOpponent().isBedBroken() ? "true" : "false";
+          if (profile.getState() != ProfileState.IN_GAME || match == null || !match.getKit().is(KitRule.BED_WARS)) return "";
+          Participant playerParticipant = match.getParticipant(player.getUniqueId());
+          if (match instanceof SoloFightMatch) {
+            return playerParticipant.getOpponent().isBedBroken() ? "true" : "false";
+          }
+          else if (match instanceof TeamFightMatch teamFightMatch) {
+            MatchTeam opponentTeam = teamFightMatch.getParticipantTeam(playerParticipant).equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
+            return opponentTeam.isBedBroken() ? "true" : "false";
+          }
         }
 
         return string;
