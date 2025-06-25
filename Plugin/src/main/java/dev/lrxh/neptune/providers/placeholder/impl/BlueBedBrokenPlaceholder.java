@@ -16,8 +16,7 @@ public class BlueBedBrokenPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("blue-bed-broken")) {
-          if(profile.getState() != ProfileState.IN_GAME) return "";
-          if(match == null || !(match instanceof SoloFightMatch soloFightMatch) || !match.getKit().is(KitRule.BED_WARS)) return "";
+          if(profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch soloFightMatch) || !match.getKit().is(KitRule.BED_WARS)) return "";
           return soloFightMatch.getParticipantB().isBedBroken() ? "true": "false";
         }
 
