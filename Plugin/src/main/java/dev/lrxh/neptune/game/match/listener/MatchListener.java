@@ -296,55 +296,54 @@ public class MatchListener implements Listener {
         Profile profile = API.getProfile(player);
         if (profile == null) return;
         Match match = profile.getMatch();
+        if (match == null) return;
         Arena arena = match.getArena();
 
-        if (match != null) {
-            Participant participant = match.getParticipant(player.getUniqueId());
-            if (participant == null) return;
-            if (participant.isFrozen()) {
-                if (event.hasChangedPosition()) {
-                    Location to = event.getTo();
-                    Location from = event.getFrom();
-                    if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
-                        player.teleport(from);
-                        return;
-                    }
-                }
-            }
-
-            if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
-                if (match.getKit().is(KitRule.PARKOUR)) {
-                    if (participant.getCurrentCheckPoint() != null) {
-                        player.teleport(participant.getCurrentCheckPoint());
-                    } else {
-                        player.teleport(match.getSpawn(participant));
-                    }
-                } else {
-                    participant.setDeathCause(DeathCause.DIED);
-                    match.onDeath(participant);
-                }
-                return;
-            }
-            if (match.getState().equals(MatchState.IN_ROUND)) {
-                Location playerLocation = player.getLocation();
-
-                if (match.getKit().is(KitRule.DROPPER)) {
-                    Block block = playerLocation.getBlock();
-
-                    if (block.getType() == Material.WATER) {
-                        match.win(participant);
-                    }
-
+        Participant participant = match.getParticipant(player.getUniqueId());
+        if (participant == null) return;
+        if (participant.isFrozen()) {
+            if (event.hasChangedPosition()) {
+                Location to = event.getTo();
+                Location from = event.getFrom();
+                if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
+                    player.teleport(from);
                     return;
                 }
+            }
+        }
 
-                if (match.getKit().is(KitRule.SUMO)) {
-                    Block block = playerLocation.getBlock();
+        if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
+            if (match.getKit().is(KitRule.PARKOUR)) {
+                if (participant.getCurrentCheckPoint() != null) {
+                    player.teleport(participant.getCurrentCheckPoint());
+                } else {
+                    player.teleport(match.getSpawn(participant));
+                }
+            } else {
+                participant.setDeathCause(DeathCause.DIED);
+                match.onDeath(participant);
+            }
+            return;
+        }
+        if (match.getState().equals(MatchState.IN_ROUND)) {
+            Location playerLocation = player.getLocation();
 
-                    if (block.getType() == Material.WATER) {
-                        participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                        match.onDeath(participant);
-                    }
+            if (match.getKit().is(KitRule.DROPPER)) {
+                Block block = playerLocation.getBlock();
+
+                if (block.getType() == Material.WATER) {
+                    match.win(participant);
+                }
+
+                return;
+            }
+
+            if (match.getKit().is(KitRule.SUMO)) {
+                Block block = playerLocation.getBlock();
+
+                if (block.getType() == Material.WATER) {
+                    participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                    match.onDeath(participant);
                 }
             }
         }
