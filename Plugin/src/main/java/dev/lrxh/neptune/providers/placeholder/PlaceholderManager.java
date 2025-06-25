@@ -55,7 +55,9 @@ public class PlaceholderManager {
                 new RedBedBrokenPlaceholder(),
                 new BlueBedBrokenPlaceholder(),
                 new AlivePlaceholder(),
-                new OpponentAlivePlaceholder()
+                new OpponentAlivePlaceholder(),
+                new MaxPlaceholder(),
+                new OpponentMaxPlaceholder()
         ));
     }
 
