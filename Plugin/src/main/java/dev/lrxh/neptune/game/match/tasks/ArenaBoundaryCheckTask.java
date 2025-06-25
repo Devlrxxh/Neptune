@@ -20,6 +20,7 @@ public class ArenaBoundaryCheckTask extends NeptuneRunnable {
                 if (!LocationUtil.isInside(player.getLocation(), arena.getMin(), arena.getMax())) {
                     player.damage(5);
                     participant.sendTitle(MessagesLocale.MATCH_OUT_OF_BOUNDS_TITLE_HEADER, MessagesLocale.MATCH_OUT_OF_BOUNDS_TITLE_FOOTER, 10);
+                    return;
                 }
                 if (player.getLocation().getBlockY() > arena.getLimit() + 1) {
                     player.damage(5);
