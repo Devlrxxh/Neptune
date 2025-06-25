@@ -32,7 +32,32 @@ public class PlaceholderManager {
                 new LeaderboardPlaceholder(),
                 new KitInMatchPlaceholder(),
                 new KitQueuedPlaceholder(),
-                new WinRatePlaceholder()
+                new WinRatePlaceholder(),
+                new OpponentPlaceholder(),
+                new OpponentPingPlaceholder(),
+                new ComboPlaceholder(),
+                new OpponentComboPlaceholder(),
+                new HitsPlaceholder(),
+                new OpponentHitsPlaceholder(),
+                new HitDifferencePlaceholder(),
+                new TimePlaceholder(),
+                new KitPlaceholder(),
+                new ArenaPlaceholder(),
+                new MaxPointsPlaceholder(),
+                new PointsPlaceholder(),
+                new OpponentPointsPlaceholder(),
+                new BedBrokenPlaceholder(),
+                new OpponentBedBrokenPlaceholder(),
+                new PlayerRedNamePlaceholder(),
+                new PlayerBlueNamePlaceholder(),
+                new PlayerRedPingPlaceholder(),
+                new PlayerBluePingPlaceholder(),
+                new RedBedBrokenPlaceholder(),
+                new BlueBedBrokenPlaceholder(),
+                new AlivePlaceholder(),
+                new OpponentAlivePlaceholder(),
+                new MaxPlaceholder(),
+                new OpponentMaxPlaceholder()
         ));
     }
 
