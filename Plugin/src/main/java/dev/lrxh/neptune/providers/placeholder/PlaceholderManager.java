@@ -57,7 +57,9 @@ public class PlaceholderManager {
                 new AlivePlaceholder(),
                 new OpponentAlivePlaceholder(),
                 new MaxPlaceholder(),
-                new OpponentMaxPlaceholder()
+                new OpponentMaxPlaceholder(),
+                new InQueuePlaceholder(),
+                new QueueTimePlaceholder()
         ));
     }
 
