@@ -302,13 +302,11 @@ public class MatchListener implements Listener {
         Participant participant = match.getParticipant(player.getUniqueId());
         if (participant == null) return;
         if (participant.isFrozen()) {
-            if (event.hasChangedPosition()) {
-                Location to = event.getTo();
-                Location from = event.getFrom();
-                if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
-                    player.teleport(from);
-                    return;
-                }
+            Location to = event.getTo();
+            Location from = event.getFrom();
+            if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
+                player.teleport(from);
+                return;
             }
         }
 
@@ -427,7 +425,6 @@ public class MatchListener implements Listener {
 
             if (match.getParticipant(player).isDead()) {
                 event.setCancelled(true);
-                return;
             }
         }
     }
