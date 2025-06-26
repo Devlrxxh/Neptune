@@ -14,6 +14,7 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class MainCommand {
@@ -33,19 +34,19 @@ public class MainCommand {
 
     @Command(name = "reload", desc = "")
     @Require("neptune.admin")
-    public void reload(@Sender Player player) {
+    public void reload(@Sender CommandSender sender) {
         ConfigService.get().load();
         CosmeticService.get().load();
         HotbarService.get().load();
 
         for (Player p : Bukkit.getOnlinePlayers()) {
-            Profile profile = API.getProfile(player);
+            Profile profile = API.getProfile(p);
             if (profile.getState().equals(ProfileState.IN_GAME) || profile.getState().equals(ProfileState.IN_KIT_EDITOR))
                 return;
             HotbarService.get().giveItems(p);
         }
 
-        player.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
+        sender.sendMessage(CC.color("&aSuccessfully reloaded configs!"));
     }
 
     @Command(name = "stop", desc = "")
