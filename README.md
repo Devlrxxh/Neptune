@@ -1,8 +1,5 @@
 ![image](https://github.com/user-attachments/assets/d3053f33-994b-472d-97b1-622cee9a4649)
 
-# 🌊 Neptune Practice Core (1.19 – 1.21)
-A powerful and highly customizable Practice Core built for Minecraft versions **1.19 – 1.21**.
-
 ---
 
 ## ✨ Features
