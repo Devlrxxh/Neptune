@@ -2,6 +2,8 @@ package dev.lrxh.neptune.game.match.impl.team;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
+import dev.lrxh.neptune.events.TeamMatchBedDestroyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -20,6 +22,8 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
+
+import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
 import java.util.List;
@@ -85,7 +89,7 @@ public class TeamFightMatch extends Match {
 
 
     @Override
-    public void breakBed(Participant participant) {
+    public void breakBed(Participant participant, Participant breaker) {
         MatchTeam team = getParticipantTeam(participant);
 
         team.setBedBroken(true);
@@ -101,6 +105,9 @@ public class TeamFightMatch extends Match {
                 new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
             }
         }
+        
+        TeamMatchBedDestroyEvent event = new TeamMatchBedDestroyEvent(this, team, breaker);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override
@@ -114,6 +121,8 @@ public class TeamFightMatch extends Match {
         hideParticipant(participant);
 
         participant.setDead(true);
+        MatchParticipantDeathEvent event = new MatchParticipantDeathEvent(this, participant);
+        Bukkit.getPluginManager().callEvent(event);
 
         if (!participant.isDisconnected() && !participant.isLeft()) {
             if (kit.is(KitRule.BED_WARS)) {
@@ -171,6 +180,8 @@ public class TeamFightMatch extends Match {
         }
 
         onDeath(participant);
+        MatchParticipantDeathEvent event = new MatchParticipantDeathEvent(this, participant);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override
