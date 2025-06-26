@@ -17,6 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
@@ -97,6 +98,7 @@ public class LeaderboardService {
 
     public List<PlayerEntry> getPlayerEntries(Kit kit, LeaderboardType leaderboardType) {
         List<LeaderboardEntry> leaderboardEntries = leaderboards.get(kit);
+        if (leaderboardEntries == null) return Collections.emptyList();
         for (LeaderboardEntry leaderboardEntry : leaderboardEntries) {
             if (leaderboardEntry.getType().equals(leaderboardType)) {
                 return leaderboardEntry.getPlayerEntries();
