@@ -8,6 +8,7 @@ import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.events.MatchSpectatorAddEvent;
 import dev.lrxh.neptune.events.MatchSpectatorRemoveEvent;
 import dev.lrxh.neptune.game.arena.Arena;
+import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.impl.MatchState;
@@ -21,7 +22,6 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
-import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.Time;
@@ -170,25 +170,12 @@ public abstract class Match {
     }
 
     public void resetArena() {
-        if (SettingsLocale.ARENA_RESET_EXPERIMENTAL.getBoolean()) {
-            Set<BlockChanger.BlockSnapshot> blocks = new HashSet<>();
-
-            for (Location location : liquids) {
-                blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
-            }
-
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
-            }
-            BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
-        } else {
             for (Location location : liquids) {
                 arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
             }
             for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
                 arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
             }
-        }
 
         removeEntities();
     }

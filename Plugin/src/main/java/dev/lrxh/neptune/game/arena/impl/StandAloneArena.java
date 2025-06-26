@@ -2,7 +2,6 @@ package dev.lrxh.neptune.game.arena.impl;
 
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
-import dev.lrxh.neptune.utils.BlockChanger;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -54,7 +53,7 @@ public class StandAloneArena extends Arena {
             StandAloneArena arena = (StandAloneArena) ArenaService.get().getArenaByName(name);
             if (arena == null) continue;
 
-            BlockChanger.setBlocksAsync(arena.getMin(), arena.getMax(), Material.AIR);
+//            BlockChanger.setBlocksAsync(arena.getMin(), arena.getMax(), Material.AIR);
 
             arena.delete();
         }

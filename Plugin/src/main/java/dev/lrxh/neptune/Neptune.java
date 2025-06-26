@@ -56,7 +56,6 @@ import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.providers.listeners.LobbyListener;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
-import dev.lrxh.neptune.utils.BlockChanger;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.menu.MenuListener;
 import dev.lrxh.neptune.utils.tasks.TaskScheduler;
@@ -102,7 +101,6 @@ public final class Neptune extends JavaPlugin {
         loadExtensions();
         if (!isEnabled()) return;
 
-        BlockChanger.load(this, false);
         ConfigService.get().load();
 
         ArenaService.get().load();

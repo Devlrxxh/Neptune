@@ -31,7 +31,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
 
     @Override
     public void run() {
-        if (!MatchService.get().matches.contains(match)) {
+        if (!MatchService.get().matches.contains(match) || participant.isLeft()) {
             stop();
 
             return;
