@@ -2,7 +2,7 @@ package dev.lrxh.neptune.game.match;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.events.impl.MatchReadyEvent;
+import dev.lrxh.neptune.events.MatchReadyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;

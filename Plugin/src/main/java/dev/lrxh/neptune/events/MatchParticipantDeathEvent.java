@@ -1,24 +1,21 @@
-package dev.lrxh.neptune.events.impl;
+package dev.lrxh.neptune.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
-import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
 import lombok.Getter;
 
-public class TeamMatchBedDestroyEvent extends Event {
+public class MatchParticipantDeathEvent extends Event {
   @Getter private final Match match;
-  @Getter private final MatchTeam bedOwner;
-  @Getter private final Participant bedBreaker;
+  @Getter private final Participant participant;
 
-  public TeamMatchBedDestroyEvent(Match match, MatchTeam bedOwner, Participant bedBreaker) {
+  public MatchParticipantDeathEvent(Match match, Participant participant) {
     this.match = match;
-    this.bedOwner = bedOwner;
-    this.bedBreaker = bedBreaker;
+    this.participant = participant;
   }
-
+  
   private static final HandlerList handlers = new HandlerList();
   @Override
   public HandlerList getHandlers() {

@@ -2,7 +2,7 @@ package dev.lrxh.neptune.game.match.impl.ffa;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.impl.MatchParticipantDeathEvent;
+import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.Match;

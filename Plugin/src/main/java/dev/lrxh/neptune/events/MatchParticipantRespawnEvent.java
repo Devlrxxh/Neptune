@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.events.impl;
+package dev.lrxh.neptune.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.impl.MatchNewRoundStartEvent;
+import dev.lrxh.neptune.events.MatchNewRoundStartEvent;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;

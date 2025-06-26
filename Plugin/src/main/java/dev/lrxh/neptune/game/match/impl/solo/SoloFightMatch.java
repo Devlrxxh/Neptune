@@ -3,7 +3,7 @@ package dev.lrxh.neptune.game.match.impl.solo;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
-import dev.lrxh.neptune.events.impl.SoloMatchBedDestroyEvent;
+import dev.lrxh.neptune.events.SoloMatchBedDestroyEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;

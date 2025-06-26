@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.events.impl;
+package dev.lrxh.neptune.events;
 
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -6,11 +6,11 @@ import org.bukkit.event.HandlerList;
 import dev.lrxh.neptune.game.match.Match;
 import lombok.Getter;
 
-public class MatchStartEvent extends Event {
+public class MatchReadyEvent extends Event {
   @Getter
   private final Match match;
 
-  public MatchStartEvent(Match match) {
+  public MatchReadyEvent(Match match) {
     this.match = match;
   }
   

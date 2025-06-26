@@ -1,17 +1,19 @@
-package dev.lrxh.neptune.events.impl;
+package dev.lrxh.neptune.events;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
 import dev.lrxh.neptune.game.match.Match;
 import lombok.Getter;
 
-public class MatchNewRoundStartEvent extends Event {
-  @Getter
-  private final Match match;
+public class MatchSpectatorAddEvent extends Event {
+  @Getter private final Match match;
+  @Getter private final Player player;
 
-  public MatchNewRoundStartEvent(Match match) {
+  public MatchSpectatorAddEvent(Match match, Player player) {
     this.match = match;
+    this.player = player;
   }
   
   private static final HandlerList handlers = new HandlerList();
