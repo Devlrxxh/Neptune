@@ -13,6 +13,7 @@ public class ArenaBoundaryCheckTask extends NeptuneRunnable {
     @Override
     public void run() {
         for (Match match : MatchService.get().matches) {
+            if (match.isEnded()) continue;
             for (Participant participant : match.getParticipants()) {
                 if (!(match.getArena() instanceof StandAloneArena arena)) continue;
                 Player player = participant.getPlayer();
