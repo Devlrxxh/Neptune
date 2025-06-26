@@ -43,7 +43,7 @@ public class CC {
     }
 
     private String convertLegacyToMiniMessage(String text) {
-        return text
+        text = text
                 .replace("&c", "<red>")
                 .replace("&a", "<green>")
                 .replace("&b", "<aqua>")
@@ -66,7 +66,10 @@ public class CC {
                 .replace("&m", "<strikethrough>")
                 .replace("&k", "<obfuscated>")
                 .replace("&r", "<reset>");
+
+        return text.replaceAll("(?i)&?#([a-f0-9]{6})", "<#$1>");
     }
+
 
     public Component returnMessage(String message, Replacement... replacements) {
         TagResolver.Builder resolverBuilder = TagResolver.builder();
