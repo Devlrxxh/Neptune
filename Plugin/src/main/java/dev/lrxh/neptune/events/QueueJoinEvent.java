@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.feature.queue.events;
+package dev.lrxh.neptune.events;
 
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.game.kit.Kit;
