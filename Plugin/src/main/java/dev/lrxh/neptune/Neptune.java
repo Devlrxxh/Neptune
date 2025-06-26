@@ -192,8 +192,8 @@ public final class Neptune extends JavaPlugin {
         drink.bind(StandAloneArena.class).toProvider(new StandaloneArenaProvider());
         drink.bind(UUID.class).toProvider(new UUIDProvider());
 
-        drink.register(new KitEditorCommand(), "kiteditor");
-        drink.register(new StatsCommand(), "stats");
+        drink.register(new KitEditorCommand(), "kiteditor").setDefaultCommandIsHelp(true);
+        drink.register(new StatsCommand(), "stats").setDefaultCommandIsHelp(true);
         drink.register(new PartyCommand(), "party", "p");
         drink.register(new FollowCommand(), "follow");
         drink.register(new QueueCommand(), "queue");
