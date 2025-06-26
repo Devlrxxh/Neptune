@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.events.impl.MatchEndEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -15,6 +16,8 @@ import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 
 import java.util.HashSet;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
 
 public class MatchEndRunnable extends NeptuneRunnable {
     private final Neptune plugin;
@@ -62,6 +65,8 @@ public class MatchEndRunnable extends NeptuneRunnable {
             }
 
             MatchService.get().matches.remove(match);
+            MatchEndEvent event = new MatchEndEvent(match);
+            Bukkit.getPluginManager().callEvent(event);
         }
         endTimer--;
     }

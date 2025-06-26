@@ -5,6 +5,9 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
+import dev.lrxh.neptune.events.impl.MatchEndEvent;
+import dev.lrxh.neptune.events.impl.MatchSpectatorAddEvent;
+import dev.lrxh.neptune.events.impl.MatchSpectatorRemoveEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -122,6 +125,8 @@ public abstract class Match {
         player.teleport(target.getLocation());
         player.setAllowFlight(true);
         player.setFlying(true);
+        MatchSpectatorAddEvent event = new MatchSpectatorAddEvent(this, player);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     public void showPlayerForSpectators() {
@@ -247,6 +252,8 @@ public abstract class Match {
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
         }
+        MatchSpectatorRemoveEvent event = new MatchSpectatorRemoveEvent(this, player);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     public void setupPlayer(UUID playerUUID) {
@@ -399,7 +406,7 @@ public abstract class Match {
 
     public abstract void sendEndMessage();
 
-    public abstract void breakBed(Participant participant);
+    public abstract void breakBed(Participant participant, Participant breaker);
 
     public abstract void sendTitle(Participant participant, TextComponent header, TextComponent footer, int duration);
 }

@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.match;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.events.impl.MatchReadyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
@@ -12,6 +13,8 @@ import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.game.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.impl.Profile;
+
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -51,6 +54,8 @@ public class MatchService {
 
         matches.add(match);
         new MatchStartRunnable(match, plugin).start(0L, 20L);
+        MatchReadyEvent event = new MatchReadyEvent(match);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {
@@ -71,6 +76,8 @@ public class MatchService {
 
         matches.add(match);
         new MatchStartRunnable(match, plugin).start(0L, 20L);
+        MatchReadyEvent event = new MatchReadyEvent(match);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
@@ -83,6 +90,8 @@ public class MatchService {
 
         matches.add(match);
         new MatchStartRunnable(match, plugin).start(0L, 20L);
+        MatchReadyEvent event = new MatchReadyEvent(match);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     public Optional<Match> getMatch(Player player) {

@@ -3,6 +3,7 @@ package dev.lrxh.neptune.game.match.impl.solo;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
+import dev.lrxh.neptune.events.impl.SoloMatchBedDestroyEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -150,7 +151,7 @@ public class SoloFightMatch extends Match {
     }
 
     @Override
-    public void breakBed(Participant participant) {
+    public void breakBed(Participant participant, Participant breaker) {
         participant.setBedBroken(true);
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
         Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
@@ -164,6 +165,8 @@ public class SoloFightMatch extends Match {
                 new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
             }
         }
+        SoloMatchBedDestroyEvent event = new SoloMatchBedDestroyEvent(this, participant, breaker);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override

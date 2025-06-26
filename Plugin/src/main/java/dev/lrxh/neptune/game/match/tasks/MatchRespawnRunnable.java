@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.events.impl.MatchParticipantRespawnEvent;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
@@ -9,6 +10,8 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
+
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Sound;
@@ -60,6 +63,8 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
             participant.setDead(false);
             match.showParticipant(participant);
             stop();
+            MatchParticipantRespawnEvent event = new MatchParticipantRespawnEvent(match, participant);
+            Bukkit.getPluginManager().callEvent(event);
             return;
         }
 
