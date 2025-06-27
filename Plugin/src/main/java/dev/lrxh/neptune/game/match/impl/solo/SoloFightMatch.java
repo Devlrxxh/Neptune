@@ -118,11 +118,18 @@ public class SoloFightMatch extends Match {
             winner.sendMessage(MessagesLocale.RANKUP_MESSAGE, new Replacement("<division>", winnerProfile.getGameData().get(kit).getDivision().getDisplayName()));
         }
 
-
         loserProfile.getGameData().run(kit, false);
 
         forEachParticipantForce(participant -> LeaderboardService.get().addChange
                 (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
+
+        if (winnerProfile.isFake()) {
+            winnerProfile.save();
+        }
+
+        if (loserProfile.isFake()) {
+            loserProfile.save();
+        }
     }
 
     public Participant getLoser() {
