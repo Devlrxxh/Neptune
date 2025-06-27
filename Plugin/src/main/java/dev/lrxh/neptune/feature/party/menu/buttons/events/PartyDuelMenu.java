@@ -24,7 +24,7 @@ public class PartyDuelMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
         int i = 0;
         for (Party p : PartyService.get().getParties().stream().filter(p -> !p.equals(party)).toList()) {
-            buttons.add(new PartyDuelButton(i++, party, p));
+            buttons.add(new PartyDuelButton(i++, p));
         }
 
         return buttons;
