@@ -127,6 +127,7 @@ public class Profile {
         settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
         settingData.setMenuSound(settings.getBoolean("menuSound", false));
         settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
+        this.gameData.getGlobalStats().update();
     }
 
     public void save() {

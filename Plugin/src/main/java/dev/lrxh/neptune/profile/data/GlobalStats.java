@@ -16,7 +16,6 @@ public class GlobalStats {
 
     public GlobalStats(Profile profile) {
         this.profile = profile;
-        update();
     }
 
     public void update() {
