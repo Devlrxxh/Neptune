@@ -16,11 +16,7 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -184,7 +180,7 @@ public class LeaderboardService {
         KitData profileKitData = new KitData();
         profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
         profileKitData.setWins(kitDocument.getInteger("WINS", 0));
-        profileKitData.setDivision(DivisionService.get().getDivisionByWinCount(profileKitData.getWins()));
+        profileKitData.setDivision(DivisionService.get().getDivisionByElo(profileKitData.getWins()));
         profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
         profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
 

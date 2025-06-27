@@ -37,16 +37,16 @@ public class DivisionService extends IService {
             for (String divisionName : getKeys("DIVISIONS")) {
                 String path = "DIVISIONS." + divisionName + ".";
                 String displayName = config.getString(path + "DISPLAY-NAME");
-                int winsRequired = config.getInt(path + "WINS");
+                int eloRequired = config.getInt(path + "ELO-REQUIRED", 0);
                 Material material = Material.getMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL")));
                 int slot = config.getInt(path + "SLOT", divisions.size());
 
-                divisions.add(new Division(divisionName, displayName, winsRequired, material, slot));
+                divisions.add(new Division(divisionName, displayName, eloRequired, material, slot));
             }
         }
 
         divisions = divisions.stream()
-                .sorted(Comparator.comparingInt(Division::getWinsRequired).reversed())
+                .sorted(Comparator.comparingInt(Division::getEloRequired).reversed())
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 
@@ -55,9 +55,9 @@ public class DivisionService extends IService {
 
     }
 
-    public Division getDivisionByWinCount(int winCount) {
+    public Division getDivisionByElo(int elo) {
         for (Division division : divisions) {
-            if (winCount >= division.getWinsRequired()) {
+            if (elo >= division.getEloRequired()) {
                 return division;
             }
         }

@@ -76,7 +76,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
             match.playSound(Sound.UI_BUTTON_CLICK);
             match.sendTitle(CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(startTimer))),
                     CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(startTimer))),
-                    100);
+                    19);
             match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));
         }
         startTimer--;

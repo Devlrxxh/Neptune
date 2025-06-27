@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.profile.data;
 
+import dev.lrxh.neptune.profile.impl.Profile;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,20 +11,21 @@ public class GlobalStats {
     private int losses = 0;
     private int currentStreak = 0;
     private int bestStreak = 0;
+    private final Profile profile;
+    private int elo = 0;
 
-    public void addWins(int value) {
-        this.wins += value;
+    public GlobalStats(Profile profile) {
+        this.profile = profile;
+        update();
     }
 
-    public void addLosses(int value) {
-        this.losses += value;
-    }
-
-    public void addCurrentStreak(int value) {
-        this.currentStreak += value;
-
-        if (currentStreak > bestStreak) {
-            this.bestStreak = currentStreak;
+    public void update() {
+        for (KitData kitData : profile.getGameData().getKitData().values()) {
+            this.wins += kitData.getWins();
+            this.losses += kitData.getLosses();
+            this.currentStreak += kitData.getCurrentStreak();
+            this.bestStreak = Math.max(this.bestStreak, kitData.getBestStreak());
+            this.elo += kitData.getElo();
         }
     }
 

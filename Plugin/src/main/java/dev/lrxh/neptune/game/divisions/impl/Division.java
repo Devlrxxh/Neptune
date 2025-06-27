@@ -9,7 +9,7 @@ import org.bukkit.Material;
 public class Division {
     public final String name;
     private final String displayName;
-    private final int winsRequired;
+    private final int eloRequired;
     private final Material material;
     private int slot;
 }

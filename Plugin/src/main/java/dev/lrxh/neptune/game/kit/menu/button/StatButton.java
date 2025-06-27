@@ -29,6 +29,7 @@ public class StatButton extends Button {
                 .name(MenusLocale.STAT_KIT_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .lore(ItemUtils.getLore(MenusLocale.STAT_LORE.getStringList(), new Replacement("<kit>", kit.getDisplayName()),
                         new Replacement("<wins>", String.valueOf(data.getWins())),
+                        new Replacement("<elo>", String.valueOf(data.getElo())),
                         new Replacement("<losses>", String.valueOf(data.getLosses())),
                         new Replacement("<win_streak_current>", String.valueOf(data.getCurrentStreak())),
                         new Replacement("<win_streak_best>", String.valueOf(data.getBestStreak())),

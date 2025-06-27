@@ -13,11 +13,10 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
+import org.bukkit.Bukkit;
 
 import java.util.HashSet;
 import java.util.UUID;
-
-import org.bukkit.Bukkit;
 
 public class MatchEndRunnable extends NeptuneRunnable {
     private final Neptune plugin;

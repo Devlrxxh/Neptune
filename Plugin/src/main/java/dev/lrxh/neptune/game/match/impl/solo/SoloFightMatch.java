@@ -63,9 +63,16 @@ public class SoloFightMatch extends Match {
         loser.setLoser(true);
         Participant winner = getWinner();
 
+        winner.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE.getString()),
+                CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
+
+        if (!loser.isLeft() && !loser.isDisconnected())
+            loser.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE.getString()),
+                    CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored())), 100);
+
+
         if (!isDuel()) {
             addStats();
-
             for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
                 if (command.equals("NONE")) continue;
                 command = command.replace("<player>", loser.getName());
@@ -81,16 +88,8 @@ public class SoloFightMatch extends Match {
             forEachPlayer(player -> HotbarService.get().giveItems(player));
         }
 
-        winner.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE.getString()),
-                CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
-
-        if (!loser.isLeft() && !loser.isDisconnected())
-            loser.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE.getString()),
-                    CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored())), 100);
 
         removePlaying();
-
-        loser.playKillEffect();
 
         new MatchEndRunnable(this, plugin).start(0L, 20L);
     }
@@ -112,18 +111,25 @@ public class SoloFightMatch extends Match {
         loserProfile.getGameData().addHistory(
                 new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
 
-        winnerProfile.getGameData().run(kit, true);
+        if (winnerProfile.getGameData().run(kit, true)) {
+            winner.sendTitle(CC.color(MessagesLocale.RANKUP_TITLE_HEADER.getString().replace("<division>", winnerProfile.getGameData().get(kit).getDivision().getDisplayName())),
+                    CC.color(MessagesLocale.RANKUP_TITLE_FOOTER.getString().replace("<division>", winnerProfile.getGameData().get(kit).getDivision().getDisplayName())), 40);
+
+            winner.sendMessage(MessagesLocale.RANKUP_MESSAGE, new Replacement("<division>", winnerProfile.getGameData().get(kit).getDivision().getDisplayName()));
+        }
+
+
         loserProfile.getGameData().run(kit, false);
 
         forEachParticipantForce(participant -> LeaderboardService.get().addChange
                 (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
     }
 
-    private Participant getLoser() {
+    public Participant getLoser() {
         return participantA.isLoser() ? participantA : participantB;
     }
 
-    private Participant getWinner() {
+    public Participant getWinner() {
         return participantA.isLoser() ? participantB : participantA;
     }
 
@@ -211,6 +217,7 @@ public class SoloFightMatch extends Match {
 
         this.setEnded(true);
 
+        participant.playKillEffect();
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
         end(participant);

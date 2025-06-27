@@ -36,6 +36,7 @@ public enum MenusLocale implements IDataAccessor {
     STAT_TITLE("STAT.TITLE", DataType.STRING, "&7<player> Statistics"),
     STAT_LORE("STAT.LORE", DataType.STRING_LIST,
             " &f&7* &fWins: &b<wins>",
+            " &f&7* &fElo: &b<elo>",
             " &f&7* &fLosses: &b<losses>",
             " &f&7* &fCurrent Streak: &b<win_streak_current>",
             " &f&7* &fBest Streak: &b<win_streak_best>",

@@ -50,7 +50,7 @@ public class Profile {
         this.username = name;
         this.playerUUID = uuid;
         this.state = ProfileState.IN_LOBBY;
-        this.gameData = new GameData();
+        this.gameData = new GameData(this);
         this.settingData = new SettingData(plugin);
         this.visibility = new Visibility(playerUUID);
         this.arenaProcedure = new ArenaProcedure();
@@ -107,17 +107,14 @@ public class Profile {
             KitData profileKitData = gameData.get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
             profileKitData.setWins(kitDocument.getInteger("WINS", 0));
-            profileKitData.setDivision(DivisionService.get().getDivisionByWinCount(profileKitData.getWins()));
+            profileKitData.setElo(kitDocument.getInteger("ELO", 0));
+            profileKitData.setDivision(DivisionService.get().getDivisionByElo(profileKitData.getElo()));
             profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
             profileKitData.updateDivision();
         }
 
-        gameData.getGlobalStats().setBestStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_BEST", gameData.getGlobalStats().getBestStreak()));
-        gameData.getGlobalStats().setCurrentStreak(kitStatistics.getInteger("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak()));
-        gameData.getGlobalStats().setWins(kitStatistics.getInteger("GLOBAL_WINS", gameData.countGlobalLosses()));
-        gameData.getGlobalStats().setLosses(kitStatistics.getInteger("GLOBAL_LOSSES", gameData.countGlobalCurrentStreak()));
         gameData.setLastPlayedKit(kitStatistics.getString("lastPlayedKit", ""));
 
         settingData.setPlayerVisibility(settings.getBoolean("showPlayers", true));
@@ -145,6 +142,7 @@ public class Profile {
             KitData entry = gameData.get(kit);
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
             kitStatisticsDocument.put("WINS", entry.getWins());
+            kitStatisticsDocument.put("ELO", entry.getElo());
             kitStatisticsDocument.put("LOSSES", entry.getLosses());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
@@ -152,10 +150,6 @@ public class Profile {
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
         }
 
-        kitStatsDoc.put("GLOBAL_WINS", gameData.getGlobalStats().getWins());
-        kitStatsDoc.put("GLOBAL_LOSSES", gameData.getGlobalStats().getLosses());
-        kitStatsDoc.put("GLOBAL_WIN_STREAK_CURRENT", gameData.getGlobalStats().getCurrentStreak());
-        kitStatsDoc.put("GLOBAL_WIN_STREAK_BEST", gameData.getGlobalStats().getBestStreak());
         kitStatsDoc.put("lastPlayedKit", gameData.getLastPlayedKit());
 
         dataDocument.put("kitData", kitStatsDoc);
