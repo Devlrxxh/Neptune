@@ -20,6 +20,12 @@ public class GlobalStats {
     }
 
     public void update() {
+        this.wins = 0;
+        this.losses = 0;
+        this.currentStreak = 0;
+        this.bestStreak = 0;
+        this.elo = 0;
+
         for (KitData kitData : profile.getGameData().getKitData().values()) {
             this.wins += kitData.getWins();
             this.losses += kitData.getLosses();
