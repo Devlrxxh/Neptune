@@ -72,7 +72,7 @@ public class BlockTracker implements Listener {
             if (match.getArena() instanceof StandAloneArena standAloneArena && match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
                 event.getItems().removeIf(item -> !standAloneArena.getWhitelistedBlocks().contains(item.getItemStack().getType()));
             } else {
-                match.getEntities().addAll(event.getItems());
+                event.setCancelled(true);
             }
         });
     }
