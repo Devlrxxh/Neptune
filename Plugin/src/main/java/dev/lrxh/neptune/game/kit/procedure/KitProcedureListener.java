@@ -12,7 +12,6 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.CC;
-import org.apache.commons.lang3.math.NumberUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -56,30 +55,6 @@ public class KitProcedureListener implements Listener {
                 profile.getKitProcedure().getKit().setDisplayName(input);
                 player.sendMessage(CC.success("Renamed kit"));
                 new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
-            }
-            case SET_SLOT -> {
-                event.setCancelled(true);
-                if (NumberUtils.isCreatable(input) && input.matches("-?\\d+")) {
-                    profile.getKitProcedure().setType(KitProcedureType.NONE);
-                    profile.getKitProcedure().getKit().setSlot(Integer.parseInt(event.getMessage()));
-                    player.sendMessage(CC.success("New Slot set"));
-                    new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
-                } else {
-                    player.sendMessage(CC.error("Not a valid number, please re-enter"));
-                    return;
-                }
-            }
-            case SET_KIT_EDITOR_SLOT -> {
-                event.setCancelled(true);
-                if (NumberUtils.isCreatable(input) && input.matches("-?\\d+")) {
-                    profile.getKitProcedure().setType(KitProcedureType.NONE);
-                    profile.getKitProcedure().getKit().setKitEditorSlot(Integer.parseInt(event.getMessage()));
-                    player.sendMessage(CC.success("New Kit editor slot set"));
-                    new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
-                } else {
-                    player.sendMessage(CC.error("Not a valid number, please re-enter"));
-                    return;
-                }
             }
             case SET_INV -> {
                 if (!input.equalsIgnoreCase("Done")) return;
