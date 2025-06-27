@@ -111,11 +111,15 @@ public class Participant {
     }
 
     public void sendTitle(TextComponent header, TextComponent footer, int duration) {
-        PlayerUtil.sendTitle(getPlayer(), header, footer, duration);
+        Player player = getPlayer();
+        if (player == null) return;
+        PlayerUtil.sendTitle(player, header, footer, duration);
     }
 
     public void sendTitle(MessagesLocale header, MessagesLocale footer, int duration) {
-        PlayerUtil.sendTitle(getPlayer(), CC.color(header.getString()), CC.color(footer.getString()), duration);
+        Player player = getPlayer();
+        if (player == null) return;
+        PlayerUtil.sendTitle(player, CC.color(header.getString()), CC.color(footer.getString()), duration);
     }
 
     public void sendMessage(TextComponent message) {
@@ -123,7 +127,9 @@ public class Participant {
     }
 
     public void sendMessage(MessagesLocale message, Replacement... replacements) {
-        message.send(getPlayer(), replacements);
+        Player player = getPlayer();
+        if (player == null) return;
+        message.send(player, replacements);
     }
 
     public void resetCombo() {

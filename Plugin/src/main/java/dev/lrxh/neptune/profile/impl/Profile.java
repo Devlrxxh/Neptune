@@ -44,8 +44,9 @@ public class Profile {
     private Visibility visibility;
     private ArenaProcedure arenaProcedure;
     private KitProcedure kitProcedure;
+    private boolean fake;
 
-    public Profile(String name, UUID uuid, Neptune plugin) {
+    public Profile(String name, UUID uuid, Neptune plugin, boolean fake) {
         this.plugin = plugin;
         this.username = name;
         this.playerUUID = uuid;
@@ -55,6 +56,7 @@ public class Profile {
         this.visibility = new Visibility(playerUUID);
         this.arenaProcedure = new ArenaProcedure();
         this.kitProcedure = new KitProcedure();
+        this.fake = fake;
 
         load();
     }

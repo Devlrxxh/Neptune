@@ -24,7 +24,11 @@ public class ProfileService {
     }
 
     public void createProfile(Player player) {
-        profiles.put(player.getUniqueId(), new Profile(player.getName(), player.getUniqueId(), plugin));
+        profiles.put(player.getUniqueId(), new Profile(player.getName(), player.getUniqueId(), plugin, false));
+    }
+
+    public Profile createProfile(UUID uuid) {
+        return new Profile("username", uuid, plugin, true);
     }
 
     public void removeProfile(UUID playerUUID) {
