@@ -105,8 +105,10 @@ public class Party {
         forEachMemberAsUUID(uuid -> {
             Profile profile = API.getProfile(uuid);
             profile.getGameData().setParty(null);
-            profile.setState(ProfileState.IN_LOBBY);
+            if(profile.getState().equals(ProfileState.IN_PARTY)) profile.setState(ProfileState.IN_LOBBY);
         });
+
+        PartyService.get().removeParty(this);
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {

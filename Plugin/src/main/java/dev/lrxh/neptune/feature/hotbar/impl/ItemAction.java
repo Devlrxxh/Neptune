@@ -4,7 +4,7 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.party.menu.PartySettingsMenu;
-import dev.lrxh.neptune.feature.party.menu.buttons.events.PartyEventsMenu;
+import dev.lrxh.neptune.feature.party.menu.buttons.events.PartyDuelMenu;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.feature.queue.menu.QueueMenu;
@@ -113,7 +113,18 @@ public enum ItemAction {
                 MessagesLocale.PARTY_NOT_ENOUGH_MEMBERS.send(player.getUniqueId());
                 return;
             }
-            new PartyEventsMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).open(player);
+            new PartyDuelMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).open(player);
+        }
+    },
+    PARTY_DUEL() {
+        @Override
+        public void execute(Player player) {
+            Party party = API.getProfile(player.getUniqueId()).getGameData().getParty();
+            if (!party.getLeader().equals(player.getUniqueId())) {
+                MessagesLocale.PARTY_NO_PERMISSION.send(player.getUniqueId());
+                return;
+            }
+            new PartyDuelMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).open(player);
         }
     },
     PARTY_SETTINGS() {
