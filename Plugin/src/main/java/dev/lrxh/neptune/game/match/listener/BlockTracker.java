@@ -17,6 +17,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EnderCrystal;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -27,9 +28,7 @@ import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class BlockTracker implements Listener {
 
@@ -70,12 +69,21 @@ public class BlockTracker implements Listener {
     public void onBlockDrop(BlockDropItemEvent event) {
         getMatchForPlayer(event.getPlayer()).ifPresent(match -> {
             if (match.getArena() instanceof StandAloneArena standAloneArena && match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-                event.getItems().removeIf(item -> !standAloneArena.getWhitelistedBlocks().contains(item.getItemStack().getType()));
+                Iterator<Item> iterator = event.getItems().iterator();
+                while (iterator.hasNext()) {
+                    Item item = iterator.next();
+                    if (!standAloneArena.getWhitelistedBlocks().contains(item.getItemStack().getType())) {
+                        iterator.remove();
+                    } else {
+                        match.getEntities().add(item);
+                    }
+                }
             } else {
                 event.setCancelled(true);
             }
         });
     }
+
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
@@ -89,87 +97,64 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
+        Player player;
+
         if (event.getEntity() instanceof EnderCrystal enderCrystal) {
-            String uuid = enderCrystal.getPersistentDataContainer()
-                    .get(new NamespacedKey(Neptune.get(), "neptune_crystal_owner"),
-                            org.bukkit.persistence.PersistentDataType.STRING);
+            String uuid = enderCrystal.getPersistentDataContainer().get(
+                    new NamespacedKey(Neptune.get(), "neptune_crystal_owner"),
+                    org.bukkit.persistence.PersistentDataType.STRING);
 
             if (uuid == null || uuid.isEmpty()) {
                 return;
             }
 
-            Player player = Bukkit.getPlayer(UUID.fromString(uuid));
-            if (player == null) {
-                event.setCancelled(true);
-                return;
-            }
-
-            getMatchForPlayer(player).ifPresent(match -> {
-                for (Block block : new ArrayList<>(event.blockList())) {
-                    for (ItemStack item : block.getDrops()) {
-                        Bukkit.getScheduler().runTaskLater(Neptune.get(), () ->
-                                match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item)), 5L
-                        );
-                    }
-
-                    if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-                        if (match.getArena() instanceof StandAloneArena arena) {
-                            if (!arena.getWhitelistedBlocks().contains(block.getType())) {
-                                match.getChanges().computeIfAbsent(block.getLocation(), location -> block.getBlockData());
-                            } else {
-                                if (match.getChanges().containsKey(block.getLocation())) {
-                                    event.blockList().remove(block);
-                                } else {
-                                    match.getChanges().put(block.getLocation(), block.getBlockData());
-                                }
-                            }
-                        }
-                    } else {
-                        if (match.getChanges().containsKey(block.getLocation())) {
-                            event.blockList().remove(block);
-                        } else {
-                            match.getChanges().put(block.getLocation(), block.getBlockData());
-                        }
-                    }
-                }
-            });
+            player = Bukkit.getPlayer(UUID.fromString(uuid));
         } else {
-            Player player = getPlayer(event.getLocation());
-            if (player == null) {
-                event.setCancelled(true);
-                return;
-            }
+            player = getPlayer(event.getLocation());
+        }
+        if (player == null) {
+            event.setCancelled(true);
+            return;
+        }
 
-            getMatchForPlayer(player).ifPresent(match -> {
-                for (Block block : new ArrayList<>(event.blockList())) {
-                    for (ItemStack item : block.getDrops()) {
+        getMatchForPlayer(player).ifPresent(match -> {
+            StandAloneArena arena = match.getArena() instanceof StandAloneArena a ? a : null;
+            boolean allowBreak = match.getKit().is(KitRule.ALLOW_ARENA_BREAK);
+
+            for (Block block : new ArrayList<>(event.blockList())) {
+                Collection<ItemStack> drops = block.getDrops();
+
+                for (ItemStack item : drops) {
+                    if (arena.getWhitelistedBlocks().contains(block.getType())) {
                         Bukkit.getScheduler().runTaskLater(Neptune.get(), () ->
-                                match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item)), 5L
-                        );
+                                match.getEntities().add(EntityUtils.getEntityByItemStack(match.getArena().getWorld(), item)), 5L);
+                    } else if (!(event.getEntity() instanceof EnderCrystal)) {
+                        event.blockList().remove(block);
                     }
+                }
 
-                    if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-                        if (match.getArena() instanceof StandAloneArena arena) {
-                            if (!arena.getWhitelistedBlocks().contains(block.getType())) {
-                                match.getChanges().computeIfAbsent(block.getLocation(), location -> block.getBlockData());
-                            } else {
-                                if (match.getChanges().containsKey(block.getLocation())) {
-                                    event.blockList().remove(block);
-                                } else {
-                                    match.getChanges().put(block.getLocation(), block.getBlockData());
-                                }
-                            }
-                        }
+                boolean isWhitelisted = arena.getWhitelistedBlocks().contains(block.getType());
+                boolean hasChange = match.getChanges().containsKey(block.getLocation());
+
+                if (allowBreak) {
+                    if (!isWhitelisted) {
+                        match.getChanges().computeIfAbsent(block.getLocation(), loc -> block.getBlockData());
                     } else {
-                        if (match.getChanges().containsKey(block.getLocation())) {
+                        if (hasChange) {
                             event.blockList().remove(block);
                         } else {
                             match.getChanges().put(block.getLocation(), block.getBlockData());
                         }
                     }
+                } else {
+                    if (hasChange) {
+                        event.blockList().remove(block);
+                    } else {
+                        match.getChanges().put(block.getLocation(), block.getBlockData());
+                    }
                 }
-            });
-        }
+            }
+        });
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
