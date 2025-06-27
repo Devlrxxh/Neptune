@@ -118,6 +118,7 @@ public class BlockTracker implements Listener {
 
         getMatchForPlayer(player).ifPresent(match -> {
             StandAloneArena arena = match.getArena() instanceof StandAloneArena a ? a : null;
+            if (arena == null) return;
             boolean allowBreak = match.getKit().is(KitRule.ALLOW_ARENA_BREAK);
 
             for (Block block : new ArrayList<>(event.blockList())) {
@@ -249,6 +250,7 @@ public class BlockTracker implements Listener {
 
         getMatchForPlayer(player).ifPresent(match -> {
             StandAloneArena arena = match.getArena() instanceof StandAloneArena a ? a : null;
+            if (arena == null) return;
             boolean allowBreak = match.getKit().is(KitRule.ALLOW_ARENA_BREAK);
 
             for (Block block : new ArrayList<>(event.blockList())) {
