@@ -202,6 +202,36 @@ public class Profile {
                 new Replacement("<sender>", sender.getName()));
     }
 
+    public void sendRematch(DuelRequest duelRequest) {
+        UUID senderUUID = duelRequest.getSender();
+
+        Player sender = Bukkit.getPlayer(senderUUID);
+        if (sender == null) return;
+
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
+
+        MessagesLocale.REMATCH_REQUEST_SENDER.send(sender.getUniqueId(),
+                new Replacement("<receiver>", username),
+                new Replacement("<arena>", duelRequest.getArena().getDisplayName()));
+
+        gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.REMATCH_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));
+
+        TextComponent accept =
+                new ClickableComponent(MessagesLocale.REMATCH_ACCEPT.getString(), "/duel accept " + duelRequest.getSender().toString(), MessagesLocale.REMATCH_ACCEPT_HOVER.getString()).build();
+
+        TextComponent deny =
+                new ClickableComponent(MessagesLocale.REMATCH_DENY.getString(), "/duel deny " + duelRequest.getSender().toString(), MessagesLocale.REMATCH_DENY_HOVER.getString()).build();
+
+        MessagesLocale.REMATCH_REQUEST_RECEIVER.send(playerUUID,
+                new Replacement("<accept>", accept),
+                new Replacement("<deny>", deny),
+                new Replacement("<kit>", duelRequest.getKit().getDisplayName()),
+                new Replacement("<arena>", duelRequest.getArena().getDisplayName()),
+                new Replacement("<rounds>", String.valueOf(duelRequest.getRounds())),
+                new Replacement("<sender>", sender.getName()));
+    }
+
     public void createParty() {
         if (gameData.getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(playerUUID);

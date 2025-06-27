@@ -9,12 +9,14 @@ import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.feature.queue.menu.QueueMenu;
 import dev.lrxh.neptune.game.divisions.menu.DivisionsMenu;
+import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.kit.menu.StatsMenu;
 import dev.lrxh.neptune.game.kit.menu.editor.KitEditorMenu;
 import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.game.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
 import dev.lrxh.neptune.game.match.menu.MatchListMenu;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -158,6 +160,21 @@ public enum ItemAction {
             profile.setMatch(null);
 
             QueueService.get().add(new QueueEntry(match.getKit(), player.getUniqueId()), true);
+        }
+    },
+    REMATCH() {
+        @Override
+        public void execute(Player player) {
+            Profile profile = API.getProfile(player);
+            if (profile == null) return;
+            SoloFightMatch match = (SoloFightMatch) profile.getMatch();
+            if (match == null) return;
+            DuelRequest duelRequest = new DuelRequest(profile.getPlayerUUID(), match.getKit(), match.getKit().getRandomArena(), false, match.getRounds());
+            Player opponent = match.getParticipant(player).getOpponent().getPlayer();
+            if (opponent == null) return;
+            Profile opponentProfile = API.getProfile(opponent);
+            if (opponentProfile == null) return;
+            opponentProfile.sendRematch(duelRequest);
         }
     },
     SETTINGS() {
