@@ -1,30 +1,27 @@
 package dev.lrxh.neptune.feature.party.menu.buttons.events;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.game.duel.menu.KitSelectMenu;
-import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
+import dev.lrxh.neptune.utils.ItemUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.menu.Button;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.profile.PlayerTextures;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class PartyDuelButton extends Button {
-    private Party party;
     private Party targetParty;
 
-    public PartyDuelButton(int slot, Party party, Party targetParty) {
+    public PartyDuelButton(int slot, Party targetParty) {
         super(slot);
-        this.party = party;
         this.targetParty = targetParty;
     }
 
@@ -35,23 +32,18 @@ public class PartyDuelButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, party.getUsers().size());
-        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
-        meta.setOwningPlayer(player);
-        itemStack.setItemMeta(meta);
-        return new ItemBuilder(itemStack)
-                .name(MenusLocale.PARTY_DUEL_PARTY_TITLE.getString().replaceAll("<leader>", party.getLeaderName()))
-                .lore(Arrays.asList(getItemLore()), player)
-                .build();
-    }
-    private String[] getItemLore() {
-        List<String> lore = new ArrayList<>();
-        for (UUID userUUID : party.getUsers()) {
-            Player player = Bukkit.getPlayer(userUUID);
-            if (player != null) {
-                lore.add(MenusLocale.PARTY_DUEL_PARTY_MEMBER.getString().replace("<member>", player.getDisplayName()));
+        ItemStack itemStack = PlayerUtil.getPlayerHead(targetParty.getLeader());
+        List<String> names = new ArrayList<>();
+        for (UUID userUUID : targetParty.getUsers()) {
+            Player playerInParty = Bukkit.getPlayer(userUUID);
+            if (playerInParty != null) {
+                names.add(playerInParty.getName());
             }
         }
-        return lore.toArray(new String[0]);
+
+        return new ItemBuilder(itemStack)
+                .name(MenusLocale.PARTY_DUEL_PARTY_TITLE.getString().replaceAll("<leader>", targetParty.getLeaderName()))
+                .lore(ItemUtils.getLore(MenusLocale.PARTY_DUEL_PARTY_LORE.getStringList(), new Replacement("<members>", names)), player)
+                .build();
     }
 }

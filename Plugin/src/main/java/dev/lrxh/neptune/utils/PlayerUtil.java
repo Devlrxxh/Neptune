@@ -78,11 +78,15 @@ public class PlayerUtil {
     }
 
     public ItemStack getPlayerHead(UUID playerUUID) {
-        ItemStack head = new ItemStack(Material.PLAYER_HEAD, 1);
-        SkullMeta skullMeta = (SkullMeta) head.getItemMeta();
-        skullMeta.setOwningPlayer(Bukkit.getPlayer(playerUUID));
-        head.setItemMeta(skullMeta);
-        return head;
+        return getPlayerHead(playerUUID, 1);
+    }
+
+    public ItemStack getPlayerHead(UUID playerUUID, int amount) {
+        ItemStack itemStack = new ItemStack(Material.PLAYER_HEAD, amount);
+        SkullMeta meta = (SkullMeta) itemStack.getItemMeta();
+        meta.setOwningPlayer(Bukkit.getPlayer(playerUUID));
+        itemStack.setItemMeta(meta);
+        return itemStack;
     }
 
     public void sendMessage(UUID playerUUID, Component message) {
