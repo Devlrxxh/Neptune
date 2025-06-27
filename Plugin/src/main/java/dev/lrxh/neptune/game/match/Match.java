@@ -173,7 +173,7 @@ public abstract class Match {
                 blocks.add(new BlockChanger.BlockSnapshot(location, Material.AIR));
             }
 
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+            for (Map.Entry<Location, BlockData> entry : new HashMap<>(changes).entrySet()) {
                 blocks.add(new BlockChanger.BlockSnapshot(entry.getKey(), entry.getValue()));
             }
             BlockChanger.setBlocksAsync(arena.getWorld(), blocks);
@@ -181,7 +181,7 @@ public abstract class Match {
             for (Location location : liquids) {
                 arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
             }
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+            for (Map.Entry<Location, BlockData> entry : new HashMap<>(changes).entrySet()) {
                 arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
             }
         }
