@@ -27,7 +27,7 @@ public class KitSetInvButton extends Button {
         profile.getKitProcedure().setKit(kit);
         player.closeInventory();
         player.getInventory().setContents(kit.getItems().toArray(new ItemStack[0]));
-        player.sendMessage(CC.info("Once your done changing around type &aDone"));
+        player.sendMessage(CC.info("Once you're done changing around, type &aDone"));
 
     }
 

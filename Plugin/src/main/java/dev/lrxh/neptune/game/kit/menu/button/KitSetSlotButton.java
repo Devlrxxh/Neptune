@@ -1,9 +1,7 @@
 package dev.lrxh.neptune.game.kit.menu.button;
 
-import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.kit.Kit;
-import dev.lrxh.neptune.game.kit.procedure.KitProcedureType;
-import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.game.kit.menu.KitSelectSlotMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -22,11 +20,8 @@ public class KitSetSlotButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-        Profile profile = API.getProfile(player);
-        profile.getKitProcedure().setType(KitProcedureType.SET_SLOT);
-        profile.getKitProcedure().setKit(kit);
-        player.closeInventory();
-        player.sendMessage(CC.info("Please enter new slot"));
+        new KitSelectSlotMenu(kit).open(player);
+        player.sendMessage(CC.info("Please select the new slot"));
     }
 
     @Override
