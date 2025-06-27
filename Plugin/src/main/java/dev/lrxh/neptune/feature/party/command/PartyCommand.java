@@ -44,7 +44,6 @@ public class PartyCommand {
         if (!party.isOpen()) {
             player.sendMessage(CC.error("Party is private"));
             return;
-
         }
         if (API.getProfile(player).getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());

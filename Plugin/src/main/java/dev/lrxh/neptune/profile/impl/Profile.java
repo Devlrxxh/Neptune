@@ -7,6 +7,7 @@ import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
 import dev.lrxh.neptune.feature.cosmetics.impl.KillEffect;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.party.Party;
+import dev.lrxh.neptune.feature.party.PartyService;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedure;
 import dev.lrxh.neptune.game.divisions.DivisionService;
 import dev.lrxh.neptune.game.duel.DuelRequest;
@@ -212,8 +213,9 @@ public class Profile {
             MessagesLocale.PARTY_ALREADY_IN.send(playerUUID);
             return;
         }
-
-        API.getProfile(playerUUID).getGameData().setParty(new Party(playerUUID, plugin));
+        Party party = new Party(playerUUID, plugin);
+        PartyService.get().addParty(party);
+        API.getProfile(playerUUID).getGameData().setParty(party);
         MessagesLocale.PARTY_CREATE.send(playerUUID);
     }
 
