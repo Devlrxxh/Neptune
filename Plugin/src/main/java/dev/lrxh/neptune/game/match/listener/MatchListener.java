@@ -468,6 +468,7 @@ public class MatchListener implements Listener {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = API.getProfile(player);
+        if (event.getBlock().getType() == Material.FIRE) return;
         if (profile == null) return;
         if (profile.getState().equals(ProfileState.IN_LOBBY)) {
             event.setCancelled(true);
