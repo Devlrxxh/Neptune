@@ -1,30 +1,23 @@
 package dev.lrxh.neptune.feature.party;
 
 import lombok.Getter;
-import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class PartyService {
     private static PartyService instance;
     @Getter
-    private List<Party> parties = new ArrayList<>();
+    private HashMap<UUID, Party> parties = new HashMap<>();
     public static PartyService get() {
         if (instance == null) instance = new PartyService();
 
         return instance;
     }
-    public Party getPartyByLeader(Player player) {
-        return this.parties.stream()
-                .filter(p -> p.getLeader().equals(player.getUniqueId()))
-                .findFirst().orElse(null);
-    }
     public void addParty(Party party) {
-        this.parties.add(party);
+        this.parties.put(party.getLeader(), party);
     }
-
     public void removeParty(Party party) {
-        this.parties.remove(party);
+        this.parties.remove(party.getLeader());
     }
 }

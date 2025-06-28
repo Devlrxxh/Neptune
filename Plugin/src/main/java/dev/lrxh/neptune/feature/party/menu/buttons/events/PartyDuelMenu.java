@@ -23,7 +23,8 @@ public class PartyDuelMenu extends PaginatedMenu {
     public List<Button> getAllPagesButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
         int i = 0;
-        for (Party p : PartyService.get().getParties().stream().filter(p -> !p.equals(party)).toList()) {
+        for (Party p : PartyService.get().getParties().values()) {
+            if (p.equals(party)) continue;
             buttons.add(new PartyDuelButton(i++, p));
         }
 
