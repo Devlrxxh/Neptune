@@ -60,7 +60,8 @@ public class PlaceholderManager {
                 new OpponentMaxPlaceholder(),
                 new InQueuePlaceholder(),
                 new QueueTimePlaceholder(),
-                new IsTeamMatchPlaceholder()
+                new IsTeamMatchPlaceholder(),
+                new KitEloPlaceholder()
         ));
     }
 
