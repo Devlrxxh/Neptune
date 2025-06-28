@@ -3,6 +3,7 @@ package dev.lrxh.neptune.profile.listener;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
@@ -13,6 +14,7 @@ import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -63,6 +65,8 @@ public class ProfileListener implements Listener {
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant == null) return;
             match.onLeave(match.getParticipant(player), true);
+            MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
+            Bukkit.getPluginManager().callEvent(deathEvent);
         }
 
         event.quitMessage(null);

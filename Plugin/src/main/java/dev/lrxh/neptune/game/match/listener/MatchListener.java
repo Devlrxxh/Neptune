@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.match.listener;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -99,6 +100,11 @@ public class MatchListener implements Listener {
             Match match = profile.getMatch();
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant == null) return;
+            MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
+            if(deathEvent.isCancelled()) {
+                event.setCancelled(false);
+                return;
+            }
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
