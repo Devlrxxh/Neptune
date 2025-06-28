@@ -15,9 +15,9 @@ public class OpponentMaxPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("opponent-max")) {
-          if(match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
-          MatchTeam opponentTeam = teamMatch.getParticipantTeam(teamMatch.getParticipant(player.getUniqueId())).equals(teamMatch.getTeamA()) ? teamMatch.getTeamB() : teamMatch.getTeamA();
-          return String.valueOf(opponentTeam.getParticipants().size());
+            if (match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
+            MatchTeam opponentTeam = teamMatch.getParticipantTeam(teamMatch.getParticipant(player.getUniqueId())).equals(teamMatch.getTeamA()) ? teamMatch.getTeamB() : teamMatch.getTeamA();
+            return String.valueOf(opponentTeam.getParticipants().size());
         }
 
         return string;

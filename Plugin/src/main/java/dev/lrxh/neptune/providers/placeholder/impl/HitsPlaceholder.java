@@ -15,8 +15,9 @@ public class HitsPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("hits")) {
-          if(profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch)) return "";
-          return String.valueOf(match.getParticipant(player.getUniqueId()).getHits());
+            if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
+                return "";
+            return String.valueOf(match.getParticipant(player.getUniqueId()).getHits());
         }
 
         return string;

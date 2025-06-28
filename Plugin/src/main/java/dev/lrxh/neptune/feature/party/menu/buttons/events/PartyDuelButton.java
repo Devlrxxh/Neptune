@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class PartyDuelButton extends Button {
-    private Party targetParty;
+    private final Party targetParty;
 
     public PartyDuelButton(int slot, Party targetParty) {
         super(slot);

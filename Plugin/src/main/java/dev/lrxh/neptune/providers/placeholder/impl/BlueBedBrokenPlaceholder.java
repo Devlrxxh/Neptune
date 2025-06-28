@@ -17,13 +17,13 @@ public class BlueBedBrokenPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("blue-bed-broken")) {
-          if (profile.getState() != ProfileState.IN_GAME || match == null || !match.getKit().is(KitRule.BED_WARS)) return "";
-          if (match instanceof SoloFightMatch soloFightMatch) {
-            return soloFightMatch.getParticipantB().isBedBroken() ? "true": "false";
-          }
-          else if (match instanceof TeamFightMatch teamFightMatch) {
-            return teamFightMatch.getTeamB().isBedBroken() ? "true" : "false";
-          }
+            if (profile.getState() != ProfileState.IN_GAME || match == null || !match.getKit().is(KitRule.BED_WARS))
+                return "";
+            if (match instanceof SoloFightMatch soloFightMatch) {
+                return soloFightMatch.getParticipantB().isBedBroken() ? "true" : "false";
+            } else if (match instanceof TeamFightMatch teamFightMatch) {
+                return teamFightMatch.getTeamB().isBedBroken() ? "true" : "false";
+            }
         }
 
         return string;

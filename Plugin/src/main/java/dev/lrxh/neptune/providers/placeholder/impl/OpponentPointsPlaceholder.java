@@ -18,15 +18,14 @@ public class OpponentPointsPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("opponent-points")) {
-          Participant playerParticipant = match.getParticipant(player.getUniqueId());
-          if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
-          if (match instanceof SoloFightMatch) {
-            return String.valueOf(playerParticipant.getOpponent().getPoints());
-          }
-          else if (match instanceof TeamFightMatch teamFightMatch) {
-            MatchTeam opponentTeam = teamFightMatch.getParticipantTeam(playerParticipant).equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
-            return String.valueOf(opponentTeam.getPoints());
-          }
+            Participant playerParticipant = match.getParticipant(player.getUniqueId());
+            if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+            if (match instanceof SoloFightMatch) {
+                return String.valueOf(playerParticipant.getOpponent().getPoints());
+            } else if (match instanceof TeamFightMatch teamFightMatch) {
+                MatchTeam opponentTeam = teamFightMatch.getParticipantTeam(playerParticipant).equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
+                return String.valueOf(opponentTeam.getPoints());
+            }
         }
 
         return string;

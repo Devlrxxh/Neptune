@@ -14,8 +14,8 @@ public class MaxPointsPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("max-points")) {
-          if(profile.getState() != ProfileState.IN_GAME || match == null) return "";
-          return String.valueOf(match.getRounds());
+            if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+            return String.valueOf(match.getRounds());
         }
 
         return string;

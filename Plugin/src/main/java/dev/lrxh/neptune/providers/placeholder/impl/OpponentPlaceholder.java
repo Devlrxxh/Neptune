@@ -15,8 +15,9 @@ public class OpponentPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("opponent")) {
-          if(profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch)) return "";
-          return match.getParticipant(player.getUniqueId()).getOpponent().getNameUnColored();
+            if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
+                return "";
+            return match.getParticipant(player.getUniqueId()).getOpponent().getNameUnColored();
         }
 
         return string;

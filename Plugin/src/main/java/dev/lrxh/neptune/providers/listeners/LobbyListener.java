@@ -61,9 +61,7 @@ public class LobbyListener implements Listener {
 
     @EventHandler
     public void onPotionEffect(EntityPotionEffectEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
-
-        Player player = (Player) event.getEntity();
+        if (!(event.getEntity() instanceof Player player)) return;
 
         if (event.getAction() == EntityPotionEffectEvent.Action.ADDED) {
             PotionEffect newEffect = event.getNewEffect();

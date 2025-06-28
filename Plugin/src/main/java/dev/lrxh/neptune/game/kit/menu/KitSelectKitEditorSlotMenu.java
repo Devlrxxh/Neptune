@@ -23,7 +23,7 @@ public class KitSelectKitEditorSlotMenu extends Menu {
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
-        for (int i = 0; i < MenusLocale.KIT_EDITOR_SELECT_SIZE.getInt(); i ++) {
+        for (int i = 0; i < MenusLocale.KIT_EDITOR_SELECT_SIZE.getInt(); i++) {
             buttons.add(new KitSelectKitEditorSlotButton(i, kit));
         }
 

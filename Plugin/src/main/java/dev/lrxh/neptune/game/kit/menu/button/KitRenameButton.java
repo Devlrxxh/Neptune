@@ -8,7 +8,6 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import net.kyori.adventure.text.event.ClickEvent;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -29,8 +28,8 @@ public class KitRenameButton extends Button {
         profile.getKitProcedure().setKit(kit);
         player.closeInventory();
         player.sendMessage(
-            CC.info("<hover:show_text:\"<yellow>Click to paste current display name\">Please type new display name &8(Color codes can be used)")
-                .clickEvent(ClickEvent.suggestCommand(kit.getDisplayName()))
+                CC.info("<hover:show_text:\"<yellow>Click to paste current display name\">Please type new display name &8(Color codes can be used)")
+                        .clickEvent(ClickEvent.suggestCommand(kit.getDisplayName()))
         );
     }
 

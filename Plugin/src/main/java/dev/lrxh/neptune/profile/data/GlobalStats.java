@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GlobalStats {
+    private final Profile profile;
     private int wins = 0;
     private int losses = 0;
     private int currentStreak = 0;
     private int bestStreak = 0;
-    private final Profile profile;
     private int elo = 0;
 
     public GlobalStats(Profile profile) {

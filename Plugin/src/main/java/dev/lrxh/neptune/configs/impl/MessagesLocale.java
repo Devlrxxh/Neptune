@@ -105,7 +105,7 @@ public enum MessagesLocale implements IDataAccessor {
     DUEL_DENY_HOVER("DUEL.DENY_HOVER", DataType.STRING, "&cClick to deny duel request"),
     DUEL_ALREADY_SENT("DUEL.ALREADY_SENT", DataType.STRING, "&cYou have already sent <player> a duel request."),
     DUEL_EXPIRED("DUEL.EXPIRED", DataType.STRING_LIST, "&cYour duel request to <player> has expired."),
-    REMATCH_REQUEST_RECEIVER("REMATCH.SENT", DataType.STRING_LIST,  " ",
+    REMATCH_REQUEST_RECEIVER("REMATCH.SENT", DataType.STRING_LIST, " ",
             "&e&lRematch Request",
             "&eYou have received a rematch request from &a<sender>&e.",
             " ",

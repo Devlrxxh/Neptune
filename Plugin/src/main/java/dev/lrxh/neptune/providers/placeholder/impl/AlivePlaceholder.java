@@ -14,8 +14,8 @@ public class AlivePlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("alive")) {
-          if(match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
-          return String.valueOf(teamMatch.getParticipantTeam(match.getParticipant(player.getUniqueId())).getAliveParticipants());
+            if (match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
+            return String.valueOf(teamMatch.getParticipantTeam(match.getParticipant(player.getUniqueId())).getAliveParticipants());
         }
 
         return string;

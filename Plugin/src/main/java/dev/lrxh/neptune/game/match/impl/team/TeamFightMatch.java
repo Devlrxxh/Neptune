@@ -21,7 +21,6 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
@@ -104,7 +103,7 @@ public class TeamFightMatch extends Match {
                 new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
             }
         }
-        
+
         TeamMatchBedDestroyEvent event = new TeamMatchBedDestroyEvent(this, team, breaker);
         Bukkit.getPluginManager().callEvent(event);
     }

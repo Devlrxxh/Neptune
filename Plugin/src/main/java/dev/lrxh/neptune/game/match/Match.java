@@ -4,11 +4,9 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
-import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.events.MatchSpectatorAddEvent;
 import dev.lrxh.neptune.events.MatchSpectatorRemoveEvent;
 import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.impl.MatchState;
@@ -171,12 +169,12 @@ public abstract class Match {
     }
 
     public void resetArena() {
-            for (Location location : liquids) {
-                arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
-            }
-            for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-                arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
-            }
+        for (Location location : liquids) {
+            arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
+        }
+        for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
+            arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
+        }
 
         removeEntities();
     }

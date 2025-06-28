@@ -14,8 +14,8 @@ public class PointsPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("points")) {
-          if (match == null || !(match instanceof SoloFightMatch)) return "";
-          return String.valueOf(match.getParticipant(player.getUniqueId()).getPoints());
+            if (match == null || !(match instanceof SoloFightMatch)) return "";
+            return String.valueOf(match.getParticipant(player.getUniqueId()).getPoints());
         }
 
         return string;

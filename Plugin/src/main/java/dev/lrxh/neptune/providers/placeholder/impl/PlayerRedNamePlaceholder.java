@@ -14,8 +14,8 @@ public class PlayerRedNamePlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("player-red-name")) {
-          if(match == null || !(match instanceof SoloFightMatch soloFightMatch)) return "";
-          return soloFightMatch.getParticipantA().getNameUnColored();
+            if (match == null || !(match instanceof SoloFightMatch soloFightMatch)) return "";
+            return soloFightMatch.getParticipantA().getNameUnColored();
         }
 
         return string;

@@ -13,7 +13,7 @@ public class TimePlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("time")) {
-          return match != null ? match.getTime().formatTime() : "";
+            return match != null ? match.getTime().formatTime() : "";
         }
 
         return string;

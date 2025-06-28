@@ -14,8 +14,8 @@ public class PlayerBluePingPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("player-blue-ping")) {
-          if(match == null || !(match instanceof SoloFightMatch soloFightMatch)) return "";
-          return String.valueOf(soloFightMatch.getParticipantB().getPlayer().getPing());
+            if (match == null || !(match instanceof SoloFightMatch soloFightMatch)) return "";
+            return String.valueOf(soloFightMatch.getParticipantB().getPlayer().getPing());
         }
 
         return string;

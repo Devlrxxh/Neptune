@@ -15,9 +15,9 @@ public class OpponentAlivePlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("opponent-alive")) {
-          if(match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
-          MatchTeam opponentTeam = teamMatch.getParticipantTeam(teamMatch.getParticipant(player.getUniqueId())).equals(teamMatch.getTeamA()) ? teamMatch.getTeamB() : teamMatch.getTeamA();
-          return String.valueOf(opponentTeam.getAliveParticipants());
+            if (match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
+            MatchTeam opponentTeam = teamMatch.getParticipantTeam(teamMatch.getParticipant(player.getUniqueId())).equals(teamMatch.getTeamA()) ? teamMatch.getTeamB() : teamMatch.getTeamA();
+            return String.valueOf(opponentTeam.getAliveParticipants());
         }
 
         return string;

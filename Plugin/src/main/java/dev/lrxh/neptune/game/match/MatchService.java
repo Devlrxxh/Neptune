@@ -13,7 +13,6 @@ import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.game.match.tasks.MatchStartRunnable;
 import dev.lrxh.neptune.profile.impl.Profile;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

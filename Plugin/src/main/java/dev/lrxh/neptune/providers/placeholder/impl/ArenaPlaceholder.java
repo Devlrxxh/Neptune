@@ -14,8 +14,8 @@ public class ArenaPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("arena")) {
-          if(profile.getState() != ProfileState.IN_GAME || match == null) return "";
-          return match.getArena().getDisplayName();
+            if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+            return match.getArena().getDisplayName();
         }
 
         return string;

@@ -14,8 +14,8 @@ public class KitPlaceholder implements Placeholder {
         if (profile == null) return string;
         Match match = profile.getMatch();
         if (string.equals("kit")) {
-          if(profile.getState() != ProfileState.IN_GAME || match == null) return "";
-          return match.getKit().getDisplayName();
+            if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+            return match.getKit().getDisplayName();
         }
 
         return string;
