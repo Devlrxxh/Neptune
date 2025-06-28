@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.leaderboard.impl;
+package dev.lrxh.neptune.feature.leaderboard.impl;
 
 import dev.lrxh.neptune.game.kit.Kit;
 import lombok.AllArgsConstructor;

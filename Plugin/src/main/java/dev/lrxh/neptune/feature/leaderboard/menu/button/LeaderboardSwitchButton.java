@@ -1,7 +1,7 @@
-package dev.lrxh.neptune.game.leaderboard.menu.button;
+package dev.lrxh.neptune.feature.leaderboard.menu.button;
 
-import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.game.leaderboard.menu.LeaderboardMenu;
+import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.feature.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import org.bukkit.Material;

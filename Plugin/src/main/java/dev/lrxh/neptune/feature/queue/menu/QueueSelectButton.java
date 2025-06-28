@@ -1,12 +1,12 @@
 package dev.lrxh.neptune.feature.queue.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
+import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.feature.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.game.kit.Kit;
-import dev.lrxh.neptune.game.leaderboard.LeaderboardService;
-import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.game.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;

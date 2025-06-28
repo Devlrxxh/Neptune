@@ -1,10 +1,10 @@
-package dev.lrxh.neptune.game.leaderboard.menu.button;
+package dev.lrxh.neptune.feature.leaderboard.menu.button;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
+import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.feature.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.game.kit.Kit;
-import dev.lrxh.neptune.game.leaderboard.LeaderboardService;
-import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.game.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import org.bukkit.entity.Player;

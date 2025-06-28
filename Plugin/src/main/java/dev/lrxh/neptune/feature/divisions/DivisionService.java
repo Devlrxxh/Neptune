@@ -1,8 +1,8 @@
-package dev.lrxh.neptune.game.divisions;
+package dev.lrxh.neptune.feature.divisions;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.ConfigService;
-import dev.lrxh.neptune.game.divisions.impl.Division;
+import dev.lrxh.neptune.feature.divisions.impl.Division;
 import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.utils.ConfigFile;
 import org.bukkit.Material;

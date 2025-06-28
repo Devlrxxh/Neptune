@@ -1,8 +1,8 @@
-package dev.lrxh.neptune.game.divisions.menu;
+package dev.lrxh.neptune.feature.divisions.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.game.divisions.DivisionService;
-import dev.lrxh.neptune.game.divisions.impl.Division;
+import dev.lrxh.neptune.feature.divisions.DivisionService;
+import dev.lrxh.neptune.feature.divisions.impl.Division;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.ItemUtils;

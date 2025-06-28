@@ -1,14 +1,14 @@
-package dev.lrxh.neptune.game.leaderboard;
+package dev.lrxh.neptune.feature.leaderboard;
 
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.game.divisions.DivisionService;
+import dev.lrxh.neptune.feature.divisions.DivisionService;
+import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardEntry;
+import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardPlayerEntry;
+import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.feature.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
-import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardEntry;
-import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardPlayerEntry;
-import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.game.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
@@ -25,7 +25,7 @@ public class LeaderboardService {
     private static LeaderboardService instance;
     private final List<LeaderboardPlayerEntry> changes;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards;
-    private final Pattern PATTERN = Pattern.compile("(WINS|BEST_WIN_STREAK|DEATHS)_(.*)_(10|[1-9])_(name|value)");
+    private final Pattern PATTERN = Pattern.compile("(WINS|BEST_WIN_STREAK|DEATHS|ELO)_(.*)_(10|[1-9])_(name|value)");
 
     public LeaderboardService() {
         leaderboards = new LinkedHashMap<>();

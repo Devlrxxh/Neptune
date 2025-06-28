@@ -1,9 +1,9 @@
-package dev.lrxh.neptune.game.leaderboard.command;
+package dev.lrxh.neptune.feature.leaderboard.command;
 
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Sender;
-import dev.lrxh.neptune.game.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.game.leaderboard.menu.LeaderboardMenu;
+import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.feature.leaderboard.menu.LeaderboardMenu;
 import org.bukkit.entity.Player;
 
 public class LeaderboardCommand {

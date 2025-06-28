@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.leaderboard.impl;
+package dev.lrxh.neptune.feature.leaderboard.impl;
 
 import dev.lrxh.neptune.profile.data.KitData;
 import lombok.Getter;
@@ -17,6 +17,12 @@ public enum LeaderboardType {
         @Override
         public int get(KitData kitData) {
             return kitData.getBestStreak();
+        }
+    },
+    ELO("Elo") {
+        @Override
+        public int get(KitData kitData) {
+            return kitData.getElo();
         }
     },
     DEATHS("Deaths") {

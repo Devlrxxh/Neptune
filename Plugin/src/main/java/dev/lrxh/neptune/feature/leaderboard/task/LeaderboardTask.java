@@ -1,6 +1,6 @@
-package dev.lrxh.neptune.game.leaderboard.task;
+package dev.lrxh.neptune.feature.leaderboard.task;
 
-import dev.lrxh.neptune.game.leaderboard.LeaderboardService;
+import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 
 
