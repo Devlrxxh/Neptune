@@ -21,8 +21,6 @@ import java.util.Arrays;
 import java.util.List;
 
 public class LeaderboardMenu extends Menu {
-    private static final int MAX_LEADERBOARD_ENTRIES = 10;
-    private static final String PLACEHOLDER = "???";
 
     private static final LeaderboardTypeConfig[] TYPE_CONFIGS = {
             new LeaderboardTypeConfig(LeaderboardType.WINS, "KILLS"),
@@ -58,7 +56,7 @@ public class LeaderboardMenu extends Menu {
     private List<Button> createLeaderboardSwitchButtons() {
         return Arrays.stream(TYPE_CONFIGS)
                 .map(this::createSwitchButton)
-                .collect(ArrayList::new, (list, button) -> list.add(button), ArrayList::addAll);
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
     private LeaderboardSwitchButton createSwitchButton(LeaderboardTypeConfig config) {
@@ -89,17 +87,17 @@ public class LeaderboardMenu extends Menu {
 
         return MenusLocale.LEADERBOARD_LORE.getStringList().stream()
                 .map(line -> replacePlaceholders(line, kit, leaderboard))
-                .collect(ArrayList::new, (list, line) -> list.add(line), ArrayList::addAll);
+                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
     }
 
     private String replacePlaceholders(String line, Kit kit, List<PlayerEntry> leaderboard) {
         String result = line;
 
-        for (int i = 1; i <= MAX_LEADERBOARD_ENTRIES; i++) {
+        for (int i = 1; i <= 10; i++) {
             PlayerEntry entry = getPlayerEntry(kit, leaderboard, i);
 
-            String playerName = entry != null ? entry.getUsername() : PLACEHOLDER;
-            String value = entry != null ? String.valueOf(entry.getValue()) : PLACEHOLDER;
+            String playerName = entry != null ? entry.getUsername() : "???";
+            String value = entry != null ? String.valueOf(entry.getValue()) : "???";
 
             result = result.replaceAll("<player_" + i + ">", playerName)
                     .replaceAll("<value_" + i + ">", value);
