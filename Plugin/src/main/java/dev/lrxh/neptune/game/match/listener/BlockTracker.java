@@ -41,17 +41,13 @@ public class BlockTracker implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onProjectileLaunch(ProjectileLaunchEvent event) {
         if (event.getEntity().getShooter() instanceof Player player) {
-            this.getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(event.getEntity()));
+            getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(event.getEntity()));
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCrystalPlace(EntitySpawnEvent event) {
         if (!(event.getEntity() instanceof EnderCrystal crystal)) {
-            return;
-        }
-
-        if (event.getEntity().getEntitySpawnReason() != CreatureSpawnEvent.SpawnReason.DEFAULT) {
             return;
         }
 
