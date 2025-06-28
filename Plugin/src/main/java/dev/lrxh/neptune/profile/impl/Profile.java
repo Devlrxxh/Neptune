@@ -235,15 +235,16 @@ public class Profile {
                 new Replacement("<sender>", sender.getName()));
     }
 
-    public void createParty() {
+    public Party createParty() {
         if (gameData.getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(playerUUID);
-            return;
+            return null;
         }
         Party party = new Party(playerUUID, plugin);
         PartyService.get().addParty(party);
         API.getProfile(playerUUID).getGameData().setParty(party);
         MessagesLocale.PARTY_CREATE.send(playerUUID);
+        return party;
     }
 
     public void disband() {

@@ -70,8 +70,9 @@ public class PartyCommand {
         Party party = profile.getGameData().getParty();
 
         if (party == null) {
-            MessagesLocale.PARTY_NOT_IN.send(player.getUniqueId());
-            return;
+            Party createdParty = profile.createParty();
+            if (createdParty == null) party = profile.getGameData().getParty();
+            else party = createdParty;
         }
 
         if (!party.getLeader().equals(player.getUniqueId())) {
