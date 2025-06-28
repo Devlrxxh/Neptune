@@ -10,6 +10,8 @@ import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.KitData;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.ItemUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
+import dev.lrxh.neptune.utils.PotionEffectUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -34,8 +37,9 @@ public class Kit {
     private HashMap<KitRule, Boolean> rules;
     private int queue, playing, slot, kitEditorSlot;
     private double health;
+    private List<PotionEffect> potionEffects;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot, List<PotionEffect> potionEffects) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -47,6 +51,7 @@ public class Kit {
         this.slot = slot;
         this.health = health;
         this.kitEditorSlot = kitEditorSlot;
+        this.potionEffects = potionEffects;
 
         addToProfiles();
     }
@@ -64,6 +69,15 @@ public class Kit {
         this.health = 20;
         this.kitEditorSlot = slot;
 
+        this.potionEffects = new ArrayList<>();
+
+        for (PotionEffect effect : player.getActivePotionEffects()) {
+            int currentDuration = effect.getDuration();
+            int maxDuration = PlayerUtil.getMaxDuration(player, effect.getType());
+
+            potionEffects.add(new PotionEffect(effect.getType(), Math.min(currentDuration, maxDuration), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()));
+        }
+
         addToProfiles();
     }
 
@@ -79,6 +93,7 @@ public class Kit {
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
         this.kitEditorSlot = slot;
+        this.potionEffects = new ArrayList<>();
 
         addToProfiles();
     }
@@ -119,6 +134,17 @@ public class Kit {
             }
         }
         return arenasString;
+    }
+
+    public List<String> getPotionsAsString() {
+        List<String> potions = new ArrayList<>();
+        if (!potionEffects.isEmpty()) {
+            for (PotionEffect effect : potionEffects) {
+                if (effect == null) continue;
+                potions.add(PotionEffectUtils.serialize(effect));
+            }
+        }
+        return potions;
     }
 
     public boolean is(KitRule kitRule) {

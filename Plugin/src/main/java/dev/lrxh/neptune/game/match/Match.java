@@ -33,6 +33,7 @@ import org.bukkit.*;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -252,6 +253,12 @@ public abstract class Match {
         Participant participant = getParticipant(playerUUID);
         participant.setLastAttacker(null);
         kit.giveLoadout(participant);
+
+        for (PotionEffect potionEffect : kit.getPotionEffects()) {
+            if (potionEffect != null) {
+                player.addPotionEffect(potionEffect);
+            }
+        }
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {

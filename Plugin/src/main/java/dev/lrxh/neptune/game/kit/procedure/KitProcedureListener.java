@@ -12,13 +12,17 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChatEvent;
+import org.bukkit.potion.PotionEffect;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class KitProcedureListener implements Listener {
     @EventHandler
@@ -47,6 +51,8 @@ public class KitProcedureListener implements Listener {
                 }
 
                 player.sendMessage(CC.success("Created kit"));
+                PlayerUtil.reset(player);
+                HotbarService.get().giveItems(player);
                 new KitsManagementMenu().open(player);
             }
             case RENAME -> {
@@ -66,6 +72,17 @@ public class KitProcedureListener implements Listener {
                 profile.getKitProcedure().setType(KitProcedureType.NONE);
                 kit.setItems(Arrays.stream(player.getInventory().getContents()).toList());
 
+                List<PotionEffect> potionEffects = new ArrayList<>();
+
+                for (PotionEffect effect : player.getActivePotionEffects()) {
+                    int currentDuration = effect.getDuration();
+                    int maxDuration = PlayerUtil.getMaxDuration(player, effect.getType());
+
+                    potionEffects.add(new PotionEffect(effect.getType(), Math.min(currentDuration, maxDuration), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()));
+                }
+
+                kit.setPotionEffects(potionEffects);
+
                 for (Profile p : ProfileService.get().profiles.values()) {
                     p.getGameData().get(kit).setKitLoadout(kit.getItems());
                 }
@@ -83,7 +100,7 @@ public class KitProcedureListener implements Listener {
 
                 player.sendMessage(CC.success("Set new inv"));
                 new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
-
+                PlayerUtil.reset(player);
                 HotbarService.get().giveItems(player);
                 Neptune.get().setAllowJoin(true);
             }

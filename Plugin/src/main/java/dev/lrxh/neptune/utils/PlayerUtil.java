@@ -14,6 +14,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import java.time.Duration;
@@ -104,6 +105,13 @@ public class PlayerUtil {
 
     public void sendTitle(Player player, TextComponent header, TextComponent footer, int duration) {
         player.showTitle(Title.title(header, footer, Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(duration * 50L), Duration.ofMillis(500))));
+    }
+
+    public int getMaxDuration(Player player, PotionEffectType type) {
+        if (player.hasMetadata("max_duration_" + type.getName())) {
+            return player.getMetadata("max_duration_" + type.getName()).get(0).asInt();
+        }
+        return 0;
     }
 
     public void doVelocityChange(UUID playerUUID) {
