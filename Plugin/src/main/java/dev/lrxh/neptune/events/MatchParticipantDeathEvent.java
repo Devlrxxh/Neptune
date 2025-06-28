@@ -6,6 +6,7 @@ import org.bukkit.event.HandlerList;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import lombok.Getter;
+import org.jetbrains.annotations.NotNull;
 
 public class MatchParticipantDeathEvent extends Event {
   @Getter private final Match match;
@@ -15,10 +16,10 @@ public class MatchParticipantDeathEvent extends Event {
     this.match = match;
     this.participant = participant;
   }
-  
+
   private static final HandlerList handlers = new HandlerList();
   @Override
-  public HandlerList getHandlers() {
+  public @NotNull HandlerList getHandlers() {
     return handlers;
   }
   public static HandlerList getHandlerList() {

@@ -2,7 +2,6 @@ package dev.lrxh.neptune.game.match.impl.ffa;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.Match;
@@ -17,7 +16,6 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import net.kyori.adventure.text.TextComponent;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
 import java.util.ArrayList;
@@ -62,8 +60,6 @@ public class FfaFightMatch extends Match {
         if (isEnded()) return;
         hideParticipant(participant);
         participant.setDead(true);
-        MatchParticipantDeathEvent event = new MatchParticipantDeathEvent(this, participant);
-        Bukkit.getPluginManager().callEvent(event);
 
         if (!participant.isLeft()) {
             addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
@@ -117,8 +113,6 @@ public class FfaFightMatch extends Match {
         }
 
         onDeath(participant);
-        MatchParticipantDeathEvent event = new MatchParticipantDeathEvent(this, participant);
-        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override
@@ -139,7 +133,6 @@ public class FfaFightMatch extends Match {
 
     @Override
     public void breakBed(Participant participant, Participant breaker) {
-        return;
     }
 
     @Override

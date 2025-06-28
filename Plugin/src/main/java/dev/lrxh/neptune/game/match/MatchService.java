@@ -51,11 +51,13 @@ public class MatchService {
         playerBlue.setColor(ParticipantColor.BLUE);
 
         SoloFightMatch match = new SoloFightMatch(arena, kit, duel, participants, playerRed, playerBlue, rounds);
-
-        matches.add(match);
-        new MatchStartRunnable(match, plugin).start(0L, 20L);
         MatchReadyEvent event = new MatchReadyEvent(match);
         Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
+        matches.add(match);
+        new MatchStartRunnable(match, plugin).start(0L, 20L);
     }
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {

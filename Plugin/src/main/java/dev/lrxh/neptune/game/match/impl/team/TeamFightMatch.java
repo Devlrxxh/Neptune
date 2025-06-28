@@ -2,7 +2,6 @@ package dev.lrxh.neptune.game.match.impl.team;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.events.TeamMatchBedDestroyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -121,8 +120,6 @@ public class TeamFightMatch extends Match {
         hideParticipant(participant);
 
         participant.setDead(true);
-        MatchParticipantDeathEvent event = new MatchParticipantDeathEvent(this, participant);
-        Bukkit.getPluginManager().callEvent(event);
 
         if (!participant.isDisconnected() && !participant.isLeft()) {
             if (kit.is(KitRule.BED_WARS)) {
@@ -180,8 +177,6 @@ public class TeamFightMatch extends Match {
         }
 
         onDeath(participant);
-        MatchParticipantDeathEvent event = new MatchParticipantDeathEvent(this, participant);
-        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override
