@@ -19,6 +19,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.LocationUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -101,10 +102,7 @@ public class MatchListener implements Listener {
             Participant participant = match.getParticipant(player.getUniqueId());
             if (participant == null) return;
             MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
-            if(deathEvent.isCancelled()) {
-                event.setCancelled(false);
-                return;
-            }
+            Bukkit.getPluginManager().callEvent(deathEvent);
             participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
             match.onDeath(participant);
         }
