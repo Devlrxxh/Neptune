@@ -98,9 +98,13 @@ public class BlockTracker implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
-        getMatchForPlayer(event.getPlayer()).ifPresent(match -> {
-            Location liquidLocation = event.getBlockClicked().getRelative(event.getBlockFace()).getLocation();
-            match.getLiquids().add(liquidLocation);
+        Player player = event.getPlayer();
+        Block blockAboutToBeFilled = event.getBlockClicked().getRelative(event.getBlockFace());
+        BlockState originalState = blockAboutToBeFilled.getState();
+
+        getMatchForPlayer(player).ifPresent(match -> {
+            match.getChanges().putIfAbsent(originalState.getLocation(), originalState.getBlockData());
+            match.getLiquids().add(originalState.getLocation());
         });
     }
 
@@ -353,10 +357,8 @@ public class BlockTracker implements Listener {
     }
 
     private Player getNearbyPlayer(Location location) {
-        return location.getNearbyEntities(10, 10, 10)
+        return location.getNearbyPlayers(10, 10, 10)
                 .stream()
-                .filter(entity -> entity instanceof Player)
-                .map(entity -> (Player) entity)
                 .findFirst()
                 .orElse(null);
     }
