@@ -54,22 +54,6 @@ public class GameData {
         return kitData.get(kit);
     }
 
-    public int countGlobalLosses() {
-        int value = 0;
-        for (KitData kitData : kitData.values()) {
-            value += kitData.getLosses();
-        }
-        return value;
-    }
-
-    public int countGlobalCurrentStreak() {
-        int value = 0;
-        for (KitData kitData : kitData.values()) {
-            value += kitData.getCurrentStreak();
-        }
-        return value;
-    }
-
     public boolean run(Kit kit, boolean won) {
         lastPlayedKit = kit.getName();
         KitData kitData = this.kitData.get(kit);

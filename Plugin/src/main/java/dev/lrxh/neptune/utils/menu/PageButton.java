@@ -1,12 +1,13 @@
 package dev.lrxh.neptune.utils.menu;
 
+import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
+import java.util.List;
 
 public class PageButton extends Button {
 
@@ -21,44 +22,41 @@ public class PageButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        if (this.mod > 0) {
-            if (hasNext(player)) {
-                return new ItemBuilder(Material.PAPER)
-                        .name("&a" + "Next Page")
-                        .lore(Arrays.asList(
-                                "&e" + "Click here to jump",
-                                "&e" + "to the next page."
-                        ), player)
-                        .build();
+        boolean isNext = this.mod > 0;
+        boolean hasPage = isNext ? hasNext(player) : hasPrevious(player);
+
+        Material material;
+        String name;
+        List<String> lore;
+
+        if (isNext) {
+            if (hasPage) {
+                material = Material.valueOf(MenusLocale.PAGINATION_NEXT_PAGE_ENABLED_MATERIAL.getString());
+                name = MenusLocale.PAGINATION_NEXT_PAGE_ENABLED_NAME.getString();
+                lore = MenusLocale.PAGINATION_NEXT_PAGE_ENABLED_LORE.getStringList();
             } else {
-                return new ItemBuilder(Material.REDSTONE)
-                        .name("&7" + "Next Page")
-                        .lore(Arrays.asList(
-                                "&e" + "There is no available",
-                                "&e" + "next page."
-                        ), player)
-                        .build();
+                material = Material.valueOf(MenusLocale.PAGINATION_NEXT_PAGE_DISABLED_MATERIAL.getString());
+                name = MenusLocale.PAGINATION_NEXT_PAGE_DISABLED_NAME.getString();
+                lore = MenusLocale.PAGINATION_NEXT_PAGE_DISABLED_LORE.getStringList();
             }
         } else {
-            if (hasPrevious(player)) {
-                return new ItemBuilder(Material.PAPER)
-                        .name("&a" + "Previous Page")
-                        .lore(Arrays.asList(
-                                "&e" + "Click here to jump",
-                                "&e" + "to the previous page."
-                        ), player)
-                        .build();
+            if (hasPage) {
+                material = Material.valueOf(MenusLocale.PAGINATION_PREVIOUS_PAGE_ENABLED_MATERIAL.getString());
+                name = MenusLocale.PAGINATION_PREVIOUS_PAGE_ENABLED_NAME.getString();
+                lore = MenusLocale.PAGINATION_PREVIOUS_PAGE_ENABLED_LORE.getStringList();
             } else {
-                return new ItemBuilder(Material.REDSTONE)
-                        .name("&7" + "Previous Page")
-                        .lore(Arrays.asList(
-                                "&e" + "There is no available",
-                                "&e" + "previous page."
-                        ), player)
-                        .build();
+                material = Material.valueOf(MenusLocale.PAGINATION_PREVIOUS_PAGE_DISABLED_MATERIAL.getString());
+                name = MenusLocale.PAGINATION_PREVIOUS_PAGE_DISABLED_NAME.getString();
+                lore = MenusLocale.PAGINATION_PREVIOUS_PAGE_DISABLED_LORE.getStringList();
             }
         }
+
+        return new ItemBuilder(material)
+                .name(name)
+                .lore(lore, player)
+                .build();
     }
+
 
     @Override
     public void onClick(ClickType clickType, Player player) {
