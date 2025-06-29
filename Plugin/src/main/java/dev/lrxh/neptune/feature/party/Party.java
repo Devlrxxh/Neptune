@@ -83,7 +83,9 @@ public class Party {
         Profile profile = API.getProfile(playerUUID);
         profile.getGameData().setParty(this);
         profile.setState(ProfileState.IN_PARTY);
-        broadcast(MessagesLocale.PARTY_JOINED, new Replacement("<player>", invitedPlayer.getName()));
+        if (playerUUID != leader) {
+            broadcast(MessagesLocale.PARTY_JOINED, new Replacement("<player>", invitedPlayer.getName()));
+        }
         API.getProfile(playerUUID).getGameData().removeRequest(leader);
     }
 
