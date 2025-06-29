@@ -44,7 +44,6 @@ public class ConfigService {
         SettingsLocale.SPAWN_LOCATION.load();
         MenusLocale.FILTER_NAME.load();
         ScoreboardLocale.TITLE.load();
-        DivisionsLocale.DIAMOND_1.load();
         CosmeticsLocale.LIGHTNING_DISPLAY_NAME.load();
     }
 }
