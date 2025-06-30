@@ -25,13 +25,13 @@ public class PartyFightButton extends Button {
 
         if (eventType.equals(EventType.TEAM)) {
             return new ItemBuilder(MenusLocale.PARTY_EVENTS_SPLIT_MATERIAL.getString())
-                    .name(MenusLocale.PARTY_EVENTS_SPLIT_TITLE.getString())
+                    .name(MenusLocale.PARTY_EVENTS_SPLIT_NAME.getString())
                     .lore(MenusLocale.PARTY_EVENTS_SPLIT_LORE.getStringList(), player)
 
                     .build();
         } else {
             return new ItemBuilder(MenusLocale.PARTY_EVENTS_FFA_MATERIAL.getString())
-                    .name(MenusLocale.PARTY_EVENTS_FFA_TITLE.getString())
+                    .name(MenusLocale.PARTY_EVENTS_FFA_NAME.getString())
                     .lore(MenusLocale.PARTY_EVENTS_FFA_LORE.getStringList(), player)
 
                     .build();

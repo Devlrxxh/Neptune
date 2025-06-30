@@ -85,8 +85,8 @@ public class PartyCommand {
             return;
         }
 
-        if (API.getProfile(target).getGameData().getParty() != null) {
-            MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
+        if (targetProfile.getGameData().getParty() != null) {
+            MessagesLocale.PARTY_ALREADY_PARTY.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
             return;
         }
 
@@ -102,11 +102,6 @@ public class PartyCommand {
 
         if (party.getMaxUsers() > party.getMaxUsers() + 1) {
             MessagesLocale.PARTY_MAX_SIZE.send(player.getUniqueId());
-            return;
-        }
-
-        if (targetProfile.getGameData().getParty() != null) {
-            MessagesLocale.PARTY_ALREADY_PARTY.send(player.getUniqueId());
             return;
         }
 
