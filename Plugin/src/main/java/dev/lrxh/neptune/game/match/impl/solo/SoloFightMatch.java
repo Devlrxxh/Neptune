@@ -232,6 +232,8 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void onLeave(Participant participant, boolean quit) {
+        if (!isEnded()) return;
+
         participant.setDeathCause(DeathCause.DISCONNECT);
         sendDeathMessage(participant);
         setEnded(true);
