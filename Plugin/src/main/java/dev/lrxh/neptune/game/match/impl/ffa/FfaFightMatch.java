@@ -99,7 +99,7 @@ public class FfaFightMatch extends Match {
 
     @Override
     public void onLeave(Participant participant, boolean quit) {
-        if (!isEnded()) return;
+        if (isEnded()) return;
 
         participant.setDeathCause(DeathCause.DISCONNECT);
         if (quit) {
