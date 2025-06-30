@@ -63,12 +63,12 @@ public class SoloFightMatch extends Match {
         loser.setLoser(true);
         Participant winner = getWinner();
 
-        winner.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE.getString()),
-                CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
+        winner.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
+                CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
 
         if (!loser.isLeft() && !loser.isDisconnected())
-            loser.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE.getString()),
-                    CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored())), 100);
+            loser.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE_HEADER.getString()),
+                    CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", winner.getNameUnColored())), 100);
 
 
         if (!isDuel()) {
@@ -254,6 +254,6 @@ public class SoloFightMatch extends Match {
         state = MatchState.IN_ROUND;
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), CC.color(MessagesLocale.MATCH_START_HEADER.getString()), 20);
+        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_HEADER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 20);
     }
 }

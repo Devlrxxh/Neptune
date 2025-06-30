@@ -45,8 +45,8 @@ public class FfaFightMatch extends Match {
         loser.setLoser(true);
         forEachParticipant(participant -> {
             if (winner == null) return;
-            participant.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE.getString()),
-                    CC.color(MessagesLocale.MATCH_TITLE_SUBTITLE.getString().replace("<player>", winner.getNameUnColored())), 100);
+            participant.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
+                    CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", winner.getNameUnColored())), 100);
         });
 
         loser.playKillEffect();
@@ -119,7 +119,7 @@ public class FfaFightMatch extends Match {
         state = MatchState.IN_ROUND;
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE.getString()), CC.color(MessagesLocale.MATCH_START_HEADER.getString()), 20);
+        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_HEADER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 20);
     }
 
     @Override
