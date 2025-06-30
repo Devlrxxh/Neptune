@@ -10,6 +10,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
 import java.util.UUID;
 
 
@@ -19,6 +20,7 @@ public class Item {
     private ItemAction action;
     private String displayName;
     private String material;
+    private List<String> lore;
     private boolean enabled;
     private byte slot;
 
@@ -46,7 +48,7 @@ public class Item {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return new ItemStack(Material.BARRIER);
 
-        return new ItemBuilder(material, playerUUID).name(displayName).makeUnbreakable().build();
+        return new ItemBuilder(material, playerUUID).name(displayName).makeUnbreakable().lore(lore).build();
     }
 
 }

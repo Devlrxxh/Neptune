@@ -15,6 +15,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -78,13 +79,14 @@ public class HotbarService extends IService {
 
                     String displayName = config.getString(path + "NAME");
                     String material = config.getString(path + "MATERIAL");
+                    List<String> lore = config.getStringList(path + "LORE");
                     boolean enabled = config.getBoolean(path + "ENABLED");
                     byte slot = (byte) config.getInt(path + "SLOT");
 
                     if (!enabled) continue;
 
                     try {
-                        Item item = new Item(ItemAction.valueOf(itemName), displayName, material, enabled, slot);
+                        Item item = new Item(ItemAction.valueOf(itemName), displayName, material, lore, enabled, slot);
                         if (slot >= 0 && slot < inventory.getSlots().length) {
                             inventory.setSlot(slot, item);
                         }
@@ -102,10 +104,11 @@ public class HotbarService extends IService {
                 String displayName = config.getString(path + "NAME");
                 String material = config.getString(path + "MATERIAL");
                 byte slot = (byte) config.getInt(path + "SLOT");
+                List<String> lore = config.getStringList(path + "LORE");
                 String command = config.getString(path + "COMMAND");
                 ProfileState profileState = ProfileState.valueOf(config.getString(path + "STATE"));
 
-                CustomItem customItem = new CustomItem(displayName, material, slot, command);
+                CustomItem customItem = new CustomItem(displayName, material, lore, slot, command);
                 items.get(profileState).addItem(customItem, slot);
             }
         }

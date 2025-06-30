@@ -83,6 +83,10 @@ public class ItemBuilder {
         item.setAmount(1);
     }
 
+    public ItemBuilder lore(List<String> lore) {
+        return lore(lore.toArray(new String[0]));
+    }
+
     public ItemBuilder lore(List<String> lore, Player player) {
         ItemMeta meta = item.getItemMeta();
         if (meta != null) {
