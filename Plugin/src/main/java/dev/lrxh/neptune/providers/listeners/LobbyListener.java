@@ -24,16 +24,11 @@ import java.util.Objects;
 public class LobbyListener implements Listener {
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
-        event.setCancelled(true);
+        if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.EGG)) event.setCancelled(true);
     }
 
     @EventHandler
     public void onWeatherChange(WeatherChangeEvent event) {
-        event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onCreatureSpawn(CreatureSpawnEvent event) {
         event.setCancelled(true);
     }
 

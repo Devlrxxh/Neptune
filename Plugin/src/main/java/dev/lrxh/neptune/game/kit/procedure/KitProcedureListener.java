@@ -13,11 +13,12 @@ import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import io.papermc.paper.event.player.AsyncChatEvent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
 import org.bukkit.potion.PotionEffect;
 
 import java.util.ArrayList;
@@ -26,10 +27,10 @@ import java.util.List;
 
 public class KitProcedureListener implements Listener {
     @EventHandler
-    public void onChat(PlayerChatEvent event) {
+    public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
-        String input = event.getMessage();
+        String input = PlainTextComponentSerializer.plainText().serialize(event.message());
 
         if (input.equalsIgnoreCase("Cancel") && !profile.getKitProcedure().getType().equals(KitProcedureType.NONE)) {
             event.setCancelled(true);

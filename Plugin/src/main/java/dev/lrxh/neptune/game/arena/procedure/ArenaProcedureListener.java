@@ -9,21 +9,22 @@ import dev.lrxh.neptune.game.arena.menu.ArenaManagementMenu;
 import dev.lrxh.neptune.game.arena.menu.WhitelistedBlocksMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
+import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.AllArgsConstructor;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerChatEvent;
 
 @AllArgsConstructor
 public class ArenaProcedureListener implements Listener {
 
     @EventHandler
-    public void onChat(PlayerChatEvent event) {
+    public void onChat(AsyncChatEvent event) {
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
-        String input = event.getMessage();
+        String input = PlainTextComponentSerializer.plainText().serialize(event.message());
 
         if (input.equalsIgnoreCase("Cancel") && !profile.getArenaProcedure().getType().equals(ArenaProcedureType.NONE)) {
             event.setCancelled(true);
