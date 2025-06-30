@@ -22,7 +22,7 @@ public class PartyDuelMenu extends PaginatedMenu {
     @Override
     public List<Button> getAllPagesButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
-        int i = 0;
+        int i = MenusLocale.PARTY_DUEL_STARTING_SLOT.getInt();
         for (Party p : PartyService.get().getParties().values()) {
             if (p.equals(party)) continue;
             buttons.add(new PartyDuelButton(i++, p));
