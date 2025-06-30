@@ -95,6 +95,8 @@ public class QueueCheckTask extends NeptuneRunnable {
                     new Replacement("<kit>", kit.getDisplayName()),
                     new Replacement("<arena>", arena.getDisplayName()),
                     new Replacement("<opponent-ping>", String.valueOf(ping2)),
+                    new Replacement("<opponent-elo>", String.valueOf(profile2.getGameData().get(kit).getElo())),
+                    new Replacement("<elo>", String.valueOf(profile1.getGameData().get(kit).getElo())),
                     new Replacement("<ping>", String.valueOf(ping1)));
 
             MessagesLocale.MATCH_FOUND.send(uuid2,
@@ -102,6 +104,8 @@ public class QueueCheckTask extends NeptuneRunnable {
                     new Replacement("<kit>", kit.getDisplayName()),
                     new Replacement("<arena>", arena.getDisplayName()),
                     new Replacement("<opponent-ping>", String.valueOf(ping1)),
+                    new Replacement("<opponent-elo>", String.valueOf(profile1.getGameData().get(kit).getElo())),
+                    new Replacement("<elo>", String.valueOf(profile2.getGameData().get(kit).getElo())),
                     new Replacement("<ping>", String.valueOf(ping2)));
 
             MatchService.get().startMatch(participants, kit, arena, false,
