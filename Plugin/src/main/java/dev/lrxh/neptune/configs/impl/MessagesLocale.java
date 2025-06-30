@@ -31,7 +31,7 @@ public enum MessagesLocale implements IDataAccessor {
     QUEUE_REPEAT_TOGGLE("QUEUE.REPEAT.TOGGLE", DataType.BOOLEAN, "true"),
     MATCH_STARTED("MATCH.STARTED", DataType.STRING_LIST, "&aMatch Started!"),
     ROUND_STARTED("MATCH.ROUND.STARTED", DataType.STRING_LIST, "&aRound Started!"),
-    MATCH_FOUND("MATCH.FOUND", DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", " "),
+    MATCH_FOUND("MATCH.FOUND", DataType.STRING_LIST, " ", "&a&lMatch Found!", " ", "&fKit: &a<kit>", "&fOpponent: &a<opponent>", "&fPing: &b<opponent-ping>", "&fOpponent Elo: &a<opponent-elo>", "", " "),
     MATCH_STARTING("MATCH.START.TIMER", DataType.STRING_LIST, "&fMatch starting in &b<timer>&f..."),
     MATCH_STARTING_TITLE_HEADER("MATCH.STARTING.TITLE-HEADER", DataType.STRING, "&e<countdown-time>"),
     MATCH_OUT_OF_BOUNDS_TITLE_HEADER("MATCH.OUT_OF_BOUNDS.TITLE-HEADER", DataType.STRING, "&cYOU ARE OUT OF BOUNDS!"),
