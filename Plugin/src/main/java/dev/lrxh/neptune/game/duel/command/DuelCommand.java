@@ -92,7 +92,7 @@ public class DuelCommand {
         profile.acceptDuel(uuid);
     }
 
-    @Command(name = "", desc = "", usage = "<player> <kit> <rounds>")
+    @Command(name = "specfic", desc = "", usage = "<player> <kit> <rounds>")
     public void duel(@Sender Player player, Player target, Kit kit, int rounds) {
         if (API.getProfile(player).getMatch() != null) {
             player.sendMessage(CC.error("You can't send duel requests right now!"));
