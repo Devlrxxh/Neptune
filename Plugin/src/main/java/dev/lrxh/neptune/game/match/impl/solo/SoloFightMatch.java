@@ -68,7 +68,7 @@ public class SoloFightMatch extends Match {
 
         if (!loser.isLeft() && !loser.isDisconnected())
             loser.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE_HEADER.getString()),
-                    CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", winner.getNameUnColored())), 100);
+                    CC.color(MessagesLocale.MATCH_LOSER_TITLE_FOOTER.getString().replace("<player>", winner.getNameUnColored())), 100);
 
 
         if (!isDuel()) {
