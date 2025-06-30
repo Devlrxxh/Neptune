@@ -39,7 +39,7 @@ public class DivisionsMenu extends Menu {
     public ItemStack getItemStack(Player player, Division division) {
         return new ItemBuilder(division.getMaterial())
                 .name(MenusLocale.DIVISIONS_ITEM_NAME.getString().replace("<division>", division.getDisplayName()))
-                .lore(ItemUtils.getLore(MenusLocale.DIVISIONS_LORE.getStringList(), new Replacement("<wins>", String.valueOf(division.getEloRequired()))), player)
+                .lore(ItemUtils.getLore(MenusLocale.DIVISIONS_LORE.getStringList(), new Replacement("<elo>", String.valueOf(division.getEloRequired()))), player)
 
                 .build();
     }

@@ -253,7 +253,7 @@ public enum MenusLocale implements IDataAccessor {
     DIVISIONS_FILTER("DIVISIONS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
     DIVISIONS_ITEM_NAME("DIVISIONS.ITEM.NAME", DataType.STRING, "<division>"),
     DIVISIONS_LORE("DIVISIONS.LORE", DataType.STRING_LIST,
-            "&7To reach this this rank you", "&7need <wins> wins."),
+            "&7To reach this this rank you", "&7need <elo> elo."),
     SETTINGS_TITLE("SETTINGS.TITLE", DataType.STRING, "&7Profile Settings"),
     SETTINGS_SIZE("SETTINGS.SIZE", DataType.INT, "27"),
     SETTINGS_FILTER("SETTINGS.FILTER-TYPE", "FILL, BORDER, NONE", DataType.STRING, "FILL"),
