@@ -60,6 +60,7 @@ public class TeamFightMatch extends Match {
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = getParticipantTeam(loser);
 
+
         winnerTeam.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
                 CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", MessagesLocale.MATCH_YOU.getString())), 100);
 
@@ -168,10 +169,10 @@ public class TeamFightMatch extends Match {
             participant.setDisconnected(true);
         } else {
             participant.setLeft(true);
+            PlayerUtil.reset(participant.getPlayer());
             PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
             Profile profile = API.getProfile(participant.getPlayerUUID());
             profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
-            PlayerUtil.reset(participant.getPlayer());
             profile.setMatch(null);
         }
 

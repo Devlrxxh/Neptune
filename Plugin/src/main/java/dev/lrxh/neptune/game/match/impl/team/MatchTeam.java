@@ -58,6 +58,7 @@ public class MatchTeam {
         for (Participant participant : participants) {
             Player player = participant.getPlayer();
             if (player != null) {
+                if (participant.isLeft() || participant.isDisconnected()) continue;
                 action.accept(participant);
             }
         }
