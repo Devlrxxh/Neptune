@@ -15,6 +15,7 @@ public class FollowCommand {
     @Command(name = "", desc = "", usage = "<player>")
     public void follow(@Sender Player player, Player target) {
         SettingData followingSettingData = API.getProfile(target.getUniqueId()).getSettingData();
+        if (target == player) return;
 
         if (followingSettingData.getFollowings().contains(player.getUniqueId())) {
             followingSettingData.removeFollower(player.getUniqueId());
