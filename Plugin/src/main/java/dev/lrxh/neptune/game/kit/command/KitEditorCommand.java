@@ -16,7 +16,7 @@ import java.util.Arrays;
 
 public class KitEditorCommand {
 
-    @Command(name = "", desc = "")
+    @Command(name = "menu", desc = "")
     public void open(@Sender Player player) {
         Profile profile = API.getProfile(player);
         if (profile == null) return;
