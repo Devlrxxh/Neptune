@@ -23,5 +23,10 @@ public class LeaveCommand {
                 profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()), false);
                 MessagesLocale.MATCH_FORFEIT.send(player);
         }
+        if (cache.getSpawn() != null) {
+            player.teleport(cache.getSpawn());
+        } else {
+            MessagesLocale.ERROR_MESSAGE.send(player);
+        }
     }
 }
