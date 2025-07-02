@@ -108,8 +108,9 @@ public class HotbarService extends IService {
                 List<String> lore = config.getStringList(path + "LORE");
                 String command = config.getString(path + "COMMAND");
                 ProfileState profileState = ProfileState.valueOf(config.getString(path + "STATE"));
+                int customModelData = config.getInt(path + "CUSTOM_MODEL_DATA", 0);
 
-                CustomItem customItem = new CustomItem(displayName, material, lore, slot, command);
+                CustomItem customItem = new CustomItem(displayName, material, lore, slot, command, customModelData);
                 items.get(profileState).addItem(customItem, slot);
             }
         }
