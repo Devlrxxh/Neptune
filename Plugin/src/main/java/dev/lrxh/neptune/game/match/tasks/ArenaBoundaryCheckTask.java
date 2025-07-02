@@ -18,7 +18,7 @@ public class ArenaBoundaryCheckTask extends NeptuneRunnable {
             for (Participant participant : match.getParticipants()) {
                 if (!(match.getArena() instanceof StandAloneArena arena)) continue;
                 Player player = participant.getPlayer();
-                if (player == null || !player.isOnline() || player.isDead()) continue;
+                if (player == null || !player.isOnline() || participant.isDead()) continue;
                 if (!LocationUtil.isInside(player.getLocation(), arena.getMin(), arena.getMax())) {
                     participant.setDeathCause(DeathCause.DIED);
                     match.onDeath(participant);
