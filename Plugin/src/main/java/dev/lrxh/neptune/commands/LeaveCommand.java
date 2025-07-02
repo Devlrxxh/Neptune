@@ -25,8 +25,6 @@ public class LeaveCommand {
         }
         if (cache.getSpawn() != null) {
             player.teleport(cache.getSpawn());
-        } else {
-            MessagesLocale.ERROR_MESSAGE.send(player);
         }
     }
 }
