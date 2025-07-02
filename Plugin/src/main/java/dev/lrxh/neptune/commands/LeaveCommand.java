@@ -6,6 +6,7 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.entity.Player;
 
 public class LeaveCommand {
@@ -18,10 +19,13 @@ public class LeaveCommand {
         switch (state) {
             case IN_SPECTATOR:
                 profile.getMatch().removeSpectator(player.getUniqueId(), true);
-                break;
+                return;
             case IN_GAME:
                 profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()), false);
                 MessagesLocale.MATCH_FORFEIT.send(player);
+                return;
         }
+
+        PlayerUtil.teleportToSpawn(player.getUniqueId());
     }
 }
