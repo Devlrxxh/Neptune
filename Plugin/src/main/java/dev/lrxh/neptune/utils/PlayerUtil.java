@@ -24,9 +24,6 @@ import java.util.UUID;
 public class PlayerUtil {
 
     public void reset(Player player) {
-        Bukkit.getScheduler().runTask(Neptune.get(), () -> {
-            if (player == null || !player.isOnline()) return;
-
             player.setSaturation(20.0F);
             player.setFallDistance(0.0F);
             player.setFoodLevel(20);
@@ -55,7 +52,6 @@ public class PlayerUtil {
             player.setMaxHealth(20.0f);
             player.setHealth(20.0D);
             resetActionbar(player);
-        });
     }
 
     public void resetActionbar(Player player) {

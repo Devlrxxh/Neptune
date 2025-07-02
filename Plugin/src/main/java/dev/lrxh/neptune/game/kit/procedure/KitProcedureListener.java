@@ -15,6 +15,7 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,7 +53,9 @@ public class KitProcedureListener implements Listener {
                 }
 
                 player.sendMessage(CC.success("Created kit"));
-                PlayerUtil.reset(player);
+                Bukkit.getScheduler().runTask(Neptune.get(), () -> {
+                    PlayerUtil.reset(player);
+                });
                 HotbarService.get().giveItems(player);
                 new KitsManagementMenu().open(player);
             }
@@ -101,7 +104,9 @@ public class KitProcedureListener implements Listener {
 
                 player.sendMessage(CC.success("Set new inv"));
                 new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
-                PlayerUtil.reset(player);
+                Bukkit.getScheduler().runTask(Neptune.get(), () -> {
+                    PlayerUtil.reset(player);
+                });
                 HotbarService.get().giveItems(player);
                 Neptune.get().setAllowJoin(true);
             }
