@@ -82,11 +82,12 @@ public class HotbarService extends IService {
                     List<String> lore = config.getStringList(path + "LORE");
                     boolean enabled = config.getBoolean(path + "ENABLED");
                     byte slot = (byte) config.getInt(path + "SLOT");
+                    int customModelData = config.getInt(path + "CUSTOM_MODEL_DATA", 0);
 
                     if (!enabled) continue;
 
                     try {
-                        Item item = new Item(ItemAction.valueOf(itemName), displayName, material, lore, enabled, slot);
+                        Item item = new Item(ItemAction.valueOf(itemName), displayName, material, lore, enabled, slot, customModelData);
                         if (slot >= 0 && slot < inventory.getSlots().length) {
                             inventory.setSlot(slot, item);
                         }

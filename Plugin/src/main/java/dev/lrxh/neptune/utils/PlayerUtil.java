@@ -104,6 +104,7 @@ public class PlayerUtil {
     }
 
     public void sendTitle(Player player, TextComponent header, TextComponent footer, int duration) {
+        if (header.content().equalsIgnoreCase("NONE") && footer.content().equalsIgnoreCase("NONE")) return;
         player.showTitle(Title.title(header, footer, Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(duration * 50L), Duration.ofMillis(500))));
     }
 

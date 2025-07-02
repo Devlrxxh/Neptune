@@ -79,6 +79,15 @@ public class ItemBuilder {
         return this;
     }
 
+    public ItemBuilder setCustomModelData(int customData) {
+        ItemMeta meta = item.getItemMeta();
+        if (meta != null) {
+            meta.setCustomModelData(customData);
+            item.setItemMeta(meta);
+        }
+        return this;
+    }
+
     public void resetAmount() {
         item.setAmount(1);
     }
