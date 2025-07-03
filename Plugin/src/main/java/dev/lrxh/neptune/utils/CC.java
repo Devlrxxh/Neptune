@@ -87,7 +87,6 @@ public class CC {
             );
         }
 
-        TagResolver resolver = resolverBuilder.build();
-        return MiniMessage.miniMessage().deserialize(moderMessage, resolver);
+        return MiniMessage.miniMessage().deserialize(moderMessage, resolverBuilder.build());
     }
 }

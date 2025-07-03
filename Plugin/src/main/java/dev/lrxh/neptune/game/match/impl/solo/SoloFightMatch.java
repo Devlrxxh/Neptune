@@ -218,6 +218,8 @@ public class SoloFightMatch extends Match {
             }
         }
 
+        addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
+
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
         }
