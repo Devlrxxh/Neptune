@@ -25,7 +25,7 @@ public class MatchSpectateButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return new ItemBuilder(match.kit.getIcon())
+        return new ItemBuilder(match.getKit().getIcon())
                 .name(MenusLocale.MATCH_LIST_ITEM_NAME.getString()
                         .replace("<playerRed_name>", match.getParticipantA().getNameUnColored())
                         .replace("<playerBlue_name>", match.getParticipantB().getNameUnColored()))

@@ -51,11 +51,11 @@ public abstract class Match {
     private final Set<Location> liquids = new HashSet<>();
     private final HashSet<Entity> entities = new HashSet<>();
     private final Time time = new Time();
-    public MatchState state;
-    public Arena arena;
-    public Kit kit;
-    public List<Participant> participants;
-    public int rounds;
+    private MatchState state;
+    private Arena arena;
+    private Kit kit;
+    private List<Participant> participants;
+    private int rounds;
     private boolean duel;
     private boolean ended;
 

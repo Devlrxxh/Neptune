@@ -55,7 +55,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
             match.sendEndMessage();
 
-            if (match.arena instanceof StandAloneArena standAloneArena) {
+            if (match.getArena() instanceof StandAloneArena standAloneArena) {
                 standAloneArena.setUsed(false);
             }
 

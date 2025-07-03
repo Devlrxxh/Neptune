@@ -36,7 +36,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
         match.setupParticipants();
         match.checkRules();
 
-        if (match.arena instanceof StandAloneArena standAloneArena) {
+        if (match.getArena() instanceof StandAloneArena standAloneArena) {
             standAloneArena.setUsed(true);
         }
 
