@@ -8,6 +8,7 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -211,24 +212,26 @@ public enum MessagesLocale implements IDataAccessor {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, getString(), replacements));
         }
     }
 
 
     public void send(UUID playerUUID, Replacement... replacements) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, getString(), replacements));
         }
     }
 }

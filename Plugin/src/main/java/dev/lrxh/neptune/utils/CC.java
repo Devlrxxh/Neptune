@@ -2,6 +2,7 @@ package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import lombok.experimental.UtilityClass;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
@@ -9,6 +10,7 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+import org.bukkit.entity.Player;
 
 @UtilityClass
 public class CC {
@@ -71,10 +73,10 @@ public class CC {
     }
 
 
-    public Component returnMessage(String message, Replacement... replacements) {
+    public Component returnMessage(Player player, String message, Replacement... replacements) {
         TagResolver.Builder resolverBuilder = TagResolver.builder();
 
-        String moderMessage = convertLegacyToMiniMessage(message);
+        String moderMessage = PlaceholderUtil.format(convertLegacyToMiniMessage(message), player);
 
         for (Replacement replacement : replacements) {
             String placeholder = replacement.getPlaceholder();
