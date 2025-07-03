@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.events.MatchEndEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
@@ -19,14 +18,11 @@ import java.util.HashSet;
 import java.util.UUID;
 
 public class MatchEndRunnable extends NeptuneRunnable {
-    private final Neptune plugin;
-
     private final Match match;
     private int endTimer = 3;
 
-    public MatchEndRunnable(Match match, Neptune plugin) {
+    public MatchEndRunnable(Match match) {
         this.match = match;
-        this.plugin = plugin;
 
         match.getTime().setStop(true);
     }

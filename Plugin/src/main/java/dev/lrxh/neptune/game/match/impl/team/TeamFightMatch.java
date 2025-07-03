@@ -51,7 +51,7 @@ public class TeamFightMatch extends Match {
         MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
         loserTeam.setLoser(true);
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class TeamFightMatch extends Match {
 
         loser.playKillEffect();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
 

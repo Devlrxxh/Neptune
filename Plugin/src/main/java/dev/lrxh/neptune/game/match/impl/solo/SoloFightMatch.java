@@ -54,7 +54,7 @@ public class SoloFightMatch extends Match {
 
         removePlaying();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     @Override
@@ -91,7 +91,7 @@ public class SoloFightMatch extends Match {
 
         removePlaying();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     private void removePlaying() {

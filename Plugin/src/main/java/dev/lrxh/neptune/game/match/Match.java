@@ -28,6 +28,7 @@ import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.*;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -44,7 +45,6 @@ import java.util.function.Consumer;
 @Setter
 public abstract class Match {
     public final List<UUID> spectators = new ArrayList<>();
-    public final Neptune plugin = Neptune.get();
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
     private final HashMap<Location, BlockData> changes = new HashMap<>();
@@ -69,16 +69,6 @@ public abstract class Match {
         } else {
             return arena.getBlueSpawn();
         }
-    }
-
-    public List<Player> getPlayers() {
-        List<Player> players = new ArrayList<>();
-
-        for (Participant participant : participants) {
-            players.add(participant.getPlayer());
-        }
-
-        return players;
     }
 
     public Participant getParticipant(UUID playerUUID) {
@@ -251,6 +241,9 @@ public abstract class Match {
         Participant participant = getParticipant(playerUUID);
         participant.setLastAttacker(null);
         kit.giveLoadout(participant);
+        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(kit.getHealth());
+        player.setHealth(kit.getHealth());
+        player.sendHealthUpdate();
 
         for (PotionEffect potionEffect : kit.getPotionEffects()) {
             if (potionEffect != null) {
@@ -340,7 +333,8 @@ public abstract class Match {
             } catch (IllegalStateException ignored) {
             }
 
-            player.sendHealthUpdate();
+
+            player.damage(0.001);
         });
     }
 
