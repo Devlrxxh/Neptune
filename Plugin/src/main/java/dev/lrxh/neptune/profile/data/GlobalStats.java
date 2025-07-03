@@ -38,7 +38,7 @@ public class GlobalStats {
 
         this.elo = this.elo / profile.getGameData().getKitData().size();
 
-        division = DivisionService.get().getDivisionByElo(elo);
+        this.division = DivisionService.get().getDivisionByElo(elo);
     }
 
     public double getWinRatio() {

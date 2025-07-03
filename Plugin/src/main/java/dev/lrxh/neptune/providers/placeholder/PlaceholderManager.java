@@ -62,7 +62,8 @@ public class PlaceholderManager {
                 new QueueTimePlaceholder(),
                 new IsTeamMatchPlaceholder(),
                 new KitEloPlaceholder(),
-                new DivisionPlaceholder()
+                new DivisionPlaceholder(),
+                new EloPlaceholder()
         ));
     }
 
