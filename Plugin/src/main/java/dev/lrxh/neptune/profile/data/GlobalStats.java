@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.profile.data;
 
+import dev.lrxh.neptune.feature.divisions.DivisionService;
+import dev.lrxh.neptune.feature.divisions.impl.Division;
 import dev.lrxh.neptune.profile.impl.Profile;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +15,7 @@ public class GlobalStats {
     private int currentStreak = 0;
     private int bestStreak = 0;
     private int elo = 0;
+    private Division division;
 
     public GlobalStats(Profile profile) {
         this.profile = profile;
@@ -32,6 +35,10 @@ public class GlobalStats {
             this.bestStreak = Math.max(this.bestStreak, kitData.getBestStreak());
             this.elo += kitData.getElo();
         }
+
+        this.elo = this.elo / profile.getGameData().getKitData().size();
+
+        division = DivisionService.get().getDivisionByElo(elo);
     }
 
     public double getWinRatio() {
