@@ -141,6 +141,7 @@ public enum MessagesLocale implements IDataAccessor {
     PARTY_NOT_IN_SAME_PARTY("PARTY.NOT_IN_SAME_PARTY", DataType.STRING_LIST, "&c<player> isn't in your party."),
     PARTY_JOINED("PARTY.JOINED", DataType.STRING_LIST, "&f<player> &bjoined the party!"),
     PARTY_INVITATION("PARTY.INVITATION", DataType.STRING_LIST, "&bYou have been invited to &f<leader>'s &bparty <accept>"),
+    PARTY_INVITE_OWN("PARTY.INVITE_OWN", DataType.STRING_LIST, "&cYou can't invite yourself to the party."),
     PARTY_ACCEPT("PARTY.ACCEPT", DataType.STRING, "&a&l(ACCEPT)"),
     PARTY_ACCEPT_HOVER("PARTY.ACCEPT_HOVER", DataType.STRING, "&aClick to accept party request"),
     PARTY_NO_PERMISSION("PARTY.NO_PERMISSION", DataType.STRING_LIST, "&cYou do not have permission to do this."),
