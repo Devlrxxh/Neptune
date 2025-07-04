@@ -21,7 +21,7 @@ import java.util.function.Consumer;
 @Getter
 @Setter
 public class Party {
-    private final UUID leader;
+    private UUID leader;
     private final HashSet<UUID> users;
     private final boolean duelRequest;
     private final Neptune plugin;
@@ -142,5 +142,9 @@ public class Party {
         for (UUID user : users) {
             action.accept(user);
         }
+    }
+    public void transfer(Player player, Player target) {
+        this.setLeader(target.getUniqueId());
+        this.broadcast(MessagesLocale.PARTY_TRANSFER, new Replacement("<leader>", player.getName()), new Replacement("<target>", player.getName()));
     }
 }
