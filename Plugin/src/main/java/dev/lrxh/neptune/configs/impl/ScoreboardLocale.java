@@ -166,7 +166,7 @@ public enum ScoreboardLocale implements IDataAccessor {
             " ",
             "&bParty:",
             " &fLeader: &b<leader>",
-            " &fSize: &b<size>",
+            " &fSize: &b<size>/<party-max>",
             " ",
             "&bserver.net",
             "&7&m--------------------");
