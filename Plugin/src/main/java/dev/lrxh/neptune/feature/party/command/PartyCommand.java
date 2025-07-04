@@ -69,6 +69,10 @@ public class PartyCommand {
         Profile profile = API.getProfile(player);
         Party party = profile.getGameData().getParty();
 
+        if (player == target) {
+            MessagesLocale.PARTY_INVITE_OWN.send(player);
+        }
+
         if (party == null) {
             Party createdParty = profile.createParty();
             if (createdParty == null) party = profile.getGameData().getParty();
