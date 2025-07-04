@@ -35,14 +35,15 @@ public class GlobalStats {
             this.bestStreak = Math.max(this.bestStreak, kitData.getBestStreak());
             this.elo += kitData.getElo();
         }
-
-        this.elo = this.elo / profile.getGameData().getKitData().size();
+        int kitData = profile.getGameData().getKitData().size();
+        if (kitData != 0) this.elo = this.elo / kitData;
 
         this.division = DivisionService.get().getDivisionByElo(elo);
     }
 
     public double getWinRatio() {
         int totalGames = wins + losses;
+        if (totalGames == 0) return 0.0;
         return Math.round(((double) wins / totalGames) * 100);
     }
 }
