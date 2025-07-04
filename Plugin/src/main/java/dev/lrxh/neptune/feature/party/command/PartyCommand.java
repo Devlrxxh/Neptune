@@ -71,6 +71,7 @@ public class PartyCommand {
 
         if (player == target) {
             MessagesLocale.PARTY_INVITE_OWN.send(player);
+            return;
         }
 
         if (party == null) {
