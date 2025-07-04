@@ -135,7 +135,7 @@ public enum MessagesLocale implements IDataAccessor {
     LEAVE_MESSAGE("LEAVE_MESSAGE", DataType.STRING, "&8[&c-&8] &7<player> &7left"),
     PARTY_CREATE("PARTY.CREATE", DataType.STRING_LIST, "&aCreated party!"),
     PARTY_DISBANDED("PARTY.DISABLED", DataType.STRING_LIST, "&cParty has been disbanded."),
-    PARTY_INVITED("PARTY.INVITED", DataType.STRING_LIST, "&f<target> &bhas been invited to the party!"),
+    PARTY_INVITED("PARTY.INVITED", DataType.STRING_LIST, "&f<player> &bhas been invited to the party!"),
     PARTY_NOT_IN("PARTY.NOT_IN", DataType.STRING_LIST, "&cYou are not in a party."),
     PARTY_NOT_IN_PARTY("PARTY.NOT_IN_PARTY", DataType.STRING_LIST, "&c<player> isn't in a party."),
     PARTY_NOT_IN_SAME_PARTY("PARTY.NOT_IN_SAME_PARTY", DataType.STRING_LIST, "&c<player> isn't in your party."),

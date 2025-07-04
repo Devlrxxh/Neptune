@@ -10,6 +10,9 @@ import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
+
+import java.util.Arrays;
+
 import org.bukkit.entity.Player;
 
 @UtilityClass
@@ -74,19 +77,24 @@ public class CC {
 
 
     public Component returnMessage(Player player, String message, Replacement... replacements) {
-        TagResolver.Builder resolverBuilder = TagResolver.builder();
+        String miniMessageInput = convertLegacyToMiniMessage(message);
 
-        String moderMessage = PlaceholderUtil.format(convertLegacyToMiniMessage(message), player);
+        TagResolver resolver = TagResolver.resolver(
+                Arrays.stream(replacements)
+                        .map(replacement -> {
+                            String key = replacement.getPlaceholder().replaceAll("^<|>$", "").toLowerCase();
+                            return TagResolver.resolver(
+                                    key,
+                                    Placeholder.component(key, replacement.getReplacement()).tag()
+                            );
+                        })
+                        .toArray(TagResolver[]::new)
+        );
 
-        for (Replacement replacement : replacements) {
-            String placeholder = replacement.getPlaceholder();
-            String cleanPlaceholder = placeholder.replaceAll("^<|>$", "").toLowerCase();
-            resolverBuilder.tag(
-                    cleanPlaceholder,
-                    Placeholder.component(cleanPlaceholder, replacement.getReplacement()).tag()
-            );
-        }
+        Component component = MiniMessage.miniMessage().deserialize(miniMessageInput, resolver);
 
-        return MiniMessage.miniMessage().deserialize(moderMessage, resolverBuilder.build());
+        String withPlaceholders = PlaceholderUtil.format(MiniMessage.miniMessage().serialize(component), player);
+
+        return MiniMessage.miniMessage().deserialize(withPlaceholders);
     }
 }
