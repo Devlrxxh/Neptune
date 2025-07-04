@@ -111,7 +111,7 @@ public class PartyCommand {
         }
 
         party.invite(target.getUniqueId());
-        MessagesLocale.PARTY_INVITED.send(player.getUniqueId(), new Replacement("<target>", target.getName()));
+        MessagesLocale.PARTY_INVITED.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
     }
 
     @Command(name = "accept", desc = "", usage = "<uuid>")
