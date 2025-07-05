@@ -24,13 +24,11 @@ import java.util.UUID;
 public class MatchStartRunnable extends NeptuneRunnable {
 
     private final Match match;
-    private final Neptune plugin;
     private int startTimer;
 
-    public MatchStartRunnable(Match match, Neptune plugin) {
+    public MatchStartRunnable(Match match) {
         this.match = match;
-        this.startTimer = match.getKit().is(KitRule.DENY_MOVEMENT) || !(match instanceof FfaFightMatch) ? 3 : 5;
-        this.plugin = plugin;
+        this.startTimer = match instanceof FfaFightMatch ? 5 : 3;
 
         match.teleportToPositions();
         match.setupParticipants();
