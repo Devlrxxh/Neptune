@@ -25,7 +25,6 @@ public class LeaveCommand {
                 MessagesLocale.MATCH_FORFEIT.send(player);
                 return;
         }
-
         PlayerUtil.teleportToSpawn(player.getUniqueId());
     }
 }
