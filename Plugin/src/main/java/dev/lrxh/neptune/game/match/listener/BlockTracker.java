@@ -24,10 +24,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityExplodeEvent;
-import org.bukkit.event.entity.EntitySpawnEvent;
-import org.bukkit.event.entity.ProjectileLaunchEvent;
+import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -68,7 +65,18 @@ public class BlockTracker implements Listener {
         getMatchForPlayer(nearbyPlayer).ifPresent(match -> match.getEntities().add(crystal));
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
+        Player nearbyPlayer = getNearbyPlayer(event.getEntity().getLocation());
+        if (nearbyPlayer == null) {
+            event.setCancelled(true);
+            return;
+        }
+
+        getMatchForPlayer(nearbyPlayer).ifPresent(match -> match.getEntities().add(event.getEntity()));
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDrop(BlockDropItemEvent event) {
         getMatchForPlayer(event.getPlayer()).ifPresent(match -> {
             if (shouldAllowArenaBreak(match)) {

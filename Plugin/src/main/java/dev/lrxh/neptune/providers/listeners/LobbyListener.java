@@ -2,6 +2,7 @@ package dev.lrxh.neptune.providers.listeners;
 
 import dev.lrxh.neptune.Neptune;
 import org.bukkit.Material;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +25,7 @@ import java.util.Objects;
 public class LobbyListener implements Listener {
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
+        if (!(event.getEntity() instanceof ArmorStand)) event.setCancelled(true);
         if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.EGG)) event.setCancelled(true);
     }
 
