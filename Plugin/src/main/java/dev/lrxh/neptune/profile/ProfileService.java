@@ -34,8 +34,9 @@ public class ProfileService {
     public void removeProfile(UUID playerUUID) {
         QueueService.get().remove(playerUUID);
         Profile profile = profiles.get(playerUUID);
-        profile.save();
         profile.disband();
+
+        profile.save();
 
         profiles.remove(playerUUID);
     }
