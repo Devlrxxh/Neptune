@@ -22,7 +22,7 @@ public enum KillEffect {
             double x = location.getX();
             double y = location.getY() + 2.0;
             double z = location.getZ();
-            location.getWorld().strikeLightning(new Location(location.getWorld(), x, y, z));
+            location.getWorld().strikeLightningEffect(new Location(location.getWorld(), x, y, z));
         }
     },
     FIREWORKS(CosmeticsLocale.FIREWORKS_DISPLAY_NAME.getString(), Material.valueOf(CosmeticsLocale.FIREWORKS_MATERIAL.getString()),
