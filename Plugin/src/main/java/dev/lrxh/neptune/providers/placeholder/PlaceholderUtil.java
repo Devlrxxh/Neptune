@@ -63,10 +63,11 @@ public class PlaceholderUtil {
             line = line.replaceAll("<time>", String.valueOf(queueEntry.getTime().formatTime()));
         }
 
-        if (state.equals(ProfileState.IN_PARTY)) {
-            Party party = profile.getGameData().getParty();
+        Party party = profile.getGameData().getParty();
+        if (party != null) {
             line = line.replaceAll("<leader>", party.getLeaderName());
             line = line.replaceAll("<size>", String.valueOf(party.getUsers().size()));
+            line = line.replaceAll("<party-max>", String.valueOf(party.getMaxUsers()));
         }
 
         if (profile.getMatch() != null) {
@@ -156,7 +157,7 @@ public class PlaceholderUtil {
             }
 
             if (match instanceof FfaFightMatch ffaFightMatch) {
-                line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.participants.size() - ffaFightMatch.deadParticipants.size()));
+                line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
             }
 
             line = line.replaceAll("<kit>", match.getKit().getDisplayName());

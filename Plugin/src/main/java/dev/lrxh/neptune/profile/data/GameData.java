@@ -57,15 +57,18 @@ public class GameData {
     public boolean run(Kit kit, boolean won) {
         lastPlayedKit = kit.getName();
         KitData kitData = this.kitData.get(kit);
+
+        boolean value = false;
+
         if (won) {
-            return updateWin(kitData);
+            value = updateWin(kitData);
         } else {
             updateLosses(kitData);
         }
 
         globalStats.update();
 
-        return false;
+        return value;
     }
 
     private boolean updateWin(KitData kitData) {

@@ -12,6 +12,7 @@ import dev.lrxh.neptune.feature.party.menu.buttons.events.PartyEventsMenu;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.feature.queue.menu.QueueMenu;
+import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.kit.menu.StatsMenu;
 import dev.lrxh.neptune.game.kit.menu.editor.KitEditorMenu;
@@ -171,7 +172,12 @@ public enum ItemAction {
             if (profile == null) return;
             SoloFightMatch match = (SoloFightMatch) profile.getMatch();
             if (match == null) return;
-            DuelRequest duelRequest = new DuelRequest(profile.getPlayerUUID(), match.getKit(), match.getKit().getRandomArena(), false, match.getRounds());
+            Arena arena = match.getKit().getRandomArena();
+            if (arena == null) {
+                player.sendMessage(CC.error("No arenas were found!"));
+                return;
+            }
+            DuelRequest duelRequest = new DuelRequest(profile.getPlayerUUID(), match.getKit(), arena, false, match.getRounds());
             Player opponent = match.getParticipant(player).getOpponent().getPlayer();
             if (opponent == null) return;
             Profile opponentProfile = API.getProfile(opponent);

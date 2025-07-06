@@ -47,16 +47,16 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void win(Participant winner) {
-        state = MatchState.ENDING;
+        setState(MatchState.ENDING);
         MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
         loserTeam.setLoser(true);
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     @Override
     public void end(Participant loser) {
-        state = MatchState.ENDING;
+        setState(MatchState.ENDING);
         MatchTeam winnerTeam = teamA.isLoser() ? teamB : teamA;
         MatchTeam loserTeam = getParticipantTeam(loser);
 
@@ -69,7 +69,7 @@ public class TeamFightMatch extends Match {
 
         loser.playKillEffect();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
 
@@ -80,7 +80,7 @@ public class TeamFightMatch extends Match {
 
         forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_TEAM.send(participant.getPlayerUUID(),
                 new Replacement("<losers>", loserTeam.getTeamNames()),
-                new Replacement("<kit>", kit.getDisplayName()),
+                new Replacement("<kit>", getKit().getDisplayName()),
                 new Replacement("<winners_points>", String.valueOf(winnerTeam.getPoints())),
                 new Replacement("<losers_points>", String.valueOf(loserTeam.getPoints())),
                 new Replacement("<winners>", winnerTeam.getTeamNames())));
@@ -96,11 +96,11 @@ public class TeamFightMatch extends Match {
 
         MatchTeam enemy = team.equals(teamA) ? teamB : teamA;
 
-        if (rounds > 1) {
+        if (getRounds() > 1) {
             enemy.addPoint();
-            if (enemy.getPoints() < rounds) {
+            if (enemy.getPoints() < getRounds()) {
 
-                state = MatchState.STARTING;
+                setState(MatchState.STARTING);
                 new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
             }
         }
@@ -122,7 +122,7 @@ public class TeamFightMatch extends Match {
         participant.setDead(true);
 
         if (!participant.isDisconnected() && !participant.isLeft()) {
-            if (kit.is(KitRule.BED_WARS)) {
+            if (getKit().is(KitRule.BED_WARS)) {
                 if (!participant.isBedBroken()) {
                     new MatchRespawnRunnable(this, participant).start(0L, 20L);
                     return;
@@ -183,7 +183,7 @@ public class TeamFightMatch extends Match {
 
     @Override
     public void startMatch() {
-        state = MatchState.IN_ROUND;
+        setState(MatchState.IN_ROUND);
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 10);

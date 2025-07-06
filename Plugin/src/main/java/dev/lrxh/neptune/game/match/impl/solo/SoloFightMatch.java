@@ -49,17 +49,17 @@ public class SoloFightMatch extends Match {
     @Override
     public void win(Participant winner) {
         Participant loser = participantA == winner ? participantB : participantA;
-        state = MatchState.ENDING;
+        setState(MatchState.ENDING);
         loser.setLoser(true);
 
         removePlaying();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     @Override
     public void end(Participant loser) {
-        state = MatchState.ENDING;
+        setState(MatchState.ENDING);
         loser.setLoser(true);
         Participant winner = getWinner();
 
@@ -91,12 +91,12 @@ public class SoloFightMatch extends Match {
 
         removePlaying();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     private void removePlaying() {
-        for (Participant ignored : participants)
-            kit.removePlaying();
+        for (Participant ignored : getParticipants())
+            getKit().removePlaying();
     }
 
     public void addStats() {
@@ -106,22 +106,22 @@ public class SoloFightMatch extends Match {
         Profile loserProfile = API.getProfile(loser.getPlayerUUID());
 
         winnerProfile.getGameData().addHistory(
-                new MatchHistory(true, loserProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
+                new MatchHistory(true, loserProfile.getUsername(), getKit().getDisplayName(), getArena().getDisplayName(), DateUtils.getDate()));
 
         loserProfile.getGameData().addHistory(
-                new MatchHistory(false, winnerProfile.getUsername(), kit.getDisplayName(), arena.getDisplayName(), DateUtils.getDate()));
+                new MatchHistory(false, winnerProfile.getUsername(), getKit().getDisplayName(), getArena().getDisplayName(), DateUtils.getDate()));
 
-        if (winnerProfile.getGameData().run(kit, true)) {
-            winner.sendTitle(CC.color(MessagesLocale.RANKUP_TITLE_HEADER.getString().replace("<division>", winnerProfile.getGameData().get(kit).getDivision().getDisplayName())),
-                    CC.color(MessagesLocale.RANKUP_TITLE_FOOTER.getString().replace("<division>", winnerProfile.getGameData().get(kit).getDivision().getDisplayName())), 40);
+        if (winnerProfile.getGameData().run(getKit(), true)) {
+            winner.sendTitle(CC.color(MessagesLocale.RANKUP_TITLE_HEADER.getString().replace("<division>", winnerProfile.getGameData().get(getKit()).getDivision().getDisplayName())),
+                    CC.color(MessagesLocale.RANKUP_TITLE_FOOTER.getString().replace("<division>", winnerProfile.getGameData().get(getKit()).getDivision().getDisplayName())), 40);
 
-            winner.sendMessage(MessagesLocale.RANKUP_MESSAGE, new Replacement("<division>", winnerProfile.getGameData().get(kit).getDivision().getDisplayName()));
+            winner.sendMessage(MessagesLocale.RANKUP_MESSAGE, new Replacement("<division>", winnerProfile.getGameData().get(getKit()).getDivision().getDisplayName()));
         }
 
-        loserProfile.getGameData().run(kit, false);
+        loserProfile.getGameData().run(getKit(), false);
 
         forEachParticipantForce(participant -> LeaderboardService.get().addChange
-                (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), kit)));
+                (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), getKit())));
 
         if (winnerProfile.isFake()) {
             winnerProfile.save();
@@ -147,7 +147,7 @@ public class SoloFightMatch extends Match {
 
         broadcast(MessagesLocale.MATCH_END_DETAILS_SOLO,
                 new Replacement("<loser>", loser.getNameUnColored()),
-                new Replacement("<kit>", kit.getDisplayName()),
+                new Replacement("<kit>", getKit().getDisplayName()),
                 new Replacement("<winner_points>", String.valueOf(winner.getPoints())),
                 new Replacement("<loser_points>", String.valueOf(loser.getPoints())),
                 new Replacement("<winner>", winner.getNameUnColored()));
@@ -155,7 +155,7 @@ public class SoloFightMatch extends Match {
         forEachParticipant(participant -> {
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
                 TextComponent playMessage = new ClickableComponent(MessagesLocale.MATCH_PLAY_AGAIN.getString(),
-                        "/queue " + kit.getName(),
+                        "/queue " + getKit().getName(),
                         MessagesLocale.MATCH_PLAY_AGAIN_HOVER.getString()).build();
 
                 PlayerUtil.sendMessage(participant.getPlayerUUID(), playMessage);
@@ -169,12 +169,12 @@ public class SoloFightMatch extends Match {
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
         Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
 
-        if (rounds > 1) {
+        if (getRounds() > 1) {
             participantKiller.addWin();
-            if (participantKiller.getPoints() < rounds) {
+            if (participantKiller.getPoints() < getRounds()) {
                 participantKiller.setCombo(0);
 
-                state = MatchState.STARTING;
+                setState(MatchState.STARTING);
                 new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
             }
         }
@@ -198,7 +198,7 @@ public class SoloFightMatch extends Match {
         sendDeathMessage(participant);
 
         if (!participant.isDisconnected() && !participant.isLeft()) {
-            if (kit.is(KitRule.BED_WARS)) {
+            if (getKit().is(KitRule.BED_WARS)) {
                 if (!participant.isBedBroken()) {
                     participantKiller.setCombo(0);
                     new MatchRespawnRunnable(this, participant).start(0L, 20L);
@@ -206,17 +206,19 @@ public class SoloFightMatch extends Match {
                 }
             }
 
-            if (rounds > 1) {
+            if (getRounds() > 1) {
                 participantKiller.addWin();
-                if (participantKiller.getPoints() < rounds) {
+                if (participantKiller.getPoints() < getRounds()) {
                     participantKiller.setCombo(0);
 
-                    state = MatchState.STARTING;
+                    setState(MatchState.STARTING);
                     new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
                     return;
                 }
             }
         }
+
+        addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
 
         if (participant.getLastAttacker() != null) {
             participant.getLastAttacker().playSound(Sound.UI_BUTTON_CLICK);
@@ -253,7 +255,7 @@ public class SoloFightMatch extends Match {
 
     @Override
     public void startMatch() {
-        state = MatchState.IN_ROUND;
+        setState(MatchState.IN_ROUND);
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_HEADER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 20);

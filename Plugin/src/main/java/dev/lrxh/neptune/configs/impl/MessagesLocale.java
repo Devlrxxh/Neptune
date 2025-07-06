@@ -8,6 +8,7 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
@@ -134,11 +135,13 @@ public enum MessagesLocale implements IDataAccessor {
     LEAVE_MESSAGE("LEAVE_MESSAGE", DataType.STRING, "&8[&c-&8] &7<player> &7left"),
     PARTY_CREATE("PARTY.CREATE", DataType.STRING_LIST, "&aCreated party!"),
     PARTY_DISBANDED("PARTY.DISABLED", DataType.STRING_LIST, "&cParty has been disbanded."),
-    PARTY_INVITED("PARTY.INVITED", DataType.STRING_LIST, "&f<player> &bhas been invited you to the party!"),
+    PARTY_INVITED("PARTY.INVITED", DataType.STRING_LIST, "&f<player> &bhas been invited to the party!"),
     PARTY_NOT_IN("PARTY.NOT_IN", DataType.STRING_LIST, "&cYou are not in a party."),
     PARTY_NOT_IN_PARTY("PARTY.NOT_IN_PARTY", DataType.STRING_LIST, "&c<player> isn't in a party."),
+    PARTY_NOT_IN_SAME_PARTY("PARTY.NOT_IN_SAME_PARTY", DataType.STRING_LIST, "&c<player> isn't in your party."),
     PARTY_JOINED("PARTY.JOINED", DataType.STRING_LIST, "&f<player> &bjoined the party!"),
-    PARTY_INVITATION("PARTY.INVITATION", DataType.STRING_LIST, "&bYou have been invited to &f<leader> &bparty <accept>"),
+    PARTY_INVITATION("PARTY.INVITATION", DataType.STRING_LIST, "&bYou have been invited to &f<leader>'s &bparty <accept>"),
+    PARTY_INVITE_OWN("PARTY.INVITE_OWN", DataType.STRING_LIST, "&cYou can't invite yourself to the party."),
     PARTY_ACCEPT("PARTY.ACCEPT", DataType.STRING, "&a&l(ACCEPT)"),
     PARTY_ACCEPT_HOVER("PARTY.ACCEPT_HOVER", DataType.STRING, "&aClick to accept party request"),
     PARTY_NO_PERMISSION("PARTY.NO_PERMISSION", DataType.STRING_LIST, "&cYou do not have permission to do this."),
@@ -146,6 +149,7 @@ public enum MessagesLocale implements IDataAccessor {
     PARTY_ALREADY_IN("PARTY.ALREADY_IN", DataType.STRING_LIST, "&cYou are already in a party."),
     PARTY_ALREADY_SENT("PARTY.ALREADY_SENT", DataType.STRING_LIST, "&cYou have already sent <player> a party request."),
     PARTY_ALREADY_PARTY("PARTY.ALREADY_IN_PARTY", DataType.STRING_LIST, "&c<player> is already in a party."),
+    PARTY_TRANSFER("PARTY.TRANSFER.MEMBERS", DataType.STRING_LIST, "&f<leader> &btransferred the party to f<target>&b."),
     PARTY_KICK("PARTY.KICK", DataType.STRING_LIST, "&f<player> &bhas been kicked from the party."),
     PARTY_LEFT("PARTY.LEFT", DataType.STRING_LIST, "&f<player> &bhas left the party."),
     PARTY_INFO("PARTY.INFO", DataType.STRING_LIST,
@@ -153,7 +157,7 @@ public enum MessagesLocale implements IDataAccessor {
             "&7&m------------------------------------------------",
             "&fPrivacy: &b<privacy>",
             "&fLeader: &b<leader>",
-            "&fSize: &b<size>",
+            "&fSize: &b<size>/<party-max>",
             "&7&m------------------------------------------------"),
     PARTY_MAX_SIZE("PARTY.MAX_SIZE_REACHED", DataType.STRING_LIST, "&cYou have reached max party size"),
     PARTY_NOT_ENOUGH_MEMBERS("PARTY.NOT_ENOUGH_MEMBERS", DataType.STRING_LIST, "&cYou need at least 2 players to start a party event."),
@@ -211,24 +215,26 @@ public enum MessagesLocale implements IDataAccessor {
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, getString(), replacements));
         }
     }
 
 
     public void send(UUID playerUUID, Replacement... replacements) {
+        Player player = Bukkit.getPlayer(playerUUID);
+        if (player == null) return;
         if (dataType.equals(DataType.STRING_LIST)) {
             for (String message : getStringList()) {
                 if (message.equals("NONE")) continue;
-                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(message, replacements));
+                PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, message, replacements));
             }
         } else if (dataType.equals(DataType.STRING)) {
             if (getString().equals("NONE")) return;
-            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(getString(), replacements));
+            PlayerUtil.sendMessage(playerUUID, CC.returnMessage(player, getString(), replacements));
         }
     }
 }

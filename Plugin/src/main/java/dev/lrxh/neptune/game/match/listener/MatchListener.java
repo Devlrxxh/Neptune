@@ -68,7 +68,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            StandAloneArena arena = (StandAloneArena) match.arena;
+            StandAloneArena arena = (StandAloneArena) match.getArena();
 
             // Check height limit
             if (blockLocation.getY() >= arena.getLimit()) {
@@ -184,7 +184,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            StandAloneArena arena = (StandAloneArena) match.arena;
+            StandAloneArena arena = (StandAloneArena) match.getArena();
 
             if (blockLocation.getY() >= arena.getLimit()) {
                 event.setCancelled(true);
@@ -249,7 +249,7 @@ public class MatchListener implements Listener {
                 }
             }
 
-            if (!match.state.equals(MatchState.IN_ROUND)) {
+            if (!match.getState().equals(MatchState.IN_ROUND)) {
                 event.setCancelled(true);
             } else {
                 if (!match.getKit().is(KitRule.DAMAGE)) {

@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.utils.menu;
 
+import dev.lrxh.neptune.API;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,6 +26,11 @@ public class MenuListener implements Listener {
             }
 
             if (button != null) {
+
+                if (API.getProfile(player).getSettingData().isMenuSound()) {
+                    player.playSound(player.getLocation(), Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                }
+
                 button.onClick(event.getClick(), player);
                 if (menu.updateOnClick) {
                     menu.open(player);

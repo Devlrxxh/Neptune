@@ -8,6 +8,7 @@ import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 
 public class ArenaBoundaryCheckTask extends NeptuneRunnable {
@@ -18,7 +19,8 @@ public class ArenaBoundaryCheckTask extends NeptuneRunnable {
             for (Participant participant : match.getParticipants()) {
                 if (!(match.getArena() instanceof StandAloneArena arena)) continue;
                 Player player = participant.getPlayer();
-                if (player == null || !player.isOnline()) continue;
+                if (player == null || !player.isOnline() || participant.isDead() || player.getGameMode().equals(GameMode.SPECTATOR))
+                    continue;
                 if (!LocationUtil.isInside(player.getLocation(), arena.getMin(), arena.getMax())) {
                     participant.setDeathCause(DeathCause.DIED);
                     match.onDeath(participant);

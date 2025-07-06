@@ -24,38 +24,34 @@ import java.util.UUID;
 public class PlayerUtil {
 
     public void reset(Player player) {
-        Bukkit.getScheduler().runTask(Neptune.get(), () -> {
-            if (player == null || !player.isOnline()) return;
+        player.setSaturation(20.0F);
+        player.setFallDistance(0.0F);
+        player.setFoodLevel(20);
+        player.setFireTicks(0);
+        player.setMaximumNoDamageTicks(20);
+        player.setExp(0.0F);
+        player.setLevel(0);
+        player.setAllowFlight(false);
+        player.setFlying(false);
 
-            player.setSaturation(20.0F);
-            player.setFallDistance(0.0F);
-            player.setFoodLevel(20);
-            player.setFireTicks(0);
-            player.setMaximumNoDamageTicks(20);
-            player.setExp(0.0F);
-            player.setLevel(0);
-            player.setAllowFlight(false);
-            player.setFlying(false);
+        Profile profile = API.getProfile(player);
+        if (profile.getState().equals(ProfileState.IN_LOBBY)
+                || profile.getState().equals(ProfileState.IN_KIT_EDITOR)
+                || profile.getState().equals(ProfileState.IN_PARTY)
+                || profile.getState().equals(ProfileState.IN_QUEUE)) {
+            player.setGameMode(GameMode.ADVENTURE);
+        } else {
+            player.setGameMode(GameMode.SURVIVAL);
+        }
 
-            Profile profile = API.getProfile(player);
-            if (profile.getState().equals(ProfileState.IN_LOBBY)
-                    || profile.getState().equals(ProfileState.IN_KIT_EDITOR)
-                    || profile.getState().equals(ProfileState.IN_PARTY)
-                    || profile.getState().equals(ProfileState.IN_QUEUE)) {
-                player.setGameMode(GameMode.ADVENTURE);
-            } else {
-                player.setGameMode(GameMode.SURVIVAL);
-            }
-
-            player.getInventory().setArmorContents(new ItemStack[4]);
-            player.getInventory().setContents(new ItemStack[36]);
-            player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
-            player.updateInventory();
-            player.resetTitle();
-            player.setMaxHealth(20.0f);
-            player.setHealth(20.0D);
-            resetActionbar(player);
-        });
+        player.getInventory().setArmorContents(new ItemStack[4]);
+        player.getInventory().setContents(new ItemStack[36]);
+        player.getActivePotionEffects().forEach(effect -> player.removePotionEffect(effect.getType()));
+        player.updateInventory();
+        player.resetTitle();
+        player.setMaxHealth(20.0f);
+        player.setHealth(20.0D);
+        resetActionbar(player);
     }
 
     public void resetActionbar(Player player) {
@@ -108,6 +104,7 @@ public class PlayerUtil {
     }
 
     public void sendTitle(Player player, TextComponent header, TextComponent footer, int duration) {
+        if (header.content().equalsIgnoreCase("NONE") && footer.content().equalsIgnoreCase("NONE")) return;
         player.showTitle(Title.title(header, footer, Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(duration * 50L), Duration.ofMillis(500))));
     }
 

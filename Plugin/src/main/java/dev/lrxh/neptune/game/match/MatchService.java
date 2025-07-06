@@ -21,11 +21,6 @@ import java.util.*;
 public class MatchService {
     private static MatchService instance;
     public final HashSet<Match> matches = new HashSet<>();
-    private final Neptune plugin;
-
-    public MatchService() {
-        this.plugin = Neptune.get();
-    }
 
     public static MatchService get() {
         if (instance == null) instance = new MatchService();
@@ -56,7 +51,7 @@ public class MatchService {
             return;
         }
         matches.add(match);
-        new MatchStartRunnable(match, plugin).start(0L, 20L);
+        new MatchStartRunnable(match).start(0L, 20L);
     }
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {
@@ -75,10 +70,14 @@ public class MatchService {
 
         TeamFightMatch match = new TeamFightMatch(arena, kit, participants, teamA, teamB);
 
-        matches.add(match);
-        new MatchStartRunnable(match, plugin).start(0L, 20L);
         MatchReadyEvent event = new MatchReadyEvent(match);
         Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
+
+        matches.add(match);
+        new MatchStartRunnable(match).start(0L, 20L);
     }
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena) {
@@ -89,10 +88,14 @@ public class MatchService {
 
         FfaFightMatch match = new FfaFightMatch(arena, kit, participants);
 
-        matches.add(match);
-        new MatchStartRunnable(match, plugin).start(0L, 20L);
         MatchReadyEvent event = new MatchReadyEvent(match);
         Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
+
+        matches.add(match);
+        new MatchStartRunnable(match).start(0L, 20L);
     }
 
     public Optional<Match> getMatch(Player player) {

@@ -32,16 +32,16 @@ public class FfaFightMatch extends Match {
 
     @Override
     public void win(Participant winner) {
-        state = MatchState.ENDING;
+        setState(MatchState.ENDING);
         this.winner = winner;
         this.setEnded(true);
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     @Override
     public void end(Participant loser) {
-        state = MatchState.ENDING;
+        setState(MatchState.ENDING);
         loser.setLoser(true);
         forEachParticipant(participant -> {
             if (winner == null) return;
@@ -51,7 +51,7 @@ public class FfaFightMatch extends Match {
 
         loser.playKillEffect();
 
-        new MatchEndRunnable(this, plugin).start(0L, 20L);
+        new MatchEndRunnable(this).start(0L, 20L);
     }
 
     @Override
@@ -85,11 +85,11 @@ public class FfaFightMatch extends Match {
     }
 
     private boolean isLastPlayerStanding() {
-        return participants.size() - deadParticipants.size() == 1;
+        return getParticipants().size() - deadParticipants.size() == 1;
     }
 
     private Participant getLastPlayerStanding() {
-        for (Participant participant : participants) {
+        for (Participant participant : getParticipants()) {
             if (!deadParticipants.contains(participant)) {
                 return participant;
             }
@@ -118,7 +118,7 @@ public class FfaFightMatch extends Match {
 
     @Override
     public void startMatch() {
-        state = MatchState.IN_ROUND;
+        setState(MatchState.IN_ROUND);
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_HEADER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 20);
@@ -129,7 +129,7 @@ public class FfaFightMatch extends Match {
         if (winner == null) return;
         forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_FFA.send(participant.getPlayerUUID(),
                 new Replacement("<winner>", winner.getNameUnColored()),
-                new Replacement("<kit>", kit.getDisplayName())));
+                new Replacement("<kit>", getKit().getDisplayName())));
     }
 
     @Override

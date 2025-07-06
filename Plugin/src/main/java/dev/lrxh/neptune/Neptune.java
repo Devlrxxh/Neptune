@@ -196,7 +196,7 @@ public final class Neptune extends JavaPlugin {
         drink.register(new FollowCommand(), "follow");
         drink.register(new QueueCommand(), "queue");
         drink.register(new DuelCommand(), "duel", "1v1").setDefaultCommandIsHelp(true);
-        drink.register(new LeaveCommand(), "leave", "forfeit", "spawn");
+        drink.register(new LeaveCommand(), "leave", "forfeit", "spawn", "l");
         drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard");
         drink.register(new SpectateCommand(), "spec", "spectate");
         drink.register(new QueueMenuCommand(), "queuemenu", "qm");
