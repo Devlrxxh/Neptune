@@ -13,18 +13,20 @@ public class LeaderboardCommand {
         new LeaderboardMenu(LeaderboardType.KILLS).open(player);
     }
 
-    @Command(name = "wins", desc = "")
-    public void wins(@Sender Player player) {
+    @Command(name = "kills", desc = "")
+    public void kills(@Sender Player player) {
         new LeaderboardMenu(LeaderboardType.KILLS).open(player);
     }
 
-    @Command(name = "winStreak", desc = "")
-    public void winStreak(@Sender Player player) {
+    @Command(name = "bestWinStreak", desc = "")
+    public void bestWinStreak(@Sender Player player) {
         new LeaderboardMenu(LeaderboardType.BEST_WIN_STREAK).open(player);
     }
 
-    @Command(name = "losses", desc = "")
-    public void losses(@Sender Player player) {
+    @Command(name = "deaths", desc = "")
+    public void deaths(@Sender Player player) {
         new LeaderboardMenu(LeaderboardType.DEATHS).open(player);
     }
+
+
 }

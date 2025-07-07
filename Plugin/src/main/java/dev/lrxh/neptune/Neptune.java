@@ -27,6 +27,7 @@ import dev.lrxh.neptune.feature.queue.command.QueueMenuCommand;
 import dev.lrxh.neptune.feature.queue.command.QuickQueueCommand;
 import dev.lrxh.neptune.feature.queue.tasks.QueueCheckTask;
 import dev.lrxh.neptune.feature.queue.tasks.QueueMessageTask;
+import dev.lrxh.neptune.feature.settings.command.SettingsCommand;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.arena.command.ArenaProvider;
@@ -197,7 +198,8 @@ public final class Neptune extends JavaPlugin {
         drink.register(new QueueCommand(), "queue");
         drink.register(new DuelCommand(), "duel", "1v1").setDefaultCommandIsHelp(true);
         drink.register(new LeaveCommand(), "leave", "forfeit", "spawn", "l");
-        drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard");
+        drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard").setDefaultCommandIsHelp(true);
+        drink.register(new SettingsCommand(), "settings").setDefaultCommandIsHelp(true);
         drink.register(new SpectateCommand(), "spec", "spectate");
         drink.register(new QueueMenuCommand(), "queuemenu", "qm");
         drink.register(new MainCommand(), "neptune");
