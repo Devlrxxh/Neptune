@@ -72,7 +72,7 @@ public class CC {
                 .replace("&k", "<obfuscated>")
                 .replace("&r", "<reset>");
 
-        return text.replaceAll("(?i)&?#([a-f0-9]{6})", "<#$1>");
+        return text.replaceAll("(?i)&#([a-f0-9]{6})", "<#$1>");
     }
 
 

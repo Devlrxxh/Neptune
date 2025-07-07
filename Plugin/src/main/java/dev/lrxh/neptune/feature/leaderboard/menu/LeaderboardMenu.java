@@ -50,14 +50,14 @@ public class LeaderboardMenu extends Menu {
     private LeaderboardSwitchButton buildSwitchButton(LeaderboardType type) {
         boolean isSelected = (type == leaderboardType);
         String state = isSelected ? "ENABLED" : "DISABLED";
-        String baseKey = "LEADERBOARD_TYPES_" + type.getConfigName() + "_" + state;
+        String baseKey = "LEADERBOARD_TYPES_" + type.getConfigName();
 
         return new LeaderboardSwitchButton(
                 MenusLocale.valueOf(baseKey + "_SLOT").getInt(),
                 type,
-                MenusLocale.valueOf(baseKey + "_NAME").getString(),
-                MenusLocale.valueOf(baseKey + "_LORE").getStringList(),
-                Material.valueOf(MenusLocale.valueOf(baseKey + "_MATERIAL").getString())
+                MenusLocale.valueOf(baseKey + "_" + state +  "_NAME").getString(),
+                MenusLocale.valueOf(baseKey + "_" + state + "_LORE").getStringList(),
+                Material.valueOf(MenusLocale.valueOf(baseKey + "_" + state + "_MATERIAL").getString())
         );
     }
 
