@@ -17,8 +17,8 @@
     </properties>
 
     <modules>
-        <module>Common</module>
-        <module>Sync</module>
+<!--        <module>Common</module>-->
+<!--        <module>Sync</module>-->
         <module>Plugin</module>
     </modules>
 
