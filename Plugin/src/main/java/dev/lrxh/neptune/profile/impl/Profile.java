@@ -108,10 +108,10 @@ public class Profile {
             if (kitDocument == null) return;
             KitData profileKitData = gameData.get(kit);
             profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
-            profileKitData.setWins(kitDocument.getInteger("WINS", 0));
+            profileKitData.setKills(kitDocument.getInteger("WINS", 0));
             profileKitData.setElo(kitDocument.getInteger("ELO", 0));
             profileKitData.setDivision(DivisionService.get().getDivisionByElo(profileKitData.getElo()));
-            profileKitData.setLosses(kitDocument.getInteger("LOSSES", 0));
+            profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
             profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
             profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
             profileKitData.updateDivision();
@@ -144,9 +144,9 @@ public class Profile {
             DataDocument kitStatisticsDocument = new DataDocument();
             KitData entry = gameData.get(kit);
             kitStatisticsDocument.put("WIN_STREAK_CURRENT", entry.getCurrentStreak());
-            kitStatisticsDocument.put("WINS", entry.getWins());
+            kitStatisticsDocument.put("WINS", entry.getKills());
             kitStatisticsDocument.put("ELO", entry.getElo());
-            kitStatisticsDocument.put("LOSSES", entry.getLosses());
+            kitStatisticsDocument.put("LOSSES", entry.getDeaths());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
             entry.updateDivision();

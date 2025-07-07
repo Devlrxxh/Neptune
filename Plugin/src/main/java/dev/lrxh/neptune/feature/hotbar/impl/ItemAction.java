@@ -72,7 +72,7 @@ public enum ItemAction {
     LEADERBOARDS() {
         @Override
         public void execute(Player player) {
-            new LeaderboardMenu(LeaderboardType.WINS).open(player);
+            new LeaderboardMenu(LeaderboardType.KILLS).open(player);
         }
     },
     PARTY_CREATE() {

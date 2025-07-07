@@ -7,10 +7,10 @@ import javax.annotation.Nullable;
 
 @Getter
 public enum LeaderboardType {
-    WINS("Wins") {
+    KILLS("Kills") {
         @Override
         public int get(KitData kitData) {
-            return kitData.getWins();
+            return kitData.getKills();
         }
     },
     BEST_WIN_STREAK("Best Win Streak") {
@@ -28,7 +28,7 @@ public enum LeaderboardType {
     DEATHS("Deaths") {
         @Override
         public int get(KitData kitData) {
-            return kitData.getLosses();
+            return kitData.getDeaths();
         }
     };
 

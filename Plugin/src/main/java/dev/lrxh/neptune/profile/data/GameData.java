@@ -72,13 +72,13 @@ public class GameData {
     }
 
     private boolean updateWin(KitData kitData) {
-        kitData.setWins(kitData.getWins() + 1);
+        kitData.setKills(kitData.getKills() + 1);
         updateWinStreak(kitData, true);
         return kitData.updateElo(true);
     }
 
     private void updateLosses(KitData kitData) {
-        kitData.setLosses(kitData.getLosses() + 1);
+        kitData.setDeaths(kitData.getDeaths() + 1);
         kitData.updateElo(false);
         updateWinStreak(kitData, false);
     }

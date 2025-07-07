@@ -24,7 +24,7 @@ public class KitWinsPlaceholder implements Placeholder {
             KitData data = profile.getGameData().get(KitService.get().getKitByName(matcher.group(1)));
             if (data == null) return string;
 
-            return String.valueOf(data.getWins());
+            return String.valueOf(data.getKills());
         }
 
         return string;

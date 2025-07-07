@@ -15,8 +15,8 @@ import java.util.concurrent.ThreadLocalRandom;
 @Getter
 @Setter
 public class KitData {
-    private int wins = 0;
-    private int losses = 0;
+    private int kills = 0;
+    private int deaths = 0;
     private int bestStreak = 0;
     private int currentStreak = 0;
     private List<ItemStack> kitLoadout = new ArrayList<>();
@@ -24,8 +24,8 @@ public class KitData {
     private int elo = 0;
 
     public double getKdr() {
-        if (losses == 0) return wins;
-        double kd = (double) wins / losses;
+        if (deaths == 0) return kills;
+        double kd = (double) kills / deaths;
         BigDecimal bd = new BigDecimal(kd);
         bd = bd.setScale(1, RoundingMode.HALF_UP);
         return bd.doubleValue();

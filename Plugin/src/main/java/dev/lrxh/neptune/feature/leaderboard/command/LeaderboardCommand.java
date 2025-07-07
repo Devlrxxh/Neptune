@@ -10,12 +10,12 @@ public class LeaderboardCommand {
 
     @Command(name = "", desc = "")
     public void open(@Sender Player player) {
-        new LeaderboardMenu(LeaderboardType.WINS).open(player);
+        new LeaderboardMenu(LeaderboardType.KILLS).open(player);
     }
 
     @Command(name = "wins", desc = "")
     public void wins(@Sender Player player) {
-        new LeaderboardMenu(LeaderboardType.WINS).open(player);
+        new LeaderboardMenu(LeaderboardType.KILLS).open(player);
     }
 
     @Command(name = "winStreak", desc = "")

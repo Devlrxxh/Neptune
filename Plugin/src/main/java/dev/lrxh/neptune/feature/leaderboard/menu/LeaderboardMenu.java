@@ -23,7 +23,7 @@ import java.util.List;
 public class LeaderboardMenu extends Menu {
 
     private static final LeaderboardTypeConfig[] TYPE_CONFIGS = {
-            new LeaderboardTypeConfig(LeaderboardType.WINS, "KILLS"),
+            new LeaderboardTypeConfig(LeaderboardType.KILLS, "KILLS"),
             new LeaderboardTypeConfig(LeaderboardType.BEST_WIN_STREAK, "WIN_STREAK"),
             new LeaderboardTypeConfig(LeaderboardType.DEATHS, "DEATHS"),
             new LeaderboardTypeConfig(LeaderboardType.ELO, "ELO")

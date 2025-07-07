@@ -29,8 +29,8 @@ public class GlobalStats {
         this.elo = 0;
 
         for (KitData kitData : profile.getGameData().getKitData().values()) {
-            this.wins += kitData.getWins();
-            this.losses += kitData.getLosses();
+            this.wins += kitData.getKills();
+            this.losses += kitData.getDeaths();
             this.currentStreak += kitData.getCurrentStreak();
             this.bestStreak = Math.max(this.bestStreak, kitData.getBestStreak());
             this.elo += kitData.getElo();
