@@ -17,6 +17,7 @@ import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchSecondRoundRunnable;
+import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.MatchHistory;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -102,35 +103,52 @@ public class SoloFightMatch extends Match {
     public void addStats() {
         Participant winner = getWinner();
         Participant loser = getLoser();
+
         Profile winnerProfile = API.getProfile(winner.getPlayerUUID());
         Profile loserProfile = API.getProfile(loser.getPlayerUUID());
 
+        String kitName = getKit().getDisplayName();
+        String arenaName = getArena().getDisplayName();
+        String date = DateUtils.getDate();
+
         winnerProfile.getGameData().addHistory(
-                new MatchHistory(true, loserProfile.getUsername(), getKit().getDisplayName(), getArena().getDisplayName(), DateUtils.getDate()));
-
+                new MatchHistory(true, loserProfile.getUsername(), kitName, arenaName, date));
         loserProfile.getGameData().addHistory(
-                new MatchHistory(false, winnerProfile.getUsername(), getKit().getDisplayName(), getArena().getDisplayName(), DateUtils.getDate()));
+                new MatchHistory(false, winnerProfile.getUsername(), kitName, arenaName, date));
 
-        if (winnerProfile.getGameData().run(getKit(), true)) {
-            winner.sendTitle(CC.color(MessagesLocale.RANKUP_TITLE_HEADER.getString().replace("<division>", winnerProfile.getGameData().get(getKit()).getDivision().getDisplayName())),
-                    CC.color(MessagesLocale.RANKUP_TITLE_FOOTER.getString().replace("<division>", winnerProfile.getGameData().get(getKit()).getDivision().getDisplayName())), 40);
+        GameData winnerData = winnerProfile.getGameData();
+        GameData loserData = loserProfile.getGameData();
 
-            winner.sendMessage(MessagesLocale.RANKUP_MESSAGE, new Replacement("<division>", winnerProfile.getGameData().get(getKit()).getDivision().getDisplayName()));
+        int initialWinnerElo = winnerData.get(getKit()).getElo();
+        int initialLoserElo = loserData.get(getKit()).getElo();
+
+        boolean rankedUp = winnerData.run(getKit(), true);
+        loserData.run(getKit(), false);
+
+        winner.setEloChange(winnerData.get(getKit()).getElo() - initialWinnerElo);
+        loser.setEloChange(loserData.get(getKit()).getElo() - initialLoserElo);
+
+        if (rankedUp) {
+            String divisionName = winnerData.get(getKit()).getDivision().getDisplayName();
+
+            winner.sendTitle(
+                    CC.color(MessagesLocale.RANKUP_TITLE_HEADER.getString().replace("<division>", divisionName)),
+                    CC.color(MessagesLocale.RANKUP_TITLE_FOOTER.getString().replace("<division>", divisionName)),
+                    40
+            );
+
+            winner.sendMessage(MessagesLocale.RANKUP_MESSAGE, new Replacement("<division>", divisionName));
         }
 
-        loserProfile.getGameData().run(getKit(), false);
+        forEachParticipantForce(participant ->
+                LeaderboardService.get().addChange(
+                        new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), getKit()))
+        );
 
-        forEachParticipantForce(participant -> LeaderboardService.get().addChange
-                (new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), getKit())));
-
-        if (winnerProfile.isFake()) {
-            winnerProfile.save();
-        }
-
-        if (loserProfile.isFake()) {
-            loserProfile.save();
-        }
+        if (winnerProfile.isFake()) winnerProfile.save();
+        if (loserProfile.isFake()) loserProfile.save();
     }
+
 
     public Participant getLoser() {
         return participantA.isLoser() ? participantA : participantB;
@@ -150,6 +168,8 @@ public class SoloFightMatch extends Match {
                 new Replacement("<kit>", getKit().getDisplayName()),
                 new Replacement("<winner_points>", String.valueOf(winner.getPoints())),
                 new Replacement("<loser_points>", String.valueOf(loser.getPoints())),
+                new Replacement("<winner-elo>", String.valueOf(winner.getEloChange())),
+                new Replacement("<loser-elo>", String.valueOf(loser.getEloChange())),
                 new Replacement("<winner>", winner.getNameUnColored()));
 
         forEachParticipant(participant -> {

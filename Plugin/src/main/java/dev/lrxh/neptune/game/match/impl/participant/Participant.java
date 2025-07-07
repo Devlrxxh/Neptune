@@ -40,6 +40,9 @@ public class Participant {
     private boolean frozen = false;
     private boolean bedBroken;
 
+    // ELO CHANGES
+    private int eloChange = 0;
+
     // PARKOUR GAME RULE
     private Location currentCheckPoint;
     private int checkPoint = 0;
