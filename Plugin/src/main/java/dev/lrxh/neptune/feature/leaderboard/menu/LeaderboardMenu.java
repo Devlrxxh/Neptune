@@ -17,23 +17,15 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class LeaderboardMenu extends Menu {
-
-    private static final LeaderboardTypeConfig[] TYPE_CONFIGS = {
-            new LeaderboardTypeConfig(LeaderboardType.KILLS, "KILLS"),
-            new LeaderboardTypeConfig(LeaderboardType.BEST_WIN_STREAK, "WIN_STREAK"),
-            new LeaderboardTypeConfig(LeaderboardType.DEATHS, "DEATHS"),
-            new LeaderboardTypeConfig(LeaderboardType.ELO, "ELO")
-    };
 
     private final LeaderboardType leaderboardType;
 
     public LeaderboardMenu(LeaderboardType leaderboardType) {
         super(
-                MenusLocale.LEADERBOARD_TITLE.getString().replace("<type>", leaderboardType.getName()),
+                MenusLocale.valueOf("LEADERBOARD_TYPES_" + leaderboardType.getConfigName() + "_TITLE").getString(),
                 MenusLocale.LEADERBOARD_SIZE.getInt(),
                 Filter.valueOf(MenusLocale.LEADERBOARD_FILTER.getString())
         );
@@ -48,26 +40,21 @@ public class LeaderboardMenu extends Menu {
                 buttons.add(new DisplayButton(kit.getSlot(), getButtonItem(player, kit)))
         );
 
-        buttons.addAll(createLeaderboardSwitchButtons());
-
+        for (LeaderboardType type : LeaderboardType.values()) {
+            buttons.add(createSwitchButton(type));
+        }
         return buttons;
     }
 
-    private List<Button> createLeaderboardSwitchButtons() {
-        return Arrays.stream(TYPE_CONFIGS)
-                .map(this::createSwitchButton)
-                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
-    }
-
-    private LeaderboardSwitchButton createSwitchButton(LeaderboardTypeConfig config) {
-        boolean isCurrentType = config.type == leaderboardType;
+    private LeaderboardSwitchButton createSwitchButton(LeaderboardType type) {
+        boolean isCurrentType = type == leaderboardType;
         String state = isCurrentType ? "ENABLED" : "DISABLED";
-        String configKey = "LEADERBOARD_TYPES_" + config.configKey;
+        String configKey = "LEADERBOARD_TYPES_" + type.getConfigName();
 
         return new LeaderboardSwitchButton(
                 MenusLocale.valueOf(configKey + "_SLOT").getInt(),
-                config.type,
-                MenusLocale.valueOf(configKey + "_" + state + "_TITLE").getString(),
+                type,
+                MenusLocale.valueOf(configKey + "_" + state + "_NAME").getString(),
                 MenusLocale.valueOf(configKey + "_" + state + "_LORE").getStringList(),
                 Material.valueOf(MenusLocale.valueOf(configKey + "_" + state + "_MATERIAL").getString())
         );
@@ -110,8 +97,5 @@ public class LeaderboardMenu extends Menu {
         return position <= leaderboard.size()
                 ? LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, position)
                 : null;
-    }
-
-    private record LeaderboardTypeConfig(LeaderboardType type, String configKey) {
     }
 }
