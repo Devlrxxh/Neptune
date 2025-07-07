@@ -36,32 +36,33 @@ public class LeaderboardMenu extends Menu {
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
-        KitService.get().kits.forEach(kit ->
-                buttons.add(new DisplayButton(kit.getSlot(), getButtonItem(player, kit)))
-        );
+        for (Kit kit : KitService.get().kits) {
+            buttons.add(new DisplayButton(kit.getSlot(), buildKitItem(player, kit)));
+        }
 
         for (LeaderboardType type : LeaderboardType.values()) {
-            buttons.add(createSwitchButton(type));
+            buttons.add(buildSwitchButton(type));
         }
+
         return buttons;
     }
 
-    private LeaderboardSwitchButton createSwitchButton(LeaderboardType type) {
-        boolean isCurrentType = type == leaderboardType;
-        String state = isCurrentType ? "ENABLED" : "DISABLED";
-        String configKey = "LEADERBOARD_TYPES_" + type.getConfigName();
+    private LeaderboardSwitchButton buildSwitchButton(LeaderboardType type) {
+        boolean isSelected = (type == leaderboardType);
+        String state = isSelected ? "ENABLED" : "DISABLED";
+        String baseKey = "LEADERBOARD_TYPES_" + type.getConfigName() + "_" + state;
 
         return new LeaderboardSwitchButton(
-                MenusLocale.valueOf(configKey + "_SLOT").getInt(),
+                MenusLocale.valueOf(baseKey + "_SLOT").getInt(),
                 type,
-                MenusLocale.valueOf(configKey + "_" + state + "_NAME").getString(),
-                MenusLocale.valueOf(configKey + "_" + state + "_LORE").getStringList(),
-                Material.valueOf(MenusLocale.valueOf(configKey + "_" + state + "_MATERIAL").getString())
+                MenusLocale.valueOf(baseKey + "_NAME").getString(),
+                MenusLocale.valueOf(baseKey + "_LORE").getStringList(),
+                Material.valueOf(MenusLocale.valueOf(baseKey + "_MATERIAL").getString())
         );
     }
 
-    public ItemStack getButtonItem(Player player, Kit kit) {
-        List<String> lore = buildLoreForKit(kit);
+    private ItemStack buildKitItem(Player player, Kit kit) {
+        List<String> lore = buildKitLore(kit);
 
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.LEADERBOARD_ITEM_NAME.getString().replace("<kit>", kit.getDisplayName()))
@@ -69,31 +70,35 @@ public class LeaderboardMenu extends Menu {
                 .build();
     }
 
-    private List<String> buildLoreForKit(Kit kit) {
+    private List<String> buildKitLore(Kit kit) {
         List<PlayerEntry> leaderboard = LeaderboardService.get().getPlayerEntries(kit, leaderboardType);
 
-        return MenusLocale.LEADERBOARD_LORE.getStringList().stream()
-                .map(line -> replacePlaceholders(line, kit, leaderboard))
-                .collect(ArrayList::new, ArrayList::add, ArrayList::addAll);
+        List<String> lore = new ArrayList<>();
+        for (String templateLine : MenusLocale.LEADERBOARD_LORE.getStringList()) {
+            lore.add(replaceLeaderboardPlaceholders(templateLine, kit, leaderboard));
+        }
+
+        return lore;
     }
 
-    private String replacePlaceholders(String line, Kit kit, List<PlayerEntry> leaderboard) {
-        String result = line;
+    private String replaceLeaderboardPlaceholders(String template, Kit kit, List<PlayerEntry> leaderboard) {
+        String result = template;
 
         for (int i = 1; i <= 10; i++) {
-            PlayerEntry entry = getPlayerEntry(kit, leaderboard, i);
+            PlayerEntry entry = getEntryAtPosition(kit, leaderboard, i);
 
-            String playerName = entry != null ? entry.getUsername() : "???";
+            String player = entry != null ? entry.getUsername() : "???";
             String value = entry != null ? String.valueOf(entry.getValue()) : "???";
 
-            result = result.replaceAll("<player_" + i + ">", playerName)
-                    .replaceAll("<value_" + i + ">", value);
+            result = result
+                    .replace("<player_" + i + ">", player)
+                    .replace("<value_" + i + ">", value);
         }
 
         return result;
     }
 
-    private PlayerEntry getPlayerEntry(Kit kit, List<PlayerEntry> leaderboard, int position) {
+    private PlayerEntry getEntryAtPosition(Kit kit, List<PlayerEntry> leaderboard, int position) {
         return position <= leaderboard.size()
                 ? LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, position)
                 : null;
