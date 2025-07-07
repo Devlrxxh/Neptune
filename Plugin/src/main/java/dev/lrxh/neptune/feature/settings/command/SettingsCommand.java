@@ -2,13 +2,10 @@ package dev.lrxh.neptune.feature.settings.command;
 
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Sender;
-import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.feature.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.feature.settings.Setting;
 import dev.lrxh.neptune.feature.settings.menu.SettingsMenu;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
-import org.checkerframework.checker.units.qual.C;
 
 public class SettingsCommand {
 

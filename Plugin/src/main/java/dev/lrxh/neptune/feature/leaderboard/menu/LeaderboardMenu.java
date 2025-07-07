@@ -55,7 +55,7 @@ public class LeaderboardMenu extends Menu {
         return new LeaderboardSwitchButton(
                 MenusLocale.valueOf(baseKey + "_SLOT").getInt(),
                 type,
-                MenusLocale.valueOf(baseKey + "_" + state +  "_NAME").getString(),
+                MenusLocale.valueOf(baseKey + "_" + state + "_NAME").getString(),
                 MenusLocale.valueOf(baseKey + "_" + state + "_LORE").getStringList(),
                 Material.valueOf(MenusLocale.valueOf(baseKey + "_" + state + "_MATERIAL").getString())
         );

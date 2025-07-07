@@ -46,14 +46,9 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
         if (respawnTimer == 0) {
             Location location;
             if (participant.getColor().equals(ParticipantColor.RED)) {
-                location = match.getArena().getWorld().getHighestBlockAt(match.getArena().getRedSpawn()).getLocation().clone().add(0.5, 1, 0.5);
-                location.setPitch(match.getArena().getRedSpawn().getPitch());
-                location.setYaw(match.getArena().getRedSpawn().getYaw());
-
+                location = match.getArena().getRedSpawn();
             } else {
-                location = match.getArena().getWorld().getHighestBlockAt(match.getArena().getBlueSpawn()).getLocation().clone().add(0.5, 1, 0.5);
-                location.setPitch(match.getArena().getBlueSpawn().getPitch());
-                location.setYaw(match.getArena().getBlueSpawn().getYaw());
+                location = match.getArena().getBlueSpawn();
             }
 
             participant.teleport(location);

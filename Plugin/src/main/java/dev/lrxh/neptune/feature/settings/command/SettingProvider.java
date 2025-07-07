@@ -4,14 +4,10 @@ import com.jonahseguin.drink.argument.CommandArg;
 import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
 import dev.lrxh.neptune.feature.settings.Setting;
-import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.ArenaService;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.annotation.Annotation;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

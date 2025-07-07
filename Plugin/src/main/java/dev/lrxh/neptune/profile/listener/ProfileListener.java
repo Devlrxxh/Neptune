@@ -62,15 +62,15 @@ public class ProfileListener implements Listener {
         Match match = profile.getMatch();
 
         if (match != null) {
-                if (profile.getState() == ProfileState.IN_SPECTATOR) {
-                    match.removeSpectator(player.getUniqueId(), true);
+            if (profile.getState() == ProfileState.IN_SPECTATOR) {
+                match.removeSpectator(player.getUniqueId(), true);
             } else {
-                    Participant participant = match.getParticipant(player.getUniqueId());
-                    if (participant == null) return;
-                    match.onLeave(match.getParticipant(player), true);
-                    MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
-                    Bukkit.getPluginManager().callEvent(deathEvent);
-                }
+                Participant participant = match.getParticipant(player.getUniqueId());
+                if (participant == null) return;
+                match.onLeave(match.getParticipant(player), true);
+                MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
+                Bukkit.getPluginManager().callEvent(deathEvent);
+            }
         }
 
         event.quitMessage(null);

@@ -8,20 +8,37 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 public interface IDataAccessor {
 
     Neptune plugin = Neptune.get();
 
-    default String  getString()     { return getConfigFile().getConfiguration().getString(getPath()); }
-    default List<String> getStringList() { return getConfigFile().getConfiguration().getStringList(getPath()); }
-    default int     getInt()        { return getConfigFile().getConfiguration().getInt(getPath()); }
-    default boolean getBoolean()    { return getConfigFile().getConfiguration().getBoolean(getPath()); }
+    default String getString() {
+        return getConfigFile().getConfiguration().getString(getPath());
+    }
+
+    default List<String> getStringList() {
+        return getConfigFile().getConfiguration().getStringList(getPath());
+    }
+
+    default int getInt() {
+        return getConfigFile().getConfiguration().getInt(getPath());
+    }
+
+    default boolean getBoolean() {
+        return getConfigFile().getConfiguration().getBoolean(getPath());
+    }
 
     String getHeader();
+
     String getPath();
+
     String getComment();
+
     List<String> getDefaultValue();
+
     DataType getDataType();
+
     ConfigFile getConfigFile();
 
     default void applyHeader() {
@@ -34,9 +51,9 @@ public interface IDataAccessor {
     default void setValue(String path, List<String> rawValue, DataType type) {
         switch (type) {
             case STRING_LIST -> getConfigFile().getConfiguration().set(path, rawValue);
-            case STRING      -> getConfigFile().getConfiguration().set(path, rawValue.get(0));
-            case INT         -> getConfigFile().getConfiguration().set(path, Integer.parseInt(rawValue.get(0)));
-            case BOOLEAN     -> getConfigFile().getConfiguration().set(path, Boolean.parseBoolean(rawValue.get(0)));
+            case STRING -> getConfigFile().getConfiguration().set(path, rawValue.get(0));
+            case INT -> getConfigFile().getConfiguration().set(path, Integer.parseInt(rawValue.get(0)));
+            case BOOLEAN -> getConfigFile().getConfiguration().set(path, Boolean.parseBoolean(rawValue.get(0)));
         }
     }
 
@@ -59,8 +76,8 @@ public interface IDataAccessor {
         if (cfgFile == null) return;
 
         var rootSection = cfgFile.getConfiguration();
-        var accessors   = List.of(this.getClass().getEnumConstants());
-        var validPaths  = accessors.stream()
+        var accessors = List.of(this.getClass().getEnumConstants());
+        var validPaths = accessors.stream()
                 .map(IDataAccessor::getPath)
                 .collect(Collectors.toSet());
 
@@ -78,8 +95,8 @@ public interface IDataAccessor {
     }
 
     private void cleanupSection(ConfigurationSection section,
-                                       String parentPath,
-                                       Set<String> validPaths) {
+                                String parentPath,
+                                Set<String> validPaths) {
         for (String key : section.getKeys(false)) {
             String fullPath = parentPath.isEmpty() ? key : (parentPath + "." + key);
 
