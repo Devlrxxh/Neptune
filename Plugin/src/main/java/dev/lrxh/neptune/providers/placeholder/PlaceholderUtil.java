@@ -63,6 +63,10 @@ public class PlaceholderUtil {
             line = line.replaceAll("<time>", String.valueOf(queueEntry.getTime().formatTime()));
         }
 
+        if (state.equals(ProfileState.IN_KIT_EDITOR)) {
+            line = line.replaceAll("<kit>", profile.getGameData().getKitEditor().getDisplayName());
+        }
+
         Party party = profile.getGameData().getParty();
         if (party != null) {
             line = line.replaceAll("<leader>", party.getLeaderName());

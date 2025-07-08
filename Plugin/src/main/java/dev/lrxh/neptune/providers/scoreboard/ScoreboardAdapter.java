@@ -30,8 +30,9 @@ public class ScoreboardAdapter implements FastAdapter {
 
         switch (state) {
             case IN_LOBBY:
-            case IN_KIT_EDITOR:
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.LOBBY.getStringList()), player);
+            case IN_KIT_EDITOR:
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.KIT_EDITOR.getStringList()), player);
             case IN_PARTY:
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.PARTY_LOBBY.getStringList()), player);
             case IN_QUEUE:
