@@ -32,6 +32,7 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -163,13 +164,13 @@ public class SoloFightMatch extends Match {
         Participant winner = getWinner();
         Participant loser = getLoser();
 
-        List<Replacement> replacements = List.of(
+        List<Replacement> replacements = new ArrayList<>(List.of(
                 new Replacement("<loser>", loser.getNameUnColored()),
                 new Replacement("<kit>", getKit().getDisplayName()),
                 new Replacement("<winner_points>", String.valueOf(winner.getPoints())),
                 new Replacement("<loser_points>", String.valueOf(loser.getPoints())),
                 new Replacement("<winner>", winner.getNameUnColored())
-        );
+        ));
 
         if (!isDuel()) {
             replacements.add(new Replacement("<winner-elo>", String.valueOf(winner.getEloChange())));
