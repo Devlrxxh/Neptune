@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -18,13 +19,21 @@ public class FastRunnable implements Runnable {
 
     @Override
     public void run() {
-        for (Map.Entry<UUID, FastBoard> entry : manager.boards.entrySet()) {
+        Iterator<Map.Entry<UUID, FastBoard>> iterator = manager.boards.entrySet().iterator();
+
+        while (iterator.hasNext()) {
+            Map.Entry<UUID, FastBoard> entry = iterator.next();
             Player player = Bukkit.getPlayer(entry.getKey());
+
+            if (player == null || !player.isOnline()) {
+                iterator.remove();
+                continue;
+            }
+
             FastBoard board = entry.getValue();
             board.updateTitle(CC.color(manager.fastAdapter.getTitle(player)));
 
             List<Component> lines = new ArrayList<>();
-
             for (String i : manager.fastAdapter.getLines(player)) {
                 lines.add(CC.color(i));
             }
