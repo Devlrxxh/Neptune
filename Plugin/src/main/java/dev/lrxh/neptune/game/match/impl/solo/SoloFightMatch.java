@@ -163,14 +163,21 @@ public class SoloFightMatch extends Match {
         Participant winner = getWinner();
         Participant loser = getLoser();
 
-        broadcast(MessagesLocale.MATCH_END_DETAILS_SOLO,
+        List<Replacement> replacements = List.of(
                 new Replacement("<loser>", loser.getNameUnColored()),
                 new Replacement("<kit>", getKit().getDisplayName()),
                 new Replacement("<winner_points>", String.valueOf(winner.getPoints())),
                 new Replacement("<loser_points>", String.valueOf(loser.getPoints())),
-                new Replacement("<winner-elo>", String.valueOf(winner.getEloChange())),
-                new Replacement("<loser-elo>", String.valueOf(loser.getEloChange())),
-                new Replacement("<winner>", winner.getNameUnColored()));
+                new Replacement("<winner>", winner.getNameUnColored())
+        );
+
+        if (!isDuel()) {
+            replacements.add(new Replacement("<winner-elo>", String.valueOf(winner.getEloChange())));
+            replacements.add(new Replacement("<loser-elo>", String.valueOf(loser.getEloChange())));
+            broadcast(MessagesLocale.MATCH_END_DETAILS_SOLO, replacements.toArray(new Replacement[0]));
+        } else {
+            broadcast(MessagesLocale.MATCH_END_DETAILS_DUEL, replacements.toArray(new Replacement[0]));
+        }
 
         forEachParticipant(participant -> {
             if (MessagesLocale.MATCH_PLAY_AGAIN_ENABLED.getBoolean()) {
