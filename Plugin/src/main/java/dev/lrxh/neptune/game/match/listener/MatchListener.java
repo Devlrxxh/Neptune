@@ -84,12 +84,12 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if (blockLocation == match.getArena().getRedSpawn() || blockLocation == match.getArena().getRedSpawn().clone().add(0, 1, 0)) {
+            if (blockLocation.equals(match.getArena().getRedSpawn()) || blockLocation.equals(match.getArena().getRedSpawn().clone().add(0, 1, 0))) {
                 event.setCancelled(true);
                 return;
             }
 
-            if (blockLocation == match.getArena().getBlueSpawn() || blockLocation == match.getArena().getBlueSpawn().clone().add(0, 1, 0)) {
+            if (blockLocation.equals(match.getArena().getBlueSpawn()) || blockLocation.equals(match.getArena().getBlueSpawn().clone().add(0, 1, 0))) {
                 event.setCancelled(true);
                 return;
             }
