@@ -17,9 +17,11 @@ import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -52,6 +54,12 @@ public class ProfileListener implements Listener {
         }
         PlayerUtil.reset(player);
         HotbarService.get().giveItems(player);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onKick(PlayerKickEvent event) {
+        PlayerQuitEvent quitEvent = new PlayerQuitEvent(event.getPlayer(), event.reason());
+        Bukkit.getPluginManager().callEvent(quitEvent);
     }
 
     @EventHandler
