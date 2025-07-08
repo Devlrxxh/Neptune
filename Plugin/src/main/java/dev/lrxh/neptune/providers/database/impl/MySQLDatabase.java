@@ -10,6 +10,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class MySQLDatabase implements IDatabase {
     private Connection connection;
@@ -47,27 +48,31 @@ public class MySQLDatabase implements IDatabase {
     }
 
     @Override
-    public void replace(UUID playerUUID, DataDocument newDocument) {
-        String updateQuery = "REPLACE INTO playerData (uuid, data) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-            statement.setString(1, playerUUID.toString());
-            statement.setString(2, newDocument.toDocument().toJson());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
-        }
+    public CompletableFuture<Void> replace(UUID playerUUID, DataDocument newDocument) {
+        return CompletableFuture.runAsync(() -> {
+            String updateQuery = "REPLACE INTO playerData (uuid, data) VALUES (?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+                statement.setString(1, playerUUID.toString());
+                statement.setString(2, newDocument.toDocument().toJson());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
+            }
+        });
     }
 
     @Override
-    public void replace(String playerUUID, DataDocument newDocument) {
-        String updateQuery = "REPLACE INTO playerData (uuid, data) VALUES (?, ?)";
-        try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
-            statement.setString(1, playerUUID);
-            statement.setString(2, newDocument.toDocument().toJson());
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
-        }
+    public CompletableFuture<Void> replace(String playerUUID, DataDocument newDocument) {
+        return CompletableFuture.runAsync(() -> {
+            String updateQuery = "REPLACE INTO playerData (uuid, data) VALUES (?, ?)";
+            try (PreparedStatement statement = connection.prepareStatement(updateQuery)) {
+                statement.setString(1, playerUUID);
+                statement.setString(2, newDocument.toDocument().toJson());
+                statement.executeUpdate();
+            } catch (SQLException e) {
+                ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
+            }
+        });
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.bson.Document;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public class MongoDatabase implements IDatabase {
     public MongoCollection<Document> collection;
@@ -36,15 +37,19 @@ public class MongoDatabase implements IDatabase {
     }
 
     @Override
-    public void replace(UUID playerUUID, DataDocument newDocument) {
-        Document document = newDocument.toDocument();
-        collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
+    public CompletableFuture<Void> replace(UUID playerUUID, DataDocument newDocument) {
+        return CompletableFuture.runAsync(() -> {
+            Document document = newDocument.toDocument();
+            collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
+        });
     }
 
     @Override
-    public void replace(String playerUUID, DataDocument newDocument) {
-        Document document = newDocument.toDocument();
-        collection.replaceOne(Filters.eq("uuid", playerUUID), document, new ReplaceOptions().upsert(true));
+    public CompletableFuture<Void> replace(String playerUUID, DataDocument newDocument) {
+        return CompletableFuture.runAsync(() -> {
+            Document document = newDocument.toDocument();
+            collection.replaceOne(Filters.eq("uuid", playerUUID), document, new ReplaceOptions().upsert(true));
+        });
     }
 
     @Override

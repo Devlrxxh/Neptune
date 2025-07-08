@@ -4,6 +4,7 @@ import dev.lrxh.neptune.configs.impl.SettingsLocale;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 
 public interface IDatabase {
     String uri = SettingsLocale.URI.getString();
@@ -13,9 +14,9 @@ public interface IDatabase {
 
     DataDocument getUserData(UUID playerUUID);
 
-    void replace(UUID playerUUID, DataDocument newDocument);
+    CompletableFuture<Void> replace(UUID playerUUID, DataDocument newDocument);
 
-    void replace(String playerUUID, DataDocument newDocument);
+    CompletableFuture<Void> replace(String playerUUID, DataDocument newDocument);
 
     List<DataDocument> getAll();
 }
