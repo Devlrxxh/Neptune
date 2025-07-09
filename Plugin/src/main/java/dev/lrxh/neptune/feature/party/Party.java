@@ -3,7 +3,9 @@ package dev.lrxh.neptune.feature.party;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.feature.party.impl.AdvertiseRunnable;
 import dev.lrxh.neptune.feature.party.impl.PartyRequest;
+import dev.lrxh.neptune.feature.party.impl.advertise.AdvertiseService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
@@ -147,5 +149,18 @@ public class Party {
     public void transfer(Player player, Player target) {
         this.setLeader(target.getUniqueId());
         this.broadcast(MessagesLocale.PARTY_TRANSFER, new Replacement("<leader>", player.getName()), new Replacement("<target>", player.getName()));
+    }
+    public boolean advertise() {
+        if (AdvertiseService.has(this)) {
+            AdvertiseRunnable runnable = AdvertiseService.getRunnable(this);
+            if (runnable == null || runnable.isCancelled()) {
+                AdvertiseService.remove(this);
+            }
+            return false;
+        } else {
+            this.setOpen(true);
+            AdvertiseService.add(this);
+            return true;
+        }
     }
 }

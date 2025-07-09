@@ -123,6 +123,23 @@ public enum Setting {
         public boolean toggled(Player player) {
             return getProfile(player).getSettingData().isMenuSound();
         }
+    },
+    PARTY_ADVERTISEMENTS(MenusLocale.SETTINGS_PARTY_ADVERTISEMENTS_TITLE.getString(),
+            MenusLocale.SETTINGS_PARTY_ADVERTISEMENTS_MATERIAL.getString(),
+            MenusLocale.SETTINGS_PARTY_ADVERTISEMENTS_LORE_ENABLED.getStringList(),
+            MenusLocale.SETTINGS_PARTY_ADVERTISEMENTS_LORE_DISABLED.getStringList(),
+            MenusLocale.SETTINGS_PARTY_ADVERTISEMENTS_SLOT.getInt()) {
+        @Override
+        public void execute(Player player, ClickType clicktype) {
+            Profile profile = getProfile(player);
+            profile.getSettingData().setPartyAdvertisements(!profile.getSettingData().isPartyAdvertisements());
+            new SettingsMenu().open(player);
+        }
+
+        @Override
+        public boolean toggled(Player player) {
+            return getProfile(player).getSettingData().isPartyAdvertisements();
+        }
     };
 
     private final String displayName;

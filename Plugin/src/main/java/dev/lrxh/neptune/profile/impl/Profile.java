@@ -9,6 +9,7 @@ import dev.lrxh.neptune.feature.divisions.DivisionService;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.party.PartyService;
+import dev.lrxh.neptune.feature.party.impl.advertise.AdvertiseService;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedure;
 import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -127,6 +128,7 @@ public class Profile {
         settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
         settingData.setMenuSound(settings.getBoolean("menuSound", false));
         settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
+        settingData.setPartyAdvertisements(settings.getBoolean("partyAdvertisements", false));
         this.gameData.getGlobalStats().update();
     }
 
@@ -167,6 +169,7 @@ public class Profile {
         settingsDoc.put("killEffect", settingData.getKillEffect().toString());
         settingsDoc.put("menuSound", settingData.isMenuSound());
         settingsDoc.put("deathMessagePackage", settingData.getKillMessagePackage().getName());
+        settingsDoc.put("partyAdvertisements", settingData.isPartyAdvertisements());
 
         dataDocument.put("settings", settingsDoc);
 
@@ -256,6 +259,7 @@ public class Profile {
 
         if (party.getLeader().equals(playerUUID)) {
             party.disband();
+            AdvertiseService.remove(party);
             return;
         }
         party.broadcast(MessagesLocale.PARTY_LEFT,
