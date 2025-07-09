@@ -4,8 +4,9 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.feature.party.impl.PartyRequest;
-import dev.lrxh.neptune.feature.party.impl.advertise.AdvertiseService;
+import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.ProfileState;
+import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -149,12 +150,23 @@ public class Party {
         this.setLeader(target.getUniqueId());
         this.broadcast(MessagesLocale.PARTY_TRANSFER, new Replacement("<leader>", player.getName()), new Replacement("<target>", player.getName()));
     }
-    public void advertise() {
-        if (AdvertiseService.get().has(this)) {
-            AdvertiseService.get().remove(this);
-        } else {
-            this.setOpen(true);
-            AdvertiseService.get().add(this);
+
+    public boolean advertise() {
+        Profile leaderProfile = API.getProfile(leader);
+
+        if (leaderProfile.hasCooldownEnded("party_advertise")) {
+            leaderProfile.addCooldown("party_advertise", 300_000);
+
+            for (Profile profile : ProfileService.get().profiles.values()) {
+                SettingData data = profile.getSettingData();
+                if (!data.isPartyAdvertisements()) continue;
+                TextComponent join = new ClickableComponent(MessagesLocale.PARTY_ADVERTISE_JOIN.getString(), "/party join " + getLeaderName(), MessagesLocale.PARTY_ADVERTISE_JOIN_HOVER.getString().replaceAll("<leader>", getLeaderName())).build();
+                MessagesLocale.PARTY_ADVERTISE_MESSAGE.send(profile.getPlayerUUID(), new Replacement("<join>", join), new Replacement("<leader>", getLeaderName()));
+
+                return true;
+            }
         }
+
+        return false;
     }
 }

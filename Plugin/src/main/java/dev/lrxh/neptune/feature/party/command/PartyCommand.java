@@ -159,6 +159,7 @@ public class PartyCommand {
         }
         party.transfer(player, target);
     }
+
     @Command(name = "advertise", desc = "")
     @Require("neptune.party.advertise")
     public void advertise(@Sender Player player) {

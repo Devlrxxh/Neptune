@@ -9,7 +9,6 @@ import dev.lrxh.neptune.feature.divisions.DivisionService;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.party.PartyService;
-import dev.lrxh.neptune.feature.party.impl.advertise.AdvertiseService;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedure;
 import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -80,8 +79,8 @@ public class Profile {
         return false;
     }
 
-    public void addCooldown(String name, Cooldown cooldown) {
-        cooldowns.put(name, cooldown);
+    public void addCooldown(String name, int millis) {
+        cooldowns.put(name, new Cooldown(millis));
     }
 
     public boolean hasCooldownEnded(String name) {
@@ -89,7 +88,7 @@ public class Profile {
             return true;
         }
 
-        if (cooldowns.get(name).isExpired()){
+        if (cooldowns.get(name).isExpired()) {
             cooldowns.remove(name);
             return true;
         }
@@ -274,11 +273,6 @@ public class Profile {
             return;
         }
 
-        if (party.getLeader().equals(playerUUID)) {
-            party.disband();
-            AdvertiseService.get().remove(party);
-            return;
-        }
         party.broadcast(MessagesLocale.PARTY_LEFT,
                 new Replacement("<player>", username));
         party.remove(playerUUID);

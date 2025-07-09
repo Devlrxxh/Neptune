@@ -29,7 +29,6 @@ public class PartySettingsMenu extends Menu {
         buttons.add(new PartyAdvertisementButton(MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_SLOT.getInt(), party));
 
 
-
         return buttons;
     }
 }
