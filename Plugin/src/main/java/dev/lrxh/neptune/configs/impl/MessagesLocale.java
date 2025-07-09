@@ -155,8 +155,6 @@ public enum MessagesLocale implements IDataAccessor {
     PARTY_ALREADY_SENT("PARTY.ALREADY_SENT", DataType.STRING_LIST, "&cYou have already sent <player> a party request."),
     PARTY_ALREADY_PARTY("PARTY.ALREADY_IN_PARTY", DataType.STRING_LIST, "&c<player> is already in a party."),
     PARTY_TRANSFER("PARTY.TRANSFER.MEMBERS", DataType.STRING_LIST, "&f<leader> &btransferred the party to f<target>&b."),
-    PARTY_ADVERTISE_ENABLED("PARTY.ADVERTISE.ENABLED", DataType.STRING_LIST, "&bYour party will now be automatically advertised to the public."),
-    PARTY_ADVERTISE_DISABLED("PARTY.ADVERTISE.DISABLED", DataType.STRING_LIST, "&bStopped automatically advertising your party."),
     PARTY_ADVERTISE_MESSAGE("PARTY.ADVERTISE.MESSAGE", DataType.STRING_LIST, "&f<leader> &6wants you in their party! <join>"),
     PARTY_ADVERTISE_JOIN("PARTY.ADVERTISE.JOIN", DataType.STRING, "&a(Join)"),
     PARTY_ADVERTISE_JOIN_HOVER("PARTY.ADVERTISE.JOIN_HOVER", DataType.STRING_LIST, "&aClick to join &f<leader>&a's party."),

@@ -15,11 +15,9 @@ import java.util.stream.Collectors;
 
 public class DivisionService extends IService {
     private static DivisionService instance;
-    private final Neptune plugin;
     public LinkedHashSet<Division> divisions;
 
     public DivisionService() {
-        this.plugin = Neptune.get();
         divisions = new LinkedHashSet<>();
     }
 

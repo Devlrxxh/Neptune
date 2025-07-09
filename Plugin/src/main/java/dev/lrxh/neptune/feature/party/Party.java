@@ -149,14 +149,12 @@ public class Party {
         this.setLeader(target.getUniqueId());
         this.broadcast(MessagesLocale.PARTY_TRANSFER, new Replacement("<leader>", player.getName()), new Replacement("<target>", player.getName()));
     }
-    public boolean advertise() {
-        if (AdvertiseService.has(this)) {
-            AdvertiseService.remove(this);
-            return false;
+    public void advertise() {
+        if (AdvertiseService.get().has(this)) {
+            AdvertiseService.get().remove(this);
         } else {
             this.setOpen(true);
-            AdvertiseService.add(this);
-            return true;
+            AdvertiseService.get().add(this);
         }
     }
 }

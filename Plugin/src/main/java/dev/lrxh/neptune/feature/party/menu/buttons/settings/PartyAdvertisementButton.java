@@ -26,14 +26,14 @@ public class PartyAdvertisementButton extends Button {
             MessagesLocale.PARTY_NO_PERMISSION.send(player);
             return;
         }
-        (party.advertise() ? MessagesLocale.PARTY_ADVERTISE_ENABLED : MessagesLocale.PARTY_ADVERTISE_DISABLED).send(player);
+        party.advertise();
     }
 
     @Override
     public ItemStack getItemStack(Player player) {
         return new ItemBuilder(MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_MATERIAL.getString())
                 .name(MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_TITLE.getString())
-                .lore(AdvertiseService.has(party) ? MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_ENABLED_LORE.getStringList() : MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_DISABLED_LORE.getStringList(), player)
+                .lore(AdvertiseService.get().has(party) ? MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_ENABLED_LORE.getStringList() : MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_DISABLED_LORE.getStringList(), player)
 
                 .build();
     }

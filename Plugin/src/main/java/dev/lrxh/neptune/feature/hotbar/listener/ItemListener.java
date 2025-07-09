@@ -6,6 +6,7 @@ import dev.lrxh.neptune.feature.hotbar.impl.Item;
 import dev.lrxh.neptune.game.match.impl.MatchState;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.utils.Cooldown;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import org.bukkit.GameMode;
@@ -37,7 +38,7 @@ public class ItemListener implements Listener {
         Item clickedItem = Item.getByItemStack(profile.getState(), event.getItem(), player.getUniqueId());
         if (clickedItem == null) return;
 
-        if (profile.cooldown) return;
+        if (profile.hasCooldownEnded("hotbar")) return;
 
 
         if (clickedItem instanceof CustomItem customItem) {
@@ -49,12 +50,6 @@ public class ItemListener implements Listener {
             clickedItem.getAction().execute(player);
         }
 
-        profile.cooldown = true;
-        TaskScheduler.get().startTaskLater(new NeptuneRunnable() {
-            @Override
-            public void run() {
-                profile.cooldown = false;
-            }
-        }, 10);
+        profile.addCooldown("hotbar", new Cooldown(10));
     }
 }

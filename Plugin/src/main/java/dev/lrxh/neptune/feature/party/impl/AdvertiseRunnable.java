@@ -21,11 +21,11 @@ public class AdvertiseRunnable extends NeptuneRunnable {
     }
     @Override
     public void run() {
-        if (!AdvertiseService.has(this)) {
+        if (!AdvertiseService.get().has(this)) {
             this.stop();
             return;
         }
-        if (!party.isOpen()) AdvertiseService.remove(party);
+        if (!party.isOpen()) AdvertiseService.get().remove(party);
         for (Player player : Bukkit.getOnlinePlayers()) {
             Profile profile = API.getProfile(player);
             if (profile == null) return;

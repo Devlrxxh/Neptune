@@ -171,6 +171,6 @@ public class PartyCommand {
             MessagesLocale.PARTY_NO_PERMISSION.send(player);
             return;
         }
-        (party.advertise() ? MessagesLocale.PARTY_ADVERTISE_ENABLED : MessagesLocale.PARTY_ADVERTISE_DISABLED).send(player);
+        party.advertise();
     }
 }

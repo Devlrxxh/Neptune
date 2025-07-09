@@ -21,6 +21,7 @@ import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
+import dev.lrxh.neptune.utils.Cooldown;
 import dev.lrxh.neptune.utils.ItemUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -28,15 +29,13 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 @Setter
 public class Profile {
     private final UUID playerUUID;
-    public boolean cooldown;
+    private Map<String, Cooldown> cooldowns;
     private String username;
     private ProfileState state;
     private Neptune plugin;
@@ -58,6 +57,7 @@ public class Profile {
         this.arenaProcedure = new ArenaProcedure();
         this.kitProcedure = new KitProcedure();
         this.fake = fake;
+        this.cooldowns = new HashMap<>();
 
         load();
     }
@@ -77,6 +77,23 @@ public class Profile {
                 return true;
             }
         }
+        return false;
+    }
+
+    public void addCooldown(String name, Cooldown cooldown) {
+        cooldowns.put(name, cooldown);
+    }
+
+    public boolean hasCooldownEnded(String name) {
+        if (!cooldowns.containsKey(name)) {
+            return true;
+        }
+
+        if (cooldowns.get(name).isExpired()){
+            cooldowns.remove(name);
+            return true;
+        }
+
         return false;
     }
 
@@ -259,7 +276,7 @@ public class Profile {
 
         if (party.getLeader().equals(playerUUID)) {
             party.disband();
-            AdvertiseService.remove(party);
+            AdvertiseService.get().remove(party);
             return;
         }
         party.broadcast(MessagesLocale.PARTY_LEFT,
