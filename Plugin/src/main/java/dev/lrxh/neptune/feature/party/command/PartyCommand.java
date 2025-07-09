@@ -2,6 +2,7 @@ package dev.lrxh.neptune.feature.party.command;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -157,5 +158,19 @@ public class PartyCommand {
             return;
         }
         party.transfer(player, target);
+    }
+    @Command(name = "advertise", desc = "")
+    @Require("neptune.party.advertise")
+    public void advertise(@Sender Player player) {
+        Party party = API.getProfile(player).getGameData().getParty();
+        if (party == null) {
+            MessagesLocale.PARTY_NOT_IN.send(player);
+            return;
+        }
+        if (party.getLeader() != player.getUniqueId()) {
+            MessagesLocale.PARTY_NO_PERMISSION.send(player);
+            return;
+        }
+        (party.advertise() ? MessagesLocale.PARTY_ADVERTISE_ENABLED : MessagesLocale.PARTY_ADVERTISE_DISABLED).send(player);
     }
 }

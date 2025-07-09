@@ -2,6 +2,7 @@ package dev.lrxh.neptune.feature.party.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.feature.party.Party;
+import dev.lrxh.neptune.feature.party.menu.buttons.settings.PartyAdvertisementButton;
 import dev.lrxh.neptune.feature.party.menu.buttons.settings.PartyLimitButton;
 import dev.lrxh.neptune.feature.party.menu.buttons.settings.PartyPrivacyButton;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -25,6 +26,9 @@ public class PartySettingsMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
         buttons.add(new PartyPrivacyButton(MenusLocale.PARTY_SETTINGS_PRIVACY_SLOT.getInt(), party));
         buttons.add(new PartyLimitButton(MenusLocale.PARTY_SETTINGS_MAX_SIZE_SLOT.getInt(), party));
+        buttons.add(new PartyAdvertisementButton(MenusLocale.PARTY_SETTINGS_ADVERTISEMENTS_SLOT.getInt(), party));
+
+
 
         return buttons;
     }
