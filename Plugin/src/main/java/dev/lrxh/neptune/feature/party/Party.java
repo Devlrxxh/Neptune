@@ -3,7 +3,6 @@ package dev.lrxh.neptune.feature.party;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.feature.party.impl.AdvertiseRunnable;
 import dev.lrxh.neptune.feature.party.impl.PartyRequest;
 import dev.lrxh.neptune.feature.party.impl.advertise.AdvertiseService;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -152,10 +151,7 @@ public class Party {
     }
     public boolean advertise() {
         if (AdvertiseService.has(this)) {
-            AdvertiseRunnable runnable = AdvertiseService.getRunnable(this);
-            if (runnable == null || runnable.isCancelled()) {
-                AdvertiseService.remove(this);
-            }
+            AdvertiseService.remove(this);
             return false;
         } else {
             this.setOpen(true);
