@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.match.commands;
 
 
 import com.jonahseguin.drink.annotation.Command;
+import com.jonahseguin.drink.annotation.Flag;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -13,8 +14,12 @@ import org.bukkit.entity.Player;
 
 public class SpectateCommand {
 
-    @Command(name = "", desc = "", usage = "<player>")
-    public void spectate(@Sender Player player, Player target) {
+    @Command(name = "", desc = "", usage = "<player> [-s: silent]")
+    public void spectate(@Sender Player player, Player target, @Flag('s') boolean silent) {
+        if (silent && !player.hasPermission("neptune.silent-spectate")) {
+            player.sendMessage(CC.error("You don't have permission to use this flag!"));
+            return;
+        }
         if (player.getName().equalsIgnoreCase(target.getName())) {
             player.sendMessage(CC.error("You can't spectate yourself!"));
             return;
@@ -38,7 +43,7 @@ public class SpectateCommand {
             return;
         }
 
-        targetProfile.getMatch().addSpectator(player, target, true, true);
+        targetProfile.getMatch().addSpectator(player, target, !silent, true);
     }
 
     @Command(name = "leave", aliases = "quit", desc = "")
