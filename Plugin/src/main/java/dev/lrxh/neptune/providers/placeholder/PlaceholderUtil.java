@@ -162,6 +162,7 @@ public class PlaceholderUtil {
 
             if (match instanceof FfaFightMatch ffaFightMatch) {
                 line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
+                line = line.replaceAll("<max>", String.valueOf(ffaFightMatch.getParticipants().size()));
             }
 
             line = line.replaceAll("<kit>", match.getKit().getDisplayName());

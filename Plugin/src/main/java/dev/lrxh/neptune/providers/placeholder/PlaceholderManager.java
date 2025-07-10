@@ -19,7 +19,7 @@ public class PlaceholderManager {
                 new InMatchPlaceholder(),
                 new QueuedPlaceholder(),
                 new WinsPlaceholder(),
-                new LossesPlaceholder(),
+                new MaxPingPlaceholder(),
                 new CurrentStreakPlaceholder(),
                 new BestStreakPlaceholder(),
                 new LastKitPlaceholder(),
@@ -59,11 +59,16 @@ public class PlaceholderManager {
                 new MaxPlaceholder(),
                 new OpponentMaxPlaceholder(),
                 new InQueuePlaceholder(),
-                new QueueTimePlaceholder(),
                 new IsTeamMatchPlaceholder(),
                 new KitEloPlaceholder(),
                 new DivisionPlaceholder(),
-                new EloPlaceholder()
+                new EloPlaceholder(),
+                new LeaderPlaceholder(),
+                new SizePlaceholder(),
+                new RedAlivePlaceholder(),
+                new BlueAlivePlaceholder(),
+                new RedMaxPlaceholder(),
+                new BlueMaxPlaceholder()
         ));
     }
 

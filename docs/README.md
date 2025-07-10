@@ -1,0 +1,3 @@
+# Documentation
+
+- [Permissions](./permissions.md)
