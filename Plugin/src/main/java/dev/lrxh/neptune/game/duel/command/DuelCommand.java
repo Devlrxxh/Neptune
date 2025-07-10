@@ -85,7 +85,17 @@ public class DuelCommand {
         }
 
         if (!duelRequest.isParty() && targetProfile.getState().equals(ProfileState.IN_PARTY)) {
-            player.sendMessage(CC.error("You can't accept duel requests right now!"));
+            player.sendMessage(CC.error("Duel request couldn't be accepted!"));
+            return;
+        }
+
+        if (duelRequest.isParty() && !profile.getState().equals(ProfileState.IN_PARTY)) {
+            player.sendMessage(CC.error("Duel request couldn't be accepted!"));
+            return;
+        }
+
+        if (duelRequest.isParty() && !targetProfile.getState().equals(ProfileState.IN_PARTY)) {
+            player.sendMessage(CC.error("Duel request couldn't be accepted!"));
             return;
         }
 
