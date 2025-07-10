@@ -13,8 +13,6 @@
 | \<losses> | %neptune_losses%` | The number of losses a player has accumulated |
 | \<currentStreak> | %neptune_currentStreak% | The current win streak of the player |
 
-\* -> The placeholder is not needed since you can use other expansions.
-
 ## In Queue
 
 | Plugin | PlaceholderAPI | Description |
@@ -50,9 +48,6 @@
 | \<kit> | %neptune_kit% | The display name of the kit the match is being played with |
 | \<arena> | %neptune_arena% | The display name of the arena of the match |
 
-\*\* -> The placeholder is only available in BedWars kits.
-\$ -> The PlaceholderAPI version of the placeholder returns "true" if the statement is true, and "false" if otherwise.
-
 ## Solo Match
 
 | Plugin | PlaceholderAPI | Description |
@@ -70,9 +65,6 @@
 | \<playerBlue_ping> | %neptune_player-blue-ping% | The ping of the player in the blue team |
 | \<bed-status><sup style="color: red">**</sup> | %neptune_bed-broken%<sup style="color: red">$</sup> | Whether the player's bed is broken |
 | \<opponent-bed-status><sup style="color: red">**</sup> | %neptune_opponent-bed-broken%<sup style="color: red">$</sup> | Whether the opponent's bed is broken |
-
-\*\* -> The placeholder is only available in BedWars kits.
-\$ -> The PlaceholderAPI version of the placeholder returns "true" if the statement is true, and "false" if otherwise.
 
 ## Team Match
 
@@ -95,3 +87,9 @@
 | ------ | -------------- | ----------- |
 | \<alive> | %neptune_alive% | The number of players alive in the match |
 | \<max> | %neptune_max% | The total number of players that participated in the match |
+
+\* -> The placeholder is not needed since you can use other expansions.
+
+\*\* -> The placeholder is only available in BedWars kits.
+
+\$ -> The PlaceholderAPI version of the placeholder returns "true" if the statement is true, and "false" if otherwise.
