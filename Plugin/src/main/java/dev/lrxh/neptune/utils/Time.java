@@ -23,7 +23,7 @@ public class Time {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
-    public String formatDuration() {
+    public String formatSecondsMillis() {
         if (!stop) {
             lastCurrentTime = System.currentTimeMillis();
         }

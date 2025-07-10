@@ -29,6 +29,10 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
     @Override
     public void run() {
+        if (match.isEnded()) {
+            stop();
+            return;
+        }
         if (!MatchService.get().matches.contains(match)) {
             stop();
             return;

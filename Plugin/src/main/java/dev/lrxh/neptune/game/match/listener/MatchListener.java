@@ -151,13 +151,13 @@ public class MatchListener implements Listener {
                     match.broadcast(MessagesLocale.PARKOUR_CHECKPOINT,
                             new Replacement("<player>", participant.getNameColored()),
                             new Replacement("<checkpoint>", String.valueOf(participant.getCheckPoint())),
-                            new Replacement("<time>", participant.getTime().formatDuration()));
+                            new Replacement("<time>", participant.getTime().formatSecondsMillis()));
                 }
             } else if (blockType.equals(Material.LIGHT_WEIGHTED_PRESSURE_PLATE)) {
                 match.win(participant);
                 match.broadcast(MessagesLocale.PARKOUR_END,
                         new Replacement("<player>", participant.getNameColored()),
-                        new Replacement("<time>", participant.getTime().formatDuration()));
+                        new Replacement("<time>", participant.getTime().formatSecondsMillis()));
             }
         }
     }
