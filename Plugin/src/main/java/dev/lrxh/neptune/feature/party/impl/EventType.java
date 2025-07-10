@@ -9,6 +9,7 @@ import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.utils.CC;
 import lombok.Getter;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -42,36 +43,37 @@ public enum EventType {
     TEAM(MenusLocale.PARTY_EVENTS_SPLIT_SLOT.getInt()) {
         @Override
         public void start(List<Participant> participants, Kit kit) {
-            Collections.shuffle(participants);
+            if (participants.size() < 2) {
+                participants.forEach(p -> p.sendMessage(CC.error("You need at least 2 players to start a duel.")));
+                return;
+            }
 
-            int halfSize = participants.size() / 2;
-            int remainder = participants.size() % 2;
-            List<Participant> teamAList = participants.subList(0, halfSize + remainder);
-            List<Participant> teamBList = participants.subList(halfSize + remainder, participants.size());
+            List<Participant> shuffled = new ArrayList<>(participants);
+            Collections.shuffle(shuffled);
+
+            int half = shuffled.size() / 2;
+            int rem  = shuffled.size() % 2;
+            List<Participant> teamAList = new ArrayList<>(shuffled.subList(0, half + rem));
+            List<Participant> teamBList = new ArrayList<>(shuffled.subList(half + rem, shuffled.size()));
 
             MatchTeam teamA = new MatchTeam(teamAList);
             MatchTeam teamB = new MatchTeam(teamBList);
 
             Arena arena = kit.getRandomArena();
-
             if (arena == null) {
-
-                for (Participant participant : participants) {
-                    participant.sendMessage(CC.error("No arenas were found!"));
-                }
+                participants.forEach(p ->
+                        p.sendMessage(CC.error("No arenas were found! Please contact an admin.")));
                 return;
             }
-
             if (!arena.isSetup()) {
-
-                for (Participant participant : participants) {
-                    participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
-                }
+                participants.forEach(p ->
+                        p.sendMessage(CC.error("Arena wasn't set up properly! Please contact an admin.")));
                 return;
             }
 
             MatchService.get().startMatch(teamA, teamB, kit, arena);
         }
+
     };
 
     final int slot;
