@@ -19,6 +19,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.LocationUtil;
+import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -27,6 +28,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.WindCharge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -96,6 +98,17 @@ public class MatchListener implements Listener {
 
             match.getPlacedBlocks().add(blockLocation);
         } else {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onKnockback(EntityPushedByEntityAttackEvent event) {
+        if (!(event.getPushedBy() instanceof WindCharge windCharge)) return;
+        if (!(windCharge.getShooter() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player target)) return;
+
+        if (!target.canSee(player)) {
             event.setCancelled(true);
         }
     }

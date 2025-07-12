@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Author: Athishh
@@ -23,7 +24,7 @@ import java.util.UUID;
  */
 public class EntityCache implements Listener {
     public static Map<Integer, Entity> entityMap = new HashMap<>();
-    public static Map<Vector3d, UUID> windCharges = new HashMap<>();
+    public static Map<Vector3d, UUID> windCharges = new ConcurrentHashMap<>();
 
     public static Entity getEntityById(int id) {
         return entityMap.get(id);
@@ -33,7 +34,7 @@ public class EntityCache implements Listener {
         Iterator<Map.Entry<Vector3d, UUID>> it = windCharges.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry<Vector3d, UUID> entry = it.next();
-            if (entry.getKey().distance(position) < 1.0) {
+            if (entry.getKey().distanceSquared(position) < 0.5) {
                 UUID owner = entry.getValue();
                 it.remove();
                 return owner;
