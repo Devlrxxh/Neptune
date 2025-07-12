@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -28,19 +29,19 @@ public class EntityCache implements Listener {
         return entityMap.get(id);
     }
 
-    public static UUID getWindChargeOwner(Vector3d vector3d) {
-        UUID owner = null;
-
-        for (Map.Entry<Vector3d, UUID> entry : windCharges.entrySet()) {
-            if (entry.getKey().distance(vector3d) < 1.0) {
-                owner = entry.getValue();
-                break;
+    public static UUID getWindChargeOwner(Vector3d position) {
+        Iterator<Map.Entry<Vector3d, UUID>> it = windCharges.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Vector3d, UUID> entry = it.next();
+            if (entry.getKey().distance(position) < 1.0) {
+                UUID owner = entry.getValue();
+                it.remove();
+                return owner;
             }
         }
-
-        windCharges.remove(vector3d);
-        return owner;
+        return null;
     }
+
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEntitySpawn(EntitySpawnEvent event) {
