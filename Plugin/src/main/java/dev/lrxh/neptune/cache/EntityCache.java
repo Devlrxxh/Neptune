@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.cache;
 
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import com.destroystokyo.paper.event.player.PlayerLaunchProjectileEvent;
+import com.github.retrooper.packetevents.util.Vector3d;
+import org.bukkit.Location;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -13,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * @Author: Athishh
@@ -21,9 +22,24 @@ import java.util.Map;
  */
 public class EntityCache implements Listener {
     public static Map<Integer, Entity> entityMap = new HashMap<>();
+    public static Map<Vector3d, UUID> windCharges = new HashMap<>();
 
     public static Entity getEntityById(int id) {
         return entityMap.get(id);
+    }
+
+    public static UUID getWindChargeOwner(Vector3d vector3d) {
+        UUID owner = null;
+
+        for (Map.Entry<Vector3d, UUID> entry : windCharges.entrySet()) {
+            if (entry.getKey().distance(vector3d) < 1.0) {
+                owner = entry.getValue();
+                break;
+            }
+        }
+
+        windCharges.remove(vector3d);
+        return owner;
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
@@ -74,5 +90,15 @@ public class EntityCache implements Listener {
     public void onItemDespawn(ItemDespawnEvent event) {
         Item item = event.getEntity();
         entityMap.remove(item.getEntityId());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onMaceUse(ProjectileHitEvent event) {
+        if (!(event.getEntity() instanceof WindCharge windCharge)) return;
+        if (!(windCharge.getShooter() instanceof Player player)) return;
+
+        Vector3d position = new Vector3d(windCharge.getLocation().getX(), windCharge.getLocation().getY(), windCharge.getLocation().getZ());
+
+        windCharges.put(position, player.getUniqueId());
     }
 }

@@ -2,28 +2,30 @@ package dev.lrxh.neptune.providers.hider.listeners;
 
 import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
+import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.wrapper.play.server.*;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
+import dev.lrxh.neptune.utils.ServerUtils;
+import io.github.retrooper.packetevents.util.SpigotConversionUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
+import org.bukkit.Location;
+import org.bukkit.entity.*;
 
 import java.util.UUID;
 
 /**
  * Author: Athishh
- * Package: me.athishh.lotus.core.user.hider.listeners
+ * Package: dev.lrxh.neptune.providers.hider.listeners
  * Created on: 1/20/2024
  */
 public class PacketInterceptor extends PacketListenerAbstract {
 
     public PacketInterceptor() {
-        super(PacketListenerPriority.NORMAL);
+        super(PacketListenerPriority.MONITOR);
     }
 
     @Override
@@ -41,6 +43,7 @@ public class PacketInterceptor extends PacketListenerAbstract {
 
         if (event.getPacketType() == PacketType.Play.Server.SPAWN_ENTITY) {
             WrapperPlayServerSpawnEntity wrapper = new WrapperPlayServerSpawnEntity(event);
+
             int entityID = wrapper.getEntityId();
             Entity entity = EntityCache.getEntityById(entityID);
             if (entity == null) return;
@@ -60,19 +63,27 @@ public class PacketInterceptor extends PacketListenerAbstract {
                 if (receiver.canSee(dropper)) return;
                 event.setCancelled(true);
             }
+        } else if (event.getPacketType() == PacketType.Play.Server.EXPLOSION) {
+            WrapperPlayServerExplosion wrapper = new WrapperPlayServerExplosion(event);
+            UUID owner = EntityCache.getWindChargeOwner(wrapper.getPosition());
+            if (owner == null) return;
+            Player shooter = Bukkit.getPlayer(owner);
+            if (shooter == null) return;
+            if (receiver.canSee(shooter)) return;
+            event.setCancelled(true);
         } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_SOUND_EFFECT) {
-
             WrapperPlayServerEntitySoundEffect wrapper = new WrapperPlayServerEntitySoundEffect(event);
             if (EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
                 if (receiver.canSee(player)) return;
                 event.setCancelled(true);
             }
-
-            /*
-             * PLAYER_INFO_REMOVE removes player from tablist, but its fired by both hidePlayer() & on Player quit.
-             * We need to cancel the packet only if its fired by hidePlayer() ie only if the player is online.
-             * */
-        } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
+        } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_EFFECT) {
+            WrapperPlayServerEntityEffect wrapper = new WrapperPlayServerEntityEffect(event);
+            if (EntityCache.getEntityById(wrapper.getEntityId()) instanceof Player player) {
+                if (receiver.canSee(player)) return;
+                event.setCancelled(true);
+            }
+        }  else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
             WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
             Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));
             if (player != null) event.setCancelled(true);

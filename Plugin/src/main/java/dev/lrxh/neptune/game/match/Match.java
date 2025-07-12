@@ -111,10 +111,10 @@ public abstract class Match {
 
         if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
-        player.setGameMode(GameMode.SPECTATOR);
         player.teleport(target.getLocation());
         player.setAllowFlight(true);
         player.setFlying(true);
+        player.setGameMode(GameMode.SPECTATOR);
         MatchSpectatorAddEvent event = new MatchSpectatorAddEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
     }
