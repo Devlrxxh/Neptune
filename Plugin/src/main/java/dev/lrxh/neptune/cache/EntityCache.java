@@ -94,13 +94,43 @@ public class EntityCache implements Listener {
         entityMap.remove(item.getEntityId());
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    private Vector3d snap(Vector3d v) {
+        double x = Math.round(v.getX() * 2) / 2.0;
+        double y = Math.round(v.getY() * 2) / 2.0;
+        double z = Math.round(v.getZ() * 2) / 2.0;
+        return new Vector3d(x, y, z);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMaceUse(ProjectileHitEvent event) {
         if (!(event.getEntity() instanceof WindCharge windCharge)) return;
         if (!(windCharge.getShooter() instanceof Player player)) return;
 
-        Vector3d position = new Vector3d(windCharge.getLocation().getX(), windCharge.getLocation().getY(), windCharge.getLocation().getZ());
+        Vector3d rawPos = new Vector3d(
+                windCharge.getLocation().getX(),
+                windCharge.getLocation().getY(),
+                windCharge.getLocation().getZ()
+        );
+
+        Vector3d position = snap(rawPos);
 
         windCharges.put(position, player.getUniqueId());
     }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onMaceSmashDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof WindCharge windCharge)) return;
+        if (!(windCharge.getShooter() instanceof Player player)) return;
+
+        Vector3d raw = new Vector3d(
+                windCharge.getLocation().getX(),
+                windCharge.getLocation().getY(),
+                windCharge.getLocation().getZ()
+        );
+        Vector3d key = snap(raw);
+        windCharges.put(key, player.getUniqueId());
+    }
+
+
+
 }

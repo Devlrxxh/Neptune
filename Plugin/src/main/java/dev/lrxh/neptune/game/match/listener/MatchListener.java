@@ -102,13 +102,20 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onKnockback(EntityPushedByEntityAttackEvent event) {
-        if (!(event.getPushedBy() instanceof WindCharge windCharge)) return;
-        if (!(windCharge.getShooter() instanceof Player player)) return;
-        if (!(event.getEntity() instanceof Player target)) return;
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityPush(EntityPushedByEntityAttackEvent event) {
+        if (!(event.getPushedBy() instanceof WindCharge wc)) return;
+        Entity pushed = event.getEntity();
 
-        if (!target.canSee(player)) {
+        if (!(wc.getShooter() instanceof Player shooter)) {
+            event.setCancelled(true);
+            return;
+        }
+        if (!(pushed instanceof Player target)) {
+            return;
+        }
+
+        if (!target.canSee(shooter) || !shooter.canSee(target)) {
             event.setCancelled(true);
         }
     }
