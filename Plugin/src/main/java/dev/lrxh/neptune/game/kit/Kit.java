@@ -38,8 +38,9 @@ public class Kit {
     private int queue, playing, slot, kitEditorSlot;
     private double health;
     private List<PotionEffect> potionEffects;
+    private double damageMultiplier;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot, List<PotionEffect> potionEffects) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot, List<PotionEffect> potionEffects, double damageMultiplier) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -52,6 +53,7 @@ public class Kit {
         this.health = health;
         this.kitEditorSlot = kitEditorSlot;
         this.potionEffects = potionEffects;
+        this.damageMultiplier = damageMultiplier;
 
         addToProfiles();
     }

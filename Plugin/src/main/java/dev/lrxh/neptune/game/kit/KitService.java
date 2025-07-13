@@ -40,6 +40,7 @@ public class KitService extends IService {
                 int slot = config.getInt(path + "slot", kits.size() + 1);
                 int kitEditorSlot = config.getInt(path + "kitEditor-slot", slot);
                 double health = config.getDouble(path + "health", 20);
+                double damageMultiplier = config.getDouble(path + "damage-multiplier", 1.0);
 
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
@@ -60,7 +61,7 @@ public class KitService extends IService {
                     }
                 }
 
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, health, kitEditorSlot, potionEffects));
+                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, health, kitEditorSlot, potionEffects, damageMultiplier));
             }
         }
     }
@@ -88,6 +89,7 @@ public class KitService extends IService {
             values.add(new Value("slot", kit.getSlot()));
             values.add(new Value("health", kit.getHealth()));
             values.add(new Value("kitEditor-slot", kit.getKitEditorSlot()));
+            values.add(new Value("damage-multiplier", kit.getDamageMultiplier()));
 
             for (Map.Entry<KitRule, Boolean> kitRuleEntry : kit.getRules().entrySet()) {
                 values.add(new Value(kitRuleEntry.getKey().getSaveName(), kit.is(kitRuleEntry.getKey())));

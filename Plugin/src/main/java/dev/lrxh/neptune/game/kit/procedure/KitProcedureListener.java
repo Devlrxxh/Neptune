@@ -124,6 +124,19 @@ public class KitProcedureListener implements Listener {
                     return;
                 }
             }
+            case SET_DAMAGE_MULTIPLIER -> {
+                event.setCancelled(true);
+                try {
+                    double damageMultiplier = Double.parseDouble(input);
+                    profile.getKitProcedure().setType(KitProcedureType.NONE);
+                    profile.getKitProcedure().getKit().setDamageMultiplier(damageMultiplier);
+                    player.sendMessage(CC.success("Set damage multiplier"));
+                    new KitManagementMenu(profile.getKitProcedure().getKit()).open(player);
+                } catch (NumberFormatException e) {
+                    player.sendMessage(CC.error("Invalid number! Try again or send \"cancel\"."));
+                    return;
+                }
+            }
 
         }
         profile.getKitProcedure().setKit(null);
