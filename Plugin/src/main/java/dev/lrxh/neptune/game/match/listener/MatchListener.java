@@ -429,7 +429,7 @@ public class MatchListener implements Listener {
         if (event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(player);
             if (profile == null) return;
-            if (event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
+            if (!event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
             Match match = profile.getMatch();
             if (match == null) {
                 event.setCancelled(true);
@@ -459,7 +459,10 @@ public class MatchListener implements Listener {
 
             if (match.getParticipant(player).isDead()) {
                 event.setCancelled(true);
+                return;
             }
+
+            event.setDamage(event.getDamage() * kit.getDamageMultiplier());
         }
     }
 
