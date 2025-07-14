@@ -9,6 +9,7 @@ import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.EntityUtils;
 import dev.lrxh.neptune.utils.ServerUtils;
+import dev.lrxh.neptune.utils.WorldUtils;
 import io.papermc.paper.event.block.BlockBreakBlockEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -368,7 +369,7 @@ public class BlockTracker implements Listener {
     }
 
     private Player getNearbyPlayer(Location location) {
-        return location.getNearbyPlayers(10, 10, 10)
+        return WorldUtils.getPlayersInRadius(location, 10)
                 .stream()
                 .findFirst()
                 .orElse(null);

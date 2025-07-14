@@ -96,10 +96,12 @@ public class EntityHider {
 
         return (policy == Policy.WHITELIST) == presence;
     }
+
     public static boolean isVisible(Player observer, Entity entity) {
         if (entity == null) return true;
         return isVisible(observer, entity.getEntityId());
     }
+
     public static boolean isOwnedByHiddenPlayer(Entity entity, Player receiver) {
         if (entity instanceof Projectile projectile && projectile.getShooter() instanceof Player shooter) {
             return !EntityHider.isVisible(receiver, shooter.getEntityId());
@@ -110,6 +112,7 @@ public class EntityHider {
         }
         return false;
     }
+
     public static boolean isEntityHidden(Entity entity, Player observer) {
         if (entity == null) return false;
 

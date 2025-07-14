@@ -52,7 +52,7 @@ public enum EventType {
             Collections.shuffle(shuffled);
 
             int half = shuffled.size() / 2;
-            int rem  = shuffled.size() % 2;
+            int rem = shuffled.size() % 2;
             List<Participant> teamAList = new ArrayList<>(shuffled.subList(0, half + rem));
             List<Participant> teamBList = new ArrayList<>(shuffled.subList(half + rem, shuffled.size()));
 

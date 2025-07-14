@@ -4,14 +4,16 @@ import com.github.retrooper.packetevents.event.PacketListenerAbstract;
 import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.protocol.packettype.PacketType;
-import com.github.retrooper.packetevents.wrapper.play.server.*;
 import com.github.retrooper.packetevents.util.Vector3d;
 import com.github.retrooper.packetevents.util.Vector3i;
+import com.github.retrooper.packetevents.wrapper.play.server.*;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
 import org.bukkit.Bukkit;
-import org.bukkit.Particle;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Item;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 
 import java.util.Queue;
 import java.util.UUID;
@@ -107,9 +109,7 @@ public class PacketInterceptor extends PacketListenerAbstract {
             if (shooter != null && !receiver.canSee(shooter)) {
                 event.setCancelled(true);
             }
-        }
-
-        else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
+        } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
             WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
             Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));
             if (player != null && !receiver.canSee(player)) {

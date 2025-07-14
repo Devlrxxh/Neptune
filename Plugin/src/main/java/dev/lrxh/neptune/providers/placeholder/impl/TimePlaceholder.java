@@ -16,7 +16,8 @@ public class TimePlaceholder implements Placeholder {
         if (string.equals("time")) {
             Match match = profile.getMatch();
             if (match != null && !match.isEnded()) return match.getTime().formatTime();
-            if (profile.getState().equals(ProfileState.IN_QUEUE)) return QueueService.get().get(player.getUniqueId()).getTime().formatTime();
+            if (profile.getState().equals(ProfileState.IN_QUEUE))
+                return QueueService.get().get(player.getUniqueId()).getTime().formatTime();
         }
 
         return string;

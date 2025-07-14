@@ -18,11 +18,9 @@ public class MaxPlaceholder implements Placeholder {
             if (match == null) return "";
             if (match instanceof TeamFightMatch tfm) {
                 return String.valueOf(tfm.getParticipantTeam(match.getParticipant(player.getUniqueId())).getParticipants().size());
-            }
-            else if (match instanceof FfaFightMatch ffm) {
+            } else if (match instanceof FfaFightMatch ffm) {
                 return String.valueOf(ffm.getParticipants().size());
-            }
-            else return "";
+            } else return "";
         }
 
         return string;

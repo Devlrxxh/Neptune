@@ -18,11 +18,9 @@ public class AlivePlaceholder implements Placeholder {
             if (match == null) return "";
             if (match instanceof TeamFightMatch tfm) {
                 return String.valueOf(tfm.getParticipantTeam(match.getParticipant(player.getUniqueId())).getAliveParticipants());
-            }
-            else if (match instanceof FfaFightMatch ffm) {
+            } else if (match instanceof FfaFightMatch ffm) {
                 return String.valueOf(ffm.getParticipants().size() - ffm.deadParticipants.size());
-            }
-            else return "";
+            } else return "";
         }
 
         return string;

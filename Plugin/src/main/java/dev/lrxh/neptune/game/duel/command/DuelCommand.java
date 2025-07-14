@@ -13,14 +13,11 @@ import dev.lrxh.neptune.profile.data.GameData;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.providers.request.Request;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.Optional;
 import java.util.UUID;
-import java.util.Map.Entry;
 
 public class DuelCommand {
 
@@ -205,6 +202,7 @@ public class DuelCommand {
 
         playerGameData.removeRequest(uuid);
     }
+
     @Command(name = "deny", desc = "", usage = "<player>")
     public void deny(@Sender Player player, Player target) {
         Profile profile = API.getProfile(player);

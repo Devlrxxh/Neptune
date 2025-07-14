@@ -6,25 +6,28 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.utils.TtlHashMap;
 import org.bukkit.Bukkit;
-import org.bukkit.Particle;
 import org.bukkit.entity.*;
-import org.bukkit.event.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.entity.*;
-import org.bukkit.event.player.*;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 
 public class EntityCache implements Listener {
-    public static Map<Integer, Entity> entityMap = new HashMap<>();
     public static final Map<Vector3d, ShooterData> windCharges = new ConcurrentHashMap<>();
     public static final Map<Vector3i, Queue<ShooterData>> potionEffects = new TtlHashMap<>(5000);
     public static final Map<Vector3i, Queue<ShooterData>> particleShooters = new TtlHashMap<>(5000);
-
+    public static Map<Integer, Entity> entityMap = new HashMap<>();
 
     public static Entity getEntityById(int id) {
         return entityMap.get(id);
     }
+
     public static void recordShooterAt(Vector3d pos, UUID shooterId) {
         Vector3i blockPos = new Vector3i(
                 (int) pos.getX(),
@@ -81,6 +84,13 @@ public class EntityCache implements Listener {
             }
         }
         return bestMatch;
+    }
+
+    public static Vector3d snap(Vector3d v) {
+        double x = Math.round(v.getX() * 2) / 2.0;
+        double y = Math.round(v.getY() * 2) / 2.0;
+        double z = Math.round(v.getZ() * 2) / 2.0;
+        return new Vector3d(x, y, z);
     }
 
     private void registerVisibility(Entity entity, Player owner) {
@@ -184,14 +194,6 @@ public class EntityCache implements Listener {
         Item item = event.getEntity();
         entityMap.remove(item.getEntityId());
     }
-
-    public static Vector3d snap(Vector3d v) {
-        double x = Math.round(v.getX() * 2) / 2.0;
-        double y = Math.round(v.getY() * 2) / 2.0;
-        double z = Math.round(v.getZ() * 2) / 2.0;
-        return new Vector3d(x, y, z);
-    }
-
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onMaceUse(ProjectileHitEvent event) {

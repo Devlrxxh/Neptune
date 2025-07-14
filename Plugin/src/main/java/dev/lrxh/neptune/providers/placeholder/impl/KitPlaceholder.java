@@ -16,8 +16,10 @@ public class KitPlaceholder implements Placeholder {
         if (string.equals("kit")) {
             Match match = profile.getMatch();
             if (match != null && !match.isEnded()) return match.getKit().getDisplayName();
-            else if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) profile.getGameData().getKitEditor().getDisplayName();
-            else if (profile.getState().equals(ProfileState.IN_QUEUE)) QueueService.get().get(player.getUniqueId()).getKit().getDisplayName();
+            else if (profile.getState().equals(ProfileState.IN_KIT_EDITOR))
+                profile.getGameData().getKitEditor().getDisplayName();
+            else if (profile.getState().equals(ProfileState.IN_QUEUE))
+                QueueService.get().get(player.getUniqueId()).getKit().getDisplayName();
             else return "";
         }
 

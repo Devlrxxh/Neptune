@@ -23,8 +23,6 @@ import org.bukkit.event.world.ChunkUnloadEvent;
 
 import java.util.LinkedList;
 
-import static dev.lrxh.neptune.cache.EntityCache.potionEffects;
-
 /**
  * @Author: Athishh
  * Package: me.athishh.lotus.core.user.hider.listeners
