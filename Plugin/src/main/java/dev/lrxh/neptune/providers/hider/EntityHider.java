@@ -9,6 +9,7 @@ import lombok.Getter;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import java.util.UUID;
  * @version Lotus
  * @since 20/1/2024
  */
+
 @SuppressWarnings({"unused"})
 public class EntityHider {
 
@@ -93,6 +95,38 @@ public class EntityHider {
         boolean presence = getMembership(observer, entityID);
 
         return (policy == Policy.WHITELIST) == presence;
+    }
+    public static boolean isVisible(Player observer, Entity entity) {
+        if (entity == null) return true;
+        return isVisible(observer, entity.getEntityId());
+    }
+    public static boolean isOwnedByHiddenPlayer(Entity entity, Player receiver) {
+        if (entity instanceof Projectile projectile && projectile.getShooter() instanceof Player shooter) {
+            return !EntityHider.isVisible(receiver, shooter.getEntityId());
+        }
+        if (entity instanceof Item item) {
+            Player dropper = EntityHider.getPlayerWhoDropped(item);
+            return dropper != null && !EntityHider.isVisible(receiver, dropper.getEntityId());
+        }
+        return false;
+    }
+    public static boolean isEntityHidden(Entity entity, Player observer) {
+        if (entity == null) return false;
+
+        if (entity instanceof Player player) {
+            return !isVisible(observer, player.getEntityId());
+        }
+
+        if (entity instanceof Projectile projectile && projectile.getShooter() instanceof Player shooter) {
+            return !isVisible(observer, shooter.getEntityId());
+        }
+
+        if (entity instanceof Item item) {
+            Player dropper = getPlayerWhoDropped(item);
+            return dropper != null && !isVisible(observer, dropper.getEntityId());
+        }
+
+        return !isVisible(observer, entity.getEntityId());
     }
 
     /**
