@@ -51,6 +51,7 @@ public class DrinkCommandContainer extends Command implements PluginIdentifiable
         final String p = prefix.toLowerCase();
         List<String> suggestions = new ArrayList<>();
         for (DrinkCommand c : commands.values()) {
+            if (c.isHidden()) continue;
             for (String alias : c.getAllAliases()) {
                 if (alias.length() > 0) {
                     if (p.length() == 0 || alias.toLowerCase().startsWith(p)) {

@@ -55,7 +55,7 @@ public class CommandExtractor {
             }
             DrinkCommand drinkCommand = new DrinkCommand(
                     commandService, command.name(), Sets.newHashSet(command.aliases()), command.desc(), command.usage(), command.async(),
-                    perm, handler, method
+                    perm, command.hidden(), handler, method
             );
             return Optional.of(drinkCommand);
         }
