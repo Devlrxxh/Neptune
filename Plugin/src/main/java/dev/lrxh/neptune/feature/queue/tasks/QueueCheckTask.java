@@ -5,6 +5,7 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.game.arena.Arena;
+import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.MatchService;
@@ -84,6 +85,11 @@ public class QueueCheckTask extends NeptuneRunnable {
                 PlayerUtil.sendMessage(uuid1, CC.error("No valid arena was found for this kit!"));
                 PlayerUtil.sendMessage(uuid2, CC.error("No valid arena was found for this kit!"));
                 continue;
+            }
+
+            if (arena instanceof StandAloneArena standAloneArena) {
+                standAloneArena.getFlowStage().addViewer(player1);
+                standAloneArena.getFlowStage().addViewer(player2);
             }
 
             Participant participant1 = new Participant(player1);

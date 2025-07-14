@@ -4,6 +4,7 @@ import com.github.retrooper.packetevents.PacketEvents;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;
+import dev.lrxh.blockFlow.BlockFlow;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.EntityCacheRunnable;
@@ -86,6 +87,7 @@ public final class Neptune extends JavaPlugin {
     private boolean allowJoin;
     @Setter
     private boolean allowMatches;
+    private BlockFlow blockFlow;
 
     public static Neptune get() {
         return instance;
@@ -103,6 +105,7 @@ public final class Neptune extends JavaPlugin {
     private void loadManager() {
         loadExtensions();
         if (!isEnabled()) return;
+        initAPIs();
 
         ConfigService.get().load();
 
@@ -123,7 +126,6 @@ public final class Neptune extends JavaPlugin {
         loadCommandManager();
         loadTasks();
         loadWorlds();
-        initAPIs();
 
         if (ScoreboardLocale.ENABLED_SCOREBOARD.getBoolean()) {
             new FastManager(this, new ScoreboardAdapter());
@@ -136,7 +138,7 @@ public final class Neptune extends JavaPlugin {
         entityHider = new EntityHider(this, EntityHider.Policy.BLACKLIST);
 
         PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
-        PacketEvents.getAPI().init();
+        blockFlow = new BlockFlow(this);
     }
 
     private void registerListeners() {
