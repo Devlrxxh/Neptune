@@ -6,6 +6,7 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.providers.hider.EntityHider;
 import dev.lrxh.neptune.utils.TtlHashMap;
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
 import org.bukkit.entity.*;
 import org.bukkit.event.*;
 import org.bukkit.event.entity.*;
