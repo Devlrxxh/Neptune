@@ -10,6 +10,7 @@ import com.github.retrooper.packetevents.util.Vector3i;
 import dev.lrxh.neptune.cache.EntityCache;
 import dev.lrxh.neptune.cache.ItemCache;
 import org.bukkit.Bukkit;
+import org.bukkit.Particle;
 import org.bukkit.entity.*;
 
 import java.util.Queue;
@@ -63,6 +64,7 @@ public class PacketInterceptor extends PacketListenerAbstract {
             }
 
         } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_SOUND_EFFECT) {
+
             WrapperPlayServerEntitySoundEffect wrapper = new WrapperPlayServerEntitySoundEffect(event);
             Entity entity = EntityCache.getEntityById(wrapper.getEntityId());
             if (entity instanceof Player player && !receiver.canSee(player)) {

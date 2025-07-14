@@ -243,7 +243,7 @@ public abstract class Match {
         Participant participant = getParticipant(playerUUID);
         participant.setLastAttacker(null);
         kit.giveLoadout(participant);
-        player.getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(kit.getHealth());
+        player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(kit.getHealth());
         player.setHealth(kit.getHealth());
         player.sendHealthUpdate();
 
