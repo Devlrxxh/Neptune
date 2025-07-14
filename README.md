@@ -1,4 +1,4 @@
-![image(1)](https://github.com/user-attachments/assets/ef3643ed-7dd9-4875-9807-c91d7efd8fae)
+<img width="2000" height="1000" alt="image(6)" src="https://github.com/user-attachments/assets/76ecdb11-ead6-4598-9d0c-4327503df5ec" />
 ---
 
 ## ✨ Features
