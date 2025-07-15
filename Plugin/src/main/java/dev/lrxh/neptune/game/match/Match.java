@@ -111,16 +111,22 @@ public abstract class Match {
 
         if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
-        player.teleport(target.getLocation());
-        player.setAllowFlight(true);
-        player.setFlying(true);
-        player.setGameMode(GameMode.SPECTATOR);
+        player.teleportAsync(target.getLocation()).thenAccept(bool -> {;
+            player.setAllowFlight(true);
+            player.setFlying(true);
+            player.setGameMode(GameMode.SPECTATOR);
+        });
         MatchSpectatorAddEvent event = new MatchSpectatorAddEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(player -> forEachPlayer(participiantPlayer -> player.showPlayer(Neptune.get(), participiantPlayer)));
+        forEachSpectator(player -> {
+            forEachPlayer(participiantPlayer -> {
+                player.showPlayer(Neptune.get(), participiantPlayer);
+                participiantPlayer.hidePlayer(Neptune.get(), player);
+            });
+        });
     }
 
     public void forEachPlayer(Consumer<Player> action) {
