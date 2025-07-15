@@ -468,13 +468,8 @@ public class MatchListener implements Listener {
                 }
             }
 
-            if (kit.is(KitRule.BOXING)) {
-                event.setDamage(0);
-                return;
-            }
-
             if (!kit.is(KitRule.DAMAGE)) {
-                event.setCancelled(true);
+                event.setDamage(0);
                 return;
             }
 
