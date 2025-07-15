@@ -17,7 +17,6 @@ import org.bukkit.entity.Projectile;
 
 import java.util.Queue;
 import java.util.UUID;
-
 public class PacketInterceptor extends PacketListenerAbstract {
 
     public PacketInterceptor() {
@@ -26,16 +25,10 @@ public class PacketInterceptor extends PacketListenerAbstract {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
-        if (event.getUser() == null) {
-            return;
-        }
-        if (event.getUser().getUUID() == null) {
-            return;
-        }
+        if (event.getUser() == null || event.getUser().getUUID() == null) return;
+
         Player receiver = Bukkit.getPlayer(event.getUser().getUUID());
-        if (receiver == null) {
-            return;
-        }
+        if (receiver == null) return;
 
         if (event.getPacketType() == PacketType.Play.Server.SPAWN_ENTITY) {
             WrapperPlayServerSpawnEntity wrapper = new WrapperPlayServerSpawnEntity(event);
@@ -59,18 +52,33 @@ public class PacketInterceptor extends PacketListenerAbstract {
         } else if (event.getPacketType() == PacketType.Play.Server.EXPLOSION) {
             WrapperPlayServerExplosion wrapper = new WrapperPlayServerExplosion(event);
             Vector3d position = wrapper.getPosition();
-            UUID owner = EntityCache.getWindChargeOwner(position);
-            Player shooter = (owner != null) ? Bukkit.getPlayer(owner) : null;
-            if (shooter != null && !receiver.canSee(shooter)) {
-                event.setCancelled(true);
+
+            UUID shooterId = EntityCache.getShooterAt(position);
+            if (shooterId != null) {
+                Player shooter = Bukkit.getPlayer(shooterId);
+                if (shooter != null && !receiver.canSee(shooter)) {
+                    event.setCancelled(true);
+                }
             }
 
         } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_SOUND_EFFECT) {
-
             WrapperPlayServerEntitySoundEffect wrapper = new WrapperPlayServerEntitySoundEffect(event);
             Entity entity = EntityCache.getEntityById(wrapper.getEntityId());
             if (entity instanceof Player player && !receiver.canSee(player)) {
                 event.setCancelled(true);
+            }
+
+        } else if (event.getPacketType() == PacketType.Play.Server.SOUND_EFFECT) {
+            WrapperPlayServerSoundEffect wrapper = new WrapperPlayServerSoundEffect(event);
+            Vector3i raw = wrapper.getEffectPosition();
+            Vector3d worldPos = new Vector3d(raw.getX() / 8.0, raw.getY() / 8.0, raw.getZ() / 8.0);
+
+            UUID shooterId = EntityCache.getShooterAt(worldPos);
+            if (shooterId != null) {
+                Player shooter = Bukkit.getPlayer(shooterId);
+                if (shooter == null || !receiver.canSee(shooter)) {
+                    event.setCancelled(true);
+                }
             }
 
         } else if (event.getPacketType() == PacketType.Play.Server.ENTITY_EFFECT) {
@@ -82,33 +90,40 @@ public class PacketInterceptor extends PacketListenerAbstract {
 
         } else if (event.getPacketType() == PacketType.Play.Server.EFFECT) {
             WrapperPlayServerEffect wrapper = new WrapperPlayServerEffect(event);
-            Vector3i pos = wrapper.getPosition();
-            Queue<EntityCache.ShooterData> queue = EntityCache.potionEffects.get(pos);
+            Vector3i raw = wrapper.getPosition();
+            Vector3d pos = new Vector3d(raw.getX(), raw.getY(), raw.getZ());
 
-            if (queue == null || queue.isEmpty()) return;
-
-            EntityCache.ShooterData data = queue.peek();
-            if (data == null || System.currentTimeMillis() - data.timestamp() > 5000) return;
-
-            Player shooter = Bukkit.getPlayer(data.shooterId());
-            if (shooter == null || !receiver.canSee(shooter)) {
-                event.setCancelled(true);
+            UUID shooterId = EntityCache.getShooterAt(pos);
+            if (shooterId != null) {
+                Player shooter = Bukkit.getPlayer(shooterId);
+                if (shooter == null || !receiver.canSee(shooter)) {
+                    event.setCancelled(true);
+                }
             }
-
 
         } else if (event.getPacketType() == PacketType.Play.Server.PARTICLE) {
             WrapperPlayServerParticle wrapper = new WrapperPlayServerParticle(event);
-            String particleName = wrapper.getParticle().getType().getName().getKey();
             Vector3d pos = wrapper.getPosition();
             UUID shooterId = EntityCache.getShooterAt(pos);
+            if (shooterId != null) {
+                Player shooter = Bukkit.getPlayer(shooterId);
+                if (shooter != null && !receiver.canSee(shooter)) {
+                    event.setCancelled(true);
+                }
+            }
 
-            if (shooterId == null) {
-                return;
+        } else if (event.getPacketType() == PacketType.Play.Server.SPAWN_EXPERIENCE_ORB) {
+            WrapperPlayServerSpawnExperienceOrb wrapper = new WrapperPlayServerSpawnExperienceOrb(event);
+            Vector3d pos = new Vector3d(wrapper.getX(), wrapper.getY(), wrapper.getZ());
+            UUID shooterId = EntityCache.getShooterAt(pos);
+
+            if (shooterId != null) {
+                Player shooter = Bukkit.getPlayer(shooterId);
+                if (shooter == null || !receiver.canSee(shooter)) {
+                    event.setCancelled(true);
+                }
             }
-            Player shooter = Bukkit.getPlayer(shooterId);
-            if (shooter != null && !receiver.canSee(shooter)) {
-                event.setCancelled(true);
-            }
+
         } else if (event.getPacketType() == PacketType.Play.Server.PLAYER_INFO_REMOVE) {
             WrapperPlayServerPlayerInfoRemove wrapper = new WrapperPlayServerPlayerInfoRemove(event);
             Player player = Bukkit.getPlayer(wrapper.getProfileIds().get(0));
