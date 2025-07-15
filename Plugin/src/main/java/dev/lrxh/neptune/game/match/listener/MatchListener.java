@@ -19,6 +19,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.LocationUtil;
+import dev.lrxh.neptune.utils.WorldUtils;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -45,6 +46,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MatchListener implements Listener {
@@ -521,38 +523,38 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (player.getGameMode() == GameMode.CREATIVE) return;
         Profile profile = API.getProfile(player);
-        if (event.getBlock().getType() == Material.FIRE) return;
         if (profile == null) return;
-        if (profile.getState().equals(ProfileState.IN_LOBBY)) {
+        if (profile.getState() == ProfileState.IN_LOBBY || profile.getState() == ProfileState.IN_SPECTATOR) {
             event.setCancelled(true);
             return;
         }
-        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
-            event.setCancelled(true);
-            return;
-        }
+
         Match match = profile.getMatch();
-        Location blockLocation = event.getBlock().getLocation();
-        Material blockType = event.getBlock().getType();
         if (match == null) return;
+
+        Material blockType = event.getBlock().getType();
+        Location blockLocation = event.getBlock().getLocation();
+
+        if (blockType == Material.FIRE) return;
         if (blockType.name().contains("BED")) return;
 
-        if (match.getKit().is(KitRule.BUILD)) {
-            event.setCancelled(!match.getPlacedBlocks().contains(blockLocation));
-        } else {
-            event.setCancelled(true);
+        boolean cancel = true;
+
+        if (match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation)) {
+            cancel = false;
+        } else if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
+            if (match.getArena() instanceof StandAloneArena standAloneArena) {
+                if (standAloneArena.getWhitelistedBlocks().contains(blockType)) {
+                    cancel = false;
+                }
+            }
         }
 
-        if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-            if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                event.setCancelled(!standAloneArena.getWhitelistedBlocks().contains(blockType));
-            }
-        } else {
-            event.setCancelled(true);
-        }
+        event.setCancelled(cancel);
     }
+
 
     @EventHandler()
     public void onBedBreak(BlockBreakEvent event) {
@@ -615,10 +617,9 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onExplode(BlockExplodeEvent event) {
-        event.setYield(0);
-        Player player = getPlayer(event.getBlock().getLocation());
+        Player player = getNearbyPlayer(event.getBlock().getLocation());
 
         if (player == null) {
             event.setCancelled(true);
@@ -626,14 +627,12 @@ public class MatchListener implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            for (Block block : new ArrayList<>(event.blockList())) {
-                if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-                    if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                        if (!standAloneArena.getWhitelistedBlocks().contains(block.getType())) {
-                            event.blockList().remove(block);
-                        }
-                    }
-                }
+            if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK) && match.getArena() instanceof StandAloneArena standAloneArena) {
+                List<Block> allowedBlocks = event.blockList().stream()
+                        .filter(block -> standAloneArena.getWhitelistedBlocks().contains(block.getType()))
+                        .toList();
+                event.blockList().clear();
+                event.blockList().addAll(allowedBlocks);
             }
         });
     }
@@ -651,14 +650,11 @@ public class MatchListener implements Listener {
         }
     }
 
-    private Player getPlayer(Location location) {
-        Player player = null;
-
-        for (Entity entity : location.getNearbyEntities(10, 10, 10)) {
-            if (entity instanceof Player p) player = p;
-        }
-
-        return player;
+    private Player getNearbyPlayer(Location location) {
+        return WorldUtils.getPlayersInRadius(location, 10)
+                .stream()
+                .findFirst()
+                .orElse(null);
     }
 
     private Optional<Match> getMatchForPlayer(Player player) {
