@@ -41,6 +41,7 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
@@ -118,7 +119,19 @@ public class MatchListener implements Listener {
         if (!target.canSee(shooter) || !shooter.canSee(target)) {
             event.setCancelled(true);
         }
+
+        if (event.getPushedBy() instanceof Player attacker) {
+            ItemStack item = attacker.getInventory().getItemInMainHand();
+            if (item.getType() == Material.MACE) {
+                if (!(event.getEntity() instanceof Player victim)) return;
+
+                if (!victim.canSee(attacker) || !attacker.canSee(victim)) {
+                    event.setCancelled(true);
+                }
+            }
+        }
     }
+
 
     @EventHandler
     public void onPlayerDeathEvent(PlayerDeathEvent event) {

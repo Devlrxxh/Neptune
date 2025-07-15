@@ -1,89 +1,130 @@
 package dev.lrxh.neptune.cache;
 
 import com.github.retrooper.packetevents.util.Vector3d;
-import com.github.retrooper.packetevents.util.Vector3i;
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.providers.hider.EntityHider;
-import dev.lrxh.neptune.utils.TtlHashMap;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.*;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.*;
+import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-
 public class EntityCache implements Listener {
-    public static final Map<Vector3d, ShooterData> windCharges = new ConcurrentHashMap<>();
-    public static final Map<Vector3i, Queue<ShooterData>> potionEffects = new TtlHashMap<>(5000);
-    public static final Map<Vector3i, Queue<ShooterData>> particleShooters = new TtlHashMap<>(5000);
-    public static Map<Integer, Entity> entityMap = new HashMap<>();
+    private static final long SHOOTER_TTL = 5000L;
+    private static final int MAX_QUEUE_SIZE = 20;
+    private static final double MAX_RADIUS_SQ = 25 * 25;
 
-    public static Entity getEntityById(int id) {
-        return entityMap.get(id);
+    private static final Map<SectionKey, ArrayDeque<ShooterData>> shooterMap = new ConcurrentHashMap<>();
+    private static final Map<Vector3d, ShooterData> windCharges = new ConcurrentHashMap<>();
+    private static final Map<Integer, Entity> entityMap = new ConcurrentHashMap<>();
+    private static final ArrayDeque<ShooterData> POOL = new ArrayDeque<>();
+
+    static {
+        Bukkit.getScheduler().runTaskTimer(Neptune.get(), () -> {
+            cleanOldShooters();
+            cleanOldWindCharges();
+        }, 100L, 100L);
+    }
+
+    public static void recordSoundAt(Location loc, UUID shooterId) {
+        recordShooterAt(new Vector3d(loc.getX(), loc.getY(), loc.getZ()), shooterId);
     }
 
     public static void recordShooterAt(Vector3d pos, UUID shooterId) {
-        Vector3i blockPos = new Vector3i(
-                (int) pos.getX(),
-                (int) pos.getY(),
-                (int) pos.getZ()
-        );
+        SectionKey section = SectionKey.from(pos);
+        ArrayDeque<ShooterData> queue = shooterMap.computeIfAbsent(section, s -> new ArrayDeque<>(MAX_QUEUE_SIZE));
 
-        Queue<ShooterData> queue = particleShooters.computeIfAbsent(blockPos, k -> new LinkedList<>());
-
-        // Clean up expired entries
-        long now = System.currentTimeMillis();
-        while (!queue.isEmpty() && now - queue.peek().timestamp > 5000) {
-            queue.poll();
+        if (queue.size() >= MAX_QUEUE_SIZE) {
+            ShooterData removed = queue.pollFirst();
+            if (removed != null && POOL.size() < 1000) POOL.offer(removed);
         }
 
-        queue.add(new ShooterData(shooterId, now));
-
+        ShooterData data = POOL.poll();
+        if (data == null) {
+            data = new ShooterData();
+        }
+        data.set(shooterId, pos, System.currentTimeMillis());
+        queue.offerLast(data);
     }
 
     public static UUID getShooterAt(Vector3d pos) {
-        int x = (int) pos.getX();
-        int y = (int) pos.getY();
-        int z = (int) pos.getZ();
+        SectionKey center = SectionKey.from(pos);
+        long now = System.currentTimeMillis();
+        UUID best = null;
+        long newest = 0;
 
-        for (int dx = -6; dx <= 6; dx++) {
-            for (int dy = -6; dy <= 6; dy++) {
-                for (int dz = -6; dz <= 6; dz++) {
-                    Vector3i key = new Vector3i(x + dx, y + dy, z + dz);
-                    Queue<ShooterData> queue = particleShooters.get(key);
-                    if (queue == null || queue.isEmpty()) continue;
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                for (int dz = -1; dz <= 1; dz++) {
+                    SectionKey section = new SectionKey(center.x + dx, center.y + dy, center.z + dz);
+                    ArrayDeque<ShooterData> queue = shooterMap.get(section);
+                    if (queue == null) continue;
 
-                    ShooterData data = queue.peek();
-                    if (System.currentTimeMillis() - data.timestamp <= 5000) {
-                        return data.shooterId;
+                    for (ShooterData data : queue) {
+                        if (now - data.timestamp > SHOOTER_TTL) continue;
+                        if (data.pos.distanceSquared(pos) <= MAX_RADIUS_SQ && data.timestamp > newest) {
+                            newest = data.timestamp;
+                            best = data.shooterId;
+                        }
                     }
                 }
             }
         }
-        return null;
+
+        return best;
     }
 
-    public static UUID getWindChargeOwner(Vector3d position) {
+    private static void cleanOldShooters() {
         long now = System.currentTimeMillis();
-        double maxDistSquared = 0.6 * 0.6;
-
-        UUID bestMatch = null;
-
-        for (Map.Entry<Vector3d, ShooterData> entry : windCharges.entrySet()) {
-            ShooterData data = entry.getValue();
-            if (now - data.timestamp > 10000) continue; // stale, skip
-
-            if (entry.getKey().distanceSquared(position) < maxDistSquared) {
-                bestMatch = data.shooterId;
+        for (ArrayDeque<ShooterData> queue : shooterMap.values()) {
+            while (!queue.isEmpty() && now - queue.peekFirst().timestamp > SHOOTER_TTL) {
+                if (POOL.size() < 1000) POOL.offer(queue.pollFirst());
+                else queue.pollFirst();
             }
         }
-        return bestMatch;
+    }
+
+    private static void cleanOldWindCharges() {
+        long now = System.currentTimeMillis();
+        Iterator<Map.Entry<Vector3d, ShooterData>> it = windCharges.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry<Vector3d, ShooterData> entry = it.next();
+            if (now - entry.getValue().timestamp > SHOOTER_TTL) {
+                if (POOL.size() < 1000) POOL.offer(entry.getValue());
+                it.remove();
+            }
+        }
+    }
+
+    public static void recordWindCharge(Vector3d pos, UUID shooterId) {
+        ShooterData data = POOL.poll();
+        if (data == null) data = new ShooterData();
+        data.set(shooterId, pos, System.currentTimeMillis());
+        windCharges.put(pos, data);
+    }
+
+    public static void recordEntity(Entity entity) {
+        entityMap.put(entity.getEntityId(), entity);
+    }
+
+    public static void removeEntity(Entity entity) {
+        entityMap.remove(entity.getEntityId());
+    }
+
+    public static Entity getEntityById(int id) {
+        return entityMap.get(id);
     }
 
     public static Vector3d snap(Vector3d v) {
@@ -93,7 +134,36 @@ public class EntityCache implements Listener {
         return new Vector3d(x, y, z);
     }
 
-    private void registerVisibility(Entity entity, Player owner) {
+
+    public record SectionKey(int x, int y, int z) {
+        public static SectionKey from(Vector3d pos) {
+            return new SectionKey((int) pos.getX() >> 3, (int) pos.getY() >> 3, (int) pos.getZ() >> 3);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityDeath(EntityDeathEvent e) {
+        removeEntity(e.getEntity());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        recordEntity(e.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        removeEntity(e.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntitySpawn(org.bukkit.event.entity.EntitySpawnEvent event) {
+        Entity entity = event.getEntity();
+        recordEntity(entity);
+        if (entity instanceof Player player) registerVisibility(player, player);
+    }
+
+    public static void registerVisibility(Entity entity, Player owner) {
         int entityID = entity.getEntityId();
         for (Player other : Bukkit.getOnlinePlayers()) {
             if (!shouldPlayerSee(owner, other)) {
@@ -102,7 +172,20 @@ public class EntityCache implements Listener {
         }
     }
 
-    private boolean shouldPlayerSee(Player source, Player target) {
+    public static void cleanEntityMap() {
+        Iterator<Map.Entry<Integer, Entity>> iterator = entityMap.entrySet().iterator();
+        int cleaned = 0;
+        while (iterator.hasNext() && cleaned < 100) {
+            Map.Entry<Integer, Entity> entry = iterator.next();
+            Entity entity = entry.getValue();
+            if (entity == null || !entity.isValid() || entity.isDead()) {
+                iterator.remove();
+                cleaned++;
+            }
+        }
+    }
+
+    public static boolean shouldPlayerSee(Player source, Player target) {
         if (source == null || target == null) return false;
         if (source.equals(target)) return true;
 
@@ -114,127 +197,4 @@ public class EntityCache implements Listener {
 
         return sourceMatch != null && sourceMatch.equals(targetMatch);
     }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntitySpawn(EntitySpawnEvent event) {
-        Entity entity = event.getEntity();
-        entityMap.put(entity.getEntityId(), entity);
-
-        if (entity instanceof Player player) {
-            registerVisibility(player, player); // self-owned
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        Projectile projectile = event.getEntity();
-        entityMap.put(projectile.getEntityId(), projectile);
-
-        if (projectile instanceof WindCharge windCharge) {
-            if (windCharge.getShooter() instanceof Player shooter) {
-                registerVisibility(windCharge, shooter);
-                // Preemptively hide from opponents
-                for (Player other : Bukkit.getOnlinePlayers()) {
-                    if (!other.canSee(shooter)) {
-                        EntityHider.setVisibility(other, windCharge.getEntityId(), false);
-                    }
-                }
-            }
-        } else if (projectile.getShooter() instanceof Player shooter) {
-            registerVisibility(projectile, shooter);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onItemSpawn(ItemSpawnEvent event) {
-        Item item = event.getEntity();
-        entityMap.put(item.getEntityId(), item);
-
-        Player dropper = EntityHider.getPlayerWhoDropped(item);
-        if (dropper != null) {
-            registerVisibility(item, dropper);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        entityMap.put(player.getEntityId(), player);
-        registerVisibility(player, player);
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityDeath(EntityDeathEvent event) {
-        Entity entity = event.getEntity();
-        entityMap.remove(entity.getEntityId());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        Player player = event.getPlayer();
-        entityMap.remove(player.getEntityId());
-    }
-
-    @EventHandler
-    public void onProjectileHit(ProjectileHitEvent event) {
-        if (event.getEntity() instanceof WindCharge windCharge &&
-                windCharge.getShooter() instanceof Player player) {
-            Vector3d raw = new Vector3d(
-                    windCharge.getLocation().getX(),
-                    windCharge.getLocation().getY(),
-                    windCharge.getLocation().getZ()
-            );
-            Vector3d snapped = snap(raw);
-            windCharges.put(snapped, new ShooterData(player.getUniqueId(), System.currentTimeMillis()));
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onItemDespawn(ItemDespawnEvent event) {
-        Item item = event.getEntity();
-        entityMap.remove(item.getEntityId());
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onMaceUse(ProjectileHitEvent event) {
-        if (!(event.getEntity() instanceof WindCharge windCharge)) return;
-        if (!(windCharge.getShooter() instanceof Player player)) return;
-
-        Vector3d rawPos = new Vector3d(
-                windCharge.getLocation().getX(),
-                windCharge.getLocation().getY(),
-                windCharge.getLocation().getZ()
-        );
-        Vector3d position = snap(rawPos);
-        windCharges.put(position, new ShooterData(player.getUniqueId(), System.currentTimeMillis()));
-
-        registerVisibility(windCharge, player);
-
-        for (Player other : Bukkit.getOnlinePlayers()) {
-            if (!other.canSee(player)) {
-                EntityHider.hideEntity(other, windCharge);
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onMaceSmashDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof WindCharge windCharge)) return;
-        if (!(windCharge.getShooter() instanceof Player player)) return;
-
-        Vector3d raw = new Vector3d(
-                windCharge.getLocation().getX(),
-                windCharge.getLocation().getY(),
-                windCharge.getLocation().getZ()
-        );
-        Vector3d key = snap(raw);
-        windCharges.put(key, new ShooterData(player.getUniqueId(), System.currentTimeMillis()));
-    }
-
-    public record ShooterData(UUID shooterId, long timestamp) {
-    }
-
-
 }
-
-
