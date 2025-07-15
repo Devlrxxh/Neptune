@@ -442,12 +442,13 @@ public class MatchListener implements Listener {
         if (event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(player);
             if (profile == null) return;
-            if (!event.getCause().equals(EntityDamageEvent.DamageCause.ENTITY_ATTACK)) return;
+
             Match match = profile.getMatch();
             if (match == null) {
                 event.setCancelled(true);
                 return;
             }
+
             Kit kit = match.getKit();
 
             if (profile.hasState(ProfileState.IN_SPECTATOR)) {
@@ -460,9 +461,11 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if (!kit.is(KitRule.FALL_DAMAGE) && event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
-                event.setCancelled(true);
-                return;
+            if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+                if (!kit.is(KitRule.FALL_DAMAGE)) {
+                    event.setCancelled(true);
+                    return;
+                }
             }
 
             if (!kit.is(KitRule.DAMAGE)) {
@@ -475,7 +478,9 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            event.setDamage(event.getDamage() * kit.getDamageMultiplier());
+            if (!event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+                event.setDamage(event.getDamage() * kit.getDamageMultiplier());
+            }
         }
     }
 
