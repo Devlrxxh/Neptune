@@ -144,7 +144,6 @@ public class Profile {
         settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
         settingData.setMenuSound(settings.getBoolean("menuSound", false));
         settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
-        settingData.setPartyAdvertisements(settings.getBoolean("partyAdvertisements", false));
         this.gameData.getGlobalStats().update();
     }
 
@@ -185,7 +184,6 @@ public class Profile {
         settingsDoc.put("killEffect", settingData.getKillEffect().toString());
         settingsDoc.put("menuSound", settingData.isMenuSound());
         settingsDoc.put("deathMessagePackage", settingData.getKillMessagePackage().getName());
-        settingsDoc.put("partyAdvertisements", settingData.isPartyAdvertisements());
 
         dataDocument.put("settings", settingsDoc);
 

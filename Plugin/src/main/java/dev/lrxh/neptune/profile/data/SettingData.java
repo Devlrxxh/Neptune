@@ -24,7 +24,6 @@ public class SettingData {
     private boolean menuSound = true;
     private KillMessagePackage killMessagePackage;
     private List<UUID> followings = new ArrayList<>();
-    private boolean partyAdvertisements = true;
 
     public SettingData(Neptune plugin) {
         this.plugin = plugin;
