@@ -296,11 +296,8 @@ public class MatchListener implements Listener {
 
             if (!match.getState().equals(MatchState.IN_ROUND)) {
                 event.setCancelled(true);
-            } else {
-                if (!match.getKit().is(KitRule.DAMAGE)) {
-                    event.setDamage(0);
-                }
             }
+
             match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
         }
     }
@@ -313,7 +310,9 @@ public class MatchListener implements Listener {
             if (targetProfile.getState() == ProfileState.IN_GAME && playerProfile.getState().equals(ProfileState.IN_GAME) && damager.getAttackCooldown() >= 0.2) {
                 Match match = targetProfile.getMatch();
                 Participant opponent = match.getParticipant(target.getUniqueId());
-                match.getParticipant(damager.getUniqueId()).handleHit(opponent);
+
+                if (damager.getAttackCooldown() < 0.7)
+                    match.getParticipant(damager.getUniqueId()).handleHit(opponent);
                 opponent.resetCombo();
             }
         }
