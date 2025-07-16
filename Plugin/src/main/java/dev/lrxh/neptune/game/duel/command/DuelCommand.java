@@ -40,7 +40,7 @@ public class DuelCommand {
         }
 
         if (targetProfile.getGameData().getRequests().contains(player.getUniqueId())) {
-            MessagesLocale.DUEL_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
+            MessagesLocale.DUEL_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
             return;
         }
 
@@ -163,7 +163,7 @@ public class DuelCommand {
         }
 
         if (targetProfile.getGameData().getRequests().contains(player.getUniqueId())) {
-            MessagesLocale.DUEL_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
+            MessagesLocale.DUEL_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
             return;
         }
 
