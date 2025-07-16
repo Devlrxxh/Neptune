@@ -16,9 +16,10 @@ import org.bukkit.event.entity.*;
 import org.bukkit.event.player.*;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.inventory.ItemStack;
+
 import java.util.UUID;
 
-import static dev.lrxh.neptune.cache.EntityCache.*;
+import static dev.lrxh.neptune.cache.EntityCache.recordShooterAt;
 
 public class BukkitListener implements Listener {
 

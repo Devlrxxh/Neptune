@@ -134,35 +134,6 @@ public class EntityCache implements Listener {
         return new Vector3d(x, y, z);
     }
 
-
-    public record SectionKey(int x, int y, int z) {
-        public static SectionKey from(Vector3d pos) {
-            return new SectionKey((int) pos.getX() >> 3, (int) pos.getY() >> 3, (int) pos.getZ() >> 3);
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntityDeath(EntityDeathEvent e) {
-        removeEntity(e.getEntity());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        recordEntity(e.getPlayer());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerQuit(PlayerQuitEvent e) {
-        removeEntity(e.getPlayer());
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onEntitySpawn(org.bukkit.event.entity.EntitySpawnEvent event) {
-        Entity entity = event.getEntity();
-        recordEntity(entity);
-        if (entity instanceof Player player) registerVisibility(player, player);
-    }
-
     public static void registerVisibility(Entity entity, Player owner) {
         int entityID = entity.getEntityId();
         for (Player other : Bukkit.getOnlinePlayers()) {
@@ -196,5 +167,33 @@ public class EntityCache implements Listener {
         var targetMatch = targetProfile.getMatch();
 
         return sourceMatch != null && sourceMatch.equals(targetMatch);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntityDeath(EntityDeathEvent e) {
+        removeEntity(e.getEntity());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent e) {
+        recordEntity(e.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerQuit(PlayerQuitEvent e) {
+        removeEntity(e.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onEntitySpawn(org.bukkit.event.entity.EntitySpawnEvent event) {
+        Entity entity = event.getEntity();
+        recordEntity(entity);
+        if (entity instanceof Player player) registerVisibility(player, player);
+    }
+
+    public record SectionKey(int x, int y, int z) {
+        public static SectionKey from(Vector3d pos) {
+            return new SectionKey((int) pos.getX() >> 3, (int) pos.getY() >> 3, (int) pos.getZ() >> 3);
+        }
     }
 }

@@ -15,8 +15,8 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 
-import java.util.Queue;
 import java.util.UUID;
+
 public class PacketInterceptor extends PacketListenerAbstract {
 
     public PacketInterceptor() {

@@ -62,6 +62,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
             MatchService.get().matches.remove(match);
             MatchEndEvent event = new MatchEndEvent(match);
             Bukkit.getPluginManager().callEvent(event);
+            stop();
         }
         endTimer--;
     }

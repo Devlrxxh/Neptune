@@ -111,7 +111,7 @@ public abstract class Match {
 
         if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
-        player.teleportAsync(target.getLocation()).thenAccept(bool -> {;
+        player.teleportAsync(target.getLocation()).thenAccept(bool -> {
             player.setAllowFlight(true);
             player.setFlying(true);
             player.setGameMode(GameMode.SPECTATOR);

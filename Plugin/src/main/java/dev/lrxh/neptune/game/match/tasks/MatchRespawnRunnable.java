@@ -56,6 +56,7 @@ public class MatchRespawnRunnable extends NeptuneRunnable {
             match.setupPlayer(participant.getPlayerUUID());
             participant.setDead(false);
             match.showParticipant(participant);
+            participant.sendMessage(MessagesLocale.MATCH_RESPAWNED);
             stop();
             MatchParticipantRespawnEvent event = new MatchParticipantRespawnEvent(match, participant);
             Bukkit.getPluginManager().callEvent(event);
