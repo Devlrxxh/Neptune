@@ -8,10 +8,12 @@ import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.game.kit.Kit;
 import org.bukkit.entity.Player;
 
+import javax.inject.Named;
+
 public class QueueCommand {
 
     @Command(name = "", desc = "", usage = "<kit>")
-    public void queue(@Sender Player player, Kit kit) {
+    public void queue(@Sender Player player, @Named("kit") Kit kit) {
         QueueService.get().add(new QueueEntry(kit, player.getUniqueId()), true);
     }
 }
