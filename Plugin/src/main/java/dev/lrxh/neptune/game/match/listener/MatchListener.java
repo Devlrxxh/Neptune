@@ -310,7 +310,7 @@ public class MatchListener implements Listener {
                 Match match = targetProfile.getMatch();
                 Participant opponent = match.getParticipant(target.getUniqueId());
 
-                if (damager.getAttackCooldown() < 0.7)
+                if (damager.getAttackCooldown() > 0.7)
                     match.getParticipant(damager.getUniqueId()).handleHit(opponent);
                 opponent.resetCombo();
             }
