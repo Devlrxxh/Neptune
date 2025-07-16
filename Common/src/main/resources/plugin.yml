@@ -1,4 +1,0 @@
-name: Common
-version: '${project.version}'
-main: dev.lrxh.common.Common
-api-version: '1.16'
