@@ -158,13 +158,23 @@ public class Party {
             leaderProfile.addCooldown("party_advertise", 300_000);
 
             for (Profile profile : ProfileService.get().profiles.values()) {
-                TextComponent join = new ClickableComponent(MessagesLocale.PARTY_ADVERTISE_JOIN.getString(), "/party join " + getLeaderName(), MessagesLocale.PARTY_ADVERTISE_JOIN_HOVER.getString().replaceAll("<leader>", getLeaderName())).build();
-                MessagesLocale.PARTY_ADVERTISE_MESSAGE.send(profile.getPlayerUUID(), new Replacement("<join>", join), new Replacement("<leader>", getLeaderName()));
+                TextComponent join = new ClickableComponent(
+                        MessagesLocale.PARTY_ADVERTISE_JOIN.getString(),
+                        "/party join " + getLeaderName(),
+                        MessagesLocale.PARTY_ADVERTISE_JOIN_HOVER.getString().replaceAll("<leader>", getLeaderName())
+                ).build();
 
-                return true;
+                MessagesLocale.PARTY_ADVERTISE_MESSAGE.send(
+                        profile.getPlayerUUID(),
+                        new Replacement("<join>", join),
+                        new Replacement("<leader>", getLeaderName())
+                );
             }
+
+            return true;
         }
 
         return false;
     }
+
 }

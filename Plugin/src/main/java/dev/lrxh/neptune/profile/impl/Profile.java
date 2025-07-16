@@ -80,7 +80,9 @@ public class Profile {
     }
 
     public void addCooldown(String name, int millis) {
-        cooldowns.put(name, new Cooldown(millis));
+        Cooldown cooldown = new Cooldown(millis);
+        cooldowns.put(name, cooldown);
+        cooldown.start();
     }
 
     public boolean hasCooldownEnded(String name) {
