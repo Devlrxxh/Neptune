@@ -204,7 +204,6 @@ public final class Neptune extends JavaPlugin {
         drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard").setDefaultCommandIsHelp(true);
         drink.register(new SettingsCommand(), "settings").setDefaultCommandIsHelp(true);
         drink.register(new SpectateCommand(), "spec", "spectate");
-        drink.register(new QueueMenuCommand(), "queuemenu", "qm");
         drink.register(new MainCommand(), "neptune");
         drink.register(new CosmeticsCommand(), "cosmetics");
         drink.register(new MatchHistoryCommand(), "matchhistory");
