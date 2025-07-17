@@ -31,7 +31,7 @@ public class CosmeticService extends IService {
     public void load() {
         FileConfiguration config = ConfigService.get().getKillMessagesConfig().getConfiguration();
         if (config.contains("KILL_MESSAGES")) {
-            for (String deathPackageName : getKeys("KILL_MESSAGES")) {
+            for (String deathPackageName : getKeys(config, "KILL_MESSAGES")) {
                 String path = "KILL_MESSAGES." + deathPackageName + ".";
                 String displayName = config.getString(path + "DISPLAY_NAME");
                 Material material = Material.getMaterial(Objects.requireNonNull(config.getString(path + "MATERIAL")));

@@ -8,8 +8,13 @@ import org.bukkit.entity.Player;
 
 public class QueueMenuCommand {
 
-    @Command(name = "menu", desc = "")
+    @Command(name = "menu", desc = "", hidden = true)
     public void menu(@Sender Player player) {
+        new QueueMenu().open(player);
+    }
+
+    @Command(name = "", desc = "")
+    public void open(@Sender Player player) {
         new QueueMenu().open(player);
     }
 }
