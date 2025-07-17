@@ -34,7 +34,7 @@ public class ArenaManagementMenu extends Menu {
             buttons.add(new ArenaSetSpawnButton(0, arena, ParticipantColor.BLUE));
             buttons.add(new ArenaSetSpawnButton(1, arena, ParticipantColor.RED));
 
-            buttons.add(new ArenaEnableButton(size - 1, arena));
+            buttons.add(new ArenaEnableButton(getSize() - 1, arena));
 
             buttons.add(new ArenaRenameButton(23, arena));
             buttons.add(new DisplayButton(22, Material.MAP, "&aTeleport to arena", o -> player.teleport(arena.getBlueSpawn())));
@@ -50,7 +50,7 @@ public class ArenaManagementMenu extends Menu {
                     standAloneArena.deleteAllCopies();
                 }));
 
-                buttons.add(new DisplayButton(size - 5, Material.GRASS_BLOCK, "&aManage Whitelisted Blocks", o -> {
+                buttons.add(new DisplayButton(getSize() - 5, Material.GRASS_BLOCK, "&aManage Whitelisted Blocks", o -> {
                     new WhitelistedBlocksMenu(standAloneArena).open(player);
                 }));
                 buttons.add(new ArenaSetEdgeButton(8, standAloneArena, EdgeType.MAX));
@@ -58,7 +58,7 @@ public class ArenaManagementMenu extends Menu {
             }
         }
 
-        buttons.add(new ReturnButton(size - 9, new ArenasManagementMenu()));
+        buttons.add(new ReturnButton(getSize() - 9, new ArenasManagementMenu()));
         return buttons;
     }
 }

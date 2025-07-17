@@ -27,8 +27,8 @@ public class KitsManagementMenu extends PaginatedMenu {
             buttons.add(new KitSelectButton(i++, kit));
         }
 
-        buttons.add(new KitCreateButton(size - 5));
-        buttons.add(new ReturnButton(size - 9, new MainMenu()));
+        buttons.add(new KitCreateButton(getSize() - 5));
+        buttons.add(new ReturnButton(getSize() - 9, new MainMenu()));
         return buttons;
     }
 
@@ -36,8 +36,8 @@ public class KitsManagementMenu extends PaginatedMenu {
     public List<Button> getGlobalButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
-        buttons.add(new KitCreateButton(size - 5));
-        buttons.add(new ReturnButton(size - 9, new MainMenu()));
+        buttons.add(new KitCreateButton(getSize() - 5));
+        buttons.add(new ReturnButton(getSize() - 9, new MainMenu()));
 
         return buttons;
     }

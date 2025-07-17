@@ -29,8 +29,8 @@ public class ArenasManagementMenu extends PaginatedMenu {
             buttons.add(new ArenaSelectButton(i++, arena));
         }
 
-        buttons.add(new ArenaCreateButton(size - 5));
-        buttons.add(new ReturnButton(size - 9, new MainMenu()));
+        buttons.add(new ArenaCreateButton(getSize() - 5));
+        buttons.add(new ReturnButton(getSize() - 9, new MainMenu()));
 
         return buttons;
     }
@@ -39,8 +39,8 @@ public class ArenasManagementMenu extends PaginatedMenu {
     public List<Button> getGlobalButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
-        buttons.add(new ArenaCreateButton(size - 5));
-        buttons.add(new ReturnButton(size - 9, new MainMenu()));
+        buttons.add(new ArenaCreateButton(getSize() - 5));
+        buttons.add(new ReturnButton(getSize() - 9, new MainMenu()));
 
         return buttons;
     }

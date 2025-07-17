@@ -30,7 +30,7 @@ public class KitRulesMenu extends Menu {
             buttons.add(new KitRuleButton(i++, kit, entry.getKey()));
         }
 
-        buttons.add(new ReturnButton(size - 9, new KitManagementMenu(kit)));
+        buttons.add(new ReturnButton(getSize() - 9, new KitManagementMenu(kit)));
 
         return buttons;
     }

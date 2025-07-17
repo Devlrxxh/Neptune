@@ -6,7 +6,6 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.feature.party.impl.PartyRequest;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.ProfileState;
-import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.ClickableComponent;
 import dev.lrxh.neptune.providers.clickable.Replacement;

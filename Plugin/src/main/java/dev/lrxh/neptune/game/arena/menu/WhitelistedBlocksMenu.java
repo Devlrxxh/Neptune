@@ -30,8 +30,8 @@ public class WhitelistedBlocksMenu extends Menu {
             buttons.add(new WhitelistedBlockButton(i++, material, arena));
         }
 
-        buttons.add(new ReturnButton(size - 9, new ArenaManagementMenu(arena)));
-        buttons.add(new AddWhitelistBlockButton(size - 5, arena));
+        buttons.add(new ReturnButton(getSize() - 9, new ArenaManagementMenu(arena)));
+        buttons.add(new AddWhitelistBlockButton(getSize() - 5, arena));
 
         return buttons;
     }

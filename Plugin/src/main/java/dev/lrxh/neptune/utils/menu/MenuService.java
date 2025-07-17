@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.utils.menu;
 
+import lombok.Getter;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 public class MenuService {
     private static MenuService instance;
+    @Getter
     private final HashMap<UUID, Menu> openedMenus;
 
     public MenuService() {

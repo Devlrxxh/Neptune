@@ -61,6 +61,7 @@ import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.menu.MenuListener;
+import dev.lrxh.neptune.utils.menu.MenuRunnable;
 import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import fr.mrmicky.fastboard.FastManager;
 import lombok.Getter;
@@ -184,6 +185,7 @@ public final class Neptune extends JavaPlugin {
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
         new EntityCacheRunnable().start(400L);
         new ArenaBoundaryCheckTask().start(20L);
+        new MenuRunnable().start(1L);
     }
 
     private void loadCommandManager() {

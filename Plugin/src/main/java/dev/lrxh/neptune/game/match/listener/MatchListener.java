@@ -45,6 +45,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.projectiles.ProjectileSource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -626,13 +627,15 @@ public class MatchListener implements Listener {
 
         getMatchForPlayer(player).ifPresent(match -> {
             if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK) && match.getArena() instanceof StandAloneArena standAloneArena) {
-                List<Block> allowedBlocks = event.blockList().stream()
+                List<Block> originalBlocks = new ArrayList<>(event.blockList());
+                List<Block> allowedBlocks = originalBlocks.stream()
                         .filter(block -> standAloneArena.getWhitelistedBlocks().contains(block.getType()))
                         .toList();
                 event.blockList().clear();
                 event.blockList().addAll(allowedBlocks);
             }
         });
+
     }
 
     @EventHandler

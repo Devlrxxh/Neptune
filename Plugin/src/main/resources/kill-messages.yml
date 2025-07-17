@@ -3,8 +3,8 @@ KILL_MESSAGES:
     DISPLAY_NAME: '&7Default'
     MATERIAL: BARRIER
     DESCRIPTION:
-    - '&7Default kill message.'
-    - ' '
+      - '&7Default kill message.'
+      - ' '
     SLOT: 10
     MESSAGES:
-    - '&c☠ <player> &7was killed by 🗡 <killer>'
+      - '&c☠ <player> &7was killed by 🗡 <killer>'

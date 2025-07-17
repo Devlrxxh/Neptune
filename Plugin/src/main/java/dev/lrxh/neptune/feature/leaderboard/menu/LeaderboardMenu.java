@@ -30,6 +30,7 @@ public class LeaderboardMenu extends Menu {
                 Filter.valueOf(MenusLocale.LEADERBOARD_FILTER.getString())
         );
         this.leaderboardType = leaderboardType;
+        setUpdateEveryTick(true);
     }
 
     @Override

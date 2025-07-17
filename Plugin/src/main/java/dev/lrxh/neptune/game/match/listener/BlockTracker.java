@@ -222,8 +222,6 @@ public class BlockTracker implements Listener {
         }
     }
 
-    // Helper methods
-
     private void filterAndTrackDrops(BlockDropItemEvent event, Match match, StandAloneArena arena) {
         Iterator<Item> iterator = event.getItems().iterator();
         while (iterator.hasNext()) {
