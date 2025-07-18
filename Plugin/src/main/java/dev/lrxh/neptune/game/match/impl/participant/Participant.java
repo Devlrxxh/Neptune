@@ -53,6 +53,12 @@ public class Participant {
         this.name = player.getName();
     }
 
+    public void reset() {
+        this.bedBroken = false;
+        this.currentCheckPoint = null;
+        this.checkPoint = 0;
+    }
+
     public void setDead(boolean dead) {
         this.dead = dead;
         playSound(Sound.BLOCK_NOTE_BLOCK_PLING);

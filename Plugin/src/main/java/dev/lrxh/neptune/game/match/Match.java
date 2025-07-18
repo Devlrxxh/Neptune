@@ -356,6 +356,7 @@ public abstract class Match {
 
     public void setupParticipants() {
         forEachPlayer(player -> setupPlayer(player.getUniqueId()));
+        forEachParticipant(Participant::reset);
     }
 
     public void sendDeathMessage(Participant deadParticipant) {
