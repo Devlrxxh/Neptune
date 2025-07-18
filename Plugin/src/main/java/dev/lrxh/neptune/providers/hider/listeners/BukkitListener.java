@@ -69,6 +69,8 @@ public class BukkitListener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event) {
+        if (event.getHand() == null) return;
+
         Player player = event.getPlayer();
 
         ItemStack item = player.getInventory().getItem(event.getHand());

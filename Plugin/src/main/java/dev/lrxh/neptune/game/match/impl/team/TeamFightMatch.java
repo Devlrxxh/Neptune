@@ -121,6 +121,9 @@ public class TeamFightMatch extends Match {
 
         participant.setDead(true);
 
+        MatchTeam team = getParticipantTeam(participant);
+        team.getDeadParticipants().add(participant);
+
         if (!participant.isDisconnected() && !participant.isLeft()) {
             if (getKit().is(KitRule.BED_WARS)) {
                 if (!participant.isBedBroken()) {
@@ -136,22 +139,18 @@ public class TeamFightMatch extends Match {
             }
 
             sendDeathMessage(participant);
-
-            MatchTeam team = getParticipantTeam(participant);
-            team.getDeadParticipants().add(participant);
-
-            if (team.getDeadParticipants().size() == team.getParticipants().size()) {
-                team.setLoser(true);
-                this.setEnded(true);
-            }
-
-            if (!team.isLoser()) return;
-
-            PlayerUtil.doVelocityChange(participant.getPlayerUUID());
         }
 
+        // Only end match if everyone on the team is out
+        boolean allOut = team.getParticipants().stream()
+                .allMatch(p -> p.isDead() || p.isDisconnected() || p.isLeft());
 
-        end(participant);
+        if (allOut) {
+            team.setLoser(true);
+            this.setEnded(true);
+            PlayerUtil.doVelocityChange(participant.getPlayerUUID());
+            end(participant);
+        }
     }
 
     public boolean onSameTeam(UUID playerUUID, UUID otherUUID) {

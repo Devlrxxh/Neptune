@@ -57,11 +57,25 @@ public class FfaFightMatch extends Match {
     @Override
     public void onDeath(Participant participant) {
         if (isEnded()) return;
+
         hideParticipant(participant);
         participant.setDead(true);
+        participant.setLoser(true);
 
-        if (!participant.isLeft()) {
+        Profile profile = API.getProfile(participant.getPlayerUUID());
+
+        if (!participant.isLeft() && !participant.isDisconnected()) {
             addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
+        } else {
+            if (participant.getPlayer() != null) {
+                PlayerUtil.reset(participant.getPlayer());
+                PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+            }
+
+            if (profile != null) {
+                profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+                profile.setMatch(null);
+            }
         }
 
         if (participant.getLastAttacker() != null) {
@@ -69,18 +83,12 @@ public class FfaFightMatch extends Match {
         }
 
         sendDeathMessage(participant);
-
-        participant.setLoser(true);
-
-        addSpectator(participant.getPlayer(), participant.getPlayer(), false, false);
-
         deadParticipants.add(participant);
 
         if (!isLastPlayerStanding()) return;
 
         winner = getLastPlayerStanding();
-        this.setEnded(true);
-
+        setEnded(true);
         end(participant);
     }
 
@@ -102,14 +110,15 @@ public class FfaFightMatch extends Match {
         if (isEnded()) return;
 
         participant.setDeathCause(DeathCause.DISCONNECT);
+        Profile profile = API.getProfile(participant.getPlayerUUID());
+
         if (quit) {
             participant.setDisconnected(true);
         } else {
             participant.setLeft(true);
-            PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
-            Profile profile = API.getProfile(participant.getPlayerUUID());
-            profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             PlayerUtil.reset(participant.getPlayer());
+            PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+            profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             profile.setMatch(null);
         }
 

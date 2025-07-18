@@ -105,7 +105,7 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityPush(EntityPushedByEntityAttackEvent event) {
         if (!(event.getPushedBy() instanceof WindCharge wc)) return;
         Entity pushed = event.getEntity();
