@@ -16,7 +16,7 @@ public enum SettingsLocale implements IDataAccessor {
     COMMANDS_AFTER_MATCH_WINNER("COMMAND_AFTER_MATCH.WINNER", DataType.STRING_LIST, "NONE"),
     COMMANDS_AFTER_MATCH_LOSER("COMMAND_AFTER_MATCH.LOSER", DataType.STRING_LIST, "NONE"),
     SPAWN_LOCATION("SPAWN.LOCATION", DataType.STRING, "NONE"),
-    LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks (20 ticks = 1 second).", DataType.INT, "20"),
+    LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME", "How often leaderboards should check in ticks (20 ticks = 1 second).", DataType.INT, "10"),
     DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL, SQLITE", DataType.STRING, "SQLITE"),
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),

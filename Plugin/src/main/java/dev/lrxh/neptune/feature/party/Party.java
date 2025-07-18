@@ -45,7 +45,6 @@ public class Party {
         Player player = Bukkit.getPlayer(leader);
         if (player == null) {
             users.remove(leader);
-            disband();
             return "";
         }
 
