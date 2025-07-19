@@ -186,7 +186,9 @@ public enum MessagesLocale implements IDataAccessor {
     BED_BREAK_TITLE("BEDWARS.OWN_BREAK.TITLE", DataType.STRING, "&cBED DESTROYED!"),
     BED_BREAK_FOOTER("BEDWARS.OWN_BREAK.FOOTER", DataType.STRING, "&fYou will no longer respawn!"),
     BLUE_BED_BROKEN_MESSAGE("BEDWARS.BLUE_BREAK.MESSAGE", DataType.STRING, "&9Blue Bed &7was broken by <player>"),
-    RED_BED_BROKEN_MESSAGE("BEDWARS.RED_BREAK.MESSAGE", DataType.STRING, "&cRed Bed &7was broken by <player>");
+    RED_BED_BROKEN_MESSAGE("BEDWARS.RED_BREAK.MESSAGE", DataType.STRING, "&cRed Bed &7was broken by <player>"),
+    MATCH_ENDERPEARL_COOLDOWN_EXPIRED("MATCH.ENDERPEARL_COOLDOWN.EXPIRED", DataType.STRING_LIST, "&aYour enderpearl cooldown expired."),
+    MATCH_ENDERPEARL_COOLDOWN_ON_GOING("MATCH.ENDERPEARL_COOLDOWN.ON_GOING", DataType.STRING_LIST, "&cEnderpearl cooldown&7: &e<time>s");
 
     private final String path;
     private final String comment;

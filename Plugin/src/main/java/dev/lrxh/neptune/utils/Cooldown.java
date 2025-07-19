@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.utils;
 
+import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
+
 public class Cooldown {
     private final long durationMillis;
     private long startTime;
@@ -7,6 +9,13 @@ public class Cooldown {
     public Cooldown(long durationMillis) {
         this.durationMillis = durationMillis;
         this.startTime = 0;
+    }
+
+    public Cooldown(long durationMillis, NeptuneRunnable task) {
+        this.durationMillis = durationMillis;
+        this.startTime = 0;
+
+        task.startLater(durationMillis / 50L);
     }
 
     public void start() {
@@ -34,6 +43,14 @@ public class Cooldown {
         long minutes = (remaining / 1000) / 60;
         long seconds = (remaining / 1000) % 60;
         return String.format("%02d:%02d", minutes, seconds);
+    }
+
+    public int getSecondsLeft() {
+        return (int) Math.ceil(getRemainingTime() / 1000.0);
+    }
+
+    public float xp() {
+        return (float) getRemainingTime() / (durationMillis);
     }
 
     public void reset() {

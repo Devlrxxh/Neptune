@@ -39,6 +39,7 @@ public class Participant {
     private int points = 0;
     private boolean frozen = false;
     private boolean bedBroken;
+    private Time time;
 
     // ELO CHANGES
     private int eloChange = 0;
@@ -46,7 +47,6 @@ public class Participant {
     // PARKOUR GAME RULE
     private Location currentCheckPoint;
     private int checkPoint = 0;
-    private Time time;
 
     public Participant(Player player) {
         this.playerUUID = player.getUniqueId();
@@ -117,6 +117,10 @@ public class Participant {
         Player killer = Bukkit.getPlayer(attckerUUID);
         if (profile == null || player == null || killer == null) return;
         profile.getSettingData().getKillEffect().execute(player, killer);
+    }
+
+    public Profile getProfile() {
+        return API.getProfile(playerUUID);
     }
 
     public void sendTitle(TextComponent header, TextComponent footer, int duration) {

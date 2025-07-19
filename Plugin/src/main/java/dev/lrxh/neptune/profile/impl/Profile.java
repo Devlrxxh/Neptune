@@ -22,6 +22,7 @@ import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.Cooldown;
 import dev.lrxh.neptune.utils.ItemUtils;
+import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
 import net.kyori.adventure.text.TextComponent;
@@ -84,6 +85,13 @@ public class Profile {
         cooldowns.put(name, cooldown);
         cooldown.start();
     }
+
+    public void addCooldown(String name, int millis, NeptuneRunnable runnable) {
+        Cooldown cooldown = new Cooldown(millis, runnable);
+        cooldowns.put(name, cooldown);
+        cooldown.start();
+    }
+
 
     public boolean hasCooldownEnded(String name) {
         if (!cooldowns.containsKey(name)) {

@@ -12,6 +12,10 @@ public abstract class NeptuneRunnable extends BukkitRunnable {
         TaskScheduler.get().startTask(this, 0L, period);
     }
 
+    public void startLater(long delay) {
+        TaskScheduler.get().startTaskLater(this, delay);
+    }
+
     public void start() {
         TaskScheduler.get().startTask(this);
     }

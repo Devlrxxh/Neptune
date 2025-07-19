@@ -18,18 +18,17 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.Cooldown;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.WorldUtils;
+import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.WindCharge;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -101,6 +100,42 @@ public class MatchListener implements Listener {
 
             match.getPlacedBlocks().add(blockLocation);
         } else {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onProjectileLaunch(ProjectileLaunchEvent event) {
+        ProjectileSource shooter = event.getEntity().getShooter();
+        if (!(shooter instanceof Player player)) return;
+
+        Profile profile = API.getProfile(player);
+        Match match = profile.getMatch();
+        if (match == null) {
+            event.setCancelled(true);
+            return;
+        }
+        if (match.getState().equals(MatchState.STARTING)) {
+            event.setCancelled(true);
+        }
+
+        if (!(event.getEntity() instanceof EnderPearl)) return;
+
+        Participant participant = match.getParticipant(player);
+        Cooldown cooldown = participant.getProfile().getCooldowns().get("enderpearl");
+        if (match.getKit().is(KitRule.ENDERPEARL_COOLDOWN) && cooldown == null) {
+            participant.getProfile().addCooldown("enderpearl",15_000, new NeptuneRunnable() {
+                @Override
+                public void run() {
+                    participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_EXPIRED);
+                }
+            });
+            return;
+        }
+
+        if (cooldown != null && !profile.hasCooldownEnded("enderpearl")) {
+            player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
+            participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING, new Replacement("<time>", String.valueOf(cooldown.getSecondsLeft())));
             event.setCancelled(true);
         }
     }
@@ -246,22 +281,6 @@ public class MatchListener implements Listener {
 
             match.getPlacedBlocks().add(blockLocation);
         } else {
-            event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        ProjectileSource shooter = event.getEntity().getShooter();
-        if (!(shooter instanceof Player player)) return;
-
-        Profile profile = API.getProfile(player);
-        Match match = profile.getMatch();
-        if (match == null) {
-            event.setCancelled(true);
-            return;
-        }
-        if (match.getState().equals(MatchState.STARTING)) {
             event.setCancelled(true);
         }
     }

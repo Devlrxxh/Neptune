@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
-import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import lombok.Getter;
 import org.bukkit.entity.Player;
 
@@ -21,6 +20,6 @@ public class TtlAction {
 
     public void setRunnable(NeptuneRunnable runnable, long leaveTime) {
         this.runnable = runnable;
-        TaskScheduler.get().startTaskLater(runnable, leaveTime * 20L);
+        runnable.startLater(leaveTime * 20L);
     }
 }
