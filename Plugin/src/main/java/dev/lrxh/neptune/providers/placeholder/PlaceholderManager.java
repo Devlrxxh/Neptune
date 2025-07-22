@@ -68,7 +68,9 @@ public class PlaceholderManager {
                 new RedAlivePlaceholder(),
                 new BlueAlivePlaceholder(),
                 new RedMaxPlaceholder(),
-                new BlueMaxPlaceholder()
+                new BlueMaxPlaceholder(),
+                new LossesPlaceholder(),
+                new PartyMaxPlaceholder()
         ));
     }
 

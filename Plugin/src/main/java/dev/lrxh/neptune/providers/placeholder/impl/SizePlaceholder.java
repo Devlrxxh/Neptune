@@ -12,8 +12,8 @@ public class SizePlaceholder implements Placeholder {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Party party = profile.getGameData().getParty();
-        if (party == null) return "";
         if (string.equals("size")) {
+            if (party == null) return "";
             return String.valueOf(party.getUsers().size());
         }
 

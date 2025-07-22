@@ -12,8 +12,8 @@ public class LeaderPlaceholder implements Placeholder {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Party party = profile.getGameData().getParty();
-        if (party == null) return "";
         if (string.equals("leader")) {
+            if (party == null) return "";
             return party.getLeaderName();
         }
 
