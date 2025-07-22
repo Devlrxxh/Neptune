@@ -9,15 +9,15 @@ import org.bukkit.OfflinePlayer;
 
 public class RedAlivePlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("red-alive");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("red-alive")) {
-            if (match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
-            return String.valueOf(teamMatch.getTeamA().getAliveParticipants());
-        }
-
-        return string;
+        if (match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
+        return String.valueOf(teamMatch.getTeamA().getAliveParticipants());
     }
 }

@@ -10,19 +10,19 @@ import org.bukkit.OfflinePlayer;
 
 public class MaxPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("max");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("max")) {
-            if (match == null) return "";
-            if (match instanceof TeamFightMatch tfm) {
-                return String.valueOf(tfm.getParticipantTeam(match.getParticipant(player.getUniqueId())).getParticipants().size());
-            } else if (match instanceof FfaFightMatch ffm) {
-                return String.valueOf(ffm.getParticipants().size());
-            } else return "";
-        }
-
-        return string;
+        if (match == null) return "";
+        if (match instanceof TeamFightMatch tfm) {
+            return String.valueOf(tfm.getParticipantTeam(match.getParticipant(player.getUniqueId())).getParticipants().size());
+        } else if (match instanceof FfaFightMatch ffm) {
+            return String.valueOf(ffm.getParticipants().size());
+        } else return "";
     }
 }

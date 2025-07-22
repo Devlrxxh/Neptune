@@ -7,14 +7,13 @@ import org.bukkit.OfflinePlayer;
 
 public class MaxPingPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("maxPing");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
-
-        if (string.equals("maxPing")) {
-            return String.valueOf(profile.getSettingData().getMaxPing());
-        }
-
-        return string;
+        return String.valueOf(profile.getSettingData().getMaxPing());
     }
 }

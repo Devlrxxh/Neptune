@@ -82,9 +82,10 @@ public class PlaceholderManager {
 
     public String parse(OfflinePlayer player, String text) {
         for (Placeholder placeholder : placeholders) {
-            text = placeholder.parse(player, text);
+            if (placeholder.match(text)) {
+                text = placeholder.parse(player, text);
+            }
         }
-
         return text;
     }
 }

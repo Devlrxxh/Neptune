@@ -9,15 +9,15 @@ import org.bukkit.OfflinePlayer;
 
 public class PlayerRedPingPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("player-red-ping");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("player-red-ping")) {
-            if (match == null || !(match instanceof SoloFightMatch soloFightMatch)) return "";
-            return String.valueOf(soloFightMatch.getParticipantA().getPlayer().getPing());
-        }
-
-        return string;
+        if (match == null || !(match instanceof SoloFightMatch soloFightMatch)) return "";
+        return String.valueOf(soloFightMatch.getParticipantA().getPlayer().getPing());
     }
 }

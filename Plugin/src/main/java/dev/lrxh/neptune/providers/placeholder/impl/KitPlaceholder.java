@@ -10,19 +10,19 @@ import org.bukkit.OfflinePlayer;
 
 public class KitPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("kit");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
-        if (string.equals("kit")) {
-            Match match = profile.getMatch();
-            if (match != null && !match.isEnded()) return match.getKit().getDisplayName();
-            else if (profile.getState().equals(ProfileState.IN_KIT_EDITOR))
-                profile.getGameData().getKitEditor().getDisplayName();
-            else if (profile.getState().equals(ProfileState.IN_QUEUE))
-                QueueService.get().get(player.getUniqueId()).getKit().getDisplayName();
-            else return "";
-        }
-
-        return string;
+        Match match = profile.getMatch();
+        if (match != null && !match.isEnded()) return match.getKit().getDisplayName();
+        else if (profile.getState().equals(ProfileState.IN_KIT_EDITOR))
+            return profile.getGameData().getKitEditor().getDisplayName();
+        else if (profile.getState().equals(ProfileState.IN_QUEUE))
+            return QueueService.get().get(player.getUniqueId()).getKit().getDisplayName();
+        else return "";
     }
 }

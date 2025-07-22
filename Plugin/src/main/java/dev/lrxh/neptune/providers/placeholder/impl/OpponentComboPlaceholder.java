@@ -10,16 +10,16 @@ import org.bukkit.OfflinePlayer;
 
 public class OpponentComboPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("opponent-combo");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("opponent-combo")) {
-            if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
-                return "";
-            return String.valueOf(match.getParticipant(player.getUniqueId()).getOpponent().getCombo());
-        }
-
-        return string;
+        if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
+            return "";
+        return String.valueOf(match.getParticipant(player.getUniqueId()).getOpponent().getCombo());
     }
 }

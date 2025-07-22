@@ -8,15 +8,15 @@ import org.bukkit.OfflinePlayer;
 
 public class LeaderPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("leader");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Party party = profile.getGameData().getParty();
-        if (string.equals("leader")) {
-            if (party == null) return "";
-            return party.getLeaderName();
-        }
-
-        return string;
+        if (party == null) return "";
+        return party.getLeaderName();
     }
 }

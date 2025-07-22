@@ -14,22 +14,23 @@ import org.bukkit.OfflinePlayer;
 
 public class OpponentBedBrokenPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("opponent-bed-broken");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("opponent-bed-broken")) {
-            if (profile.getState() != ProfileState.IN_GAME || match == null || !match.getKit().is(KitRule.BED_WARS))
-                return "";
-            Participant playerParticipant = match.getParticipant(player.getUniqueId());
-            if (match instanceof SoloFightMatch) {
-                return playerParticipant.getOpponent().isBedBroken() ? "true" : "false";
-            } else if (match instanceof TeamFightMatch teamFightMatch) {
-                MatchTeam opponentTeam = teamFightMatch.getParticipantTeam(playerParticipant).equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
-                return opponentTeam.isBedBroken() ? "true" : "false";
-            }
+        if (profile.getState() != ProfileState.IN_GAME || match == null || !match.getKit().is(KitRule.BED_WARS))
+            return "";
+        Participant playerParticipant = match.getParticipant(player.getUniqueId());
+        if (match instanceof SoloFightMatch) {
+            return playerParticipant.getOpponent().isBedBroken() ? "true" : "false";
+        } else if (match instanceof TeamFightMatch teamFightMatch) {
+            MatchTeam opponentTeam = teamFightMatch.getParticipantTeam(playerParticipant).equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
+            return opponentTeam.isBedBroken() ? "true" : "false";
         }
-
-        return string;
+        return "";
     }
 }

@@ -6,11 +6,11 @@ import org.bukkit.OfflinePlayer;
 
 public class InMatchPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("in-match");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
-        if (string.equals("in-match")) {
-            return String.valueOf(MatchService.get().matches.size());
-        }
-
-        return string;
+        return String.valueOf(MatchService.get().matches.size());
     }
 }

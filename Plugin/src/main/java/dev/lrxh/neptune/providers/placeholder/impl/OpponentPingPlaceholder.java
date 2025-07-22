@@ -11,18 +11,18 @@ import org.bukkit.entity.Player;
 
 public class OpponentPingPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("opponent-ping");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("opponent-ping")) {
-            if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
-                return "";
-            Player opponentPlayer = match.getParticipant(player.getUniqueId()).getOpponent().getPlayer();
-            if (opponentPlayer == null) return "";
-            return String.valueOf(match.getParticipant(player.getUniqueId()).getOpponent().getPlayer().getPing());
-        }
-
-        return string;
+        if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
+            return "";
+        Player opponentPlayer = match.getParticipant(player.getUniqueId()).getOpponent().getPlayer();
+        if (opponentPlayer == null) return "";
+        return String.valueOf(match.getParticipant(player.getUniqueId()).getOpponent().getPlayer().getPing());
     }
 }

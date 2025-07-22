@@ -10,16 +10,17 @@ import org.bukkit.OfflinePlayer;
 
 public class TimePlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("time");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
-        if (string.equals("time")) {
-            Match match = profile.getMatch();
-            if (match != null && !match.isEnded()) return match.getTime().formatTime();
-            if (profile.getState().equals(ProfileState.IN_QUEUE))
-                return QueueService.get().get(player.getUniqueId()).getTime().formatTime();
-        }
-
-        return string;
+        Match match = profile.getMatch();
+        if (match != null && !match.isEnded()) return match.getTime().formatTime();
+        if (profile.getState().equals(ProfileState.IN_QUEUE))
+            return QueueService.get().get(player.getUniqueId()).getTime().formatTime();
+        return "";
     }
 }
