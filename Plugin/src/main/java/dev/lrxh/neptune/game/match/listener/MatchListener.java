@@ -59,7 +59,7 @@ public class MatchListener implements Listener {
         Match match = profile.getMatch();
         Location blockLocation = event.getBlock().getLocation();
 
-        if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
+        if (profile.hasState(ProfileState.IN_KIT_EDITOR, ProfileState.IN_QUEUE)) {
             event.setCancelled(true);
             player.sendMessage(CC.color("&cYou can't place blocks here!"));
             return;
@@ -544,7 +544,7 @@ public class MatchListener implements Listener {
         if (player.getGameMode() == GameMode.CREATIVE) return;
         Profile profile = API.getProfile(player);
         if (profile == null) return;
-        if (profile.getState() == ProfileState.IN_LOBBY || profile.getState() == ProfileState.IN_SPECTATOR) {
+        if (profile.hasState(ProfileState.IN_LOBBY, ProfileState.IN_SPECTATOR, ProfileState.IN_KIT_EDITOR, ProfileState.IN_QUEUE)) {
             event.setCancelled(true);
             return;
         }
