@@ -8,15 +8,14 @@ import org.bukkit.OfflinePlayer;
 
 public class WinRatePlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("winRate");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         GlobalStats globalStats = profile.getGameData().getGlobalStats();
-
-        if (string.equals("winRate")) {
-            return String.valueOf(globalStats.getWinRatio());
-        }
-
-        return string;
+        return String.valueOf(globalStats.getWinRatio());
     }
 }

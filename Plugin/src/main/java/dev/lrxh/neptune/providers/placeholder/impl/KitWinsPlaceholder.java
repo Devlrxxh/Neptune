@@ -13,6 +13,10 @@ import java.util.regex.Pattern;
 public class KitWinsPlaceholder implements Placeholder {
     private final Pattern PATTERN = Pattern.compile("(.*)_wins");
 
+    @Override
+    public boolean match(String string) {
+        return PATTERN.matcher(string).matches();
+    }
 
     @Override
     public String parse(OfflinePlayer player, String string) {
@@ -20,13 +24,9 @@ public class KitWinsPlaceholder implements Placeholder {
         if (profile == null) return string;
 
         Matcher matcher = PATTERN.matcher(string);
-        if (matcher.matches()) {
-            KitData data = profile.getGameData().get(KitService.get().getKitByName(matcher.group(1)));
-            if (data == null) return string;
+        KitData data = profile.getGameData().get(KitService.get().getKitByName(matcher.group(1)));
+        if (data == null) return string;
 
-            return String.valueOf(data.getKills());
-        }
-
-        return string;
+        return String.valueOf(data.getKills());
     }
 }

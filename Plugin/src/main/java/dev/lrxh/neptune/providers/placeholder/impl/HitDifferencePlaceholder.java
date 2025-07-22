@@ -11,17 +11,17 @@ import org.bukkit.OfflinePlayer;
 
 public class HitDifferencePlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("hit-difference");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("hit-difference")) {
-            if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
-                return "";
-            Participant playerParticipant = match.getParticipant(player.getUniqueId());
-            return String.valueOf(playerParticipant.getHitsDifference(playerParticipant.getOpponent()));
-        }
-
-        return string;
+        if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
+            return "";
+        Participant playerParticipant = match.getParticipant(player.getUniqueId());
+        return String.valueOf(playerParticipant.getHitsDifference(playerParticipant.getOpponent()));
     }
 }

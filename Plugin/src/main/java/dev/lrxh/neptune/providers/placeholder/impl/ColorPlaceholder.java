@@ -8,15 +8,14 @@ import org.bukkit.OfflinePlayer;
 
 public class ColorPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("color");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
-
-        if (string.equals("color")) {
-            Match match = profile.getMatch();
-            return match != null ? match.getParticipant(player.getUniqueId()).getColor().getColor() : "";
-        }
-
-        return string;
+        Match match = profile.getMatch();
+        return match != null ? match.getParticipant(player.getUniqueId()).getColor().getColor() : "";
     }
 }

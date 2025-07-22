@@ -7,13 +7,13 @@ import org.bukkit.OfflinePlayer;
 
 public class PartyMaxPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("party-max");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
-        if (string.equals("party-max")) {
-            Party party = API.getProfile(player).getGameData().getParty();
-            if (party == null) return "";
-            return String.valueOf(party.getMaxUsers());
-        }
-
-        return string;
+        Party party = API.getProfile(player).getGameData().getParty();
+        if (party == null) return "";
+        return String.valueOf(party.getMaxUsers());
     }
 }

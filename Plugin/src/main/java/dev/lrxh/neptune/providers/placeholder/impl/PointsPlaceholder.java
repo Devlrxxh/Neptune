@@ -10,19 +10,19 @@ import org.bukkit.OfflinePlayer;
 
 public class PointsPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("points");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("points")) {
-            if (match == null) return "";
-            if (match instanceof SoloFightMatch)
-                return String.valueOf(match.getParticipant(player.getUniqueId()).getPoints());
-            else if (match instanceof TeamFightMatch tfm) {
-                return String.valueOf(tfm.getParticipantTeam(match.getParticipant(profile.getPlayer())).getPoints());
-            } else return "";
-        }
-
-        return string;
+        if (match == null) return "";
+        if (match instanceof SoloFightMatch)
+            return String.valueOf(match.getParticipant(player.getUniqueId()).getPoints());
+        else if (match instanceof TeamFightMatch tfm) {
+            return String.valueOf(tfm.getParticipantTeam(match.getParticipant(profile.getPlayer())).getPoints());
+        } else return "";
     }
 }

@@ -14,18 +14,19 @@ public class KitQueuedPlaceholder implements Placeholder {
     private final Pattern PATTERN = Pattern.compile("queued_(.*)");
 
     @Override
+    public boolean match(String string) {
+        return PATTERN.matcher(string).matches();
+    }
+
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
 
         Matcher matcher = PATTERN.matcher(string);
-        if (matcher.matches()) {
-            Kit kit = KitService.get().getKitByName(matcher.group(1));
-            if (kit == null) return string;
+        Kit kit = KitService.get().getKitByName(matcher.group(1));
+        if (kit == null) return string;
 
-            return String.valueOf(kit.getQueue());
-        }
-
-        return string;
+        return String.valueOf(kit.getQueue());
     }
 }

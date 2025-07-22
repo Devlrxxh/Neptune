@@ -7,12 +7,12 @@ import org.bukkit.OfflinePlayer;
 
 public class InQueuePlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("in-queue");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
-        if (string.equals("in-queue")) {
-            QueueEntry entry = QueueService.get().get(player.getUniqueId());
-            return entry != null ? entry.getKit().getDisplayName() : "";
-        }
-
-        return string;
+        QueueEntry entry = QueueService.get().get(player.getUniqueId());
+        return entry != null ? entry.getKit().getDisplayName() : "";
     }
 }

@@ -8,15 +8,14 @@ import org.bukkit.OfflinePlayer;
 
 public class CurrentStreakPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("currentStreak");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         GlobalStats globalStats = profile.getGameData().getGlobalStats();
-
-        if (string.equals("currentStreak")) {
-            return String.valueOf(globalStats.getCurrentStreak());
-        }
-
-        return string;
+        return String.valueOf(globalStats.getCurrentStreak());
     }
 }

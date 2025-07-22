@@ -6,11 +6,11 @@ import org.bukkit.OfflinePlayer;
 
 public class QueuedPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("queued");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
-        if (string.equals("queued")) {
-            return String.valueOf(QueueService.get().getQueueSize());
-        }
-
-        return string;
+        return String.valueOf(QueueService.get().getQueueSize());
     }
 }

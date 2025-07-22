@@ -10,16 +10,16 @@ import org.bukkit.OfflinePlayer;
 
 public class OpponentMaxPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("opponent-max");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("opponent-max")) {
-            if (match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
-            MatchTeam opponentTeam = teamMatch.getParticipantTeam(teamMatch.getParticipant(player.getUniqueId())).equals(teamMatch.getTeamA()) ? teamMatch.getTeamB() : teamMatch.getTeamA();
-            return String.valueOf(opponentTeam.getParticipants().size());
-        }
-
-        return string;
+        if (match == null || !(match instanceof TeamFightMatch teamMatch)) return "";
+        MatchTeam opponentTeam = teamMatch.getParticipantTeam(teamMatch.getParticipant(player.getUniqueId())).equals(teamMatch.getTeamA()) ? teamMatch.getTeamB() : teamMatch.getTeamA();
+        return String.valueOf(opponentTeam.getParticipants().size());
     }
 }

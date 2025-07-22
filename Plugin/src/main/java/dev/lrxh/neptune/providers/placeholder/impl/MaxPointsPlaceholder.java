@@ -9,15 +9,15 @@ import org.bukkit.OfflinePlayer;
 
 public class MaxPointsPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("max-points");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("max-points")) {
-            if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
-            return String.valueOf(match.getRounds());
-        }
-
-        return string;
+        if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+        return String.valueOf(match.getRounds());
     }
 }

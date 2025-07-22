@@ -10,19 +10,19 @@ import org.bukkit.OfflinePlayer;
 
 public class AlivePlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("alive");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("alive")) {
-            if (match == null) return "";
-            if (match instanceof TeamFightMatch tfm) {
-                return String.valueOf(tfm.getParticipantTeam(match.getParticipant(player.getUniqueId())).getAliveParticipants());
-            } else if (match instanceof FfaFightMatch ffm) {
-                return String.valueOf(ffm.getParticipants().size() - ffm.deadParticipants.size());
-            } else return "";
-        }
-
-        return string;
+        if (match == null) return "";
+        if (match instanceof TeamFightMatch tfm) {
+            return String.valueOf(tfm.getParticipantTeam(match.getParticipant(player.getUniqueId())).getAliveParticipants());
+        } else if (match instanceof FfaFightMatch ffm) {
+            return String.valueOf(ffm.getParticipants().size() - ffm.deadParticipants.size());
+        } else return "";
     }
 }

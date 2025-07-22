@@ -8,15 +8,14 @@ import org.bukkit.OfflinePlayer;
 
 public class LossesPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("losses");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         GlobalStats globalStats = profile.getGameData().getGlobalStats();
-
-        if (string.equals("losses")) {
-            return String.valueOf(globalStats.getLosses());
-        }
-
-        return string;
+        return String.valueOf(globalStats.getLosses());
     }
 }

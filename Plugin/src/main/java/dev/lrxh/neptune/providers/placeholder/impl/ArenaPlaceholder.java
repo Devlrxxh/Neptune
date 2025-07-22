@@ -9,15 +9,15 @@ import org.bukkit.OfflinePlayer;
 
 public class ArenaPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("arena");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("arena")) {
-            if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
-            return match.getArena().getDisplayName();
-        }
-
-        return string;
+        if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+        return match.getArena().getDisplayName();
     }
 }

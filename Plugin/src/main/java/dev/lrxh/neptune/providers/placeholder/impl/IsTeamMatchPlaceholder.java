@@ -10,15 +10,15 @@ import org.bukkit.OfflinePlayer;
 
 public class IsTeamMatchPlaceholder implements Placeholder {
     @Override
+    public boolean match(String string) {
+        return string.equals("is-team-match");
+    }
+    @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        if (string.equals("is-team-match")) {
-            if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
-            return match instanceof TeamFightMatch ? "true" : "false";
-        }
-
-        return string;
+        if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
+        return match instanceof TeamFightMatch ? "true" : "false";
     }
 }
