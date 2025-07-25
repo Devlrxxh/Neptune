@@ -2,7 +2,7 @@ package dev.lrxh.neptune.game.arena.impl;
 
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import dev.lrxh.blockChanger.BlockChanger;
-import dev.lrxh.blockChanger.wrapper.impl.snapshot.CuboidSnapshot;
+import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.utils.FaweUtils;
 import dev.lrxh.neptune.utils.LocationUtil;
