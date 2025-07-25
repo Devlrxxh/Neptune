@@ -18,7 +18,6 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.Cooldown;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.WorldUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
@@ -28,7 +27,10 @@ import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.entity.WindCharge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -107,7 +109,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onEnderPearlUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if(!event.getAction().isRightClick()) return;
+        if (!event.getAction().isRightClick()) return;
         if (event.getHand() == null) return;
         if (player.getInventory().getItem(event.getHand()).getType() != Material.ENDER_PEARL) return;
 
@@ -122,13 +124,13 @@ public class MatchListener implements Listener {
         }
         Participant participant = match.getParticipant(player);
 
-        if(player.hasCooldown(Material.ENDER_PEARL)) {
+        if (player.hasCooldown(Material.ENDER_PEARL)) {
             int ticksLeft = player.getCooldown(Material.ENDER_PEARL);
             if (ticksLeft > 0) {
                 double secondsLeft = ticksLeft / 20.0;
                 participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING, new Replacement("<time>", String.valueOf(secondsLeft)));
             }
-        }else {
+        } else {
             new NeptuneRunnable() {
                 @Override
                 public void run() {
