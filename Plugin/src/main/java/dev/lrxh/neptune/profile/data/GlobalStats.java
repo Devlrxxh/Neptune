@@ -15,7 +15,7 @@ public class GlobalStats {
     private int currentStreak = 0;
     private int bestStreak = 0;
     private int elo = 0;
-    private Division division;
+    private Division division = DivisionService.get().getDivisionByElo(0);
 
     public GlobalStats(Profile profile) {
         this.profile = profile;
