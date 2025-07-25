@@ -43,7 +43,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
                 match.removeSpectator(spectator, false);
             }
 
-//            match.resetArena();
+            match.resetArena();
             match.forEachParticipant(participant -> {
 
                 Profile profile = API.getProfile(participant.getPlayerUUID());
@@ -61,7 +61,6 @@ public class MatchEndRunnable extends NeptuneRunnable {
 
             if (match.getArena() instanceof StandAloneArena standAloneArena) {
                 standAloneArena.setUsed(false);
-                standAloneArena.restore();
             }
 
             MatchService.get().matches.remove(match);
