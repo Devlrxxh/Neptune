@@ -105,9 +105,11 @@ public class MatchListener implements Listener {
     }
 
     @EventHandler
-    public void onProjectileLaunch(ProjectileLaunchEvent event) {
-        ProjectileSource shooter = event.getEntity().getShooter();
-        if (!(shooter instanceof Player player)) return;
+    public void onEnderPearlUse(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+        if(!event.getAction().isRightClick()) return;
+        if (event.getHand() == null) return;
+        if (player.getInventory().getItem(event.getHand()).getType() != Material.ENDER_PEARL) return;
 
         Profile profile = API.getProfile(player);
         Match match = profile.getMatch();
@@ -118,25 +120,21 @@ public class MatchListener implements Listener {
         if (match.getState().equals(MatchState.STARTING)) {
             event.setCancelled(true);
         }
-
-        if (!(event.getEntity() instanceof EnderPearl)) return;
-
         Participant participant = match.getParticipant(player);
-        Cooldown cooldown = participant.getProfile().getCooldowns().get("enderpearl");
-        if (match.getKit().is(KitRule.ENDERPEARL_COOLDOWN) && cooldown == null) {
-            participant.getProfile().addCooldown("enderpearl", 15_000, new NeptuneRunnable() {
+
+        if(player.hasCooldown(Material.ENDER_PEARL)) {
+            int ticksLeft = player.getCooldown(Material.ENDER_PEARL);
+            if (ticksLeft > 0) {
+                double secondsLeft = ticksLeft / 20.0;
+                participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING, new Replacement("<time>", String.valueOf(secondsLeft)));
+            }
+        }else {
+            new NeptuneRunnable() {
                 @Override
                 public void run() {
-                    participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_EXPIRED);
+                    player.setCooldown(Material.ENDER_PEARL, 6 * 20);
                 }
-            });
-            return;
-        }
-
-        if (cooldown != null && !profile.hasCooldownEnded("enderpearl")) {
-            player.getInventory().addItem(new ItemStack(Material.ENDER_PEARL));
-            participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING, new Replacement("<time>", String.valueOf(cooldown.getSecondsLeft())));
-            event.setCancelled(true);
+            }.startLater(1L);
         }
     }
 
