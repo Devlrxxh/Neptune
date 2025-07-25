@@ -18,6 +18,10 @@
 
     <repositories>
         <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+        <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
@@ -40,10 +44,6 @@
         <repository>
             <id>codemc-snapshots</id>
             <url>https://repo.codemc.io/repository/maven-snapshots/</url>
-        </repository>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
         </repository>
         <repository>
             <id>enginehub</id>
@@ -115,6 +115,12 @@
             <groupId>com.fastasyncworldedit</groupId>
             <artifactId>FastAsyncWorldEdit-Core</artifactId>
             <scope>provided</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.Devlrxxh</groupId>
+            <artifactId>BlockChanger</artifactId>
+            <version>68ed5ad74d</version>
         </dependency>
     </dependencies>
 
