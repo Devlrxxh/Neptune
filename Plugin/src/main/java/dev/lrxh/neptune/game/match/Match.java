@@ -206,6 +206,8 @@ public abstract class Match {
         } else if (this instanceof TeamFightMatch) {
             if (this.getKit().is(KitRule.BED_WARS)) {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS_TEAM.getStringList()), player);
+            } else if (this.getKit().is(KitRule.BOXING)) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING_TEAM.getStringList()), player);
             }
 
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
