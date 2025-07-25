@@ -209,9 +209,11 @@ public abstract class Match {
             } else if (this.getKit().is(KitRule.BOXING)) {
                 return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING_TEAM.getStringList()), player);
             }
-
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
         } else if (this instanceof FfaFightMatch) {
+            if (this.getKit().is(KitRule.BOXING)) {
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING_FFA.getStringList()), player);
+            }
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_FFA.getStringList()), player);
         }
 
