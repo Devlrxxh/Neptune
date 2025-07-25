@@ -112,4 +112,14 @@ public class StandAloneArena extends Arena {
         }
         return copiesString;
     }
+
+    public void setMin(Location min) {
+        this.min = min;
+        this.snapshot = new CuboidSnapshot(min, max);
+    }
+
+    public void setMax(Location max) {
+        this.max = max;
+        this.snapshot = new CuboidSnapshot(min, max);
+    }
 }
