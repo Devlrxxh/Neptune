@@ -132,7 +132,7 @@ public class MatchListener implements Listener {
             new NeptuneRunnable() {
                 @Override
                 public void run() {
-                    player.setCooldown(Material.ENDER_PEARL, 6 * 20);
+                    player.setCooldown(Material.ENDER_PEARL, 15 * 20);
                 }
             }.startLater(1L);
         }
