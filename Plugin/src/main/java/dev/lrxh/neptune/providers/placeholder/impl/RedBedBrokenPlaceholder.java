@@ -14,6 +14,7 @@ public class RedBedBrokenPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("red-bed-broken");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

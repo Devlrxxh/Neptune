@@ -10,6 +10,7 @@ public class InQueuePlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("in-queue");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         QueueEntry entry = QueueService.get().get(player.getUniqueId());

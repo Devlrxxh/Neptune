@@ -15,6 +15,7 @@ public class BedBrokenPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("bed-broken");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
@@ -26,7 +27,6 @@ public class BedBrokenPlaceholder implements Placeholder {
             return soloFightMatch.getParticipant(player.getUniqueId()).isBedBroken() ? "true" : "false";
         } else if (match instanceof TeamFightMatch teamFightMatch) {
             return teamFightMatch.getParticipantTeam(teamFightMatch.getParticipant(player.getUniqueId())).isBedBroken() ? "true" : "false";
-        }
-        else return "";
+        } else return "";
     }
 }

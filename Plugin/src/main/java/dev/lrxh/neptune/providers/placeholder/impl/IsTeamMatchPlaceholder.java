@@ -13,6 +13,7 @@ public class IsTeamMatchPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("is-team-match");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

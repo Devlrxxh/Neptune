@@ -9,6 +9,7 @@ public class InMatchPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("in-match");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         return String.valueOf(MatchService.get().matches.size());

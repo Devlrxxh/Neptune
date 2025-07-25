@@ -116,14 +116,6 @@
             <artifactId>FastAsyncWorldEdit-Core</artifactId>
             <scope>provided</scope>
         </dependency>
-
-        <dependency>
-            <groupId>dev.lrxh</groupId>
-            <artifactId>BlockChanger</artifactId>
-            <version>2.0-SNAPSHOT</version>
-        </dependency>
-
-
     </dependencies>
 
     <build>

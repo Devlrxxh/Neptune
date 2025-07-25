@@ -9,6 +9,7 @@ public class LeaderboardPlaceholder implements Placeholder {
     public boolean match(String string) {
         return LeaderboardService.get().PATTERN.matcher(string).matches();
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         return LeaderboardService.get().getPlaceholder(string);

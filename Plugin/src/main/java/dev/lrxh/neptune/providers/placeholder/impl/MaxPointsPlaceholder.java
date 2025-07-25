@@ -12,6 +12,7 @@ public class MaxPointsPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("max-points");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

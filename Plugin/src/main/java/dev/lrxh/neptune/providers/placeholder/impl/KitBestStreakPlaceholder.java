@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class KitBestStreakPlaceholder implements Placeholder {
     private final Pattern PATTERN = Pattern.compile("(.*)_bestStreak");
+
     @Override
     public boolean match(String string) {
         return PATTERN.matcher(string).matches();

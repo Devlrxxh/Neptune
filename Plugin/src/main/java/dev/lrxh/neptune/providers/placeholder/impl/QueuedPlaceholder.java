@@ -9,6 +9,7 @@ public class QueuedPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("queued");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         return String.valueOf(QueueService.get().getQueueSize());

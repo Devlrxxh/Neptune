@@ -11,6 +11,7 @@ public class WinRatePlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("winRate");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

@@ -12,6 +12,7 @@ public class BlueMaxPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("blue-max");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

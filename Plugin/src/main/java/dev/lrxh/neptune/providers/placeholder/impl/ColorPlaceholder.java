@@ -11,6 +11,7 @@ public class ColorPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("color");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

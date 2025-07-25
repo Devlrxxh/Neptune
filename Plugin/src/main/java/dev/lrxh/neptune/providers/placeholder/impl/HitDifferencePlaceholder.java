@@ -14,6 +14,7 @@ public class HitDifferencePlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("hit-difference");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

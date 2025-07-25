@@ -23,9 +23,9 @@ import java.util.regex.Pattern;
 @Getter
 public class LeaderboardService {
     private static LeaderboardService instance;
+    public final Pattern PATTERN = Pattern.compile("(WINS|BEST_WIN_STREAK|DEATHS|ELO)_(.*)_(10|[1-9])_(name|value)");
     private final List<LeaderboardPlayerEntry> changes;
     private final LinkedHashMap<Kit, List<LeaderboardEntry>> leaderboards;
-    public final Pattern PATTERN = Pattern.compile("(WINS|BEST_WIN_STREAK|DEATHS|ELO)_(.*)_(10|[1-9])_(name|value)");
 
     public LeaderboardService() {
         leaderboards = new LinkedHashMap<>();

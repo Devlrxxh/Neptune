@@ -13,6 +13,7 @@ public class TimePlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("time");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

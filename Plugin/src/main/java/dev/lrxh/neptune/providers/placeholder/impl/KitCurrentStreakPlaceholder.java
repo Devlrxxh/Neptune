@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 public class KitCurrentStreakPlaceholder implements Placeholder {
     private final Pattern PATTERN = Pattern.compile("(.*)_currentStreak");
+
     @Override
     public boolean match(String string) {
         return PATTERN.matcher(string).matches();

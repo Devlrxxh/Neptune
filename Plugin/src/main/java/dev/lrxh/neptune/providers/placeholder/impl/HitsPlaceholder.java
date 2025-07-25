@@ -13,6 +13,7 @@ public class HitsPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("hits");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

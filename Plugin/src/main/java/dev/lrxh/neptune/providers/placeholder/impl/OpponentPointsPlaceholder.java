@@ -16,6 +16,7 @@ public class OpponentPointsPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("opponent-points");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

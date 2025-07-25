@@ -13,6 +13,7 @@ public class OpponentAlivePlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("opponent-alive");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

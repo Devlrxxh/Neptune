@@ -66,7 +66,9 @@ import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import fr.mrmicky.fastboard.FastManager;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.*;
+import org.bukkit.Difficulty;
+import org.bukkit.GameRule;
+import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 

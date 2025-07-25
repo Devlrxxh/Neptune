@@ -10,6 +10,7 @@ public class PartyMaxPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("party-max");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Party party = API.getProfile(player).getGameData().getParty();

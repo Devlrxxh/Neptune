@@ -124,7 +124,7 @@ public class MatchListener implements Listener {
         Participant participant = match.getParticipant(player);
         Cooldown cooldown = participant.getProfile().getCooldowns().get("enderpearl");
         if (match.getKit().is(KitRule.ENDERPEARL_COOLDOWN) && cooldown == null) {
-            participant.getProfile().addCooldown("enderpearl",15_000, new NeptuneRunnable() {
+            participant.getProfile().addCooldown("enderpearl", 15_000, new NeptuneRunnable() {
                 @Override
                 public void run() {
                     participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_EXPIRED);

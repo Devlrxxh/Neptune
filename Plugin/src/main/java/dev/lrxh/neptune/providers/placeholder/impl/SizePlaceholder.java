@@ -11,6 +11,7 @@ public class SizePlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("size");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

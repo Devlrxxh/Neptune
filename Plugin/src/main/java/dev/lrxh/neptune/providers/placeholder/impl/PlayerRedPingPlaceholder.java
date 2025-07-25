@@ -12,6 +12,7 @@ public class PlayerRedPingPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("player-red-ping");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

@@ -10,6 +10,7 @@ public class LastKitPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("lastKit");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

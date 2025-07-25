@@ -9,6 +9,7 @@ public class PingPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("ping");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         return String.valueOf(PlayerUtil.getPing(player.getUniqueId()));

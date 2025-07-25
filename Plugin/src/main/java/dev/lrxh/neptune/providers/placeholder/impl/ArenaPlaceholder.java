@@ -12,6 +12,7 @@ public class ArenaPlaceholder implements Placeholder {
     public boolean match(String string) {
         return string.equals("arena");
     }
+
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);

@@ -63,7 +63,7 @@ public class ArenaService extends IService {
             List<String> copies = config.getStringList(path + "copies");
             List<StandAloneArena> copiesArenas = new ArrayList<>();
 
-            for (String copyName : new ArrayList<>(copies))  {
+            for (String copyName : new ArrayList<>(copies)) {
                 Arena copy = loadArena(copyName);
                 if (copy == null) copies.remove(copiesArenas);
                 copiesArenas.add((StandAloneArena) copy);
