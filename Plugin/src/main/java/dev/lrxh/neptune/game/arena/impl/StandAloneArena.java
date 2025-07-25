@@ -1,11 +1,20 @@
 package dev.lrxh.neptune.game.arena.impl;
 
+import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import dev.lrxh.blockChanger.BlockChanger;
+import dev.lrxh.blockChanger.wrapper.impl.snapshot.CuboidSnapshot;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
+import dev.lrxh.neptune.utils.FaweUtils;
+import dev.lrxh.neptune.utils.LocationUtil;
+import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
 import lombok.Setter;
+import net.kyori.adventure.text.Component;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,15 +22,16 @@ import java.util.List;
 @Getter
 @Setter
 public class StandAloneArena extends Arena {
-    private final List<String> copies;
+    private final List<StandAloneArena> copies;
     private final boolean copy;
     private Location min;
     private Location max;
     private double limit;
     private boolean used;
     private List<Material> whitelistedBlocks;
+    private CuboidSnapshot snapshot;
 
-    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean copy, List<String> copies, List<Material> whitelistedBlocks, int deathY) {
+    public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean copy, List<StandAloneArena> copies, List<Material> whitelistedBlocks, int deathY) {
         super(name, displayName, redSpawn, blueSpawn, enabled, deathY);
         this.min = min;
         this.max = max;
@@ -30,6 +40,7 @@ public class StandAloneArena extends Arena {
         this.used = false;
         this.copies = copies;
         this.whitelistedBlocks = whitelistedBlocks;
+        this.snapshot = new CuboidSnapshot(min, max);
     }
 
     public StandAloneArena(String arenaName) {
@@ -43,21 +54,44 @@ public class StandAloneArena extends Arena {
         this.whitelistedBlocks = new ArrayList<>();
     }
 
+    public void restore() {
+        BlockChanger.restoreCuboidSnapshot(snapshot).thenRun(() -> {
+            ServerUtils.info("Restoring arena " + getName() + "...");
+        });
+    }
+
     @Override
     public boolean isSetup() {
         return !(getRedSpawn() == null || getBlueSpawn() == null || min == null || max == null);
     }
 
     public void deleteAllCopies() {
-        for (String name : copies) {
-            StandAloneArena arena = (StandAloneArena) ArenaService.get().getArenaByName(name);
-            if (arena == null) continue;
-
+        for (StandAloneArena arena : copies) {
 //            BlockChanger.setBlocksAsync(arena.getMin(), arena.getMax(), Material.AIR);
 
             arena.delete();
         }
         copies.clear();
+    }
+
+    public void createDuplicate(Clipboard clipboard) {
+        int offset = (copies.isEmpty() ? 1 : copies.size()) * 500;
+        Location redSpawn = LocationUtil.addOffsetX(getRedSpawn().clone(), offset);
+        Location blueSpawn = LocationUtil.addOffsetX(getBlueSpawn().clone(), offset);
+        Location min = LocationUtil.addOffsetX(this.min.clone(), offset);
+        Location max = LocationUtil.addOffsetX(this.max.clone(), offset);
+        StandAloneArena arena = new StandAloneArena(getName() + "#" + copies.size(), getDisplayName(), redSpawn, blueSpawn, min, max, limit, isEnabled(), false, new ArrayList<>(), whitelistedBlocks, getDeathY());
+        FaweUtils.pasteClipboard(clipboard, min, true);
+        copies.add(arena);
+//        ArenaService.get().getArenas().add(arena);
+    }
+
+    public StandAloneArena get() {
+        for (StandAloneArena arena : copies) {
+            if (!arena.isUsed()) return arena;
+        }
+        if (!isUsed()) return this;
+        return null;
     }
 
     public List<String> getWhitelistedBlocksAsString() {
@@ -68,5 +102,16 @@ public class StandAloneArena extends Arena {
         }
 
         return r;
+    }
+
+    public List<String> getCopiesAsString() {
+        List<String> copiesString = new ArrayList<>();
+        if (!copies.isEmpty()) {
+            for (StandAloneArena copy : copies) {
+                if (copy == null) continue;
+                copiesString.add(copy.getName());
+            }
+        }
+        return copiesString;
     }
 }

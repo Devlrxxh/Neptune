@@ -167,13 +167,6 @@ public abstract class Match {
     }
 
     public void resetArena() {
-        for (Location location : liquids) {
-            arena.getWorld().setBlockData(location, Material.AIR.createBlockData());
-        }
-        for (Map.Entry<Location, BlockData> entry : changes.entrySet()) {
-            arena.getWorld().setBlockData(entry.getKey(), entry.getValue());
-        }
-
         removeEntities();
     }
 

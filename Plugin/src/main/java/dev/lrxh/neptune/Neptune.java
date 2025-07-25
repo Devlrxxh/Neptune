@@ -46,7 +46,6 @@ import dev.lrxh.neptune.game.kit.procedure.KitProcedureListener;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.game.match.commands.SpectateCommand;
-import dev.lrxh.neptune.game.match.listener.BlockTracker;
 import dev.lrxh.neptune.game.match.listener.MatchListener;
 import dev.lrxh.neptune.game.match.tasks.ArenaBoundaryCheckTask;
 import dev.lrxh.neptune.game.match.tasks.XPBarRunnable;
@@ -67,9 +66,7 @@ import dev.lrxh.neptune.utils.tasks.TaskScheduler;
 import fr.mrmicky.fastboard.FastManager;
 import lombok.Getter;
 import lombok.Setter;
-import org.bukkit.Difficulty;
-import org.bukkit.GameRule;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -130,7 +127,6 @@ public final class Neptune extends JavaPlugin {
         if (ScoreboardLocale.ENABLED_SCOREBOARD.getBoolean()) {
             new FastManager(this, new ScoreboardAdapter());
         }
-
         ServerUtils.info("Loaded Successfully");
     }
 
@@ -152,8 +148,7 @@ public final class Neptune extends JavaPlugin {
                 new BukkitListener(),
                 new MenuListener(),
                 new ArenaProcedureListener(),
-                new KitProcedureListener(),
-                new BlockTracker()
+                new KitProcedureListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

@@ -9,10 +9,12 @@ import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.PotionEffectUtils;
+import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.*;
 
@@ -45,7 +47,12 @@ public class KitService extends IService {
                 HashSet<Arena> arenas = new HashSet<>();
                 if (!config.getStringList(path + "arenas").isEmpty()) {
                     for (String arenaName : config.getStringList(path + "arenas")) {
-                        arenas.add(ArenaService.get().getArenaByName(arenaName));
+                        Arena arena = ArenaService.get().getArenaByName(arenaName);
+                        if (arena == null) {
+                            ServerUtils.error("KitService: Arena " + arenaName + " not found for kit " + kitName);
+                            continue;
+                        }
+                        arenas.add(arena);
                     }
                 }
 

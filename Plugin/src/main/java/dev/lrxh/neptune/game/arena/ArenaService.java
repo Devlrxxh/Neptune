@@ -34,37 +34,57 @@ public class ArenaService extends IService {
         FileConfiguration config = ConfigService.get().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
             for (String arenaName : getKeys("arenas")) {
-                String path = "arenas." + arenaName + ".";
-
-                String displayName = config.getString(path + "displayName");
-                Location redSpawn = LocationUtil.deserialize(config.getString(path + "redSpawn"));
-                Location blueSpawn = LocationUtil.deserialize(config.getString(path + "blueSpawn"));
-                boolean enabled = config.getBoolean(path + "enabled");
-                ArenaType arenaType = ArenaType.valueOf(config.getString(path + "type"));
-                int deathY = config.getInt(path + "deathY", -68321);
-
-                if (arenaType.equals(ArenaType.STANDALONE)) {
-                    Location edge1 = LocationUtil.deserialize(config.getString(path + "min"));
-                    Location edge2 = LocationUtil.deserialize(config.getString(path + "max"));
-
-                    double limit = config.getDouble(path + "limit");
-                    List<String> copies = config.getStringList(path + "copies");
-                    boolean copy = config.getBoolean(path + "copy", false);
-                    List<Material> whitelistedBlocks = new ArrayList<>();
-
-                    for (String name : config.getStringList(path + "whitelistedBlocks")) {
-                        whitelistedBlocks.add(Material.getMaterial(name));
-                    }
-
-                    StandAloneArena arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copies, whitelistedBlocks, deathY);
-                    arenas.add(arena);
-                } else {
-                    SharedArena arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled, deathY);
-                    arenas.add(arena);
-                }
+                Arena arena = loadArena(arenaName);
+                arenas.add(arena);
             }
         }
     }
+
+    public Arena loadArena(String arenaName) {
+        FileConfiguration config = ConfigService.get().getArenasConfig().getConfiguration();
+        String path = "arenas." + arenaName + ".";
+
+        if (!config.contains(path + "displayName")) return null;
+
+        String displayName = config.getString(path + "displayName");
+        Location redSpawn = LocationUtil.deserialize(config.getString(path + "redSpawn"));
+        Location blueSpawn = LocationUtil.deserialize(config.getString(path + "blueSpawn"));
+        boolean enabled = config.getBoolean(path + "enabled");
+        ArenaType arenaType = ArenaType.valueOf(config.getString(path + "type"));
+        int deathY = config.getInt(path + "deathY", -68321);
+
+        Arena arena;
+
+        if (arenaType.equals(ArenaType.STANDALONE)) {
+            Location edge1 = LocationUtil.deserialize(config.getString(path + "min"));
+            Location edge2 = LocationUtil.deserialize(config.getString(path + "max"));
+
+            double limit = config.getDouble(path + "limit");
+            List<String> copies = config.getStringList(path + "copies");
+            List<StandAloneArena> copiesArenas = new ArrayList<>();
+
+            for (String copyName : new ArrayList<>(copies))  {
+                Arena copy = loadArena(copyName);
+                if (copy == null) copies.remove(copiesArenas);
+                copiesArenas.add((StandAloneArena) copy);
+                arenas.add(copy);
+            }
+
+            boolean copy = config.getBoolean(path + "copy", false);
+            List<Material> whitelistedBlocks = new ArrayList<>();
+
+            for (String name : config.getStringList(path + "whitelistedBlocks")) {
+                whitelistedBlocks.add(Material.getMaterial(name));
+            }
+
+            arena = new StandAloneArena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, copy, copiesArenas, whitelistedBlocks, deathY);
+        } else {
+            arena = new SharedArena(arenaName, displayName, redSpawn, blueSpawn, enabled, deathY);
+        }
+
+        return arena;
+    }
+
 
     @Override
     public void stop() {
@@ -84,7 +104,7 @@ public class ArenaService extends IService {
                         new Value("min", LocationUtil.serialize(standAloneArena.getMin())),
                         new Value("max", LocationUtil.serialize(standAloneArena.getMax())),
                         new Value("limit", standAloneArena.getLimit()),
-                        new Value("copies", standAloneArena.getCopies()),
+                        new Value("copies", standAloneArena.getCopiesAsString()),
                         new Value("copy", standAloneArena.isCopy()),
                         new Value("whitelistedBlocks", standAloneArena.getWhitelistedBlocksAsString())
                 ));
