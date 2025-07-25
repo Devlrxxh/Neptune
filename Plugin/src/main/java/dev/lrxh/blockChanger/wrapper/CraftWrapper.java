@@ -1,5 +1,7 @@
 package dev.lrxh.blockChanger.wrapper;
 
+import dev.lrxh.blockChanger.utility.ReflectionUtility;
+
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
@@ -13,20 +15,12 @@ public abstract class CraftWrapper<T> {
         this.nms = apply(input);
     }
 
-    public Class cb(String className) {
-        try {
-            return Class.forName("org.bukkit.craftbukkit." + className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("CraftBukkit class not found: " + className, e);
-        }
+    public Class<?> cb(String className) {
+        return ReflectionUtility.getClass("org.bukkit.craftbukkit." + className);
     }
 
-    public Class nms(String className) {
-        try {
-            return Class.forName("net.minecraft." + className);
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("NMS class not found: " + className, e);
-        }
+    public Class<?> nms(String className) {
+        return ReflectionUtility.getClass("net.minecraft." + className);
     }
 
     public Object nms() {

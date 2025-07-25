@@ -14,6 +14,7 @@ import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 
 public class ThreadedLevelLightEngine_1_21 extends ThreadedLevelLightEngine {
+
     public ThreadedLevelLightEngine_1_21(World input) {
         super(input);
     }
@@ -21,29 +22,31 @@ public class ThreadedLevelLightEngine_1_21 extends ThreadedLevelLightEngine {
     @Override
     protected Object apply(World input) {
         try {
-            Class<?> serverLevel = nms("server.level.ServerLevel");
+            Class<?> serverLevelClass = nms("server.level.ServerLevel");
             CraftWorld craftWorld = new CraftWorld(input);
-            Object world = getMethod(craftWorld.nms().getClass(), "getHandle", serverLevel)
+            Object world = getMethod(craftWorld.nms().getClass(), "getHandle", serverLevelClass)
                     .invoke(craftWorld.nms());
-            Class<?> chunkProvider = nms("server.level.ChunkProviderServer");
-            Object chunkProviderInstance = getMethod(world.getClass(), "m", chunkProvider).invoke(world);
-            Class<?> threadedLevelLightEngine = nms("server.level.ThreadedLevelLightEngine");
-            Object result = getMethod(chunkProviderInstance.getClass(), "a", threadedLevelLightEngine).invoke(chunkProviderInstance);
-            return result;
+
+            Class<?> chunkProviderClass = nms("server.level.ChunkProviderServer");
+            Object chunkProvider = getMethod(world.getClass(), "m", chunkProviderClass)
+                    .invoke(world);
+
+            Class<?> lightEngineClass = nms("server.level.ThreadedLevelLightEngine");
+            return getMethod(chunkProvider.getClass(), "a", lightEngineClass)
+                    .invoke(chunkProvider);
+
         } catch (Throwable e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to get StarLightLightingProvider", e);
+            throw new RuntimeException("Failed to get ThreadedLevelLightEngine instance", e);
         }
     }
 
     @Override
     public void relightChunks(Set<Chunk> chunks) {
         try {
-            Class<?> lightEngineClass = Class.forName("ca.spottedleaf.moonrise.patches.starlight.light.StarLightLightingProvider");
+            Object lightEngine = nms();
+            Collection<Object> chunkPositions = new ArrayList<>();
 
-            Object lightEngine = lightEngineClass.cast(nms());
-            Collection<Object> positions = new ArrayList<>();
-            Method lightChunksMethod = getReflectiveMethod(
+            Method relightMethod = getReflectiveMethod(
                     lightEngine.getClass(),
                     "starlight$serverRelightChunks",
                     Collection.class,
@@ -51,24 +54,25 @@ public class ThreadedLevelLightEngine_1_21 extends ThreadedLevelLightEngine {
                     IntConsumer.class
             );
 
-            for (Chunk chunk : chunks) {
-                Class<?> chunkPosClass = Class.forName("net.minecraft.world.level.ChunkPos");
-                Constructor<?> constructor = chunkPosClass.getConstructor(int.class, int.class);
+            Class<?> chunkPosClass = nms("world.level.ChunkPos");
+            Constructor<?> chunkPosConstructor = chunkPosClass.getConstructor(int.class, int.class);
 
-                Object chunkPos = constructor.newInstance(chunk.getX(), chunk.getZ());
-                positions.add(chunkPos);
+            for (Chunk chunk : chunks) {
+                Object chunkPos = chunkPosConstructor.newInstance(chunk.getX(), chunk.getZ());
+                chunkPositions.add(chunkPos);
             }
 
-            lightChunksMethod.invoke(lightEngine, positions,
-                    (Consumer<Object>) (chunkPos) -> {
+            relightMethod.invoke(
+                    lightEngine,
+                    chunkPositions,
+                    (Consumer<Object>) chunkPos -> {
                     },
-                    (IntConsumer) (intValue) -> {
+                    (IntConsumer) value -> {
                     }
             );
+
         } catch (Throwable e) {
-            e.printStackTrace();
-            throw new RuntimeException("Failed to bind method handle for lightChunk", e);
+            throw new RuntimeException("Failed to relight chunks using StarLightLightingProvider", e);
         }
     }
-
 }

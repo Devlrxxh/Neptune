@@ -19,10 +19,8 @@ public class IChunkAccess_1_21 extends IChunkAccess {
 
             Class<?> chunkSectionClass = nms("world.level.chunk.ChunkSection");
             MethodHandle getSectionsHandle = getMethod(chunkClass, "d", Array.newInstance(chunkSectionClass, 0).getClass());
-            Object[] sections = (Object[]) getSectionsHandle.invoke(nms());
-            return sections;
+            return (Object[]) getSectionsHandle.invoke(nms());
         } catch (Throwable e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to get chunk handle", e);
         }
     }
@@ -54,7 +52,6 @@ public class IChunkAccess_1_21 extends IChunkAccess {
 
             return copiedSections.toArray(new Object[0]);
         } catch (Throwable e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to get chunk handle", e);
         }
     }
@@ -64,7 +61,6 @@ public class IChunkAccess_1_21 extends IChunkAccess {
             MethodHandle copyHandle = getMethod(section.getClass(), "k", section.getClass());
             return copyHandle.invoke(section);
         } catch (Throwable e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to copy chunk section", e);
         }
     }

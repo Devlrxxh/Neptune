@@ -42,7 +42,6 @@ public class CraftChunk_1_21 extends CraftChunk {
 
             return IChunkAccess.from(rawResult);
         } catch (Throwable e) {
-            e.printStackTrace();
             throw new RuntimeException("Failed to get chunk handle", e);
         }
     }

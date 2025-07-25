@@ -11,7 +11,6 @@ public class CraftWorld extends CraftWrapper<World> {
     @Override
     protected Object apply(World input) {
         Class<?> craftWorldClass = cb("CraftWorld");
-        Object craftWorldInstance = craftWorldClass.cast(input);
-        return craftWorldInstance;
+        return craftWorldClass.cast(input);
     }
 }
