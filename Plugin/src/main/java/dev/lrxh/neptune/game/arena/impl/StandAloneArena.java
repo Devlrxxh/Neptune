@@ -55,9 +55,7 @@ public class StandAloneArena extends Arena {
     }
 
     public void restore() {
-        BlockChanger.restoreCuboidSnapshot(snapshot).thenRun(() -> {
-            ServerUtils.info("Restoring arena " + getName() + "...");
-        });
+        BlockChanger.restoreCuboidSnapshot(snapshot);
     }
 
     @Override
