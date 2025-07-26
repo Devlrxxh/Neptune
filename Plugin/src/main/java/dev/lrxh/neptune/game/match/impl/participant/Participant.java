@@ -86,7 +86,7 @@ public class Participant {
     }
 
     public String getNameColored() {
-        return PlaceholderUtil.format(color.getColor() + name, getPlayer());
+        return color.getColor() + name;
     }
 
     public void addWin() {

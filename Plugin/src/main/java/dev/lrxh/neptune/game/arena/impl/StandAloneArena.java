@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.arena.impl;
 
 import dev.lrxh.blockChanger.BlockChanger;
 import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.utils.LocationUtil;
@@ -83,21 +84,22 @@ public class StandAloneArena extends Arena {
         this.copy = false;
         this.copies = new ArrayList<>();
         this.whitelistedBlocks = new ArrayList<>();
-        this.duplicateCounter = new AtomicInteger(copies.size());
+        this.duplicateCounter = new AtomicInteger(0);
     }
 
     public void createDuplicate() {
         int index = duplicateIndex.getAndIncrement();
-        int offset = index * 500;
+        int offsetX = index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt();
+        int offsetZ = index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt();
 
-        Location redSpawn = LocationUtil.addOffsetX(getRedSpawn().clone(), offset);
-        Location blueSpawn = LocationUtil.addOffsetX(getBlueSpawn().clone(), offset);
-        Location min = LocationUtil.addOffsetX(this.min.clone(), offset);
-        Location max = LocationUtil.addOffsetX(this.max.clone(), offset);
+        Location redSpawn = LocationUtil.addOffset(getRedSpawn().clone(), offsetX, offsetZ);
+        Location blueSpawn = LocationUtil.addOffset(getBlueSpawn().clone(), offsetX, offsetZ);
+        Location min = LocationUtil.addOffset(this.min.clone(), offsetX, offsetZ);
+        Location max = LocationUtil.addOffset(this.max.clone(), offsetX, offsetZ);
 
-        snapshot.offset(offset, 0).thenAcceptAsync(cuboidSnapshot -> {
+        snapshot.offset(offsetX, offsetZ).thenAcceptAsync(cuboidSnapshot -> {
             cuboidSnapshot.restore();
-            ServerUtils.info("Generated arena: " + getName() + "#" + index + " at " + redSpawn.getWorld().getName() + " with offset: " + offset);
+            ServerUtils.info("Generated arena: " + getName() + "#" + index + " at " + redSpawn.getWorld().getName() + " with offset X: " + offsetX + " and Z: " + offsetZ);
 
             StandAloneArena arena = new StandAloneArena(
                     getName() + "#" + index,

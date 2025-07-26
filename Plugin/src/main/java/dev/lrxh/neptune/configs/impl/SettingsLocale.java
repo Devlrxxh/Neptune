@@ -23,6 +23,8 @@ public enum SettingsLocale implements IDataAccessor {
     PARTICIPANT_COLOR_BLUE("PARTICIPANT.COLOR.BLUE", "", DataType.STRING, "&9"),
     PARTICIPANT_COLOR_RED("PARTICIPANT.COLOR.RED", "", DataType.STRING, "&c"),
     REQUEST_EXPIRY_TIME("REQUEST.EXPIRY_TIME", "How long a request should last in seconds.", DataType.INT, "30"),
+    STANDALONE_ARENA_COPY_OFFSET_X("STANDALONE_ARENA.COPY_OFFSET.X", "The offset in the X direction when copying a standalone arena.", DataType.INT, "500"),
+    STANDALONE_ARENA_COPY_OFFSET_Z("STANDALONE_ARENA.COPY_OFFSET.Z", "The offset in the Z direction when copying a standalone arena.", DataType.INT, "0"),
     PARTY_ADVERTISE_TIME("PARTY.ADVERTISE_TIME", "The time it should take for sending each message for party advertisements, in ticks (20 ticks = 1 second).", DataType.INT, "6000");
 
     private final String path;

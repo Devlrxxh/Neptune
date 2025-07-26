@@ -5,8 +5,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 
 public class LocationUtil {
-    public static Location addOffsetX(Location location, int offsetX) {
-        return location.clone().add(offsetX, 0, 0);
+    public static Location addOffset(Location location, int offsetX, int offsetZ) {
+        return location.clone().add(offsetX, 0, offsetZ);
     }
 
     public static boolean isInside(Location location, Location min, Location max) {
