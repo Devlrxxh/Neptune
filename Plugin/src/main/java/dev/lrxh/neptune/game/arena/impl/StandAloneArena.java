@@ -27,7 +27,7 @@ public class StandAloneArena extends Arena {
     private List<Material> whitelistedBlocks;
     private CuboidSnapshot snapshot;
     private final AtomicInteger duplicateCounter;
-    private final AtomicInteger duplicateIndex = new AtomicInteger(1); // Add this to your class
+    private final AtomicInteger duplicateIndex = new AtomicInteger(1);
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean copy, List<StandAloneArena> copies, List<Material> whitelistedBlocks, int deathY) {
         super(name, displayName, redSpawn, blueSpawn, enabled, deathY);
@@ -87,7 +87,7 @@ public class StandAloneArena extends Arena {
     }
 
     public void createDuplicate() {
-        int index = duplicateIndex.getAndIncrement(); // Thread-safe increment
+        int index = duplicateIndex.getAndIncrement();
         int offset = index * 500;
 
         Location redSpawn = LocationUtil.addOffsetX(getRedSpawn().clone(), offset);
@@ -95,7 +95,7 @@ public class StandAloneArena extends Arena {
         Location min = LocationUtil.addOffsetX(this.min.clone(), offset);
         Location max = LocationUtil.addOffsetX(this.max.clone(), offset);
 
-        snapshot.offsetAsync(offset, 0).thenAcceptAsync(cuboidSnapshot -> {
+        snapshot.offset(offset, 0).thenAcceptAsync(cuboidSnapshot -> {
             cuboidSnapshot.restore();
             ServerUtils.info("Generated arena: " + getName() + "#" + index + " at " + redSpawn.getWorld().getName() + " with offset: " + offset);
 
