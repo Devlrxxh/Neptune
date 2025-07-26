@@ -57,6 +57,8 @@ public class Participant {
         this.bedBroken = false;
         this.currentCheckPoint = null;
         this.checkPoint = 0;
+        this.hits = 0;
+        this.combo = 0;
     }
 
     public void setDead(boolean dead) {
