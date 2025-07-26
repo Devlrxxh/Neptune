@@ -364,7 +364,7 @@ public abstract class Match {
 
         if (deathMessage.isEmpty() && deathCause != null) {
             broadcast(
-                    deadParticipant.getDeathCause().getMessagesLocale(),
+                    deadParticipant.getDeathCause().getMessage(),
                     new Replacement("<player>", deadParticipant.getNameColored()),
                     new Replacement("<killer>", deadParticipant.getLastAttackerName())
             );

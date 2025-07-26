@@ -10,9 +10,9 @@ public enum DeathCause {
     DIED(MessagesLocale.MATCH_DEATH_DIED),
     VOID(MessagesLocale.MATCH_DEATH_VOID);
 
-    private final MessagesLocale messagesLocale;
+    private final MessagesLocale message;
 
-    DeathCause(MessagesLocale messagesLocale) {
-        this.messagesLocale = messagesLocale;
+    DeathCause(MessagesLocale message) {
+        this.message = message;
     }
 }

@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Consumer;
 
 @Getter
 @Setter
@@ -154,11 +155,49 @@ public class StandAloneArena extends Arena {
 
     public void setMin(Location min) {
         this.min = min;
-        if (min != null && max != null) this.snapshot = new CuboidSnapshot(min, max);
+        if (min != null && max != null) {
+            this.snapshot = new CuboidSnapshot(min, max);
+            runForEachCopy(copy -> {
+                copy.setMax(max);
+                copy.setSnapshot(new CuboidSnapshot(min, max));
+            });
+        }
     }
 
     public void setMax(Location max) {
         this.max = max;
-        if (min != null && max != null) this.snapshot = new CuboidSnapshot(min, max);
+        if (min != null && max != null) {
+            this.snapshot = new CuboidSnapshot(min, max);
+            runForEachCopy(copy -> {
+                copy.setMax(max);
+                copy.setSnapshot(new CuboidSnapshot(min, max));
+            });
+        }
+    }
+
+    private void runForEachCopy(Consumer<StandAloneArena> consumer) {
+        for (StandAloneArena copy : copies) {
+            if (copy != null) {
+                consumer.accept(copy);
+            }
+        }
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(true);
+        runForEachCopy(copy -> copy.setEnabled(enabled));
+    }
+
+    @Override
+    public void setRedSpawn(Location redSpawn) {
+        super.setRedSpawn(redSpawn);
+        runForEachCopy(copy -> copy.setRedSpawn(redSpawn));
+    }
+
+    @Override
+    public void setBlueSpawn(Location blueSpawn) {
+        super.setBlueSpawn(blueSpawn);
+        runForEachCopy(copy -> copy.setBlueSpawn(blueSpawn));
     }
 }
