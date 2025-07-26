@@ -99,7 +99,7 @@
         <dependency>
             <groupId>com.github.Devlrxxh</groupId>
             <artifactId>BlockChanger</artifactId>
-            <version>e1db136</version>
+            <version>a46b131</version>
         </dependency>
     </dependencies>
 

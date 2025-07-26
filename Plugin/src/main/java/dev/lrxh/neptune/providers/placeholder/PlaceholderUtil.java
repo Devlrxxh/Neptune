@@ -76,25 +76,26 @@ public class PlaceholderUtil {
 
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
+            Participant participant = match.getParticipant(player.getUniqueId());
+            line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
+            line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
+            line = line.replaceAll("<time>", match.getTime().formatTime());
+
             if (match instanceof SoloFightMatch soloFightMatch) {
 
                 Participant redPlayer = soloFightMatch.getParticipantA();
                 Participant bluePlayer = soloFightMatch.getParticipantB();
 
                 if (profile.getState().equals(ProfileState.IN_GAME)) {
-                    Participant participant = match.getParticipant(player.getUniqueId());
                     if (participant == null) return "";
                     Participant opponent = participant.getOpponent();
                     Player opponentPlayer = participant.getOpponent().getPlayer();
                     line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
                     line = line.replaceAll("<opponent-ping>", String.valueOf(opponentPlayer == null ? 0 : opponentPlayer.getPing()));
 
-                    line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
                     line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
-                    line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
                     line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
                     line = line.replaceAll("<diffrence>", participant.getHitsDifference(opponent));
-                    line = line.replaceAll("<time>", match.getTime().formatTime());
 
                     if (match.getRounds() > 1) {
                         line = line.replaceAll("<maxPoints>", String.valueOf(soloFightMatch.getRounds()));
