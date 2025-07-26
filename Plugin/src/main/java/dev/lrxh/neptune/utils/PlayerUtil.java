@@ -51,6 +51,7 @@ public class PlayerUtil {
         player.resetTitle();
         player.setMaxHealth(20.0f);
         player.setHealth(20.0D);
+        player.setCooldown(Material.ENDER_PEARL, 0);
         resetActionbar(player);
     }
 
