@@ -11,6 +11,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder;
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver;
 import org.bukkit.entity.Player;
+import org.intellij.lang.annotations.Subst;
 
 import java.util.Arrays;
 
@@ -83,7 +84,7 @@ public class CC {
         TagResolver resolver = TagResolver.resolver(
                 Arrays.stream(replacements)
                         .map(replacement -> {
-                            String key = replacement.getPlaceholder().replaceAll("^<|>$", "").toLowerCase();
+                            @Subst("") String key = replacement.getPlaceholder().replaceAll("^<|>$", "").toLowerCase();
                             return TagResolver.resolver(
                                     key,
                                     Placeholder.component(key, replacement.getReplacement()).tag()

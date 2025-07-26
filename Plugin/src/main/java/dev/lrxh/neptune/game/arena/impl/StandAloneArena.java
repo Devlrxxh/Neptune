@@ -14,7 +14,6 @@ import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 
 @Getter
@@ -28,8 +27,7 @@ public class StandAloneArena extends Arena {
     private boolean used;
     private List<Material> whitelistedBlocks;
     private CuboidSnapshot snapshot;
-    private final AtomicInteger duplicateCounter;
-    private final AtomicInteger duplicateIndex = new AtomicInteger(1);
+    private int duplicateIndex;
 
     public StandAloneArena(String name, String displayName, Location redSpawn, Location blueSpawn, Location min, Location max, double limit, boolean enabled, boolean copy, List<StandAloneArena> copies, List<Material> whitelistedBlocks, int deathY) {
         super(name, displayName, redSpawn, blueSpawn, enabled, deathY);
@@ -41,7 +39,7 @@ public class StandAloneArena extends Arena {
         this.copies = copies;
         this.whitelistedBlocks = whitelistedBlocks;
         if (min != null && max != null) this.snapshot = new CuboidSnapshot(min, max);
-        this.duplicateCounter = new AtomicInteger(copies.size());
+        this.duplicateIndex = copies.size();
     }
 
 
@@ -55,7 +53,19 @@ public class StandAloneArena extends Arena {
         this.copies = copies;
         this.whitelistedBlocks = whitelistedBlocks;
         this.snapshot = snapshot;
-        this.duplicateCounter = new AtomicInteger(copies.size());
+        this.duplicateIndex = copies.size();
+    }
+
+    public StandAloneArena(String arenaName) {
+        super(arenaName, arenaName, null, null, false, -68321);
+        this.min = null;
+        this.max = null;
+        this.limit = 68321;
+        this.used = false;
+        this.copy = false;
+        this.copies = new ArrayList<>();
+        this.whitelistedBlocks = new ArrayList<>();
+        this.duplicateIndex = 0;
     }
 
     public void restore() {
@@ -69,27 +79,15 @@ public class StandAloneArena extends Arena {
 
     public void deleteAllCopies() {
         for (StandAloneArena arena : copies) {
-//            BlockChanger.setBlocksAsync(arena.getMin(), arena.getMax(), Material.AIR);
-
-            arena.delete();
+            arena.delete(false);
         }
         copies.clear();
-    }
-
-    public StandAloneArena(String arenaName) {
-        super(arenaName, arenaName, null, null, false, -68321);
-        this.min = null;
-        this.max = null;
-        this.limit = 68321;
-        this.used = false;
-        this.copy = false;
-        this.copies = new ArrayList<>();
-        this.whitelistedBlocks = new ArrayList<>();
-        this.duplicateCounter = new AtomicInteger(0);
+        ArenaService.get().save();
+        duplicateIndex = 0;
     }
 
     public void createDuplicate() {
-        int index = duplicateIndex.getAndIncrement();
+        int index = duplicateIndex++;
         int offsetX = index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt();
         int offsetZ = index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt();
 

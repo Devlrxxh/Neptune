@@ -34,10 +34,7 @@ import org.bukkit.entity.WindCharge;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockExplodeEvent;
-import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
@@ -416,19 +413,20 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerMove(PlayerMoveEvent event) {
-        Player player = event.getPlayer();
-        Location from = event.getFrom();
-        Location to = event.getTo();
-        if (to.getY() > from.getY()) {
-            Block currentBlock = player.getLocation().getBlock();
-
-            if (currentBlock.getType() == Material.END_PORTAL) {
-
-            }
-        }
-    }
+//            TODO: PLANNED FOR BRIDGE
+//    @EventHandler
+//    public void onPlayerMove(PlayerMoveEvent event) {
+//        Player player = event.getPlayer();
+//        Location from = event.getFrom();
+//        Location to = event.getTo();
+//        if (to.getY() > from.getY()) {
+//            Block currentBlock = player.getLocation().getBlock();
+//
+//            if (currentBlock.getType() == Material.END_PORTAL) {
+//
+//            }
+//        }
+//    }
 
 
     @EventHandler
@@ -575,6 +573,10 @@ public class MatchListener implements Listener {
         event.setCancelled(cancel);
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockDrop(BlockDropItemEvent event) {
+        getMatchForPlayer(event.getPlayer()).ifPresentOrElse(match -> match.getEntities().addAll(event.getItems()), () -> event.setCancelled(true));
+    }
 
     @EventHandler()
     public void onBedBreak(BlockBreakEvent event) {
@@ -628,11 +630,7 @@ public class MatchListener implements Listener {
             if (!profile.getState().equals(ProfileState.IN_GAME)) {
                 event.setCancelled(true);
             } else {
-                getMatchForPlayer(player).ifPresent(match -> {
-                    if (projectile instanceof Projectile) {
-                        match.getEntities().add(projectile);
-                    }
-                });
+                getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(projectile));
             }
         }
     }

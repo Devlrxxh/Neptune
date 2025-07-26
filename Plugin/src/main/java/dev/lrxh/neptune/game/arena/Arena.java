@@ -18,10 +18,13 @@ public class Arena {
     private boolean enabled;
     private int deathY;
 
-    public void delete() {
+    public void delete(boolean save) {
         KitService.get().removeArenasFromKits(this);
         ArenaService.get().arenas.remove(this);
-        ArenaService.get().save();
+
+        if (save) {
+            ArenaService.get().save();
+        }
     }
 
     public boolean isSetup() {

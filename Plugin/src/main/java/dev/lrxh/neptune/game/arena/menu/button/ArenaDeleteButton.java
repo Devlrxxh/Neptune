@@ -20,7 +20,7 @@ public class ArenaDeleteButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-        arena.delete();
+        arena.delete(true);
         new ArenasManagementMenu().open(player);
         player.sendMessage(CC.success("Deleted arena"));
     }

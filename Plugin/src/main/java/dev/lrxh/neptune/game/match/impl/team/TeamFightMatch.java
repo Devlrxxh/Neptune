@@ -12,7 +12,6 @@ import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
-import dev.lrxh.neptune.game.match.tasks.MatchSecondRoundRunnable;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
