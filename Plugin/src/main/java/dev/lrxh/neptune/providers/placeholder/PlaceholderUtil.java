@@ -77,6 +77,8 @@ public class PlaceholderUtil {
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
             Participant participant = match.getParticipant(player.getUniqueId());
+            if (participant == null) return "";
+
             line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
             line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
             line = line.replaceAll("<time>", match.getTime().formatTime());
@@ -87,7 +89,6 @@ public class PlaceholderUtil {
                 Participant bluePlayer = soloFightMatch.getParticipantB();
 
                 if (profile.getState().equals(ProfileState.IN_GAME)) {
-                    if (participant == null) return "";
                     Participant opponent = participant.getOpponent();
                     Player opponentPlayer = participant.getOpponent().getPlayer();
                     line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
