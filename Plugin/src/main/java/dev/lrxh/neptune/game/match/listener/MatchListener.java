@@ -122,6 +122,8 @@ public class MatchListener implements Listener {
         if (match.getState().equals(MatchState.STARTING)) {
             event.setCancelled(true);
         }
+
+        if (!match.getKit().is(KitRule.ENDERPEARL_COOLDOWN)) return;
         Participant participant = match.getParticipant(player);
 
         if (player.hasCooldown(Material.ENDER_PEARL)) {
