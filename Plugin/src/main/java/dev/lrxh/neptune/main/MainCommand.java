@@ -3,19 +3,18 @@ package dev.lrxh.neptune.main;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
-import com.sk89q.worldedit.extent.clipboard.Clipboard;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.feature.cosmetics.CosmeticService;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
+import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.FaweUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -65,10 +64,12 @@ public class MainCommand {
 
     @Command(name = "generate", desc = "", usage = "<arena> <amount>")
     public void generate(@Sender Player player, StandAloneArena arena, int amount) {
-        Clipboard clipboard = FaweUtils.createClipboard(arena.getMin(), arena.getMax(), arena.getMin());
+        player.sendMessage(CC.color("&aGenerating " + amount + " copies of arena " + arena.getName() + "..."));
+        player.sendMessage(CC.color("&aThis may take a while, please wait... (Check console for progress)"));
         for (int i = 0; i < amount; i++) {
-            player.sendMessage(CC.color("&aGenerating arena: " + arena.getName() + " (" + (i + 1) + "/" + amount + ")..."));
-            arena.createDuplicate(clipboard);
+            arena.createDuplicate();
         }
+
+        ArenaService.get().save();
     }
 }

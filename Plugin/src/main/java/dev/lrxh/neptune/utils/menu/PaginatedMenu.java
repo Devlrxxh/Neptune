@@ -55,8 +55,8 @@ public abstract class PaginatedMenu extends Menu {
         }
 
         buttons.add(new DisplayButton(9 - 5, Material.BOOK, "&fPage: &e" + page + "/" + getPages(player)));
-        buttons.add(new PageButton(9 - 4, -1, this));
-        buttons.add(new PageButton(9 - 6, 1, this));
+        buttons.add(new PageButton(9 - 4, 1, this));
+        buttons.add(new PageButton(9 - 6, -1, this));
 
 
         List<Button> global = getGlobalButtons(player);

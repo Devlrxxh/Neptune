@@ -24,7 +24,7 @@ public class KitArenaButton extends Button {
     @Override
     public void onClick(ClickType type, Player player) {
         kit.toggleArena(arena);
-        KitService.get().stop();
+        KitService.get().save();
         new KitArenaManagementMenu(kit).open(player);
     }
 

@@ -140,6 +140,6 @@ public class KitProcedureListener implements Listener {
 
         }
         profile.getKitProcedure().setKit(null);
-        KitService.get().stop();
+        KitService.get().save();
     }
 }

@@ -81,7 +81,7 @@ public class KitService extends IService {
     }
 
     @Override
-    public void stop() {
+    public void save() {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         kits.forEach(kit -> {
             String path = "kits." + kit.getName() + ".";

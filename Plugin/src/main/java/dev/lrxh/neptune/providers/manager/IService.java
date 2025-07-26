@@ -12,7 +12,7 @@ public abstract class IService {
 
     public abstract void load();
 
-    public abstract void stop();
+    public abstract void save();
 
     public void save(List<Value> values, String path) {
         for (Value value : values) {

@@ -45,7 +45,7 @@ public class CosmeticService extends IService {
     }
 
     @Override
-    public void stop() {
+    public void save() {
 
     }
 

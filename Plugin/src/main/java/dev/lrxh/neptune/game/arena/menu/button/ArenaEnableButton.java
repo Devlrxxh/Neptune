@@ -21,7 +21,7 @@ public class ArenaEnableButton extends Button {
     @Override
     public void onClick(ClickType type, Player player) {
         arena.setEnabled(!arena.isEnabled());
-        ArenaService.get().stop();
+        ArenaService.get().save();
         new ArenaManagementMenu(arena).open(player);
     }
 

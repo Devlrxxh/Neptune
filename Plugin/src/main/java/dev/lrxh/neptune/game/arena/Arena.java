@@ -21,7 +21,7 @@ public class Arena {
     public void delete() {
         KitService.get().removeArenasFromKits(this);
         ArenaService.get().arenas.remove(this);
-        ArenaService.get().stop();
+        ArenaService.get().save();
     }
 
     public boolean isSetup() {

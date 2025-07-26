@@ -117,7 +117,7 @@ public class HotbarService extends IService {
     }
 
     @Override
-    public void stop() {
+    public void save() {
 
     }
 

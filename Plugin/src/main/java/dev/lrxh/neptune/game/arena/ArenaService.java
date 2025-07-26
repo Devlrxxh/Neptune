@@ -87,7 +87,7 @@ public class ArenaService extends IService {
 
 
     @Override
-    public void stop() {
+    public void save() {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
         arenas.forEach(arena -> {
             String path = "arenas." + arena.getName() + ".";
@@ -118,12 +118,13 @@ public class ArenaService extends IService {
 
     public Arena getArenaByName(String arenaName) {
         for (Arena arena : arenas) {
-            if (arena.getName().equalsIgnoreCase(arenaName)) {
+            if (arena != null && arena.getName() != null && arena.getName().equalsIgnoreCase(arenaName)) {
                 return arena;
             }
         }
         return null;
     }
+
 
     @Override
     public ConfigFile getConfigFile() {
