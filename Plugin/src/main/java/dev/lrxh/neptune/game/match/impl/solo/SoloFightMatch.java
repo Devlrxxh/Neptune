@@ -195,17 +195,6 @@ public class SoloFightMatch extends Match {
     public void breakBed(Participant participant, Participant breaker) {
         participant.setBedBroken(true);
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
-        Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
-
-        if (getRounds() > 1) {
-            participantKiller.addWin();
-            if (participantKiller.getPoints() < getRounds()) {
-                participantKiller.setCombo(0);
-
-                setState(MatchState.STARTING);
-                new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
-            }
-        }
         SoloMatchBedDestroyEvent event = new SoloMatchBedDestroyEvent(this, participant, breaker);
         Bukkit.getPluginManager().callEvent(event);
     }

@@ -90,21 +90,8 @@ public class TeamFightMatch extends Match {
     @Override
     public void breakBed(Participant participant, Participant breaker) {
         MatchTeam team = getParticipantTeam(participant);
-
         team.setBedBroken(true);
         playSound(Sound.ENTITY_ENDER_DRAGON_GROWL);
-
-        MatchTeam enemy = team.equals(teamA) ? teamB : teamA;
-
-        if (getRounds() > 1) {
-            enemy.addPoint();
-            if (enemy.getPoints() < getRounds()) {
-
-                setState(MatchState.STARTING);
-                new MatchSecondRoundRunnable(this, participant).start(0L, 20L);
-            }
-        }
-
         TeamMatchBedDestroyEvent event = new TeamMatchBedDestroyEvent(this, team, breaker);
         Bukkit.getPluginManager().callEvent(event);
     }

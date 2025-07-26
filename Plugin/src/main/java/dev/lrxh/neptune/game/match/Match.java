@@ -108,10 +108,7 @@ public abstract class Match {
         profile.setState(ProfileState.IN_SPECTATOR);
         if (add) spectators.add(player.getUniqueId());
 
-        forEachPlayer(participiantPlayer -> {
-            player.showPlayer(Neptune.get(), participiantPlayer);
-            participiantPlayer.hidePlayer(Neptune.get(), player);
-        });
+        showPlayerForSpectators();
 
         if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
@@ -303,10 +300,7 @@ public abstract class Match {
             participant.setDead(false);
         });
 
-        forEachPlayer(player -> {
-            Profile profile = API.getProfile(player);
-            profile.handleVisibility();
-        });
+        showPlayerForSpectators();
     }
 
     public void hideHealth() {
