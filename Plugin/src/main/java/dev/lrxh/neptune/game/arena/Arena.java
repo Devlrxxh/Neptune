@@ -201,20 +201,23 @@ public class Arena {
             @Override
             public void run() {
                 int processed = 0;
-                while (index < chunksToLoad.size() && processed < 10) {
-                    Map.Entry<Integer, Integer> chunk = chunksToLoad.get(index++);
-                    int cx = chunk.getKey();
-                    int cz = chunk.getValue();
-                    world.loadChunk(cx, cz, false);
-                    world.setChunkForceLoaded(cx, cz, true);
+                while (index < chunksToLoad.size() && processed < 5) {
+                    Map.Entry<Integer, Integer> entry = chunksToLoad.get(index++);
+                    int cx = entry.getKey();
+                    int cz = entry.getValue();
+
+                    world.getChunkAtAsync(cx, cz, true).thenAccept(chunk -> world.setChunkForceLoaded(chunk.getX(), chunk.getZ(), true));
+
                     processed++;
                 }
+
                 if (index >= chunksToLoad.size()) {
                     cancel();
                 }
             }
-        }.runTaskTimer(Neptune.get(), 0L, 20L);
+        }.runTaskTimer(Neptune.get(), 0L, 1L);
     }
+
 
 
 }
