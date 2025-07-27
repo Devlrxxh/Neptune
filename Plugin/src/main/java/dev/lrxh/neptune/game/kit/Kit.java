@@ -182,14 +182,12 @@ public class Kit {
             arenas1.add(arena);
         }
 
-        if (arenas.isEmpty()) {
+        if (arenas1.isEmpty())
             return null;
-        }
 
         Arena selected = arenas1.get(ThreadLocalRandom.current().nextInt(arenas1.size()));
         return selected.createDuplicate().thenApply(arena -> arena);
     }
-
 
     public void giveLoadout(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);

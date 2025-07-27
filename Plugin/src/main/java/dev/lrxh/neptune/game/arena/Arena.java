@@ -168,7 +168,7 @@ public class Arena {
 
     public void loadChunks() {
         if (min == null || max == null) return;
-        for (int i = 1; i < 20; i++) {
+        for (int i = 1; i < 5; i++) {
             int offsetX = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
             int offsetZ = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
 
