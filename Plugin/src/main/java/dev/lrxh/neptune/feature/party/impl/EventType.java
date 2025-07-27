@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.feature.party.impl;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
@@ -19,25 +18,25 @@ public enum EventType {
     FFA(MenusLocale.PARTY_EVENTS_FFA_SLOT.getInt()) {
         @Override
         public void start(List<Participant> participants, Kit kit) {
-            Arena arena = kit.getRandomArena();
+            kit.getRandomArena().thenAccept(arena -> {
+                if (arena == null) {
 
-            if (arena == null) {
-
-                for (Participant participant : participants) {
-                    participant.sendMessage(CC.error("No arenas were found!"));
+                    for (Participant participant : participants) {
+                        participant.sendMessage(CC.error("No arenas were found!"));
+                    }
+                    return;
                 }
-                return;
-            }
 
-            if (!arena.isSetup()) {
+                if (!arena.isSetup()) {
 
-                for (Participant participant : participants) {
-                    participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
+                    for (Participant participant : participants) {
+                        participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
+                    }
+                    return;
                 }
-                return;
-            }
 
-            MatchService.get().startMatch(participants, kit, arena);
+                MatchService.get().startMatch(participants, kit, arena);
+            });
         }
     },
     TEAM(MenusLocale.PARTY_EVENTS_SPLIT_SLOT.getInt()) {
@@ -59,19 +58,20 @@ public enum EventType {
             MatchTeam teamA = new MatchTeam(teamAList);
             MatchTeam teamB = new MatchTeam(teamBList);
 
-            Arena arena = kit.getRandomArena();
-            if (arena == null) {
-                participants.forEach(p ->
-                        p.sendMessage(CC.error("No arenas were found! Please contact an admin.")));
-                return;
-            }
-            if (!arena.isSetup()) {
-                participants.forEach(p ->
-                        p.sendMessage(CC.error("Arena wasn't set up properly! Please contact an admin.")));
-                return;
-            }
+            kit.getRandomArena().thenAccept(arena -> {
+                if (arena == null) {
+                    participants.forEach(p ->
+                            p.sendMessage(CC.error("No arenas were found! Please contact an admin.")));
+                    return;
+                }
+                if (!arena.isSetup()) {
+                    participants.forEach(p ->
+                            p.sendMessage(CC.error("Arena wasn't set up properly! Please contact an admin.")));
+                    return;
+                }
 
-            MatchService.get().startMatch(teamA, teamB, kit, arena);
+                MatchService.get().startMatch(teamA, teamB, kit, arena);
+            });
         }
 
     };

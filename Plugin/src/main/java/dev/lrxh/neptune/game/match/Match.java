@@ -7,7 +7,6 @@ import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.events.MatchSpectatorAddEvent;
 import dev.lrxh.neptune.events.MatchSpectatorRemoveEvent;
 import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.impl.MatchState;
@@ -169,10 +168,6 @@ public abstract class Match {
 
     public void resetArena() {
         removeEntities();
-
-        if (arena instanceof StandAloneArena standAloneArena) {
-            standAloneArena.restore();
-        }
     }
 
     public List<String> getScoreboard(UUID playerUUID) {

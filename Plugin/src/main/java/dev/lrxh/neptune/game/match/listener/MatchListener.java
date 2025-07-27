@@ -4,7 +4,6 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
@@ -71,7 +70,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            StandAloneArena arena = (StandAloneArena) match.getArena();
+            Arena arena = match.getArena();
 
             // Check height limit
             if (blockLocation.getY() >= arena.getLimit()) {
@@ -263,7 +262,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            StandAloneArena arena = (StandAloneArena) match.getArena();
+            Arena arena = match.getArena();
 
             if (blockLocation.getY() >= arena.getLimit()) {
                 event.setCancelled(true);
@@ -551,6 +550,7 @@ public class MatchListener implements Listener {
 
         Match match = profile.getMatch();
         if (match == null) return;
+        Arena arena = match.getArena();
 
         Material blockType = event.getBlock().getType();
         Location blockLocation = event.getBlock().getLocation();
@@ -563,10 +563,8 @@ public class MatchListener implements Listener {
         if (match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation)) {
             cancel = false;
         } else if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-            if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                if (standAloneArena.getWhitelistedBlocks().contains(blockType)) {
-                    cancel = false;
-                }
+            if (arena.getWhitelistedBlocks().contains(blockType)) {
+                cancel = false;
             }
         }
 
@@ -645,14 +643,13 @@ public class MatchListener implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK) && match.getArena() instanceof StandAloneArena standAloneArena) {
-                List<Block> originalBlocks = new ArrayList<>(event.blockList());
-                List<Block> allowedBlocks = originalBlocks.stream()
-                        .filter(block -> standAloneArena.getWhitelistedBlocks().contains(block.getType()))
-                        .toList();
-                event.blockList().clear();
-                event.blockList().addAll(allowedBlocks);
-            }
+            Arena arena = match.getArena();
+            List<Block> originalBlocks = new ArrayList<>(event.blockList());
+            List<Block> allowedBlocks = originalBlocks.stream()
+                    .filter(block -> arena.getWhitelistedBlocks().contains(block.getType()))
+                    .toList();
+            event.blockList().clear();
+            event.blockList().addAll(allowedBlocks);
         });
 
     }

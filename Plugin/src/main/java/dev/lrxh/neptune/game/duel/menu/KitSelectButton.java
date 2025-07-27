@@ -1,14 +1,15 @@
 package dev.lrxh.neptune.game.duel.menu;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -40,14 +41,17 @@ public class KitSelectButton extends Button {
         if (party) {
             Profile profile = API.getProfile(receiver);
             if (profile == null) return;
-            Arena arena = kit.getRandomArena();
-            if (arena == null) {
-                player.sendMessage(CC.error("No arena found, please contact and admin"));
-                return;
-            }
-            DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, true, 1);
-            profile.sendDuel(duelRequest);
-            player.closeInventory();
+            kit.getRandomArena().thenAccept(arena -> {
+                if (arena == null) {
+                    player.sendMessage(CC.error("No arena found, please contact and admin"));
+                    return;
+                }
+                DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, true, 1);
+                profile.sendDuel(duelRequest);
+                Bukkit.getScheduler().runTask(Neptune.get(), () -> {
+                    player.closeInventory();
+                });
+            });
         } else {
             new RoundsSelectMenu(kit, receiver).open(player);
         }
