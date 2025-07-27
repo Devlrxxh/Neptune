@@ -1,35 +1,29 @@
 package dev.lrxh.neptune.game.arena;
 
 import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
 public class Arena {
+    private final Set<Integer> loadedChunkIndices = new HashSet<>();
     private String name;
     private String displayName;
     private Location redSpawn;
     private Location blueSpawn;
     private boolean enabled;
     private int deathY;
-
     private Location min;
     private Location max;
     private double limit;
@@ -65,7 +59,7 @@ public class Arena {
         this.snapshot = new CuboidSnapshot(min, max);
 
         if (!duplicate) {
-            loadChunks();
+            loadChunks(duplicateIndex, true);
         }
     }
 
@@ -93,6 +87,12 @@ public class Arena {
 
     public CompletableFuture<Arena> createDuplicate() {
         int duplicateIndex = this.duplicateIndex++;
+
+        if (!loadedChunkIndices.contains(duplicateIndex)) {
+            loadChunks(duplicateIndex, false);
+            loadedChunkIndices.add(duplicateIndex);
+        }
+
         int offsetX = Math.abs(duplicateIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
         int offsetZ = Math.abs(duplicateIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
 
@@ -103,9 +103,6 @@ public class Arena {
 
         return snapshot.offset(offsetX, offsetZ).thenApplyAsync(cuboidSnapshot -> {
             cuboidSnapshot.restore();
-//            ServerUtils.info("Generated arena: " + name + "#" + duplicateIndex + " at " + redSpawn.getWorld().getName()
-//                    + " with offset X: " + offsetX + " and Z: " + offsetZ);
-
             return new Arena(
                     this.name + "#" + duplicateIndex,
                     displayName,
@@ -123,7 +120,6 @@ public class Arena {
         });
     }
 
-
     public List<String> getWhitelistedBlocksAsString() {
         List<String> result = new ArrayList<>();
         for (Material mat : whitelistedBlocks) {
@@ -135,6 +131,7 @@ public class Arena {
     public void remove() {
         if (owner != null) {
             owner.duplicateIndex--;
+            owner.loadedChunkIndices.remove(owner.duplicateIndex + 1);
         }
     }
 
@@ -142,7 +139,6 @@ public class Arena {
         this.min = min;
         if (min != null && max != null) {
             this.snapshot = new CuboidSnapshot(min, max);
-            loadChunks();
         }
     }
 
@@ -150,7 +146,6 @@ public class Arena {
         this.max = max;
         if (min != null && max != null) {
             this.snapshot = new CuboidSnapshot(min, max);
-            loadChunks();
         }
     }
 
@@ -171,33 +166,34 @@ public class Arena {
         return false;
     }
 
-    public void loadChunks() {
-        if (min == null || max == null) return;
+    public void loadChunks(int i, boolean disable) {
+        if (min == null || max == null) {
+            return;
+        }
 
         World world = redSpawn.getWorld();
         List<Map.Entry<Integer, Integer>> chunksToLoad = new ArrayList<>();
 
-        for (int i = 1; i < 10; i++) {
-            int offsetX = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
-            int offsetZ = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
+        int offsetX = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
+        int offsetZ = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
 
-            Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
-            Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
+        Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
+        Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
 
-            int chunkMinX = Math.min(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
-            int chunkMaxX = Math.max(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
-            int chunkMinZ = Math.min(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
-            int chunkMaxZ = Math.max(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
+        int chunkMinX = Math.min(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
+        int chunkMaxX = Math.max(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
+        int chunkMinZ = Math.min(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
+        int chunkMaxZ = Math.max(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
 
-            for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
-                for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
-                    chunksToLoad.add(new AbstractMap.SimpleEntry<>(cx, cz));
-                }
+        for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
+            for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
+                chunksToLoad.add(new AbstractMap.SimpleEntry<>(cx, cz));
             }
         }
 
         boolean wasEnabled = isEnabled();
-        setEnabled(false);
+
+        if (disable) setEnabled(false);
 
         new NeptuneRunnable() {
             int index = 0;
@@ -211,16 +207,12 @@ public class Arena {
                     int cz = entry.getValue();
 
                     world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> chunk.setForceLoaded(true));
-
                     processed++;
                 }
 
                 if (index >= chunksToLoad.size()) {
                     cancel();
-                    if (wasEnabled) {
-                        setEnabled(true);
-                    }
-                    ServerUtils.info("Loaded " + chunksToLoad.size() + " chunks for arena: " + name);
+                    if (wasEnabled) setEnabled(true);
                 }
             }
         }.start(0L, 1L);

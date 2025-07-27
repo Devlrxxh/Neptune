@@ -77,10 +77,12 @@ public class QueueCheckTask extends NeptuneRunnable {
                 continue;
             }
 
+            profile1.setState(ProfileState.IN_LOBBY);
+            profile2.setState(ProfileState.IN_LOBBY);
+
             kit.getRandomArena().thenAccept(arena -> {
-                if (arena == null || !arena.isSetup()) {
-                    profile1.setState(ProfileState.IN_LOBBY);
-                    profile2.setState(ProfileState.IN_LOBBY);
+
+                if (arena == null) {
                     PlayerUtil.sendMessage(uuid1, CC.error("No valid arena was found for this kit!"));
                     PlayerUtil.sendMessage(uuid2, CC.error("No valid arena was found for this kit!"));
                     return;

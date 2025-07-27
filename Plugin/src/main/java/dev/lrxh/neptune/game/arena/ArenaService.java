@@ -5,7 +5,6 @@ import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.providers.manager.Value;
 import dev.lrxh.neptune.utils.ConfigFile;
 import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -29,7 +28,6 @@ public class ArenaService extends IService {
 
     @Override
     public void load() {
-        ServerUtils.info("Loading arenas... (This will take a few seconds)");
         FileConfiguration config = ConfigService.get().getArenasConfig().getConfiguration();
         if (config.contains("arenas")) {
             for (String arenaName : getKeys("arenas")) {

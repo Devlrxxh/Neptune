@@ -62,6 +62,9 @@ public class QueueService {
         return entry;
     }
 
+    public void remove(QueueEntry queueEntry) {
+        remove(queueEntry.getUuid());
+    }
 
     public QueueEntry poll(Kit kit) {
         Queue<QueueEntry> queue = kitQueues.get(kit);
