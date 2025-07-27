@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.arena;
 
 import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.utils.LocationUtil;
@@ -10,9 +11,12 @@ import lombok.Setter;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
 @Getter
@@ -168,31 +172,49 @@ public class Arena {
 
     public void loadChunks() {
         if (min == null || max == null) return;
-        for (int i = 1; i < 5; i++) {
+
+        World world = redSpawn.getWorld();
+        List<Map.Entry<Integer, Integer>> chunksToLoad = new ArrayList<>();
+
+        for (int i = 1; i < 10; i++) {
             int offsetX = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
             int offsetZ = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
 
-            World world = redSpawn.getWorld();
+            Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
+            Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
 
-            Location min = LocationUtil.addOffset(this.min.clone(), offsetX, offsetZ);
-            Location max = LocationUtil.addOffset(this.max.clone(), offsetX, offsetZ);
+            int chunkMinX = Math.min(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
+            int chunkMaxX = Math.max(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
+            int chunkMinZ = Math.min(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
+            int chunkMaxZ = Math.max(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
 
-            int x1 = min.getChunk().getX();
-            int z1 = min.getChunk().getZ();
-            int x2 = max.getChunk().getX();
-            int z2 = max.getChunk().getZ();
-
-            int minX = Math.min(x1, x2);
-            int maxX = Math.max(x1, x2);
-            int minZ = Math.min(z1, z2);
-            int maxZ = Math.max(z1, z2);
-
-            for (int cx = minX; cx <= maxX; cx++) {
-                for (int cz = minZ; cz <= maxZ; cz++) {
-                    world.loadChunk(cx, cz, false);
-                    world.setChunkForceLoaded(cx, cz, true);
+            for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
+                for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
+                    chunksToLoad.add(new AbstractMap.SimpleEntry<>(cx, cz));
                 }
             }
         }
+
+        new BukkitRunnable() {
+            int index = 0;
+
+            @Override
+            public void run() {
+                int processed = 0;
+                while (index < chunksToLoad.size() && processed < 10) {
+                    Map.Entry<Integer, Integer> chunk = chunksToLoad.get(index++);
+                    int cx = chunk.getKey();
+                    int cz = chunk.getValue();
+                    world.loadChunk(cx, cz, false);
+                    world.setChunkForceLoaded(cx, cz, true);
+                    processed++;
+                }
+                if (index >= chunksToLoad.size()) {
+                    cancel();
+                }
+            }
+        }.runTaskTimer(Neptune.get(), 0L, 20L);
     }
+
+
 }
