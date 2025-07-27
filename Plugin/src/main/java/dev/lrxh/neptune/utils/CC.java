@@ -79,8 +79,6 @@ public class CC {
     public Component returnMessage(Player player, String message, Replacement... replacements) {
         String miniMessageInput = convertLegacyToMiniMessage(message);
 
-        String formattedMessage = PlaceholderUtil.format(miniMessageInput, player);
-
         TagResolver resolver = TagResolver.resolver(
                 Arrays.stream(replacements)
                         .map(replacement -> {
@@ -92,8 +90,7 @@ public class CC {
                         })
                         .toArray(TagResolver[]::new)
         );
-
-        return MiniMessage.miniMessage().deserialize(formattedMessage, resolver);
+        return PlaceholderUtil.format(MiniMessage.miniMessage().deserialize(miniMessageInput, resolver), player);
     }
 
 }

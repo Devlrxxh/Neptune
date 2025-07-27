@@ -20,11 +20,14 @@ import dev.lrxh.neptune.utils.PlayerUtil;
 import lombok.experimental.UtilityClass;
 import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @UtilityClass
 public class PlaceholderUtil {
@@ -37,6 +40,17 @@ public class PlaceholderUtil {
         }
 
         return formattedLines;
+    }
+
+    public Component format(Component component, Player player) {
+        return component.replaceText(builder -> builder
+                .match(Pattern.compile("<.*?>"))
+                .replacement((match, builder1) -> {
+                    String placeholder = match.group();
+                    String replacement = format(placeholder, player);
+                    return Component.text(replacement);
+                })
+        );
     }
 
     public String format(String line, Player player) {
