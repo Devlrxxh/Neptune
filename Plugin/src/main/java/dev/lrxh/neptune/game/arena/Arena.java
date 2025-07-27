@@ -6,6 +6,7 @@ import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
+import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
@@ -102,8 +103,8 @@ public class Arena {
 
         return snapshot.offset(offsetX, offsetZ).thenApplyAsync(cuboidSnapshot -> {
             cuboidSnapshot.restore();
-            ServerUtils.info("Generated arena: " + name + "#" + duplicateIndex + " at " + redSpawn.getWorld().getName()
-                    + " with offset X: " + offsetX + " and Z: " + offsetZ);
+//            ServerUtils.info("Generated arena: " + name + "#" + duplicateIndex + " at " + redSpawn.getWorld().getName()
+//                    + " with offset X: " + offsetX + " and Z: " + offsetZ);
 
             return new Arena(
                     this.name + "#" + duplicateIndex,
@@ -195,7 +196,10 @@ public class Arena {
             }
         }
 
-        new BukkitRunnable() {
+        boolean wasEnabled = isEnabled();
+        setEnabled(false);
+
+        new NeptuneRunnable() {
             int index = 0;
 
             @Override
@@ -206,18 +210,19 @@ public class Arena {
                     int cx = entry.getKey();
                     int cz = entry.getValue();
 
-                    world.getChunkAtAsync(cx, cz, true).thenAccept(chunk -> world.setChunkForceLoaded(chunk.getX(), chunk.getZ(), true));
+                    world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> chunk.setForceLoaded(true));
 
                     processed++;
                 }
 
                 if (index >= chunksToLoad.size()) {
                     cancel();
+                    if (wasEnabled) {
+                        setEnabled(true);
+                    }
+                    ServerUtils.info("Loaded " + chunksToLoad.size() + " chunks for arena: " + name);
                 }
             }
-        }.runTaskTimer(Neptune.get(), 0L, 1L);
+        }.start(0L, 1L);
     }
-
-
-
 }
