@@ -184,7 +184,7 @@ public class Kit {
         }
 
         if (arenas1.isEmpty())
-            return null;
+            return CompletableFuture.completedFuture(null);
 
         Arena selected = arenas1.get(ThreadLocalRandom.current().nextInt(arenas1.size()));
         return selected.createDuplicate().thenApply(arena -> arena);

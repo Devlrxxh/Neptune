@@ -49,9 +49,6 @@ public class RoundSelectButton extends Button {
                     }
                     DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, false, round);
                     profile.sendDuel(duelRequest);
-                    Bukkit.getScheduler().runTask(Neptune.get(), () -> {
-                        player.closeInventory();
-                    });
                     player.closeInventory();
                 }
         );
