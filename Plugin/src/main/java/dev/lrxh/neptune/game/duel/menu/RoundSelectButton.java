@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.duel.menu;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.game.duel.DuelRequest;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -8,6 +9,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -47,7 +49,8 @@ public class RoundSelectButton extends Button {
                     }
                     DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, false, round);
                     profile.sendDuel(duelRequest);
-                    player.closeInventory();
+
+                    Bukkit.getScheduler().runTask(Neptune.get(), () -> player.closeInventory());
                 }
         );
     }
