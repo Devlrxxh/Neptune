@@ -179,6 +179,7 @@ public class Kit {
 
         for (Arena arena : arenas) {
             if (!arena.isEnabled()) continue;
+            if (!arena.isSetup()) continue;
             arenas1.add(arena);
         }
 
