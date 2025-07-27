@@ -43,6 +43,11 @@ public class ArenaProcedureListener implements Listener {
                     return;
                 }
 
+                if (input.contains(" ")) {
+                    player.sendMessage(CC.error("Arena name cannot contain spaces"));
+                    return;
+                }
+
                 new ArenaCreateMenu(input).open(player);
             }
             case RENAME -> {
