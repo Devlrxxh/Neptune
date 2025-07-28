@@ -89,16 +89,20 @@ public class Arena {
     }
 
     public CompletableFuture<Arena> createDuplicate() {
-        int duplicateIndex = this.duplicateIndex++;
+        int currentIndex = this.duplicateIndex++;
+        int preloadIndex = currentIndex + 1;
 
-        if (duplicateIndex >= preloadedIndex) {
-            int preloadIndex = duplicateIndex + 1;
+        if (preloadIndex > preloadedIndex) {
             loadChunks(preloadIndex, false);
             preloadedIndex = preloadIndex;
         }
 
-        int offsetX = Math.abs(duplicateIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
-        int offsetZ = Math.abs(duplicateIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
+        if (currentIndex - 2 >= 1) {
+            unloadChunks(currentIndex - 2);
+        }
+
+        int offsetX = Math.abs(currentIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
+        int offsetZ = Math.abs(currentIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
 
         Location redSpawn = LocationUtil.addOffset(this.redSpawn.clone(), offsetX, offsetZ);
         Location blueSpawn = LocationUtil.addOffset(this.blueSpawn.clone(), offsetX, offsetZ);
@@ -108,7 +112,7 @@ public class Arena {
         return snapshot.offset(offsetX, offsetZ).thenApplyAsync(cuboidSnapshot -> {
             cuboidSnapshot.restore();
             return new Arena(
-                    this.name + "#" + duplicateIndex,
+                    this.name + "#" + currentIndex,
                     displayName,
                     redSpawn,
                     blueSpawn,
@@ -123,6 +127,33 @@ public class Arena {
             );
         });
     }
+
+
+    public void unloadChunks(int index) {
+        if (min == null || max == null) return;
+
+        World world = redSpawn.getWorld();
+
+        int offsetX = Math.abs(index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
+        int offsetZ = Math.abs(index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
+
+        Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
+        Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
+
+        int chunkMinX = Math.min(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
+        int chunkMaxX = Math.max(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
+        int chunkMinZ = Math.min(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
+        int chunkMaxZ = Math.max(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
+
+        for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
+            for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
+                world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> chunk.setForceLoaded(false));
+            }
+        }
+
+        ServerUtils.info("✘ Unloaded chunks for arena duplicate index " + index);
+    }
+
 
     public List<String> getWhitelistedBlocksAsString() {
         List<String> result = new ArrayList<>();
@@ -219,7 +250,7 @@ public class Arena {
                     cancel();
                     if (wasEnabled) setEnabled(true);
                     int totalChunks = chunksToLoad.size();
-                    ServerUtils.info("✔ Loaded " + totalChunks + " chunks for arena " + i + (disable ? " (with temporary disable)" : ""));
+                    ServerUtils.info("✔ Loaded " + totalChunks + " chunks for " + name + " (index: " + i + ")");
                 }
             }
         }.start(0L, 1L);
