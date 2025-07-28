@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.listener;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
@@ -21,15 +22,9 @@ import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.WorldUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.WindCharge;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -45,8 +40,14 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MatchListener implements Listener {
+    private final NamespacedKey crystalOwnerKey;
+
+    public MatchListener() {
+        this.crystalOwnerKey = new NamespacedKey(Neptune.get(), "neptune_crystal_owner");
+    }
 
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
@@ -100,6 +101,46 @@ public class MatchListener implements Listener {
         } else {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof EnderCrystal crystal && event.getDamager() instanceof Player player) {
+            crystal.getPersistentDataContainer().set(
+                    crystalOwnerKey,
+                    org.bukkit.persistence.PersistentDataType.STRING,
+                    player.getUniqueId().toString()
+            );
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onExplosion(EntityExplodeEvent event) {
+        Entity entity = event.getEntity();
+        String uuid = entity.getPersistentDataContainer().get(
+                crystalOwnerKey,
+                org.bukkit.persistence.PersistentDataType.STRING
+        );
+
+        if (uuid == null || uuid.isEmpty()) {
+            event.setCancelled(true);
+        }
+
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        if (player == null) {
+            event.setCancelled(true);
+            return;
+        }
+
+        getMatchForPlayer(player).ifPresent(match -> {
+            Arena arena = match.getArena();
+            List<Block> originalBlocks = new ArrayList<>(event.blockList());
+            List<Block> allowedBlocks = originalBlocks.stream()
+                    .filter(block -> arena.getWhitelistedBlocks().contains(block.getType()))
+                    .toList();
+            event.blockList().clear();
+            event.blockList().addAll(allowedBlocks);
+        });
     }
 
     @EventHandler
@@ -651,7 +692,6 @@ public class MatchListener implements Listener {
             event.blockList().clear();
             event.blockList().addAll(allowedBlocks);
         });
-
     }
 
     @EventHandler
