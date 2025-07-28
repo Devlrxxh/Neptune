@@ -4,6 +4,7 @@ import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.utils.LocationUtil;
+import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
@@ -30,6 +31,7 @@ public class Arena {
     private List<Material> whitelistedBlocks;
     private CuboidSnapshot snapshot;
     private int duplicateIndex;
+    private int preloadedIndex;
     private Arena owner;
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
@@ -43,6 +45,7 @@ public class Arena {
         this.limit = 0;
         this.whitelistedBlocks = new ArrayList<>();
         this.duplicateIndex = 1;
+        this.preloadedIndex = 0;
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
@@ -88,9 +91,10 @@ public class Arena {
     public CompletableFuture<Arena> createDuplicate() {
         int duplicateIndex = this.duplicateIndex++;
 
-        if (!loadedChunkIndices.contains(duplicateIndex)) {
-            loadChunks(duplicateIndex, false);
-            loadedChunkIndices.add(duplicateIndex);
+        if (duplicateIndex >= preloadedIndex) {
+            int preloadIndex = duplicateIndex + 1;
+            loadChunks(preloadIndex, false);
+            preloadedIndex = preloadIndex;
         }
 
         int offsetX = Math.abs(duplicateIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
@@ -210,9 +214,12 @@ public class Arena {
                     processed++;
                 }
 
+
                 if (index >= chunksToLoad.size()) {
                     cancel();
                     if (wasEnabled) setEnabled(true);
+                    int totalChunks = chunksToLoad.size();
+                    ServerUtils.info("✔ Loaded " + totalChunks + " chunks for arena " + i + (disable ? " (with temporary disable)" : ""));
                 }
             }
         }.start(0L, 1L);
