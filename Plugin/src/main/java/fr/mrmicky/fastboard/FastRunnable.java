@@ -27,13 +27,27 @@ public class FastRunnable implements Runnable {
             }
 
             FastBoard board = entry.getValue();
-            board.updateTitle(CC.color(manager.fastAdapter.getTitle(player)));
 
-            List<Component> lines = new ArrayList<>();
-            for (String i : manager.fastAdapter.getLines(player)) {
-                lines.add(CC.color(i));
+            String rawTitle = manager.fastAdapter.getTitle(player);
+            List<String> rawLines = manager.fastAdapter.getLines(player);
+
+            String currentTitle = board.getTitle().toString();
+            if (!currentTitle.equals(rawTitle)) {
+                board.updateTitle(CC.color(rawTitle));
             }
-            board.updateLines(lines);
+
+            List<String> currentRawLines = board.getLines().stream()
+                    .map(Component::toString)
+                    .toList();
+
+            if (!currentRawLines.equals(rawLines)) {
+                List<Component> newLines = new ArrayList<>();
+                for (String line : rawLines) {
+                    newLines.add(CC.color(line));
+                }
+                board.updateLines(newLines);
+            }
         }
     }
+
 }
