@@ -168,6 +168,7 @@ public abstract class Match {
 
     public void resetArena() {
         removeEntities();
+        arena.restore();
     }
 
     public List<String> getScoreboard(UUID playerUUID) {

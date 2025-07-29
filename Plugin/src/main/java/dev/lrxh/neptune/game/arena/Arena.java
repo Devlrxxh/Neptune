@@ -170,6 +170,12 @@ public class Arena {
         }
     }
 
+    public void restore() {
+        if (snapshot != null) {
+            snapshot.restore();
+        }
+    }
+
     public void setMin(Location min) {
         this.min = min;
         if (min != null && max != null) {
