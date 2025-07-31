@@ -2,7 +2,6 @@ package dev.lrxh.neptune.game.kit;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.ProfileService;
@@ -23,6 +22,7 @@ import org.bukkit.potion.PotionEffect;
 
 import javax.annotation.Nullable;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Getter
@@ -174,23 +174,20 @@ public class Kit {
     }
 
     @Nullable
-    public Arena getRandomArena() {
-        List<Arena> kitArenas = new ArrayList<>();
+    public CompletableFuture<Arena> getRandomArena() {
+        List<Arena> arenas1 = new ArrayList<>();
+
         for (Arena arena : arenas) {
-            if (arena == null) continue;
             if (!arena.isEnabled()) continue;
-            if (is(KitRule.BUILD)) {
-                if ((arena instanceof StandAloneArena standAloneArena)) {
-                    if (standAloneArena.isCopy()) continue;
-                    StandAloneArena arena1 = standAloneArena.get();
-                    if (arena1 != null) kitArenas.add(arena1);
-                }
-            } else {
-                kitArenas.add(arena);
-            }
+            if (!arena.isSetup()) continue;
+            arenas1.add(arena);
         }
-        Collections.shuffle(kitArenas);
-        return kitArenas.isEmpty() ? null : kitArenas.get(ThreadLocalRandom.current().nextInt(kitArenas.size()));
+
+        if (arenas1.isEmpty())
+            return CompletableFuture.completedFuture(null);
+
+        Arena selected = arenas1.get(ThreadLocalRandom.current().nextInt(arenas1.size()));
+        return selected.createDuplicate().thenApply(arena -> arena);
     }
 
     public void giveLoadout(UUID playerUUID) {

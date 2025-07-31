@@ -23,6 +23,7 @@ public class KitBestStreakPlaceholder implements Placeholder {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Matcher matcher = PATTERN.matcher(string);
+        if (!matcher.matches()) return string;
         KitData data = profile.getGameData().get(KitService.get().getKitByName(matcher.group(1)));
         if (data == null) return string;
 

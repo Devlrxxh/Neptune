@@ -180,8 +180,10 @@ public class DuelCommand {
 
         boolean party = API.getProfile(player).getState().equals(ProfileState.IN_PARTY) && API.getProfile(target).getState().equals(ProfileState.IN_PARTY);
 
-        DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, kit.getRandomArena(), party, rounds);
-        ProfileService.get().getByUUID(target.getUniqueId()).sendDuel(duelRequest);
+        kit.getRandomArena().thenAccept(arena -> {
+            DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, party, rounds);
+            ProfileService.get().getByUUID(target.getUniqueId()).sendDuel(duelRequest);
+        });
     }
 
     @Command(name = "deny-uuid", desc = "", usage = "<uuid>", hidden = true)

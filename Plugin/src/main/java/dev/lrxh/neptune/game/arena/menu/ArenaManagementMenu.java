@@ -2,7 +2,6 @@ package dev.lrxh.neptune.game.arena.menu;
 
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.impl.EdgeType;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.arena.menu.button.*;
 import dev.lrxh.neptune.game.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -44,18 +43,13 @@ public class ArenaManagementMenu extends Menu {
             buttons.add(new ArenaSetDeathYButton(9, arena));
 
 
-            if (arena instanceof StandAloneArena standAloneArena) {
-                buttons.add(new ArenaSetLimitButton(4, arena));
-                buttons.add(new DisplayButton(10, Material.REDSTONE, "&cDelete all copies", o -> {
-                    standAloneArena.deleteAllCopies();
-                }));
+            buttons.add(new ArenaSetLimitButton(4, arena));
 
-                buttons.add(new DisplayButton(getSize() - 5, Material.GRASS_BLOCK, "&aManage Whitelisted Blocks", o -> {
-                    new WhitelistedBlocksMenu(standAloneArena).open(player);
-                }));
-                buttons.add(new ArenaSetEdgeButton(8, standAloneArena, EdgeType.MAX));
-                buttons.add(new ArenaSetEdgeButton(7, standAloneArena, EdgeType.MIN));
-            }
+            buttons.add(new DisplayButton(getSize() - 5, Material.GRASS_BLOCK, "&aManage Whitelisted Blocks", o -> {
+                new WhitelistedBlocksMenu(arena).open(player);
+            }));
+            buttons.add(new ArenaSetEdgeButton(8, arena, EdgeType.MAX));
+            buttons.add(new ArenaSetEdgeButton(7, arena, EdgeType.MIN));
         }
 
         buttons.add(new ReturnButton(getSize() - 9, new ArenasManagementMenu()));

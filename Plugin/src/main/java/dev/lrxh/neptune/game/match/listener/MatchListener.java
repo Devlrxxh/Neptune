@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.game.match.listener;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
@@ -22,15 +22,9 @@ import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.WorldUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
-import org.bukkit.Bukkit;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.entity.WindCharge;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -46,8 +40,14 @@ import org.bukkit.projectiles.ProjectileSource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class MatchListener implements Listener {
+    private final NamespacedKey crystalOwnerKey;
+
+    public MatchListener() {
+        this.crystalOwnerKey = new NamespacedKey(Neptune.get(), "neptune_crystal_owner");
+    }
 
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
@@ -71,7 +71,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            StandAloneArena arena = (StandAloneArena) match.getArena();
+            Arena arena = match.getArena();
 
             // Check height limit
             if (blockLocation.getY() >= arena.getLimit()) {
@@ -101,6 +101,46 @@ public class MatchListener implements Listener {
         } else {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getEntity() instanceof EnderCrystal crystal && event.getDamager() instanceof Player player) {
+            crystal.getPersistentDataContainer().set(
+                    crystalOwnerKey,
+                    org.bukkit.persistence.PersistentDataType.STRING,
+                    player.getUniqueId().toString()
+            );
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onExplosion(EntityExplodeEvent event) {
+        Entity entity = event.getEntity();
+        String uuid = entity.getPersistentDataContainer().get(
+                crystalOwnerKey,
+                org.bukkit.persistence.PersistentDataType.STRING
+        );
+
+        if (uuid == null || uuid.isEmpty()) {
+            event.setCancelled(true);
+        }
+
+        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
+        if (player == null) {
+            event.setCancelled(true);
+            return;
+        }
+
+        getMatchForPlayer(player).ifPresent(match -> {
+            Arena arena = match.getArena();
+            List<Block> originalBlocks = new ArrayList<>(event.blockList());
+            List<Block> allowedBlocks = originalBlocks.stream()
+                    .filter(block -> arena.getWhitelistedBlocks().contains(block.getType()))
+                    .toList();
+            event.blockList().clear();
+            event.blockList().addAll(allowedBlocks);
+        });
     }
 
     @EventHandler
@@ -263,7 +303,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            StandAloneArena arena = (StandAloneArena) match.getArena();
+            Arena arena = match.getArena();
 
             if (blockLocation.getY() >= arena.getLimit()) {
                 event.setCancelled(true);
@@ -551,6 +591,7 @@ public class MatchListener implements Listener {
 
         Match match = profile.getMatch();
         if (match == null) return;
+        Arena arena = match.getArena();
 
         Material blockType = event.getBlock().getType();
         Location blockLocation = event.getBlock().getLocation();
@@ -563,10 +604,8 @@ public class MatchListener implements Listener {
         if (match.getKit().is(KitRule.BUILD) && match.getPlacedBlocks().contains(blockLocation)) {
             cancel = false;
         } else if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK)) {
-            if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                if (standAloneArena.getWhitelistedBlocks().contains(blockType)) {
-                    cancel = false;
-                }
+            if (arena.getWhitelistedBlocks().contains(blockType)) {
+                cancel = false;
             }
         }
 
@@ -645,16 +684,14 @@ public class MatchListener implements Listener {
         }
 
         getMatchForPlayer(player).ifPresent(match -> {
-            if (match.getKit().is(KitRule.ALLOW_ARENA_BREAK) && match.getArena() instanceof StandAloneArena standAloneArena) {
-                List<Block> originalBlocks = new ArrayList<>(event.blockList());
-                List<Block> allowedBlocks = originalBlocks.stream()
-                        .filter(block -> standAloneArena.getWhitelistedBlocks().contains(block.getType()))
-                        .toList();
-                event.blockList().clear();
-                event.blockList().addAll(allowedBlocks);
-            }
+            Arena arena = match.getArena();
+            List<Block> originalBlocks = new ArrayList<>(event.blockList());
+            List<Block> allowedBlocks = originalBlocks.stream()
+                    .filter(block -> arena.getWhitelistedBlocks().contains(block.getType()))
+                    .toList();
+            event.blockList().clear();
+            event.blockList().addAll(allowedBlocks);
         });
-
     }
 
     @EventHandler

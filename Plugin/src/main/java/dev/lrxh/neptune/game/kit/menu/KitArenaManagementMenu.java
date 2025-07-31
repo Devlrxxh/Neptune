@@ -2,9 +2,7 @@ package dev.lrxh.neptune.game.kit.menu;
 
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.Kit;
-import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.kit.menu.button.KitArenaButton;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
@@ -29,17 +27,8 @@ public class KitArenaManagementMenu extends PaginatedMenu {
 
         int i = 0;
         for (Arena arena : ArenaService.get().getArenas()) {
-            if (kit.is(KitRule.BUILD)) {
-                if (arena instanceof StandAloneArena) {
-                    buttons.add(new KitArenaButton(i++, kit, arena));
-                }
-            } else {
-                if (!(arena instanceof StandAloneArena)) {
-                    buttons.add(new KitArenaButton(i++, kit, arena));
-                }
-            }
+            buttons.add(new KitArenaButton(i++, kit, arena));
         }
-
 
         return buttons;
     }

@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.menu.WhitelistedBlocksMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -11,9 +11,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class WhitelistedBlockButton extends Button {
     private final Material material;
-    private final StandAloneArena arena;
+    private final Arena arena;
 
-    public WhitelistedBlockButton(int slot, Material material, StandAloneArena arena) {
+    public WhitelistedBlockButton(int slot, Material material, Arena arena) {
         super(slot);
         this.material = material;
         this.arena = arena;

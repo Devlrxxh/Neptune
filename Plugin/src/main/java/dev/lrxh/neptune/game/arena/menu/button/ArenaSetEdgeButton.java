@@ -1,8 +1,8 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.impl.EdgeType;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureType;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
@@ -15,10 +15,10 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class ArenaSetEdgeButton extends Button {
-    private final StandAloneArena arena;
+    private final Arena arena;
     private final EdgeType edgeType;
 
-    public ArenaSetEdgeButton(int slot, StandAloneArena arena, EdgeType edgeType) {
+    public ArenaSetEdgeButton(int slot, Arena arena, EdgeType edgeType) {
         super(slot, false);
         this.arena = arena;
         this.edgeType = edgeType;

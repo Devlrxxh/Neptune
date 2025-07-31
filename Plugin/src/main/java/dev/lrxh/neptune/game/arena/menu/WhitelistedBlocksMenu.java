@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.game.arena.menu;
 
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.menu.button.AddWhitelistBlockButton;
 import dev.lrxh.neptune.game.arena.menu.button.WhitelistedBlockButton;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -14,9 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class WhitelistedBlocksMenu extends Menu {
-    private final StandAloneArena arena;
+    private final Arena arena;
 
-    public WhitelistedBlocksMenu(StandAloneArena arena) {
+    public WhitelistedBlocksMenu(Arena arena) {
         super("&eWhitelisted Blocks", 45, Filter.NONE);
         this.arena = arena;
     }

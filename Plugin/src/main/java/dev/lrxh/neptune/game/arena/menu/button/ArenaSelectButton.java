@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
 import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.arena.menu.ArenaManagementMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -25,6 +24,6 @@ public class ArenaSelectButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return new ItemBuilder(arena instanceof StandAloneArena ? Material.LAVA_BUCKET : Material.DIAMOND_SWORD).name("&f" + arena.getName() + " &7(" + arena.getDisplayName() + "&7)").lore("&7Press to manage arena", "&7Type: " + (arena instanceof StandAloneArena ? "&eStandalone" : "&9Shared")).build();
+        return new ItemBuilder(Material.DIAMOND_SWORD).name("&f" + arena.getName() + " &7(" + arena.getDisplayName() + "&7)").lore("&7Press to manage arena", "&7Enabled: " + (arena.isEnabled() ? "&aEnabled" : "&cEnabled"), "&7Setup: " + (arena.isSetup() ? "&aDone" : "&cNot Done")).build();
     }
 }

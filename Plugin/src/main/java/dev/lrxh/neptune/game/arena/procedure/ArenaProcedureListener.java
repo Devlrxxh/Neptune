@@ -3,12 +3,12 @@ package dev.lrxh.neptune.game.arena.procedure;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
-import dev.lrxh.neptune.game.arena.menu.ArenaCreateMenu;
 import dev.lrxh.neptune.game.arena.menu.ArenaManagementMenu;
+import dev.lrxh.neptune.game.arena.menu.ArenasManagementMenu;
 import dev.lrxh.neptune.game.arena.menu.WhitelistedBlocksMenu;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import io.papermc.paper.event.player.AsyncChatEvent;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -48,7 +48,14 @@ public class ArenaProcedureListener implements Listener {
                     return;
                 }
 
-                new ArenaCreateMenu(input).open(player);
+
+                Arena arena = new Arena(input);
+
+                ArenaService.get().arenas.add(arena);
+                player.sendMessage(CC.success("Created arena"));
+                new ArenasManagementMenu().open(player);
+
+                ArenaService.get().save();
             }
             case RENAME -> {
                 event.setCancelled(true);
@@ -80,14 +87,10 @@ public class ArenaProcedureListener implements Listener {
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
                 Arena arena = profile.getArenaProcedure().getArena();
                 if (!arena.isSetup()) {
-                    if (arena instanceof StandAloneArena) {
-                        arena.setBlueSpawn(player.getLocation());
-                        profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MIN);
-                        player.sendMessage(CC.info("Go to the lowest edge of the arena and type &aDone"));
-                        return;
-                    } else {
-                        player.sendMessage(CC.success("Arena setup complete"));
-                    }
+                    arena.setBlueSpawn(player.getLocation());
+                    profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MIN);
+                    player.sendMessage(CC.info("Go to the lowest edge of the arena and type &aDone"));
+                    return;
                 } else {
                     player.sendMessage(CC.success("Set arena blue spawn"));
                 }
@@ -100,21 +103,27 @@ public class ArenaProcedureListener implements Listener {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-                StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
+                Arena arena = profile.getArenaProcedure().getArena();
                 if (!arena.isSetup()) {
                     player.sendMessage(CC.success("Arena setup complete"));
                 } else {
                     player.sendMessage(CC.success("Set arena max position"));
                 }
-                arena.setMax(player.getLocation());
-                new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
-                profile.getArenaProcedure().setArena(null);
+
+                new NeptuneRunnable() {
+                    @Override
+                    public void run() {
+                        arena.setMax(player.getLocation());
+                        new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                        profile.getArenaProcedure().setArena(null);
+                    }
+                }.start();
             }
             case SET_BUILD_LIMIT -> {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-                StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
+                Arena arena = profile.getArenaProcedure().getArena();
                 arena.setLimit(player.getLocation().getBlockY());
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
                 player.sendMessage(CC.success("Set arena build limit"));
@@ -124,17 +133,23 @@ public class ArenaProcedureListener implements Listener {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-                StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
+                Arena arena = profile.getArenaProcedure().getArena();
                 if (!arena.isSetup()) {
                     arena.setMin(player.getLocation());
                     profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MAX);
                     player.sendMessage(CC.info("Go to the highest edge of the arena and type &aDone"));
                     return;
                 }
-                arena.setMin(player.getLocation());
-                player.sendMessage(CC.success("Set arena min position"));
-                new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
-                profile.getArenaProcedure().setArena(null);
+                new NeptuneRunnable() {
+                    @Override
+                    public void run() {
+                        arena.setMin(player.getLocation());
+                        player.sendMessage(CC.success("Set arena min position"));
+                        new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                        profile.getArenaProcedure().setArena(null);
+                    }
+                }.start();
+
             }
             case SET_DEATH_Y -> {
                 if (!input.equalsIgnoreCase("Done")) return;
@@ -155,7 +170,7 @@ public class ArenaProcedureListener implements Listener {
                 }
 
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-                StandAloneArena arena = (StandAloneArena) profile.getArenaProcedure().getArena();
+                Arena arena = profile.getArenaProcedure().getArena();
 
                 arena.getWhitelistedBlocks().add(player.getInventory().getItemInMainHand().getType());
                 new WhitelistedBlocksMenu(arena).open(player);

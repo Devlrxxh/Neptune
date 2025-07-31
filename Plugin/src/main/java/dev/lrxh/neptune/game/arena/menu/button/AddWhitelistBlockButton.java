@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
+import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureType;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 
 
 public class AddWhitelistBlockButton extends Button {
-    private final StandAloneArena arena;
+    private final Arena arena;
 
-    public AddWhitelistBlockButton(int slot, StandAloneArena arena) {
+    public AddWhitelistBlockButton(int slot, Arena arena) {
         super(slot, false);
         this.arena = arena;
     }
