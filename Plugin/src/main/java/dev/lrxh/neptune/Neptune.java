@@ -163,7 +163,7 @@ public final class Neptune extends JavaPlugin {
         new QueueMessageTask().start(100L);
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
         new ArenaBoundaryCheckTask().start(20L);
-        new MenuRunnable().start(10L);
+        new MenuRunnable().start(20L);
         new XPBarRunnable().start(2L);
     }
 
