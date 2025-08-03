@@ -101,8 +101,8 @@ public class Arena {
             unloadChunks(currentIndex - 2);
         }
 
-        int offsetX = Math.abs(currentIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
-        int offsetZ = Math.abs(currentIndex * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
+        int offsetX = Math.abs(currentIndex * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
+        int offsetZ = Math.abs(currentIndex * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
 
         Location redSpawn = LocationUtil.addOffset(this.redSpawn.clone(), offsetX, offsetZ);
         Location blueSpawn = LocationUtil.addOffset(this.blueSpawn.clone(), offsetX, offsetZ);
@@ -134,8 +134,8 @@ public class Arena {
 
         World world = redSpawn.getWorld();
 
-        int offsetX = Math.abs(index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
-        int offsetZ = Math.abs(index * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
+        int offsetX = Math.abs(index * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
+        int offsetZ = Math.abs(index * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
 
         Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
         Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
@@ -215,8 +215,8 @@ public class Arena {
         World world = redSpawn.getWorld();
         List<Map.Entry<Integer, Integer>> chunksToLoad = new ArrayList<>();
 
-        int offsetX = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_X.getInt());
-        int offsetZ = Math.abs(i * SettingsLocale.STANDALONE_ARENA_COPY_OFFSET_Z.getInt());
+        int offsetX = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
+        int offsetZ = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
 
         Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
         Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);

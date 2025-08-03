@@ -18,9 +18,11 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.EntityUtils;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.WorldUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
+import io.papermc.paper.event.block.BlockBreakBlockEvent;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -117,6 +119,7 @@ public class MatchListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
+        if (!(entity instanceof EnderCrystal)) return;
         String uuid = entity.getPersistentDataContainer().get(
                 crystalOwnerKey,
                 org.bukkit.persistence.PersistentDataType.STRING
@@ -124,10 +127,13 @@ public class MatchListener implements Listener {
 
         if (uuid == null || uuid.isEmpty()) {
             event.setCancelled(true);
+            return;
         }
 
-        Player player = Bukkit.getPlayer(UUID.fromString(uuid));
-        if (player == null) {
+        Player player;
+        try {
+            player = Bukkit.getPlayer(UUID.fromString(uuid));
+        } catch (IllegalArgumentException e) {
             event.setCancelled(true);
             return;
         }
@@ -617,6 +623,11 @@ public class MatchListener implements Listener {
         getMatchForPlayer(event.getPlayer()).ifPresentOrElse(match -> match.getEntities().addAll(event.getItems()), () -> event.setCancelled(true));
     }
 
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onBlockBreak(BlockBreakBlockEvent event) {
+        event.getDrops().clear();
+    }
+
     @EventHandler()
     public void onBedBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
@@ -692,6 +703,16 @@ public class MatchListener implements Listener {
             event.blockList().clear();
             event.blockList().addAll(allowedBlocks);
         });
+    }
+
+    @EventHandler
+    public void onItemDrop(BlockBreakBlockEvent event) {
+        Player player = getNearbyPlayer(event.getBlock().getLocation());
+        getMatchForPlayer(player).ifPresent(match -> Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
+            for (ItemStack item : event.getDrops()) {
+                match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item));
+            }
+        },1));
     }
 
     @EventHandler

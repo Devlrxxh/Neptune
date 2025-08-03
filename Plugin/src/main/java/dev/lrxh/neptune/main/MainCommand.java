@@ -61,15 +61,4 @@ public class MainCommand {
 
         Bukkit.getServer().shutdown();
     }
-
-    @Command(name = "generate", desc = "", usage = "<arena> <amount>")
-    public void generate(@Sender Player player, Arena arena, int amount) {
-        player.sendMessage(CC.color("&aGenerating " + amount + " copies of arena " + arena.getName() + "..."));
-        player.sendMessage(CC.color("&aThis may take a while, please wait... (Check console for progress)"));
-        for (int i = 0; i < amount; i++) {
-            arena.createDuplicate();
-        }
-
-        ArenaService.get().save();
-    }
 }

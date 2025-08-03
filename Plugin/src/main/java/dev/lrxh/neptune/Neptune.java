@@ -86,24 +86,26 @@ public final class Neptune extends JavaPlugin {
     public void onEnable() {
         instance = this;
         allowJoin = false;
+        allowMatches = false;
         loadManager();
         allowJoin = true;
         allowMatches = true;
     }
 
     private void loadManager() {
+        ConfigService.get().load();
+
         loadExtensions();
         if (!isEnabled()) return;
 
-        ConfigService.get().load();
+        new DatabaseService();
+        if (!isEnabled()) return;
 
         ArenaService.get().load();
         KitService.get().load();
         this.cache = new Cache();
         HotbarService.get().load();
 
-        new DatabaseService();
-        if (!isEnabled()) return;
         CosmeticService.get().load();
 
         DivisionService.get().load();
@@ -161,7 +163,7 @@ public final class Neptune extends JavaPlugin {
         new QueueMessageTask().start(100L);
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
         new ArenaBoundaryCheckTask().start(20L);
-        new MenuRunnable().start(2L);
+        new MenuRunnable().start(10L);
         new XPBarRunnable().start(2L);
     }
 

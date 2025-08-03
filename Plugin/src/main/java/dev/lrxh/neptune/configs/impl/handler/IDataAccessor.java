@@ -29,6 +29,10 @@ public interface IDataAccessor {
         return getConfigFile().getConfiguration().getBoolean(getPath());
     }
 
+    default boolean resetUnknown(){
+        return true;
+    }
+
     String getHeader();
 
     String getPath();
@@ -81,7 +85,9 @@ public interface IDataAccessor {
                 .map(IDataAccessor::getPath)
                 .collect(Collectors.toSet());
 
-        cleanupSection(rootSection, "", validPaths);
+        if (resetUnknown()) {
+            cleanupSection(rootSection, "", validPaths);
+        }
 
         for (IDataAccessor accessor : accessors) {
             String path = accessor.getPath();
