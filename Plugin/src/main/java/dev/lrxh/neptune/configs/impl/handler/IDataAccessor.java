@@ -76,29 +76,29 @@ public interface IDataAccessor {
 
     default void load() {
         applyHeader();
-        ConfigFile cfgFile = getConfigFile();
+        var cfgFile = getConfigFile();
         if (cfgFile == null) return;
 
-        var rootSection = cfgFile.getConfiguration();
+        var root = cfgFile.getConfiguration();
         var accessors = List.of(this.getClass().getEnumConstants());
-        var validPaths = accessors.stream()
-                .map(IDataAccessor::getPath)
-                .collect(Collectors.toSet());
 
-        if (resetUnknown()) {
-            cleanupSection(rootSection, "", validPaths);
+        for (var a : accessors) {
+            if (root.get(a.getPath()) == null) {
+                setValue(a.getPath(), a.getDefaultValue(), a.getDataType());
+                comment(a.getPath(), a.getComment());
+            }
         }
 
-        for (IDataAccessor accessor : accessors) {
-            String path = accessor.getPath();
-            if (rootSection.get(path) == null) {
-                setValue(path, accessor.getDefaultValue(), accessor.getDataType());
-                comment(path, accessor.getComment());
-            }
+        if (resetUnknown()) {
+            var valid = accessors.stream()
+                    .map(IDataAccessor::getPath)
+                    .collect(Collectors.toSet());
+            cleanupSection(root, "", valid);
         }
 
         cfgFile.save();
     }
+
 
     private void cleanupSection(ConfigurationSection section,
                                 String parentPath,
