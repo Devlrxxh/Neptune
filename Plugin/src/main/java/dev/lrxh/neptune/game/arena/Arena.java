@@ -1,13 +1,14 @@
 package dev.lrxh.neptune.game.arena;
 
+import dev.lrxh.blockChanger.snapshot.ChunkPosition;
 import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -33,6 +34,7 @@ public class Arena {
     private int duplicateIndex;
     private int preloadedIndex;
     private Arena owner;
+    private final Map<ChunkPosition, Chunk> loadedChunks = new HashMap<>();
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
         this.name = name;
@@ -109,7 +111,7 @@ public class Arena {
         Location min = LocationUtil.addOffset(this.min.clone(), offsetX, offsetZ);
         Location max = LocationUtil.addOffset(this.max.clone(), offsetX, offsetZ);
 
-        return snapshot.offset(offsetX, offsetZ).thenApplyAsync(cuboidSnapshot -> {
+        return snapshot.offset(offsetX, offsetZ, loadedChunks).thenApplyAsync(cuboidSnapshot -> {
             cuboidSnapshot.restore();
             return new Arena(
                     this.name + "#" + currentIndex,
@@ -146,11 +148,19 @@ public class Arena {
 
         for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
             for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
-                world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> chunk.setForceLoaded(false));
+                final int chunkX = cx;
+                final int chunkZ = cz;
+
+                world.getChunkAtAsync(chunkX, chunkZ, false).thenAccept(chunk -> {
+                    chunk.setForceLoaded(true);
+                    ChunkPosition position = new ChunkPosition(chunkX, chunkZ);
+                    loadedChunks.put(position, chunk);
+                });
+
             }
         }
 
-        ServerUtils.info("✘ Unloaded chunks for arena duplicate index " + index);
+//        ServerUtils.info("✘ Unloaded chunks for arena duplicate index " + index);
     }
 
     public List<String> getWhitelistedBlocksAsString() {
@@ -210,6 +220,16 @@ public class Arena {
             return;
         }
 
+        loadedChunks.entrySet().removeIf(entry -> {
+            ChunkPosition pos = entry.getKey();
+            int xOffset = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
+            int zOffset = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
+            return pos.x() >= min.getChunk().getX() + xOffset &&
+                    pos.x() <= max.getChunk().getX() + xOffset &&
+                    pos.z() >= min.getChunk().getZ() + zOffset &&
+                    pos.z() <= max.getChunk().getZ() + zOffset;
+        });
+
         World world = redSpawn.getWorld();
         List<Map.Entry<Integer, Integer>> chunksToLoad = new ArrayList<>();
 
@@ -245,7 +265,11 @@ public class Arena {
                     int cx = entry.getKey();
                     int cz = entry.getValue();
 
-                    world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> chunk.setForceLoaded(true));
+                    world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> {
+                        chunk.setForceLoaded(true);
+                        ChunkPosition position = new ChunkPosition(cx, cz);
+                        loadedChunks.put(position, chunk);
+                    });
                     processed++;
                 }
 
@@ -253,8 +277,8 @@ public class Arena {
                     cancel();
                     if (wasEnabled) setEnabled(true);
                     loadedChunkIndices.add(i);
-                    int totalChunks = chunksToLoad.size();
-                    ServerUtils.info("✔ Loaded " + totalChunks + " chunks for " + name + " (index: " + i + ")");
+//                    int totalChunks = chunksToLoad.size();
+//                    ServerUtils.info("✔ Loaded " + totalChunks + " chunks for " + name + " (index: " + i + ")");
                 }
             }
         }.start(0L, 1L);
