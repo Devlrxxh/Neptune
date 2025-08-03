@@ -1,12 +1,16 @@
 package dev.lrxh.neptune.feature.party.impl;
 
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,7 +39,9 @@ public enum EventType {
                     return;
                 }
 
-                MatchService.get().startMatch(participants, kit, arena);
+                Bukkit.getScheduler().runTask(Neptune.get(), () -> {
+                    MatchService.get().startMatch(participants, kit, arena);
+                });
             });
         }
     },
@@ -70,7 +76,9 @@ public enum EventType {
                     return;
                 }
 
-                MatchService.get().startMatch(teamA, teamB, kit, arena);
+                Bukkit.getScheduler().runTask(Neptune.get(), () -> {
+                    MatchService.get().startMatch(teamA, teamB, kit, arena);
+                });
             });
         }
 
