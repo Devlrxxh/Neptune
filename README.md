@@ -19,7 +19,7 @@
 
 Use the `/neptune` command to create and manage arenas and kits through intuitive in-game menus.
 
-[Read the documentation](./docs/README.md).
+[Permissions & Placeholders](./docs/README.md).
 
 ---
 
