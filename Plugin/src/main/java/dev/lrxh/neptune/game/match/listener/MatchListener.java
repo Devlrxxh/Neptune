@@ -653,13 +653,11 @@ public class MatchListener implements Listener {
                 Location spawn = match.getSpawn(participant);
                 Participant opponent = participant.getOpponent();
                 Location opponentSpawn = match.getSpawn(opponent);
-                ParticipantColor color = participant.getColor();
-
                 if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
                     event.setDropItems(false);
                     match.breakBed(opponent, participant);
                     match.sendTitle(opponent, CC.color(MessagesLocale.BED_BREAK_TITLE.getString()), CC.color(MessagesLocale.BED_BREAK_FOOTER.getString()), 20);
-                    match.broadcast(opponent.equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE : MessagesLocale.BLUE_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
+                    match.broadcast(opponent.getColor().equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE : MessagesLocale.BLUE_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
                 } else {
                     event.setCancelled(true);
                     participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);

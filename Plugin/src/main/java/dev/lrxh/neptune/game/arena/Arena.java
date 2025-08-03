@@ -128,7 +128,6 @@ public class Arena {
         });
     }
 
-
     public void unloadChunks(int index) {
         if (min == null || max == null) return;
 
@@ -153,7 +152,6 @@ public class Arena {
 
         ServerUtils.info("✘ Unloaded chunks for arena duplicate index " + index);
     }
-
 
     public List<String> getWhitelistedBlocksAsString() {
         List<String> result = new ArrayList<>();
@@ -251,10 +249,10 @@ public class Arena {
                     processed++;
                 }
 
-
                 if (index >= chunksToLoad.size()) {
                     cancel();
                     if (wasEnabled) setEnabled(true);
+                    loadedChunkIndices.add(i);
                     int totalChunks = chunksToLoad.size();
                     ServerUtils.info("✔ Loaded " + totalChunks + " chunks for " + name + " (index: " + i + ")");
                 }
