@@ -3,21 +3,16 @@
 ---
 
 ## ✨ Core Features:
-    🔁 Arena System — Supports both Shared and Standalone modes
-    🥊 Kit System — Includes Boxing, Crystal, Axe, and more
-    🎛️ GUI-Based Kit Editor — Easily customize kits through an intuitive interface
-    🎥 Match Replay & History Viewer — Review past matches and highlights
-    🌐 Queue Ping Range System — Ensure fair matchmaking by ping filters
-    📊 Animated Scoreboards — Clean, dynamic, and real-time updates
-    🧩 PlaceholderAPI Support — Seamless integration with other plugins
-    ⚙️ Fully Configurable — Customize Hotbar Items, Messages, and more
-    📋 Advanced Arena Logic — Intelligent match handling & arena transitions
-    📈 Player Stats Tracking — Monitor Wins, Deaths, Win Streaks, etc.
-    🎆 Custom Death Effects — Add flair with particle-based effects
-    🛠️ Management Menus — Streamlined admin tools via intuitive GUIs
-    🏆 Leaderboards — Showcase top players and rankings
-    🧩 Highly Customizable UI — Tailor Menus, Scoreboards, and more
-    ⚡ Dynamic Arena Creation — Instantly spawns arenas at match start
+- 🥊 Kit System (Boxing, Crystal, Axe, and more)
+- 🎛️ GUI-Based Kit Editor
+- 🌐 Queue Ping Range System
+- 📊 Animated Scoreboards
+- 🧩 PlaceholderAPI Support 
+- 🎆 Custom Death Messages
+- 🛠️ Management Menus 
+- 🏆 Instant Leaderboards Updates
+- 🧩 Highly Customizable 
+- ⚡ Dynamic Arena Creation
 ---
 
 ## 🧪 Usage
