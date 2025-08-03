@@ -710,7 +710,7 @@ public class MatchListener implements Listener {
             for (ItemStack item : event.getDrops()) {
                 match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item));
             }
-        },1));
+        }, 1));
     }
 
     @EventHandler

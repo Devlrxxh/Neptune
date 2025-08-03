@@ -29,7 +29,7 @@ public interface IDataAccessor {
         return getConfigFile().getConfiguration().getBoolean(getPath());
     }
 
-    default boolean resetUnknown(){
+    default boolean resetUnknown() {
         return true;
     }
 
