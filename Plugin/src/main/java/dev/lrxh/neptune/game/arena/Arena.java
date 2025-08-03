@@ -135,8 +135,8 @@ public class Arena {
 
         World world = redSpawn.getWorld();
 
-        int offsetX = Math.abs(index * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
-        int offsetZ = Math.abs(index * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
+        int offsetX = Math.abs(index) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
+        int offsetZ = Math.abs(index) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
 
         Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
         Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
@@ -222,8 +222,8 @@ public class Arena {
 
         loadedChunks.entrySet().removeIf(entry -> {
             ChunkPosition pos = entry.getKey();
-            int xOffset = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
-            int zOffset = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
+            int xOffset = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
+            int zOffset = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
             return pos.x() >= min.getChunk().getX() + xOffset &&
                     pos.x() <= max.getChunk().getX() + xOffset &&
                     pos.z() >= min.getChunk().getZ() + zOffset &&
@@ -233,8 +233,8 @@ public class Arena {
         World world = redSpawn.getWorld();
         List<Map.Entry<Integer, Integer>> chunksToLoad = new ArrayList<>();
 
-        int offsetX = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
-        int offsetZ = Math.abs(i * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
+        int offsetX = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
+        int offsetZ = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
 
         Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
         Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
