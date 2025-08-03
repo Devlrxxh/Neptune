@@ -103,8 +103,8 @@ public class Arena {
             unloadChunks(currentIndex - 2);
         }
 
-        int offsetX = Math.abs(currentIndex * SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
-        int offsetZ = Math.abs(currentIndex * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
+        int offsetX = Math.abs(currentIndex) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
+        int offsetZ = Math.abs(currentIndex) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
 
         Location redSpawn = LocationUtil.addOffset(this.redSpawn.clone(), offsetX, offsetZ);
         Location blueSpawn = LocationUtil.addOffset(this.blueSpawn.clone(), offsetX, offsetZ);
