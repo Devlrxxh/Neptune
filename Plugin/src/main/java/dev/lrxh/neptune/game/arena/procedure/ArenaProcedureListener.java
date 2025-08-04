@@ -124,7 +124,7 @@ public class ArenaProcedureListener implements Listener {
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
                 Arena arena = profile.getArenaProcedure().getArena();
-                arena.setLimit(player.getLocation().getBlockY());
+                arena.setBuildLimit(player.getLocation().getBlockY());
                 new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
                 player.sendMessage(CC.success("Set arena build limit"));
                 profile.getArenaProcedure().setArena(null);

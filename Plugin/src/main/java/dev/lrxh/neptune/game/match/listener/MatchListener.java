@@ -76,7 +76,7 @@ public class MatchListener implements Listener {
             Arena arena = match.getArena();
 
             // Check height limit
-            if (blockLocation.getY() >= arena.getLimit()) {
+            if (blockLocation.getY() >= arena.getBuildLimit()) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou have reached build limit!"));
                 return;
@@ -311,7 +311,7 @@ public class MatchListener implements Listener {
 
             Arena arena = match.getArena();
 
-            if (blockLocation.getY() >= arena.getLimit()) {
+            if (blockLocation.getY() >= arena.getBuildLimit()) {
                 event.setCancelled(true);
                 player.sendMessage(CC.color("&cYou have reached build limit!"));
                 return;

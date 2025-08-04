@@ -80,7 +80,7 @@ public class ArenaService extends IService {
                     new Value("blueSpawn", LocationUtil.serialize(arena.getBlueSpawn())),
                     new Value("enabled", arena.isEnabled()),
                     new Value("deathY", arena.getDeathY()),
-                    new Value("limit", arena.getLimit()),
+                    new Value("limit", arena.getBuildLimit()),
                     new Value("whitelistedBlocks", arena.getWhitelistedBlocksAsString())
             ));
 

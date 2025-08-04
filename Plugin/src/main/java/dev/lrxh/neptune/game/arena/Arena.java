@@ -28,7 +28,7 @@ public class Arena {
     private int deathY;
     private Location min;
     private Location max;
-    private double limit;
+    private double buildLimit;
     private List<Material> whitelistedBlocks;
     private CuboidSnapshot snapshot;
     private int duplicateIndex;
@@ -44,20 +44,20 @@ public class Arena {
         this.enabled = enabled;
         this.deathY = deathY;
 
-        this.limit = 0;
+        this.buildLimit = 0;
         this.whitelistedBlocks = new ArrayList<>();
         this.duplicateIndex = 1;
         this.preloadedIndex = 0;
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double limit, boolean enabled,
+                 Location min, Location max, double buildLimit, boolean enabled,
                  List<Material> whitelistedBlocks, int deathY, boolean duplicate) {
 
         this(name, displayName, redSpawn, blueSpawn, enabled, deathY);
         this.min = min;
         this.max = max;
-        this.limit = limit;
+        this.buildLimit = buildLimit;
         this.whitelistedBlocks = whitelistedBlocks;
 
         if (min == null || max == null) return;
@@ -69,10 +69,10 @@ public class Arena {
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double limit, boolean enabled,
+                 Location min, Location max, double buildLimit, boolean enabled,
                  List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
 
-        this(name, displayName, redSpawn, blueSpawn, min, max, limit, enabled, whitelistedBlocks, deathY, true);
+        this(name, displayName, redSpawn, blueSpawn, min, max, buildLimit, enabled, whitelistedBlocks, deathY, true);
         this.snapshot = snapshot;
         this.owner = owner;
     }
@@ -81,7 +81,7 @@ public class Arena {
         this(name, name, null, null, false, -68321);
         this.min = null;
         this.max = null;
-        this.limit = 68321;
+        this.buildLimit = 68321;
         this.whitelistedBlocks = new ArrayList<>();
         this.duplicateIndex = 1;
     }
@@ -120,7 +120,7 @@ public class Arena {
                     blueSpawn,
                     min,
                     max,
-                    limit,
+                    buildLimit,
                     enabled,
                     whitelistedBlocks,
                     deathY,
@@ -195,6 +195,22 @@ public class Arena {
         this.max = max;
         if (min != null && max != null) {
             this.snapshot = new CuboidSnapshot(min, max);
+        }
+    }
+
+    public void setRedSpawn(Location redSpawn) {
+        this.redSpawn = redSpawn;
+
+        if (buildLimit == 68321) {
+            this.buildLimit = redSpawn.getBlockY() + 5;
+        }
+    }
+
+    public void setBlueSpawn(Location blueSpawn) {
+        this.blueSpawn = blueSpawn;
+
+        if (buildLimit == 68321) {
+            this.buildLimit = blueSpawn.getBlockY() + 5;
         }
     }
 
