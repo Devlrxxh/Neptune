@@ -2,7 +2,6 @@ package dev.lrxh.neptune.game.arena.menu;
 
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.arena.menu.button.ArenaCreateButton;
 import dev.lrxh.neptune.game.arena.menu.button.ArenaSelectButton;
 import dev.lrxh.neptune.main.MainMenu;
@@ -25,7 +24,6 @@ public class ArenasManagementMenu extends PaginatedMenu {
         List<Button> buttons = new ArrayList<>();
         int i = 0;
         for (Arena arena : ArenaService.get().getArenas()) {
-            if (arena instanceof StandAloneArena standAloneArena && standAloneArena.isCopy()) continue;
             buttons.add(new ArenaSelectButton(i++, arena));
         }
 

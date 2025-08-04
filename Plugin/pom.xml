@@ -68,13 +68,6 @@
         </dependency>
 
         <dependency>
-            <groupId>com.github.retrooper</groupId>
-            <artifactId>packetevents-spigot</artifactId>
-            <version>2.9.1</version>
-            <scope>provided</scope>
-        </dependency>
-
-        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.38</version>
@@ -95,11 +88,16 @@
             <scope>provided</scope>
         </dependency>
 
+<!--        <dependency>-->
+<!--            <groupId>dev.lrxh</groupId>-->
+<!--            <artifactId>BlockChanger</artifactId>-->
+<!--            <version>2.0-SNAPSHOT</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.github.Devlrxxh</groupId>
             <artifactId>BlockChanger</artifactId>
-            <version>a46b131</version>
+            <version>669ccd7363</version>
         </dependency>
     </dependencies>
 

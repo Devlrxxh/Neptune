@@ -155,6 +155,7 @@ public class Party {
         if (leaderProfile.hasCooldownEnded("party_advertise")) {
             leaderProfile.addCooldown("party_advertise", 300_000);
 
+            setOpen(true);
             for (Profile profile : ProfileService.get().profiles.values()) {
                 TextComponent join = new ClickableComponent(
                         MessagesLocale.PARTY_ADVERTISE_JOIN.getString(),

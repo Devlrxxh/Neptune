@@ -8,5 +8,3 @@ load: POSTWORLD
 softdepend:
   - PlaceholderAPI
   - Multiverse-Core
-depend:
-  - packetevents

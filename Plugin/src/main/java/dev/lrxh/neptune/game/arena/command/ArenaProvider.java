@@ -5,7 +5,6 @@ import com.jonahseguin.drink.exception.CommandExitMessage;
 import com.jonahseguin.drink.parametric.DrinkProvider;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -56,11 +55,7 @@ public class ArenaProvider extends DrinkProvider<Arena> {
         List<String> arenas = new ArrayList<>();
 
         for (Arena arena : ArenaService.get().getArenas()) {
-            if (arena instanceof StandAloneArena standAloneArena) {
-                if (!standAloneArena.isCopy()) arenas.add(arena.getName());
-            } else {
-                arenas.add(arena.getName());
-            }
+            arenas.add(arena.getName());
         }
 
         return arenas;

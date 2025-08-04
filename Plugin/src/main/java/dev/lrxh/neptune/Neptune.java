@@ -1,13 +1,9 @@
 package dev.lrxh.neptune;
 
-import com.github.retrooper.packetevents.PacketEvents;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;
 import dev.lrxh.neptune.cache.Cache;
-import dev.lrxh.neptune.cache.EntityCache;
-import dev.lrxh.neptune.cache.EntityCacheRunnable;
-import dev.lrxh.neptune.cache.ItemCache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
 import dev.lrxh.neptune.configs.ConfigService;
@@ -33,8 +29,6 @@ import dev.lrxh.neptune.feature.settings.command.SettingsCommand;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.arena.command.ArenaProvider;
-import dev.lrxh.neptune.game.arena.command.StandaloneArenaProvider;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureListener;
 import dev.lrxh.neptune.game.duel.command.DuelCommand;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -53,9 +47,6 @@ import dev.lrxh.neptune.main.MainCommand;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.database.DatabaseService;
-import dev.lrxh.neptune.providers.hider.EntityHider;
-import dev.lrxh.neptune.providers.hider.listeners.BukkitListener;
-import dev.lrxh.neptune.providers.hider.listeners.PacketInterceptor;
 import dev.lrxh.neptune.providers.listeners.LobbyListener;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
@@ -82,7 +73,6 @@ public final class Neptune extends JavaPlugin {
     private static Neptune instance;
     private Cache cache;
     private boolean placeholder = false;
-    private EntityHider entityHider;
     @Setter
     private boolean allowJoin;
     @Setter
@@ -96,24 +86,26 @@ public final class Neptune extends JavaPlugin {
     public void onEnable() {
         instance = this;
         allowJoin = false;
+        allowMatches = false;
         loadManager();
         allowJoin = true;
         allowMatches = true;
     }
 
     private void loadManager() {
+        ConfigService.get().load();
+
         loadExtensions();
         if (!isEnabled()) return;
 
-        ConfigService.get().load();
+        new DatabaseService();
+        if (!isEnabled()) return;
 
         ArenaService.get().load();
         KitService.get().load();
         this.cache = new Cache();
         HotbarService.get().load();
 
-        new DatabaseService();
-        if (!isEnabled()) return;
         CosmeticService.get().load();
 
         DivisionService.get().load();
@@ -124,19 +116,11 @@ public final class Neptune extends JavaPlugin {
         loadCommandManager();
         loadTasks();
         loadWorlds();
-        initAPIs();
 
         if (ScoreboardLocale.ENABLED_SCOREBOARD.getBoolean()) {
             new FastManager(this, new ScoreboardAdapter());
         }
         ServerUtils.info("Loaded Successfully");
-    }
-
-    private void initAPIs() {
-        entityHider = new EntityHider(this, EntityHider.Policy.BLACKLIST);
-
-        PacketEvents.getAPI().getEventManager().registerListener(new PacketInterceptor());
-        PacketEvents.getAPI().init();
     }
 
     private void registerListeners() {
@@ -145,9 +129,6 @@ public final class Neptune extends JavaPlugin {
                 new MatchListener(),
                 new LobbyListener(),
                 new ItemListener(),
-                new EntityCache(),
-                new ItemCache(),
-                new BukkitListener(),
                 new MenuListener(),
                 new ArenaProcedureListener(),
                 new KitProcedureListener()
@@ -181,9 +162,8 @@ public final class Neptune extends JavaPlugin {
         new QueueCheckTask().start(20L);
         new QueueMessageTask().start(100L);
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
-        new EntityCacheRunnable().start(400L);
         new ArenaBoundaryCheckTask().start(20L);
-        new MenuRunnable().start(2L);
+        new MenuRunnable().start(20L);
         new XPBarRunnable().start(2L);
     }
 
@@ -191,7 +171,6 @@ public final class Neptune extends JavaPlugin {
         CommandService drink = Drink.get(this);
         drink.bind(Kit.class).toProvider(new KitProvider());
         drink.bind(Arena.class).toProvider(new ArenaProvider());
-        drink.bind(StandAloneArena.class).toProvider(new StandaloneArenaProvider());
         drink.bind(UUID.class).toProvider(new UUIDProvider());
         drink.bind(Setting.class).toProvider(new SettingProvider());
 

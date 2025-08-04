@@ -24,6 +24,7 @@ public class KitInMatchPlaceholder implements Placeholder {
         if (profile == null) return string;
 
         Matcher matcher = PATTERN.matcher(string);
+        if (!matcher.matches()) return string;
         Kit kit = KitService.get().getKitByName(matcher.group(1));
         if (kit == null) return string;
 

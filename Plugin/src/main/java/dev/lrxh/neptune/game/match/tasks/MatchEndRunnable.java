@@ -3,7 +3,6 @@ package dev.lrxh.neptune.game.match.tasks;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.events.MatchEndEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
-import dev.lrxh.neptune.game.arena.impl.StandAloneArena;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
@@ -58,11 +57,7 @@ public class MatchEndRunnable extends NeptuneRunnable {
             });
 
             match.sendEndMessage();
-
-            if (match.getArena() instanceof StandAloneArena standAloneArena) {
-                standAloneArena.setUsed(false);
-            }
-
+            match.getArena().remove();
             MatchService.get().matches.remove(match);
             MatchEndEvent event = new MatchEndEvent(match);
             Bukkit.getPluginManager().callEvent(event);
