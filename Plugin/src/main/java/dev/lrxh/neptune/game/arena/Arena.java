@@ -152,9 +152,9 @@ public class Arena {
                 final int chunkZ = cz;
 
                 world.getChunkAtAsync(chunkX, chunkZ, false).thenAccept(chunk -> {
-                    chunk.setForceLoaded(true);
+                    chunk.setForceLoaded(false);
                     ChunkPosition position = new ChunkPosition(chunkX, chunkZ);
-                    loadedChunks.put(position, chunk);
+                    loadedChunks.remove(position);
                 });
 
             }
