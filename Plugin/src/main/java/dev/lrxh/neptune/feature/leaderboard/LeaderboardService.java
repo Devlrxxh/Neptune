@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.feature.leaderboard;
 
-
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.feature.divisions.DivisionService;
 import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardEntry;
@@ -17,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -34,7 +34,6 @@ public class LeaderboardService {
 
     public static LeaderboardService get() {
         if (instance == null) instance = new LeaderboardService();
-
         return instance;
     }
 
@@ -51,15 +50,10 @@ public class LeaderboardService {
             if (kit == null) return placeholder;
             LeaderboardType leaderboardType = LeaderboardType.value(type);
 
-            PlayerEntry playerEntry = LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, entry);
-
+            PlayerEntry playerEntry = getLeaderboardSlot(kit, leaderboardType, entry);
             if (playerEntry == null) return "???";
 
-            if (name) {
-                return playerEntry.getUsername();
-            } else {
-                return String.valueOf(playerEntry.getValue());
-            }
+            return name ? playerEntry.getUsername() : String.valueOf(playerEntry.getValue());
         }
 
         return placeholder;
@@ -67,34 +61,26 @@ public class LeaderboardService {
 
     private void checkIfMissing() {
         for (Kit kit : KitService.get().kits) {
-            if (leaderboards.containsKey(kit)) {
-                continue;
-            }
-            List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
-
-
-            for (LeaderboardType leaderboardType : LeaderboardType.values()) {
-                leaderboardEntries.add(new LeaderboardEntry(leaderboardType, new ArrayList<>()));
-            }
-
-            leaderboards.put(kit, leaderboardEntries);
+            leaderboards.computeIfAbsent(kit, k -> {
+                List<LeaderboardEntry> leaderboardEntries = new ArrayList<>();
+                for (LeaderboardType leaderboardType : LeaderboardType.values()) {
+                    leaderboardEntries.add(new LeaderboardEntry(leaderboardType, new ArrayList<>()));
+                }
+                return leaderboardEntries;
+            });
         }
     }
 
     public PlayerEntry getLeaderboardSlot(Kit kit, LeaderboardType leaderboardType, int i) {
         List<PlayerEntry> playerEntries = getPlayerEntries(kit, leaderboardType);
-
-        if (i <= 0 || i > playerEntries.size()) {
-            return null;
-        }
-
+        if (i <= 0 || i > playerEntries.size()) return null;
         return playerEntries.get(i - 1);
     }
-
 
     public List<PlayerEntry> getPlayerEntries(Kit kit, LeaderboardType leaderboardType) {
         List<LeaderboardEntry> leaderboardEntries = leaderboards.get(kit);
         if (leaderboardEntries == null) return Collections.emptyList();
+
         for (LeaderboardEntry leaderboardEntry : leaderboardEntries) {
             if (leaderboardEntry.getType().equals(leaderboardType)) {
                 return leaderboardEntry.getPlayerEntries();
@@ -104,50 +90,61 @@ public class LeaderboardService {
         List<PlayerEntry> newLeaderboard = new ArrayList<>();
         LeaderboardEntry newEntry = new LeaderboardEntry(leaderboardType, newLeaderboard);
         leaderboardEntries.add(newEntry);
-        leaderboards.put(kit, leaderboardEntries);
-
         return newLeaderboard;
     }
 
-    public void load() {
+    public CompletableFuture<Void> load() {
         checkIfMissing();
-        for (LeaderboardType leaderboardType : LeaderboardType.values()) {
-            loadType(leaderboardType);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+        for (LeaderboardType type : LeaderboardType.values()) {
+            futures.add(loadType(type));
         }
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
     }
 
-    public void update() {
-        if (changes.isEmpty()) return;
-        checkIfMissing();
-        for (LeaderboardPlayerEntry leaderboardPlayerEntry : new ArrayList<>(changes)) {
-            for (LeaderboardType leaderboardType : LeaderboardType.values()) {
-                loadLB(leaderboardType, leaderboardPlayerEntry);
-            }
-            changes.remove(leaderboardPlayerEntry);
-        }
-    }
-
-    private void loadType(LeaderboardType leaderboardType) {
-
+    private CompletableFuture<Void> loadType(LeaderboardType leaderboardType) {
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
         for (Kit kit : KitService.get().kits) {
+            CompletableFuture<Void> future = DatabaseService.get().getDatabase().getAll().thenAccept(dataDocuments -> {
+                for (DataDocument document : dataDocuments) {
+                    String username = document.getString("username");
+                    UUID uuid = UUID.fromString(document.getString("uuid"));
+                    getKitData(uuid, kit).thenAccept(kitData -> {
+                        if (kitData == null) return;
+                        PlayerEntry playerEntry = new PlayerEntry(username, uuid, leaderboardType.get(kitData));
+                        addPlayerEntry(kit, playerEntry, leaderboardType);
+                    });
+                }
+            });
+            futures.add(future);
+        }
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
+    }
 
-            for (DataDocument document : DatabaseService.get().getDatabase().getAll()) {
+    public CompletableFuture<Void> update() {
+        if (changes.isEmpty()) return CompletableFuture.completedFuture(null);
 
-                String username = document.getString("username");
-                UUID uuid = UUID.fromString(document.getString("uuid"));
-                KitData kitData = getKitData(uuid, kit);
-                if (kitData == null) continue;
+        checkIfMissing();
+        List<LeaderboardPlayerEntry> copy = new ArrayList<>(changes);
+        changes.clear();
 
-                PlayerEntry playerEntry = new PlayerEntry(username, uuid, leaderboardType.get(kitData));
-                addPlayerEntry(kit, playerEntry, leaderboardType);
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        for (LeaderboardPlayerEntry leaderboardPlayerEntry : copy) {
+            for (LeaderboardType type : LeaderboardType.values()) {
+                futures.add(loadLB(type, leaderboardPlayerEntry));
             }
         }
+
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
     }
 
     private void addPlayerEntry(Kit kit, PlayerEntry playerEntry, LeaderboardType leaderboardType) {
-        for (LeaderboardEntry leaderboardEntry : leaderboards.get(kit)) {
-            if (leaderboardEntry.getType().equals(leaderboardType)) {
-                leaderboardEntry.addEntry(playerEntry);
+        List<LeaderboardEntry> entries = leaderboards.get(kit);
+        for (LeaderboardEntry entry : entries) {
+            if (entry.getType().equals(leaderboardType)) {
+                entry.addEntry(playerEntry);
+                return;
             }
         }
     }
@@ -156,34 +153,40 @@ public class LeaderboardService {
         changes.add(playerEntry);
     }
 
-    private void loadLB(LeaderboardType leaderboardType, LeaderboardPlayerEntry leaderboardPlayerEntry) {
+    private CompletableFuture<Void> loadLB(LeaderboardType leaderboardType, LeaderboardPlayerEntry leaderboardPlayerEntry) {
         Kit kit = leaderboardPlayerEntry.getKit();
-        PlayerEntry playerEntry = new PlayerEntry(leaderboardPlayerEntry.getUsername(), leaderboardPlayerEntry.getPlayerUUID(),
-                leaderboardType.get(getKitData(leaderboardPlayerEntry.getPlayerUUID(), kit)));
-        addPlayerEntry(kit, playerEntry, leaderboardType);
+        UUID playerUUID = leaderboardPlayerEntry.getPlayerUUID();
+        String username = leaderboardPlayerEntry.getUsername();
+
+        return getKitData(playerUUID, kit).thenAccept(kitData -> {
+            if (kitData == null) return;
+            PlayerEntry playerEntry = new PlayerEntry(username, playerUUID, leaderboardType.get(kitData));
+            addPlayerEntry(kit, playerEntry, leaderboardType);
+        });
     }
 
-
-    private KitData getKitData(UUID playerUUID, Kit kit) {
+    private CompletableFuture<KitData> getKitData(UUID playerUUID, Kit kit) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player != null) {
-            return API.getProfile(player).getGameData().get(kit);
+            return CompletableFuture.completedFuture(API.getProfile(player).getGameData().get(kit));
         }
 
-        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(playerUUID);
-        if (dataDocument == null) return null;
+        return DatabaseService.get().getDatabase().getUserData(playerUUID).thenApply(document -> {
+            if (document == null) return null;
 
-        DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
-        DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
-        if (kitDocument == null) return null;
+            DataDocument kitStatistics = document.getDataDocument("kitData");
+            if (kitStatistics == null) return null;
 
-        KitData profileKitData = new KitData();
-        profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
-        profileKitData.setKills(kitDocument.getInteger("WINS", 0));
-        profileKitData.setDivision(DivisionService.get().getDivisionByElo(profileKitData.getKills()));
-        profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
-        profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
+            DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
+            if (kitDocument == null) return null;
 
-        return profileKitData;
+            KitData kitData = new KitData();
+            kitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
+            kitData.setKills(kitDocument.getInteger("WINS", 0));
+            kitData.setDivision(DivisionService.get().getDivisionByElo(kitData.getKills()));
+            kitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
+            kitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
+            return kitData;
+        });
     }
 }

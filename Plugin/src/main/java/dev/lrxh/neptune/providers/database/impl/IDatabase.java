@@ -12,11 +12,11 @@ public interface IDatabase {
 
     IDatabase load();
 
-    DataDocument getUserData(UUID playerUUID);
+    CompletableFuture<DataDocument> getUserData(UUID playerUUID);
 
     CompletableFuture<Void> replace(UUID playerUUID, DataDocument newDocument);
 
     CompletableFuture<Void> replace(String playerUUID, DataDocument newDocument);
 
-    List<DataDocument> getAll();
+    CompletableFuture<List<DataDocument>> getAll();
 }

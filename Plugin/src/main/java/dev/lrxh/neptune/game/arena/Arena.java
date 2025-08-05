@@ -20,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 @Setter
 public class Arena {
     private final Set<Integer> loadedChunkIndices = new HashSet<>();
+    private final Map<ChunkPosition, Chunk> loadedChunks = new HashMap<>();
     private String name;
     private String displayName;
     private Location redSpawn;
@@ -34,7 +35,6 @@ public class Arena {
     private int duplicateIndex;
     private int preloadedIndex;
     private Arena owner;
-    private final Map<ChunkPosition, Chunk> loadedChunks = new HashMap<>();
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
         this.name = name;

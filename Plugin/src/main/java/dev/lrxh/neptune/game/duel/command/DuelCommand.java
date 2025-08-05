@@ -58,7 +58,7 @@ public class DuelCommand {
         new KitSelectMenu(target.getUniqueId(), userProfile.getState().equals(ProfileState.IN_PARTY)).open(player);
     }
 
-    @Command(name = "accept-uuid", desc = "", usage = "<uuid>", hidden = true)
+    @Command(name = "accept-uuid", desc = "", usage = "<uuid>")
     public void acceptUUID(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = API.getProfile(player).getGameData();
@@ -100,48 +100,6 @@ public class DuelCommand {
         }
 
         profile.acceptDuel(uuid);
-    }
-
-    @Command(name = "accept", desc = "", usage = "<player>")
-    public void accept(@Sender Player player, Player target) {
-        Profile profile = API.getProfile(player);
-        GameData playerGameData = API.getProfile(player).getGameData();
-
-        if (profile.getMatch() != null || profile.getState().equals(ProfileState.IN_SPECTATOR) || profile.hasState(ProfileState.IN_KIT_EDITOR) || profile.hasState(ProfileState.IN_QUEUE)) {
-            player.sendMessage(CC.error("You can't accept duel requests right now!"));
-            return;
-        }
-
-        if (target == null) {
-            player.sendMessage(CC.error("Player isn't online!"));
-            return;
-        }
-
-        Profile targetProfile = API.getProfile(target);
-
-        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(target.getUniqueId());
-
-        if (duelRequest == null) {
-            player.sendMessage(CC.error("You don't have any duel request from this player!"));
-            return;
-        }
-
-        if (!duelRequest.isParty() && targetProfile.getState().equals(ProfileState.IN_PARTY)) {
-            player.sendMessage(CC.error("Duel request couldn't be accepted!"));
-            return;
-        }
-
-        if (duelRequest.isParty() && !profile.getState().equals(ProfileState.IN_PARTY)) {
-            player.sendMessage(CC.error("Duel request couldn't be accepted!"));
-            return;
-        }
-
-        if (duelRequest.isParty() && !targetProfile.getState().equals(ProfileState.IN_PARTY)) {
-            player.sendMessage(CC.error("Duel request couldn't be accepted!"));
-            return;
-        }
-
-        profile.acceptDuel(duelRequest.getSender());
     }
 
     @Command(name = "specific", desc = "", usage = "<player> <kit> <rounds>")
@@ -186,7 +144,7 @@ public class DuelCommand {
         });
     }
 
-    @Command(name = "deny-uuid", desc = "", usage = "<uuid>", hidden = true)
+    @Command(name = "deny-uuid", desc = "", usage = "<uuid>")
     public void denyUUID(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = profile.getGameData();
@@ -203,24 +161,5 @@ public class DuelCommand {
                 new Replacement("<player>", player.getName()));
 
         playerGameData.removeRequest(uuid);
-    }
-
-    @Command(name = "deny", desc = "", usage = "<player>")
-    public void deny(@Sender Player player, Player target) {
-        Profile profile = API.getProfile(player);
-        GameData playerGameData = profile.getGameData();
-
-        DuelRequest duelRequest = (DuelRequest) playerGameData.getRequests().get(player.getUniqueId());
-
-        if (duelRequest == null) {
-            player.sendMessage(CC.error("You don't have any duel request from this player!"));
-            return;
-        }
-
-        MessagesLocale.DUEL_DENY_SENDER.send(player.getUniqueId());
-        MessagesLocale.DUEL_DENY_RECEIVER.send(player,
-                new Replacement("<player>", player.getName()));
-
-        playerGameData.removeRequest(player.getUniqueId());
     }
 }

@@ -117,44 +117,44 @@ public class Profile {
     }
 
     public void load() {
-        DataDocument dataDocument = DatabaseService.get().getDatabase().getUserData(playerUUID);
+        DatabaseService.get().getDatabase().getUserData(playerUUID).thenAccept(dataDocument -> {
+            if (dataDocument == null) {
+                save();
+            }
 
-        if (dataDocument == null) {
-            save();
-        }
+            if (dataDocument == null) return;
 
-        if (dataDocument == null) return;
+            gameData.setMatchHistories(gameData.deserializeHistory(dataDocument.getList("history", new ArrayList<>())));
 
-        gameData.setMatchHistories(gameData.deserializeHistory(dataDocument.getList("history", new ArrayList<>())));
+            DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
+            DataDocument settings = dataDocument.getDataDocument("settings");
 
-        DataDocument kitStatistics = dataDocument.getDataDocument("kitData");
-        DataDocument settings = dataDocument.getDataDocument("settings");
+            for (Kit kit : KitService.get().kits) {
+                DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
+                if (kitDocument == null) return;
+                KitData profileKitData = gameData.get(kit);
+                profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
+                profileKitData.setKills(kitDocument.getInteger("WINS", 0));
+                profileKitData.setElo(kitDocument.getInteger("ELO", 0));
+                profileKitData.setDivision(DivisionService.get().getDivisionByElo(profileKitData.getElo()));
+                profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
+                profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
+                profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
+                profileKitData.updateDivision();
+            }
 
-        for (Kit kit : KitService.get().kits) {
-            DataDocument kitDocument = kitStatistics.getDataDocument(kit.getName());
-            if (kitDocument == null) return;
-            KitData profileKitData = gameData.get(kit);
-            profileKitData.setCurrentStreak(kitDocument.getInteger("WIN_STREAK_CURRENT", 0));
-            profileKitData.setKills(kitDocument.getInteger("WINS", 0));
-            profileKitData.setElo(kitDocument.getInteger("ELO", 0));
-            profileKitData.setDivision(DivisionService.get().getDivisionByElo(profileKitData.getElo()));
-            profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
-            profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
-            profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
-            profileKitData.updateDivision();
-        }
+            gameData.setLastPlayedKit(kitStatistics.getString("lastPlayedKit", ""));
 
-        gameData.setLastPlayedKit(kitStatistics.getString("lastPlayedKit", ""));
-
-        settingData.setPlayerVisibility(settings.getBoolean("showPlayers", true));
-        settingData.setAllowSpectators(settings.getBoolean("allowSpectators", true));
-        settingData.setAllowDuels(settings.getBoolean("allowDuels", true));
-        settingData.setAllowParty(settings.getBoolean("allowParty", true));
-        settingData.setMaxPing(settings.getInteger("maxPing", 350));
-        settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
-        settingData.setMenuSound(settings.getBoolean("menuSound", false));
-        settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
-        this.gameData.getGlobalStats().update();
+            settingData.setPlayerVisibility(settings.getBoolean("showPlayers", true));
+            settingData.setAllowSpectators(settings.getBoolean("allowSpectators", true));
+            settingData.setAllowDuels(settings.getBoolean("allowDuels", true));
+            settingData.setAllowParty(settings.getBoolean("allowParty", true));
+            settingData.setMaxPing(settings.getInteger("maxPing", 350));
+            settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
+            settingData.setMenuSound(settings.getBoolean("menuSound", false));
+            settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
+            this.gameData.getGlobalStats().update();
+        });
     }
 
     public void save() {

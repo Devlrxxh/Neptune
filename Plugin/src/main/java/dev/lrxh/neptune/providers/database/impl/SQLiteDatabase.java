@@ -33,23 +33,25 @@ public class SQLiteDatabase implements IDatabase {
     }
 
     @Override
-    public DataDocument getUserData(UUID playerUUID) {
-        String query = "SELECT * FROM playerData WHERE uuid=?";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, playerUUID.toString());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                String dataString = resultSet.getString("data");
-                if (isValidJSON(dataString)) {
-                    return new DataDocument(dataString);
-                } else {
-                    ServerUtils.error("Invalid JSON data for UUID: " + playerUUID);
+    public CompletableFuture<DataDocument> getUserData(UUID playerUUID) {
+        return CompletableFuture.supplyAsync(() -> {
+            String query = "SELECT * FROM playerData WHERE uuid=?";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                statement.setString(1, playerUUID.toString());
+                ResultSet resultSet = statement.executeQuery();
+                if (resultSet.next()) {
+                    String dataString = resultSet.getString("data");
+                    if (isValidJSON(dataString)) {
+                        return new DataDocument(dataString);
+                    } else {
+                        ServerUtils.error("Invalid JSON data for UUID: " + playerUUID);
+                    }
                 }
+            } catch (SQLException e) {
+                ServerUtils.error("Error fetching user data from SQLite: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            ServerUtils.error("Error fetching user data from SQLite: " + e.getMessage());
-        }
-        return null;
+            return null;
+        });
     }
 
     @Override
@@ -81,23 +83,25 @@ public class SQLiteDatabase implements IDatabase {
     }
 
     @Override
-    public List<DataDocument> getAll() {
-        List<DataDocument> allDocuments = new ArrayList<>();
-        String query = "SELECT * FROM playerData";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            ResultSet resultSet = statement.executeQuery();
-            while (resultSet.next()) {
-                String jsonString = resultSet.getString("data");
-                if (isValidJSON(jsonString)) {
-                    allDocuments.add(new DataDocument(jsonString));
-                } else {
-                    ServerUtils.error("Invalid JSON found in database: " + jsonString);
+    public CompletableFuture<List<DataDocument>> getAll() {
+        return CompletableFuture.supplyAsync(() -> {
+            List<DataDocument> allDocuments = new ArrayList<>();
+            String query = "SELECT * FROM playerData";
+            try (PreparedStatement statement = connection.prepareStatement(query)) {
+                ResultSet resultSet = statement.executeQuery();
+                while (resultSet.next()) {
+                    String jsonString = resultSet.getString("data");
+                    if (isValidJSON(jsonString)) {
+                        allDocuments.add(new DataDocument(jsonString));
+                    } else {
+                        ServerUtils.error("Invalid JSON found in database: " + jsonString);
+                    }
                 }
+            } catch (SQLException e) {
+                ServerUtils.error("Error retrieving all documents from SQLite: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            ServerUtils.error("Error retrieving all documents from SQLite: " + e.getMessage());
-        }
-        return allDocuments;
+            return allDocuments;
+        });
     }
 
     public boolean isValidJSON(String jsonString) {

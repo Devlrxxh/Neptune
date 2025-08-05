@@ -30,10 +30,12 @@ public class MongoDatabase implements IDatabase {
     }
 
     @Override
-    public DataDocument getUserData(UUID playerUUID) {
-        Document document = collection.find(Filters.eq("uuid", playerUUID.toString())).first();
-        if (document == null) return null;
-        return new DataDocument(document);
+    public CompletableFuture<DataDocument> getUserData(UUID playerUUID) {
+        return CompletableFuture.supplyAsync(() -> {
+            Document document = collection.find(Filters.eq("uuid", playerUUID.toString())).first();
+            if (document == null) return null;
+            return new DataDocument(document);
+        });
     }
 
     @Override
@@ -53,16 +55,18 @@ public class MongoDatabase implements IDatabase {
     }
 
     @Override
-    public List<DataDocument> getAll() {
-        List<DataDocument> allDocuments = new ArrayList<>();
-        try (MongoCursor<Document> cursor = collection.find().iterator()) {
-            while (cursor.hasNext()) {
-                Document document = cursor.next();
-                allDocuments.add(new DataDocument(document));
+    public CompletableFuture<List<DataDocument>> getAll() {
+        return CompletableFuture.supplyAsync(() -> {
+            List<DataDocument> allDocuments = new ArrayList<>();
+            try (MongoCursor<Document> cursor = collection.find().iterator()) {
+                while (cursor.hasNext()) {
+                    Document document = cursor.next();
+                    allDocuments.add(new DataDocument(document));
+                }
+            } catch (Exception e) {
+                ServerUtils.error("Error retrieving documents from MongoDB: " + e.getMessage());
             }
-        } catch (Exception e) {
-            ServerUtils.error("Error retrieving documents from MongoDB: " + e.getMessage());
-        }
-        return allDocuments;
+            return allDocuments;
+        });
     }
 }
