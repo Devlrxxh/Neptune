@@ -152,9 +152,9 @@ public class Arena {
                 final int chunkZ = cz;
 
                 world.getChunkAtAsync(chunkX, chunkZ, false).thenAccept(chunk -> {
-                    chunk.setForceLoaded(true);
+                    chunk.setForceLoaded(false);
                     ChunkPosition position = new ChunkPosition(chunkX, chunkZ);
-                    loadedChunks.put(position, chunk);
+                    loadedChunks.remove(position);
                 });
 
             }
@@ -235,16 +235,6 @@ public class Arena {
         if (min == null || max == null) {
             return;
         }
-
-        loadedChunks.entrySet().removeIf(entry -> {
-            ChunkPosition pos = entry.getKey();
-            int xOffset = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
-            int zOffset = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
-            return pos.x() >= min.getChunk().getX() + xOffset &&
-                    pos.x() <= max.getChunk().getX() + xOffset &&
-                    pos.z() >= min.getChunk().getZ() + zOffset &&
-                    pos.z() <= max.getChunk().getZ() + zOffset;
-        });
 
         World world = redSpawn.getWorld();
         List<Map.Entry<Integer, Integer>> chunksToLoad = new ArrayList<>();

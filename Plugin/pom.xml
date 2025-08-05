@@ -97,7 +97,7 @@
         <dependency>
             <groupId>com.github.Devlrxxh</groupId>
             <artifactId>BlockChanger</artifactId>
-            <version>669ccd7363</version>
+            <version>bdfb054ae8</version>
         </dependency>
     </dependencies>
 
