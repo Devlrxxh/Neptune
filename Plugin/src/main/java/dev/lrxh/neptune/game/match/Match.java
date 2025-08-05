@@ -98,6 +98,7 @@ public abstract class Match {
 
     public void sendMessage(MessagesLocale message, Replacement... replacements) {
         forEachParticipant(participant -> message.send(participant.getPlayerUUID(), replacements));
+        forEachSpectator(player -> message.send(player.getUniqueId(), replacements));
     }
 
     public void addSpectator(Player player, Player target, boolean sendMessage, boolean add) {
