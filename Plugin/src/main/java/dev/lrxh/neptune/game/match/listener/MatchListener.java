@@ -706,6 +706,11 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onItemDrop(BlockBreakBlockEvent event) {
         Player player = getNearbyPlayer(event.getBlock().getLocation());
+        if (player == null) {
+            event.getDrops().clear();
+            return;
+        }
+
         getMatchForPlayer(player).ifPresent(match -> Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
             for (ItemStack item : event.getDrops()) {
                 match.getEntities().add(EntityUtils.getEntityByItemStack(player.getWorld(), item));
