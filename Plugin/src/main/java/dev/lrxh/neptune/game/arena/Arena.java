@@ -2,6 +2,7 @@ package dev.lrxh.neptune.game.arena;
 
 import dev.lrxh.blockChanger.snapshot.ChunkPosition;
 import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.utils.LocationUtil;
@@ -152,7 +153,7 @@ public class Arena {
                 final int chunkZ = cz;
 
                 world.getChunkAtAsync(chunkX, chunkZ, false).thenAccept(chunk -> {
-                    chunk.setForceLoaded(false);
+                    chunk.removePluginChunkTicket(Neptune.get());
                     ChunkPosition position = new ChunkPosition(chunkX, chunkZ);
                     loadedChunks.remove(position);
                 });
@@ -282,7 +283,7 @@ public class Arena {
                     int cz = entry.getValue();
 
                     world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> {
-                        chunk.setForceLoaded(true);
+                        chunk.addPluginChunkTicket(Neptune.get());
                         ChunkPosition position = new ChunkPosition(cx, cz);
                         loadedChunks.put(position, chunk);
                     });
