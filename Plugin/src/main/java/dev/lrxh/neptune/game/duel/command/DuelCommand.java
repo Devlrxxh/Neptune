@@ -58,7 +58,7 @@ public class DuelCommand {
         new KitSelectMenu(target.getUniqueId(), userProfile.getState().equals(ProfileState.IN_PARTY)).open(player);
     }
 
-    @Command(name = "accept-uuid", desc = "", usage = "<uuid>")
+    @Command(name = "accept-uuid", desc = "", usage = "<uuid>", hidden = true)
     public void acceptUUID(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = API.getProfile(player).getGameData();
@@ -144,7 +144,7 @@ public class DuelCommand {
         });
     }
 
-    @Command(name = "deny-uuid", desc = "", usage = "<uuid>")
+    @Command(name = "deny-uuid", desc = "", usage = "<uuid>", hidden = true)
     public void denyUUID(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
         GameData playerGameData = profile.getGameData();

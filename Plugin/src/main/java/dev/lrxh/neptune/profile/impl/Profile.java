@@ -248,10 +248,10 @@ public class Profile {
         gameData.addRequest(duelRequest, senderUUID, ignore -> MessagesLocale.REMATCH_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));
 
         TextComponent accept =
-                new ClickableComponent(MessagesLocale.REMATCH_ACCEPT.getString(), "/duel accept " + duelRequest.getSender().toString(), MessagesLocale.REMATCH_ACCEPT_HOVER.getString()).build();
+                new ClickableComponent(MessagesLocale.REMATCH_ACCEPT.getString(), "/duel accept-uuid " + duelRequest.getSender().toString(), MessagesLocale.REMATCH_ACCEPT_HOVER.getString()).build();
 
         TextComponent deny =
-                new ClickableComponent(MessagesLocale.REMATCH_DENY.getString(), "/duel deny " + duelRequest.getSender().toString(), MessagesLocale.REMATCH_DENY_HOVER.getString()).build();
+                new ClickableComponent(MessagesLocale.REMATCH_DENY.getString(), "/duel accept-uuid " + duelRequest.getSender().toString(), MessagesLocale.REMATCH_DENY_HOVER.getString()).build();
 
         MessagesLocale.REMATCH_REQUEST_RECEIVER.send(playerUUID,
                 new Replacement("<accept>", accept),
