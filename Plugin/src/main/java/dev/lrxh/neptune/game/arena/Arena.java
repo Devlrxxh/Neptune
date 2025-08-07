@@ -62,7 +62,9 @@ public class Arena {
         this.whitelistedBlocks = whitelistedBlocks;
 
         if (min == null || max == null) return;
-        this.snapshot = new CuboidSnapshot(min, max);
+        CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
+            this.snapshot = cuboidSnapshot;
+        });
 
         if (!duplicate) {
             loadChunks(duplicateIndex, true);
@@ -188,14 +190,18 @@ public class Arena {
     public void setMin(Location min) {
         this.min = min;
         if (min != null && max != null) {
-            this.snapshot = new CuboidSnapshot(min, max);
+            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {;
+                this.snapshot = cuboidSnapshot;
+            });
         }
     }
 
     public void setMax(Location max) {
         this.max = max;
         if (min != null && max != null) {
-            this.snapshot = new CuboidSnapshot(min, max);
+            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {;
+                this.snapshot = cuboidSnapshot;
+            });
         }
     }
 
