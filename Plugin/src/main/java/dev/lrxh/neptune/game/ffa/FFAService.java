@@ -107,6 +107,14 @@ public class FFAService extends IService {
         return arena;
     }
 
+    public void deleteArena(FFAArena arena) {
+        arenas.remove(arena);
+        for (Kit kit : arena.getAllowedKits()) {
+            kitArenas.remove(kit);
+        }
+        save();
+    }
+
     @Override
     public void save() {
         getConfigFile().getConfiguration().getKeys(false)

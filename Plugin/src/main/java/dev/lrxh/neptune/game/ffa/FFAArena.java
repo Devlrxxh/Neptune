@@ -43,7 +43,12 @@ public class FFAArena {
         killStreak.put(profile.getPlayerUUID(), 0);
         profile.setState(ProfileState.IN_FFA);
         kit.giveLoadout(profile.getPlayerUUID());
-        profile.getPlayer().teleport(spawnLocations.get(location));
+        for (String loc : spawnLocations.keySet() ) {
+            if (loc.equalsIgnoreCase(location)) {
+                profile.getPlayer().teleport(spawnLocations.get(loc));
+                return;
+            }
+        }
         profile.getGameData().setLastPlayedArena(this);
         profile.getGameData().setLastPlayedKitInFfa(getPlayerKit(profile.getPlayerUUID()));
         profile.getGameData().setLastPlayedSpawn(location);

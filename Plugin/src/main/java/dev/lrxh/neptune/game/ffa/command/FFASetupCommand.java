@@ -3,6 +3,7 @@ package dev.lrxh.neptune.game.ffa.command;
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
+import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.ffa.FFAService;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -45,6 +46,7 @@ public class FFASetupCommand {
             return;
         }
         arena.getSpawnLocations().remove(location);
+        player.sendMessage(CC.success("Spawn location removed") );
     }
 
     @Command(name = "delete", desc = "")
@@ -54,6 +56,8 @@ public class FFASetupCommand {
             player.sendMessage(CC.error("Arena not found") );
             return;
         }
-        FFAService.get().getArenas().remove(arena);
+        arena.getAllPlayers().forEach(it -> arena.removePlayer(API.getProfile(it)));
+        FFAService.get().deleteArena(arena);
+        player.sendMessage(CC.success("Arena deleted") );
     }
 }

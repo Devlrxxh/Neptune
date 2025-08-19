@@ -26,4 +26,13 @@ public class FFACommand {
         }
         FFAService.get().join(API.getProfile(player), kit, location);
     }
+
+    @Command(name = "leave", desc = "")
+    public void leave(@Sender Player player) {
+        if (!API.getProfile(player).hasState(ProfileState.IN_FFA)) {
+            player.sendMessage(CC.error("You aren't in FFA!"));
+            return;
+        }
+        FFAService.get().leave(API.getProfile(player));
+    }
 }

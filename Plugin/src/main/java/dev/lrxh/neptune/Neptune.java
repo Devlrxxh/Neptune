@@ -33,6 +33,7 @@ import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureListener;
 import dev.lrxh.neptune.game.duel.command.DuelCommand;
 import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.ffa.FFAService;
+import dev.lrxh.neptune.game.ffa.command.FFAArenaProvider;
 import dev.lrxh.neptune.game.ffa.command.FFACommand;
 import dev.lrxh.neptune.game.ffa.command.FFASetupCommand;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -179,6 +180,7 @@ public final class Neptune extends JavaPlugin {
         drink.bind(Arena.class).toProvider(new ArenaProvider());
         drink.bind(UUID.class).toProvider(new UUIDProvider());
         drink.bind(Setting.class).toProvider(new SettingProvider());
+        drink.bind(FFAArena.class).toProvider(new FFAArenaProvider());
 
         drink.register(new KitEditorCommand(), "kiteditor").setDefaultCommandIsHelp(true);
         drink.register(new StatsCommand(), "stats").setDefaultCommandIsHelp(true);
