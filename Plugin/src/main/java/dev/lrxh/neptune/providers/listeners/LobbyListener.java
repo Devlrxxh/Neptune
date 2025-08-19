@@ -25,7 +25,6 @@ import java.util.Objects;
 public class LobbyListener implements Listener {
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
-        if (!(event.getEntity() instanceof ArmorStand)) event.setCancelled(true);
         if (!event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.EGG)) event.setCancelled(true);
     }
 
