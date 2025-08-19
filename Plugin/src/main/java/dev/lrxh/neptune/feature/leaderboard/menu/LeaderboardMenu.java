@@ -7,6 +7,7 @@ import dev.lrxh.neptune.feature.leaderboard.impl.PlayerEntry;
 import dev.lrxh.neptune.feature.leaderboard.menu.button.LeaderboardSwitchButton;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;
@@ -38,6 +39,7 @@ public class LeaderboardMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
 
         for (Kit kit : KitService.get().kits) {
+            if (kit.getRules().get(KitRule.HIDDEN)) continue;
             buttons.add(new DisplayButton(kit.getSlot(), buildKitItem(player, kit)));
         }
 

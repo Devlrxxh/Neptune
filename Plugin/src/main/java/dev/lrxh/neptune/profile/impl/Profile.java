@@ -11,6 +11,7 @@ import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.party.PartyService;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedure;
 import dev.lrxh.neptune.game.duel.DuelRequest;
+import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.kit.procedure.KitProcedure;
@@ -140,6 +141,9 @@ public class Profile {
                 profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
                 profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
                 profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
+                profileKitData.setFfaKills(kitDocument.getInteger("FFA_KILLS", 0));
+                profileKitData.setFfaDeaths(kitDocument.getInteger("FFA_DEATHS", 0));
+                profileKitData.setFfaBestStreak(kitDocument.getInteger("FFA_BEST_STREAK", 0));
                 profileKitData.updateDivision();
             }
 
@@ -175,6 +179,9 @@ public class Profile {
             kitStatisticsDocument.put("ELO", entry.getElo());
             kitStatisticsDocument.put("LOSSES", entry.getDeaths());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
+            kitStatisticsDocument.put("FFA_KILLS", entry.getFfaKills());
+            kitStatisticsDocument.put("FFA_DEATHS", entry.getFfaDeaths());
+            kitStatisticsDocument.put("FFA_BEST_STREAK", entry.getFfaBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
             entry.updateDivision();
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
@@ -299,4 +306,5 @@ public class Profile {
     public void setMatch(Match match) {
         gameData.setMatch(match);
     }
+
 }

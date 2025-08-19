@@ -5,6 +5,7 @@ import org.bukkit.Material;
 
 @Getter
 public enum KitRule {
+    HIDDEN(Material.REDSTONE_TORCH, "If the kit shouldn't appear in the queue and party events menu (Used mainly for FFA-only kits)", "Hidden", "hidden"),
     BUILD(Material.LAVA_BUCKET, "Allow/Deny Players to place and break blocks placed by them.", "Build", "build"),
     HUNGER(Material.COOKED_BEEF, "Allow/Deny Players losing Hunger", "Hunger", "hunger"),
     SUMO(Material.LEAD, "Allow/Deny Sumo", "Sumo", "sumo"),
@@ -23,7 +24,8 @@ public enum KitRule {
     RESET_ARENA_AFTER_ROUND(Material.BARRIER, "If the arena should be reset after the round", "Reset Arena After Round", "resetArenaAfterMatch"),
     DROPPER(Material.DROPPER, "Allow/Deny Dropper", "Dropper", "dropper"),
     ENDERPEARL_COOLDOWN(Material.ENDER_PEARL, "Enderpearls have a 15s delay when being used.", "Enderpearl cooldown", "enderpearlCooldown"),
-    SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "Allow/Deny Saturation", "Saturation", "saturation");
+    SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "Allow/Deny Saturation", "Saturation", "saturation"),
+    FFA(Material.BLUE_BANNER, "Allow/Deny FFA", "FFA", "ffa");
 
     private final String description;
     private final String name;

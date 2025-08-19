@@ -5,6 +5,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
+import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
@@ -235,14 +236,22 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player) {
+        if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(attacker);
             if (profile == null) return;
             Match match = profile.getMatch();
-            if (match == null) return;
-
-            if (match.getKit().is(KitRule.PARKOUR)) {
-                event.setCancelled(true);
+            FFAArena ffa = profile.getGameData().getFfaArena();
+            if (match != null) {
+                if (match.getKit().is(KitRule.PARKOUR)) {
+                    event.setCancelled(true);
+                }
+            } else if (ffa != null) {
+                if (event.getFinalDamage() >= player.getHealth()) {
+                    event.setCancelled(true);
+                    ffa.onDeath(ProfileService.get().getByUUID(attacker.getUniqueId()), ProfileService.get().getByUUID(player.getUniqueId()));
+                    attacker.setHealth(20.0f);
+                    player.setHealth(20.0f);
+                }
             }
         }
     }
@@ -337,11 +346,15 @@ public class MatchListener implements Listener {
             Profile profile = API.getProfile(player);
             if (profile == null) return;
 
-            if (profile.getMatch() == null || attackerProfile.getState().equals(ProfileState.IN_SPECTATOR)) {
+            if ((profile.getMatch() == null || attackerProfile.getState().equals(ProfileState.IN_SPECTATOR)) && !profile.getState().equals(ProfileState.IN_FFA)) {
                 event.setCancelled(true);
                 return;
             }
             Match match = profile.getMatch();
+
+            if (match == null) {
+                return;
+            }
 
             if (!attackerProfile.getMatch().getUuid().equals(match.getUuid())) {
                 event.setCancelled(true);
@@ -510,8 +523,11 @@ public class MatchListener implements Listener {
             if (profile == null) return;
 
             Match match = profile.getMatch();
-            if (match == null) {
+            if (match == null && !profile.getState().equals(ProfileState.IN_FFA)) {
                 event.setCancelled(true);
+                return;
+            }
+            if (match == null) {
                 return;
             }
 

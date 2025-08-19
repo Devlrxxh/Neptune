@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.feature.party.Party;
+import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.match.Match;
@@ -26,6 +27,7 @@ import java.util.function.Consumer;
 public class GameData {
     private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.REQUEST_EXPIRY_TIME.getInt());
     private Match match;
+    private FFAArena ffaArena;
     private HashMap<Kit, KitData> kitData;
     private ArrayList<MatchHistory> matchHistories;
     private Gson gson;
@@ -33,6 +35,11 @@ public class GameData {
     private Party party;
     private GlobalStats globalStats;
     private String lastPlayedKit;
+
+    // FFA Specific
+    private FFAArena lastPlayedArena;
+    private Kit lastPlayedKitInFfa;
+    private String lastPlayedSpawn;
 
     public GameData(Profile profile) {
         this.kitData = new HashMap<>();

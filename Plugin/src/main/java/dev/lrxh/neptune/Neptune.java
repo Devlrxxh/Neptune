@@ -31,6 +31,10 @@ import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.arena.command.ArenaProvider;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureListener;
 import dev.lrxh.neptune.game.duel.command.DuelCommand;
+import dev.lrxh.neptune.game.ffa.FFAArena;
+import dev.lrxh.neptune.game.ffa.FFAService;
+import dev.lrxh.neptune.game.ffa.command.FFACommand;
+import dev.lrxh.neptune.game.ffa.command.FFASetupCommand;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.kit.command.KitEditorCommand;
@@ -112,6 +116,8 @@ public final class Neptune extends JavaPlugin {
 
         LeaderboardService.get();
 
+        FFAService.get().load();
+
         registerListeners();
         loadCommandManager();
         loadTasks();
@@ -188,6 +194,8 @@ public final class Neptune extends JavaPlugin {
         drink.register(new CosmeticsCommand(), "cosmetics");
         drink.register(new MatchHistoryCommand(), "matchhistory");
         drink.register(new QuickQueueCommand(), "quickqueue");
+        drink.register(new FFACommand(), "ffa").setDefaultCommandIsHelp(true);
+        drink.register(new FFASetupCommand(), "ffasetup");
         drink.registerCommands();
     }
 
@@ -198,6 +206,7 @@ public final class Neptune extends JavaPlugin {
         stopService(MatchService.get(), MatchService::stopAllGames);
         stopService(TaskScheduler.get(), TaskScheduler::stopAllTasks);
         stopService(ProfileService.get(), ProfileService::saveAll);
+        stopService(FFAService.get(), FFAService::save);
         stopService(cache, Cache::save);
     }
 

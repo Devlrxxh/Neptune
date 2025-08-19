@@ -5,6 +5,7 @@ import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.events.QueueJoinEvent;
 import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -33,6 +34,7 @@ public class QueueService {
         Profile profile = API.getProfile(playerUUID);
         if (profile.hasState(ProfileState.IN_GAME)) return;
         if (profile.getGameData().getParty() != null) return;
+        if (!queueEntry.getKit().getRules().get(KitRule.HIDDEN)) return;
 
         kitQueues.computeIfAbsent(kit, k -> new ConcurrentLinkedQueue<>()).offer(queueEntry);
 

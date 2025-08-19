@@ -6,5 +6,6 @@ public enum ProfileState {
     IN_GAME,
     IN_KIT_EDITOR,
     IN_SPECTATOR,
-    IN_PARTY
+    IN_PARTY,
+    IN_FFA
 }

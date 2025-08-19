@@ -436,7 +436,11 @@ public enum MenusLocale implements IDataAccessor {
             "<description> ",
             "<messages>",
             " ",
-            "&cNo permission");
+            "&cNo permission"),
+    FFA_SPAWN_LOCATION_FORMAT("SETTINGS.FFA.LOCATION.NAME_FORMAT", DataType.STRING, "&b&l<spawnName> | <arenaName>"),
+    FFA_SPAWN_LOCATION_LORE("SETTINGS.FFA.LOCATION.LORE", DataType.STRING_LIST,
+            "&f",
+            "&bClick to teleport");
 
     private final String path;
     private final String comment;

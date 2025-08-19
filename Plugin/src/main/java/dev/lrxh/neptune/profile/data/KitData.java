@@ -22,6 +22,9 @@ public class KitData {
     private List<ItemStack> kitLoadout = new ArrayList<>();
     private Division division;
     private int elo = 0;
+    private int ffaKills = 0;
+    private int ffaDeaths = 0;
+    private int ffaBestStreak = 0;
 
     public double getKdr() {
         if (deaths == 0) return kills;

@@ -25,6 +25,7 @@ public class KitEditorMenu extends Menu {
         List<Button> buttons = new ArrayList<>();
 
         for (Kit kit : KitService.get().kits) {
+            if (kit.getRules().get(KitRule.HIDDEN)) continue;
             if (kit.is(KitRule.ALLOW_KIT_EDITOR)) {
                 buttons.add(new KitEditorSelectButton(kit.getKitEditorSlot(), kit));
             }
