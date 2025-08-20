@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.impl.team;
 
 
+import dev.lrxh.api.match.team.IMatchTeam;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 @Data
-public class MatchTeam {
+public class MatchTeam implements IMatchTeam {
     private final List<Participant> participants;
     private final List<Participant> deadParticipants;
     private boolean loser;

@@ -40,8 +40,8 @@ public class ScoreboardAdapter implements FastAdapter {
             case IN_GAME:
                 match = profile.getMatch();
                 return match.getScoreboard(player.getUniqueId());
-            case IN_FFA:
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_FFA.getStringList()), player);
+//            case IN_FFA:
+//                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_FFA.getStringList()), player);
             case IN_SPECTATOR:
                 match = profile.getMatch();
                 if (match instanceof SoloFightMatch) {

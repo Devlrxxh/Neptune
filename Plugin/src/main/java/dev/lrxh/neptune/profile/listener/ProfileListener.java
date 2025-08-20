@@ -3,7 +3,7 @@ package dev.lrxh.neptune.profile.listener;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
+import dev.lrxh.api.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;

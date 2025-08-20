@@ -61,6 +61,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>me.dev.lrxh</groupId>
+            <artifactId>API</artifactId>
+            <version>1.4</version>
+        </dependency>
+        <dependency>
             <groupId>io.papermc.paper</groupId>
             <artifactId>paper-api</artifactId>
             <version>1.21.5-R0.1-SNAPSHOT</version>

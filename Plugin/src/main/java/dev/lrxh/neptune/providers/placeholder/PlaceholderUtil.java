@@ -87,25 +87,25 @@ public class PlaceholderUtil {
             line = line.replaceAll("<party-max>", String.valueOf(party.getMaxUsers()));
         }
 
-        if (state.equals(ProfileState.IN_FFA)) {
-            line = line.replaceAll("<kit>", profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID()).getDisplayName());
-
-            int kills = profile.getGameData().getKitData()
-                    .get(profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID())).getFfaKills();
-            int deaths = profile.getGameData().getKitData()
-                    .get(profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID())).getFfaDeaths();
-            line = line.replaceAll("<kills>", String.valueOf(kills));
-            line = line.replaceAll("<deaths>", String.valueOf(deaths));
-            double kdr = 0;
-            if (kills > 0) {
-                kdr = deaths == 0 ? kills : (double) kills / deaths;
-            }
-
-            line = line.replaceAll("<kdr>", String.format("%.2f", kdr));
-            line = line.replaceAll("<bestStreak>", profile.getGameData().getKitData()
-                    .get(profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID())).getFfaBestStreak() + "");
-            line = line.replaceAll("<killstreak>", profile.getGameData().getFfaArena().getKillStreak(profile.getPlayerUUID()) + "");
-        }
+//        if (state.equals(ProfileState.IN_FFA)) {
+//            line = line.replaceAll("<kit>", profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID()).getDisplayName());
+//
+//            int kills = profile.getGameData().getKitData()
+//                    .get(profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID())).getFfaKills();
+//            int deaths = profile.getGameData().getKitData()
+//                    .get(profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID())).getFfaDeaths();
+//            line = line.replaceAll("<kills>", String.valueOf(kills));
+//            line = line.replaceAll("<deaths>", String.valueOf(deaths));
+//            double kdr = 0;
+//            if (kills > 0) {
+//                kdr = deaths == 0 ? kills : (double) kills / deaths;
+//            }
+//
+//            line = line.replaceAll("<kdr>", String.format("%.2f", kdr));
+//            line = line.replaceAll("<bestStreak>", profile.getGameData().getKitData()
+//                    .get(profile.getGameData().getFfaArena().getPlayerKit(profile.getPlayerUUID())).getFfaBestStreak() + "");
+//            line = line.replaceAll("<killstreak>", profile.getGameData().getFfaArena().getKillStreak(profile.getPlayerUUID()) + "");
+//        }
 
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();

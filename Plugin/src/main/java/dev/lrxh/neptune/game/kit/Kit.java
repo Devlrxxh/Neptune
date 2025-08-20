@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.kit;
 
+import dev.lrxh.api.kit.IKit;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -28,7 +29,7 @@ import java.util.concurrent.ThreadLocalRandom;
 @Getter
 @Setter
 @AllArgsConstructor
-public class Kit {
+public class Kit implements IKit {
     private String name;
     private String displayName;
     private List<ItemStack> items;
@@ -123,7 +124,7 @@ public class Kit {
 
     private void addToProfiles() {
         for (Profile profile : ProfileService.get().profiles.values()) {
-            profile.getGameData().getKitData().put(this, new KitData());
+            profile.getGameData().getKitDataInternal().put(this, new KitData());
         }
     }
 

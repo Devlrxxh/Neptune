@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.profile.impl;
 
+import dev.lrxh.api.profile.IProfile;
+import dev.lrxh.api.profile.IProfileState;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -11,7 +13,6 @@ import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.party.PartyService;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedure;
 import dev.lrxh.neptune.game.duel.DuelRequest;
-import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.kit.procedure.KitProcedure;
@@ -34,11 +35,12 @@ import java.util.*;
 
 @Getter
 @Setter
-public class Profile {
+public class Profile implements IProfile {
     private final UUID playerUUID;
     private Map<String, Cooldown> cooldowns;
     private String username;
-    private ProfileState state;
+    private ProfileState state; // for main plugin, if this was set to ProfileState.IN_CUSTOM, it will use customState instead
+    private String customState;
     private Neptune plugin;
     private GameData gameData;
     private SettingData settingData;
@@ -68,9 +70,31 @@ public class Profile {
         visibility.handle();
     }
 
-    public boolean hasState(ProfileState profileState) {
-        return state.equals(profileState);
+    public void setState(ProfileState profileState) {
+        state = profileState;
+        handleVisibility();
+        HotbarService.get().giveItems(getPlayer());
     }
+
+    @Override
+    public void setState(String customState) {
+        this.state = ProfileState.IN_CUSTOM;
+        this.customState = customState;
+    }
+
+    @Override
+    public boolean hasState(IProfileState state) {
+        return this.state.equals(state);
+    }
+
+    @Override
+    public boolean hasState(String customState) {
+        if (this.state != ProfileState.IN_CUSTOM) {
+            return false;
+        }
+        return this.customState.equals(customState);
+    }
+
 
     public boolean hasState(ProfileState... profileStates) {
         for (ProfileState profileState : profileStates) {
@@ -105,12 +129,6 @@ public class Profile {
         }
 
         return false;
-    }
-
-    public void setState(ProfileState profileState) {
-        state = profileState;
-        handleVisibility();
-        HotbarService.get().giveItems(getPlayer());
     }
 
     public Player getPlayer() {

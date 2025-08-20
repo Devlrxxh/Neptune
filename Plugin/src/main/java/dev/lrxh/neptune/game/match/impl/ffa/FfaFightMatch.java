@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.match.impl.ffa;
 
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.arena.Arena;
@@ -148,5 +149,10 @@ public class FfaFightMatch extends Match {
     @Override
     public void sendTitle(Participant participant, TextComponent header, TextComponent footer, int duration) {
         participant.sendTitle(header, footer, duration);
+    }
+
+    @Override
+    public List<IParticipant> getParticipant() {
+        return List.of();
     }
 }

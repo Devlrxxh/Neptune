@@ -2,6 +2,9 @@ package dev.lrxh.neptune.profile.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import dev.lrxh.api.data.IGameData;
+import dev.lrxh.api.data.IKitData;
+import dev.lrxh.api.kit.IKit;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.game.ffa.FFAArena;
@@ -24,7 +27,7 @@ import java.util.function.Consumer;
 
 @Getter
 @Setter
-public class GameData {
+public class GameData implements IGameData {
     private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.REQUEST_EXPIRY_TIME.getInt());
     private Match match;
     private FFAArena ffaArena;
@@ -59,6 +62,15 @@ public class GameData {
         }
 
         return kitData.get(kit);
+    }
+
+    @Override
+    public HashMap<IKit, IKitData> getKitData() {
+        return new HashMap<>(kitData);
+    }
+
+    public HashMap<Kit, KitData> getKitDataInternal() {
+        return kitData;
     }
 
     public boolean run(Kit kit, boolean won) {

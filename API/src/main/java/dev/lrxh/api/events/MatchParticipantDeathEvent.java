@@ -1,20 +1,20 @@
-package dev.lrxh.neptune.events;
+package dev.lrxh.api.events;
 
-import dev.lrxh.neptune.game.match.Match;
-import dev.lrxh.neptune.game.match.impl.participant.Participant;
+
+import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.participant.IParticipant;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
 public class MatchParticipantDeathEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private final Match match;
+    private final IMatch match;
     @Getter
-    private final Participant participant;
+    private final IParticipant participant;
 
-    public MatchParticipantDeathEvent(Match match, Participant participant) {
+    public MatchParticipantDeathEvent(IMatch match, IParticipant participant) {
         this.match = match;
         this.participant = participant;
     }
@@ -24,7 +24,7 @@ public class MatchParticipantDeathEvent extends Event {
     }
 
     @Override
-    public @NotNull HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return handlers;
     }
 }

@@ -3,7 +3,7 @@ package dev.lrxh.neptune.game.match.listener;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.MatchParticipantDeathEvent;
+import dev.lrxh.api.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -346,7 +346,11 @@ public class MatchListener implements Listener {
             Profile profile = API.getProfile(player);
             if (profile == null) return;
 
-            if ((profile.getMatch() == null || attackerProfile.getState().equals(ProfileState.IN_SPECTATOR)) && !profile.getState().equals(ProfileState.IN_FFA)) {
+            if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
+                return;
+            }
+
+            if (profile.getMatch() == null || attackerProfile.getState().equals(ProfileState.IN_SPECTATOR)) {
                 event.setCancelled(true);
                 return;
             }
@@ -523,11 +527,11 @@ public class MatchListener implements Listener {
             if (profile == null) return;
 
             Match match = profile.getMatch();
-            if (match == null && !profile.getState().equals(ProfileState.IN_FFA)) {
-                event.setCancelled(true);
+            if (match == null) {
                 return;
             }
-            if (match == null) {
+            if (!profile.getState().equals(ProfileState.IN_CUSTOM)) {
+                event.setCancelled(true);
                 return;
             }
 

@@ -41,7 +41,7 @@ public class FFAArena {
         players.put(profile.getPlayerUUID(), kit);
         profile.getGameData().setFfaArena(this);
         killStreak.put(profile.getPlayerUUID(), 0);
-        profile.setState(ProfileState.IN_FFA);
+//        profile.setState(ProfileState.IN_FFA);
         kit.giveLoadout(profile.getPlayerUUID());
         for (String loc : spawnLocations.keySet() ) {
             if (loc.equalsIgnoreCase(location)) {
@@ -71,18 +71,18 @@ public class FFAArena {
         if (killer.getGameData().getFfaArena() != this) return;
         if (victim.getGameData().getFfaArena() != this) return;
 
-        var killerKitData = killer.getGameData().getKitData().get(players.get(killer.getPlayerUUID()));
+        var killerKitData = killer.getGameData().getKitDataInternal().get(players.get(killer.getPlayerUUID()));
         killerKitData.setFfaKills(killerKitData.getFfaKills() + 1);
 
-        var victimKitData = victim.getGameData().getKitData().get(players.get(victim.getPlayerUUID()));
+        var victimKitData = victim.getGameData().getKitDataInternal().get(players.get(victim.getPlayerUUID()));
         victimKitData.setFfaDeaths(victimKitData.getFfaDeaths() + 1);
 
         int streak = getKillStreak().getOrDefault(killer.getPlayerUUID(), 0) + 1;
         getKillStreak().put(killer.getPlayerUUID(), streak);
         getKillStreak().put(victim.getPlayerUUID(), 0); // Reset victim's killstreak
 
-        if (killer.getGameData().getKitData().get(players.get(killer.getPlayerUUID())).getFfaBestStreak() < streak) {
-            killer.getGameData().getKitData().get(players.get(killer.getPlayerUUID())).setFfaBestStreak(streak);
+        if (killer.getGameData().getKitDataInternal().get(players.get(killer.getPlayerUUID())).getFfaBestStreak() < streak) {
+            killer.getGameData().getKitDataInternal().get(players.get(killer.getPlayerUUID())).setFfaBestStreak(streak);
         }
 
         // Always send a random kill message

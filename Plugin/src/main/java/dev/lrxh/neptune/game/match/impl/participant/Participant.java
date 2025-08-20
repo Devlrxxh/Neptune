@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.match.impl.participant;
 
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -21,7 +22,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Data
-public class Participant {
+public class Participant implements IParticipant {
     public boolean dead = false;
     private UUID playerUUID;
     private String name;

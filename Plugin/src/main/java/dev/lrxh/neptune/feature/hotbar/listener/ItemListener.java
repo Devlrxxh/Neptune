@@ -22,7 +22,7 @@ public class ItemListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
         if (profile.getMatch() != null && profile.getMatch().getState().equals(MatchState.IN_ROUND)) return;
-        if (profile.getState().equals(ProfileState.IN_FFA)) return;
+//        if (profile.getState().equals(ProfileState.IN_FFA)) return;
         if (profile.getState().equals(ProfileState.IN_KIT_EDITOR)) return;
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
 

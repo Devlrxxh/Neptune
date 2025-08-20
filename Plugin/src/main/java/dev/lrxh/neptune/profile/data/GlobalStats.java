@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.profile.data;
 
+import dev.lrxh.api.data.IGlobalStats;
 import dev.lrxh.neptune.feature.divisions.DivisionService;
 import dev.lrxh.neptune.feature.divisions.impl.Division;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -8,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GlobalStats {
+public class GlobalStats implements IGlobalStats {
     private final Profile profile;
     private int wins = 0;
     private int losses = 0;
@@ -28,19 +29,20 @@ public class GlobalStats {
         this.bestStreak = 0;
         this.elo = 0;
 
-        for (KitData kitData : profile.getGameData().getKitData().values()) {
+        for (KitData kitData : profile.getGameData().getKitDataInternal().values()) {
             this.wins += kitData.getKills();
             this.losses += kitData.getDeaths();
             this.currentStreak += kitData.getCurrentStreak();
             this.bestStreak = Math.max(this.bestStreak, kitData.getBestStreak());
             this.elo += kitData.getElo();
         }
-        int kitData = profile.getGameData().getKitData().size();
+        int kitData = profile.getGameData().getKitDataInternal().size();
         if (kitData != 0) this.elo = this.elo / kitData;
 
         this.division = DivisionService.get().getDivisionByElo(elo);
     }
 
+    @Override
     public double getWinRatio() {
         int totalGames = wins + losses;
         if (totalGames == 0) return 0.0;

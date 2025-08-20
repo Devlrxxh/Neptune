@@ -29,10 +29,10 @@ public class FFACommand {
 
     @Command(name = "leave", desc = "")
     public void leave(@Sender Player player) {
-        if (!API.getProfile(player).hasState(ProfileState.IN_FFA)) {
-            player.sendMessage(CC.error("You aren't in FFA!"));
-            return;
-        }
+//        if (!API.getProfile(player).hasState(ProfileState.IN_FFA)) {
+//            player.sendMessage(CC.error("You aren't in FFA!"));
+//            return;
+//        }
         FFAService.get().leave(API.getProfile(player));
     }
 }

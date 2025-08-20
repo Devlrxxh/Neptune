@@ -39,11 +39,11 @@ public class Visibility {
             return;
         }
 
-        if (has(viewerProfile, otherProfile, ProfileState.IN_FFA) && viewerProfile.getGameData().getFfaArena().getName().equals(otherProfile.getGameData().getFfaArena().getName())) {
-            viewerPlayer.showPlayer(Neptune.get(), otherPlayer);
-            otherPlayer.showPlayer(Neptune.get(), viewerPlayer);
-            return;
-        }
+//        if (has(viewerProfile, otherProfile, ProfileState.IN_FFA) && viewerProfile.getGameData().getFfaArena().getName().equals(otherProfile.getGameData().getFfaArena().getName())) {
+//            viewerPlayer.showPlayer(Neptune.get(), otherPlayer);
+//            otherPlayer.showPlayer(Neptune.get(), viewerPlayer);
+//            return;
+//        }
 
         if (!viewerProfile.getSettingData().isPlayerVisibility()) {
             viewerPlayer.hidePlayer(Neptune.get(), otherPlayer);

@@ -2,7 +2,7 @@ package dev.lrxh.neptune.game.match;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.events.MatchReadyEvent;
+import dev.lrxh.api.events.MatchReadyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
@@ -89,6 +89,19 @@ public class MatchService {
         FfaFightMatch match = new FfaFightMatch(arena, kit, participants);
 
         MatchReadyEvent event = new MatchReadyEvent(match);
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
+
+        matches.add(match);
+        new MatchStartRunnable(match).start(0L, 20L);
+    }
+
+    public void startMatch(Match match) {
+        if (!Neptune.get().isAllowMatches()) return;
+        MatchReadyEvent event = new MatchReadyEvent(match);
+
         Bukkit.getPluginManager().callEvent(event);
         if (event.isCancelled()) {
             return;
