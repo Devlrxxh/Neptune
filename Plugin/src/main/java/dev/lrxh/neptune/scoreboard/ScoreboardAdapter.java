@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.providers.scoreboard;
+package dev.lrxh.neptune.scoreboard;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
@@ -60,6 +60,8 @@ public class ScoreboardAdapter implements FastAdapter {
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_FFA.getStringList()), player);
                 }
                 break;
+            case IN_CUSTOM:
+                ScoreboardService.get().getScoreboard(profile.getCustomState());
             default:
                 break;
         }

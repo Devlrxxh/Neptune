@@ -25,10 +25,6 @@ public class KitData implements IKitData {
     private Division division;
     private int elo = 0;
     private HashMap<String, Object> customData = new HashMap<>();
-    private int ffaKills = 0;
-    private int ffaDeaths = 0;
-    private int ffaBestStreak = 0;
-
     public double getKdr() {
         if (deaths == 0) return kills;
         double kd = (double) kills / deaths;

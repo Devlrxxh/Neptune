@@ -18,7 +18,6 @@ public class ConfigService {
     private ConfigFile divisionsConfig;
     private ConfigFile cosmeticsConfig;
     private ConfigFile killMessagesConfig;
-    private ConfigFile ffaConfig;
 
     public static ConfigService get() {
         if (instance == null) instance = new ConfigService();
@@ -37,7 +36,6 @@ public class ConfigService {
         divisionsConfig = new ConfigFile("divisions");
         cosmeticsConfig = new ConfigFile("cosmetics");
         killMessagesConfig = new ConfigFile("kill-messages");
-        ffaConfig = new ConfigFile("ffa");
 
         initialize();
     }

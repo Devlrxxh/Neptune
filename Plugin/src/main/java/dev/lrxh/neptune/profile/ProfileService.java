@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.profile;
 
+import dev.lrxh.api.profile.IProfile;
+import dev.lrxh.api.profile.IProfileService;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -8,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.IdentityHashMap;
 import java.util.UUID;
 
-public class ProfileService {
+public class ProfileService implements IProfileService {
     private static ProfileService instance;
     public final IdentityHashMap<UUID, Profile> profiles = new IdentityHashMap<>();
     private final Neptune plugin;
@@ -56,5 +58,10 @@ public class ProfileService {
         }
 
         return null;
+    }
+
+    @Override
+    public IProfile getProfile(UUID uuid) {
+        return getByUUID(uuid) != null ? getByUUID(uuid) : createProfile(uuid);
     }
 }

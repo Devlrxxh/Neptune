@@ -34,7 +34,7 @@ public class QueueService {
         Profile profile = API.getProfile(playerUUID);
         if (profile.hasState(ProfileState.IN_GAME)) return;
         if (profile.getGameData().getParty() != null) return;
-        if (!queueEntry.getKit().getRules().get(KitRule.HIDDEN)) return;
+        if (queueEntry.getKit().getRule().get(KitRule.HIDDEN)) return;
 
         kitQueues.computeIfAbsent(kit, k -> new ConcurrentLinkedQueue<>()).offer(queueEntry);
 

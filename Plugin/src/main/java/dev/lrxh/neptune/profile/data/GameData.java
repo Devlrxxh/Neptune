@@ -7,7 +7,6 @@ import dev.lrxh.api.data.IKitData;
 import dev.lrxh.api.kit.IKit;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.feature.party.Party;
-import dev.lrxh.neptune.game.ffa.FFAArena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.match.Match;
@@ -30,7 +29,6 @@ import java.util.function.Consumer;
 public class GameData implements IGameData {
     private final TtlHashMap<UUID, Request> requests = new TtlHashMap<>(SettingsLocale.REQUEST_EXPIRY_TIME.getInt());
     private Match match;
-    private FFAArena ffaArena;
     private HashMap<Kit, KitData> kitData;
     private ArrayList<MatchHistory> matchHistories;
     private Gson gson;
@@ -39,10 +37,7 @@ public class GameData implements IGameData {
     private GlobalStats globalStats;
     private String lastPlayedKit;
 
-    // FFA Specific
-    private FFAArena lastPlayedArena;
-    private Kit lastPlayedKitInFfa;
-    private String lastPlayedSpawn;
+    private HashMap<String, Object> customData = new HashMap<>();
 
     public GameData(Profile profile) {
         this.kitData = new HashMap<>();
@@ -67,6 +62,20 @@ public class GameData implements IGameData {
     @Override
     public HashMap<IKit, IKitData> getKitData() {
         return new HashMap<>(kitData);
+    }
+
+    @Override
+    public void setCustomData(String key, Object value) {
+        if (customData.get(key) != null) {
+            customData.replace(key, value);
+            return;
+        }
+        customData.put(key, value);
+    }
+
+    @Override
+    public Object getCustomData(String key) {
+        return customData.get(key);
     }
 
     public HashMap<Kit, KitData> getKitDataInternal() {

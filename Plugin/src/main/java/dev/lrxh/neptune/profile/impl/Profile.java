@@ -24,6 +24,7 @@ import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.Cooldown;
 import dev.lrxh.neptune.utils.ItemUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
@@ -83,14 +84,31 @@ public class Profile implements IProfile {
     }
 
     @Override
+    public void toLobby() {
+        setState(ProfileState.IN_LOBBY);
+        PlayerUtil.teleportToSpawn(playerUUID);
+        getMatch().onDeath(getMatch().getParticipant(playerUUID));
+    }
+
     public boolean hasState(IProfileState state) {
+        if (this.state != ProfileState.IN_CUSTOM) {
+            return false;
+        }
         return this.state.equals(state);
     }
 
     @Override
     public boolean hasState(String customState) {
         if (this.state != ProfileState.IN_CUSTOM) {
-            return false;
+            return switch (customState) {
+                case "neptune:in_lobby" -> this.state == ProfileState.IN_LOBBY;
+                case "neptune:in_game" -> this.state == ProfileState.IN_GAME;
+                case "neptune:in_kiteditor" -> this.state == ProfileState.IN_KIT_EDITOR;
+                case "neptune:in_party" -> this.state == ProfileState.IN_PARTY;
+                case "neptune:spectating" -> this.state == ProfileState.IN_SPECTATOR;
+                case "neptune:in_queue" -> this.state == ProfileState.IN_QUEUE;
+                default -> false;
+            };
         }
         return this.customState.equals(customState);
     }
@@ -159,9 +177,6 @@ public class Profile implements IProfile {
                 profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
                 profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
                 profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
-                profileKitData.setFfaKills(kitDocument.getInteger("FFA_KILLS", 0));
-                profileKitData.setFfaDeaths(kitDocument.getInteger("FFA_DEATHS", 0));
-                profileKitData.setFfaBestStreak(kitDocument.getInteger("FFA_BEST_STREAK", 0));
                 profileKitData.updateDivision();
             }
 
@@ -197,9 +212,6 @@ public class Profile implements IProfile {
             kitStatisticsDocument.put("ELO", entry.getElo());
             kitStatisticsDocument.put("LOSSES", entry.getDeaths());
             kitStatisticsDocument.put("WIN_STREAK_BEST", entry.getBestStreak());
-            kitStatisticsDocument.put("FFA_KILLS", entry.getFfaKills());
-            kitStatisticsDocument.put("FFA_DEATHS", entry.getFfaDeaths());
-            kitStatisticsDocument.put("FFA_BEST_STREAK", entry.getFfaBestStreak());
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
             entry.updateDivision();
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);

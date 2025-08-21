@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.kit;
 
 import dev.lrxh.api.kit.IKit;
+import dev.lrxh.api.kit.IKitRule;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -174,6 +175,11 @@ public class Kit implements IKit {
         }
     }
 
+    @Override
+    public HashMap<IKitRule, Boolean> getRule() {
+        return rules.entrySet().stream().collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), HashMap::putAll);
+    }
+
     @Nullable
     public CompletableFuture<Arena> getRandomArena() {
         List<Arena> arenas1 = new ArrayList<>();
@@ -191,6 +197,7 @@ public class Kit implements IKit {
         return selected.createDuplicate().thenApply(arena -> arena);
     }
 
+    @Override
     public void giveLoadout(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
         if (player == null) return;

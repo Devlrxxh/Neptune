@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.game.match;
 
+import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.IMatchService;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.api.events.MatchReadyEvent;
@@ -18,7 +20,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class MatchService {
+public class MatchService implements IMatchService {
     private static MatchService instance;
     public final HashSet<Match> matches = new HashSet<>();
 
@@ -98,7 +100,8 @@ public class MatchService {
         new MatchStartRunnable(match).start(0L, 20L);
     }
 
-    public void startMatch(Match match) {
+    @Override
+    public void startMatch(IMatch match) {
         if (!Neptune.get().isAllowMatches()) return;
         MatchReadyEvent event = new MatchReadyEvent(match);
 
@@ -107,8 +110,8 @@ public class MatchService {
             return;
         }
 
-        matches.add(match);
-        new MatchStartRunnable(match).start(0L, 20L);
+        matches.add((Match) match);
+        new MatchStartRunnable((Match) match).start(0L, 20L);
     }
 
     public Optional<Match> getMatch(Player player) {

@@ -1,10 +1,11 @@
 package dev.lrxh.neptune.game.kit.impl;
 
+import dev.lrxh.api.kit.IKitRule;
 import lombok.Getter;
 import org.bukkit.Material;
 
 @Getter
-public enum KitRule {
+public enum KitRule implements IKitRule {
     HIDDEN(Material.REDSTONE_TORCH, "If the kit shouldn't appear in the queue and party events menu (Used mainly for FFA-only kits)", "Hidden", "hidden"),
     BUILD(Material.LAVA_BUCKET, "Allow/Deny Players to place and break blocks placed by them.", "Build", "build"),
     HUNGER(Material.COOKED_BEEF, "Allow/Deny Players losing Hunger", "Hunger", "hunger"),
@@ -24,9 +25,7 @@ public enum KitRule {
     RESET_ARENA_AFTER_ROUND(Material.BARRIER, "If the arena should be reset after the round", "Reset Arena After Round", "resetArenaAfterMatch"),
     DROPPER(Material.DROPPER, "Allow/Deny Dropper", "Dropper", "dropper"),
     ENDERPEARL_COOLDOWN(Material.ENDER_PEARL, "Enderpearls have a 15s delay when being used.", "Enderpearl cooldown", "enderpearlCooldown"),
-    SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "Allow/Deny Saturation", "Saturation", "saturation"),
-    FFA(Material.BLUE_BANNER, "Allow/Deny FFA", "FFA", "ffa");
-
+    SATURATION(Material.ENCHANTED_GOLDEN_APPLE, "Allow/Deny Saturation", "Saturation", "saturation");
     private final String description;
     private final String name;
     private final Material icon;
