@@ -63,6 +63,7 @@ public abstract class Match implements IMatch {
     private boolean duel;
     private boolean ended;
 
+    @Override
     public List<Participant> getParticipants() {
         return participants;
     }
