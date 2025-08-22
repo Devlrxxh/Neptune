@@ -63,6 +63,10 @@ public abstract class Match implements IMatch {
     private boolean duel;
     private boolean ended;
 
+    public List<Participant> getParticipants() {
+        return participants;
+    }
+
     public void playSound(Sound sound) {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
     }
