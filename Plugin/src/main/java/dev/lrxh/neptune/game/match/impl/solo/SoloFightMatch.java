@@ -98,7 +98,7 @@ public class SoloFightMatch extends Match {
     }
 
     private void removePlaying() {
-        for (Participant ignored : getParticipants())
+        for (IParticipant ignored : getParticipants())
             getKit().removePlaying();
     }
 
@@ -278,7 +278,7 @@ public class SoloFightMatch extends Match {
     }
 
     @Override
-    public List<IParticipant> getParticipant() {
+    public List<IParticipant> getParticipants() {
         return List.of(participantA, participantB);
     }
 }

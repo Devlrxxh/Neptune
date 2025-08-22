@@ -176,7 +176,7 @@ public class TeamFightMatch extends Match {
     }
 
     @Override
-    public List<IParticipant> getParticipant() {
+    public List<IParticipant> getParticipants() {
         return List.of();
     }
 }

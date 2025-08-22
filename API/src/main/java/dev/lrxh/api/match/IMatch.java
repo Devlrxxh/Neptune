@@ -15,7 +15,7 @@ public interface IMatch {
     IMatchState getState();
     IArena getArena();
     IKit getKit();
-    List<IParticipant> getParticipant();
+    List<IParticipant> getParticipants();
     int getRounds();
     boolean isDuel();
     boolean isEnded();

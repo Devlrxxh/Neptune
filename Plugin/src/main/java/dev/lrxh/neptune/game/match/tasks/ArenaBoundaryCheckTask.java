@@ -21,7 +21,7 @@ public class ArenaBoundaryCheckTask extends NeptuneRunnable {
             if (match.isEnded()) continue;
             if (match.getState() != MatchState.IN_ROUND) continue;
 
-            for (Participant participant : match.getParticipants()) {
+            for (Participant participant : match.getParticipantsList()) {
                 Arena arena = match.getArena();
 
                 Player player = participant.getPlayer();

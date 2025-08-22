@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match;
 
 import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -64,7 +65,11 @@ public abstract class Match implements IMatch {
     private boolean ended;
 
     @Override
-    public List<Participant> getParticipants() {
+    public List<IParticipant> getParticipants() {
+        return participants.stream().map(IParticipant.class::cast).toList();
+    }
+
+    public List<Participant> getParticipantsList() {
         return participants;
     }
 

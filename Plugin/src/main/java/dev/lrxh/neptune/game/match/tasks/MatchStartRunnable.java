@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.api.events.MatchStartEvent;
@@ -51,7 +52,8 @@ public class MatchStartRunnable extends NeptuneRunnable {
             checkFollowings();
             match.getTime().setStop(false);
 
-            for (Participant participant : match.getParticipants()) {
+
+            for (Participant participant : match.getParticipantsList()) {
                 participant.setTime(new Time());
             }
 
@@ -72,7 +74,7 @@ public class MatchStartRunnable extends NeptuneRunnable {
     }
 
     private void checkFollowings() {
-        for (Participant participant : match.getParticipants()) {
+        for (Participant participant : match.getParticipantsList()) {
             if (participant.isDisconnected()) continue;
             SettingData settingData = API.getProfile(participant.getPlayerUUID()).getSettingData();
             if (settingData == null) continue;

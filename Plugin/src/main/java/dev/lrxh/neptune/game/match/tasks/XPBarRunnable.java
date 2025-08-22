@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.match.tasks;
 
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
@@ -14,7 +15,7 @@ public class XPBarRunnable extends NeptuneRunnable {
         for (Match match : MatchService.get().matches) {
             if (match.isEnded()) continue;
 
-            for (Participant participant : match.getParticipants()) {
+            for (Participant participant : match.getParticipantsList()) {
                 if (participant.isLeft() || participant.isDisconnected() || participant.isDead()) continue;
 
                 Player player = participant.getPlayer();
