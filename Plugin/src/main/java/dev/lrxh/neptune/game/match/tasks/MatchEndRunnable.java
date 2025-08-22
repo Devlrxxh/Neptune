@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.events.MatchEndEvent;
+import dev.lrxh.api.events.MatchEndEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;

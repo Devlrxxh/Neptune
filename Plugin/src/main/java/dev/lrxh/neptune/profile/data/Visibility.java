@@ -32,12 +32,25 @@ public class Visibility {
         Profile viewerProfile = API.getProfile(uuid);
         Profile otherProfile = API.getProfile(otherUUID);
 
+        if (has(viewerProfile, otherProfile, ProfileState.IN_CUSTOM)
+                && viewerProfile.getCustomState().equals(otherProfile.getCustomState())) {
+            viewerPlayer.showPlayer(Neptune.get(), otherPlayer);
+            otherPlayer.showPlayer(Neptune.get(), viewerPlayer);
+            return;
+        }
+
         if (has(viewerProfile, otherProfile, ProfileState.IN_GAME)
                 && viewerProfile.getMatch().getUuid().equals(otherProfile.getMatch().getUuid())) {
             viewerPlayer.showPlayer(Neptune.get(), otherPlayer);
             otherPlayer.showPlayer(Neptune.get(), viewerPlayer);
             return;
         }
+
+//        if (has(viewerProfile, otherProfile, ProfileState.IN_FFA) && viewerProfile.getGameData().getFfaArena().getName().equals(otherProfile.getGameData().getFfaArena().getName())) {
+//            viewerPlayer.showPlayer(Neptune.get(), otherPlayer);
+//            otherPlayer.showPlayer(Neptune.get(), viewerPlayer);
+//            return;
+//        }
 
         if (!viewerProfile.getSettingData().isPlayerVisibility()) {
             viewerPlayer.hidePlayer(Neptune.get(), otherPlayer);

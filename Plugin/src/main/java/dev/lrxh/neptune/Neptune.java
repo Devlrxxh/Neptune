@@ -3,6 +3,8 @@ package dev.lrxh.neptune;
 import com.jonahseguin.drink.CommandService;
 import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;
+import dev.lrxh.api.NeptuneAPI;
+import dev.lrxh.api.NeptuneAPIImpl;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
@@ -47,9 +49,10 @@ import dev.lrxh.neptune.main.MainCommand;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
 import dev.lrxh.neptune.providers.database.DatabaseService;
-import dev.lrxh.neptune.providers.listeners.LobbyListener;
+import dev.lrxh.neptune.providers.listeners.GlobalListener;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
-import dev.lrxh.neptune.providers.scoreboard.ScoreboardAdapter;
+import dev.lrxh.neptune.scoreboard.ScoreboardAdapter;
+import dev.lrxh.neptune.scoreboard.ScoreboardService;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.menu.MenuListener;
 import dev.lrxh.neptune.utils.menu.MenuRunnable;
@@ -61,11 +64,10 @@ import org.bukkit.Difficulty;
 import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Arrays;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Consumer;
 
 @Getter
@@ -88,8 +90,19 @@ public final class Neptune extends JavaPlugin {
         allowJoin = false;
         allowMatches = false;
         loadManager();
+        initAPI();
         allowJoin = true;
         allowMatches = true;
+    }
+
+    private void initAPI() {
+        getServer().getServicesManager().register(
+                NeptuneAPI.class,
+                new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get()),
+                this,
+                ServicePriority.Normal
+                );
+        ServerUtils.info("Neptune API Initialized.");
     }
 
     private void loadManager() {
@@ -127,7 +140,7 @@ public final class Neptune extends JavaPlugin {
         Arrays.asList(
                 new ProfileListener(),
                 new MatchListener(),
-                new LobbyListener(),
+                new GlobalListener(),
                 new ItemListener(),
                 new MenuListener(),
                 new ArenaProcedureListener(),

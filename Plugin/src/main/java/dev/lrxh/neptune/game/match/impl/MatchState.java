@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.game.match.impl;
 
-public enum MatchState {
+import dev.lrxh.api.match.IMatchState;
+
+public enum MatchState implements IMatchState {
     STARTING,
     IN_ROUND,
     ENDING

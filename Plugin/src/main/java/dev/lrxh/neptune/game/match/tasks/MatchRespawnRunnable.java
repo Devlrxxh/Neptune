@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.game.match.tasks;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.MatchParticipantRespawnEvent;
+import dev.lrxh.api.events.MatchParticipantRespawnEvent;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;

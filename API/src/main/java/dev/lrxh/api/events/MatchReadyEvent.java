@@ -1,21 +1,21 @@
-package dev.lrxh.neptune.events;
+package dev.lrxh.api.events;
 
-import dev.lrxh.neptune.game.match.Match;
+
+import dev.lrxh.api.match.IMatch;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
-import org.jetbrains.annotations.NotNull;
 
 public class MatchReadyEvent extends Event implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private final Match match;
+    private final IMatch match;
     @Setter
     private boolean cancelled;
 
-    public MatchReadyEvent(Match match) {
+    public MatchReadyEvent(IMatch match) {
         this.match = match;
     }
 
@@ -29,7 +29,7 @@ public class MatchReadyEvent extends Event implements Cancellable {
     }
 
     @Override
-    public @NotNull HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return handlers;
     }
 }

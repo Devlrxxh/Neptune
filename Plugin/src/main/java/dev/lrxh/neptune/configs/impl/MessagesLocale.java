@@ -187,7 +187,16 @@ public enum MessagesLocale implements IDataAccessor {
     BED_BREAK_FOOTER("BEDWARS.OWN_BREAK.FOOTER", DataType.STRING, "&fYou will no longer respawn!"),
     BLUE_BED_BROKEN_MESSAGE("BEDWARS.BLUE_BREAK.MESSAGE", DataType.STRING, "&9Blue Bed &7was broken by <player>"),
     RED_BED_BROKEN_MESSAGE("BEDWARS.RED_BREAK.MESSAGE", DataType.STRING, "&cRed Bed &7was broken by <player>"),
-    MATCH_ENDERPEARL_COOLDOWN_ON_GOING("MATCH.ENDERPEARL_COOLDOWN.ON_GOING", DataType.STRING_LIST, "&cEnderpearl cooldown&7: &e<time>s");
+    MATCH_ENDERPEARL_COOLDOWN_ON_GOING("MATCH.ENDERPEARL_COOLDOWN.ON_GOING", DataType.STRING_LIST, "&cEnderpearl cooldown&7: &e<time>s"),
+    FFA_KILLSTREAK_ANNOUNCE_RULES("FFA.KILLSTREAK_RULES", "Rules: 5,10,15 (exact); >5 (above); <5 (below); +5 (every 5 kills). Multiple rules separated by ,", DataType.STRING, "+5"),
+    FFA_KILL_ANNOUNCE("FFA.KILL_ANNOUNCE", DataType.STRING_LIST,
+            "&b⚔ &b<player> &fwas killed by &b<killer>",
+            "&b⚔ &b<player> &fwas 360 no-scoped by &b<killer>",
+            "&b⚔ &b<player> &fwas diddled by &b<killer>",
+            "&b⚔ &b<player> &fwas sent a j*b application by &b<killer>"),
+    FFA_KILLSTREAK_ANNOUNCE_ENABLED("FFA.KILLSTREAK_ANNOUNCE.ENABLED", DataType.BOOLEAN, "false"),
+    FFA_KILLSTREAK_ANNOUNCE_MESSAGE("FFA.KILLSTREAK_ANNOUNCE.MESSAGE", DataType.STRING_LIST,
+            " ", "&b<player> &fis now on a &b&l<killstreak> KILLSTREAK!", " ");
 
     private final String path;
     private final String comment;

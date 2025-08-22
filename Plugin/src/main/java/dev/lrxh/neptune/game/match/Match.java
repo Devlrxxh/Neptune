@@ -1,11 +1,13 @@
 package dev.lrxh.neptune.game.match;
 
+import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
-import dev.lrxh.neptune.events.MatchSpectatorAddEvent;
-import dev.lrxh.neptune.events.MatchSpectatorRemoveEvent;
+import dev.lrxh.api.events.MatchSpectatorAddEvent;
+import dev.lrxh.api.events.MatchSpectatorRemoveEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -46,7 +48,7 @@ import java.util.function.Consumer;
 @AllArgsConstructor
 @Getter
 @Setter
-public abstract class Match {
+public abstract class Match implements IMatch {
     public final List<UUID> spectators = new ArrayList<>();
     private final UUID uuid = UUID.randomUUID();
     private final HashSet<Location> placedBlocks = new HashSet<>();
@@ -61,6 +63,15 @@ public abstract class Match {
     private int rounds;
     private boolean duel;
     private boolean ended;
+
+    @Override
+    public List<IParticipant> getParticipants() {
+        return participants.stream().map(IParticipant.class::cast).toList();
+    }
+
+    public List<Participant> getParticipantsList() {
+        return participants;
+    }
 
     public void playSound(Sound sound) {
         forEachPlayer(player -> player.playSound(player.getLocation(), sound, 1.0f, 1.0f));
@@ -265,6 +276,7 @@ public abstract class Match {
         forEachSpectator(player -> messagesLocale.send(player.getUniqueId(), replacements));
     }
 
+    @Override
     public void broadcast(String message) {
         forEachParticipant(participant -> participant.sendMessage(CC.color(message)));
 

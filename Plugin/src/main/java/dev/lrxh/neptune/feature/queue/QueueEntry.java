@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.feature.queue;
 
+import dev.lrxh.api.queue.IQueueEntry;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.utils.Time;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class QueueEntry {
+public class QueueEntry implements IQueueEntry {
     public final Time time;
     private final Kit kit;
     private final UUID uuid;

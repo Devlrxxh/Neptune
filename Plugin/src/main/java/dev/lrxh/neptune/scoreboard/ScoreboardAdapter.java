@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.providers.scoreboard;
+package dev.lrxh.neptune.scoreboard;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
@@ -46,18 +46,18 @@ public class ScoreboardAdapter implements FastAdapter {
                     if (match.getKit().is(KitRule.BED_WARS)) {
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_BEDWARS.getStringList()), player);
                     }
-
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
                 } else if (match instanceof TeamFightMatch) {
                     if (match.getKit().is(KitRule.BED_WARS)) {
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_BEDWARS.getStringList()), player);
                     }
-
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
                 } else if (match instanceof FfaFightMatch) {
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_FFA.getStringList()), player);
                 }
                 break;
+            case IN_CUSTOM:
+                return PlaceholderUtil.format(ScoreboardService.get().getScoreboardLines(profile.getCustomState(), profile), player);
             default:
                 break;
         }

@@ -1,7 +1,8 @@
-package dev.lrxh.neptune.events;
+package dev.lrxh.api.events;
 
-import dev.lrxh.neptune.game.match.Match;
-import dev.lrxh.neptune.game.match.impl.participant.Participant;
+
+import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.participant.IParticipant;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -9,13 +10,13 @@ import org.bukkit.event.HandlerList;
 public class SoloMatchBedDestroyEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private final Match match;
+    private final IMatch match;
     @Getter
-    private final Participant bedOwner;
+    private final IParticipant bedOwner;
     @Getter
-    private final Participant bedBreaker;
+    private final IParticipant bedBreaker;
 
-    public SoloMatchBedDestroyEvent(Match match, Participant bedOwner, Participant bedBreaker) {
+    public SoloMatchBedDestroyEvent(IMatch match, IParticipant bedOwner, IParticipant bedBreaker) {
         this.match = match;
         this.bedOwner = bedOwner;
         this.bedBreaker = bedBreaker;

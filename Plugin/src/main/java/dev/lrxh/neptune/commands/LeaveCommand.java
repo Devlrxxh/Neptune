@@ -24,6 +24,10 @@ public class LeaveCommand {
                 profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()), false);
                 MessagesLocale.MATCH_FORFEIT.send(player);
                 return;
+            case IN_CUSTOM:
+                profile.setState(ProfileState.IN_LOBBY);
+                PlayerUtil.teleportToSpawn(player.getUniqueId());
+                return;
         }
         PlayerUtil.teleportToSpawn(player.getUniqueId());
     }

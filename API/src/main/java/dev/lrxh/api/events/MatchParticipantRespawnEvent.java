@@ -1,21 +1,22 @@
-package dev.lrxh.neptune.events;
+package dev.lrxh.api.events;
 
-import dev.lrxh.neptune.game.match.Match;
+
+import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.participant.IParticipant;
 import lombok.Getter;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class MatchSpectatorAddEvent extends Event {
+public class MatchParticipantRespawnEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private final Match match;
+    private final IMatch match;
     @Getter
-    private final Player player;
+    private final IParticipant participant;
 
-    public MatchSpectatorAddEvent(Match match, Player player) {
+    public MatchParticipantRespawnEvent(IMatch match, IParticipant participant) {
         this.match = match;
-        this.player = player;
+        this.participant = participant;
     }
 
     public static HandlerList getHandlerList() {

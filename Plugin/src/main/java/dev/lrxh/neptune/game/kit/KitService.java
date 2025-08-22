@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.game.kit;
 
+import dev.lrxh.api.kit.IKit;
+import dev.lrxh.api.kit.IKitService;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
@@ -18,7 +20,7 @@ import org.bukkit.potion.PotionEffect;
 import java.util.*;
 
 @Getter
-public class KitService extends IService {
+public class KitService extends IService implements IKitService {
     private static KitService instance;
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
 
@@ -143,5 +145,10 @@ public class KitService extends IService {
     @Override
     public ConfigFile getConfigFile() {
         return ConfigService.get().getKitsConfig();
+    }
+
+    @Override
+    public IKit getKit(String name) {
+        return getKitByName(name) != null ? getKitByName(name) : null;
     }
 }

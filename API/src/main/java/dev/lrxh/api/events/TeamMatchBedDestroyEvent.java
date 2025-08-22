@@ -1,8 +1,9 @@
-package dev.lrxh.neptune.events;
+package dev.lrxh.api.events;
 
-import dev.lrxh.neptune.game.match.Match;
-import dev.lrxh.neptune.game.match.impl.participant.Participant;
-import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
+
+import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.participant.IParticipant;
+import dev.lrxh.api.match.team.IMatchTeam;
 import lombok.Getter;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -10,13 +11,13 @@ import org.bukkit.event.HandlerList;
 public class TeamMatchBedDestroyEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     @Getter
-    private final Match match;
+    private final IMatch match;
     @Getter
-    private final MatchTeam bedOwner;
+    private final IMatchTeam bedOwner;
     @Getter
-    private final Participant bedBreaker;
+    private final IParticipant bedBreaker;
 
-    public TeamMatchBedDestroyEvent(Match match, MatchTeam bedOwner, Participant bedBreaker) {
+    public TeamMatchBedDestroyEvent(IMatch match, IMatchTeam bedOwner, IParticipant bedBreaker) {
         this.match = match;
         this.bedOwner = bedOwner;
         this.bedBreaker = bedBreaker;

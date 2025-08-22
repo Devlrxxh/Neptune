@@ -1,9 +1,10 @@
 package dev.lrxh.neptune.game.match.impl.solo;
 
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
-import dev.lrxh.neptune.events.SoloMatchBedDestroyEvent;
+import dev.lrxh.api.events.SoloMatchBedDestroyEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardPlayerEntry;
@@ -97,7 +98,7 @@ public class SoloFightMatch extends Match {
     }
 
     private void removePlaying() {
-        for (Participant ignored : getParticipants())
+        for (IParticipant ignored : getParticipants())
             getKit().removePlaying();
     }
 
@@ -274,5 +275,10 @@ public class SoloFightMatch extends Match {
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_HEADER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 20);
+    }
+
+    @Override
+    public List<IParticipant> getParticipants() {
+        return List.of(participantA, participantB);
     }
 }

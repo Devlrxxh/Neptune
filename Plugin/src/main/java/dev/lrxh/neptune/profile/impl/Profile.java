@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.profile.impl;
 
+import dev.lrxh.api.profile.IProfile;
+import dev.lrxh.api.profile.IProfileState;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -22,6 +24,7 @@ import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.Cooldown;
 import dev.lrxh.neptune.utils.ItemUtils;
+import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,11 +36,12 @@ import java.util.*;
 
 @Getter
 @Setter
-public class Profile {
+public class Profile implements IProfile {
     private final UUID playerUUID;
     private Map<String, Cooldown> cooldowns;
     private String username;
-    private ProfileState state;
+    private ProfileState state; // for main plugin, if this was set to ProfileState.IN_CUSTOM, it will use customState instead
+    private String customState;
     private Neptune plugin;
     private GameData gameData;
     private SettingData settingData;
@@ -67,9 +71,60 @@ public class Profile {
         visibility.handle();
     }
 
-    public boolean hasState(ProfileState profileState) {
-        return state.equals(profileState);
+    public void setState(ProfileState profileState) {
+        state = profileState;
+        customState = "";
+        handleVisibility();
+        HotbarService.get().giveItems(getPlayer());
     }
+
+    @Override
+    public void setState(String customState) {
+        this.customState = "";
+        switch (customState) {
+            case "neptune:in_lobby" -> this.state = ProfileState.IN_LOBBY;
+            case "neptune:in_game" -> this.state = ProfileState.IN_GAME;
+            case "neptune:in_kiteditor" -> this.state = ProfileState.IN_KIT_EDITOR;
+            case "neptune:in_party" -> this.state = ProfileState.IN_PARTY;
+            case "neptune:spectating" -> this.state = ProfileState.IN_SPECTATOR;
+            case "neptune:in_queue" -> this.state = ProfileState.IN_QUEUE;
+            default -> {
+                this.state = ProfileState.IN_CUSTOM;
+                this.customState = customState;
+            }
+        }
+        handleVisibility();
+    }
+
+    @Override
+    public void toLobby() {
+        setState(ProfileState.IN_LOBBY);
+        PlayerUtil.teleportToSpawn(playerUUID);
+        if (getMatch() != null) {
+            getMatch().onDeath(getMatch().getParticipant(playerUUID));
+        }
+    }
+
+    public boolean hasState(IProfileState state) {
+        return this.state.equals(state);
+    }
+
+    @Override
+    public boolean hasState(String customState) {
+        if (this.state != ProfileState.IN_CUSTOM) {
+            return switch (customState) {
+                case "neptune:in_lobby" -> this.state == ProfileState.IN_LOBBY;
+                case "neptune:in_game" -> this.state == ProfileState.IN_GAME;
+                case "neptune:in_kiteditor" -> this.state == ProfileState.IN_KIT_EDITOR;
+                case "neptune:in_party" -> this.state == ProfileState.IN_PARTY;
+                case "neptune:spectating" -> this.state == ProfileState.IN_SPECTATOR;
+                case "neptune:in_queue" -> this.state == ProfileState.IN_QUEUE;
+                default -> false;
+            };
+        }
+        return this.customState.equals(customState);
+    }
+
 
     public boolean hasState(ProfileState... profileStates) {
         for (ProfileState profileState : profileStates) {
@@ -106,12 +161,6 @@ public class Profile {
         return false;
     }
 
-    public void setState(ProfileState profileState) {
-        state = profileState;
-        handleVisibility();
-        HotbarService.get().giveItems(getPlayer());
-    }
-
     public Player getPlayer() {
         return Bukkit.getPlayer(playerUUID);
     }
@@ -140,6 +189,15 @@ public class Profile {
                 profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
                 profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
                 profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
+
+                // Load persistent custom data for each kit
+                DataDocument customPersistentData = kitDocument.getDataDocument("customPersistentData");
+                if (customPersistentData != null) {
+                    for (String key : customPersistentData.data.keySet()) {
+                        profileKitData.setPersistentData(key, customPersistentData.data.get(key));
+                    }
+                }
+
                 profileKitData.updateDivision();
             }
 
@@ -153,6 +211,15 @@ public class Profile {
             settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
             settingData.setMenuSound(settings.getBoolean("menuSound", false));
             settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
+
+            // Load global persistent custom data
+            DataDocument globalCustomPersistentData = dataDocument.getDataDocument("customPersistentData");
+            if (globalCustomPersistentData != null) {
+                for (String key : globalCustomPersistentData.data.keySet()) {
+                    gameData.setPersistentData(key, globalCustomPersistentData.data.get(key));
+                }
+            }
+
             this.gameData.getGlobalStats().update();
         });
     }
@@ -178,6 +245,11 @@ public class Profile {
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
             entry.updateDivision();
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
+            DataDocument customPersistentData = new DataDocument();
+            for (String data : entry.getPersistentData().keySet()) {
+                customPersistentData.put(data, entry.getPersistentData().get(data));
+            }
+            kitStatisticsDocument.put("customPersistentData", customPersistentData);
         }
 
         kitStatsDoc.put("lastPlayedKit", gameData.getLastPlayedKit());
@@ -196,6 +268,14 @@ public class Profile {
         settingsDoc.put("deathMessagePackage", settingData.getKillMessagePackage().getName());
 
         dataDocument.put("settings", settingsDoc);
+
+        DataDocument customPersistentData = new DataDocument();
+
+        for (String data : gameData.getPersistentData().keySet()) {
+            customPersistentData.put(data, gameData.getPersistentData().get(data));
+        }
+
+        dataDocument.put("customPersistentData", customPersistentData);
 
         DatabaseService.get().getDatabase().replace(playerUUID, dataDocument);
     }
@@ -299,4 +379,5 @@ public class Profile {
     public void setMatch(Match match) {
         gameData.setMatch(match);
     }
+
 }

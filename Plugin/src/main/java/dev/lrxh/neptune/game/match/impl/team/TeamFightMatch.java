@@ -1,8 +1,9 @@
 package dev.lrxh.neptune.game.match.impl.team;
 
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.neptune.events.TeamMatchBedDestroyEvent;
+import dev.lrxh.api.events.TeamMatchBedDestroyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -172,5 +173,10 @@ public class TeamFightMatch extends Match {
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 10);
+    }
+
+    @Override
+    public List<IParticipant> getParticipants() {
+        return List.of();
     }
 }

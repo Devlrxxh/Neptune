@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.match.impl.ffa;
 
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.arena.Arena;
@@ -22,12 +23,14 @@ import java.util.List;
 
 public class FfaFightMatch extends Match {
     public final List<Participant> deadParticipants;
+    private final List<Participant> participants;
     private Participant winner;
 
     public FfaFightMatch(Arena arena, Kit kit, List<Participant> participants) {
         super(MatchState.STARTING, arena, kit, participants, 1, true, false);
         this.winner = null;
         this.deadParticipants = new ArrayList<>();
+        this.participants = participants;
     }
 
     @Override
@@ -97,9 +100,9 @@ public class FfaFightMatch extends Match {
     }
 
     private Participant getLastPlayerStanding() {
-        for (Participant participant : getParticipants()) {
+        for (IParticipant participant : getParticipants()) {
             if (!deadParticipants.contains(participant)) {
-                return participant;
+                return (Participant) participant;
             }
         }
         return null;
@@ -148,5 +151,10 @@ public class FfaFightMatch extends Match {
     @Override
     public void sendTitle(Participant participant, TextComponent header, TextComponent footer, int duration) {
         participant.sendTitle(header, footer, duration);
+    }
+
+    @Override
+    public List<IParticipant> getParticipants() {
+        return new ArrayList<>(participants);
     }
 }

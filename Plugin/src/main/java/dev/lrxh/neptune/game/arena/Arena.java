@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.arena;
 
+import dev.lrxh.api.arena.IArena;
 import dev.lrxh.blockChanger.snapshot.ChunkPosition;
 import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
 import dev.lrxh.neptune.Neptune;
@@ -19,7 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 @Getter
 @Setter
-public class Arena {
+public class Arena implements IArena {
     private final Set<Integer> loadedChunkIndices = new HashSet<>();
     private final Map<ChunkPosition, Chunk> loadedChunks = new HashMap<>();
     private String name;

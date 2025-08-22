@@ -1,8 +1,10 @@
 package dev.lrxh.neptune.game.match;
 
+import dev.lrxh.api.match.IMatch;
+import dev.lrxh.api.match.IMatchService;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.events.MatchReadyEvent;
+import dev.lrxh.api.events.MatchReadyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
@@ -18,7 +20,7 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class MatchService {
+public class MatchService implements IMatchService {
     private static MatchService instance;
     public final HashSet<Match> matches = new HashSet<>();
 
@@ -96,6 +98,20 @@ public class MatchService {
 
         matches.add(match);
         new MatchStartRunnable(match).start(0L, 20L);
+    }
+
+    @Override
+    public void startMatch(IMatch match) {
+        if (!Neptune.get().isAllowMatches()) return;
+        MatchReadyEvent event = new MatchReadyEvent(match);
+
+        Bukkit.getPluginManager().callEvent(event);
+        if (event.isCancelled()) {
+            return;
+        }
+
+        matches.add((Match) match);
+        new MatchStartRunnable((Match) match).start(0L, 20L);
     }
 
     public Optional<Match> getMatch(Player player) {
