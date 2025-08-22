@@ -279,6 +279,6 @@ public class SoloFightMatch extends Match {
 
     @Override
     public List<IParticipant> getParticipant() {
-        return List.of();
+        return List.of(participantA, participantB);
     }
 }
