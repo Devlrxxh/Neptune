@@ -67,10 +67,6 @@ public class GameData implements IGameData {
 
     @Override
     public void setCustomData(String key, Object value) {
-        if (customData.get(key) != null) {
-            customData.replace(key, value);
-            return;
-        }
         customData.put(key, value);
     }
 
@@ -81,10 +77,6 @@ public class GameData implements IGameData {
 
     @Override
     public void setPersistentData(String key, Object value) {
-        if (persistentData.get(key) != null) {
-            persistentData.replace(key, value);
-            return;
-        }
         persistentData.put(key, value);
     }
 
