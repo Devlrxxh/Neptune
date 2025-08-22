@@ -26,7 +26,6 @@ public class LeaveCommand {
                 return;
             case IN_CUSTOM:
                 profile.setState(ProfileState.IN_LOBBY);
-                // TODO: Add consumers for custom API states
                 PlayerUtil.teleportToSpawn(player.getUniqueId());
                 return;
         }
