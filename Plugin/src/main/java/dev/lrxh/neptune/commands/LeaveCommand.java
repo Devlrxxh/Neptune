@@ -24,9 +24,11 @@ public class LeaveCommand {
                 profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()), false);
                 MessagesLocale.MATCH_FORFEIT.send(player);
                 return;
-//            case IN_FFA:
-//                FFAService.get().leave(ProfileService.get().getByUUID(player.getUniqueId()));
-//                return;
+            case IN_CUSTOM:
+                profile.setState(ProfileState.IN_LOBBY);
+                // TODO: Add consumers for custom API states
+                PlayerUtil.teleportToSpawn(player.getUniqueId());
+                return;
         }
         PlayerUtil.teleportToSpawn(player.getUniqueId());
     }

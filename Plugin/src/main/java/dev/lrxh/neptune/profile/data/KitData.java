@@ -25,6 +25,7 @@ public class KitData implements IKitData {
     private Division division;
     private int elo = 0;
     private HashMap<String, Object> customData = new HashMap<>();
+    private HashMap<String, Object> persistentData = new HashMap<>();
     public double getKdr() {
         if (deaths == 0) return kills;
         double kd = (double) kills / deaths;
@@ -45,6 +46,20 @@ public class KitData implements IKitData {
     @Override
     public Object getCustomData(String key) {
         return customData.get(key);
+    }
+
+    @Override
+    public void setPersistentData(String key, Object value) {
+        if (persistentData.get(key) != null) {
+            persistentData.replace(key, value);
+            return;
+        }
+        persistentData.put(key, value);
+    }
+
+    @Override
+    public Object getPersistentData(String key) {
+        return persistentData.get(key) != null ? persistentData.get(key) : null;
     }
 
     public boolean updateElo(boolean won) {

@@ -180,6 +180,9 @@ public class MatchListener implements Listener {
         if (player.getInventory().getItem(event.getHand()).getType() != Material.ENDER_PEARL) return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
+        if (ProfileService.get().getByUUID(player.getUniqueId()).getState().equals(ProfileState.IN_CUSTOM)) {
+            return;
+        }
         if (!profileOpt.isPresent()) {
             event.setCancelled(true);
             return;
@@ -238,7 +241,6 @@ public class MatchListener implements Listener {
             ItemStack item = attacker.getInventory().getItemInMainHand();
             if (item.getType() == Material.MACE) {
                 if (!(event.getEntity() instanceof Player victim)) return;
-
                 if (!getMatchProfile(attacker).isPresent() || !getMatchProfile(victim).isPresent()) {
                     event.setCancelled(true);
                     return;
@@ -276,6 +278,10 @@ public class MatchListener implements Listener {
         if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(attacker);
             if (profile == null) return;
+
+            if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
+                return;
+            }
 
             // Check if attacker is in match
             if (!isPlayerInMatch(profile)) {
@@ -389,6 +395,10 @@ public class MatchListener implements Listener {
             Profile profile = API.getProfile(player);
             if (profile == null) return;
 
+            if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
+                return;
+            }
+
             // Cancel if either player is not in match
             if (!isPlayerInMatch(profile) || !isPlayerInMatch(attackerProfile)) {
                 event.setCancelled(true);
@@ -426,6 +436,10 @@ public class MatchListener implements Listener {
             Profile targetProfile = API.getProfile(target);
             Profile playerProfile = API.getProfile(damager.getUniqueId());
 
+            if (playerProfile.getState().equals(ProfileState.IN_CUSTOM)) {
+                return;
+            }
+
             if (!isPlayerInMatch(targetProfile) || !isPlayerInMatch(playerProfile)) {
                 event.setCancelled(true);
                 return;
@@ -447,6 +461,7 @@ public class MatchListener implements Listener {
         if (!(event.getEntity() instanceof Player player)) return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
+
         if (!profileOpt.isPresent()) return;
 
         if (!(event.getFinalDamage() >= player.getHealth())) return;
@@ -559,6 +574,9 @@ public class MatchListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
             Optional<Profile> profileOpt = getMatchProfile(player);
+            if (ProfileService.get().getByUUID(player.getUniqueId()).getState().equals(ProfileState.IN_CUSTOM)) {
+                return;
+            }
             if (!profileOpt.isPresent()) {
                 event.setCancelled(true);
                 return;

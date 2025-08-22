@@ -166,6 +166,9 @@ public class GlobalListener implements Listener {
             Profile victimProfile = API.getProfile(victim);
 
             // Cancel if either player is not in a match
+            if (attackerProfile.getState().equals(ProfileState.IN_CUSTOM)) {
+                return;
+            }
             if (isPlayerNotInMatch(attackerProfile) || isPlayerNotInMatch(victimProfile)) {
                 event.setCancelled(true);
 
@@ -173,6 +176,9 @@ public class GlobalListener implements Listener {
                 if (isPlayerNotInMatch(attackerProfile)) {
                     ProfileState state = attackerProfile != null ? attackerProfile.getState() : null;
                     if (state != null) {
+                        if (state.equals(ProfileState.IN_CUSTOM)) {
+                            return;
+                        }
                         if (state.equals(ProfileState.IN_LOBBY)) {
                             attacker.sendMessage(CC.color("&cYou can't attack players in the lobby!"));
                         } else if (state.equals(ProfileState.IN_QUEUE)) {
@@ -191,6 +197,9 @@ public class GlobalListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(player);
+            if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
+                return;
+            }
             if (isPlayerNotInMatch(profile)) {
                 event.setCancelled(true);
             }

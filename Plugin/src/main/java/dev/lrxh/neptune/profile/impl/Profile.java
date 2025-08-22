@@ -73,21 +73,36 @@ public class Profile implements IProfile {
 
     public void setState(ProfileState profileState) {
         state = profileState;
+        customState = "";
         handleVisibility();
         HotbarService.get().giveItems(getPlayer());
     }
 
     @Override
     public void setState(String customState) {
-        this.state = ProfileState.IN_CUSTOM;
-        this.customState = customState;
+        this.customState = "";
+        switch (customState) {
+            case "neptune:in_lobby" -> this.state = ProfileState.IN_LOBBY;
+            case "neptune:in_game" -> this.state = ProfileState.IN_GAME;
+            case "neptune:in_kiteditor" -> this.state = ProfileState.IN_KIT_EDITOR;
+            case "neptune:in_party" -> this.state = ProfileState.IN_PARTY;
+            case "neptune:spectating" -> this.state = ProfileState.IN_SPECTATOR;
+            case "neptune:in_queue" -> this.state = ProfileState.IN_QUEUE;
+            default -> {
+                this.state = ProfileState.IN_CUSTOM;
+                this.customState = customState;
+            }
+        }
+        handleVisibility();
     }
 
     @Override
     public void toLobby() {
         setState(ProfileState.IN_LOBBY);
         PlayerUtil.teleportToSpawn(playerUUID);
-        getMatch().onDeath(getMatch().getParticipant(playerUUID));
+        if (getMatch() != null) {
+            getMatch().onDeath(getMatch().getParticipant(playerUUID));
+        }
     }
 
     public boolean hasState(IProfileState state) {
@@ -177,6 +192,15 @@ public class Profile implements IProfile {
                 profileKitData.setDeaths(kitDocument.getInteger("LOSSES", 0));
                 profileKitData.setBestStreak(kitDocument.getInteger("WIN_STREAK_BEST", 0));
                 profileKitData.setKitLoadout(Objects.equals(kitDocument.getString("kit"), "") ? kit.getItems() : ItemUtils.deserialize(kitDocument.getString("kit")));
+
+                // Load persistent custom data for each kit
+                DataDocument customPersistentData = kitDocument.getDataDocument("customPersistentData");
+                if (customPersistentData != null) {
+                    for (String key : customPersistentData.data.keySet()) {
+                        profileKitData.setPersistentData(key, customPersistentData.data.get(key));
+                    }
+                }
+
                 profileKitData.updateDivision();
             }
 
@@ -190,6 +214,15 @@ public class Profile implements IProfile {
             settingData.setKillEffect(KillEffect.valueOf(settings.getString("killEffect", "NONE")));
             settingData.setMenuSound(settings.getBoolean("menuSound", false));
             settingData.setKillMessagePackage(CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
+
+            // Load global persistent custom data
+            DataDocument globalCustomPersistentData = dataDocument.getDataDocument("customPersistentData");
+            if (globalCustomPersistentData != null) {
+                for (String key : globalCustomPersistentData.data.keySet()) {
+                    gameData.setPersistentData(key, globalCustomPersistentData.data.get(key));
+                }
+            }
+
             this.gameData.getGlobalStats().update();
         });
     }
@@ -215,6 +248,11 @@ public class Profile implements IProfile {
             kitStatisticsDocument.put("kit", entry.getKitLoadout() == null || entry.getKitLoadout().isEmpty() ? "" : ItemUtils.serialize(entry.getKitLoadout()));
             entry.updateDivision();
             kitStatsDoc.put(kit.getName(), kitStatisticsDocument);
+            DataDocument customPersistentData = new DataDocument();
+            for (String data : entry.getPersistentData().keySet()) {
+                customPersistentData.put(data, entry.getPersistentData().get(data));
+            }
+            kitStatisticsDocument.put("customPersistentData", customPersistentData);
         }
 
         kitStatsDoc.put("lastPlayedKit", gameData.getLastPlayedKit());
@@ -233,6 +271,14 @@ public class Profile implements IProfile {
         settingsDoc.put("deathMessagePackage", settingData.getKillMessagePackage().getName());
 
         dataDocument.put("settings", settingsDoc);
+
+        DataDocument customPersistentData = new DataDocument();
+
+        for (String data : gameData.getPersistentData().keySet()) {
+            customPersistentData.put(data, gameData.getPersistentData().get(data));
+        }
+
+        dataDocument.put("customPersistentData", customPersistentData);
 
         DatabaseService.get().getDatabase().replace(playerUUID, dataDocument);
     }

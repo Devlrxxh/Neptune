@@ -16,4 +16,7 @@ public interface IKitData {
 
     void setCustomData(String key, Object value);
     Object getCustomData(String key);
+
+    void setPersistentData(String key, Object value);
+    Object getPersistentData(String key);
 }

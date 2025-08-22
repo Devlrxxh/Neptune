@@ -38,6 +38,7 @@ public class GameData implements IGameData {
     private String lastPlayedKit;
 
     private HashMap<String, Object> customData = new HashMap<>();
+    private HashMap<String, Object> persistentData = new HashMap<>();
 
     public GameData(Profile profile) {
         this.kitData = new HashMap<>();
@@ -76,6 +77,20 @@ public class GameData implements IGameData {
     @Override
     public Object getCustomData(String key) {
         return customData.get(key);
+    }
+
+    @Override
+    public void setPersistentData(String key, Object value) {
+        if (persistentData.get(key) != null) {
+            persistentData.replace(key, value);
+            return;
+        }
+        persistentData.put(key, value);
+    }
+
+    @Override
+    public Object getPersistentData(String key) {
+        return persistentData.get(key) != null ? persistentData.get(key) : null;
     }
 
     public HashMap<Kit, KitData> getKitDataInternal() {

@@ -40,28 +40,24 @@ public class ScoreboardAdapter implements FastAdapter {
             case IN_GAME:
                 match = profile.getMatch();
                 return match.getScoreboard(player.getUniqueId());
-//            case IN_FFA:
-//                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_FFA.getStringList()), player);
             case IN_SPECTATOR:
                 match = profile.getMatch();
                 if (match instanceof SoloFightMatch) {
                     if (match.getKit().is(KitRule.BED_WARS)) {
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_BEDWARS.getStringList()), player);
                     }
-
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
                 } else if (match instanceof TeamFightMatch) {
                     if (match.getKit().is(KitRule.BED_WARS)) {
                         return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_BEDWARS.getStringList()), player);
                     }
-
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_TEAM.getStringList()), player);
                 } else if (match instanceof FfaFightMatch) {
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_FFA.getStringList()), player);
                 }
                 break;
             case IN_CUSTOM:
-                ScoreboardService.get().getScoreboard(profile.getCustomState());
+                return PlaceholderUtil.format(ScoreboardService.get().getScoreboardLines(profile.getCustomState(), profile), player);
             default:
                 break;
         }
