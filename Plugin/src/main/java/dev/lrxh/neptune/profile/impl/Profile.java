@@ -106,9 +106,6 @@ public class Profile implements IProfile {
     }
 
     public boolean hasState(IProfileState state) {
-        if (this.state != ProfileState.IN_CUSTOM) {
-            return false;
-        }
         return this.state.equals(state);
     }
 
