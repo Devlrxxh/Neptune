@@ -153,6 +153,6 @@ public class FfaFightMatch extends Match {
 
     @Override
     public List<IParticipant> getParticipant() {
-        return List.of();
+        return new ArrayList<>(participants);
     }
 }
