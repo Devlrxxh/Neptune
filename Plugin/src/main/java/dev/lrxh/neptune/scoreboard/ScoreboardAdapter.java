@@ -55,7 +55,7 @@ public class ScoreboardAdapter implements FastAdapter {
                 } else if (match instanceof FfaFightMatch) {
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR_FFA.getStringList()), player);
                 }
-                break;
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_SPECTATOR.getStringList()), player);
             case IN_CUSTOM:
                 return PlaceholderUtil.format(ScoreboardService.get().getScoreboardLines(profile.getCustomState(), profile), player);
             default:

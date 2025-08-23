@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.game.match.tasks;
 
-import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
