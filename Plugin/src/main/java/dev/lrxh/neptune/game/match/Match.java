@@ -127,16 +127,23 @@ public abstract class Match implements IMatch {
             player.setAllowFlight(true);
             player.setFlying(true);
             player.setGameMode(GameMode.SPECTATOR);
+
+            forEachPlayer(alivePlayer -> {
+                if (!alivePlayer.equals(player)) {
+                    player.showPlayer(Neptune.get(), alivePlayer);
+                    alivePlayer.hidePlayer(Neptune.get(), player);
+                }
+            });
         });
         MatchSpectatorAddEvent event = new MatchSpectatorAddEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(player -> {
-            forEachPlayer(participiantPlayer -> {
-                player.showPlayer(Neptune.get(), participiantPlayer);
-                participiantPlayer.hidePlayer(Neptune.get(), player);
+        forEachSpectator(spectator -> {
+            forEachPlayer(alivePlayer -> {
+                spectator.showPlayer(Neptune.get(), alivePlayer);
+                alivePlayer.hidePlayer(Neptune.get(), spectator);
             });
         });
     }
@@ -262,12 +269,6 @@ public abstract class Match implements IMatch {
         player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(kit.getHealth());
         player.setHealth(kit.getHealth());
         player.sendHealthUpdate();
-
-        for (PotionEffect potionEffect : kit.getPotionEffects()) {
-            if (potionEffect != null) {
-                player.addPotionEffect(potionEffect);
-            }
-        }
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
