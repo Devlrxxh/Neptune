@@ -210,6 +210,12 @@ public class Kit implements IKit {
             player.getInventory().setContents(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]));
         }
 
+        for (PotionEffect effect : potionEffects) {
+            if (effect != null) {
+                player.addPotionEffect(effect);
+            }
+        }
+
         player.updateInventory();
     }
 
@@ -224,6 +230,11 @@ public class Kit implements IKit {
         } else {
             player.getInventory().setContents(ItemUtils.color(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor()));
         }
+
+        for (PotionEffect effect : potionEffects) {
+            if (effect != null) {
+                player.addPotionEffect(effect);
+            }        }
 
         player.updateInventory();
     }

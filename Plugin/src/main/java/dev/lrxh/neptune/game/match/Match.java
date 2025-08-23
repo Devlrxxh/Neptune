@@ -262,12 +262,6 @@ public abstract class Match implements IMatch {
         player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(kit.getHealth());
         player.setHealth(kit.getHealth());
         player.sendHealthUpdate();
-
-        for (PotionEffect potionEffect : kit.getPotionEffects()) {
-            if (potionEffect != null) {
-                player.addPotionEffect(potionEffect);
-            }
-        }
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {
