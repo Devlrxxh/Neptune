@@ -32,7 +32,6 @@ public class CC {
     public TextComponent color(String message) {
         String converted = convertLegacyToMiniMessage(message);
         Component parsed = MiniMessage.miniMessage().deserialize(converted);
-
         boolean hasItalic = converted.contains("<italic>");
         Component fixed = parsed.decorationIfAbsent(TextDecoration.ITALIC,
                 hasItalic ? TextDecoration.State.TRUE : TextDecoration.State.FALSE);
