@@ -104,7 +104,7 @@ public final class Neptune extends JavaPlugin {
                 this,
                 ServicePriority.Normal
                 );
-        ServerUtils.info("Neptune API Initialized.");
+        ServerUtils.info("Neptune API Initialized");
     }
 
     private void loadManager() {
