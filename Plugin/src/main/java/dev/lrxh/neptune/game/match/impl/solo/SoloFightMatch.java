@@ -245,6 +245,13 @@ public class SoloFightMatch extends Match {
         participant.playKillEffect();
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
 
+        if (!participant.isDisconnected() && !participant.isLeft() && !isEnded()) {
+            Participant otherParticipant = participantA.equals(participant) ? participantB : participantA;
+            if (otherParticipant.getPlayer() != null) {
+                addSpectator(participant.getPlayer(), otherParticipant.getPlayer(), false, false);
+            }
+        }
+
         end(participant);
     }
 

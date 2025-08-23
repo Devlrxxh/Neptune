@@ -127,16 +127,23 @@ public abstract class Match implements IMatch {
             player.setAllowFlight(true);
             player.setFlying(true);
             player.setGameMode(GameMode.SPECTATOR);
+
+            forEachPlayer(alivePlayer -> {
+                if (!alivePlayer.equals(player)) {
+                    player.showPlayer(Neptune.get(), alivePlayer);
+                    alivePlayer.hidePlayer(Neptune.get(), player);
+                }
+            });
         });
         MatchSpectatorAddEvent event = new MatchSpectatorAddEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(player -> {
-            forEachPlayer(participiantPlayer -> {
-                player.showPlayer(Neptune.get(), participiantPlayer);
-                participiantPlayer.hidePlayer(Neptune.get(), player);
+        forEachSpectator(spectator -> {
+            forEachPlayer(alivePlayer -> {
+                spectator.showPlayer(Neptune.get(), alivePlayer);
+                alivePlayer.hidePlayer(Neptune.get(), spectator);
             });
         });
     }
