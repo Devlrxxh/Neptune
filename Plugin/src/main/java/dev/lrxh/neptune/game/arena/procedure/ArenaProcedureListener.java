@@ -68,15 +68,17 @@ public class ArenaProcedureListener implements Listener {
             case SET_SPAWN_RED -> {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
-                if (!profile.getArenaProcedure().getArena().isSetup()) {
+                Arena arena = profile.getArenaProcedure().getArena();
+                if (!arena.isSetup()) {
                     profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_BLUE);
                     player.sendMessage(CC.success("Set arena red spawn"));
-                    profile.getArenaProcedure().getArena().setRedSpawn(player.getLocation());
+                    arena.setRedSpawn(player.getLocation());
+                    if (arena.getBlueSpawn() != null) player.teleport(arena.getBlueSpawn());
                     player.sendMessage(CC.info("Go to the spawn of the &9blue &7player and type &aDone"));
                 } else {
                     profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
-                    profile.getArenaProcedure().getArena().setRedSpawn(player.getLocation());
-                    new ArenaManagementMenu(profile.getArenaProcedure().getArena()).open(player);
+                    arena.setRedSpawn(player.getLocation());
+                    new ArenaManagementMenu(arena).open(player);
                     player.sendMessage(CC.success("Set arena red &aspawn"));
                     profile.getArenaProcedure().setArena(null);
                 }
