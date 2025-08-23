@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.arena.procedure;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.arena.menu.ArenaManagementMenu;
@@ -73,7 +74,13 @@ public class ArenaProcedureListener implements Listener {
                     profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_BLUE);
                     player.sendMessage(CC.success("Set arena red spawn"));
                     arena.setRedSpawn(player.getLocation());
-                    if (arena.getBlueSpawn() != null) player.teleport(arena.getBlueSpawn());
+                    if (arena.getBlueSpawn() != null) {
+                        new NeptuneRunnable() {
+                            public void run() {
+                                player.teleport(arena.getBlueSpawn());
+                            };
+                        }.runTask(Neptune.get());
+                    }
                     player.sendMessage(CC.info("Go to the spawn of the &9blue &7player and type &aDone"));
                 } else {
                     profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
