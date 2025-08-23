@@ -19,6 +19,7 @@ public class SettingData {
     private boolean allowSpectators = true;
     private boolean allowDuels = true;
     private boolean allowParty = true;
+    private boolean showNameTag = true;
     private int maxPing = 350;
     private KillEffect killEffect = KillEffect.NONE;
     private boolean menuSound = true;

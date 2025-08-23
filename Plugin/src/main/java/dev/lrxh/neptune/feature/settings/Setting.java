@@ -123,6 +123,29 @@ public enum Setting {
         public boolean toggled(Player player) {
             return getProfile(player).getSettingData().isMenuSound();
         }
+    },
+    NAME_TAG_DISPLAY(MenusLocale.SETTINGS_NAME_TAG_DISPLAY_TITLE.getString(),
+            MenusLocale.SETTINGS_NAME_TAG_DISPLAY_MATERIAL.getString(),
+            MenusLocale.SETTINGS_NAME_TAG_DISPLAY_LORE_ENABLED.getStringList(),
+            MenusLocale.SETTINGS_NAME_TAG_DISPLAY_LORE_DISABLED.getStringList(),
+            MenusLocale.SETTINGS_NAME_TAG_DISPLAY_SLOT.getInt()) {
+        @Override
+        public void execute(Player player, ClickType clicktype) {
+            Profile profile = getProfile(player);
+            profile.getSettingData().setShowNameTag(!profile.getSettingData().isShowNameTag());
+            
+            // Update name tag display immediately if in a match
+            if (profile.getMatch() != null) {
+                profile.getMatch().updateNameTagDisplay(player);
+            }
+            
+            new SettingsMenu().open(player);
+        }
+
+        @Override
+        public boolean toggled(Player player) {
+            return getProfile(player).getSettingData().isShowNameTag();
+        }
     };
 
     private final String displayName;

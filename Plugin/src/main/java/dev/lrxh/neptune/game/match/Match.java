@@ -314,11 +314,42 @@ public abstract class Match implements IMatch {
 
     public void hideHealth() {
         forEachPlayer(player -> {
+            Profile profile = API.getProfile(player);
+            // Always allow hiding health regardless of the setting, 
+            // as this method is called during match cleanup
             Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
             if (objective != null) {
                 objective.unregister();
             }
         });
+    }
+
+    public void updateNameTagDisplay(Player player) {
+        if (!kit.is(KitRule.SHOW_HP)) {
+            return; // Kit doesn't support health display
+        }
+        
+        Profile profile = API.getProfile(player);
+        if (profile == null) return;
+        
+        Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
+        
+        if (profile.getSettingData().isShowNameTag()) {
+            // Show name tag
+            if (objective == null) {
+                objective = player.getScoreboard().registerNewObjective("neptune_health", Criteria.HEALTH, CC.color("&c❤"));
+            }
+            try {
+                objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
+            } catch (IllegalStateException ignored) {
+            }
+            player.damage(0.001);
+        } else {
+            // Hide name tag
+            if (objective != null) {
+                objective.unregister();
+            }
+        }
     }
 
     public void hideParticipant(Participant participant) {
@@ -339,6 +370,11 @@ public abstract class Match implements IMatch {
 
     private void showHealth() {
         forEachPlayer(player -> {
+            Profile profile = API.getProfile(player);
+            if (profile == null || !profile.getSettingData().isShowNameTag()) {
+                return; // Skip showing health if name tag display is disabled
+            }
+            
             Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
 
             if (objective == null) {
