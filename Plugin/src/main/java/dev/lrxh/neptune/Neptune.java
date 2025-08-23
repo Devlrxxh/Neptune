@@ -67,7 +67,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Consumer;
 
 @Getter

@@ -1,13 +1,13 @@
 package dev.lrxh.neptune.game.match;
 
+import dev.lrxh.api.events.MatchSpectatorAddEvent;
+import dev.lrxh.api.events.MatchSpectatorRemoveEvent;
 import dev.lrxh.api.match.IMatch;
 import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
-import dev.lrxh.api.events.MatchSpectatorAddEvent;
-import dev.lrxh.api.events.MatchSpectatorRemoveEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -37,7 +37,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -127,16 +126,23 @@ public abstract class Match implements IMatch {
             player.setAllowFlight(true);
             player.setFlying(true);
             player.setGameMode(GameMode.SPECTATOR);
+
+            forEachPlayer(alivePlayer -> {
+                if (!alivePlayer.equals(player)) {
+                    player.showPlayer(Neptune.get(), alivePlayer);
+                    alivePlayer.hidePlayer(Neptune.get(), player);
+                }
+            });
         });
         MatchSpectatorAddEvent event = new MatchSpectatorAddEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(player -> {
-            forEachPlayer(participiantPlayer -> {
-                player.showPlayer(Neptune.get(), participiantPlayer);
-                participiantPlayer.hidePlayer(Neptune.get(), player);
+        forEachSpectator(spectator -> {
+            forEachPlayer(alivePlayer -> {
+                spectator.showPlayer(Neptune.get(), alivePlayer);
+                alivePlayer.hidePlayer(Neptune.get(), spectator);
             });
         });
     }
@@ -262,12 +268,6 @@ public abstract class Match implements IMatch {
         player.getAttribute(Attribute.MAX_HEALTH).setBaseValue(kit.getHealth());
         player.setHealth(kit.getHealth());
         player.sendHealthUpdate();
-
-        for (PotionEffect potionEffect : kit.getPotionEffects()) {
-            if (potionEffect != null) {
-                player.addPotionEffect(potionEffect);
-            }
-        }
     }
 
     public void broadcast(MessagesLocale messagesLocale, Replacement... replacements) {

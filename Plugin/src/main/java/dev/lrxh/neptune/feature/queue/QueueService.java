@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.feature.queue;
 
+import dev.lrxh.api.events.QueueJoinEvent;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
-import dev.lrxh.api.events.QueueJoinEvent;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.profile.data.ProfileState;

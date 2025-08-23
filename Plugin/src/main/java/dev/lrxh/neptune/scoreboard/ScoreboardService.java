@@ -3,12 +3,10 @@ package dev.lrxh.neptune.scoreboard;
 import dev.lrxh.api.profile.IProfile;
 import dev.lrxh.api.scoreboard.IScoreboardService;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class ScoreboardService implements IScoreboardService {

@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.game.match.impl.solo;
 
+import dev.lrxh.api.events.SoloMatchBedDestroyEvent;
 import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
-import dev.lrxh.api.events.SoloMatchBedDestroyEvent;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardPlayerEntry;
@@ -244,6 +244,13 @@ public class SoloFightMatch extends Match {
 
         participant.playKillEffect();
         PlayerUtil.doVelocityChange(participant.getPlayerUUID());
+
+        if (!participant.isDisconnected() && !participant.isLeft() && !isEnded()) {
+            Participant otherParticipant = participantA.equals(participant) ? participantB : participantA;
+            if (otherParticipant.getPlayer() != null) {
+                addSpectator(participant.getPlayer(), otherParticipant.getPlayer(), false, false);
+            }
+        }
 
         end(participant);
     }

@@ -1,10 +1,10 @@
 package dev.lrxh.neptune.game.match;
 
+import dev.lrxh.api.events.MatchReadyEvent;
 import dev.lrxh.api.match.IMatch;
 import dev.lrxh.api.match.IMatchService;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.api.events.MatchReadyEvent;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
