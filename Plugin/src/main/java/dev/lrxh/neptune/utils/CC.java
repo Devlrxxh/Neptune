@@ -33,7 +33,7 @@ public class CC {
         String converted = convertLegacyToMiniMessage(message);
         Component parsed = MiniMessage.miniMessage().deserialize(converted);
 
-        boolean hasItalic = message.contains("&o") || converted.contains("<italic>");
+        boolean hasItalic = converted.contains("<italic>");
         Component fixed = parsed.decorationIfAbsent(TextDecoration.ITALIC,
                 hasItalic ? TextDecoration.State.TRUE : TextDecoration.State.FALSE);
 
@@ -75,6 +75,7 @@ public class CC {
         return text.replaceAll("(?i)&#([a-f0-9]{6})", "<#$1>");
     }
 
+
     public Component returnMessage(Player player, String message, Replacement... replacements) {
         String miniMessageInput = convertLegacyToMiniMessage(message);
 
@@ -91,4 +92,5 @@ public class CC {
         );
         return PlaceholderUtil.format(MiniMessage.miniMessage().deserialize(miniMessageInput, resolver), player);
     }
+
 }
