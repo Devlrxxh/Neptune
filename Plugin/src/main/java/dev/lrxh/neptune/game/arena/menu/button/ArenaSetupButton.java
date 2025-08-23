@@ -26,6 +26,7 @@ public class ArenaSetupButton extends Button {
         profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_RED);
         profile.getArenaProcedure().setArena(arena);
         player.closeInventory();
+        if (arena.getRedSpawn() != null) player.teleport(arena.getRedSpawn());
         player.sendMessage(CC.info("Go to the spawn of the &cred&7 player and type &aDone"));
     }
 
