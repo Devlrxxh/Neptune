@@ -103,6 +103,7 @@ public class Profile implements IProfile {
         if (getMatch() != null) {
             getMatch().onDeath(getMatch().getParticipant(playerUUID));
         }
+        getPlayer().setHealth(20);
     }
 
     public boolean hasState(IProfileState state) {

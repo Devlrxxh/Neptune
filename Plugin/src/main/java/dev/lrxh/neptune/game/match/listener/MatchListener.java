@@ -695,6 +695,7 @@ public class MatchListener implements Listener {
     @EventHandler()
     public void onBedBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
+        if (player.getGameMode() == GameMode.CREATIVE) return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
         if (!profileOpt.isPresent()) {
