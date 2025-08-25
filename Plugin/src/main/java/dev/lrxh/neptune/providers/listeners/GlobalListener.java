@@ -233,20 +233,6 @@ public class GlobalListener implements Listener {
         }
     }
 
-    
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            Profile profile = API.getProfile(player);
-            if (isPlayerNotInMatch(profile)) {
-                // Allow natural healing in lobby/non-match areas
-                if (event.getRegainReason() == EntityRegainHealthEvent.RegainReason.SATIATED) {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
-
     @EventHandler
     public void onPotionEffect(EntityPotionEffectEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;

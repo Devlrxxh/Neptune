@@ -122,11 +122,11 @@ public abstract class Match implements IMatch {
 
         if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
-        player.teleportAsync(target.getLocation()).thenAccept(bool -> {
-            player.setAllowFlight(true);
-            player.setFlying(true);
-            player.setGameMode(GameMode.SPECTATOR);
+        player.setAllowFlight(true);
+        player.setFlying(true);
+        player.setGameMode(GameMode.SPECTATOR);
 
+        player.teleportAsync(target.getLocation()).thenAccept(bool -> {
             forEachPlayer(alivePlayer -> {
                 if (!alivePlayer.equals(player)) {
                     player.showPlayer(Neptune.get(), alivePlayer);
