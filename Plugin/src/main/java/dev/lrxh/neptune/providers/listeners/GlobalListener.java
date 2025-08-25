@@ -202,6 +202,7 @@ public class GlobalListener implements Listener {
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(player);
+            if (profile == null) return;
             if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
                 return;
             }
