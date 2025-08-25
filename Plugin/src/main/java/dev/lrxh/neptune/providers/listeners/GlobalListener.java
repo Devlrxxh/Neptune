@@ -7,7 +7,6 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -35,8 +34,11 @@ public class GlobalListener implements Listener {
 
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
-        if (!(event.getEntity() instanceof ArmorStand)) event.setCancelled(true);
-        if (!(event.getEntity() instanceof ArmorStand) && !event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.EGG)) event.setCancelled(true);
+        event.setCancelled(true);
+
+        if (event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.EGG) || event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.BUCKET)) {
+            event.setCancelled(false);
+        }
     }
 
     @EventHandler
