@@ -35,7 +35,6 @@ public class PlaceholderImpl extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
         if (player == null) return identifier;
-        if (!player.isOnline()) return "Offline Player";
         Profile profile = API.getProfile(player);
         if (profile == null) return identifier;
 

@@ -23,6 +23,6 @@ public class API {
     }
 
     public static Profile getProfile(OfflinePlayer player) {
-        return ProfileService.get().getByUUID(player.getUniqueId());
+        return getProfile(player.getUniqueId());
     }
 }
