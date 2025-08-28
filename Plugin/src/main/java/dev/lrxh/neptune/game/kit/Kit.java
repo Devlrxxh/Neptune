@@ -73,6 +73,7 @@ public class Kit implements IKit {
         this.slot = KitService.get().kits.size() + 1;
         this.health = 20;
         this.kitEditorSlot = slot;
+        this.damageMultiplier = 1.0;
 
         this.potionEffects = new ArrayList<>();
 
@@ -99,7 +100,8 @@ public class Kit implements IKit {
         this.health = 20;
         this.kitEditorSlot = slot;
         this.potionEffects = new ArrayList<>();
-
+        this.damageMultiplier = 1.0;
+        
         addToProfiles();
     }
 
