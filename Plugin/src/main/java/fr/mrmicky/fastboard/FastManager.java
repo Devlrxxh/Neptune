@@ -14,6 +14,6 @@ public class FastManager {
         this.fastAdapter = fastAdapter;
         this.boards = new HashMap<>();
         plugin.getServer().getPluginManager().registerEvents(new FastListener(this), plugin);
-        plugin.getServer().getScheduler().runTaskTimer(plugin, new FastRunnable(this), 0, 4L);
+        plugin.getServer().getScheduler().runTaskTimerAsynchronously(plugin, new FastRunnable(this), 0, 4L);
     }
 }
