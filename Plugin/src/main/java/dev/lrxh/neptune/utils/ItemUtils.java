@@ -49,7 +49,6 @@ public class ItemUtils {
         return items;
     }
 
-
     public String serialize(List<ItemStack> items) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         if (items == null) {
@@ -94,7 +93,8 @@ public class ItemUtils {
 
     public List<ItemStack> deserialize(String base64) {
         List<ItemStack> items = new ArrayList<>();
-        if (base64 == null) return items;
+        if (base64 == null)
+            return items;
         byte[] data = Base64.getDecoder().decode(base64);
 
         try {
@@ -125,8 +125,7 @@ public class ItemUtils {
                 if (modifiedLine.contains(replacement.getPlaceholder())) {
                     modifiedLine = modifiedLine.replace(
                             replacement.getPlaceholder(),
-                            MiniMessage.miniMessage().serialize(replacement.getReplacement())
-                    );
+                            MiniMessage.miniMessage().serialize(replacement.getReplacement()));
                 }
             }
 
@@ -136,7 +135,6 @@ public class ItemUtils {
 
         return newLore;
     }
-
 
     public ItemStack deserializeItem(String base64) {
         byte[] data = Base64.getDecoder().decode(base64);

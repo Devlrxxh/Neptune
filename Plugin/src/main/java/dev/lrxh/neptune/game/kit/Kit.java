@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 
-import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
@@ -43,7 +42,9 @@ public class Kit implements IKit {
     private List<PotionEffect> potionEffects;
     private double damageMultiplier;
 
-    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon, HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot, List<PotionEffect> potionEffects, double damageMultiplier) {
+    public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon,
+            HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot,
+            List<PotionEffect> potionEffects, double damageMultiplier) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;
@@ -81,7 +82,8 @@ public class Kit implements IKit {
             int currentDuration = effect.getDuration();
             int maxDuration = PlayerUtil.getMaxDuration(player, effect.getType());
 
-            potionEffects.add(new PotionEffect(effect.getType(), Math.min(currentDuration, maxDuration), effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()));
+            potionEffects.add(new PotionEffect(effect.getType(), Math.min(currentDuration, maxDuration),
+                    effect.getAmplifier(), effect.isAmbient(), effect.hasParticles(), effect.hasIcon()));
         }
 
         addToProfiles();
@@ -101,7 +103,7 @@ public class Kit implements IKit {
         this.kitEditorSlot = slot;
         this.potionEffects = new ArrayList<>();
         this.damageMultiplier = 1.0;
-        
+
         addToProfiles();
     }
 
@@ -136,7 +138,8 @@ public class Kit implements IKit {
         List<String> arenasString = new ArrayList<>();
         if (!arenas.isEmpty()) {
             for (Arena arena : arenas) {
-                if (arena == null) continue;
+                if (arena == null)
+                    continue;
                 arenasString.add(arena.getName());
             }
         }
@@ -147,7 +150,8 @@ public class Kit implements IKit {
         List<String> potions = new ArrayList<>();
         if (!potionEffects.isEmpty()) {
             for (PotionEffect effect : potionEffects) {
-                if (effect == null) continue;
+                if (effect == null)
+                    continue;
                 potions.add(PotionEffectUtils.serialize(effect));
             }
         }
@@ -180,16 +184,18 @@ public class Kit implements IKit {
 
     @Override
     public HashMap<IKitRule, Boolean> getRule() {
-        return rules.entrySet().stream().collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), HashMap::putAll);
+        return rules.entrySet().stream().collect(HashMap::new,
+                (map, entry) -> map.put(entry.getKey(), entry.getValue()), HashMap::putAll);
     }
 
-    @Nullable
     public CompletableFuture<Arena> getRandomArena() {
         List<Arena> arenas1 = new ArrayList<>();
 
         for (Arena arena : arenas) {
-            if (!arena.isEnabled()) continue;
-            if (!arena.isSetup()) continue;
+            if (!arena.isEnabled())
+                continue;
+            if (!arena.isSetup())
+                continue;
             arenas1.add(arena);
         }
 
@@ -203,7 +209,8 @@ public class Kit implements IKit {
     @Override
     public void giveLoadout(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
         Profile profile = API.getProfile(playerUUID);
         GameData gameData = profile.getGameData();
         if (gameData.getKitData() == null || gameData.get(this) == null ||
@@ -221,14 +228,18 @@ public class Kit implements IKit {
 
     public void giveLoadout(Participant participant) {
         Player player = participant.getPlayer();
-        if (player == null) return;
+        if (player == null)
+            return;
         Profile profile = API.getProfile(player);
         GameData gameData = profile.getGameData();
         if (gameData.getKitData() == null || gameData.get(this) == null ||
                 gameData.get(this).getKitLoadout().isEmpty()) {
-            player.getInventory().setContents(ItemUtils.color(items.toArray(new ItemStack[0]), participant.getColor().getContentColor()));
+            player.getInventory().setContents(
+                    ItemUtils.color(items.toArray(new ItemStack[0]), participant.getColor().getContentColor()));
         } else {
-            player.getInventory().setContents(ItemUtils.color(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]), participant.getColor().getContentColor()));
+            player.getInventory()
+                    .setContents(ItemUtils.color(gameData.get(this).getKitLoadout().toArray(new ItemStack[0]),
+                            participant.getColor().getContentColor()));
         }
 
         player.addPotionEffects(potionEffects);
@@ -254,4 +265,3 @@ public class Kit implements IKit {
         return false;
     }
 }
-

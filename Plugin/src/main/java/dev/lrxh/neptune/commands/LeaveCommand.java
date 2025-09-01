@@ -28,6 +28,8 @@ public class LeaveCommand {
                 profile.setState(ProfileState.IN_LOBBY);
                 PlayerUtil.teleportToSpawn(player.getUniqueId());
                 return;
+            default:
+                break;
         }
         PlayerUtil.teleportToSpawn(player.getUniqueId());
     }

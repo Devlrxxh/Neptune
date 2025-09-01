@@ -61,7 +61,8 @@ public class PlayerUtil {
 
     public void teleportToSpawn(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
         if (Neptune.get().getCache().getSpawn() != null) {
             player.teleport(Neptune.get().getCache().getSpawn());
         } else {
@@ -75,7 +76,8 @@ public class PlayerUtil {
 
     public int getPing(UUID uuid) {
         Player player = Bukkit.getPlayer(uuid);
-        if (player == null) throw new RuntimeException("Player UUID isn't valid");
+        if (player == null)
+            throw new RuntimeException("Player UUID isn't valid");
         return player.getPing();
     }
 
@@ -93,20 +95,24 @@ public class PlayerUtil {
 
     public void sendMessage(UUID playerUUID, Component message) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
 
         player.sendMessage(message);
     }
 
     public void sendMessage(UUID playerUUID, String message) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
         player.sendMessage(CC.color(message));
     }
 
     public void sendTitle(Player player, TextComponent header, TextComponent footer, int duration) {
-        if (header.content().equalsIgnoreCase("NONE") && footer.content().equalsIgnoreCase("NONE")) return;
-        player.showTitle(Title.title(header, footer, Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(duration * 50L), Duration.ofMillis(500))));
+        if (header.content().equalsIgnoreCase("NONE") && footer.content().equalsIgnoreCase("NONE"))
+            return;
+        player.showTitle(Title.title(header, footer,
+                Title.Times.times(Duration.ofMillis(1000), Duration.ofMillis(duration * 50L), Duration.ofMillis(500))));
     }
 
     public int getMaxDuration(Player player, PotionEffectType type) {
@@ -118,7 +124,8 @@ public class PlayerUtil {
 
     public void doVelocityChange(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
 
         player.setVelocity(player.getVelocity().add(new Vector(0, 0.25, 0)));
         player.setAllowFlight(true);

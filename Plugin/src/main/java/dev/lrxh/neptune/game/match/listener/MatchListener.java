@@ -56,11 +56,6 @@ public class MatchListener implements Listener {
         return profile.getState().equals(ProfileState.IN_GAME) && profile.getMatch() != null;
     }
 
-    private boolean isPlayerSpectating(Profile profile) {
-        if (profile == null) return false;
-        return profile.getState().equals(ProfileState.IN_SPECTATOR);
-    }
-
     private Optional<Profile> getMatchProfile(Player player) {
         Profile profile = API.getProfile(player);
         return isPlayerInMatch(profile) ? Optional.of(profile) : Optional.empty();
@@ -275,7 +270,7 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player player) {
+        if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player) {
             Profile profile = API.getProfile(attacker);
             if (profile == null) return;
 

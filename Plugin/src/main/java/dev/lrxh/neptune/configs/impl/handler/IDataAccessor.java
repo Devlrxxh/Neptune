@@ -48,7 +48,7 @@ public interface IDataAccessor {
     default void applyHeader() {
         String header = getHeader();
         if (!header.isEmpty()) {
-            getConfigFile().getConfiguration().options().header(header);
+            getConfigFile().getConfiguration().options().setHeader(List.of(header));
         }
     }
 
