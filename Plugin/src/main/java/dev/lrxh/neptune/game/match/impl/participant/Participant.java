@@ -99,26 +99,37 @@ public class Participant implements IParticipant {
 
     public void playSound(Sound sound) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
         player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
     }
 
     public void teleport(Location location) {
         Player player = getPlayer();
-        if (player == null) return;
+        if (player == null)
+            return;
         player.teleport(location);
     }
 
     public void playKillEffect() {
         Participant lastAttacker = getLastAttacker();
-        if (lastAttacker == null) return;
+        if (lastAttacker == null)
+            return;
         UUID attckerUUID = lastAttacker.getPlayerUUID();
-        if (attckerUUID == null) return;
+        if (attckerUUID == null)
+            return;
         Profile profile = API.getProfile(attckerUUID);
         Player player = getPlayer();
         Player killer = Bukkit.getPlayer(attckerUUID);
-        if (profile == null || player == null || killer == null) return;
+        if (profile == null || player == null || killer == null)
+            return;
         profile.getSettingData().getKillEffect().execute(player, killer);
+    }
+
+    public Location getSpawn(Match match) {
+        if (currentCheckPoint != null)
+            return currentCheckPoint;
+        return match.getSpawn(this);
     }
 
     public Profile getProfile() {
@@ -127,13 +138,15 @@ public class Participant implements IParticipant {
 
     public void sendTitle(TextComponent header, TextComponent footer, int duration) {
         Player player = getPlayer();
-        if (player == null) return;
+        if (player == null)
+            return;
         PlayerUtil.sendTitle(player, header, footer, duration);
     }
 
     public void sendTitle(MessagesLocale header, MessagesLocale footer, int duration) {
         Player player = getPlayer();
-        if (player == null) return;
+        if (player == null)
+            return;
         PlayerUtil.sendTitle(player, CC.color(header.getString()), CC.color(footer.getString()), duration);
     }
 
@@ -143,7 +156,8 @@ public class Participant implements IParticipant {
 
     public void sendMessage(MessagesLocale message, Replacement... replacements) {
         Player player = getPlayer();
-        if (player == null) return;
+        if (player == null)
+            return;
         message.send(player, replacements);
     }
 
@@ -178,7 +192,9 @@ public class Participant implements IParticipant {
         }
         Match match = API.getProfile(playerUUID).getMatch();
         if (match.getKit().is(KitRule.BOXING)) {
-            if (match instanceof TeamFightMatch teamFightMatch ? hits >= teamFightMatch.getTeamA().getParticipants().size() * 100 : hits >= 100) {
+            if (match instanceof TeamFightMatch teamFightMatch
+                    ? hits >= teamFightMatch.getTeamA().getParticipants().size() * 100
+                    : hits >= 100) {
                 opponent.setDeathCause(getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                 match.onDeath(opponent);
             }
@@ -229,7 +245,8 @@ public class Participant implements IParticipant {
 
     public Player getPlayer() {
         Player p = Bukkit.getPlayer(playerUUID);
-        if (p != null) return p;
+        if (p != null)
+            return p;
         return Bukkit.getPlayer(getName());
     }
 }

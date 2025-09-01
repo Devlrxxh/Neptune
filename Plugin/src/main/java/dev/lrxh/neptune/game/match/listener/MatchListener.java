@@ -52,7 +52,8 @@ public class MatchListener implements Listener {
     }
 
     private boolean isPlayerInMatch(Profile profile) {
-        if (profile == null) return false;
+        if (profile == null)
+            return false;
         return profile.getState().equals(ProfileState.IN_GAME) && profile.getMatch() != null;
     }
 
@@ -64,10 +65,12 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (player.getGameMode().equals(GameMode.CREATIVE))
+            return;
 
         Profile profile = API.getProfile(player);
-        if (profile == null) return;
+        if (profile == null)
+            return;
 
         // Cancel if not in match
         if (!isPlayerInMatch(profile)) {
@@ -101,12 +104,14 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if (blockLocation.equals(match.getArena().getRedSpawn()) || blockLocation.equals(match.getArena().getRedSpawn().clone().add(0, 1, 0))) {
+            if (blockLocation.equals(match.getArena().getRedSpawn())
+                    || blockLocation.equals(match.getArena().getRedSpawn().clone().add(0, 1, 0))) {
                 event.setCancelled(true);
                 return;
             }
 
-            if (blockLocation.equals(match.getArena().getBlueSpawn()) || blockLocation.equals(match.getArena().getBlueSpawn().clone().add(0, 1, 0))) {
+            if (blockLocation.equals(match.getArena().getBlueSpawn())
+                    || blockLocation.equals(match.getArena().getBlueSpawn().clone().add(0, 1, 0))) {
                 event.setCancelled(true);
                 return;
             }
@@ -129,19 +134,18 @@ public class MatchListener implements Listener {
             crystal.getPersistentDataContainer().set(
                     crystalOwnerKey,
                     org.bukkit.persistence.PersistentDataType.STRING,
-                    player.getUniqueId().toString()
-            );
+                    player.getUniqueId().toString());
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onExplosion(EntityExplodeEvent event) {
         Entity entity = event.getEntity();
-        if (!(entity instanceof EnderCrystal)) return;
+        if (!(entity instanceof EnderCrystal))
+            return;
         String uuid = entity.getPersistentDataContainer().get(
                 crystalOwnerKey,
-                org.bukkit.persistence.PersistentDataType.STRING
-        );
+                org.bukkit.persistence.PersistentDataType.STRING);
 
         if (uuid == null || uuid.isEmpty()) {
             event.setCancelled(true);
@@ -170,9 +174,12 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onEnderPearlUse(PlayerInteractEvent event) {
         Player player = event.getPlayer();
-        if (!event.getAction().isRightClick()) return;
-        if (event.getHand() == null) return;
-        if (player.getInventory().getItem(event.getHand()).getType() != Material.ENDER_PEARL) return;
+        if (!event.getAction().isRightClick())
+            return;
+        if (event.getHand() == null)
+            return;
+        if (player.getInventory().getItem(event.getHand()).getType() != Material.ENDER_PEARL)
+            return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
         if (ProfileService.get().getByUUID(player.getUniqueId()).getState().equals(ProfileState.IN_CUSTOM)) {
@@ -190,14 +197,16 @@ public class MatchListener implements Listener {
             event.setCancelled(true);
         }
 
-        if (!match.getKit().is(KitRule.ENDERPEARL_COOLDOWN)) return;
+        if (!match.getKit().is(KitRule.ENDERPEARL_COOLDOWN))
+            return;
         Participant participant = match.getParticipant(player);
 
         if (player.hasCooldown(Material.ENDER_PEARL)) {
             int ticksLeft = player.getCooldown(Material.ENDER_PEARL);
             if (ticksLeft > 0) {
                 double secondsLeft = ticksLeft / 20.0;
-                participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING, new Replacement("<time>", String.valueOf(secondsLeft)));
+                participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING,
+                        new Replacement("<time>", String.valueOf(secondsLeft)));
             }
         } else {
             new NeptuneRunnable() {
@@ -211,7 +220,8 @@ public class MatchListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityPush(EntityPushedByEntityAttackEvent event) {
-        if (!(event.getPushedBy() instanceof WindCharge wc)) return;
+        if (!(event.getPushedBy() instanceof WindCharge wc))
+            return;
         Entity pushed = event.getEntity();
 
         if (!(wc.getShooter() instanceof Player shooter)) {
@@ -235,7 +245,8 @@ public class MatchListener implements Listener {
         if (event.getPushedBy() instanceof Player attacker) {
             ItemStack item = attacker.getInventory().getItemInMainHand();
             if (item.getType() == Material.MACE) {
-                if (!(event.getEntity() instanceof Player victim)) return;
+                if (!(event.getEntity() instanceof Player victim))
+                    return;
                 if (!getMatchProfile(attacker).isPresent() || !getMatchProfile(victim).isPresent()) {
                     event.setCancelled(true);
                     return;
@@ -255,12 +266,14 @@ public class MatchListener implements Listener {
         event.getDrops().clear();
 
         Optional<Profile> profileOpt = getMatchProfile(player);
-        if (!profileOpt.isPresent()) return;
+        if (!profileOpt.isPresent())
+            return;
 
         Profile profile = profileOpt.get();
         Match match = profile.getMatch();
         Participant participant = match.getParticipant(player.getUniqueId());
-        if (participant == null) return;
+        if (participant == null)
+            return;
 
         MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
         Bukkit.getPluginManager().callEvent(deathEvent);
@@ -272,7 +285,8 @@ public class MatchListener implements Listener {
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player) {
             Profile profile = API.getProfile(attacker);
-            if (profile == null) return;
+            if (profile == null)
+                return;
 
             if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
                 return;
@@ -299,17 +313,22 @@ public class MatchListener implements Listener {
         Player player = event.getPlayer();
         if (event.getAction() == Action.PHYSICAL) {
             Material blockType = event.getClickedBlock() != null ? event.getClickedBlock().getType() : null;
-            if (blockType == null) return;
+            if (blockType == null)
+                return;
 
             Optional<Profile> profileOpt = getMatchProfile(player);
-            if (!profileOpt.isPresent()) return;
+            if (!profileOpt.isPresent())
+                return;
 
             Profile profile = profileOpt.get();
             Match match = profile.getMatch();
-            if (!match.getKit().is(KitRule.PARKOUR)) return;
-            if (!match.getState().equals(MatchState.IN_ROUND)) return;
+            if (!match.getKit().is(KitRule.PARKOUR))
+                return;
+            if (!match.getState().equals(MatchState.IN_ROUND))
+                return;
             Participant participant = match.getParticipant(player);
-            if (participant == null) return;
+            if (participant == null)
+                return;
 
             if (blockType.equals(Material.HEAVY_WEIGHTED_PRESSURE_PLATE)) {
                 if (participant.setCurrentCheckPoint(event.getClickedBlock().getLocation().clone().add(0, 1, 0))) {
@@ -330,9 +349,11 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
-            if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+            if (player.getGameMode().equals(GameMode.CREATIVE))
+                return;
             Profile profile = API.getProfile(player);
-            if (profile == null) return;
+            if (profile == null)
+                return;
 
             if (!isPlayerInMatch(profile)) {
                 event.setCancelled(true);
@@ -343,7 +364,8 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onPlayerBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (player.getGameMode().equals(GameMode.CREATIVE))
+            return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
         if (!profileOpt.isPresent()) {
@@ -388,7 +410,8 @@ public class MatchListener implements Listener {
         if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player player) {
             Profile attackerProfile = API.getProfile(attacker.getUniqueId());
             Profile profile = API.getProfile(player);
-            if (profile == null) return;
+            if (profile == null)
+                return;
 
             if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
                 return;
@@ -453,15 +476,19 @@ public class MatchListener implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onDamage(EntityDamageEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player player))
+            return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
 
-        if (!profileOpt.isPresent()) return;
+        if (!profileOpt.isPresent())
+            return;
 
-        if (!(event.getFinalDamage() >= player.getHealth())) return;
+        if (!(event.getFinalDamage() >= player.getHealth()))
+            return;
         if (player.getInventory().getItemInMainHand().getType().equals(Material.TOTEM_OF_UNDYING) ||
-                player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING)) return;
+                player.getInventory().getItemInOffHand().getType().equals(Material.TOTEM_OF_UNDYING))
+            return;
 
         Profile profile = profileOpt.get();
         Match match = profile.getMatch();
@@ -474,18 +501,21 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerMoveEvent(PlayerMoveEvent event) {
-        if (!event.hasChangedPosition()) return;
+        if (!event.hasChangedPosition())
+            return;
         Player player = event.getPlayer();
 
         Optional<Profile> profileOpt = getMatchProfile(player);
-        if (!profileOpt.isPresent()) return;
+        if (!profileOpt.isPresent())
+            return;
 
         Profile profile = profileOpt.get();
         Match match = profile.getMatch();
         Arena arena = match.getArena();
 
         Participant participant = match.getParticipant(player.getUniqueId());
-        if (participant == null) return;
+        if (participant == null)
+            return;
         if (participant.isFrozen()) {
             Location to = event.getTo();
             Location from = event.getFrom();
@@ -497,11 +527,7 @@ public class MatchListener implements Listener {
 
         if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
             if (match.getKit().is(KitRule.PARKOUR)) {
-                if (participant.getCurrentCheckPoint() != null) {
-                    player.teleport(participant.getCurrentCheckPoint());
-                } else {
-                    player.teleport(match.getSpawn(participant));
-                }
+                player.teleport(participant.getSpawn(match));
             } else {
                 participant.setDeathCause(DeathCause.DIED);
                 match.onDeath(participant);
@@ -525,7 +551,8 @@ public class MatchListener implements Listener {
                 Block block = playerLocation.getBlock();
 
                 if (block.getType() == Material.WATER) {
-                    participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                    participant
+                            .setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
                     match.onDeath(participant);
                 }
             }
@@ -534,10 +561,12 @@ public class MatchListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
 
         Block clickedBlock = event.getClickedBlock();
-        if (clickedBlock == null) return;
+        if (clickedBlock == null)
+            return;
 
         Material blockType = clickedBlock.getType();
 
@@ -631,7 +660,8 @@ public class MatchListener implements Listener {
     public void onPlayerRegainHealth(EntityRegainHealthEvent event) {
         if (event.getEntity() instanceof Player player) {
             Optional<Profile> profileOpt = getMatchProfile(player);
-            if (!profileOpt.isPresent()) return;
+            if (!profileOpt.isPresent())
+                return;
 
             Profile profile = profileOpt.get();
             Match match = profile.getMatch();
@@ -646,7 +676,8 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode() == GameMode.CREATIVE) return;
+        if (player.getGameMode() == GameMode.CREATIVE)
+            return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
         if (!profileOpt.isPresent()) {
@@ -661,8 +692,10 @@ public class MatchListener implements Listener {
         Material blockType = event.getBlock().getType();
         Location blockLocation = event.getBlock().getLocation();
 
-        if (blockType == Material.FIRE) return;
-        if (blockType.name().contains("BED")) return;
+        if (blockType == Material.FIRE)
+            return;
+        if (blockType.name().contains("BED"))
+            return;
 
         boolean cancel = true;
 
@@ -679,7 +712,8 @@ public class MatchListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockDrop(BlockDropItemEvent event) {
-        getMatchForPlayer(event.getPlayer()).ifPresentOrElse(match -> match.getEntities().addAll(event.getItems()), () -> event.setCancelled(true));
+        getMatchForPlayer(event.getPlayer()).ifPresentOrElse(match -> match.getEntities().addAll(event.getItems()),
+                () -> event.setCancelled(true));
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
@@ -690,7 +724,8 @@ public class MatchListener implements Listener {
     @EventHandler()
     public void onBedBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode() == GameMode.CREATIVE) return;
+        if (player.getGameMode() == GameMode.CREATIVE)
+            return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
         if (!profileOpt.isPresent()) {
@@ -702,7 +737,8 @@ public class MatchListener implements Listener {
         Match match = profile.getMatch();
         Material blockType = event.getBlock().getType();
 
-        if (!match.getKit().is(KitRule.BED_WARS)) return;
+        if (!match.getKit().is(KitRule.BED_WARS))
+            return;
 
         if (match.getKit().is(KitRule.BED_WARS)) {
             if (blockType == Material.OAK_PLANKS || blockType == Material.END_STONE) {
@@ -715,15 +751,20 @@ public class MatchListener implements Listener {
                 Location bed = event.getBlock().getLocation();
 
                 Participant participant = match.getParticipant(player.getUniqueId());
-                if (participant == null) return;
+                if (participant == null)
+                    return;
                 Location spawn = match.getSpawn(participant);
                 Participant opponent = participant.getOpponent();
                 Location opponentSpawn = match.getSpawn(opponent);
                 if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
                     event.setDropItems(false);
                     match.breakBed(opponent, participant);
-                    match.sendTitle(opponent, CC.color(MessagesLocale.BED_BREAK_TITLE.getString()), CC.color(MessagesLocale.BED_BREAK_FOOTER.getString()), 20);
-                    match.broadcast(opponent.getColor().equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE : MessagesLocale.BLUE_BED_BROKEN_MESSAGE, new Replacement("<player>", participant.getNameColored()));
+                    match.sendTitle(opponent, CC.color(MessagesLocale.BED_BREAK_TITLE.getString()),
+                            CC.color(MessagesLocale.BED_BREAK_FOOTER.getString()), 20);
+                    match.broadcast(
+                            opponent.getColor().equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE
+                                    : MessagesLocale.BLUE_BED_BROKEN_MESSAGE,
+                            new Replacement("<player>", participant.getNameColored()));
                 } else {
                     event.setCancelled(true);
                     participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
@@ -738,7 +779,8 @@ public class MatchListener implements Listener {
         ProjectileSource shooter = projectile.getShooter();
 
         if (shooter instanceof Player player) {
-            if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+            if (player.getGameMode().equals(GameMode.CREATIVE))
+                return;
 
             Optional<Profile> profileOpt = getMatchProfile(player);
             if (!profileOpt.isPresent()) {
@@ -787,7 +829,8 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (player.getGameMode().equals(GameMode.CREATIVE))
+            return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
         if (!profileOpt.isPresent()) {
