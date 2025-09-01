@@ -17,6 +17,7 @@ import org.bukkit.World;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Getter
 @Setter
@@ -34,8 +35,8 @@ public class Arena implements IArena {
     private double buildLimit;
     private List<Material> whitelistedBlocks;
     private CuboidSnapshot snapshot;
-    private int duplicateIndex;
-    private int preloadedIndex;
+    private AtomicInteger duplicateIndex;
+    private AtomicInteger preloadedIndex;
     private Arena owner;
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
@@ -48,13 +49,13 @@ public class Arena implements IArena {
 
         this.buildLimit = 0;
         this.whitelistedBlocks = new ArrayList<>();
-        this.duplicateIndex = 1;
-        this.preloadedIndex = 0;
+        this.duplicateIndex = new AtomicInteger(1);
+        this.preloadedIndex = new AtomicInteger(0);
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double buildLimit, boolean enabled,
-                 List<Material> whitelistedBlocks, int deathY, boolean duplicate) {
+            Location min, Location max, double buildLimit, boolean enabled,
+            List<Material> whitelistedBlocks, int deathY, boolean duplicate) {
 
         this(name, displayName, redSpawn, blueSpawn, enabled, deathY);
         this.min = min;
@@ -62,19 +63,20 @@ public class Arena implements IArena {
         this.buildLimit = buildLimit;
         this.whitelistedBlocks = whitelistedBlocks;
 
-        if (min == null || max == null) return;
+        if (min == null || max == null)
+            return;
         CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
             this.snapshot = cuboidSnapshot;
         });
 
         if (!duplicate) {
-            loadChunks(duplicateIndex, true);
+            loadChunks(duplicateIndex.get(), true);
         }
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double buildLimit, boolean enabled,
-                 List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
+            Location min, Location max, double buildLimit, boolean enabled,
+            List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
 
         this(name, displayName, redSpawn, blueSpawn, min, max, buildLimit, enabled, whitelistedBlocks, deathY, true);
         this.snapshot = snapshot;
@@ -87,7 +89,7 @@ public class Arena implements IArena {
         this.max = null;
         this.buildLimit = 68321;
         this.whitelistedBlocks = new ArrayList<>();
-        this.duplicateIndex = 1;
+        this.duplicateIndex = new AtomicInteger(1);
     }
 
     public boolean isSetup() {
@@ -95,12 +97,13 @@ public class Arena implements IArena {
     }
 
     public CompletableFuture<Arena> createDuplicate() {
-        int currentIndex = this.duplicateIndex++;
+        int currentIndex = this.duplicateIndex.getAndIncrement();
+
         int preloadIndex = currentIndex + 1;
 
-        if (preloadIndex > preloadedIndex) {
+        if (preloadIndex > preloadedIndex.get()) {
             loadChunks(preloadIndex, false);
-            preloadedIndex = preloadIndex;
+            preloadedIndex.set(preloadIndex);
         }
 
         if (currentIndex - 2 >= 1) {
@@ -129,13 +132,13 @@ public class Arena implements IArena {
                     whitelistedBlocks,
                     deathY,
                     cuboidSnapshot,
-                    this
-            );
+                    this);
         });
     }
 
     public void unloadChunks(int index) {
-        if (min == null || max == null) return;
+        if (min == null || max == null)
+            return;
 
         World world = redSpawn.getWorld();
 
@@ -164,7 +167,7 @@ public class Arena implements IArena {
             }
         }
 
-//        ServerUtils.info("✘ Unloaded chunks for arena duplicate index " + index);
+        // ServerUtils.info("✘ Unloaded chunks for arena duplicate index " + index);
     }
 
     public List<String> getWhitelistedBlocksAsString() {
@@ -177,8 +180,8 @@ public class Arena implements IArena {
 
     public void remove() {
         if (owner != null) {
-            owner.duplicateIndex--;
-            owner.loadedChunkIndices.remove(owner.duplicateIndex + 1);
+            owner.duplicateIndex.getAndDecrement();
+            owner.loadedChunkIndices.remove(owner.duplicateIndex.get() + 1);
         }
     }
 
@@ -191,7 +194,8 @@ public class Arena implements IArena {
     public void setMin(Location min) {
         this.min = min;
         if (min != null && max != null) {
-            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {;
+            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
+                ;
                 this.snapshot = cuboidSnapshot;
             });
         }
@@ -200,7 +204,8 @@ public class Arena implements IArena {
     public void setMax(Location max) {
         this.max = max;
         if (min != null && max != null) {
-            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {;
+            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
+                ;
                 this.snapshot = cuboidSnapshot;
             });
         }
@@ -276,7 +281,8 @@ public class Arena implements IArena {
 
         boolean wasEnabled = isEnabled();
 
-        if (disable) setEnabled(false);
+        if (disable)
+            setEnabled(false);
 
         new NeptuneRunnable() {
             int index = 0;
@@ -299,10 +305,12 @@ public class Arena implements IArena {
 
                 if (index >= chunksToLoad.size()) {
                     cancel();
-                    if (wasEnabled) setEnabled(true);
+                    if (wasEnabled)
+                        setEnabled(true);
                     loadedChunkIndices.add(i);
-//                    int totalChunks = chunksToLoad.size();
-//                    ServerUtils.info("✔ Loaded " + totalChunks + " chunks for " + name + " (index: " + i + ")");
+                    // int totalChunks = chunksToLoad.size();
+                    // ServerUtils.info("✔ Loaded " + totalChunks + " chunks for " + name + "
+                    // (index: " + i + ")");
                 }
             }
         }.start(0L, 1L);
