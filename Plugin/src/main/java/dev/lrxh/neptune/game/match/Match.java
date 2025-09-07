@@ -129,14 +129,22 @@ public abstract class Match implements IMatch {
 
         player.setHealth(20);
         player.setFoodLevel(20);
-        player.teleportAsync(target.getLocation()).thenAccept(bool -> {
+        player.teleportAsync(target.getLocation()).thenAccept(success -> {
+            if (!success) return;
+
             forEachPlayer(alivePlayer -> {
                 if (!alivePlayer.equals(player)) {
                     player.showPlayer(Neptune.get(), alivePlayer);
                     alivePlayer.hidePlayer(Neptune.get(), player);
                 }
             });
+
+            Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
+                player.setAllowFlight(true);
+                player.setFlying(true);
+            }, 5L);
         });
+
 
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(true);

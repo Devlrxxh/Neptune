@@ -110,7 +110,48 @@ public class PlaceholderUtil {
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
             Participant participant = match.getParticipant(player.getUniqueId());
-            if (participant == null) return "";
+
+            if (profile.getState() == ProfileState.IN_SPECTATOR) {
+                if (match instanceof SoloFightMatch soloFightMatch) {
+                    Participant red = soloFightMatch.getParticipantA();
+                    Participant blue = soloFightMatch.getParticipantB();
+
+                    line = line.replaceAll("<playerRed_name>", red != null ? red.getNameUnColored() : "N/A");
+                    line = line.replaceAll("<playerBlue_name>", blue != null ? blue.getNameUnColored() : "N/A");
+                    line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(red != null ? red.getPlayer() : null)));
+                    line = line.replaceAll("<playerBlue_ping>", String.valueOf(PlayerUtil.getPing(blue != null ? blue.getPlayer() : null)));
+
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        line = line.replaceAll("<red-bed-status>", red != null && !red.isBedBroken() ? "&a✔" : "&c✘");
+                        line = line.replaceAll("<blue-bed-status>", blue != null && !blue.isBedBroken() ? "&a✔" : "&c✘");
+                    }
+                }
+                else if (match instanceof TeamFightMatch teamFightMatch) {
+                    MatchTeam red = teamFightMatch.getTeamA();
+                    MatchTeam blue = teamFightMatch.getTeamB();
+
+                    line = line.replaceAll("<alive-red>", String.valueOf(red.getAliveParticipants()));
+                    line = line.replaceAll("<max-red>", String.valueOf(red.getParticipants().size()));
+                    line = line.replaceAll("<alive-blue>", String.valueOf(blue.getAliveParticipants()));
+                    line = line.replaceAll("<max-blue>", String.valueOf(blue.getParticipants().size()));
+
+                    if (match.getKit().is(KitRule.BED_WARS)) {
+                        line = line.replaceAll("<red-bed-status>", !red.isBedBroken() ? "&a✔" : "&c✘");
+                        line = line.replaceAll("<blue-bed-status>", !blue.isBedBroken() ? "&a✔" : "&c✘");
+                    }
+                }
+                else if (match instanceof FfaFightMatch ffaFightMatch) {
+                    line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
+                    line = line.replaceAll("<max>", String.valueOf(ffaFightMatch.getParticipants().size()));
+                }
+
+                line = line.replaceAll("<kit>", match.getKit().getDisplayName());
+                line = line.replaceAll("<arena>", match.getArena().getDisplayName());
+
+                return line;
+            }
+
+            if (participant == null) return line;
 
             line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
             line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
