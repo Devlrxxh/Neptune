@@ -18,10 +18,7 @@ import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.EntityUtils;
-import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.neptune.utils.WorldUtils;
+import dev.lrxh.neptune.utils.*;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import io.papermc.paper.event.block.BlockBreakBlockEvent;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
@@ -37,6 +34,8 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.vehicle.VehicleEnterEvent;
+import org.bukkit.event.vehicle.VehicleExitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -242,10 +241,31 @@ public class MatchListener implements Listener {
         }
     }
 
+    private boolean isSpectator(Player player) {
+        Profile profile = API.getProfile(player);
+        return profile != null && profile.getState() == ProfileState.IN_SPECTATOR;
+    }
+
+
+    @EventHandler
+    public void onVehicleEnter(VehicleEnterEvent event) {
+        if (event.getEntered() instanceof Player player && isSpectator(player)) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onVehicleExit(VehicleExitEvent event) {
+        if (event.getExited() instanceof Player player && isSpectator(player)) {
+            event.setCancelled(true);
+        }
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityPush(EntityPushedByEntityAttackEvent event) {
         if (!(event.getPushedBy() instanceof WindCharge wc))
             return;
+
         Entity pushed = event.getEntity();
 
         if (!(wc.getShooter() instanceof Player shooter)) {
@@ -712,6 +732,11 @@ public class MatchListener implements Listener {
         Profile profile = profileOpt.get();
         Match match = profile.getMatch();
         Arena arena = match.getArena();
+
+        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
+            event.setCancelled(true);
+            return;
+        }
 
         Material blockType = event.getBlock().getType();
         Location blockLocation = event.getBlock().getLocation();

@@ -101,6 +101,7 @@ public class GlobalListener implements Listener {
         if (player.getGameMode() == GameMode.CREATIVE) return;
 
         Profile profile = API.getProfile(player);
+        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) event.setCancelled(true);
         if (isPlayerNotInMatch(profile)) {
             event.setCancelled(true);
 

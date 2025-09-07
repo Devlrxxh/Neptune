@@ -6,8 +6,10 @@ import dev.lrxh.api.match.IMatch;
 import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.HotbarLocale;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
+import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -23,6 +25,7 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.Time;
 import lombok.AllArgsConstructor;
@@ -37,6 +40,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -114,26 +118,40 @@ public abstract class Match implements IMatch {
     public void addSpectator(Player player, Player target, boolean sendMessage, boolean add) {
         Profile profile = API.getProfile(player);
 
-        profile.setMatch(this);
         profile.setState(ProfileState.IN_SPECTATOR);
+        profile.setMatch(this);
+
         if (add) spectators.add(player.getUniqueId());
 
         showPlayerForSpectators();
 
         if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
-        player.setAllowFlight(true);
-        player.setFlying(true);
-        player.setGameMode(GameMode.SPECTATOR);
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.teleportAsync(target.getLocation()).thenAccept(success -> {
+            if (!success) return;
 
-        player.teleportAsync(target.getLocation()).thenAccept(bool -> {
             forEachPlayer(alivePlayer -> {
                 if (!alivePlayer.equals(player)) {
                     player.showPlayer(Neptune.get(), alivePlayer);
                     alivePlayer.hidePlayer(Neptune.get(), player);
                 }
             });
+
+            Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
+                player.setAllowFlight(true);
+                player.setFlying(true);
+            }, 5L);
         });
+
+
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setAllowFlight(true);
+        player.setFlying(true);
+
+        HotbarService.get().giveItems(player);
+
         MatchSpectatorAddEvent event = new MatchSpectatorAddEvent(this, player);
         Bukkit.getPluginManager().callEvent(event);
     }

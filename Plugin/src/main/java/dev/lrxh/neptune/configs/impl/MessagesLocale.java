@@ -132,6 +132,7 @@ public enum MessagesLocale implements IDataAccessor {
     MATCH_FORFEIT("MATCH.FORFEIT", DataType.STRING_LIST, "&cSomeone rage quit"),
     SPECTATE_STOP("MATCH.SPECTATE.STOP", DataType.STRING_LIST, "&b<player> &fstopped spectating match."),
     SPECTATE_NOT_ALLOWED("MATCH.SPECTATE.SPECTATE_NOT_ALLOWED", DataType.STRING_LIST, "&c<player> has spectating disabled."),
+    SPECTATE_LEAVE_IN_PARTY("MATCH.SPECTATE.SPECTATE_LEAVE_IN_PARTY", DataType.STRING, "&cYou are not allowed to leave spectating mode while being in a party!"),
     ERROR_MESSAGE("ERROR_MESSAGE", DataType.STRING, "&c<error>"),
     JOIN_MESSAGE("JOIN_MESSAGE", DataType.STRING, "&8[&a+&8] &7<player> &7joined"),
     LEAVE_MESSAGE("LEAVE_MESSAGE", DataType.STRING, "&8[&c-&8] &7<player> &7left"),
