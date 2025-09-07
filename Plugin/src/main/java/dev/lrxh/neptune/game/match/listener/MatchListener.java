@@ -689,6 +689,11 @@ public class MatchListener implements Listener {
         Match match = profile.getMatch();
         Arena arena = match.getArena();
 
+        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
+            event.setCancelled(true);
+            return;
+        }
+
         Material blockType = event.getBlock().getType();
         Location blockLocation = event.getBlock().getLocation();
 

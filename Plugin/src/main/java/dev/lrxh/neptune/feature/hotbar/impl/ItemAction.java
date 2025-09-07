@@ -20,6 +20,7 @@ import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.impl.solo.SoloFightMatch;
 import dev.lrxh.neptune.game.match.menu.MatchListMenu;
+import dev.lrxh.neptune.game.match.menu.MatchSpectateTeleportMenu;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -189,6 +190,16 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             new SettingsMenu().open(player);
+        }
+    },
+    SPECTATOR_TELEPORT() {
+        @Override
+        public void execute(Player player) { new MatchSpectateTeleportMenu().open(player); }
+    },
+    SPECTATOR_LEAVE() {
+        @Override
+        public void execute(Player player) {
+            player.chat("/leave");
         }
     };
 
