@@ -2,7 +2,7 @@ package dev.lrxh.neptune.game.kit.menu.button;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.kit.Kit;
-import dev.lrxh.neptune.game.kit.procedure.KitProcedureType;
+import dev.lrxh.neptune.game.kit.procedure.metadata.KitProcedureType;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;

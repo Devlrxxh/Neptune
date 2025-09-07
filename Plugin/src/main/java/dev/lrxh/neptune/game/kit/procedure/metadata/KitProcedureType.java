@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.kit.procedure;
+package dev.lrxh.neptune.game.kit.procedure.metadata;
 
 public enum KitProcedureType {
     RENAME,

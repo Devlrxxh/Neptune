@@ -6,26 +6,41 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Location;
 
-
-@Getter
-@Setter
+@Getter @Setter
 public class Cache {
+
     private Location spawn;
 
     public Cache() {
         load();
     }
 
+    /**
+     * Sets the spawn location and immediately saves it to persistent storage.
+     *
+     * @param location the new spawn location
+     */
     public void setSpawn(Location location) {
-        spawn = location;
+        this.spawn = location;
         save();
     }
 
+    /**
+     * Loads the spawn location from the configuration.
+     * Uses {@link LocationUtil} to deserialize the stored string.
+     */
     public void load() {
-        spawn = LocationUtil.deserialize(SettingsLocale.SPAWN_LOCATION.getString());
+        String serializedLocation = SettingsLocale.SPAWN_LOCATION.getString();
+        this.spawn = LocationUtil.deserialize(serializedLocation);
     }
 
+    /**
+     * Saves the current spawn location to the configuration.
+     * Uses {@link LocationUtil} to serialize the location into a string.
+     */
     public void save() {
-        SettingsLocale.SPAWN_LOCATION.set(LocationUtil.serialize(spawn));
+        if (spawn != null) {
+            SettingsLocale.SPAWN_LOCATION.set(LocationUtil.serialize(spawn));
+        }
     }
 }

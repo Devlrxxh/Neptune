@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.feature.party.impl;
+package dev.lrxh.neptune.feature.party.request;
 
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.providers.request.Request;
@@ -8,6 +8,7 @@ import java.util.UUID;
 
 @Getter
 public class PartyRequest extends Request {
+
     private final Party party;
 
     public PartyRequest(UUID sender, Party party) {

@@ -2,8 +2,8 @@ package dev.lrxh.neptune.feature.leaderboard.menu.button;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
-import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.feature.leaderboard.impl.PlayerEntry;
+import dev.lrxh.neptune.feature.leaderboard.entry.player.PlayerLeaderboardEntry;
+import dev.lrxh.neptune.feature.leaderboard.metadata.LeaderboardType;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LeaderboardButton extends Button {
+
     private final Kit kit;
     private final LeaderboardType leaderboardType;
 
@@ -27,23 +28,18 @@ public class LeaderboardButton extends Button {
     public ItemStack getItemStack(Player player) {
         List<String> lore = new ArrayList<>();
 
-        List<PlayerEntry> leaderboard = LeaderboardService.get().getPlayerEntries(kit, leaderboardType);
+        List<PlayerLeaderboardEntry> leaderboard = LeaderboardService.get().getPlayerEntries(kit, leaderboardType);
 
-        MenusLocale.LEADERBOARD_LORE.getStringList().forEach(line -> {
+        MenusLocale.LEADERBOARD_LORE.getStringList().forEach(lineTemplate -> {
+            String line = lineTemplate;
+
             for (int i = 1; i <= 10; i++) {
-                PlayerEntry playerEntry = null;
-                if (i <= leaderboard.size()) {
-                    playerEntry = LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, i);
-                }
+                PlayerLeaderboardEntry entry = i <= leaderboard.size() ? leaderboard.get(i - 1) : null;
+                String playerName = entry != null ? entry.username() : "???";
+                String value = entry != null ? String.valueOf(entry.value()) : "???";
 
-                if (playerEntry == null) {
-                    line = line.replaceAll("<player_" + i + ">", "???");
-                    line = line.replaceAll("<value_" + i + ">", "???");
-                    continue;
-                }
-
-                line = line.replaceAll("<player_" + i + ">", playerEntry.getUsername());
-                line = line.replaceAll("<value_" + i + ">", String.valueOf(playerEntry.getValue()));
+                line = line.replace("<player_" + i + ">", playerName)
+                        .replace("<value_" + i + ">", value);
             }
 
             lore.add(line);
@@ -52,7 +48,6 @@ public class LeaderboardButton extends Button {
         return new ItemBuilder(kit.getIcon())
                 .name(MenusLocale.LEADERBOARD_ITEM_NAME.getString().replace("<kit>", kit.getDisplayName()))
                 .lore(lore, player)
-
                 .build();
     }
 }

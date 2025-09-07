@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.arena.procedure;
+package dev.lrxh.neptune.game.arena.procedure.metadata;
 
 public enum ArenaProcedureType {
     RENAME,

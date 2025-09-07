@@ -7,9 +7,12 @@ import org.bukkit.Material;
 @Getter
 @AllArgsConstructor
 public class Division {
+
     public final String name;
     private final String displayName;
-    private final int eloRequired;
+
     private final Material material;
+
+    private final int eloRequired;
     private int slot;
 }

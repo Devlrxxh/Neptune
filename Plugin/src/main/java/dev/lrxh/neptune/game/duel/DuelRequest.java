@@ -20,11 +20,22 @@ import java.util.UUID;
 
 @Getter
 public class DuelRequest extends Request {
+
     private final Kit kit;
     private final Arena arena;
+
     private final boolean party;
     private final int rounds;
 
+    /**
+     * Creates a new duel request.
+     *
+     * @param sender the UUID of the player sending the request
+     * @param kit the kit to be used in the duel
+     * @param arena the arena for the duel
+     * @param party whether this is a party duel
+     * @param rounds number of rounds for the duel
+     */
     public DuelRequest(UUID sender, Kit kit, Arena arena, boolean party, int rounds) {
         super(sender);
         this.kit = kit;
@@ -33,6 +44,11 @@ public class DuelRequest extends Request {
         this.rounds = rounds;
     }
 
+    /**
+     * Starts the duel for the given receiver.
+     *
+     * @param receiver UUID of the player or party leader receiving the duel request
+     */
     public void start(UUID receiver) {
         if (party) {
             partyDuel(receiver);
@@ -41,33 +57,40 @@ public class DuelRequest extends Request {
         }
     }
 
-    public void normalDuel(UUID receiver) {
-        Player sender = Bukkit.getPlayer(getSender());
-        Player reciverPlayer = Bukkit.getPlayer(receiver);
+    /**
+     * Starts a normal 1v1 duel.
+     *
+     * @param receiver UUID of the player receiving the duel request
+     */
+    private void normalDuel(UUID receiver) {
+        Player senderPlayer = Bukkit.getPlayer(getSender());
+        Player receiverPlayer = Bukkit.getPlayer(receiver);
 
-        if (reciverPlayer == null || sender == null) return;
+        if (senderPlayer == null || receiverPlayer == null) return;
 
-        Participant participant1 =
-                new Participant(sender);
-
-        Participant participant2 =
-                new Participant(reciverPlayer);
+        Participant participant1 = new Participant(senderPlayer);
+        Participant participant2 = new Participant(receiverPlayer);
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 
-        MatchService.get().startMatch(participants, kit,
-                arena, true, rounds);
+        MatchService.get().startMatch(participants, kit, arena, true, rounds);
     }
 
-    public void partyDuel(UUID receiver) {
+    /**
+     * Starts a party vs party duel asynchronously.
+     *
+     * @param receiver UUID of the receiving party leader
+     */
+    private void partyDuel(UUID receiver) {
         kit.getRandomArena().thenAccept(arena -> {
             Profile receiverProfile = API.getProfile(receiver);
             Profile senderProfile = API.getProfile(getSender());
 
             List<Participant> participants = new ArrayList<>();
-
             List<Participant> teamAList = new ArrayList<>();
+            List<Participant> teamBList = new ArrayList<>();
 
+            // Add participants from receiver's party
             for (UUID userUUID : receiverProfile.getGameData().getParty().getUsers()) {
                 Player player = Bukkit.getPlayer(userUUID);
                 if (player == null) continue;
@@ -76,8 +99,6 @@ public class DuelRequest extends Request {
                 teamAList.add(participant);
                 participants.add(participant);
             }
-
-            List<Participant> teamBList = new ArrayList<>();
 
             for (UUID userUUID : senderProfile.getGameData().getParty().getUsers()) {
                 Player player = Bukkit.getPlayer(userUUID);
@@ -92,18 +113,14 @@ public class DuelRequest extends Request {
             MatchTeam teamB = new MatchTeam(teamBList);
 
             if (arena == null) {
-
-                for (Participant participant : participants) {
-                    participant.sendMessage(CC.error("No arenas were found!"));
-                }
+                participants.forEach(p -> p.sendMessage(CC.error("No arenas were found!")));
                 return;
             }
 
             if (!arena.isSetup()) {
-
-                for (Participant participant : participants) {
-                    participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
-                }
+                participants.forEach(p -> p.sendMessage(CC.error(
+                        "Arena wasn't setup properly! Please contact an admin if you see this."
+                )));
                 return;
             }
 

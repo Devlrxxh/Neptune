@@ -21,71 +21,61 @@ import java.util.*;
 
 @Getter
 public class KitService extends IService implements IKitService {
+
     private static KitService instance;
+
     public final LinkedHashSet<Kit> kits = new LinkedHashSet<>();
 
     public static KitService get() {
-        if (instance == null) instance = new KitService();
-
+        if (instance == null) {
+            instance = new KitService();
+        }
         return instance;
     }
 
     @Override
     public void load() {
         FileConfiguration config = ConfigService.get().getKitsConfig().getConfiguration();
-        if (config.contains("kits")) {
-            for (String kitName : getKeys("kits")) {
-                String path = "kits." + kitName + ".";
-                String displayName = config.getString(path + "displayName", kitName);
-                ItemStack icon = ItemUtils.deserializeItem(config.getString(path + "icon", ""));
+        if (!config.contains("kits")) return;
 
-                List<ItemStack> items = ItemUtils.deserialize(config.getString(path + "items", ""));
-                int slot = config.getInt(path + "slot", kits.size() + 1);
-                int kitEditorSlot = config.getInt(path + "kitEditor-slot", slot);
-                double health = config.getDouble(path + "health", 20);
-                double damageMultiplier = config.getDouble(path + "damage-multiplier", 1.0);
+        for (String kitName : getKeys("kits")) {
+            String path = "kits." + kitName + ".";
 
-                HashSet<Arena> arenas = new HashSet<>();
-                if (!config.getStringList(path + "arenas").isEmpty()) {
-                    for (String arenaName : config.getStringList(path + "arenas")) {
-                        Arena arena = ArenaService.get().getArenaByName(arenaName);
-                        if (arena == null) {
-                            ServerUtils.error("KitService: Arena " + arenaName + " not found for kit " + kitName);
-                            continue;
-                        }
-                        arenas.add(arena);
-                    }
-                }
+            String displayName = config.getString(path + "displayName", kitName);
+            ItemStack icon = ItemUtils.deserializeItem(config.getString(path + "icon", ""));
+            List<ItemStack> items = ItemUtils.deserialize(config.getString(path + "items", ""));
+            int slot = config.getInt(path + "slot", kits.size() + 1);
+            int kitEditorSlot = config.getInt(path + "kitEditor-slot", slot);
+            double health = config.getDouble(path + "health", 20);
+            double damageMultiplier = config.getDouble(path + "damage-multiplier", 1.0);
 
-                HashMap<KitRule, Boolean> rules = new HashMap<>();
-                for (KitRule kitRule : KitRule.values()) {
-                    rules.put(kitRule, config.getBoolean(path + kitRule.getSaveName(), false));
-                }
-
-                List<PotionEffect> potionEffects = new ArrayList<>();
-                if (!config.getStringList(path + "potionEffects").isEmpty()) {
-                    for (String potion : config.getStringList(path + "potionEffects")) {
-                        potionEffects.add(PotionEffectUtils.deserialize(potion));
-                    }
-                }
-
-                kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, health, kitEditorSlot, potionEffects, damageMultiplier));
+            HashSet<Arena> arenas = new HashSet<>();
+            for (String arenaName : config.getStringList(path + "arenas")) {
+                Arena arena = ArenaService.get().getArenaByName(arenaName);
+                if (arena != null) arenas.add(arena);
+                else ServerUtils.error("KitService: Arena " + arenaName + " not found for kit " + kitName);
             }
-        }
-    }
 
-    public boolean add(Kit kit) {
-        for (Kit k : kits) {
-            if (k.equals(kit)) return true;
+            HashMap<KitRule, Boolean> rules = new HashMap<>();
+            for (KitRule rule : KitRule.values()) {
+                rules.put(rule, config.getBoolean(path + rule.getSaveName(), false));
+            }
+
+            List<PotionEffect> potionEffects = new ArrayList<>();
+            for (String potion : config.getStringList(path + "potionEffects")) {
+                potionEffects.add(PotionEffectUtils.deserialize(potion));
+            }
+
+            kits.add(new Kit(kitName, displayName, items, arenas, icon, rules, slot, health, kitEditorSlot, potionEffects, damageMultiplier));
         }
-        kits.add(kit);
-        return false;
     }
 
     @Override
     public void save() {
-        getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
-        kits.forEach(kit -> {
+        getConfigFile().getConfiguration().getKeys(false)
+                .forEach(key -> getConfigFile().getConfiguration().set(key, null));
+
+        for (Kit kit : kits) {
             String path = "kits." + kit.getName() + ".";
             List<Value> values = new ArrayList<>();
 
@@ -95,60 +85,55 @@ public class KitService extends IService implements IKitService {
             values.add(new Value("potionEffects", kit.getPotionsAsString()));
             values.add(new Value("icon", ItemUtils.serialize(kit.getIcon())));
             values.add(new Value("slot", kit.getSlot()));
-            values.add(new Value("health", kit.getHealth()));
             values.add(new Value("kitEditor-slot", kit.getKitEditorSlot()));
+            values.add(new Value("health", kit.getHealth()));
             values.add(new Value("damage-multiplier", kit.getDamageMultiplier()));
 
-            for (Map.Entry<KitRule, Boolean> kitRuleEntry : kit.getRules().entrySet()) {
-                values.add(new Value(kitRuleEntry.getKey().getSaveName(), kit.is(kitRuleEntry.getKey())));
+            for (Map.Entry<KitRule, Boolean> entry : kit.getRules().entrySet()) {
+                values.add(new Value(entry.getKey().getSaveName(), kit.is(entry.getKey())));
             }
 
             save(values, path);
-        });
+        }
     }
-
 
     public Kit getKitByName(String kitName) {
-        for (Kit kit : kits) {
-            if (kit.getName().equalsIgnoreCase(kitName)) {
-                return kit;
-            }
-        }
-        return null;
+        return kits.stream()
+                .filter(kit -> kit.getName().equalsIgnoreCase(kitName))
+                .findFirst()
+                .orElse(null);
     }
 
-    public Kit getKitByDisplay(String kitName) {
-        for (Kit kit : kits) {
-            if (kit.getDisplayName().equals(kitName)) {
-                return kit;
-            }
-        }
-        return null;
+    public Kit getKitByDisplay(String displayName) {
+        return kits.stream()
+                .filter(kit -> kit.getDisplayName().equals(displayName))
+                .findFirst()
+                .orElse(null);
     }
 
     public List<String> getKitNames() {
         List<String> names = new ArrayList<>();
-        for (Kit kit : kits) {
-            names.add(kit.getName());
-        }
-
+        for (Kit kit : kits) names.add(kit.getName());
         return names;
     }
 
+    @Override
+    public IKit getKit(String name) {
+        return getKitByName(name);
+    }
+
+    public boolean add(Kit kit) {
+        for (Kit k : kits) if (k.equals(kit)) return true;
+        kits.add(kit);
+        return false;
+    }
 
     public void removeArenasFromKits(Arena arena) {
-        for (Kit kit : kits) {
-            kit.getArenas().remove(arena);
-        }
+        kits.forEach(kit -> kit.getArenas().remove(arena));
     }
 
     @Override
     public ConfigFile getConfigFile() {
         return ConfigService.get().getKitsConfig();
-    }
-
-    @Override
-    public IKit getKit(String name) {
-        return getKitByName(name) != null ? getKitByName(name) : null;
     }
 }

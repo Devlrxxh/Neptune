@@ -11,16 +11,28 @@ import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import java.util.Queue;
 
 public class QueueMessageTask extends NeptuneRunnable {
+
     @Override
     public void run() {
         if (!MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) return;
 
+        sendQueueReminders();
+    }
+
+    /**
+     * Iterates through all queued players and sends them the
+     * repeat queue message with placeholders replaced.
+     */
+    private void sendQueueReminders() {
         for (Queue<QueueEntry> queue : QueueService.get().getAllQueues().values()) {
-            for (QueueEntry queueEntry : queue) {
-                Profile profile = API.getProfile(queueEntry.getUuid());
-                MessagesLocale.QUEUE_REPEAT.send(queueEntry.getUuid(),
-                        new Replacement("<kit>", queueEntry.getKit().getDisplayName()),
-                        new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
+            for (QueueEntry entry : queue) {
+                Profile profile = API.getProfile(entry.getUuid());
+
+                MessagesLocale.QUEUE_REPEAT.send(
+                        entry.getUuid(),
+                        new Replacement("<kit>", entry.getKit().getDisplayName()),
+                        new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()))
+                );
             }
         }
     }

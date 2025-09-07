@@ -58,7 +58,6 @@ public enum KillEffect {
     private final Material material;
     private final int slot;
 
-
     KillEffect(String displayName, Material material, int slot) {
         this.displayName = displayName;
         this.material = material;

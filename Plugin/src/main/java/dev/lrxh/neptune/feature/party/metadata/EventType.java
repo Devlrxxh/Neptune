@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.feature.party.impl;
+package dev.lrxh.neptune.feature.party.metadata;
 
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MenusLocale;

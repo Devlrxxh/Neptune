@@ -2,8 +2,7 @@ package dev.lrxh.neptune.feature.queue.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
-import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
-import dev.lrxh.neptune.feature.leaderboard.impl.PlayerEntry;
+import dev.lrxh.neptune.feature.leaderboard.metadata.LeaderboardType;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.game.kit.Kit;
@@ -56,8 +55,8 @@ public class QueueSelectButton extends Button {
                 line = line.replaceAll("<player_" + split[1] + "_" + i + ">", "???");
                 line = line.replaceAll("<value" + split[1] + "_" + i + ">", "???");
             } else {
-                line = line.replaceAll("<player_" + split[1] + "_" + i + ">", playerEntry.getUsername());
-                line = line.replaceAll("<value" + split[1] + "_" + i + ">", String.valueOf(playerEntry.getValue()));
+                line = line.replaceAll("<player_" + split[1] + "_" + i + ">", playerEntry.username());
+                line = line.replaceAll("<value" + split[1] + "_" + i + ">", String.valueOf(playerEntry.value()));
             }
 
             lore.add(line);

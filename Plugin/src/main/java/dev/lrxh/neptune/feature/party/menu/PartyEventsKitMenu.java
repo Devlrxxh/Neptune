@@ -2,7 +2,7 @@ package dev.lrxh.neptune.feature.party.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.feature.party.Party;
-import dev.lrxh.neptune.feature.party.impl.EventType;
+import dev.lrxh.neptune.feature.party.metadata.EventType;
 import dev.lrxh.neptune.feature.party.menu.buttons.events.PartyTeamKitButton;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;

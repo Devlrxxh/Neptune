@@ -1,26 +1,52 @@
 package dev.lrxh.neptune.feature.party;
 
-import lombok.Getter;
-
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class PartyService {
+
     private static PartyService instance;
-    @Getter
-    private HashMap<UUID, Party> parties = new HashMap<>();
 
+    private final Map<UUID, Party> parties = new ConcurrentHashMap<>();
+
+    /**
+     * Gets the singleton instance of the PartyService.
+     *
+     * @return the PartyService instance
+     */
     public static PartyService get() {
-        if (instance == null) instance = new PartyService();
-
+        if (instance == null) {
+            instance = new PartyService();
+        }
         return instance;
     }
 
+    /**
+     * Registers a new party in the service.
+     *
+     * @param party the party to add
+     */
     public void addParty(Party party) {
-        this.parties.put(party.getLeader(), party);
+        parties.put(party.getLeader(), party);
     }
 
+    /**
+     * Removes a party from the service.
+     *
+     * @param party the party to remove
+     */
     public void removeParty(Party party) {
-        this.parties.remove(party.getLeader());
+        parties.remove(party.getLeader());
+    }
+
+    /**
+     * Gets an unmodifiable view of all active parties.
+     *
+     * @return unmodifiable map of leader UUIDs to parties
+     */
+    public Map<UUID, Party> getParties() {
+        return Collections.unmodifiableMap(parties);
     }
 }

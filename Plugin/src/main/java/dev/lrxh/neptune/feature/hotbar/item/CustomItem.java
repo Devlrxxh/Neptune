@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.feature.hotbar.impl;
+package dev.lrxh.neptune.feature.hotbar.item;
 
 import lombok.Getter;
 

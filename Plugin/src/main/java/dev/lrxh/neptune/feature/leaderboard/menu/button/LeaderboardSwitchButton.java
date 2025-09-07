@@ -1,6 +1,6 @@
 package dev.lrxh.neptune.feature.leaderboard.menu.button;
 
-import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.feature.leaderboard.metadata.LeaderboardType;
 import dev.lrxh.neptune.feature.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.List;
 
 public class LeaderboardSwitchButton extends Button {
+
     public final LeaderboardType leaderboardType;
     public final String title;
     public final List<String> lore;
@@ -35,7 +36,6 @@ public class LeaderboardSwitchButton extends Button {
         return new ItemBuilder(material)
                 .name(title)
                 .lore(lore, player)
-
                 .build();
     }
 }

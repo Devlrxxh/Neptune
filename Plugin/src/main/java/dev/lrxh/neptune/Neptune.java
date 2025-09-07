@@ -31,14 +31,14 @@ import dev.lrxh.neptune.feature.settings.command.SettingsCommand;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.arena.command.ArenaProvider;
-import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureListener;
+import dev.lrxh.neptune.game.arena.procedure.listener.ArenaProcedureListener;
 import dev.lrxh.neptune.game.duel.command.DuelCommand;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.kit.command.KitEditorCommand;
 import dev.lrxh.neptune.game.kit.command.KitProvider;
 import dev.lrxh.neptune.game.kit.command.StatsCommand;
-import dev.lrxh.neptune.game.kit.procedure.KitProcedureListener;
+import dev.lrxh.neptune.game.kit.procedure.listener.KitProcedureListener;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.game.match.commands.SpectateCommand;
@@ -74,9 +74,12 @@ import java.util.function.Consumer;
 
 @Getter
 public final class Neptune extends JavaPlugin {
-    private static Neptune instance;
+
+    @Getter private static Neptune instance;
+
     private Cache cache;
     private boolean placeholder = false;
+
     @Setter
     private boolean allowJoin;
     @Setter
@@ -89,6 +92,8 @@ public final class Neptune extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+
         allowJoin = false;
         allowMatches = false;
         loadManager();
