@@ -242,14 +242,6 @@ public class MatchListener implements Listener {
         if (!(event.getPushedBy() instanceof WindCharge wc))
             return;
 
-        if (event.getEntity() instanceof Player target && isSpectator(target)) {
-            event.setCancelled(true);
-            return;
-        }
-        if (event.getPushedBy() instanceof Player shooter && isSpectator(shooter)) {
-            event.setCancelled(true);
-            return;
-        }
         Entity pushed = event.getEntity();
 
         if (!(wc.getShooter() instanceof Player shooter)) {
@@ -306,6 +298,7 @@ public class MatchListener implements Listener {
         MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
         Bukkit.getPluginManager().callEvent(deathEvent);
         participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+        match.onDeath(participant);
     }
 
     @EventHandler
@@ -522,7 +515,6 @@ public class MatchListener implements Listener {
         Participant participant = match.getParticipant(player.getUniqueId());
         participant.setDeathCause(DeathCause.DIED);
         match.onDeath(participant);
-
         player.setHealth(20.0f);
         event.setCancelled(true);
     }

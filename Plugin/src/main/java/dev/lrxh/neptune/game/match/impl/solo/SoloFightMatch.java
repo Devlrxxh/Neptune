@@ -212,6 +212,8 @@ public class SoloFightMatch extends Match {
 
         participant.setDead(true);
 
+        playSound(Sound.ENTITY_PLAYER_ATTACK_STRONG);
+
         Participant participantKiller = participantA.getNameColored().equals(participant.getNameColored()) ? participantB : participantA;
         sendDeathMessage(participant);
 
