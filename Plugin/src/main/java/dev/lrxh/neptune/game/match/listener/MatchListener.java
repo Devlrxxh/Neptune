@@ -4,6 +4,7 @@ import dev.lrxh.api.events.MatchParticipantDeathEvent;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
@@ -37,6 +38,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.projectiles.ProjectileSource;
 
 import java.util.ArrayList;
@@ -133,7 +135,7 @@ public class MatchListener implements Listener {
 
             crystal.getPersistentDataContainer().set(
                     crystalOwnerKey,
-                    org.bukkit.persistence.PersistentDataType.STRING,
+                    PersistentDataType.STRING,
                     player.getUniqueId().toString());
         }
     }
@@ -145,7 +147,7 @@ public class MatchListener implements Listener {
             return;
         String uuid = entity.getPersistentDataContainer().get(
                 crystalOwnerKey,
-                org.bukkit.persistence.PersistentDataType.STRING);
+                PersistentDataType.STRING);
 
         if (uuid == null || uuid.isEmpty()) {
             event.setCancelled(true);
@@ -169,6 +171,28 @@ public class MatchListener implements Listener {
             event.blockList().clear();
             event.blockList().addAll(allowedBlocks);
         });
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onFriendlyFire(EntityDamageByEntityEvent event) {
+        if (SettingsLocale.FRIENDLY_FIRE.getBoolean()) return;
+        if (!(event.getEntity() instanceof Player victim)) return;
+        Player owner = getResponsiblePlayer(event);
+
+        if (owner == null) return;
+
+        Optional<Match> ownerMatchOptional = getMatchForPlayer(owner);
+        Optional<Match> victimMatchOptional = getMatchForPlayer(victim);
+
+        if (ownerMatchOptional.isEmpty() || victimMatchOptional.isEmpty()) {
+            return;
+        }
+
+        Match match = ownerMatchOptional.get();
+        if (!match.getUuid().equals(victimMatchOptional.get().getUuid())) return;
+
+        if (!(match instanceof TeamFightMatch teamMatch) || !(teamMatch.onSameTeam(owner.getUniqueId(), victim.getUniqueId()))) return;
+        event.setCancelled(true);
     }
 
     @EventHandler
@@ -231,13 +255,13 @@ public class MatchListener implements Listener {
         if (!(pushed instanceof Player target)) {
             return;
         }
-
+        
         // Check if both players are in matches
         if (!getMatchProfile(shooter).isPresent() || !getMatchProfile(target).isPresent()) {
             event.setCancelled(true);
             return;
         }
-
+        
         if (!target.canSee(shooter) || !shooter.canSee(target)) {
             event.setCancelled(true);
         }
@@ -839,6 +863,26 @@ public class MatchListener implements Listener {
             Profile profile = profileOpt.get();
             profile.getMatch().getEntities().add(event.getItemDrop());
         }
+    }
+
+    private Player getResponsiblePlayer(EntityDamageByEntityEvent event) {
+        Entity damager = event.getDamager();
+
+        if (damager instanceof Player p) return p;
+        if (damager instanceof TNTPrimed tnt && tnt.getSource() instanceof Player source) return source;
+        if (damager instanceof Projectile proj && proj.getShooter() instanceof Player shooter) return shooter;
+        if (damager instanceof ThrownPotion potion && potion.getShooter() instanceof Player thrower) return thrower;
+        if (damager instanceof AreaEffectCloud cloud && cloud.getSource() instanceof Player source) return source;
+        if (damager instanceof EnderCrystal crystal) {
+            String uuid = crystal.getPersistentDataContainer().get(
+                    crystalOwnerKey,
+                    PersistentDataType.STRING
+            );
+            if (uuid != null) {
+                return Bukkit.getPlayer(UUID.fromString(uuid));
+            }
+        }
+        return null;
     }
 
     private Player getNearbyPlayer(Location location) {
