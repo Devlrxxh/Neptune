@@ -17,7 +17,7 @@ public class WhitelistedBlocksMenu extends Menu {
     private final Arena arena;
 
     public WhitelistedBlocksMenu(Arena arena) {
-        super("&eWhitelisted Blocks", 45, Filter.NONE);
+        super("&eWhitelisted Blocks", 54, Filter.NONE);
         this.arena = arena;
     }
 
