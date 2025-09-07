@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.arena.procedure;
+package dev.lrxh.neptune.game.arena.procedure.listener;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
@@ -7,6 +7,7 @@ import dev.lrxh.neptune.game.arena.ArenaService;
 import dev.lrxh.neptune.game.arena.menu.ArenaManagementMenu;
 import dev.lrxh.neptune.game.arena.menu.ArenasManagementMenu;
 import dev.lrxh.neptune.game.arena.menu.WhitelistedBlocksMenu;
+import dev.lrxh.neptune.game.arena.procedure.metadata.ArenaProcedureType;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;

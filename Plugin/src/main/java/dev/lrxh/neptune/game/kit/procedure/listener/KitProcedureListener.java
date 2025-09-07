@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.kit.procedure;
+package dev.lrxh.neptune.game.kit.procedure.listener;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
@@ -7,6 +7,7 @@ import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.game.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.game.kit.menu.KitsManagementMenu;
+import dev.lrxh.neptune.game.kit.procedure.metadata.KitProcedureType;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.database.DatabaseService;

@@ -12,7 +12,7 @@
     <name>Plugin</name>
 
     <properties>
-        <java.version>20</java.version>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 

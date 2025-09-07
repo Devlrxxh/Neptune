@@ -1,9 +1,9 @@
-package dev.lrxh.neptune.feature.hotbar.impl;
+package dev.lrxh.neptune.feature.hotbar.item.metadata;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.feature.divisions.menu.DivisionsMenu;
-import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
+import dev.lrxh.neptune.feature.leaderboard.metadata.LeaderboardType;
 import dev.lrxh.neptune.feature.leaderboard.menu.LeaderboardMenu;
 import dev.lrxh.neptune.feature.party.Party;
 import dev.lrxh.neptune.feature.party.menu.PartySettingsMenu;
@@ -42,6 +42,7 @@ public enum ItemAction {
             new QueueMenu().open(player);
         }
     },
+
     QUEUE_LEAVE() {
         @Override
         public void execute(Player player) {
@@ -50,30 +51,35 @@ public enum ItemAction {
             MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId());
         }
     },
+
     KIT_EDITOR() {
         @Override
         public void execute(Player player) {
             new KitEditorMenu().open(player);
         }
     },
+
     STATS() {
         @Override
         public void execute(Player player) {
             new StatsMenu(player.getName()).open(player);
         }
     },
+
     SPECTATE_MENU {
         @Override
         public void execute(Player player) {
             new MatchListMenu().open(player);
         }
     },
+
     LEADERBOARDS() {
         @Override
         public void execute(Player player) {
             new LeaderboardMenu(LeaderboardType.KILLS).open(player);
         }
     },
+
     PARTY_CREATE() {
         @Override
         public void execute(Player player) {
@@ -81,6 +87,7 @@ public enum ItemAction {
             profile.createParty();
         }
     },
+
     PARTY_INFO() {
         @Override
         public void execute(Player player) {
@@ -98,12 +105,14 @@ public enum ItemAction {
                     new Replacement("<size>", String.valueOf(party.getUsers().size())));
         }
     },
+
     PARTY_DISBAND() {
         @Override
         public void execute(Player player) {
             API.getProfile(player.getUniqueId()).disband();
         }
     },
+
     PARTY_EVENTS() {
         @Override
         public void execute(Player player) {
@@ -120,6 +129,7 @@ public enum ItemAction {
             new PartyEventsMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).open(player);
         }
     },
+
     PARTY_DUEL() {
         @Override
         public void execute(Player player) {
@@ -131,6 +141,7 @@ public enum ItemAction {
             new PartyDuelMenu(API.getProfile(player.getUniqueId()).getGameData().getParty()).open(player);
         }
     },
+
     PARTY_SETTINGS() {
         @Override
         public void execute(Player player) {
@@ -142,28 +153,34 @@ public enum ItemAction {
             new PartySettingsMenu(party).open(player);
         }
     },
+
     DIVISIONS() {
         @Override
         public void execute(Player player) {
             new DivisionsMenu().open(player);
         }
     },
+
     PLAY_AGAIN() {
         @Override
         public void execute(Player player) {
             Profile profile = API.getProfile(player);
+
             Match match = profile.getMatch();
             if (match == null) return;
+
             Participant participant = match.getParticipant(player);
             participant.setDisconnected(true);
             PlayerUtil.reset(participant.getPlayer());
             PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+
             profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             profile.setMatch(null);
 
             QueueService.get().add(new QueueEntry(match.getKit(), player.getUniqueId()), true);
         }
     },
+
     REMATCH() {
         @Override
         public void execute(Player player) {
@@ -171,20 +188,25 @@ public enum ItemAction {
             if (profile == null) return;
             SoloFightMatch match = (SoloFightMatch) profile.getMatch();
             if (match == null) return;
+
             match.getKit().getRandomArena().thenAccept(arena -> {
                 if (arena == null) {
                     player.sendMessage(CC.error("No arenas were found!"));
                     return;
                 }
+
                 DuelRequest duelRequest = new DuelRequest(profile.getPlayerUUID(), match.getKit(), arena, false, match.getRounds());
                 Player opponent = match.getParticipant(player).getOpponent().getPlayer();
                 if (opponent == null) return;
+
                 Profile opponentProfile = API.getProfile(opponent);
                 if (opponentProfile == null) return;
+
                 opponentProfile.sendRematch(duelRequest);
             });
         }
     },
+
     SETTINGS() {
         @Override
         public void execute(Player player) {
@@ -192,5 +214,10 @@ public enum ItemAction {
         }
     };
 
+    /**
+     * Executes the action for the given player.
+     *
+     * @param player the player executing this action
+     */
     public abstract void execute(Player player);
 }

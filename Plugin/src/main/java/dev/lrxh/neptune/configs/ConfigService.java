@@ -4,10 +4,11 @@ import dev.lrxh.neptune.configs.impl.*;
 import dev.lrxh.neptune.utils.ConfigFile;
 import lombok.Getter;
 
-
 @Getter
 public class ConfigService {
+
     private static ConfigService instance;
+
     private ConfigFile messagesConfig;
     private ConfigFile arenasConfig;
     private ConfigFile kitsConfig;
@@ -19,9 +20,16 @@ public class ConfigService {
     private ConfigFile cosmeticsConfig;
     private ConfigFile killMessagesConfig;
 
+    /**
+     * Returns the singleton instance of ConfigService.
+     * Creates the instance if it does not already exist.
+     *
+     * @return the singleton ConfigService instance
+     */
     public static ConfigService get() {
-        if (instance == null) instance = new ConfigService();
-
+        if (instance == null) {
+            instance = new ConfigService();
+        }
         return instance;
     }
 

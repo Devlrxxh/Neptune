@@ -14,83 +14,142 @@ import org.bukkit.Bukkit;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-public class QueueService {
+public final class QueueService {
 
     private static QueueService instance;
 
     private final Map<Kit, Queue<QueueEntry>> kitQueues = new HashMap<>();
 
+    private QueueService() {
+    }
+
+    /**
+     * Returns the singleton instance of the {@code QueueService}.
+     *
+     * @return the singleton instance
+     */
     public static QueueService get() {
-        if (instance == null) instance = new QueueService();
+        if (instance == null) {
+            instance = new QueueService();
+        }
         return instance;
     }
 
-    public void add(QueueEntry queueEntry, boolean add) {
-        UUID playerUUID = queueEntry.getUuid();
-        Kit kit = queueEntry.getKit();
+    /**
+     * Adds a player entry to the queue for its kit.
+     *
+     * @param entry the queue entry
+     * @param fireEvent whether to fire a {@link QueueJoinEvent} and update player state
+     */
+    public void add(QueueEntry entry, boolean fireEvent) {
+        UUID playerUUID = entry.getUuid();
+        Kit kit = entry.getKit();
 
         if (get(playerUUID) != null) return;
 
         Profile profile = API.getProfile(playerUUID);
+
         if (profile.hasState(ProfileState.IN_GAME)) return;
         if (profile.getGameData().getParty() != null) return;
-        if (queueEntry.getKit().is(KitRule.HIDDEN)) return;
+        if (kit.is(KitRule.HIDDEN)) return;
 
-        kitQueues.computeIfAbsent(kit, k -> new ConcurrentLinkedQueue<>()).offer(queueEntry);
+        kitQueues
+                .computeIfAbsent(kit, k -> new ConcurrentLinkedQueue<>())
+                .offer(entry);
 
-        if (add) {
-            QueueJoinEvent event = new QueueJoinEvent(queueEntry);
-            Bukkit.getScheduler().runTask(Neptune.get(), () -> Bukkit.getPluginManager().callEvent(event));
+        if (fireEvent) {
+            QueueJoinEvent event = new QueueJoinEvent(entry);
+            Bukkit.getScheduler().runTask(Neptune.get(),
+                    () -> Bukkit.getPluginManager().callEvent(event));
+
             if (event.isCancelled()) return;
+
             profile.setState(ProfileState.IN_QUEUE);
             kit.addQueue();
-            MessagesLocale.QUEUE_JOIN.send(playerUUID,
+
+            MessagesLocale.QUEUE_JOIN.send(
+                    playerUUID,
                     new Replacement("<kit>", kit.getDisplayName()),
-                    new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing())));
+                    new Replacement("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()))
+            );
         }
     }
 
+    /**
+     * Removes the queue entry for the given player UUID.
+     *
+     * @param playerUUID the UUID of the player
+     * @return the removed entry, or {@code null} if not found
+     */
     public QueueEntry remove(UUID playerUUID) {
         QueueEntry entry = get(playerUUID);
         if (entry == null) return null;
 
-        Kit kit = entry.getKit();
-        Queue<QueueEntry> queue = kitQueues.get(kit);
+        Queue<QueueEntry> queue = kitQueues.get(entry.getKit());
         if (queue != null) {
             queue.remove(entry);
             entry.getKit().removeQueue();
         }
-
         return entry;
     }
 
-    public void remove(QueueEntry queueEntry) {
-        remove(queueEntry.getUuid());
+    /**
+     * Removes the specified queue entry.
+     *
+     * @param entry the queue entry to remove
+     */
+    public void remove(QueueEntry entry) {
+        remove(entry.getUuid());
     }
 
+    /**
+     * Randomly polls a player from a given kit's queue and removes them.
+     *
+     * @param kit the kit
+     * @return a randomly selected entry, or {@code null} if empty
+     */
     public QueueEntry poll(Kit kit) {
         Queue<QueueEntry> queue = kitQueues.get(kit);
         if (queue == null || queue.isEmpty()) return null;
 
         List<QueueEntry> entries = new ArrayList<>(queue);
-        return remove(entries.get(new Random().nextInt(entries.size())).getUuid());
+        QueueEntry randomEntry = entries.get(new Random().nextInt(entries.size()));
+        return remove(randomEntry.getUuid());
     }
 
-    public QueueEntry get(UUID uuid) {
+    /**
+     * Retrieves the queue entry for a given player.
+     *
+     * @param playerUUID the UUID of the player
+     * @return the entry, or {@code null} if not found
+     */
+    public QueueEntry get(UUID playerUUID) {
         for (Queue<QueueEntry> queue : kitQueues.values()) {
             for (QueueEntry entry : queue) {
-                if (entry.getUuid().equals(uuid)) return entry;
+                if (entry.getUuid().equals(playerUUID)) {
+                    return entry;
+                }
             }
         }
         return null;
     }
 
+    /**
+     * Returns the total number of players across all queues.
+     *
+     * @return the total queue size
+     */
     public int getQueueSize() {
-        return QueueService.get().getAllQueues().values().stream()
+        return kitQueues.values().stream()
                 .mapToInt(Queue::size)
                 .sum();
     }
 
+    /**
+     * Gets all kit queues.
+     *
+     * @return a map of kit to queue
+     */
     public Map<Kit, Queue<QueueEntry>> getAllQueues() {
         return kitQueues;
     }

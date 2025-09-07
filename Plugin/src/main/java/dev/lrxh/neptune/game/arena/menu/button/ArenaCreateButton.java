@@ -1,7 +1,7 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
 import dev.lrxh.neptune.API;
-import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureType;
+import dev.lrxh.neptune.game.arena.procedure.metadata.ArenaProcedureType;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
