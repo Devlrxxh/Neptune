@@ -16,6 +16,7 @@ import dev.lrxh.neptune.feature.cosmetics.command.CosmeticsCommand;
 import dev.lrxh.neptune.feature.divisions.DivisionService;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.hotbar.listener.ItemListener;
+import dev.lrxh.neptune.feature.itembrowser.ItemBrowserService;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.feature.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.feature.leaderboard.task.LeaderboardTask;
@@ -146,7 +147,8 @@ public final class Neptune extends JavaPlugin {
                 new ItemListener(),
                 new MenuListener(),
                 new ArenaProcedureListener(),
-                new KitProcedureListener()
+                new KitProcedureListener(),
+                ItemBrowserService.get()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 

@@ -92,6 +92,6 @@ public class ItemBrowserMenu extends PaginatedMenu {
 
     @Override
     public int getMaxItemsPerPage() {
-        return 45;
+        return 36;
     }
 }
