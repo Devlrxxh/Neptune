@@ -139,11 +139,10 @@ public class MatchListener implements Listener {
         if (getMatchProfile(event.getPlayer()).isPresent()) return;
         if (!getMatchProfile(event.getPlayer()).get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE)) return;
         event.setCancelled(true);
-        Creeper creeper = (Creeper) event.getInteractionPoint().getWorld().spawnEntity(
+        ((Creeper) event.getInteractionPoint().getWorld().spawnEntity(
                 event.getInteractionPoint(),
                 EntityType.CREEPER
-        );
-        creeper.ignite();
+        )).ignite();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
