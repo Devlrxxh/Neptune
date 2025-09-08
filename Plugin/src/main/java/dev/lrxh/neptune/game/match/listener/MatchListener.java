@@ -121,9 +121,10 @@ public class MatchListener implements Listener {
                 event.setCancelled(true);
 
                 TNTPrimed tnt = (TNTPrimed) event.getPlayer().getWorld().spawnEntity(
-                        event.getBlockPlaced().getLocation(),
+                        event.getBlockPlaced().getLocation().add(0.5, 0.5, 0.5),
                         EntityType.TNT
                 );
+                tnt.setFuseTicks(60);
                 tnt.getPersistentDataContainer().set(
                         explosiveOwnerKey,
                         PersistentDataType.STRING,
@@ -166,39 +167,14 @@ public class MatchListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onCreeperSpawn(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (event.getItem().getType() != Material.CREEPER_SPAWN_EGG) return;
-        Optional<Profile> profileOpt = getMatchProfile(event.getPlayer());
-        if (!profileOpt.isPresent()) return;
-        if (!profileOpt.get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE)) return;
-        event.setCancelled(true);
-        Creeper creeper = (Creeper) event.getInteractionPoint().getWorld().spawnEntity(
-                event.getInteractionPoint(),
-                EntityType.CREEPER
-        );
-        creeper.ignite();
-        creeper.getPersistentDataContainer().set(
-                explosiveOwnerKey,
-                PersistentDataType.STRING,
-                event.getPlayer().getUniqueId().toString()
-        );
-        // Add creeper entity to match entities
-        profileOpt.get().getMatch().getEntities().add(creeper);
-    }
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntitySpawn(EntitySpawnEvent event) {
-        // Add every entity spawned in the world to the match's entity list if spawned by a player in a match
         Entity entity = event.getEntity();
-        if (entity instanceof Player) return; // Don't track players
-        // Find players nearby who are in a match
+        if (entity instanceof Player) return;
         for (Player player : entity.getWorld().getPlayers()) {
             Optional<Profile> profileOpt = getMatchProfile(player);
             if (profileOpt.isPresent()) {
                 Match match = profileOpt.get().getMatch();
-                // Optionally filter by distance (e.g. 10 blocks)
                 if (entity.getLocation().distanceSquared(player.getLocation()) < 100) {
                     match.getEntities().add(entity);
                     break;
@@ -211,19 +187,25 @@ public class MatchListener implements Listener {
     public void onCreeperSpawn(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
         if (event.getItem().getType() != Material.CREEPER_SPAWN_EGG) return;
-        if (getMatchProfile(event.getPlayer()).isPresent()) return;
-        if (!getMatchProfile(event.getPlayer()).get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE)) return;
+        Optional<Profile> profileOpt = getMatchProfile(event.getPlayer());
+        if (profileOpt.isEmpty()) return;
+        if (!profileOpt.get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE)) return;
+        Location spawnLocation = event.getInteractionPoint();
+        Creeper creeper = (Creeper) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.CREEPER,
+                CreatureSpawnEvent.SpawnReason.SPAWNER_EGG);
+        creeper.ignite();
+        creeper.getPersistentDataContainer().set(
+                explosiveOwnerKey,
+                PersistentDataType.STRING,
+                event.getPlayer().getUniqueId().toString()
+        );
+        profileOpt.get().getMatch().getEntities().add(creeper);
         event.setCancelled(true);
-        ((Creeper) event.getInteractionPoint().getWorld().spawnEntity(
-                event.getInteractionPoint(),
-                EntityType.CREEPER
-        )).ignite();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof EnderCrystal crystal && event.getDamager() instanceof Player player) {
-            // Only allow if player is in match
             if (!getMatchProfile(player).isPresent()) {
                 event.setCancelled(true);
                 return;
