@@ -117,10 +117,33 @@ public class MatchListener implements Listener {
                 return;
             }
 
+            if (event.getBlock().getType() == Material.TNT &&
+                    match.getKit().getRules().get(KitRule.AUTO_IGNITE)) {
+                event.setCancelled(true);
+                event.getPlayer().getWorld().spawnEntity(
+                        event.getBlockPlaced().getLocation(),
+                        EntityType.TNT
+                );
+            }
+
             match.getPlacedBlocks().add(blockLocation);
         } else {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onCreeperSpawn(PlayerInteractEvent event) {
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getItem().getType() != Material.CREEPER_SPAWN_EGG) return;
+        if (getMatchProfile(event.getPlayer()).isPresent()) return;
+        if (!getMatchProfile(event.getPlayer()).get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE)) return;
+        event.setCancelled(true);
+        Creeper creeper = (Creeper) event.getInteractionPoint().getWorld().spawnEntity(
+                event.getInteractionPoint(),
+                EntityType.CREEPER
+        );
+        creeper.ignite();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
