@@ -15,7 +15,7 @@ public class QueueMessageTask extends NeptuneRunnable {
     public void run() {
         if (!MessagesLocale.QUEUE_REPEAT_TOGGLE.getBoolean()) return;
 
-        for (Queue<QueueEntry> queue : QueueService.get().getAllQueues().values()) {
+        for (Queue<QueueEntry> queue : QueueService.get().getRawQueues().values()) {
             for (QueueEntry queueEntry : queue) {
                 Profile profile = API.getProfile(queueEntry.getUuid());
                 MessagesLocale.QUEUE_REPEAT.send(queueEntry.getUuid(),

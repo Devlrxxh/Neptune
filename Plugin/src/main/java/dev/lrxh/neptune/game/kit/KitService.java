@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.game.kit;
 
-import dev.lrxh.api.kit.IKit;
 import dev.lrxh.api.kit.IKitService;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.game.arena.Arena;
@@ -145,10 +144,5 @@ public class KitService extends IService implements IKitService {
     @Override
     public ConfigFile getConfigFile() {
         return ConfigService.get().getKitsConfig();
-    }
-
-    @Override
-    public IKit getKit(String name) {
-        return getKitByName(name) != null ? getKitByName(name) : null;
     }
 }

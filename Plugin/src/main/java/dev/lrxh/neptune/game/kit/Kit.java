@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.kit;
 
+import dev.lrxh.api.arena.IArena;
 import dev.lrxh.api.kit.IKit;
 import dev.lrxh.api.kit.IKitRule;
 import dev.lrxh.neptune.API;
@@ -116,12 +117,12 @@ public class Kit implements IKit {
         return rules;
     }
 
-    public void toggleArena(Arena arena) {
+    public void toggleArena(IArena arena) {
         if (arenas.contains(arena)) {
             arenas.remove(arena);
             return;
         }
-        arenas.add(arena);
+        arenas.add((Arena) arena);
     }
 
     public boolean isArenaAdded(Arena arena) {
@@ -158,7 +159,7 @@ public class Kit implements IKit {
         return potions;
     }
 
-    public boolean is(KitRule kitRule) {
+    public boolean is(IKitRule kitRule) {
         return rules.get(kitRule);
     }
 
@@ -182,12 +183,6 @@ public class Kit implements IKit {
         }
     }
 
-    @Override
-    public HashMap<IKitRule, Boolean> getRule() {
-        return rules.entrySet().stream().collect(HashMap::new,
-                (map, entry) -> map.put(entry.getKey(), entry.getValue()), HashMap::putAll);
-    }
-
     public CompletableFuture<Arena> getRandomArena() {
         List<Arena> arenas1 = new ArrayList<>();
 
@@ -203,7 +198,7 @@ public class Kit implements IKit {
             return CompletableFuture.completedFuture(null);
 
         Arena selected = arenas1.get(ThreadLocalRandom.current().nextInt(arenas1.size()));
-        return selected.createDuplicate().thenApply(arena -> arena);
+        return (CompletableFuture<Arena>) selected.createDuplicate().thenApply(arena -> arena);
     }
 
     @Override

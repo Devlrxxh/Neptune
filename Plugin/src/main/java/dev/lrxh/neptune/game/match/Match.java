@@ -6,7 +6,6 @@ import dev.lrxh.api.match.IMatch;
 import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.configs.impl.HotbarLocale;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.ScoreboardLocale;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
@@ -25,7 +24,6 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
 import dev.lrxh.neptune.utils.CC;
-import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.Time;
 import lombok.AllArgsConstructor;
@@ -40,7 +38,6 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.scoreboard.Criteria;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -355,7 +352,7 @@ public abstract class Match implements IMatch {
         });
     }
 
-    private void showHealth() {
+    public void showHealth() {
         forEachPlayer(player -> {
             Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
 

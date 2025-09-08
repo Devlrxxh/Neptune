@@ -26,7 +26,7 @@ public class QueueCheckTask extends NeptuneRunnable {
     @Override
     public void run() {
 
-        for (Queue<QueueEntry> queue : QueueService.get().getAllQueues().values()) {
+        for (Queue<QueueEntry> queue : QueueService.get().getRawQueues().values()) {
             for (QueueEntry entry : queue) {
                 Player player = Bukkit.getPlayer(entry.getUuid());
                 if (player != null) {
@@ -35,7 +35,7 @@ public class QueueCheckTask extends NeptuneRunnable {
             }
         }
 
-        for (Map.Entry<Kit, Queue<QueueEntry>> entry : QueueService.get().getAllQueues().entrySet()) {
+        for (Map.Entry<Kit, Queue<QueueEntry>> entry : QueueService.get().getRawQueues().entrySet()) {
             Kit kit = entry.getKey();
             Queue<QueueEntry> kitQueue = entry.getValue();
 
