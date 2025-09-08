@@ -21,6 +21,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ArenaSelectMenu extends Menu {
     private final Kit kit;
@@ -70,7 +71,9 @@ public class ArenaSelectMenu extends Menu {
                 public ItemStack getItemStack(Player p) {
                     return new ItemBuilder(Material.MAP)
                             .name(MenusLocale.ARENA_ITEM_NAME.getString().replace("<arena>",  arena.getName()))
-                            .lore(MenusLocale.ARENA_ITEM_LORE.getStringList())
+                            .lore(MenusLocale.ARENA_ITEM_LORE.getStringList().stream()
+                                    .map(it -> it.replace("<arena>", arena.getName()))
+                                    .collect(Collectors.toList()))
                             .build();
                 }
 
