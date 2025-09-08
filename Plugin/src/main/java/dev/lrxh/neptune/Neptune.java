@@ -20,6 +20,7 @@ import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.feature.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.feature.leaderboard.task.LeaderboardTask;
 import dev.lrxh.neptune.feature.party.command.PartyCommand;
+import dev.lrxh.neptune.feature.queue.QueueService;
 import dev.lrxh.neptune.feature.queue.command.QueueCommand;
 import dev.lrxh.neptune.feature.queue.command.QueueMenuCommand;
 import dev.lrxh.neptune.feature.queue.command.QuickQueueCommand;
@@ -100,7 +101,7 @@ public final class Neptune extends JavaPlugin {
     private void initAPI() {
         getServer().getServicesManager().register(
                 NeptuneAPI.class,
-                new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get()),
+                new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get(), QueueService.get()),
                 this,
                 ServicePriority.Normal
                 );
