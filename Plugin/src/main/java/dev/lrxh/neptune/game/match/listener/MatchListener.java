@@ -130,7 +130,6 @@ public class MatchListener implements Listener {
                         PersistentDataType.STRING,
                         event.getPlayer().getUniqueId().toString()
                 );
-                // Add TNT entity to match entities
                 match.getEntities().add(tnt);
 
                 event.getPlayer().getWorld().spawnEntity(
@@ -194,6 +193,7 @@ public class MatchListener implements Listener {
         Creeper creeper = (Creeper) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.CREEPER,
                 CreatureSpawnEvent.SpawnReason.SPAWNER_EGG);
         creeper.ignite();
+
         creeper.getPersistentDataContainer().set(
                 explosiveOwnerKey,
                 PersistentDataType.STRING,
