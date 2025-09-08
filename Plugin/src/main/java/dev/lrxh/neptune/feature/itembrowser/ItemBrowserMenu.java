@@ -18,11 +18,11 @@ public class ItemBrowserMenu extends PaginatedMenu {
 
     private final ItemBrowserService service;
     private final Consumer<Material> itemConsumer;
-    private final String search;
     private final Runnable returnConsumer;
+    private final String search;
 
     public ItemBrowserMenu(ItemBrowserService service, Consumer<Material> itemConsumer, String search, Runnable returnConsumer) {
-        super("&fItem Browser", 54, Filter.FILL);
+        super("&fItem Browser", 54, Filter.NONE);
         this.service = service;
         this.itemConsumer = itemConsumer;
         this.search = search == null ? "" : search;
@@ -60,7 +60,7 @@ public class ItemBrowserMenu extends PaginatedMenu {
     @Override
     public List<Button> getGlobalButtons(Player player) {
         List<Button> global = new ArrayList<>();
-        global.add(new Button(45) { // bottom left corner
+        global.add(new Button(45) {
             @Override
             public ItemStack getItemStack(Player p) {
                 return new ItemBuilder(Material.OAK_SIGN)
@@ -69,10 +69,10 @@ public class ItemBrowserMenu extends PaginatedMenu {
             }
             @Override
             public void onClick(ClickType type, Player p) {
-                service.requestSearch(p, itemConsumer, dev.lrxh.neptune.Neptune.get(), returnConsumer);
+                service.requestSearch(p, itemConsumer, returnConsumer);
             }
         });
-        global.add(new Button(49) { // bottom center
+        global.add(new Button(49) {
             @Override
             public ItemStack getItemStack(Player p) {
                 return new ItemBuilder(Material.ARROW)

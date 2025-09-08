@@ -1,21 +1,35 @@
 package dev.lrxh.neptune.feature.itembrowser;
 
-import dev.lrxh.neptune.utils.menu.Button;
+import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.profile.ProfileService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 import java.util.function.Consumer;
 
 public class ItemBrowserService implements Listener {
 
-    private static final List<Material> cachedMaterials = new ArrayList<>();
+    private static ItemBrowserService instance;
 
-    static {
+    public static ItemBrowserService get() {
+        if (instance == null) instance = new ItemBrowserService(Neptune.get());
+
+        return instance;
+    }
+
+    private final Plugin plugin;
+    private final Map<UUID, SearchSession> searchSessions = new HashMap<>();
+    private final List<Material> cachedMaterials;
+
+    public ItemBrowserService(Plugin plugin) {
+        this.plugin = plugin;
+        this.cachedMaterials = new ArrayList<>();
         for (Material material : Material.values()) {
             if (material.isItem()) {
                 cachedMaterials.add(material);
@@ -27,8 +41,6 @@ public class ItemBrowserService implements Listener {
         return new ArrayList<>(cachedMaterials);
     }
 
-    private final Map<UUID, PendingSearch> waitingForSearch = new HashMap<>();
-
     public void openBrowser(Player player, Consumer<Material> itemConsumer, Runnable returnConsumer) {
         openBrowser(player, itemConsumer, "", returnConsumer);
     }
@@ -37,31 +49,29 @@ public class ItemBrowserService implements Listener {
         new ItemBrowserMenu(this, itemConsumer, search, returnConsumer).open(player);
     }
 
+    public void requestSearch(Player player, Consumer<Material> itemConsumer, Runnable returnConsumer) {
+        player.closeInventory();
+        player.sendMessage("§ePlease type your search in chat.");
+        searchSessions.put(player.getUniqueId(), new SearchSession(itemConsumer, returnConsumer));
+    }
+
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        PendingSearch pending = waitingForSearch.remove(uuid);
-        if (pending != null) {
+        SearchSession session = searchSessions.remove(uuid);
+        if (session != null) {
             event.setCancelled(true);
             String input = event.getMessage();
-            Bukkit.getScheduler().runTask(pending.plugin, () -> openBrowser(event.getPlayer(), pending.consumer, input, pending.returnConsumer));
+            Bukkit.getScheduler().runTask(plugin, () -> openBrowser(event.getPlayer(), session.itemConsumer, input, session.returnConsumer));
         }
     }
 
-    public void requestSearch(Player player, Consumer<Material> consumer, org.bukkit.plugin.Plugin plugin, Runnable returnConsumer) {
-        player.closeInventory();
-        player.sendMessage("§ePlease type your search in chat.");
-        waitingForSearch.put(player.getUniqueId(), new PendingSearch(consumer, plugin, returnConsumer));
-    }
-
-    private static class PendingSearch {
-        final Consumer<Material> consumer;
-        final org.bukkit.plugin.Plugin plugin;
+    private static class SearchSession {
+        final Consumer<Material> itemConsumer;
         final Runnable returnConsumer;
 
-        PendingSearch(Consumer<Material> consumer, org.bukkit.plugin.Plugin plugin, Runnable returnConsumer) {
-            this.consumer = consumer;
-            this.plugin = plugin;
+        SearchSession(Consumer<Material> itemConsumer, Runnable returnConsumer) {
+            this.itemConsumer = itemConsumer;
             this.returnConsumer = returnConsumer;
         }
     }

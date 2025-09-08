@@ -1,9 +1,9 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.feature.itembrowser.ItemBrowserService;
 import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureType;
-import dev.lrxh.neptune.profile.impl.Profile;
+import dev.lrxh.neptune.game.arena.menu.WhitelistedBlocksMenu;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -11,7 +11,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
-
 
 public class AddWhitelistBlockButton extends Button {
     private final Arena arena;
@@ -23,12 +22,19 @@ public class AddWhitelistBlockButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
-        Profile profile = API.getProfile(player);
-        profile.getArenaProcedure().setArena(arena);
-
-        profile.getArenaProcedure().setType(ArenaProcedureType.ADD_BLOCK);
-        player.sendMessage(CC.info("Hold the block you want to whitelist in main hand and type &aDone"));
         player.closeInventory();
+        player.sendMessage(CC.info("Select a block to whitelist!"));
+
+        ItemBrowserService service = ItemBrowserService.get();
+        service.openBrowser(player, material -> {
+            if (!arena.getWhitelistedBlocks().contains(material)) {
+                arena.getWhitelistedBlocks().add(material);
+                player.sendMessage(CC.success("Added block " + material.name() + " to whitelist."));
+            } else {
+                player.sendMessage(CC.error(material.name() + " is already whitelisted."));
+            }
+            new WhitelistedBlocksMenu(arena).open(player);
+        }, () -> new WhitelistedBlocksMenu(arena).open(player));
     }
 
     @Override
