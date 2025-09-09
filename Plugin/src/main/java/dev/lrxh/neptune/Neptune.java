@@ -16,6 +16,7 @@ import dev.lrxh.neptune.feature.cosmetics.command.CosmeticsCommand;
 import dev.lrxh.neptune.feature.divisions.DivisionService;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.hotbar.listener.ItemListener;
+import dev.lrxh.neptune.feature.itembrowser.ItemBrowserService;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
 import dev.lrxh.neptune.feature.leaderboard.command.LeaderboardCommand;
 import dev.lrxh.neptune.feature.leaderboard.task.LeaderboardTask;
@@ -146,7 +147,8 @@ public final class Neptune extends JavaPlugin {
                 new ItemListener(),
                 new MenuListener(),
                 new ArenaProcedureListener(),
-                new KitProcedureListener()
+                new KitProcedureListener(),
+                ItemBrowserService.get()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
@@ -195,7 +197,7 @@ public final class Neptune extends JavaPlugin {
         drink.register(new FollowCommand(), "follow");
         drink.register(new QueueCommand(), "queue").registerSub(new QueueMenuCommand());
         drink.register(new DuelCommand(), "duel", "1v1").setDefaultCommandIsHelp(true);
-        drink.register(new LeaveCommand(), "leave", "forfeit", "spawn", "l");
+        drink.register(new LeaveCommand(), "leave", "forfeit", "spawn", "l", "ff");
         drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard").setDefaultCommandIsHelp(true);
         drink.register(new SettingsCommand(), "settings").setDefaultCommandIsHelp(true);
         drink.register(new SpectateCommand(), "spec", "spectate");
