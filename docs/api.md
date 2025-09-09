@@ -14,7 +14,7 @@
  <dependency>
      <groupId>com.github.Devlrxxh.Neptune</groupId>
      <artifactId>API</artifactId>
-     <version>master-SNAPSHOT</version> <!-- change this to the latest commit hash -->
+     <version>{latest-commit-hash}</version> <!-- change this to the latest commit hash -->
      <scope>provided</scope>
  </dependency>
 ```
