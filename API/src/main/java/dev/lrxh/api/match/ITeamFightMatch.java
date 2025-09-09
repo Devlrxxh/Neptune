@@ -10,6 +10,8 @@ public interface ITeamFightMatch extends IMatch {
     List<IParticipant> getParticipants();
     IMatchTeam getTeamA();
     IMatchTeam getTeamB();
+    IMatchTeam getWinner();
+    IMatchTeam getLoser();
     IMatchTeam getParticipantTeam(IParticipant participant);
     boolean onSameTeam(UUID playerUUID, UUID otherUUID);
 }

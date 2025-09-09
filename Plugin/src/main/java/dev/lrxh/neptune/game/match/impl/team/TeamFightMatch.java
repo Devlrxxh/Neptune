@@ -49,6 +49,14 @@ public class TeamFightMatch extends Match implements ITeamFightMatch {
     public IMatchTeam getParticipantTeam(IParticipant participant) {
         return getParticipantTeam((Participant) participant);
     }
+    
+    public IMatchTeam getWinner() {
+        return teamA.isLoser() ? teamB : teamA;
+    }
+
+    public IMatchTeam getLoser() {
+        return teamA.isLoser() ? teamA : teamB;
+    }
 
     @Override
     public void win(Participant winner) {
