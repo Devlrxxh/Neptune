@@ -186,7 +186,7 @@ public class MatchListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCreeperSpawn(PlayerInteractEvent event) {
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (event.getItem().getType() != Material.CREEPER_SPAWN_EGG) return;
+        if (event.getItem() == null || event.getItem().getType() != Material.CREEPER_SPAWN_EGG) return;
         Optional<Profile> profileOpt = getMatchProfile(event.getPlayer());
         if (profileOpt.isEmpty()) return;
         if (!profileOpt.get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE)) return;
