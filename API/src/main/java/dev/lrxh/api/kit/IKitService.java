@@ -1,6 +1,8 @@
 package dev.lrxh.api.kit;
 
-public interface IKitService {
+import java.util.LinkedHashSet;
 
+public interface IKitService {
+    LinkedHashSet<IKit> getAllKits();
     IKit getKit(String name);
 }

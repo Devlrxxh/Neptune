@@ -151,4 +151,12 @@ public class KitService extends IService implements IKitService {
     public IKit getKit(String name) {
         return getKitByName(name) != null ? getKitByName(name) : null;
     }
+
+    public LinkedHashSet<IKit> getAllKits() {
+        return kits.stream().collect(
+            LinkedHashSet::new,
+            LinkedHashSet::add,
+            LinkedHashSet::addAll
+        );
+    }
 }
