@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.feature.cosmetics;
 
+import dev.lrxh.api.features.ICosmeticService;
+import dev.lrxh.api.features.IKillMessagePackage;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.feature.cosmetics.impl.KillMessagePackage;
 import dev.lrxh.neptune.providers.manager.IService;
@@ -12,9 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-public class CosmeticService extends IService {
+public class CosmeticService extends IService implements ICosmeticService {
     private static CosmeticService instance;
     public final Map<String, KillMessagePackage> deathMessages;
+
+    public Map<String, IKillMessagePackage> getDeathMessages() {
+        return deathMessages.entrySet().stream().collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), (IKillMessagePackage) entry.getValue()), HashMap::putAll);
+    }
 
     public CosmeticService() {
         this.deathMessages = new HashMap<>();
@@ -42,6 +48,10 @@ public class CosmeticService extends IService {
                 deathMessages.put(deathPackageName, new KillMessagePackage(deathPackageName, displayName, material, description, slot, messages));
             }
         }
+    }
+
+    public void registerKillMessage(IKillMessagePackage killMessagePackage) {
+        deathMessages.put(killMessagePackage.getName(), (KillMessagePackage) killMessagePackage);
     }
 
     @Override

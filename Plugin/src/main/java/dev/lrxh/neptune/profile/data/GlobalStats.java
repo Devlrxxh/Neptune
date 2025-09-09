@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.profile.data;
 
+import dev.lrxh.api.data.IDivision;
 import dev.lrxh.api.data.IGlobalStats;
 import dev.lrxh.neptune.feature.divisions.DivisionService;
 import dev.lrxh.neptune.feature.divisions.impl.Division;
@@ -17,6 +18,10 @@ public class GlobalStats implements IGlobalStats {
     private int bestStreak = 0;
     private int elo = 0;
     private Division division = DivisionService.get().getDivisionByElo(0);
+
+    public void setDivision(IDivision division) {
+        this.division = (Division) division;
+    }
 
     public GlobalStats(Profile profile) {
         this.profile = profile;

@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.game.arena;
 
+import dev.lrxh.api.arena.IArena;
+import dev.lrxh.api.arena.IArenaService;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.providers.manager.IService;
 import dev.lrxh.neptune.providers.manager.Value;
@@ -16,9 +18,13 @@ import java.util.LinkedHashSet;
 import java.util.List;
 
 @Getter
-public class ArenaService extends IService {
+public class ArenaService extends IService implements IArenaService {
     private static ArenaService instance;
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
+
+    public LinkedHashSet<IArena> getAllArenas() {
+        return arenas.stream().collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+    }
 
     public static ArenaService get() {
         if (instance == null) instance = new ArenaService();

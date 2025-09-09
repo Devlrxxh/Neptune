@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public interface IDataAccessor {
+public interface IDataAccessor extends dev.lrxh.api.config.IDataAccessor {
 
     Neptune plugin = Neptune.get();
 

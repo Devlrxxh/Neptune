@@ -32,9 +32,7 @@ public class MatchService implements IMatchService {
 
     public void startMatch(List<Participant> participants, Kit kit, Arena arena, boolean duel, int rounds) {
         if (!Neptune.get().isAllowMatches()) return;
-        for (Participant ignore : participants) {
-            kit.addPlaying();
-        }
+        participants.forEach((p) -> kit.addPlaying());
 
         //Create teams
         Participant playerRed = participants.get(0);
@@ -58,8 +56,8 @@ public class MatchService implements IMatchService {
 
     public void startMatch(MatchTeam teamA, MatchTeam teamB, Kit kit, Arena arena) {
         if (!Neptune.get().isAllowMatches()) return;
-        for (Participant participant : teamA.getParticipants()) {
-            for (Participant opponent : teamB.getParticipants()) {
+        for (Participant participant : teamA.participants()) {
+            for (Participant opponent : teamB.participants()) {
                 participant.setOpponent(opponent);
                 participant.setColor(ParticipantColor.RED);
                 opponent.setOpponent(participant);
@@ -67,8 +65,8 @@ public class MatchService implements IMatchService {
             }
         }
 
-        List<Participant> participants = new ArrayList<>(teamA.getParticipants());
-        participants.addAll(teamB.getParticipants());
+        List<Participant> participants = new ArrayList<>(teamA.participants());
+        participants.addAll(teamB.participants());
 
         TeamFightMatch match = new TeamFightMatch(arena, kit, participants, teamA, teamB);
 

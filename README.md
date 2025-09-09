@@ -2,24 +2,26 @@
 
 ---
 
-## ✨ Core Features:
+## ✨ Core Features
+
 - 🥊 Kit System (Boxing, Crystal, Axe, and more)
 - 🎛️ GUI-Based Kit Editor
 - 🌐 Queue Ping Range System
 - 📊 Animated Scoreboards
-- 🧩 PlaceholderAPI Support 
+- 🧩 PlaceholderAPI Support
 - 🎆 Custom Death Messages
-- 🛠️ Management Menus 
+- 🛠️ Management Menus
 - 🏆 Instant Leaderboards Updates
-- 🧩 Highly Customizable 
+- 🧩 Highly Customizable
 - ⚡ Dynamic Arena Creation
+
 ---
 
 ## 🧪 Usage
 
 Use the `/neptune` command to create and manage arenas and kits through intuitive in-game menus.
 
-[Permissions & Placeholders](./docs/README.md).
+[Permissions, Placeholders, and API](./docs/README.md).
 
 ---
 

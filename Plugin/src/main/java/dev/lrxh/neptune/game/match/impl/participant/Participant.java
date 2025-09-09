@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.match.impl.participant;
 
+import dev.lrxh.api.match.IMatch;
 import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -131,6 +132,9 @@ public class Participant implements IParticipant {
             return currentCheckPoint;
         return match.getSpawn(this);
     }
+    public Location getSpawn(IMatch match) {
+        return getSpawn((Match) match);
+    }
 
     public Profile getProfile() {
         return API.getProfile(playerUUID);
@@ -208,6 +212,24 @@ public class Participant implements IParticipant {
             return "&c(" + (hits - otherParticipant.getHits()) + ")";
         } else {
             return "&e(" + (hits - otherParticipant.getHits()) + ")";
+        }
+    }
+    public String getHitsDifference(IParticipant otherParticipant) {
+        if (hits - otherParticipant.getHits() > 0) {
+            return "&a(+" + (hits - otherParticipant.getHits()) + ")";
+        } else if (hits - otherParticipant.getHits() < 0) {
+            return "&c(" + (hits - otherParticipant.getHits()) + ")";
+        } else {
+            return "&e(" + (hits - otherParticipant.getHits()) + ")";
+        }
+    }
+    public String getHitsDifferenceUncolored(IParticipant otherParticipant) {
+        if (hits - otherParticipant.getHits() > 0) {
+            return "+" + (hits - otherParticipant.getHits());
+        } else if (hits - otherParticipant.getHits() < 0) {
+            return String.valueOf(hits - otherParticipant.getHits());
+        } else {
+            return "-" + (hits - otherParticipant.getHits());
         }
     }
 
