@@ -161,6 +161,6 @@ public class FfaFightMatch extends Match implements IFffaFightMatch {
     }
     @Override
     public List<IParticipant> getDeadParticipants() {
-        return new ArrayList<>(participants);
+        return new ArrayList<>(deadParticipants);
     }
 }
