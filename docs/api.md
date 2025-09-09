@@ -30,7 +30,10 @@ depend: [Neptune]
 ```java
 NeptuneAPI neptune = NeptuneAPIProvider.getAPI();
 neptune.getProfileService();
-neptune.getKitService();
 neptune.getMatchService();
+neptune.getKitService();
 neptune.getScoreboardService();
+neptune.getArenaService();
+neptune.getDivisionService();
+neptune.getCosmeticService();
 ```
