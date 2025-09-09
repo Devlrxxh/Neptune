@@ -97,6 +97,7 @@ public class Arena implements IArena {
     }
 
     public CompletableFuture<Arena> createDuplicate() {
+        if (snapshot == null) CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> this.snapshot = cuboidSnapshot);
         int currentIndex = this.duplicateIndex.getAndIncrement();
 
         int preloadIndex = currentIndex + 1;
