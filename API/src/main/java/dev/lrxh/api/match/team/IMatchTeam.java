@@ -8,7 +8,9 @@ public interface IMatchTeam {
     boolean isLoser();
     List<IParticipant> getParticipants();
     List<IParticipant> getDeadParticipants();
+    int getPoints();
     
+    void setPoints(int points);
     void addPoint();
     String getTeamNames();
 }
