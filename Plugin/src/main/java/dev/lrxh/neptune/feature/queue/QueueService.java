@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
 public class QueueService implements IQueueService {
 
@@ -97,8 +98,15 @@ public class QueueService implements IQueueService {
     public Map<Kit, Queue<QueueEntry>> getAllQueues() {
         return kitQueues;
     }
-    @SuppressWarnings("unchecked")
     public Map<IKit, Queue<IQueueEntry>> getQueues() {
-        return new HashMap<>((Map<IKit, Queue<IQueueEntry>>) (Map<?, ?>) kitQueues);
+        return kitQueues.entrySet().stream().collect(
+            HashMap::new,
+            (map, entry) -> map.put(
+                (IKit) entry.getKey(),
+                entry.getValue().stream().map(
+                    e -> (IQueueEntry) e).collect(Collectors.toCollection(LinkedList::new)
+                )
+            ),
+            HashMap::putAll);
     }
 }
