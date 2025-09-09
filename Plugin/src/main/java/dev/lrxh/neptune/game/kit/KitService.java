@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.kit;
 
+import dev.lrxh.api.arena.IArena;
 import dev.lrxh.api.kit.IKit;
 import dev.lrxh.api.kit.IKitService;
 import dev.lrxh.neptune.configs.ConfigService;
@@ -82,6 +83,10 @@ public class KitService extends IService implements IKitService {
         return false;
     }
 
+    public boolean addKit(IKit kit) {
+        return add((Kit) kit);
+    }
+
     @Override
     public void save() {
         getConfigFile().getConfiguration().getKeys(false).forEach(key -> getConfigFile().getConfiguration().set(key, null));
@@ -142,14 +147,13 @@ public class KitService extends IService implements IKitService {
         }
     }
 
-    @Override
-    public ConfigFile getConfigFile() {
-        return ConfigService.get().getKitsConfig();
+    public void removeArena(IArena arena) {
+        removeArenasFromKits((Arena) arena);
     }
 
     @Override
-    public IKit getKit(String name) {
-        return getKitByName(name) != null ? getKitByName(name) : null;
+    public ConfigFile getConfigFile() {
+        return ConfigService.get().getKitsConfig();
     }
 
     public LinkedHashSet<IKit> getAllKits() {

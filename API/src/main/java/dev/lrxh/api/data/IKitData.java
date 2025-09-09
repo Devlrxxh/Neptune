@@ -12,6 +12,9 @@ public interface IKitData {
     int getCurrentStreak();
     void setCurrentStreak(int amount);
 
+    int getBestStreak();
+    void setBestStreak(int amount);
+
     double getKdr();
 
     void setCustomData(String key, Object value);
