@@ -157,10 +157,6 @@ public class KitService extends IService implements IKitService {
     }
 
     public LinkedHashSet<IKit> getAllKits() {
-        return kits.stream().collect(
-            LinkedHashSet::new,
-            LinkedHashSet::add,
-            LinkedHashSet::addAll
-        );
+        return new LinkedHashSet<>(kits);
     }
 }
