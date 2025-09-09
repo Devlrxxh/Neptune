@@ -130,7 +130,6 @@ public class MatchListener implements Listener {
                         PersistentDataType.STRING,
                         event.getPlayer().getUniqueId().toString()
                 );
-                // Add TNT entity to match entities
                 match.getEntities().add(tnt);
 
                 event.getPlayer().getWorld().spawnEntity(
@@ -142,44 +141,6 @@ public class MatchListener implements Listener {
             match.getPlacedBlocks().add(blockLocation);
         } else {
             event.setCancelled(true);
-        }
-    }
-
-    @EventHandler
-    public void onItemSpawn(ItemSpawnEvent event) {
-        Item item = event.getEntity();
-        // Find all players in the world who are in a match
-        for (Player player : item.getWorld().getPlayers()) {
-            Optional<Profile> profileOpt = getMatchProfile(player);
-            if (profileOpt.isPresent()) {
-                Match match = profileOpt.get().getMatch();
-                // Optionally filter by distance (e.g. 10 blocks)
-                if (item.getLocation().distanceSquared(player.getLocation()) < 100) {
-                    // Schedule to add the item to the entities list only if it wasn't picked up immediately
-                    Bukkit.getScheduler().runTaskLater(Neptune.get(), () -> {
-                        if (!item.isDead() && item.getPickupDelay() > 0) {
-                            match.getEntities().add(item);
-                        }
-                    }, 1L);
-                    break;
-                }
-            }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST)
-    public void onEntitySpawn(EntitySpawnEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof Player) return;
-        for (Player player : entity.getWorld().getPlayers()) {
-            Optional<Profile> profileOpt = getMatchProfile(player);
-            if (profileOpt.isPresent()) {
-                Match match = profileOpt.get().getMatch();
-                if (entity.getLocation().distanceSquared(player.getLocation()) < 100) {
-                    match.getEntities().add(entity);
-                    break;
-                }
-            }
         }
     }
 
