@@ -1,5 +1,6 @@
 package dev.lrxh.api;
 
+import dev.lrxh.api.arena.IArenaService;
 import dev.lrxh.api.kit.IKitService;
 import dev.lrxh.api.match.IMatchService;
 import dev.lrxh.api.profile.IProfileService;
@@ -11,12 +12,14 @@ public class NeptuneAPIImpl implements NeptuneAPI {
     private final IMatchService matchService;
     private final IKitService kitService;
     private final IScoreboardService scoreboardService;
+    private final IArenaService arenaService;
 
-    public NeptuneAPIImpl(IProfileService profileService, IMatchService matchService, IKitService kitService, IScoreboardService scoreboardService) {
+    public NeptuneAPIImpl(IProfileService profileService, IMatchService matchService, IKitService kitService, IScoreboardService scoreboardService, IArenaService arenaService) {
         this.profileService = profileService;
         this.matchService = matchService;
         this.kitService = kitService;
         this.scoreboardService = scoreboardService;
+        this.arenaService = arenaService;
     }
 
     @Override
@@ -37,5 +40,10 @@ public class NeptuneAPIImpl implements NeptuneAPI {
     @Override
     public IScoreboardService getScoreboardService() {
         return scoreboardService;
+    }
+
+    @Override
+    public IArenaService getArenaService() {
+        return arenaService;
     }
 }

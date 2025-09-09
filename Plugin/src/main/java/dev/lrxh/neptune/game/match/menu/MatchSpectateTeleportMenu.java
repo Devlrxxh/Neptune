@@ -4,8 +4,6 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.menu.button.MatchSpectateTeleportButton;
-import dev.lrxh.neptune.profile.ProfileService;
-import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.menu.Button;
 import dev.lrxh.neptune.utils.menu.Filter;

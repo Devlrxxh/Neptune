@@ -1,11 +1,12 @@
 package dev.lrxh.neptune.game.match.impl.participant;
 
+import dev.lrxh.api.match.participant.IParticipantColor;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import lombok.Getter;
 import org.bukkit.Color;
 
 @Getter
-public enum ParticipantColor {
+public enum ParticipantColor implements IParticipantColor {
     RED(SettingsLocale.PARTICIPANT_COLOR_RED.getString()),
     BLUE(SettingsLocale.PARTICIPANT_COLOR_BLUE.getString());
 

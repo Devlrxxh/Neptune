@@ -1,7 +1,9 @@
 package dev.lrxh.neptune.game.match.impl.team;
 
 import dev.lrxh.api.events.TeamMatchBedDestroyEvent;
+import dev.lrxh.api.match.ITeamFightMatch;
 import dev.lrxh.api.match.participant.IParticipant;
+import dev.lrxh.api.match.team.IMatchTeam;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.arena.Arena;
@@ -29,7 +31,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class TeamFightMatch extends Match {
+public class TeamFightMatch extends Match implements ITeamFightMatch {
 
     private final MatchTeam teamA;
     private final MatchTeam teamB;
@@ -42,14 +44,15 @@ public class TeamFightMatch extends Match {
     }
 
     public MatchTeam getParticipantTeam(Participant participant) {
-        return teamA.getParticipants().contains(participant) ? teamA : teamB;
+        return teamA.participants().contains(participant) ? teamA : teamB;
+    }
+    public IMatchTeam getParticipantTeam(IParticipant participant) {
+        return getParticipantTeam((Participant) participant);
     }
 
     @Override
     public void win(Participant winner) {
         setState(MatchState.ENDING);
-        MatchTeam loserTeam = teamA.isLoser() ? teamA : teamB;
-        loserTeam.setLoser(true);
 
         new MatchEndRunnable(this).start(0L, 20L);
     }
@@ -109,7 +112,7 @@ public class TeamFightMatch extends Match {
         participant.setDead(true);
 
         MatchTeam team = getParticipantTeam(participant);
-        team.getDeadParticipants().add(participant);
+        team.deadParticipants().add(participant);
 
         if (!participant.isDisconnected() && !participant.isLeft()) {
             if (getKit().is(KitRule.BED_WARS)) {
@@ -129,11 +132,10 @@ public class TeamFightMatch extends Match {
         }
 
         // Only end match if everyone on the team is out
-        boolean allOut = team.getParticipants().stream()
+        boolean allOut = team.participants().stream()
                 .allMatch(p -> p.isDead() || p.isDisconnected() || p.isLeft());
 
         if (allOut) {
-            team.setLoser(true);
             this.setEnded(true);
             PlayerUtil.doVelocityChange(participant.getPlayerUUID());
             end(participant);
@@ -173,10 +175,5 @@ public class TeamFightMatch extends Match {
         showPlayerForSpectators();
         playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
         sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 10);
-    }
-
-    @Override
-    public List<IParticipant> getParticipants() {
-        return List.of();
     }
 }
