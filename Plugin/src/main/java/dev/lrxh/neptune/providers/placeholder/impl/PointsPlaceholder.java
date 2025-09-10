@@ -21,9 +21,9 @@ public class PointsPlaceholder implements Placeholder {
         Match match = profile.getMatch();
         if (match == null) return "";
         if (match instanceof SoloFightMatch)
-            return String.valueOf(match.getParticipant(player.getUniqueId()).getPoints());
+            return String.valueOf(match.getParticipant(player.getUniqueId()).orElseThrow().getPoints());
         else if (match instanceof TeamFightMatch tfm) {
-            return String.valueOf(tfm.getParticipantTeam(match.getParticipant(profile.getPlayer())).getPoints());
+            return String.valueOf(tfm.getParticipantTeam(match.getParticipant(profile.getPlayer()).orElseThrow()).getPoints());
         } else return "";
     }
 }

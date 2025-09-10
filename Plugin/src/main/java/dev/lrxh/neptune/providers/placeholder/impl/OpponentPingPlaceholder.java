@@ -22,8 +22,8 @@ public class OpponentPingPlaceholder implements Placeholder {
         Match match = profile.getMatch();
         if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
             return "";
-        Player opponentPlayer = match.getParticipant(player.getUniqueId()).getOpponent().getPlayer();
+        Player opponentPlayer = match.getParticipant(player.getUniqueId()).orElseThrow().getOpponent().getPlayer();
         if (opponentPlayer == null) return "";
-        return String.valueOf(match.getParticipant(player.getUniqueId()).getOpponent().getPlayer().getPing());
+        return String.valueOf(match.getParticipant(player.getUniqueId()).orElseThrow().getOpponent().getPlayer().getPing());
     }
 }

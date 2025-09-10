@@ -21,6 +21,6 @@ public class ComboPlaceholder implements Placeholder {
         Match match = profile.getMatch();
         if (profile.getState() != ProfileState.IN_GAME || match == null || !(match instanceof SoloFightMatch))
             return "";
-        return String.valueOf(match.getParticipant(player.getUniqueId()).getCombo());
+        return String.valueOf(match.getParticipant(player.getUniqueId()).orElseThrow().getCombo());
     }
 }

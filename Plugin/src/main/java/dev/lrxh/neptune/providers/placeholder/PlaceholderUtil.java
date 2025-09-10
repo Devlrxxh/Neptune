@@ -109,7 +109,7 @@ public class PlaceholderUtil {
 
         if (profile.getMatch() != null) {
             Match match = profile.getMatch();
-            Participant participant = match.getParticipant(player.getUniqueId());
+            Participant participant = match.getParticipant(player.getUniqueId()).orElseThrow();
             if (participant == null) return "";
 
             line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
@@ -158,7 +158,7 @@ public class PlaceholderUtil {
                 }
             }
             if (match instanceof TeamFightMatch teamFightMatch) {
-                MatchTeam matchTeam = teamFightMatch.getParticipantTeam(teamFightMatch.getParticipant(player.getUniqueId()));
+                MatchTeam matchTeam = teamFightMatch.getParticipantTeam(teamFightMatch.getParticipant(player.getUniqueId()).orElseThrow());
                 MatchTeam opponentTeam = matchTeam.equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
 
                 if (profile.getState().equals(ProfileState.IN_GAME)) {

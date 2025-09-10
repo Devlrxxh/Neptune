@@ -21,7 +21,7 @@ public class LeaveCommand {
                 profile.getMatch().removeSpectator(player.getUniqueId(), true);
                 return;
             case IN_GAME:
-                profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()), false);
+                profile.getMatch().onLeave(profile.getMatch().getParticipant(player.getUniqueId()).orElseThrow(), false);
                 MessagesLocale.MATCH_FORFEIT.send(player);
                 return;
             case IN_CUSTOM:

@@ -101,7 +101,7 @@ public class Profile implements IProfile {
         setState(ProfileState.IN_LOBBY);
         PlayerUtil.teleportToSpawn(playerUUID);
         if (getMatch() != null) {
-            getMatch().onDeath(getMatch().getParticipant(playerUUID));
+            getMatch().onDeath(getMatch().getParticipant(playerUUID).orElseThrow());
         }
         getPlayer().setHealth(20);
     }

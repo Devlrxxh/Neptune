@@ -22,7 +22,7 @@ public class OpponentPointsPlaceholder implements Placeholder {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        Participant playerParticipant = match.getParticipant(player.getUniqueId());
+        Participant playerParticipant = match.getParticipant(player.getUniqueId()).orElseThrow();
         if (profile.getState() != ProfileState.IN_GAME || match == null) return "";
         if (match instanceof SoloFightMatch) {
             return String.valueOf(playerParticipant.getOpponent().getPoints());

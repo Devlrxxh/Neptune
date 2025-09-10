@@ -9,8 +9,8 @@ import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.MatchState;
-import dev.lrxh.neptune.game.match.impl.participant.metadata.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.game.match.impl.participant.metadata.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.metadata.ParticipantColor;
 import dev.lrxh.neptune.game.match.impl.team.TeamFightMatch;
 import dev.lrxh.neptune.profile.ProfileService;
@@ -199,13 +199,13 @@ public class MatchListener implements Listener {
 
         if (!match.getKit().is(KitRule.ENDERPEARL_COOLDOWN))
             return;
-        Participant participant = match.getParticipant(player);
+        Optional<Participant> participant = match.getParticipant(player);
 
         if (player.hasCooldown(Material.ENDER_PEARL)) {
             int ticksLeft = player.getCooldown(Material.ENDER_PEARL);
             if (ticksLeft > 0) {
                 double secondsLeft = ticksLeft / 20.0;
-                participant.sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING,
+                participant.orElseThrow().sendMessage(MessagesLocale.MATCH_ENDERPEARL_COOLDOWN_ON_GOING,
                         new Replacement("<time>", String.valueOf(secondsLeft)));
             }
         } else {
@@ -271,14 +271,14 @@ public class MatchListener implements Listener {
 
         Profile profile = profileOpt.get();
         Match match = profile.getMatch();
-        Participant participant = match.getParticipant(player.getUniqueId());
+        Optional<Participant> participant = match.getParticipant(player.getUniqueId());
         if (participant == null)
             return;
 
-        MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
+        MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant.orElseThrow());
         Bukkit.getPluginManager().callEvent(deathEvent);
-        participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-        match.onDeath(participant);
+        participant.orElseThrow().setDeathCause(participant.orElseThrow().getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+        match.onDeath(participant.orElseThrow());
     }
 
     @EventHandler
@@ -326,22 +326,22 @@ public class MatchListener implements Listener {
                 return;
             if (!match.getState().equals(MatchState.IN_ROUND))
                 return;
-            Participant participant = match.getParticipant(player);
+            Optional<Participant> participant = match.getParticipant(player);
             if (participant == null)
                 return;
 
             if (blockType.equals(Material.HEAVY_WEIGHTED_PRESSURE_PLATE)) {
-                if (participant.setCurrentCheckPoint(event.getClickedBlock().getLocation().clone().add(0, 1, 0))) {
+                if (participant.orElseThrow().setCurrentCheckPoint(event.getClickedBlock().getLocation().clone().add(0, 1, 0))) {
                     match.broadcast(MessagesLocale.PARKOUR_CHECKPOINT,
-                            new Replacement("<player>", participant.getNameColored()),
-                            new Replacement("<checkpoint>", String.valueOf(participant.getCheckPoint())),
-                            new Replacement("<time>", participant.getTime().formatSecondsMillis()));
+                            new Replacement("<player>", participant.orElseThrow().getNameColored()),
+                            new Replacement("<checkpoint>", String.valueOf(participant.orElseThrow().getCheckPoint())),
+                            new Replacement("<time>", participant.orElseThrow().getTime().formatSecondsMillis()));
                 }
             } else if (blockType.equals(Material.LIGHT_WEIGHTED_PRESSURE_PLATE)) {
-                match.win(participant);
+                match.win(participant.orElseThrow());
                 match.broadcast(MessagesLocale.PARKOUR_END,
-                        new Replacement("<player>", participant.getNameColored()),
-                        new Replacement("<time>", participant.getTime().formatSecondsMillis()));
+                        new Replacement("<player>", participant.orElseThrow().getNameColored()),
+                        new Replacement("<time>", participant.orElseThrow().getTime().formatSecondsMillis()));
             }
         }
     }
@@ -430,7 +430,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if (match.getParticipant(attacker).isDead()) {
+            if (match.getParticipant(attacker).orElseThrow().isDead()) {
                 event.setCancelled(true);
             }
 
@@ -444,7 +444,7 @@ public class MatchListener implements Listener {
                 event.setCancelled(true);
             }
 
-            match.getParticipant(player.getUniqueId()).setLastAttacker(match.getParticipant(attacker.getUniqueId()));
+            match.getParticipant(player.getUniqueId()).orElseThrow().setLastAttacker(match.getParticipant(attacker.getUniqueId()).orElseThrow());
         }
     }
 
@@ -465,11 +465,11 @@ public class MatchListener implements Listener {
 
             if (damager.getAttackCooldown() >= 0.2) {
                 Match match = targetProfile.getMatch();
-                Participant opponent = match.getParticipant(target.getUniqueId());
+                Optional<Participant> opponent = match.getParticipant(target.getUniqueId());
 
                 if (damager.getAttackCooldown() > 0.7)
-                    match.getParticipant(damager.getUniqueId()).handleHit(opponent);
-                opponent.resetCombo();
+                    match.getParticipant(damager.getUniqueId()).orElseThrow().handleHit(opponent.orElseThrow());
+                opponent.orElseThrow().resetCombo();
             }
         }
     }
@@ -492,9 +492,9 @@ public class MatchListener implements Listener {
 
         Profile profile = profileOpt.get();
         Match match = profile.getMatch();
-        Participant participant = match.getParticipant(player.getUniqueId());
-        participant.setDeathCause(DeathCause.DIED);
-        match.onDeath(participant);
+        Optional<Participant> participant = match.getParticipant(player.getUniqueId());
+        participant.orElseThrow().setDeathCause(DeathCause.DIED);
+        match.onDeath(participant.orElseThrow());
         player.setHealth(20.0f);
         event.setCancelled(true);
     }
@@ -513,10 +513,10 @@ public class MatchListener implements Listener {
         Match match = profile.getMatch();
         Arena arena = match.getArena();
 
-        Participant participant = match.getParticipant(player.getUniqueId());
+        Optional<Participant> participant = match.getParticipant(player.getUniqueId());
         if (participant == null)
             return;
-        if (participant.isFrozen()) {
+        if (participant.orElseThrow().isFrozen()) {
             Location to = event.getTo();
             Location from = event.getFrom();
             if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
@@ -525,12 +525,12 @@ public class MatchListener implements Listener {
             }
         }
 
-        if (player.getLocation().getY() <= arena.getDeathY() && !participant.isDead()) {
+        if (player.getLocation().getY() <= arena.getDeathY() && !participant.orElseThrow().isDead()) {
             if (match.getKit().is(KitRule.PARKOUR)) {
-                player.teleport(participant.getSpawn(match));
+                player.teleport(participant.orElseThrow().getSpawn(match));
             } else {
-                participant.setDeathCause(DeathCause.DIED);
-                match.onDeath(participant);
+                participant.orElseThrow().setDeathCause(DeathCause.DIED);
+                match.onDeath(participant.orElseThrow());
             }
             return;
         }
@@ -541,7 +541,7 @@ public class MatchListener implements Listener {
                 Block block = playerLocation.getBlock();
 
                 if (block.getType() == Material.WATER) {
-                    match.win(participant);
+                    match.win(participant.orElseThrow());
                 }
 
                 return;
@@ -551,9 +551,9 @@ public class MatchListener implements Listener {
                 Block block = playerLocation.getBlock();
 
                 if (block.getType() == Material.WATER) {
-                    participant
-                            .setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-                    match.onDeath(participant);
+                    participant.orElseThrow()
+                            .setDeathCause(participant.orElseThrow().getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+                    match.onDeath(participant.orElseThrow());
                 }
             }
         }
@@ -627,7 +627,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if (match.getParticipant(player).isDead()) {
+            if (match.getParticipant(player).orElseThrow().isDead()) {
                 event.setCancelled(true);
                 return;
             }
@@ -750,24 +750,24 @@ public class MatchListener implements Listener {
             if (event.getBlock().getType().toString().contains("BED")) {
                 Location bed = event.getBlock().getLocation();
 
-                Participant participant = match.getParticipant(player.getUniqueId());
+                Optional<Participant> participant = match.getParticipant(player.getUniqueId());
                 if (participant == null)
                     return;
-                Location spawn = match.getSpawn(participant);
-                Participant opponent = participant.getOpponent();
+                Location spawn = match.getSpawn(participant.orElseThrow());
+                Participant opponent = participant.orElseThrow().getOpponent();
                 Location opponentSpawn = match.getSpawn(opponent);
                 if (bed.distanceSquared(spawn) > bed.distanceSquared(opponentSpawn)) {
                     event.setDropItems(false);
-                    match.breakBed(opponent, participant);
+                    match.breakBed(opponent, participant.orElseThrow());
                     match.sendTitle(opponent, CC.color(MessagesLocale.BED_BREAK_TITLE.getString()),
                             CC.color(MessagesLocale.BED_BREAK_FOOTER.getString()), 20);
                     match.broadcast(
                             opponent.getColor().equals(ParticipantColor.RED) ? MessagesLocale.RED_BED_BROKEN_MESSAGE
                                     : MessagesLocale.BLUE_BED_BROKEN_MESSAGE,
-                            new Replacement("<player>", participant.getNameColored()));
+                            new Replacement("<player>", participant.orElseThrow().getNameColored()));
                 } else {
                     event.setCancelled(true);
-                    participant.sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
+                    participant.orElseThrow().sendMessage(MessagesLocale.CANT_BREAK_OWN_BED);
                 }
             }
         }

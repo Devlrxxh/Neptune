@@ -9,8 +9,8 @@ import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.MatchState;
-import dev.lrxh.neptune.game.match.impl.participant.metadata.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.game.match.impl.participant.metadata.DeathCause;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.profile.data.ProfileState;
@@ -26,6 +26,8 @@ import org.bukkit.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Getter @Setter
 public class TeamFightMatch extends Match {
@@ -178,5 +180,12 @@ public class TeamFightMatch extends Match {
         all.addAll(teamA.getParticipants());
         all.addAll(teamB.getParticipants());
         return all;
+    }
+
+    public boolean onSameTeam(UUID playerUUID, UUID otherUUID) {
+        Optional<Participant> participant = getParticipant(playerUUID);
+        Optional<Participant> other = getParticipant(otherUUID);
+
+        return getParticipantTeam(participant.orElseThrow()).equals(getParticipantTeam(other.orElseThrow()));
     }
 }

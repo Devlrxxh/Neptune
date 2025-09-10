@@ -17,6 +17,6 @@ public class ColorPlaceholder implements Placeholder {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        return match != null ? match.getParticipant(player.getUniqueId()).getColor().getColor() : "";
+        return match != null ? match.getParticipant(player.getUniqueId()).orElseThrow().getColor().getColor() : "";
     }
 }

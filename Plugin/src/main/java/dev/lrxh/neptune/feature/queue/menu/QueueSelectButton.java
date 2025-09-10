@@ -2,6 +2,7 @@ package dev.lrxh.neptune.feature.queue.menu;
 
 import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
+import dev.lrxh.neptune.feature.leaderboard.entry.player.PlayerLeaderboardEntry;
 import dev.lrxh.neptune.feature.leaderboard.metadata.LeaderboardType;
 import dev.lrxh.neptune.feature.queue.QueueEntry;
 import dev.lrxh.neptune.feature.queue.QueueService;
@@ -42,10 +43,10 @@ public class QueueSelectButton extends Button {
                 return;
             }
 
-            List<PlayerEntry> leaderboard = LeaderboardService.get().getPlayerEntries(kit, leaderboardType);
+            List<PlayerLeaderboardEntry> leaderboard = LeaderboardService.get().getPlayerEntries(kit, leaderboardType);
 
             int i = Integer.parseInt(split[2]);
-            PlayerEntry playerEntry = null;
+            PlayerLeaderboardEntry playerEntry = null;
 
             if (i <= leaderboard.size()) {
                 playerEntry = LeaderboardService.get().getLeaderboardSlot(kit, leaderboardType, i);

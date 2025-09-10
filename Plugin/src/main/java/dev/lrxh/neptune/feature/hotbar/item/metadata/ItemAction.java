@@ -27,6 +27,8 @@ import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 @SuppressWarnings("unused")
 public enum ItemAction {
 
@@ -169,10 +171,10 @@ public enum ItemAction {
             Match match = profile.getMatch();
             if (match == null) return;
 
-            Participant participant = match.getParticipant(player);
-            participant.setDisconnected(true);
-            PlayerUtil.reset(participant.getPlayer());
-            PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
+            Optional<Participant> participant = match.getParticipant(player);
+            participant.orElseThrow().setDisconnected(true);
+            PlayerUtil.reset(participant.orElseThrow().getPlayer());
+            PlayerUtil.teleportToSpawn(participant.orElseThrow().getPlayerUUID());
 
             profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             profile.setMatch(null);
@@ -196,7 +198,7 @@ public enum ItemAction {
                 }
 
                 DuelRequest duelRequest = new DuelRequest(profile.getPlayerUUID(), match.getKit(), arena, false, match.getRounds());
-                Player opponent = match.getParticipant(player).getOpponent().getPlayer();
+                Player opponent = match.getParticipant(player).orElseThrow().getOpponent().getPlayer();
                 if (opponent == null) return;
 
                 Profile opponentProfile = API.getProfile(opponent);

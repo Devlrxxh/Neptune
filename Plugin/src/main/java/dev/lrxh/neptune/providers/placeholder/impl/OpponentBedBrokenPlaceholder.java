@@ -25,7 +25,7 @@ public class OpponentBedBrokenPlaceholder implements Placeholder {
         Match match = profile.getMatch();
         if (profile.getState() != ProfileState.IN_GAME || match == null || !match.getKit().is(KitRule.BED_WARS))
             return "";
-        Participant playerParticipant = match.getParticipant(player.getUniqueId());
+        Participant playerParticipant = match.getParticipant(player.getUniqueId()).orElseThrow();
         if (match instanceof SoloFightMatch) {
             return playerParticipant.getOpponent().isBedBroken() ? "true" : "false";
         } else if (match instanceof TeamFightMatch teamFightMatch) {

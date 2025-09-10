@@ -73,9 +73,9 @@ public class ProfileListener implements Listener {
             if (profile.getState() == ProfileState.IN_SPECTATOR) {
                 match.removeSpectator(player.getUniqueId(), true);
             } else {
-                Participant participant = match.getParticipant(player.getUniqueId());
+                Participant participant = match.getParticipant(player.getUniqueId()).orElseThrow();
                 if (participant == null) return;
-                match.onLeave(match.getParticipant(player), true);
+                match.onLeave(match.getParticipant(player).orElseThrow(), true);
                 MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
                 Bukkit.getPluginManager().callEvent(deathEvent);
             }
