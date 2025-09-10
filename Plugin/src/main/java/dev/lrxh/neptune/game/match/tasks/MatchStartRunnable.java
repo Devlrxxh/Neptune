@@ -25,16 +25,10 @@ public class MatchStartRunnable extends NeptuneRunnable {
 
     public MatchStartRunnable(Match match) {
         this.match = match;
-        this.startTimer = match instanceof FfaFightMatch ? 5 : 3;
+        this.startTimer = (match instanceof FfaFightMatch) ? 5 : 3;
 
-        match.teleportToPositions();
-        match.setupParticipants();
-        match.checkRules();
-
-        match.getTime().setStop(true);
-        match.getTime().setZero();
+        prepareMatch();
     }
-
 
     @Override
     public void run() {
@@ -43,49 +37,71 @@ public class MatchStartRunnable extends NeptuneRunnable {
             return;
         }
 
-        if (startTimer == 0) {
-            match.sendMessage(MessagesLocale.MATCH_STARTED);
-            match.startMatch();
-            match.checkRules();
-            checkFollowings();
-            match.getTime().setStop(false);
-
-
-            for (Participant participant : match.getParticipantsList()) {
-                participant.setTime(new Time());
-            }
-
-            stop();
-            MatchStartEvent event = new MatchStartEvent(match);
-            Bukkit.getPluginManager().callEvent(event);
+        if (startTimer <= 0) {
+            beginMatch();
             return;
         }
-        if (match.getState().equals(MatchState.STARTING)) {
-            match.playSound(Sound.UI_BUTTON_CLICK);
-            match.sendTitle(CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(startTimer))),
-                    CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(startTimer))),
-                    19);
-            match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));
-        }
-        startTimer--;
 
+        if (match.getState() == MatchState.STARTING) {
+            sendCountdownFeedback();
+        }
+
+        startTimer--;
     }
 
-    private void checkFollowings() {
+    private void prepareMatch() {
+        match.teleportToPositions();
+        match.setupParticipants();
+        match.checkRules();
+
+        match.getTime().setStop(true);
+        match.getTime().setZero();
+    }
+
+    private void beginMatch() {
+        match.sendMessage(MessagesLocale.MATCH_STARTED);
+        match.startMatch();
+        match.checkRules();
+        notifyFollowers();
+        match.getTime().setStop(false);
+
+        for (Participant participant : match.getParticipantsList()) {
+            participant.setTime(new Time());
+        }
+
+        stop();
+        Bukkit.getPluginManager().callEvent(new MatchStartEvent(match));
+    }
+
+    private void sendCountdownFeedback() {
+        String timerStr = String.valueOf(startTimer);
+
+        match.playSound(Sound.UI_BUTTON_CLICK);
+        match.sendTitle(
+                CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString()
+                        .replace("<countdown-time>", timerStr)),
+                CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString()
+                        .replace("<countdown-time>", timerStr)),
+                19
+        );
+        match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", timerStr));
+    }
+
+    private void notifyFollowers() {
         for (Participant participant : match.getParticipantsList()) {
             if (participant.isDisconnected()) continue;
+
             SettingData settingData = API.getProfile(participant.getPlayerUUID()).getSettingData();
-            if (settingData == null) continue;
-            if (settingData.getFollowings().isEmpty()) continue;
+            if (settingData == null || settingData.getFollowings().isEmpty()) continue;
+
+            Player target = participant.getPlayer();
+            if (target == null) continue;
 
             for (UUID uuid : settingData.getFollowings()) {
                 Player follower = Bukkit.getPlayer(uuid);
-                if (follower == null) continue;
-
-                Player particpiantPlayer = participant.getPlayer();
-                if (particpiantPlayer == null) continue;
-
-                match.addSpectator(follower, particpiantPlayer, false, true);
+                if (follower != null) {
+                    match.addSpectator(follower, target, false, true);
+                }
             }
         }
     }

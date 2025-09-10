@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.game.match.impl.team;
 
-
 import dev.lrxh.api.match.team.IMatchTeam;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
@@ -14,22 +13,21 @@ import java.util.function.Consumer;
 
 @Data
 public class MatchTeam implements IMatchTeam {
-    private final List<Participant> participants;
-    private final List<Participant> deadParticipants;
-    private boolean loser;
 
+    private final List<Participant> participants;
+    private final List<Participant> deadParticipants = new ArrayList<>();
+
+    private boolean loser;
     private boolean bedBroken;
     private int points;
 
     public MatchTeam(List<Participant> participants) {
         this.participants = participants;
-        this.deadParticipants = new ArrayList<>();
-        this.loser = false;
     }
 
     public void setBedBroken(boolean bedBroken) {
         this.bedBroken = bedBroken;
-        forEachParticipant(participants -> participants.setBedBroken(bedBroken));
+        participants.forEach(participant -> participant.setBedBroken(bedBroken));
     }
 
     public boolean isLoser() {
@@ -47,7 +45,7 @@ public class MatchTeam implements IMatchTeam {
     public String getTeamNames() {
         StringBuilder playerNames = new StringBuilder();
         for (Participant participant : participants) {
-            if (!playerNames.isEmpty()) {
+            if (playerNames.length() > 0) {
                 playerNames.append(MessagesLocale.MATCH_COMMA.getString());
             }
             playerNames.append(participant.getNameUnColored());
@@ -58,8 +56,7 @@ public class MatchTeam implements IMatchTeam {
     public void forEachParticipant(Consumer<Participant> action) {
         for (Participant participant : participants) {
             Player player = participant.getPlayer();
-            if (player != null) {
-                if (participant.isLeft() || participant.isDisconnected()) continue;
+            if (player != null && !participant.isLeft() && !participant.isDisconnected()) {
                 action.accept(participant);
             }
         }

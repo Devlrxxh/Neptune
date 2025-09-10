@@ -12,17 +12,18 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.HashSet;
 import java.util.UUID;
 
 public class MatchEndRunnable extends NeptuneRunnable {
+
     private final Match match;
     private int endTimer = 3;
 
     public MatchEndRunnable(Match match) {
         this.match = match;
-
         match.getTime().setStop(true);
     }
 
@@ -32,37 +33,46 @@ public class MatchEndRunnable extends NeptuneRunnable {
             stop();
             return;
         }
+
         if (endTimer == 0) {
             match.setState(MatchState.ENDING);
+
             if (match.getKit().is(KitRule.SHOW_HP)) {
                 match.hideHealth();
             }
 
-            for (UUID spectator : new HashSet<>(match.spectators)) {
-                match.removeSpectator(spectator, false);
+            for (UUID spectatorUUID : new HashSet<>(match.getSpectators())) {
+                match.removeSpectator(spectatorUUID, false);
             }
 
             match.resetArena();
-            match.forEachParticipant(participant -> {
 
+            match.forEachParticipant(participant -> {
                 Profile profile = API.getProfile(participant.getPlayerUUID());
                 if (profile.getMatch() != match) return;
 
-                PlayerUtil.reset(participant.getPlayer());
-                profile.setMatch(null);
-                PlayerUtil.teleportToSpawn(participant.getPlayerUUID());
-                profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
+                Player player = participant.getPlayer();
+                if (player != null) {
+                    PlayerUtil.reset(player);
+                    PlayerUtil.teleportToSpawn(player.getUniqueId());
+                    HotbarService.get().giveItems(player);
+                }
 
-                match.forEachPlayer(player -> HotbarService.get().giveItems(player));
+                profile.setMatch(null);
+                profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
             });
 
             match.sendEndMessage();
             match.getArena().remove();
+
             MatchService.get().matches.remove(match);
+
             MatchEndEvent event = new MatchEndEvent(match);
             Bukkit.getPluginManager().callEvent(event);
+
             stop();
         }
+
         endTimer--;
     }
 }

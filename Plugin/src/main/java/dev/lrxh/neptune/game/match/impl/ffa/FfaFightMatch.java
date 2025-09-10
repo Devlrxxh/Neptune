@@ -7,8 +7,8 @@ import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.MatchState;
-import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.game.match.impl.participant.metadata.DeathCause;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
@@ -22,22 +22,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FfaFightMatch extends Match {
-    public final List<Participant> deadParticipants;
+
+    // --- Fields ---
     private final List<Participant> participants;
+    public final List<Participant> deadParticipants;
     private Participant winner;
 
     public FfaFightMatch(Arena arena, Kit kit, List<Participant> participants) {
-        super(MatchState.STARTING, arena, kit, participants, 1, true, false);
+        super(MatchState.STARTING, true, false, 1, participants, arena, kit);
         this.winner = null;
         this.deadParticipants = new ArrayList<>();
         this.participants = participants;
     }
 
     @Override
+    public void startMatch() {
+        setState(MatchState.IN_ROUND);
+        showPlayerForSpectators();
+        playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
+        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_HEADER.getString()),
+                CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 20);
+    }
+
+    @Override
     public void win(Participant winner) {
         setState(MatchState.ENDING);
         this.winner = winner;
-        this.setEnded(true);
+        setEnded(true);
 
         new MatchEndRunnable(this).start(0L, 20L);
     }
@@ -46,14 +57,18 @@ public class FfaFightMatch extends Match {
     public void end(Participant loser) {
         setState(MatchState.ENDING);
         loser.setLoser(true);
+
         forEachParticipant(participant -> {
             if (winner == null) return;
-            participant.sendTitle(CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
-                    CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString().replace("<player>", winner.getNameUnColored())), 100);
+            participant.sendTitle(
+                    CC.color(MessagesLocale.MATCH_WINNER_TITLE_HEADER.getString()),
+                    CC.color(MessagesLocale.MATCH_WINNER_TITLE_FOOTER.getString()
+                            .replace("<player>", winner.getNameUnColored())),
+                    100
+            );
         });
 
         loser.playKillEffect();
-
         new MatchEndRunnable(this).start(0L, 20L);
     }
 
@@ -88,24 +103,11 @@ public class FfaFightMatch extends Match {
         sendDeathMessage(participant);
         deadParticipants.add(participant);
 
-        if (!isLastPlayerStanding()) return;
-
-        winner = getLastPlayerStanding();
-        setEnded(true);
-        end(participant);
-    }
-
-    private boolean isLastPlayerStanding() {
-        return getParticipants().size() - deadParticipants.size() == 1;
-    }
-
-    private Participant getLastPlayerStanding() {
-        for (IParticipant participant : getParticipants()) {
-            if (!deadParticipants.contains(participant)) {
-                return (Participant) participant;
-            }
+        if (isLastPlayerStanding()) {
+            winner = getLastPlayerStanding();
+            setEnded(true);
+            end(participant);
         }
-        return null;
     }
 
     @Override
@@ -128,17 +130,21 @@ public class FfaFightMatch extends Match {
         onDeath(participant);
     }
 
-    @Override
-    public void startMatch() {
-        setState(MatchState.IN_ROUND);
-        showPlayerForSpectators();
-        playSound(Sound.ENTITY_FIREWORK_ROCKET_BLAST);
-        sendTitle(CC.color(MessagesLocale.MATCH_START_TITLE_HEADER.getString()), CC.color(MessagesLocale.MATCH_START_TITLE_FOOTER.getString()), 20);
+    private boolean isLastPlayerStanding() {
+        return participants.size() - deadParticipants.size() == 1;
+    }
+
+    private Participant getLastPlayerStanding() {
+        for (Participant participant : participants) {
+            if (!deadParticipants.contains(participant)) return participant;
+        }
+        return null;
     }
 
     @Override
     public void sendEndMessage() {
         if (winner == null) return;
+
         forEachParticipant(participant -> MessagesLocale.MATCH_END_DETAILS_FFA.send(participant.getPlayerUUID(),
                 new Replacement("<winner>", winner.getNameUnColored()),
                 new Replacement("<kit>", getKit().getDisplayName())));
@@ -158,3 +164,4 @@ public class FfaFightMatch extends Match {
         return new ArrayList<>(participants);
     }
 }
+

@@ -23,52 +23,70 @@ public class MatchSecondRoundRunnable extends NeptuneRunnable {
         this.match = match;
         this.participant = participant;
 
-        match.setupParticipants();
-        match.checkRules();
-        match.teleportToPositions();
+        prepareRound();
     }
 
     @Override
     public void run() {
-        if (!MatchService.get().matches.contains(match) || participant.isLeft()) {
-            stop();
-
-            return;
-        }
-
-        if (match.isEnded()) {
+        if (!MatchService.get().matches.contains(match) || participant.isLeft() || match.isEnded()) {
             stop();
             return;
         }
 
         if (participant.getPlayer() == null) return;
-        if (respawnTimer == 0) {
-            match.startMatch();
-            match.checkRules();
-            match.sendMessage(MessagesLocale.ROUND_STARTED);
-            stop();
+
+        if (respawnTimer <= 0) {
+            beginRound();
             return;
         }
 
-        if (match.getState().equals(MatchState.STARTING)) {
-            match.playSound(Sound.UI_BUTTON_CLICK);
-
-            match.sendTitle(CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(respawnTimer))),
-                    CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(respawnTimer))),
-                    19);
-            match.sendMessage(MessagesLocale.ROUND_STARTING, new Replacement("<timer>", String.valueOf(respawnTimer)));
+        if (match.getState() == MatchState.STARTING) {
+            sendCountdownFeedback();
         }
 
         if (respawnTimer == 3) {
-            match.setupParticipants();
-            match.teleportToPositions();
-
-            if (match.getKit().is(KitRule.RESET_ARENA_AFTER_ROUND)) {
-                match.resetArena();
-            }
-            MatchNewRoundStartEvent event = new MatchNewRoundStartEvent(match);
-            Bukkit.getPluginManager().callEvent(event);
+            setupNewRound();
         }
+
         respawnTimer--;
+    }
+
+    private void prepareRound() {
+        match.setupParticipants();
+        match.checkRules();
+        match.teleportToPositions();
+    }
+
+    private void beginRound() {
+        match.startMatch();
+        match.checkRules();
+        match.sendMessage(MessagesLocale.ROUND_STARTED);
+
+        stop();
+    }
+
+    private void sendCountdownFeedback() {
+        String timerStr = String.valueOf(respawnTimer);
+
+        match.playSound(Sound.UI_BUTTON_CLICK);
+        match.sendTitle(
+                CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString()
+                        .replace("<countdown-time>", timerStr)),
+                CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString()
+                        .replace("<countdown-time>", timerStr)),
+                19
+        );
+        match.sendMessage(MessagesLocale.ROUND_STARTING, new Replacement("<timer>", timerStr));
+    }
+
+    private void setupNewRound() {
+        match.setupParticipants();
+        match.teleportToPositions();
+
+        if (match.getKit().is(KitRule.RESET_ARENA_AFTER_ROUND)) {
+            match.resetArena();
+        }
+
+        Bukkit.getPluginManager().callEvent(new MatchNewRoundStartEvent(match));
     }
 }

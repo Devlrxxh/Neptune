@@ -1,4 +1,4 @@
-package dev.lrxh.neptune.game.match.impl.participant;
+package dev.lrxh.neptune.game.match.impl.participant.metadata;
 
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import lombok.Getter;

@@ -7,12 +7,13 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
 import dev.lrxh.neptune.feature.leaderboard.LeaderboardService;
+import dev.lrxh.neptune.feature.leaderboard.entry.player.PlayerLeaderboardEntry;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.MatchState;
-import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
+import dev.lrxh.neptune.game.match.impl.participant.metadata.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
@@ -35,15 +36,15 @@ import org.bukkit.Sound;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
+@Getter @Setter
 public class SoloFightMatch extends Match {
 
     private final Participant participantA;
     private final Participant participantB;
 
-    public SoloFightMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants, Participant participantA, Participant participantB, int rounds) {
-        super(MatchState.STARTING, arena, kit, participants, rounds, duel, false);
+    public SoloFightMatch(Arena arena, Kit kit, boolean duel, List<Participant> participants,
+                          Participant participantA, Participant participantB, int rounds) {
+        super(MatchState.STARTING, false, duel, rounds,participants, arena, kit);
         this.participantA = participantA;
         this.participantB = participantB;
     }
@@ -72,7 +73,6 @@ public class SoloFightMatch extends Match {
             loser.sendTitle(CC.color(MessagesLocale.MATCH_LOSER_TITLE_HEADER.getString()),
                     CC.color(MessagesLocale.MATCH_LOSER_TITLE_FOOTER.getString().replace("<player>", winner.getNameUnColored())), 100);
 
-
         if (!isDuel()) {
             addStats();
             for (String command : SettingsLocale.COMMANDS_AFTER_MATCH_LOSER.getStringList()) {
@@ -89,7 +89,6 @@ public class SoloFightMatch extends Match {
 
             forEachPlayer(player -> HotbarService.get().giveItems(player));
         }
-
 
         removePlaying();
 
@@ -143,13 +142,12 @@ public class SoloFightMatch extends Match {
 
         forEachParticipantForce(participant ->
                 LeaderboardService.get().addChange(
-                        new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), getKit()))
+                        new PlayerLeaderboardEntry(participant.getNameUnColored(), participant.getPlayerUUID(), getKit()))
         );
 
         if (winnerProfile.isFake()) winnerProfile.save();
         if (loserProfile.isFake()) loserProfile.save();
     }
-
 
     public Participant getLoser() {
         return participantA.isLoser() ? participantA : participantB;

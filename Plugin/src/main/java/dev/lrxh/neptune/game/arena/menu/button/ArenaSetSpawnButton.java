@@ -3,7 +3,7 @@ package dev.lrxh.neptune.game.arena.menu.button;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.procedure.metadata.ArenaProcedureType;
-import dev.lrxh.neptune.game.match.impl.participant.ParticipantColor;
+import dev.lrxh.neptune.game.match.impl.participant.metadata.ParticipantColor;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;

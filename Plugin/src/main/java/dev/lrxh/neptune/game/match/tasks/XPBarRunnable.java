@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 
 public class XPBarRunnable extends NeptuneRunnable {
 
+
     @Override
     public void run() {
         for (Match match : MatchService.get().matches) {
@@ -21,14 +22,18 @@ public class XPBarRunnable extends NeptuneRunnable {
                 if (player == null) continue;
 
                 int ticksLeft = player.getCooldown(Material.ENDER_PEARL);
-                if (ticksLeft > 0) {
-                    double secondsLeft = ticksLeft / 20.0;
-                    player.setExp((float) ticksLeft / 20f / 15f);
-                    player.setLevel((int) Math.ceil(secondsLeft));
-                } else {
+
+                if (ticksLeft <= 0) {
                     player.setExp(0f);
                     player.setLevel(0);
+                    return;
                 }
+
+                double secondsLeft = ticksLeft / 20.0;
+                float progress = (float) (secondsLeft / 15.0);
+
+                player.setExp(progress);
+                player.setLevel((int) Math.ceil(secondsLeft));
             }
         }
     }
