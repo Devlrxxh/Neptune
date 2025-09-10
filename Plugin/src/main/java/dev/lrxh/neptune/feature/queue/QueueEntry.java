@@ -21,7 +21,7 @@ public class QueueEntry implements IQueueEntry {
      * @param uuid the unique identifier of the player
      * @param kit  the kit chosen by the player
      */
-    public QueueEntry(UUID uuid, Kit kit) {
+    public QueueEntry(Kit kit, UUID uuid) {
         this.uuid = uuid;
         this.kit = kit;
         this.time = new Time();
