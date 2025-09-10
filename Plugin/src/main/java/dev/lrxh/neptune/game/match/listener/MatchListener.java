@@ -382,9 +382,9 @@ public class MatchListener implements Listener {
         if (participant == null)
             return;
 
-        MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant);
-        Bukkit.getPluginManager().callEvent(deathEvent);
         participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
+        MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant, participant.getDeathCause().getMessage().getString());
+        Bukkit.getPluginManager().callEvent(deathEvent);
         match.onDeath(participant);
     }
 
