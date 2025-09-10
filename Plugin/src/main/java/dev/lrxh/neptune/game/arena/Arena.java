@@ -41,7 +41,7 @@ public class Arena implements IArena {
     private final Set<Integer> loadedChunkIndices = new HashSet<>();
     private final Map<ChunkPosition, Chunk> loadedChunks = new HashMap<>();
 
-    // Duplicateion & Snapshots
+    // Duplication & Snapshots
     private CuboidSnapshot snapshot;
     private final AtomicInteger duplicateIndex = new AtomicInteger(1);
     private final AtomicInteger preloadedIndex = new AtomicInteger(0);
