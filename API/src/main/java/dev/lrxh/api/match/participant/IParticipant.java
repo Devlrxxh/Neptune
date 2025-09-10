@@ -14,7 +14,6 @@ public interface IParticipant {
     String getName();
     String getNameColored();
     IParticipant getOpponent();
-    IDeathCause getDeathCause();
     IParticipantColor getColor();
     IParticipant getLastAttacker();
     int getHits();
