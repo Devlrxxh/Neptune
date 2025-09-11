@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.feature.itembrowser;
 
-import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.ProfileService;
+import dev.lrxh.api.features.IItemBrowserService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,46 +12,48 @@ import org.bukkit.plugin.Plugin;
 import java.util.*;
 import java.util.function.Consumer;
 
-public class ItemBrowserService implements Listener {
+public class ItemBrowserService implements Listener, IItemBrowserService {
 
     private static ItemBrowserService instance;
+    private final Plugin plugin;
+
+    private final Map<String, List<Material>> sectionMaterials = new HashMap<>();
+    private final Map<UUID, SearchSession> searchSessions = new HashMap<>();
+
+    private final List<Material> cachedMaterials = new ArrayList<>();
 
     public static ItemBrowserService get() {
-        if (instance == null) instance = new ItemBrowserService(Neptune.get());
-
         return instance;
     }
 
-    private final Plugin plugin;
-    private final Map<UUID, SearchSession> searchSessions = new HashMap<>();
-    private final List<Material> cachedMaterials;
-
     public ItemBrowserService(Plugin plugin) {
         this.plugin = plugin;
-        this.cachedMaterials = new ArrayList<>();
-        for (Material material : Material.values()) {
-            if (material.isItem()) {
-                cachedMaterials.add(material);
-            }
-        }
+        instance = this;
     }
 
-    public List<Material> getAllItems() {
-        return new ArrayList<>(cachedMaterials);
+    @Override
+    public List<Material> getItems(String section) {
+        if (section.equals("blocks")) return getBlocks();
+        return sectionMaterials.getOrDefault(section, Collections.emptyList());
     }
 
-    public void openBrowser(Player player, Consumer<Material> itemConsumer, Runnable returnConsumer) {
-        openBrowser(player, itemConsumer, "", returnConsumer);
+    public List<Material> getBlocks() {
+        return cachedMaterials.stream().filter(Material::isBlock).toList();
     }
 
-    public void openBrowser(Player player, Consumer<Material> itemConsumer, String search, Runnable returnConsumer) {
-        new ItemBrowserMenu(this, itemConsumer, search, returnConsumer).open(player);
+    @Override
+    public void openBrowser(Player player, String section, Consumer<Material> itemConsumer, Runnable returnConsumer) {
+        openBrowser(player, section, itemConsumer, "", returnConsumer);
     }
 
-    public void requestSearch(Player player, Consumer<Material> itemConsumer, Runnable returnConsumer) {
+    public void openBrowser(Player player, String section, Consumer<Material> itemConsumer, String search, Runnable returnConsumer) {
+        new ItemBrowserMenu(this, section, itemConsumer, search, returnConsumer).open(player);
+    }
+
+    public void requestSearch(Player player, String section, Consumer<Material> itemConsumer, Runnable returnConsumer) {
         player.closeInventory();
         player.sendMessage("§ePlease type your search in chat.");
-        searchSessions.put(player.getUniqueId(), new SearchSession(itemConsumer, returnConsumer));
+        searchSessions.put(player.getUniqueId(), new SearchSession(section, itemConsumer, returnConsumer));
     }
 
     @EventHandler
@@ -62,15 +63,29 @@ public class ItemBrowserService implements Listener {
         if (session != null) {
             event.setCancelled(true);
             String input = event.getMessage();
-            Bukkit.getScheduler().runTask(plugin, () -> openBrowser(event.getPlayer(), session.itemConsumer, input, session.returnConsumer));
+            Bukkit.getScheduler().runTask(plugin, () -> openBrowser(event.getPlayer(), session.section, session.itemConsumer, input, session.returnConsumer));
         }
     }
 
+    @Override
+    public void registerSection(String section, List<String> materialNames) {
+        List<Material> materials = new ArrayList<>();
+        for (String matName : materialNames) {
+            Material mat = Material.matchMaterial(matName);
+            if (mat != null && mat.isItem()) {
+                materials.add(mat);
+            }
+        }
+        sectionMaterials.put(section, materials);
+    }
+
     private static class SearchSession {
+        final String section;
         final Consumer<Material> itemConsumer;
         final Runnable returnConsumer;
 
-        SearchSession(Consumer<Material> itemConsumer, Runnable returnConsumer) {
+        SearchSession(String section, Consumer<Material> itemConsumer, Runnable returnConsumer) {
+            this.section = section;
             this.itemConsumer = itemConsumer;
             this.returnConsumer = returnConsumer;
         }

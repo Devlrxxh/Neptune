@@ -101,7 +101,7 @@ public final class Neptune extends JavaPlugin {
     private void initAPI() {
         getServer().getServicesManager().register(
                 NeptuneAPI.class,
-                new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get(), ArenaService.get(), DivisionService.get(), CosmeticService.get()),
+                new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get(), ArenaService.get(), DivisionService.get(), CosmeticService.get(), ItemBrowserService.get()),
                 this,
                 ServicePriority.Normal
                 );
