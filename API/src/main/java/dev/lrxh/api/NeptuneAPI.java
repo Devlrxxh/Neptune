@@ -1,5 +1,8 @@
 package dev.lrxh.api;
 
+import dev.lrxh.api.arena.IArenaService;
+import dev.lrxh.api.features.ICosmeticService;
+import dev.lrxh.api.features.IDivisionService;
 import dev.lrxh.api.kit.IKitService;
 import dev.lrxh.api.match.IMatchService;
 import dev.lrxh.api.profile.IProfileService;
@@ -10,4 +13,7 @@ public interface NeptuneAPI {
     IMatchService getMatchService();
     IKitService getKitService();
     IScoreboardService getScoreboardService();
+    IArenaService getArenaService();
+    IDivisionService getDivisionService();
+    ICosmeticService getCosmeticService();
 }

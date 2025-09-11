@@ -1,6 +1,8 @@
 package dev.lrxh.neptune.utils;
 
-public class Time {
+import dev.lrxh.api.utils.ITime;
+
+public class Time implements ITime {
     private long oldTime;
     private long lastCurrentTime;
     private boolean stop;

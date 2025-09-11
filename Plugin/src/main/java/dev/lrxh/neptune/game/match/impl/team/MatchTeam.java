@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.impl.team;
 
 
+import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.api.match.team.IMatchTeam;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
@@ -16,15 +17,31 @@ import java.util.function.Consumer;
 public class MatchTeam implements IMatchTeam {
     private final List<Participant> participants;
     private final List<Participant> deadParticipants;
-    private boolean loser;
 
     private boolean bedBroken;
     private int points;
 
+    public List<IParticipant> getParticipants() {
+        return participants.stream()
+                .map(p -> (IParticipant) p)
+                .toList();
+    }
+
+    public List<IParticipant> getDeadParticipants() {
+        return deadParticipants.stream()
+                .map(p -> (IParticipant) p)
+                .toList();
+    }
+    public List<Participant> deadParticipants() {
+        return deadParticipants;
+    }
+    public List<Participant> participants() {
+        return participants;
+    }
+    
     public MatchTeam(List<Participant> participants) {
         this.participants = participants;
         this.deadParticipants = new ArrayList<>();
-        this.loser = false;
     }
 
     public void setBedBroken(boolean bedBroken) {

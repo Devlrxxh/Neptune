@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.match.impl.solo;
 
 import dev.lrxh.api.events.SoloMatchBedDestroyEvent;
+import dev.lrxh.api.match.ISoloFightMatch;
 import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -15,6 +16,7 @@ import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.MatchState;
 import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.game.match.impl.participant.ParticipantColor;
 import dev.lrxh.neptune.game.match.tasks.MatchEndRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchRespawnRunnable;
 import dev.lrxh.neptune.game.match.tasks.MatchSecondRoundRunnable;
@@ -38,7 +40,7 @@ import java.util.List;
 
 @Getter
 @Setter
-public class SoloFightMatch extends Match {
+public class SoloFightMatch extends Match implements ISoloFightMatch {
 
     private final Participant participantA;
     private final Participant participantB;
@@ -98,8 +100,7 @@ public class SoloFightMatch extends Match {
     }
 
     private void removePlaying() {
-        for (IParticipant ignored : getParticipants())
-            getKit().removePlaying();
+        getParticipants().forEach((i) -> getKit().removePlaying());
     }
 
     public void addStats() {
@@ -289,5 +290,12 @@ public class SoloFightMatch extends Match {
     @Override
     public List<IParticipant> getParticipants() {
         return List.of(participantA, participantB);
+    }
+
+    public Participant getRedParticipant() {
+        return participantA.getColor().equals(ParticipantColor.RED) ? participantA : participantB;
+    }
+    public Participant getBlueParticipant() {
+        return participantA.getColor().equals(ParticipantColor.BLUE) ? participantA : participantB;
     }
 }

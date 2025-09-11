@@ -13,5 +13,11 @@ public interface IGlobalStats {
     int getBestStreak();
     void setBestStreak(int amount);
 
+    int getElo();
+    void setElo(int elo);
+
+    IDivision getDivision();
+    void setDivision(IDivision division);
+
     double getWinRatio();
 }

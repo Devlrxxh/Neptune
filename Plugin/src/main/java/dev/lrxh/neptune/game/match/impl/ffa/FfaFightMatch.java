@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.match.impl.ffa;
 
+import dev.lrxh.api.match.IFffaFightMatch;
 import dev.lrxh.api.match.participant.IParticipant;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -15,16 +16,17 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
+import lombok.Getter;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Sound;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FfaFightMatch extends Match {
+public class FfaFightMatch extends Match implements IFffaFightMatch {
     public final List<Participant> deadParticipants;
     private final List<Participant> participants;
-    private Participant winner;
+    @Getter private Participant winner;
 
     public FfaFightMatch(Arena arena, Kit kit, List<Participant> participants) {
         super(MatchState.STARTING, arena, kit, participants, 1, true, false);
@@ -156,5 +158,9 @@ public class FfaFightMatch extends Match {
     @Override
     public List<IParticipant> getParticipants() {
         return new ArrayList<>(participants);
+    }
+    @Override
+    public List<IParticipant> getDeadParticipants() {
+        return new ArrayList<>(deadParticipants);
     }
 }

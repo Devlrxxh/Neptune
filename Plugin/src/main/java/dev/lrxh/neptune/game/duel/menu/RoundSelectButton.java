@@ -34,7 +34,6 @@ public class RoundSelectButton extends Button {
         return new ItemBuilder(Material.MAP)
                 .name(MenusLocale.ROUNDS_ITEM_NAME.getString().replace("<rounds>", String.valueOf(round)))
                 .lore(MenusLocale.ROUNDS_LORE.getStringList(), player)
-
                 .build();
     }
 
@@ -42,16 +41,19 @@ public class RoundSelectButton extends Button {
     public void onClick(ClickType type, Player player) {
         Profile profile = API.getProfile(receiver);
         if (profile == null) return;
+        if (player.hasPermission("neptune.arenaselector")) {
+            new ArenaSelectMenu(kit, receiver, round).open(player);
+            return;
+        }
         kit.getRandomArena().thenAccept(arena -> {
-                    if (arena == null) {
-                        player.sendMessage(CC.error("No arena found, please contact and admin"));
-                        return;
-                    }
-                    DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, false, round);
-                    profile.sendDuel(duelRequest);
+            if (arena == null) {
+                player.sendMessage(CC.error("No arena found, please contact an admin"));
+                return;
+            }
+            DuelRequest duelRequest = new DuelRequest(player.getUniqueId(), kit, arena, false, round);
+            profile.sendDuel(duelRequest);
 
-                    Bukkit.getScheduler().runTask(Neptune.get(), () -> player.closeInventory());
-                }
-        );
+            Bukkit.getScheduler().runTask(Neptune.get(), () -> player.closeInventory());
+        });
     }
 }

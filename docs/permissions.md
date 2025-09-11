@@ -9,3 +9,4 @@ These are the permissions a player needs to do specific things with the plugin.
 | `neptune.cosmetics.killmessages.[name]` | Use a specific kill message        |
 | `neptune.party.advertise`               | Advertise party publicly           |
 | `neptune.silent-spectate`               | Spectate someone silently          |
+| `neptune.arenaselector`                 | Access to duel arena selector menu |

@@ -12,7 +12,7 @@
     <name>Plugin</name>
 
     <properties>
-        <java.version>20</java.version>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
@@ -102,7 +102,7 @@
         <dependency>
             <groupId>com.github.Devlrxxh</groupId>
             <artifactId>BlockChanger</artifactId>
-            <version>8eaf9f678b</version>
+            <version>91b16c3703</version>
         </dependency>
     </dependencies>
 

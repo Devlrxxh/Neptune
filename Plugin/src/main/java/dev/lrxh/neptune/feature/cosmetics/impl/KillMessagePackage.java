@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.feature.cosmetics.impl;
 
+import dev.lrxh.api.features.IKillMessagePackage;
 import dev.lrxh.neptune.utils.RandomUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Getter
 @AllArgsConstructor
-public class KillMessagePackage {
+public class KillMessagePackage implements IKillMessagePackage {
     private String name;
     private String displayName;
     private Material material;

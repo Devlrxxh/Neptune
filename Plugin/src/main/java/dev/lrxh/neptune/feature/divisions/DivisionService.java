@@ -1,5 +1,7 @@
 package dev.lrxh.neptune.feature.divisions;
 
+import dev.lrxh.api.data.IDivision;
+import dev.lrxh.api.features.IDivisionService;
 import dev.lrxh.neptune.configs.ConfigService;
 import dev.lrxh.neptune.feature.divisions.impl.Division;
 import dev.lrxh.neptune.providers.manager.IService;
@@ -12,9 +14,13 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class DivisionService extends IService {
+public class DivisionService extends IService implements IDivisionService {
     private static DivisionService instance;
     public LinkedHashSet<Division> divisions;
+
+    public LinkedHashSet<IDivision> getDivisions() {
+        return divisions.stream().collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+    }
 
     public DivisionService() {
         divisions = new LinkedHashSet<>();
@@ -42,6 +48,13 @@ public class DivisionService extends IService {
             }
         }
 
+        divisions = divisions.stream()
+                .sorted(Comparator.comparingInt(Division::getEloRequired).reversed())
+                .collect(Collectors.toCollection(LinkedHashSet::new));
+    }
+
+    public void registerDivision(IDivision division) {
+        divisions.add((Division) division);
         divisions = divisions.stream()
                 .sorted(Comparator.comparingInt(Division::getEloRequired).reversed())
                 .collect(Collectors.toCollection(LinkedHashSet::new));

@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Material;
 
+import dev.lrxh.api.data.IDivision;
+
 @Getter
 @AllArgsConstructor
-public class Division {
+public class Division implements IDivision {
     public final String name;
     private final String displayName;
     private final int eloRequired;

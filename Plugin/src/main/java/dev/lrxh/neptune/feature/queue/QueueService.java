@@ -1,6 +1,9 @@
 package dev.lrxh.neptune.feature.queue;
 
 import dev.lrxh.api.events.QueueJoinEvent;
+import dev.lrxh.api.kit.IKit;
+import dev.lrxh.api.queue.IQueueEntry;
+import dev.lrxh.api.queue.IQueueService;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
@@ -13,8 +16,9 @@ import org.bukkit.Bukkit;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.stream.Collectors;
 
-public class QueueService {
+public class QueueService implements IQueueService {
 
     private static QueueService instance;
 
@@ -93,5 +97,16 @@ public class QueueService {
 
     public Map<Kit, Queue<QueueEntry>> getAllQueues() {
         return kitQueues;
+    }
+    public Map<IKit, Queue<IQueueEntry>> getQueues() {
+        return kitQueues.entrySet().stream().collect(
+            HashMap::new,
+            (map, entry) -> map.put(
+                (IKit) entry.getKey(),
+                entry.getValue().stream().map(
+                    e -> (IQueueEntry) e).collect(Collectors.toCollection(LinkedList::new)
+                )
+            ),
+            HashMap::putAll);
     }
 }

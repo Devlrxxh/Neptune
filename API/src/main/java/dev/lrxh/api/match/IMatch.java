@@ -7,6 +7,8 @@ import dev.lrxh.api.match.participant.IParticipant;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.entity.Player;
+
 public interface IMatch {
 
     List<UUID> getSpectators();
@@ -19,6 +21,7 @@ public interface IMatch {
     int getRounds();
     boolean isDuel();
     boolean isEnded();
+    IParticipant getParticipant(Player player);
 
     void broadcast(String message);
 }

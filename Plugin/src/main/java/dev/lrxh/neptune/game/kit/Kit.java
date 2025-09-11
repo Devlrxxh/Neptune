@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.game.kit;
 
+import dev.lrxh.api.arena.IArena;
 import dev.lrxh.api.kit.IKit;
 import dev.lrxh.api.kit.IKitRule;
 import dev.lrxh.neptune.API;
@@ -254,6 +255,10 @@ public class Kit implements IKit {
     public void delete() {
         KitService.get().kits.remove(this);
         KitService.get().save();
+    }
+
+    public HashSet<IArena> getAllArenas() {
+        return arenas.stream().collect(HashSet::new, HashSet::add, HashSet::addAll);
     }
 
     @Override
