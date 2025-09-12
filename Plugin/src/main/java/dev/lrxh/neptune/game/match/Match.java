@@ -154,12 +154,10 @@ public abstract class Match implements IMatch {
     }
 
     public void showPlayerForSpectators() {
-        forEachSpectator(spectator -> {
-            forEachPlayer(alivePlayer -> {
-                spectator.showPlayer(Neptune.get(), alivePlayer);
-                alivePlayer.hidePlayer(Neptune.get(), spectator);
-            });
-        });
+        forEachSpectator(spectator -> forEachPlayer(alivePlayer -> {
+            spectator.showPlayer(Neptune.get(), alivePlayer);
+            alivePlayer.hidePlayer(Neptune.get(), spectator);
+        }));
     }
 
     public void forEachPlayer(Consumer<Player> action) {
