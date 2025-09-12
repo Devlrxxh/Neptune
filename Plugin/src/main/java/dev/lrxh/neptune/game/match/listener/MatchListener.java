@@ -166,6 +166,8 @@ public class MatchListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
+        if (!(event.getDamager() instanceof Player)) return;
+        if (API.getProfile(event.getDamager().getUniqueId()).getState().equals(ProfileState.IN_CUSTOM)) return;
         if (event.getEntity() instanceof EnderCrystal crystal && event.getDamager() instanceof Player player) {
             if (!getMatchProfile(player).isPresent()) {
                 event.setCancelled(true);
