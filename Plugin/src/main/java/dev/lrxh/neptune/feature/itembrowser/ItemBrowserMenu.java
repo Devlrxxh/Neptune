@@ -17,13 +17,15 @@ import java.util.stream.Collectors;
 public class ItemBrowserMenu extends PaginatedMenu {
 
     private final ItemBrowserService service;
+    private final String section;
     private final Consumer<Material> itemConsumer;
     private final Runnable returnConsumer;
     private final String search;
 
-    public ItemBrowserMenu(ItemBrowserService service, Consumer<Material> itemConsumer, String search, Runnable returnConsumer) {
+    public ItemBrowserMenu(ItemBrowserService service, String section, Consumer<Material> itemConsumer, String search, Runnable returnConsumer) {
         super("&fItem Browser", 54, Filter.NONE);
         this.service = service;
+        this.section = section;
         this.itemConsumer = itemConsumer;
         this.search = search == null ? "" : search;
         this.returnConsumer = returnConsumer;
@@ -31,7 +33,7 @@ public class ItemBrowserMenu extends PaginatedMenu {
 
     @Override
     public List<Button> getAllPagesButtons(Player player) {
-        List<Material> items = service.getAllItems();
+        List<Material> items = service.getItems(section);
         if (!search.isEmpty()) {
             items = items.stream()
                     .filter(mat -> mat.name().toLowerCase().contains(search.toLowerCase()))
@@ -71,7 +73,7 @@ public class ItemBrowserMenu extends PaginatedMenu {
 
             @Override
             public void onClick(ClickType type, Player p) {
-                service.requestSearch(p, itemConsumer, returnConsumer);
+                service.requestSearch(p, section, itemConsumer, returnConsumer);
             }
         });
         global.add(new Button(49) {

@@ -25,7 +25,8 @@ public class AddWhitelistBlockButton extends Button {
         player.sendMessage(CC.info("Select a block to whitelist!"));
 
         ItemBrowserService service = ItemBrowserService.get();
-        service.openBrowser(player, material -> {
+        String section = "blocks";
+        service.openBrowser(player, section, material -> {
             if (!arena.getWhitelistedBlocks().contains(material)) {
                 arena.getWhitelistedBlocks().add(material);
                 player.sendMessage(CC.success("Added block " + material.name() + " to whitelist."));
@@ -38,6 +39,9 @@ public class AddWhitelistBlockButton extends Button {
 
     @Override
     public ItemStack getItemStack(Player player) {
-        return new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE).name("&aAdd Block").lore("&aPress to add").build();
+        return new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
+                .name("&aAdd Block")
+                .lore("&aPress to add")
+                .build();
     }
 }
