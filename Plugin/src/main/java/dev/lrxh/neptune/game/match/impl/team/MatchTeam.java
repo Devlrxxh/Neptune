@@ -21,6 +21,11 @@ public class MatchTeam implements IMatchTeam {
     private boolean bedBroken;
     private int points;
 
+    public MatchTeam(List<Participant> participants) {
+        this.participants = participants;
+        this.deadParticipants = new ArrayList<>();
+    }
+
     public List<IParticipant> getParticipants() {
         return participants.stream()
                 .map(p -> (IParticipant) p)
@@ -32,16 +37,13 @@ public class MatchTeam implements IMatchTeam {
                 .map(p -> (IParticipant) p)
                 .toList();
     }
+
     public List<Participant> deadParticipants() {
         return deadParticipants;
     }
+
     public List<Participant> participants() {
         return participants;
-    }
-    
-    public MatchTeam(List<Participant> participants) {
-        this.participants = participants;
-        this.deadParticipants = new ArrayList<>();
     }
 
     public void setBedBroken(boolean bedBroken) {

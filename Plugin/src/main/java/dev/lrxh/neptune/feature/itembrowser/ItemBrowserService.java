@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.feature.itembrowser;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.profile.ProfileService;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,17 +15,9 @@ import java.util.function.Consumer;
 public class ItemBrowserService implements Listener {
 
     private static ItemBrowserService instance;
-
-    public static ItemBrowserService get() {
-        if (instance == null) instance = new ItemBrowserService(Neptune.get());
-
-        return instance;
-    }
-
     private final Plugin plugin;
     private final Map<UUID, SearchSession> searchSessions = new HashMap<>();
     private final List<Material> cachedMaterials;
-
     public ItemBrowserService(Plugin plugin) {
         this.plugin = plugin;
         this.cachedMaterials = new ArrayList<>();
@@ -35,6 +26,12 @@ public class ItemBrowserService implements Listener {
                 cachedMaterials.add(material);
             }
         }
+    }
+
+    public static ItemBrowserService get() {
+        if (instance == null) instance = new ItemBrowserService(Neptune.get());
+
+        return instance;
     }
 
     public List<Material> getAllItems() {

@@ -19,12 +19,12 @@ public class GlobalStats implements IGlobalStats {
     private int elo = 0;
     private Division division = DivisionService.get().getDivisionByElo(0);
 
-    public void setDivision(IDivision division) {
-        this.division = (Division) division;
-    }
-
     public GlobalStats(Profile profile) {
         this.profile = profile;
+    }
+
+    public void setDivision(IDivision division) {
+        this.division = (Division) division;
     }
 
     public void update() {

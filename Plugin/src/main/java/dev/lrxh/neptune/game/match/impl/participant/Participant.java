@@ -132,6 +132,7 @@ public class Participant implements IParticipant {
             return currentCheckPoint;
         return match.getSpawn(this);
     }
+
     public Location getSpawn(IMatch match) {
         return getSpawn((Match) match);
     }
@@ -214,6 +215,7 @@ public class Participant implements IParticipant {
             return "&e(" + (hits - otherParticipant.getHits()) + ")";
         }
     }
+
     public String getHitsDifference(IParticipant otherParticipant) {
         if (hits - otherParticipant.getHits() > 0) {
             return "&a(+" + (hits - otherParticipant.getHits()) + ")";
@@ -223,6 +225,7 @@ public class Participant implements IParticipant {
             return "&e(" + (hits - otherParticipant.getHits()) + ")";
         }
     }
+
     public String getHitsDifferenceUncolored(IParticipant otherParticipant) {
         if (hits - otherParticipant.getHits() > 0) {
             return "+" + (hits - otherParticipant.getHits());

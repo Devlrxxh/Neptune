@@ -1,10 +1,9 @@
 package dev.lrxh.neptune.feature.divisions.impl;
 
+import dev.lrxh.api.data.IDivision;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.bukkit.Material;
-
-import dev.lrxh.api.data.IDivision;
 
 @Getter
 @AllArgsConstructor

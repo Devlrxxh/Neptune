@@ -295,6 +295,7 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
     public Participant getRedParticipant() {
         return participantA.getColor().equals(ParticipantColor.RED) ? participantA : participantB;
     }
+
     public Participant getBlueParticipant() {
         return participantA.getColor().equals(ParticipantColor.BLUE) ? participantA : participantB;
     }

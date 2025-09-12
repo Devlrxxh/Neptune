@@ -125,8 +125,7 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<red-bed-status>", red != null && !red.isBedBroken() ? "&a✔" : "&c✘");
                         line = line.replaceAll("<blue-bed-status>", blue != null && !blue.isBedBroken() ? "&a✔" : "&c✘");
                     }
-                }
-                else if (match instanceof TeamFightMatch teamFightMatch) {
+                } else if (match instanceof TeamFightMatch teamFightMatch) {
                     MatchTeam red = teamFightMatch.getTeamA();
                     MatchTeam blue = teamFightMatch.getTeamB();
 
@@ -139,8 +138,7 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<red-bed-status>", !red.isBedBroken() ? "&a✔" : "&c✘");
                         line = line.replaceAll("<blue-bed-status>", !blue.isBedBroken() ? "&a✔" : "&c✘");
                     }
-                }
-                else if (match instanceof FfaFightMatch ffaFightMatch) {
+                } else if (match instanceof FfaFightMatch ffaFightMatch) {
                     line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
                     line = line.replaceAll("<max>", String.valueOf(ffaFightMatch.getParticipants().size()));
                 }

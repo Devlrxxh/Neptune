@@ -46,10 +46,11 @@ public class TeamFightMatch extends Match implements ITeamFightMatch {
     public MatchTeam getParticipantTeam(Participant participant) {
         return teamA.participants().contains(participant) ? teamA : teamB;
     }
+
     public IMatchTeam getParticipantTeam(IParticipant participant) {
         return getParticipantTeam((Participant) participant);
     }
-    
+
     public IMatchTeam getWinner() {
         return teamA.isLoser() ? teamB : teamA;
     }

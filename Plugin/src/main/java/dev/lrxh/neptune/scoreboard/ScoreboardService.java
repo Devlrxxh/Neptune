@@ -11,8 +11,8 @@ import java.util.function.Function;
 
 public class ScoreboardService implements IScoreboardService {
 
-    private HashMap<String, Function<IProfile, List<String>>> scoreboards = new HashMap<>();
     private static ScoreboardService instance;
+    private final HashMap<String, Function<IProfile, List<String>>> scoreboards = new HashMap<>();
 
     public static ScoreboardService get() {
         if (instance == null) instance = new ScoreboardService();

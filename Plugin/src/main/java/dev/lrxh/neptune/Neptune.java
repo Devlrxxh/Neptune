@@ -105,7 +105,7 @@ public final class Neptune extends JavaPlugin {
                 new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get(), ArenaService.get(), DivisionService.get(), CosmeticService.get()),
                 this,
                 ServicePriority.Normal
-                );
+        );
         ServerUtils.info("Neptune API Initialized");
     }
 

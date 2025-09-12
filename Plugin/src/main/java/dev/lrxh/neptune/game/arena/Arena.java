@@ -49,7 +49,7 @@ public class Arena implements IArena {
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-            Location min, Location max, double buildLimit, boolean enabled,
+                 Location min, Location max, double buildLimit, boolean enabled,
                  List<Material> whitelistedBlocks, int deathY) {
 
         this(name, displayName, redSpawn, blueSpawn, enabled, deathY);
@@ -64,8 +64,8 @@ public class Arena implements IArena {
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-            Location min, Location max, double buildLimit, boolean enabled,
-            List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
+                 Location min, Location max, double buildLimit, boolean enabled,
+                 List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
 
         this(name, displayName, redSpawn, blueSpawn, min, max, buildLimit, enabled, whitelistedBlocks, deathY);
         this.snapshot = snapshot;

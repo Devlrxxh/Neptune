@@ -18,7 +18,10 @@ import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.*;
+import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.EntityUtils;
+import dev.lrxh.neptune.utils.LocationUtil;
+import dev.lrxh.neptune.utils.WorldUtils;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import io.papermc.paper.event.block.BlockBreakBlockEvent;
 import io.papermc.paper.event.entity.EntityPushedByEntityAttackEvent;
@@ -62,6 +65,7 @@ public class MatchListener implements Listener {
         Profile profile = API.getProfile(player);
         return isPlayerInMatch(profile) ? Optional.of(profile) : Optional.empty();
     }
+
     @EventHandler
     public void onBlockPlaceEvent(BlockPlaceEvent event) {
         Player player = event.getPlayer();
@@ -255,7 +259,8 @@ public class MatchListener implements Listener {
         Match match = ownerMatchOptional.get();
         if (!match.getUuid().equals(victimMatchOptional.get().getUuid())) return;
 
-        if (!(match instanceof TeamFightMatch teamMatch) || !(teamMatch.onSameTeam(owner.getUniqueId(), victim.getUniqueId()))) return;
+        if (!(match instanceof TeamFightMatch teamMatch) || !(teamMatch.onSameTeam(owner.getUniqueId(), victim.getUniqueId())))
+            return;
         event.setCancelled(true);
     }
 
@@ -340,13 +345,13 @@ public class MatchListener implements Listener {
         if (!(pushed instanceof Player target)) {
             return;
         }
-        
+
         // Check if both players are in matches
         if (!getMatchProfile(shooter).isPresent() || !getMatchProfile(target).isPresent()) {
             event.setCancelled(true);
             return;
         }
-        
+
         if (!target.canSee(shooter) || !shooter.canSee(target)) {
             event.setCancelled(true);
         }
