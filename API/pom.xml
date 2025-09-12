@@ -49,7 +49,7 @@
 
     <build>
         <defaultGoal>clean package</defaultGoal>
-        <finalName>Neptune</finalName>
+        <finalName>NeptuneAPI</finalName>
 
         <resources>
             <resource>
