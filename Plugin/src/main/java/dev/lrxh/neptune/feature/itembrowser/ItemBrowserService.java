@@ -1,11 +1,8 @@
 package dev.lrxh.neptune.feature.itembrowser;
 
 import dev.lrxh.api.features.IItemBrowserService;
-import dev.lrxh.neptune.Neptune;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -13,7 +10,6 @@ import java.util.function.Consumer;
 public class ItemBrowserService implements IItemBrowserService {
 
     private static ItemBrowserService instance;
-    private final Plugin plugin;
 
     private final Map<String, List<Material>> sectionMaterials = new HashMap<>();
     private final Map<UUID, SearchSession> searchSessions = new HashMap<>();
@@ -22,16 +18,13 @@ public class ItemBrowserService implements IItemBrowserService {
 
     public static ItemBrowserService get() {
         if (instance == null) {
-            instance = new ItemBrowserService(Neptune.get());
+            instance = new ItemBrowserService();
         }
         return instance;
     }
 
-    public ItemBrowserService(Plugin plugin) {
-        this.plugin = plugin;
-        instance = this;
-        cachedMaterials.addAll(List.of(Material.values()));
-        cachedMaterials.remove(Material.AIR);
+    public ItemBrowserService() {
+        Arrays.stream(Material.values()).filter(m -> m != Material.AIR).forEach(cachedMaterials::add);
     }
 
     @Override
@@ -75,15 +68,5 @@ public class ItemBrowserService implements IItemBrowserService {
         sectionMaterials.put(section, materials);
     }
 
-    public static class SearchSession {
-        final String section;
-        final Consumer<Material> itemConsumer;
-        final Runnable returnConsumer;
-
-        SearchSession(String section, Consumer<Material> itemConsumer, Runnable returnConsumer) {
-            this.section = section;
-            this.itemConsumer = itemConsumer;
-            this.returnConsumer = returnConsumer;
-        }
-    }
+    record SearchSession(String section, Consumer<Material> itemConsumer, Runnable returnConsumer) {}
 }

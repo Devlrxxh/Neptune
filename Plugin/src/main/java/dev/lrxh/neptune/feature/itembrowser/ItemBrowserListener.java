@@ -28,10 +28,10 @@ public class ItemBrowserListener implements Listener {
             String input = event.getMessage();
             Bukkit.getScheduler().runTask(plugin,
                     () -> service.openBrowser(event.getPlayer(),
-                            session.section,
-                            session.itemConsumer,
+                            session.section(),
+                            session.itemConsumer(),
                             input,
-                            session.returnConsumer));
+                            session.returnConsumer()));
         }
     }
 }
