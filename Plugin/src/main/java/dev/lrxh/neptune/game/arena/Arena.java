@@ -3,17 +3,14 @@ package dev.lrxh.neptune.game.arena;
 import dev.lrxh.api.arena.IArena;
 import dev.lrxh.blockChanger.snapshot.ChunkPosition;
 import dev.lrxh.blockChanger.snapshot.CuboidSnapshot;
-import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.game.kit.KitService;
 import dev.lrxh.neptune.utils.LocationUtil;
-import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
@@ -36,7 +33,6 @@ public class Arena implements IArena {
     private List<Material> whitelistedBlocks;
     private CuboidSnapshot snapshot;
     private AtomicInteger duplicateIndex;
-    private AtomicInteger preloadedIndex;
     private Arena owner;
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
@@ -50,7 +46,6 @@ public class Arena implements IArena {
         this.buildLimit = 0;
         this.whitelistedBlocks = new ArrayList<>();
         this.duplicateIndex = new AtomicInteger(1);
-        this.preloadedIndex = new AtomicInteger(0);
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
@@ -68,10 +63,6 @@ public class Arena implements IArena {
         CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
             this.snapshot = cuboidSnapshot;
         });
-
-        if (!duplicate) {
-            loadChunks(duplicateIndex.get(), true);
-        }
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
@@ -100,17 +91,6 @@ public class Arena implements IArena {
         if (snapshot == null) CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> this.snapshot = cuboidSnapshot);
         int currentIndex = this.duplicateIndex.getAndIncrement();
 
-        int preloadIndex = currentIndex + 1;
-
-        if (preloadIndex > preloadedIndex.get()) {
-            loadChunks(preloadIndex, false);
-            preloadedIndex.set(preloadIndex);
-        }
-
-        if (currentIndex - 2 >= 1) {
-            unloadChunks(currentIndex - 2);
-        }
-
         int offsetX = Math.abs(currentIndex) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
         int offsetZ = Math.abs(currentIndex) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
 
@@ -135,40 +115,6 @@ public class Arena implements IArena {
                     cuboidSnapshot,
                     this);
         });
-    }
-
-    public void unloadChunks(int index) {
-        if (min == null || max == null)
-            return;
-
-        World world = redSpawn.getWorld();
-
-        int offsetX = Math.abs(index) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
-        int offsetZ = Math.abs(index) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
-
-        Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
-        Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
-
-        int chunkMinX = Math.min(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
-        int chunkMaxX = Math.max(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
-        int chunkMinZ = Math.min(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
-        int chunkMaxZ = Math.max(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
-
-        for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
-            for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
-                final int chunkX = cx;
-                final int chunkZ = cz;
-
-                world.getChunkAtAsync(chunkX, chunkZ, false).thenAccept(chunk -> {
-                    chunk.removePluginChunkTicket(Neptune.get());
-                    ChunkPosition position = new ChunkPosition(chunkX, chunkZ);
-                    loadedChunks.remove(position);
-                });
-
-            }
-        }
-
-        // ServerUtils.info("✘ Unloaded chunks for arena duplicate index " + index);
     }
 
     public List<String> getWhitelistedBlocksAsString() {
@@ -243,77 +189,5 @@ public class Arena implements IArena {
             return arena.getName().equals(name);
         }
         return false;
-    }
-
-    public void loadChunks(int i, boolean disable) {
-        if (min == null || max == null) {
-            return;
-        }
-
-        loadedChunks.entrySet().removeIf(entry -> {
-            ChunkPosition pos = entry.getKey();
-            int xOffset = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
-            int zOffset = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
-            return pos.x() >= min.getChunk().getX() + xOffset &&
-                    pos.x() <= max.getChunk().getX() + xOffset &&
-                    pos.z() >= min.getChunk().getZ() + zOffset &&
-                    pos.z() <= max.getChunk().getZ() + zOffset;
-        });
-
-        World world = redSpawn.getWorld();
-        List<Map.Entry<Integer, Integer>> chunksToLoad = new ArrayList<>();
-
-        int offsetX = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
-        int offsetZ = Math.abs(i) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
-
-        Location offsetMin = LocationUtil.addOffset(min.clone(), offsetX, offsetZ);
-        Location offsetMax = LocationUtil.addOffset(max.clone(), offsetX, offsetZ);
-
-        int chunkMinX = Math.min(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
-        int chunkMaxX = Math.max(offsetMin.getChunk().getX(), offsetMax.getChunk().getX());
-        int chunkMinZ = Math.min(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
-        int chunkMaxZ = Math.max(offsetMin.getChunk().getZ(), offsetMax.getChunk().getZ());
-
-        for (int cx = chunkMinX; cx <= chunkMaxX; cx++) {
-            for (int cz = chunkMinZ; cz <= chunkMaxZ; cz++) {
-                chunksToLoad.add(new AbstractMap.SimpleEntry<>(cx, cz));
-            }
-        }
-
-        boolean wasEnabled = isEnabled();
-
-        if (disable)
-            setEnabled(false);
-
-        new NeptuneRunnable() {
-            int index = 0;
-
-            @Override
-            public void run() {
-                int processed = 0;
-                while (index < chunksToLoad.size() && processed < 5) {
-                    Map.Entry<Integer, Integer> entry = chunksToLoad.get(index++);
-                    int cx = entry.getKey();
-                    int cz = entry.getValue();
-
-                    world.getChunkAtAsync(cx, cz, false).thenAccept(chunk -> {
-                        chunk.addPluginChunkTicket(Neptune.get());
-                        ChunkPosition position = new ChunkPosition(cx, cz);
-                        loadedChunks.put(position, chunk);
-                    });
-                    processed++;
-                }
-
-                if (index >= chunksToLoad.size()) {
-                    cancel();
-                    if (wasEnabled)
-                        setEnabled(true);
-                    loadedChunkIndices.add(i);
-                    // int totalChunks = chunksToLoad.size();
-                    // ServerUtils.info("✔ Loaded " + totalChunks + " chunks for " + name + "
-                    // (index: " + i + ")");
-                }
-            }
-        }.start(0L, 1L);
     }
 }

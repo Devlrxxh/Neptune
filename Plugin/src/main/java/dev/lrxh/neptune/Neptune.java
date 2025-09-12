@@ -5,6 +5,7 @@ import com.jonahseguin.drink.Drink;
 import com.jonahseguin.drink.provider.spigot.UUIDProvider;
 import dev.lrxh.api.NeptuneAPI;
 import dev.lrxh.api.NeptuneAPIImpl;
+import dev.lrxh.blockChanger.BlockChanger;
 import dev.lrxh.neptune.cache.Cache;
 import dev.lrxh.neptune.commands.FollowCommand;
 import dev.lrxh.neptune.commands.LeaveCommand;
@@ -117,6 +118,7 @@ public final class Neptune extends JavaPlugin {
         new DatabaseService();
         if (!isEnabled()) return;
 
+        BlockChanger.initialize(this);
         ArenaService.get().load();
         KitService.get().load();
         this.cache = new Cache();
