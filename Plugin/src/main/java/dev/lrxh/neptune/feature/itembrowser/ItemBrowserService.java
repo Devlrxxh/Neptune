@@ -1,18 +1,16 @@
 package dev.lrxh.neptune.feature.itembrowser;
 
 import dev.lrxh.api.features.IItemBrowserService;
+import dev.lrxh.neptune.Neptune;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.Plugin;
 
 import java.util.*;
 import java.util.function.Consumer;
 
-public class ItemBrowserService implements Listener, IItemBrowserService {
+public class ItemBrowserService implements IItemBrowserService {
 
     private static ItemBrowserService instance;
     private final Plugin plugin;
@@ -23,12 +21,17 @@ public class ItemBrowserService implements Listener, IItemBrowserService {
     private final List<Material> cachedMaterials = new ArrayList<>();
 
     public static ItemBrowserService get() {
+        if (instance == null) {
+            instance = new ItemBrowserService(Neptune.get());
+        }
         return instance;
     }
 
     public ItemBrowserService(Plugin plugin) {
         this.plugin = plugin;
         instance = this;
+        cachedMaterials.addAll(List.of(Material.values()));
+        cachedMaterials.remove(Material.AIR);
     }
 
     @Override
@@ -47,7 +50,7 @@ public class ItemBrowserService implements Listener, IItemBrowserService {
     }
 
     public void openBrowser(Player player, String section, Consumer<Material> itemConsumer, String search, Runnable returnConsumer) {
-        new ItemBrowserMenu(this, section, itemConsumer, search, returnConsumer).open(player);
+        new ItemBrowserMenu(get(), section, itemConsumer, search, returnConsumer).open(player);
     }
 
     public void requestSearch(Player player, String section, Consumer<Material> itemConsumer, Runnable returnConsumer) {
@@ -56,15 +59,8 @@ public class ItemBrowserService implements Listener, IItemBrowserService {
         searchSessions.put(player.getUniqueId(), new SearchSession(section, itemConsumer, returnConsumer));
     }
 
-    @EventHandler
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        UUID uuid = event.getPlayer().getUniqueId();
-        SearchSession session = searchSessions.remove(uuid);
-        if (session != null) {
-            event.setCancelled(true);
-            String input = event.getMessage();
-            Bukkit.getScheduler().runTask(plugin, () -> openBrowser(event.getPlayer(), session.section, session.itemConsumer, input, session.returnConsumer));
-        }
+    public SearchSession removeSearchSession(UUID uuid) {
+        return searchSessions.remove(uuid);
     }
 
     @Override
@@ -79,7 +75,7 @@ public class ItemBrowserService implements Listener, IItemBrowserService {
         sectionMaterials.put(section, materials);
     }
 
-    private static class SearchSession {
+    public static class SearchSession {
         final String section;
         final Consumer<Material> itemConsumer;
         final Runnable returnConsumer;
