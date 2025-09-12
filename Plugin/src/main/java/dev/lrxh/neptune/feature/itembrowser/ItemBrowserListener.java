@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.feature.itembrowser;
 
+import dev.lrxh.neptune.Neptune;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -13,9 +14,9 @@ public class ItemBrowserListener implements Listener {
     private final ItemBrowserService service;
     private final Plugin plugin;
 
-    public ItemBrowserListener(ItemBrowserService service, Plugin plugin) {
-        this.service = service;
-        this.plugin = plugin;
+    public ItemBrowserListener() {
+        this.service = ItemBrowserService.get();
+        this.plugin = Neptune.get();
     }
 
     @EventHandler

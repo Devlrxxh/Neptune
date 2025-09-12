@@ -149,7 +149,7 @@ public final class Neptune extends JavaPlugin {
                 new MenuListener(),
                 new ArenaProcedureListener(),
                 new KitProcedureListener(),
-                new ItemBrowserListener(ItemBrowserService.get(), this)
+                new ItemBrowserListener()
         ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
