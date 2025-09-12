@@ -28,6 +28,8 @@ public class ItemListener implements Listener {
         }
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
 
+        if (profile.getState() == ProfileState.IN_CUSTOM) return;
+
         event.setCancelled(true);
 
         if (event.getItem() == null) return;

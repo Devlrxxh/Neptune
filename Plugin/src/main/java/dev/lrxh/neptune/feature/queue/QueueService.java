@@ -98,15 +98,16 @@ public class QueueService implements IQueueService {
     public Map<Kit, Queue<QueueEntry>> getAllQueues() {
         return kitQueues;
     }
+
     public Map<IKit, Queue<IQueueEntry>> getQueues() {
         return kitQueues.entrySet().stream().collect(
-            HashMap::new,
-            (map, entry) -> map.put(
-                (IKit) entry.getKey(),
-                entry.getValue().stream().map(
-                    e -> (IQueueEntry) e).collect(Collectors.toCollection(LinkedList::new)
-                )
-            ),
-            HashMap::putAll);
+                HashMap::new,
+                (map, entry) -> map.put(
+                        entry.getKey(),
+                        entry.getValue().stream().map(
+                                e -> (IQueueEntry) e).collect(Collectors.toCollection(LinkedList::new)
+                        )
+                ),
+                HashMap::putAll);
     }
 }

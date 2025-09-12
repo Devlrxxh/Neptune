@@ -26,6 +26,7 @@ public class KitData implements IKitData {
     private int elo = 0;
     private HashMap<String, Object> customData = new HashMap<>();
     private HashMap<String, Object> persistentData = new HashMap<>();
+
     public double getKdr() {
         if (deaths == 0) return kills;
         double kd = (double) kills / deaths;

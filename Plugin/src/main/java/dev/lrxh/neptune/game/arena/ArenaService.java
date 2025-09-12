@@ -22,14 +22,14 @@ public class ArenaService extends IService implements IArenaService {
     private static ArenaService instance;
     public final LinkedHashSet<Arena> arenas = new LinkedHashSet<>();
 
-    public LinkedHashSet<IArena> getAllArenas() {
-        return arenas.stream().collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
-    }
-
     public static ArenaService get() {
         if (instance == null) instance = new ArenaService();
 
         return instance;
+    }
+
+    public LinkedHashSet<IArena> getAllArenas() {
+        return arenas.stream().collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ArenaService extends IService implements IArenaService {
             whitelistedBlocks.add(Material.getMaterial(name));
         }
 
-        Arena arena = new Arena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, whitelistedBlocks, deathY, false);
+        Arena arena = new Arena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, whitelistedBlocks, deathY);
 
         return arena;
     }

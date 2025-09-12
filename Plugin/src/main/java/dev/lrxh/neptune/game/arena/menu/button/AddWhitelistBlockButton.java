@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
-import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.feature.itembrowser.ItemBrowserService;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.arena.menu.WhitelistedBlocksMenu;

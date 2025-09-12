@@ -93,7 +93,7 @@ public class GlobalListener implements Listener {
             }
         }
     }
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
@@ -118,7 +118,7 @@ public class GlobalListener implements Listener {
         }
     }
 
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
@@ -131,7 +131,7 @@ public class GlobalListener implements Listener {
         }
     }
 
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
@@ -150,7 +150,7 @@ public class GlobalListener implements Listener {
         }
     }
 
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
@@ -163,41 +163,22 @@ public class GlobalListener implements Listener {
         }
     }
 
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDamageByPlayer(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player attacker && event.getEntity() instanceof Player victim) {
             Profile attackerProfile = API.getProfile(attacker);
             Profile victimProfile = API.getProfile(victim);
-
-            // Cancel if either player is not in a match
             if (attackerProfile.getState().equals(ProfileState.IN_CUSTOM)) {
                 return;
             }
             if (isPlayerNotInMatch(attackerProfile) || isPlayerNotInMatch(victimProfile)) {
                 event.setCancelled(true);
-
-                // Send message to attacker if they're not in match
-                if (isPlayerNotInMatch(attackerProfile)) {
-                    ProfileState state = attackerProfile != null ? attackerProfile.getState() : null;
-                    if (state != null) {
-                        if (state.equals(ProfileState.IN_CUSTOM)) {
-                            return;
-                        }
-                        if (state.equals(ProfileState.IN_LOBBY)) {
-                            attacker.sendMessage(CC.color("&cYou can't attack players in the lobby!"));
-                        } else if (state.equals(ProfileState.IN_QUEUE)) {
-                            attacker.sendMessage(CC.color("&cYou can't attack players while in queue!"));
-                        } else {
-                            attacker.sendMessage(CC.color("&cYou can't attack players here!"));
-                        }
-                    }
-                }
             }
         }
     }
 
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
@@ -212,7 +193,7 @@ public class GlobalListener implements Listener {
         }
     }
 
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player player) {
@@ -223,7 +204,7 @@ public class GlobalListener implements Listener {
         }
     }
 
-    
+
     @EventHandler(priority = EventPriority.HIGH)
     public void onProjectileHit(ProjectileHitEvent event) {
         if (event.getEntity().getShooter() instanceof Player player) {

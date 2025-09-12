@@ -78,7 +78,8 @@ public class ArenaProcedureListener implements Listener {
                         new NeptuneRunnable() {
                             public void run() {
                                 player.teleport(arena.getBlueSpawn());
-                            };
+                            }
+
                         }.runTask(Neptune.get());
                     }
                     player.sendMessage(CC.info("Go to the spawn of the &9blue &7player and type &aDone"));

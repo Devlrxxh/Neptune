@@ -44,8 +44,8 @@ public class Kit implements IKit {
     private double damageMultiplier;
 
     public Kit(String name, String displayName, List<ItemStack> items, HashSet<Arena> arenas, ItemStack icon,
-            HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot,
-            List<PotionEffect> potionEffects, double damageMultiplier) {
+               HashMap<KitRule, Boolean> rules, int slot, double health, int kitEditorSlot,
+               List<PotionEffect> potionEffects, double damageMultiplier) {
         this.name = name;
         this.displayName = displayName;
         this.items = items;

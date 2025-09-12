@@ -2,8 +2,8 @@ package dev.lrxh.neptune.feature.itembrowser;
 
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
-import dev.lrxh.neptune.utils.menu.PaginatedMenu;
 import dev.lrxh.neptune.utils.menu.Filter;
+import dev.lrxh.neptune.utils.menu.PaginatedMenu;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -49,6 +49,7 @@ public class ItemBrowserMenu extends PaginatedMenu {
                             .name("&f" + mat.name())
                             .build();
                 }
+
                 @Override
                 public void onClick(ClickType type, Player p) {
                     itemConsumer.accept(mat);
@@ -69,6 +70,7 @@ public class ItemBrowserMenu extends PaginatedMenu {
                         .name("&eSearch")
                         .build();
             }
+
             @Override
             public void onClick(ClickType type, Player p) {
                 service.requestSearch(p, section, itemConsumer, returnConsumer);
@@ -81,6 +83,7 @@ public class ItemBrowserMenu extends PaginatedMenu {
                         .name("&cReturn")
                         .build();
             }
+
             @Override
             public void onClick(ClickType type, Player p) {
                 if (returnConsumer != null) {

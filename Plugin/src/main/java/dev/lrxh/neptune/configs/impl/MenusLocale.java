@@ -99,6 +99,8 @@ public enum MenusLocale implements IDataAccessor {
     ARENA_ITEM_NAME("ARENA.ITEM.NAME", DataType.STRING, "&b<arena>"),
     ARENA_ITEM_LORE("ARENA.ITEM.LORE", DataType.STRING_LIST, "", "&fSelect <arena> as the battle arena"),
     ARENA_RANDOM_ITEM_NAME("ARENA.RANDOM_ITEM.NAME", DataType.STRING, "&bRandom Arena"),
+    ARENA_RANDOM_ITEM_SLOT("ARENA.RANDOM_ITEM.NAME", DataType.INT, "0"),
+    ARENA_RANDOM_ITEM_MATERIAL("ARENA.RANDOM_ITEM.MATERIAL", DataType.STRING, "FILLED_MAP"),
     ARENA_RANDOM_ITEM_LORE("ARENA.RANDOM_ITEM.LORE", DataType.STRING_LIST, "", "&fSelect a random arena as the battle arena"),
     MATCH_HISTORY_TITLE("MATCH_HISTORY.TITLE", DataType.STRING, "&7Match History"),
     MATCH_HISTORY_SIZE("MATCH_HISTORY.SIZE", DataType.INT, "27"),
@@ -448,11 +450,7 @@ public enum MenusLocale implements IDataAccessor {
             "<description> ",
             "<messages>",
             " ",
-            "&cNo permission"),
-    FFA_SPAWN_LOCATION_FORMAT("SETTINGS.FFA.LOCATION.NAME_FORMAT", DataType.STRING, "&b&l<spawnName> | <arenaName>"),
-    FFA_SPAWN_LOCATION_LORE("SETTINGS.FFA.LOCATION.LORE", DataType.STRING_LIST,
-            "&f",
-            "&bClick to teleport");
+            "&cNo permission");
 
     private final String path;
     private final String comment;

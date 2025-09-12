@@ -1,12 +1,12 @@
 package dev.lrxh.neptune.game.duel.menu;
 
-import dev.lrxh.neptune.configs.impl.MenusLocale;
-import dev.lrxh.neptune.game.kit.Kit;
-import dev.lrxh.neptune.game.arena.Arena;
-import dev.lrxh.neptune.game.duel.DuelRequest;
-import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MenusLocale;
+import dev.lrxh.neptune.game.arena.Arena;
+import dev.lrxh.neptune.game.duel.DuelRequest;
+import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.ItemBuilder;
 import dev.lrxh.neptune.utils.menu.Button;
@@ -38,12 +38,12 @@ public class ArenaSelectMenu extends Menu {
     @Override
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
-        int i = 0;
+        int i = 1;
 
-        buttons.add(new Button(i++) {
+        buttons.add(new Button(MenusLocale.ARENA_RANDOM_ITEM_SLOT.getInt()) {
             @Override
             public ItemStack getItemStack(Player p) {
-                return new ItemBuilder(Material.FILLED_MAP)
+                return new ItemBuilder(MenusLocale.ARENA_RANDOM_ITEM_MATERIAL.getString())
                         .name(MenusLocale.ARENA_RANDOM_ITEM_NAME.getString())
                         .lore(MenusLocale.ARENA_RANDOM_ITEM_LORE.getStringList())
                         .build();
@@ -70,7 +70,7 @@ public class ArenaSelectMenu extends Menu {
                 @Override
                 public ItemStack getItemStack(Player p) {
                     return new ItemBuilder(Material.MAP)
-                            .name(MenusLocale.ARENA_ITEM_NAME.getString().replace("<arena>",  arena.getName()))
+                            .name(MenusLocale.ARENA_ITEM_NAME.getString().replace("<arena>", arena.getName()))
                             .lore(MenusLocale.ARENA_ITEM_LORE.getStringList().stream()
                                     .map(it -> it.replace("<arena>", arena.getName()))
                                     .collect(Collectors.toList()))

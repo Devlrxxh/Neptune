@@ -18,10 +18,6 @@ public class DivisionService extends IService implements IDivisionService {
     private static DivisionService instance;
     public LinkedHashSet<Division> divisions;
 
-    public LinkedHashSet<IDivision> getDivisions() {
-        return divisions.stream().collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
-    }
-
     public DivisionService() {
         divisions = new LinkedHashSet<>();
     }
@@ -32,6 +28,9 @@ public class DivisionService extends IService implements IDivisionService {
         return instance;
     }
 
+    public LinkedHashSet<IDivision> getDivisions() {
+        return divisions.stream().collect(LinkedHashSet::new, LinkedHashSet::add, LinkedHashSet::addAll);
+    }
 
     @Override
     public void load() {

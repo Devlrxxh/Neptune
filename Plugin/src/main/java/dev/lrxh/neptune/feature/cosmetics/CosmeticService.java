@@ -18,10 +18,6 @@ public class CosmeticService extends IService implements ICosmeticService {
     private static CosmeticService instance;
     public final Map<String, KillMessagePackage> deathMessages;
 
-    public Map<String, IKillMessagePackage> getDeathMessages() {
-        return deathMessages.entrySet().stream().collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), (IKillMessagePackage) entry.getValue()), HashMap::putAll);
-    }
-
     public CosmeticService() {
         this.deathMessages = new HashMap<>();
         load();
@@ -31,6 +27,10 @@ public class CosmeticService extends IService implements ICosmeticService {
         if (instance == null) instance = new CosmeticService();
 
         return instance;
+    }
+
+    public Map<String, IKillMessagePackage> getDeathMessages() {
+        return deathMessages.entrySet().stream().collect(HashMap::new, (map, entry) -> map.put(entry.getKey(), entry.getValue()), HashMap::putAll);
     }
 
     @Override

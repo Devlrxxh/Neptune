@@ -194,7 +194,9 @@ public enum ItemAction {
     },
     SPECTATOR_TELEPORT() {
         @Override
-        public void execute(Player player) { new MatchSpectateTeleportMenu().open(player); }
+        public void execute(Player player) {
+            new MatchSpectateTeleportMenu().open(player);
+        }
     },
     SPECTATOR_LEAVE() {
         @Override
