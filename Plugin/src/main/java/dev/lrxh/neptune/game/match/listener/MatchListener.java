@@ -124,7 +124,7 @@ public class MatchListener implements Listener {
                         event.getBlockPlaced().getLocation().add(0.5, 0.5, 0.5),
                         EntityType.TNT
                 );
-                tnt.setFuseTicks(60);
+                tnt.setFuseTicks(40);
                 tnt.getPersistentDataContainer().set(
                         explosiveOwnerKey,
                         PersistentDataType.STRING,
