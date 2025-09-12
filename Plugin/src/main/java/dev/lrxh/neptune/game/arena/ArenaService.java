@@ -66,7 +66,7 @@ public class ArenaService extends IService implements IArenaService {
             whitelistedBlocks.add(Material.getMaterial(name));
         }
 
-        Arena arena = new Arena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, whitelistedBlocks, deathY, false);
+        Arena arena = new Arena(arenaName, displayName, redSpawn, blueSpawn, edge1, edge2, limit, enabled, whitelistedBlocks, deathY);
 
         return arena;
     }
