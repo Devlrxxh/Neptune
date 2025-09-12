@@ -38,12 +38,12 @@ public class ArenaSelectMenu extends Menu {
     @Override
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
-        int i = 0;
+        int i = 1;
 
-        buttons.add(new Button(i++) {
+        buttons.add(new Button(MenusLocale.ARENA_RANDOM_ITEM_SLOT.getInt()) {
             @Override
             public ItemStack getItemStack(Player p) {
-                return new ItemBuilder(Material.FILLED_MAP)
+                return new ItemBuilder(MenusLocale.ARENA_RANDOM_ITEM_MATERIAL.getString())
                         .name(MenusLocale.ARENA_RANDOM_ITEM_NAME.getString())
                         .lore(MenusLocale.ARENA_RANDOM_ITEM_LORE.getStringList())
                         .build();
