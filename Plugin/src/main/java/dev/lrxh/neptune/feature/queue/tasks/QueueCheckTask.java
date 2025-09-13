@@ -53,6 +53,9 @@ public class QueueCheckTask extends NeptuneRunnable {
             Profile profile1 = API.getProfile(uuid1);
             Profile profile2 = API.getProfile(uuid2);
 
+            profile1.setState(ProfileState.IN_LOBBY);
+            profile2.setState(ProfileState.IN_LOBBY);
+
             if (!queueEntry1.getKit().equals(queueEntry2.getKit())) {
                 QueueService.get().add(queueEntry1, false);
                 QueueService.get().add(queueEntry2, false);
@@ -76,9 +79,6 @@ public class QueueCheckTask extends NeptuneRunnable {
             if (player1 == null || player2 == null) {
                 continue;
             }
-
-            profile1.setState(ProfileState.IN_LOBBY);
-            profile2.setState(ProfileState.IN_LOBBY);
 
             kit.getRandomArena().thenAccept(arena -> {
 

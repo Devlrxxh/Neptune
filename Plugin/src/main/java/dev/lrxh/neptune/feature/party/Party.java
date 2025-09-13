@@ -95,6 +95,11 @@ public class Party {
     }
 
     public void remove(UUID playerUUID) {
+        if (leader == playerUUID) {
+            disband();
+            return;
+        }
+
         Profile profile = API.getProfile(playerUUID);
         users.remove(playerUUID);
         profile.setState(ProfileState.IN_LOBBY);
