@@ -2,6 +2,9 @@ package dev.lrxh.neptune.utils;
 
 import dev.lrxh.neptune.providers.material.NMaterial;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderUtil;
+import io.papermc.paper.datacomponent.DataComponentType;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.datacomponent.item.TooltipDisplay;
 import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -62,12 +65,18 @@ public class ItemBuilder {
     }
 
     private void clearFlags() {
-        ItemMeta meta = item.getItemMeta();
-        if (meta != null) {
-            meta.addItemFlags(ItemFlag.values());
-            item.setItemMeta(meta);
-        }
-        resetAmount();
+        TooltipDisplay hideAttributes = TooltipDisplay.tooltipDisplay()
+                .addHiddenComponents(
+                        DataComponentTypes.POTION_CONTENTS,
+                        DataComponentTypes.ENCHANTMENTS,
+                        DataComponentTypes.ATTRIBUTE_MODIFIERS,
+                        DataComponentTypes.DYED_COLOR,
+                        DataComponentTypes.TRIM,
+                        DataComponentTypes.BANNER_PATTERNS,
+                        DataComponentTypes.FIREWORKS,
+                        DataComponentTypes.JUKEBOX_PLAYABLE
+                ).build();
+        item.setData(DataComponentTypes.TOOLTIP_DISPLAY, hideAttributes);
     }
 
     public ItemBuilder makeUnbreakable() {
