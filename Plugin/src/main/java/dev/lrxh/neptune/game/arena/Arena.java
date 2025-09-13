@@ -19,7 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Getter
 @Setter
 public class Arena implements IArena {
-    private final Set<Integer> loadedChunkIndices = new HashSet<>();
     private final Map<ChunkPosition, Chunk> loadedChunks = new HashMap<>();
     private String name;
     private String displayName;
@@ -127,7 +126,6 @@ public class Arena implements IArena {
     public void remove() {
         if (owner != null) {
             owner.duplicateIndex.getAndDecrement();
-            owner.loadedChunkIndices.remove(owner.duplicateIndex.get() + 1);
         }
     }
 

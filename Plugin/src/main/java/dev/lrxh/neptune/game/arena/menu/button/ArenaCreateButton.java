@@ -1,6 +1,7 @@
 package dev.lrxh.neptune.game.arena.menu.button;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.game.arena.procedure.ArenaProcedureType;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
@@ -19,6 +20,11 @@ public class ArenaCreateButton extends Button {
 
     @Override
     public void onClick(ClickType type, Player player) {
+        if (player.getWorld().equals(Neptune.get().getCache().getSpawn().getWorld())) {
+            player.sendMessage(CC.error("You cannot create an arena in the same world as the spawn!"));
+            return;
+        }
+
         Profile profile = API.getProfile(player);
         profile.getArenaProcedure().setType(ArenaProcedureType.CREATE);
         player.closeInventory();
