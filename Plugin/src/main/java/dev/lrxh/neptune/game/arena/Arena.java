@@ -12,7 +12,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -86,7 +89,6 @@ public class Arena implements IArena {
     }
 
     public boolean isSetup() {
-        if (!isDoneLoading()) return false;
         return !(redSpawn == null || blueSpawn == null || min == null || max == null);
     }
 

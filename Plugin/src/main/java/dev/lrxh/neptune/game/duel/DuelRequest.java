@@ -99,7 +99,7 @@ public class DuelRequest extends Request {
                 return;
             }
 
-            if (!arena.isSetup()) {
+            if (!arena.isSetup() || !arena.isDoneLoading()) {
 
                 for (Participant participant : participants) {
                     participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));

@@ -27,6 +27,6 @@ public class ArenaSelectButton extends Button {
         return new ItemBuilder(Material.DIAMOND_SWORD).name("&f" + arena.getName() + " &7(" + arena.getDisplayName() + "&7)").lore("&7Press to manage arena",
                 "&7Enabled: " + (arena.isEnabled() ? "&aEnabled" : "&cDisabled"),
                 "&7Setup: " + (arena.isSetup() ? "&aDone" : "&cNot Done"),
-                "&7Snapshot: " + (arena.isDoneLoading() ? "&aDone" : "&eLoading...")).build();
+                "&7Snapshot: " + (arena.isDoneLoading() ? "&aDone" : arena.isSetup() ? "&eLoading..." : "&cNot Setup")).build();
     }
 }

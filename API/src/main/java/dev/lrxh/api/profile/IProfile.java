@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public interface IProfile {
     Player getPlayer();
+
     UUID getPlayerUUID();
 
     IGameData getGameData();
@@ -18,5 +19,6 @@ public interface IProfile {
     boolean hasState(String state);
 
     void addCooldown(String name, int millis);
+
     boolean hasCooldownEnded(String name);
 }

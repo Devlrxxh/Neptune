@@ -6,5 +6,6 @@ import java.util.UUID;
 
 public interface IQueueEntry {
     UUID getUuid();
+
     IKit getKit();
 }

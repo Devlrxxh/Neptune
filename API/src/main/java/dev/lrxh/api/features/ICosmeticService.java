@@ -4,5 +4,6 @@ import java.util.Map;
 
 public interface ICosmeticService {
     Map<String, IKillMessagePackage> getDeathMessages();
+
     void registerKillMessage(IKillMessagePackage killMessagePackage);
 }

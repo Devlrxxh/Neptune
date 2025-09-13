@@ -70,7 +70,7 @@ public class ArenaProcedureListener implements Listener {
                 if (!input.equalsIgnoreCase("Done")) return;
                 event.setCancelled(true);
                 Arena arena = profile.getArenaProcedure().getArena();
-                if (!arena.isSetup()) {
+                if (!arena.isSetup() || !arena.isDoneLoading()) {
                     profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_BLUE);
                     player.sendMessage(CC.success("Set arena red spawn"));
                     arena.setRedSpawn(player.getLocation());
@@ -96,7 +96,7 @@ public class ArenaProcedureListener implements Listener {
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
                 Arena arena = profile.getArenaProcedure().getArena();
-                if (!arena.isSetup()) {
+                if (!arena.isSetup() || !arena.isDoneLoading()) {
                     arena.setBlueSpawn(player.getLocation());
                     profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MIN);
                     player.sendMessage(CC.info("Go to the lowest edge of the arena and type &aDone"));
@@ -114,7 +114,7 @@ public class ArenaProcedureListener implements Listener {
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
                 Arena arena = profile.getArenaProcedure().getArena();
-                if (!arena.isSetup()) {
+                if (!arena.isSetup() || !arena.isDoneLoading()) {
                     player.sendMessage(CC.success("Arena setup complete"));
                 } else {
                     player.sendMessage(CC.success("Set arena max position"));
@@ -144,7 +144,7 @@ public class ArenaProcedureListener implements Listener {
                 event.setCancelled(true);
                 profile.getArenaProcedure().setType(ArenaProcedureType.NONE);
                 Arena arena = profile.getArenaProcedure().getArena();
-                if (!arena.isSetup()) {
+                if (!arena.isSetup() || !arena.isDoneLoading()) {
                     arena.setMin(player.getLocation());
                     profile.getArenaProcedure().setType(ArenaProcedureType.SET_SPAWN_MAX);
                     player.sendMessage(CC.info("Go to the highest edge of the arena and type &aDone"));

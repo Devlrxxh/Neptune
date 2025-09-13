@@ -1,30 +1,48 @@
 package dev.lrxh.api.arena;
 
-import java.util.List;
-
 import org.bukkit.Location;
 import org.bukkit.Material;
 
+import java.util.List;
+
 public interface IArena {
     String getName();
+
     String getDisplayName();
+
     Location getRedSpawn();
+
+    void setRedSpawn(Location redSpawn);
+
     Location getBlueSpawn();
+
+    void setBlueSpawn(Location blueSpawn);
+
     boolean isEnabled();
+
     int getDeathY();
+
     Location getMin();
+
+    void setMin(Location min);
+
     Location getMax();
+
+    void setMax(Location max);
+
     double getBuildLimit();
+
     List<Material> getWhitelistedBlocks();
+
     IArena getOwner();
+
     boolean isSetup();
 
     void remove();
+
     void restore();
-    void setMin(Location min);
-    void setMax(Location max);
-    void setRedSpawn(Location redSpawn);
-    void setBlueSpawn(Location blueSpawn);
+
     void delete(boolean save);
+
     boolean equals(Object o);
 }

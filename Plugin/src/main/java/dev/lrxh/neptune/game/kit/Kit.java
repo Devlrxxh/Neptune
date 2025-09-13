@@ -195,7 +195,7 @@ public class Kit implements IKit {
         for (Arena arena : arenas) {
             if (!arena.isEnabled())
                 continue;
-            if (!arena.isSetup())
+            if (!arena.isSetup() || !arena.isDoneLoading())
                 continue;
             arenas1.add(arena);
         }

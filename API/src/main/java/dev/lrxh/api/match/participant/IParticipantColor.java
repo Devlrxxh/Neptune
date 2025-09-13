@@ -4,5 +4,6 @@ import org.bukkit.Color;
 
 public interface IParticipantColor {
     String getColor();
+
     Color getContentColor();
 }

@@ -8,4 +8,6 @@ import java.util.function.Function;
 public interface IScoreboardService {
 
     void registerScoreboard(String state, Function<IProfile, List<String>> scoreboardFunction);
-    List<String> getScoreboardLines(String state, IProfile profile);}
+
+    List<String> getScoreboardLines(String state, IProfile profile);
+}
