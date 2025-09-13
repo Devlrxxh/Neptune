@@ -157,6 +157,7 @@ public enum MessagesLocale implements IDataAccessor {
     PARTY_ADVERTISE_JOIN("PARTY.ADVERTISE.JOIN", DataType.STRING, "&a(Join)"),
     PARTY_ADVERTISE_JOIN_HOVER("PARTY.ADVERTISE.JOIN_HOVER", DataType.STRING, "&aClick to join &f<leader>&a's party."),
     PARTY_KICK("PARTY.KICK", DataType.STRING_LIST, "&f<player> &bhas been kicked from the party."),
+    PARTY_CANNOT_CREATE("PARTY.CANNOT_CREATE", DataType.STRING_LIST, "&cYou can only create a party while in lobby!"),
     PARTY_LEFT("PARTY.LEFT", DataType.STRING_LIST, "&f<player> &bhas left the party."),
     PARTY_INFO("PARTY.INFO", DataType.STRING_LIST,
             " ",

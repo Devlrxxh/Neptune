@@ -27,6 +27,10 @@ public class PartyCommand {
     @Command(name = "create", desc = "")
     public void create(@Sender Player player) {
         Profile profile = API.getProfile(player);
+        if (!profile.hasState(ProfileState.IN_LOBBY)) {
+            MessagesLocale.PARTY_CANNOT_CREATE.send(player.getUniqueId());
+            return;
+        }
         profile.createParty();
     }
 
@@ -34,6 +38,7 @@ public class PartyCommand {
     @Command(name = "join", desc = "", usage = "<player>")
     public void join(@Sender Player player, Player target) {
         Party party = API.getProfile(target).getGameData().getParty();
+
         if (party == null) {
             player.sendMessage(CC.error("Player isn't in any party"));
             return;
@@ -46,8 +51,16 @@ public class PartyCommand {
             player.sendMessage(CC.error("Party is private"));
             return;
         }
-        if (API.getProfile(player).getGameData().getParty() != null) {
+
+        Profile profile = API.getProfile(player);
+
+        if (profile.getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
+            return;
+        }
+
+        if (!profile.hasState(ProfileState.IN_LOBBY)) {
+            MessagesLocale.PARTY_CANNOT_CREATE.send(player.getUniqueId());
             return;
         }
 
@@ -72,6 +85,11 @@ public class PartyCommand {
 
         if (player == target) {
             MessagesLocale.PARTY_INVITE_OWN.send(player);
+            return;
+        }
+
+        if (!profile.hasState(ProfileState.IN_LOBBY)) {
+            MessagesLocale.PARTY_CANNOT_CREATE.send(player.getUniqueId());
             return;
         }
 
