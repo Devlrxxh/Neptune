@@ -124,22 +124,23 @@ public class MatchListener implements Listener {
                     match.getKit().getRules().get(KitRule.AUTO_IGNITE)) {
                 event.setCancelled(true);
 
+                ItemStack handItem = player.getInventory().getItemInMainHand();
+                if (handItem.getType() == Material.TNT) {
+                    handItem.setAmount(handItem.getAmount() - 1);
+                }
+
                 TNTPrimed tnt = (TNTPrimed) event.getPlayer().getWorld().spawnEntity(
                         event.getBlockPlaced().getLocation().add(0.5, 0.5, 0.5),
                         EntityType.TNT
                 );
-                tnt.setFuseTicks(40);
+                tnt.setFuseTicks(20);
                 tnt.getPersistentDataContainer().set(
                         explosiveOwnerKey,
                         PersistentDataType.STRING,
                         event.getPlayer().getUniqueId().toString()
                 );
-                match.getEntities().add(tnt);
 
-                event.getPlayer().getWorld().spawnEntity(
-                        event.getBlockPlaced().getLocation(),
-                        EntityType.TNT
-                );
+                match.getEntities().add(tnt);
             }
 
             match.getPlacedBlocks().add(blockLocation);

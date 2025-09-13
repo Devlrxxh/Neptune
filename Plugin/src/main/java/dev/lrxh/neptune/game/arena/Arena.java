@@ -33,6 +33,7 @@ public class Arena implements IArena {
     private CuboidSnapshot snapshot;
     private AtomicInteger duplicateIndex;
     private Arena owner;
+    private boolean doneLoading;
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
         this.name = name;
@@ -45,6 +46,7 @@ public class Arena implements IArena {
         this.buildLimit = 0;
         this.whitelistedBlocks = new ArrayList<>();
         this.duplicateIndex = new AtomicInteger(1);
+        this.doneLoading = false;
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
@@ -59,7 +61,10 @@ public class Arena implements IArena {
 
         if (min == null || max == null)
             return;
-        CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> this.snapshot = cuboidSnapshot);
+        CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
+            this.snapshot = cuboidSnapshot;
+            this.doneLoading = true;
+        });
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
@@ -81,12 +86,11 @@ public class Arena implements IArena {
     }
 
     public boolean isSetup() {
+        if (!isDoneLoading()) return false;
         return !(redSpawn == null || blueSpawn == null || min == null || max == null);
     }
 
     public CompletableFuture<Arena> createDuplicate() {
-        if (snapshot == null) snapshot = CuboidSnapshot.create(min, max).join();
-
         int currentIndex = this.duplicateIndex.getAndIncrement();
 
         int offsetX = Math.abs(currentIndex) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
@@ -138,14 +142,22 @@ public class Arena implements IArena {
     public void setMin(Location min) {
         this.min = min;
         if (min != null && max != null) {
-            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> this.snapshot = cuboidSnapshot);
+            this.doneLoading = false;
+            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
+                this.snapshot = cuboidSnapshot;
+                this.doneLoading = true;
+            });
         }
     }
 
     public void setMax(Location max) {
         this.max = max;
         if (min != null && max != null) {
-            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> this.snapshot = cuboidSnapshot);
+            this.doneLoading = false;
+            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
+                this.snapshot = cuboidSnapshot;
+                this.doneLoading = true;
+            });
         }
     }
 

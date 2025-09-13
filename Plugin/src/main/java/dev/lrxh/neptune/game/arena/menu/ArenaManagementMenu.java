@@ -27,7 +27,7 @@ public class ArenaManagementMenu extends Menu {
     public List<Button> getButtons(Player player) {
         List<Button> buttons = new ArrayList<>();
 
-        if (!arena.isSetup()) {
+        if (!arena.isSetup() && !arena.isDoneLoading()) {
             buttons.add(new ArenaSetupButton(22, arena));
         } else {
             buttons.add(new ArenaSetSpawnButton(0, arena, ParticipantColor.BLUE));
