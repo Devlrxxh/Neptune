@@ -209,7 +209,7 @@ public enum MessagesLocale implements IDataAccessor {
     START_FOLLOW("FOLLOW.STARTED", DataType.STRING_LIST, "&bStarted following &f<player>"),
     STOP_FOLLOWING("FOLLOW.STOPPED", DataType.STRING_LIST, "&cStopped following <player>"),
     NOT_ONLINE("NOT_ONLINE", DataType.STRING_LIST, "&c<player> isn't online!"),
-    CANT_BREAK_OWN_BED("CANT.BREAK.OWN.BEAD", DataType.STRING_LIST, "&cYou can't break your own bed!"),
+    CANT_BREAK_OWN_BED("CANT.BREAK_OWN_BED", DataType.STRING_LIST, "&cYou can't break your own bed!"),
     BED_BREAK_TITLE("BEDWARS.OWN_BREAK.TITLE", DataType.STRING, "&cBED DESTROYED!"),
     BED_BREAK_FOOTER("BEDWARS.OWN_BREAK.FOOTER", DataType.STRING, "&fYou will no longer respawn!"),
     BLUE_BED_BROKEN_MESSAGE("BEDWARS.BLUE_BREAK.MESSAGE", DataType.STRING, "&9Blue Bed &7was broken by <player>"),
