@@ -121,6 +121,9 @@ public enum MenusLocale implements IDataAccessor {
                         "&fDate: &b<date>",
                         "&fArena: &b<arena>",
                         "&7&m-------------------"),
+        MATCH_HISTORY_WON("MATCH_HISTORY.WON", DataType.STRING, "&aWon"),
+        MATCH_HISTORY_LOST("MATCH_HISTORY.LOST", DataType.STRING, "&cLost"),
+
         MATCH_SPECTATE_TITLE("MATCH_SPECTATE_TELEPORT.TITLE", DataType.STRING, "&7Teleport to a player"),
         MATCH_SPECTATE_STARTING_SLOT("MATCH_SPECTATE_TELEPORT.STARTING-SLOT", DataType.INT, "10"),
         MATCH_SPECTATE_FILTER("MATCH_SPECTATE_TELEPORT.FILTER_TYPE", DataType.STRING, "FILL"),
