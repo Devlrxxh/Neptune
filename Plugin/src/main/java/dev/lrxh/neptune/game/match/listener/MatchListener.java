@@ -50,9 +50,11 @@ import java.util.UUID;
 
 public class MatchListener implements Listener {
     private final NamespacedKey explosiveOwnerKey;
+    private final NamespacedKey crystalOwnerKey;
 
     public MatchListener() {
         this.explosiveOwnerKey = new NamespacedKey(Neptune.get(), "neptune_explosive_owner");
+        this.crystalOwnerKey = new NamespacedKey(Neptune.get(), "neptune_crystal_owner");
     }
 
     private boolean isPlayerInMatch(Profile profile) {
@@ -64,6 +66,17 @@ public class MatchListener implements Listener {
     private Optional<Profile> getMatchProfile(Player player) {
         Profile profile = API.getProfile(player);
         return isPlayerInMatch(profile) ? Optional.of(profile) : Optional.empty();
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onCrystalSpawn(EntitySpawnEvent event) {
+        if (event.getEntity() instanceof EnderCrystal crystal) {
+            Player player = getNearbyPlayer(crystal.getLocation());
+            if (player == null)
+                return;
+
+            getMatchForPlayer(player).ifPresent(match -> match.getEntities().add(crystal));
+        }
     }
 
     @EventHandler
@@ -131,14 +144,12 @@ public class MatchListener implements Listener {
 
                 TNTPrimed tnt = (TNTPrimed) event.getPlayer().getWorld().spawnEntity(
                         event.getBlockPlaced().getLocation().add(0.5, 0.5, 0.5),
-                        EntityType.TNT
-                );
+                        EntityType.TNT);
                 tnt.setFuseTicks(20);
                 tnt.getPersistentDataContainer().set(
                         explosiveOwnerKey,
                         PersistentDataType.STRING,
-                        event.getPlayer().getUniqueId().toString()
-                );
+                        event.getPlayer().getUniqueId().toString());
 
                 match.getEntities().add(tnt);
             }
@@ -151,11 +162,15 @@ public class MatchListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onCreeperSpawn(PlayerInteractEvent event) {
-        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
-        if (event.getItem() == null || event.getItem().getType() != Material.CREEPER_SPAWN_EGG) return;
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK)
+            return;
+        if (event.getItem() == null || event.getItem().getType() != Material.CREEPER_SPAWN_EGG)
+            return;
         Optional<Profile> profileOpt = getMatchProfile(event.getPlayer());
-        if (profileOpt.isEmpty()) return;
-        if (!profileOpt.get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE)) return;
+        if (profileOpt.isEmpty())
+            return;
+        if (!profileOpt.get().getMatch().getKit().getRules().get(KitRule.AUTO_IGNITE))
+            return;
         Location spawnLocation = event.getInteractionPoint();
         Creeper creeper = (Creeper) spawnLocation.getWorld().spawnEntity(spawnLocation, EntityType.CREEPER,
                 CreatureSpawnEvent.SpawnReason.SPAWNER_EGG);
@@ -163,16 +178,17 @@ public class MatchListener implements Listener {
         creeper.getPersistentDataContainer().set(
                 explosiveOwnerKey,
                 PersistentDataType.STRING,
-                event.getPlayer().getUniqueId().toString()
-        );
+                event.getPlayer().getUniqueId().toString());
         profileOpt.get().getMatch().getEntities().add(creeper);
         event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onEntityDamage(EntityDamageByEntityEvent event) {
-        if (!(event.getDamager() instanceof Player)) return;
-        if (API.getProfile(event.getDamager().getUniqueId()).getState().equals(ProfileState.IN_CUSTOM)) return;
+        if (!(event.getDamager() instanceof Player))
+            return;
+        if (API.getProfile(event.getDamager().getUniqueId()).getState().equals(ProfileState.IN_CUSTOM))
+            return;
         if (event.getEntity() instanceof EnderCrystal crystal && event.getDamager() instanceof Player player) {
             if (!getMatchProfile(player).isPresent()) {
                 event.setCancelled(true);
@@ -193,8 +209,7 @@ public class MatchListener implements Listener {
             creeper.getPersistentDataContainer().set(
                     explosiveOwnerKey,
                     PersistentDataType.STRING,
-                    player.getUniqueId().toString()
-            );
+                    player.getUniqueId().toString());
         }
         if (event.getEntity() instanceof TNTPrimed tnt && event.getDamager() instanceof Player player) {
             if (!getMatchProfile(player).isPresent()) {
@@ -204,8 +219,7 @@ public class MatchListener implements Listener {
             tnt.getPersistentDataContainer().set(
                     explosiveOwnerKey,
                     PersistentDataType.STRING,
-                    player.getUniqueId().toString()
-            );
+                    player.getUniqueId().toString());
         }
     }
 
@@ -244,11 +258,14 @@ public class MatchListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onFriendlyFire(EntityDamageByEntityEvent event) {
-        if (SettingsLocale.FRIENDLY_FIRE.getBoolean()) return;
-        if (!(event.getEntity() instanceof Player victim)) return;
+        if (SettingsLocale.FRIENDLY_FIRE.getBoolean())
+            return;
+        if (!(event.getEntity() instanceof Player victim))
+            return;
         Player owner = getResponsiblePlayer(event);
 
-        if (owner == null) return;
+        if (owner == null)
+            return;
 
         Optional<Match> ownerMatchOptional = getMatchForPlayer(owner);
         Optional<Match> victimMatchOptional = getMatchForPlayer(victim);
@@ -258,9 +275,11 @@ public class MatchListener implements Listener {
         }
 
         Match match = ownerMatchOptional.get();
-        if (!match.getUuid().equals(victimMatchOptional.get().getUuid())) return;
+        if (!match.getUuid().equals(victimMatchOptional.get().getUuid()))
+            return;
 
-        if (!(match instanceof TeamFightMatch teamMatch) || !(teamMatch.onSameTeam(owner.getUniqueId(), victim.getUniqueId())))
+        if (!(match instanceof TeamFightMatch teamMatch)
+                || !(teamMatch.onSameTeam(owner.getUniqueId(), victim.getUniqueId())))
             return;
         event.setCancelled(true);
     }
@@ -316,7 +335,6 @@ public class MatchListener implements Listener {
         Profile profile = API.getProfile(player);
         return profile != null && profile.getState() == ProfileState.IN_SPECTATOR;
     }
-
 
     @EventHandler
     public void onVehicleEnter(VehicleEnterEvent event) {
@@ -391,7 +409,8 @@ public class MatchListener implements Listener {
             return;
 
         participant.setDeathCause(participant.getLastAttacker() != null ? DeathCause.KILL : DeathCause.DIED);
-        MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant, participant.getDeathCause().getMessage().getString());
+        MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant,
+                participant.getDeathCause().getMessage().getString());
         Bukkit.getPluginManager().callEvent(deathEvent);
         match.onDeath(participant);
     }
@@ -964,16 +983,20 @@ public class MatchListener implements Listener {
     private Player getResponsiblePlayer(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
 
-        if (damager instanceof Player p) return p;
-        if (damager instanceof TNTPrimed tnt && tnt.getSource() instanceof Player source) return source;
-        if (damager instanceof Projectile proj && proj.getShooter() instanceof Player shooter) return shooter;
-        if (damager instanceof ThrownPotion potion && potion.getShooter() instanceof Player thrower) return thrower;
-        if (damager instanceof AreaEffectCloud cloud && cloud.getSource() instanceof Player source) return source;
+        if (damager instanceof Player p)
+            return p;
+        if (damager instanceof TNTPrimed tnt && tnt.getSource() instanceof Player source)
+            return source;
+        if (damager instanceof Projectile proj && proj.getShooter() instanceof Player shooter)
+            return shooter;
+        if (damager instanceof ThrownPotion potion && potion.getShooter() instanceof Player thrower)
+            return thrower;
+        if (damager instanceof AreaEffectCloud cloud && cloud.getSource() instanceof Player source)
+            return source;
         if (damager instanceof EnderCrystal crystal) {
             String uuid = crystal.getPersistentDataContainer().get(
                     explosiveOwnerKey,
-                    PersistentDataType.STRING
-            );
+                    PersistentDataType.STRING);
             if (uuid != null) {
                 return Bukkit.getPlayer(UUID.fromString(uuid));
             }
