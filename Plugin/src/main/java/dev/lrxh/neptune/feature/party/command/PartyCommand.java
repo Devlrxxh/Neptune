@@ -148,7 +148,7 @@ public class PartyCommand {
     public void kick(@Sender Player player, Player target) {
         Party party = API.getProfile(target).getGameData().getParty();
         if (party == null || !party.getLeader().equals(player.getUniqueId())) {
-            MessagesLocale.PARTY_NOT_IN.send(player.getUniqueId(),
+            MessagesLocale.PARTY_NOT_IN_SAME_PARTY.send(player.getUniqueId(),
                     new Replacement("<player>", player.getName()));
             return;
         }
