@@ -23,73 +23,90 @@ import java.util.Collections;
 import java.util.List;
 
 public class MatchHistoryMenu extends Menu {
-    public MatchHistoryMenu() {
-        super(MenusLocale.MATCH_HISTORY_TITLE.getString(), MenusLocale.MATCH_HISTORY_SIZE.getInt(),
-                Filter.valueOf(MenusLocale.MATCH_HISTORY_FILTER.getString()));
-    }
+        private final Player target;
 
-    @Override
-    public List<Button> getButtons(Player player) {
-        List<Button> buttons = new ArrayList<>();
-        Profile profile = API.getProfile(player);
-
-        int i = MenusLocale.MATCH_HISTORY_STARTING_SLOT.getInt();
-
-        ArrayList<MatchHistory> matchHistories = new ArrayList<>(profile.getGameData().getMatchHistories());
-        Collections.reverse(matchHistories);
-
-        for (MatchHistory matchHistory : matchHistories) {
-            buttons.add(new DisplayButton(i++, getButtonItem(player, matchHistory)));
+        public MatchHistoryMenu(Player target) {
+                super(MenusLocale.MATCH_HISTORY_TITLE.getString(), MenusLocale.MATCH_HISTORY_SIZE.getInt(),
+                                Filter.valueOf(MenusLocale.MATCH_HISTORY_FILTER.getString()));
+                this.target = target;
         }
 
-        return buttons;
-    }
+        @Override
+        public List<Button> getButtons(Player player) {
+                List<Button> buttons = new ArrayList<>();
+                Profile profile = API.getProfile(target);
 
-    public ItemStack getButtonItem(Player player, MatchHistory matchHistory) {
-        Kit kit = KitService.get().getKitByDisplay(matchHistory.getKitName());
-        if (kit == null) {
-            return new ItemBuilder(Material.COMPASS)
-                    .name(MenusLocale.MATCH_HISTORY_ITEM_NAME.getString()
-                            .replace("<kit>", matchHistory.getKitName())
-                            .replace("<won>",
-                                    matchHistory.isWon() ? MenusLocale.MATCH_HISTORY_WON.getString()
-                                            : MenusLocale.MATCH_HISTORY_LOST.getString())
-                            .replace("<winner>",
-                                    matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName())
-                            .replace("<loser>",
-                                    !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()))
-                    .lore(ItemUtils.getLore(MenusLocale.MATCH_HISTORY_LORE.getStringList(),
-                            new Replacement("<arena>", matchHistory.getArenaName()),
-                            new Replacement("<kit>", matchHistory.getKitName()),
-                            new Replacement("<winner>",
-                                    matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
-                            new Replacement("<loser>",
-                                    !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
-                            new Replacement("<date>", matchHistory.getDate())), player)
+                int i = MenusLocale.MATCH_HISTORY_STARTING_SLOT.getInt();
 
-                    .build();
-        } else {
-            return new ItemBuilder(kit.getIcon())
-                    .name(MenusLocale.MATCH_HISTORY_ITEM_NAME.getString()
-                            .replace("<kit>", matchHistory.getKitName())
-                            .replace("<won>",
-                                    matchHistory.isWon() ? MenusLocale.MATCH_HISTORY_WON.getString()
-                                            : MenusLocale.MATCH_HISTORY_LOST.getString())
-                            .replace("<winner>",
-                                    matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName())
-                            .replace("<loser>",
-                                    !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()))
-                    .lore(ItemUtils.getLore(MenusLocale.MATCH_HISTORY_LORE.getStringList(),
-                            new Replacement("<arena>", matchHistory.getArenaName()),
-                            new Replacement("<kit>", matchHistory.getKitName()),
-                            new Replacement("<winner>",
-                                    matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
-                            new Replacement("<loser>",
-                                    !matchHistory.isWon() ? player.getName() : matchHistory.getOpponentName()),
-                            new Replacement("<date>", matchHistory.getDate())), player)
+                ArrayList<MatchHistory> matchHistories = new ArrayList<>(profile.getGameData().getMatchHistories());
+                Collections.reverse(matchHistories);
 
-                    .build();
+                for (MatchHistory matchHistory : matchHistories) {
+                        buttons.add(new DisplayButton(i++, getButtonItem(target, matchHistory)));
+                }
+
+                return buttons;
         }
 
-    }
+        public ItemStack getButtonItem(Player player, MatchHistory matchHistory) {
+                Kit kit = KitService.get().getKitByDisplay(matchHistory.getKitName());
+                if (kit == null) {
+                        return new ItemBuilder(Material.COMPASS)
+                                        .name(MenusLocale.MATCH_HISTORY_ITEM_NAME.getString()
+                                                        .replace("<kit>", matchHistory.getKitName())
+                                                        .replace("<won>",
+                                                                        matchHistory.isWon()
+                                                                                        ? MenusLocale.MATCH_HISTORY_WON
+                                                                                                        .getString()
+                                                                                        : MenusLocale.MATCH_HISTORY_LOST
+                                                                                                        .getString())
+                                                        .replace("<winner>",
+                                                                        matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName())
+                                                        .replace("<loser>",
+                                                                        !matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName()))
+                                        .lore(ItemUtils.getLore(MenusLocale.MATCH_HISTORY_LORE.getStringList(),
+                                                        new Replacement("<arena>", matchHistory.getArenaName()),
+                                                        new Replacement("<kit>", matchHistory.getKitName()),
+                                                        new Replacement("<winner>",
+                                                                        matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName()),
+                                                        new Replacement("<loser>",
+                                                                        !matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName()),
+                                                        new Replacement("<date>", matchHistory.getDate())), player)
+
+                                        .build();
+                } else {
+                        return new ItemBuilder(kit.getIcon())
+                                        .name(MenusLocale.MATCH_HISTORY_ITEM_NAME.getString()
+                                                        .replace("<kit>", matchHistory.getKitName())
+                                                        .replace("<won>",
+                                                                        matchHistory.isWon()
+                                                                                        ? MenusLocale.MATCH_HISTORY_WON
+                                                                                                        .getString()
+                                                                                        : MenusLocale.MATCH_HISTORY_LOST
+                                                                                                        .getString())
+                                                        .replace("<winner>",
+                                                                        matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName())
+                                                        .replace("<loser>",
+                                                                        !matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName()))
+                                        .lore(ItemUtils.getLore(MenusLocale.MATCH_HISTORY_LORE.getStringList(),
+                                                        new Replacement("<arena>", matchHistory.getArenaName()),
+                                                        new Replacement("<kit>", matchHistory.getKitName()),
+                                                        new Replacement("<winner>",
+                                                                        matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName()),
+                                                        new Replacement("<loser>",
+                                                                        !matchHistory.isWon() ? player.getName()
+                                                                                        : matchHistory.getOpponentName()),
+                                                        new Replacement("<date>", matchHistory.getDate())), player)
+
+                                        .build();
+                }
+
+        }
 }
