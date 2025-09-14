@@ -2,6 +2,8 @@ package dev.lrxh.neptune.providers.listeners;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.configs.impl.SettingsLocale;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.CC;
@@ -15,6 +17,7 @@ import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
@@ -27,14 +30,29 @@ import java.util.Objects;
 public class GlobalListener implements Listener {
 
     private boolean isPlayerNotInMatch(Profile profile) {
-        if (profile == null) return true;
+        if (profile == null)
+            return true;
         ProfileState state = profile.getState();
-        return !state.equals(ProfileState.IN_GAME) && !state.equals(ProfileState.IN_SPECTATOR) || profile.getMatch() == null;
+        return !state.equals(ProfileState.IN_GAME) && !state.equals(ProfileState.IN_SPECTATOR)
+                || profile.getMatch() == null;
+    }
+
+    @EventHandler
+    public void PlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
+        String cmd = event.getMessage().toLowerCase().replaceAll("\\s+", "");
+        for (String str : SettingsLocale.IN_MATCH_BLOCKED_COMMANDS.getStringList()) {
+            if (cmd.startsWith(str)) {
+                event.setCancelled(true);
+                MessagesLocale.IN_MATCH_BLOCKED_COMMAND_MESSAGE.send(event.getPlayer());
+                return;
+            }
+        }
     }
 
     @EventHandler
     public void onCreatureSpawnEvent(CreatureSpawnEvent event) {
-        if (event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.SPAWNER_EGG) || event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.BUCKET)) {
+        if (event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.SPAWNER_EGG)
+                || event.getSpawnReason().equals(CreatureSpawnEvent.SpawnReason.BUCKET)) {
             return;
         }
         event.setCancelled(true);
@@ -67,14 +85,16 @@ public class GlobalListener implements Listener {
 
     @EventHandler
     public void onSoilChange(PlayerInteractEvent event) {
-        if (event.getAction() == Action.PHYSICAL && Objects.requireNonNull(event.getClickedBlock()).getType() == Material.FARMLAND)
+        if (event.getAction() == Action.PHYSICAL
+                && Objects.requireNonNull(event.getClickedBlock()).getType() == Material.FARMLAND)
             event.setCancelled(true);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (player.getGameMode().equals(GameMode.CREATIVE))
+            return;
 
         Profile profile = API.getProfile(player);
         if (isPlayerNotInMatch(profile)) {
@@ -97,10 +117,12 @@ public class GlobalListener implements Listener {
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode() == GameMode.CREATIVE) return;
+        if (player.getGameMode() == GameMode.CREATIVE)
+            return;
 
         Profile profile = API.getProfile(player);
-        if (profile.getState().equals(ProfileState.IN_SPECTATOR)) event.setCancelled(true);
+        if (profile.getState().equals(ProfileState.IN_SPECTATOR))
+            event.setCancelled(true);
         if (isPlayerNotInMatch(profile)) {
             event.setCancelled(true);
 
@@ -118,11 +140,11 @@ public class GlobalListener implements Listener {
         }
     }
 
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
         Player player = event.getPlayer();
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (player.getGameMode().equals(GameMode.CREATIVE))
+            return;
 
         Profile profile = API.getProfile(player);
         if (isPlayerNotInMatch(profile)) {
@@ -130,7 +152,6 @@ public class GlobalListener implements Listener {
             player.sendMessage(CC.color("&cYou can't place liquids here!"));
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemDrop(PlayerDropItemEvent event) {
@@ -142,7 +163,8 @@ public class GlobalListener implements Listener {
             return;
         }
 
-        if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+        if (player.getGameMode().equals(GameMode.CREATIVE))
+            return;
 
         Profile profile = API.getProfile(player);
         if (isPlayerNotInMatch(profile)) {
@@ -150,11 +172,11 @@ public class GlobalListener implements Listener {
         }
     }
 
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onItemPickup(EntityPickupItemEvent event) {
         if (event.getEntity() instanceof Player player) {
-            if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+            if (player.getGameMode().equals(GameMode.CREATIVE))
+                return;
 
             Profile profile = API.getProfile(player);
             if (isPlayerNotInMatch(profile)) {
@@ -162,7 +184,6 @@ public class GlobalListener implements Listener {
             }
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onPlayerDamageByPlayer(EntityDamageByEntityEvent event) {
@@ -178,12 +199,12 @@ public class GlobalListener implements Listener {
         }
     }
 
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
             Profile profile = API.getProfile(player);
-            if (profile == null) return;
+            if (profile == null)
+                return;
             if (profile.getState().equals(ProfileState.IN_CUSTOM)) {
                 return;
             }
@@ -192,7 +213,6 @@ public class GlobalListener implements Listener {
             }
         }
     }
-
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
@@ -204,11 +224,11 @@ public class GlobalListener implements Listener {
         }
     }
 
-
     @EventHandler(priority = EventPriority.HIGH)
     public void onProjectileHit(ProjectileHitEvent event) {
         if (event.getEntity().getShooter() instanceof Player player) {
-            if (player.getGameMode().equals(GameMode.CREATIVE)) return;
+            if (player.getGameMode().equals(GameMode.CREATIVE))
+                return;
 
             Profile profile = API.getProfile(player);
             if (isPlayerNotInMatch(profile)) {
@@ -219,12 +239,14 @@ public class GlobalListener implements Listener {
 
     @EventHandler
     public void onPotionEffect(EntityPotionEffectEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player player))
+            return;
 
         if (event.getAction() == EntityPotionEffectEvent.Action.ADDED) {
             PotionEffect newEffect = event.getNewEffect();
             if (newEffect != null) {
-                player.setMetadata("max_duration_" + newEffect.getType().getName(), new FixedMetadataValue(Neptune.get(), newEffect.getDuration()));
+                player.setMetadata("max_duration_" + newEffect.getType().getName(),
+                        new FixedMetadataValue(Neptune.get(), newEffect.getDuration()));
             }
         }
 
