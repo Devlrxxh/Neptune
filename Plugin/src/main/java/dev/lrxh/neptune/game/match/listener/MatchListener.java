@@ -775,6 +775,7 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player player) {
+            if (API.getProfile(player).getState().equals(ProfileState.IN_CUSTOM)) return;
             Optional<Profile> profileOpt = getMatchProfile(player);
             if (!profileOpt.isPresent()) {
                 event.setCancelled(true);
