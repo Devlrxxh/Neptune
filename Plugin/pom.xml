@@ -102,7 +102,7 @@
         <dependency>
             <groupId>com.github.Devlrxxh</groupId>
             <artifactId>BlockChanger</artifactId>
-            <version>3845a0e</version>
+            <version>6be98aa</version>
         </dependency>
     </dependencies>
 

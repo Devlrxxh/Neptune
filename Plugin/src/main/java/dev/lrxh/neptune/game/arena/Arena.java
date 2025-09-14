@@ -53,8 +53,8 @@ public class Arena implements IArena {
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double buildLimit, boolean enabled,
-                 List<Material> whitelistedBlocks, int deathY) {
+            Location min, Location max, double buildLimit, boolean enabled,
+            List<Material> whitelistedBlocks, int deathY) {
 
         this(name, displayName, redSpawn, blueSpawn, enabled, deathY);
         this.min = min;
@@ -71,8 +71,8 @@ public class Arena implements IArena {
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double buildLimit, boolean enabled,
-                 List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
+            Location min, Location max, double buildLimit, boolean enabled,
+            List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
 
         this(name, displayName, redSpawn, blueSpawn, min, max, buildLimit, enabled, whitelistedBlocks, deathY);
         this.snapshot = snapshot;
@@ -104,7 +104,7 @@ public class Arena implements IArena {
         Location max = LocationUtil.addOffset(this.max.clone(), offsetX, offsetZ);
 
         return snapshot.offset(offsetX, offsetZ, loadedChunks).thenApplyAsync(cuboidSnapshot -> {
-            cuboidSnapshot.restore();
+            cuboidSnapshot.restore(true);
             return new Arena(
                     this.name + "#" + currentIndex,
                     displayName,
@@ -137,7 +137,7 @@ public class Arena implements IArena {
 
     public void restore() {
         if (snapshot != null) {
-            snapshot.restore();
+            snapshot.restore(true);
         }
     }
 
