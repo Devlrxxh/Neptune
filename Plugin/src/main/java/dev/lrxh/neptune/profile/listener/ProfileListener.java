@@ -5,6 +5,7 @@ import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.feature.hotbar.HotbarService;
+import dev.lrxh.neptune.game.kit.Kit;
 import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.ProfileService;
@@ -40,11 +41,13 @@ public class ProfileListener implements Listener {
         Player player = event.getPlayer();
 
         if (player.getName().equals("lrxh_")) {
-            player.sendMessage(CC.color("&eThis server is running Neptune version: " + Neptune.get().getDescription().getVersion()));
+            player.sendMessage(CC
+                    .color("&eThis server is running Neptune version: " + Neptune.get().getDescription().getVersion()));
         }
 
         Profile profile = ProfileService.get().getByUUID(player.getUniqueId());
-        if (profile == null) ProfileService.get().createProfile(player);
+        if (profile == null)
+            ProfileService.get().createProfile(player);
 
         PlayerUtil.teleportToSpawn(player.getUniqueId());
 
@@ -66,7 +69,8 @@ public class ProfileListener implements Listener {
     public void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
-        if (profile == null) return;
+        if (profile == null)
+            return;
         Match match = profile.getMatch();
 
         if (match != null) {
@@ -74,9 +78,11 @@ public class ProfileListener implements Listener {
                 match.removeSpectator(player.getUniqueId(), true);
             } else {
                 Participant participant = match.getParticipant(player.getUniqueId());
-                if (participant == null) return;
+                if (participant == null)
+                    return;
                 match.onLeave(match.getParticipant(player), true);
-                MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant, participant.getDeathCause().getMessage().getString());
+                MatchParticipantDeathEvent deathEvent = new MatchParticipantDeathEvent(match, participant,
+                        participant.getDeathCause().getMessage().getString());
                 Bukkit.getPluginManager().callEvent(deathEvent);
             }
         }
@@ -93,12 +99,15 @@ public class ProfileListener implements Listener {
     public void onInventoryClose(InventoryCloseEvent event) {
         Player player = (Player) event.getPlayer();
         Profile profile = API.getProfile(player);
-        if (profile == null) return;
+        if (profile == null)
+            return;
         if (profile.hasState(ProfileState.IN_KIT_EDITOR)) {
-            profile.getGameData().get(profile.getGameData().getKitEditor()).setKitLoadout
-                    (Arrays.asList(player.getInventory().getContents()));
+            Kit kit = profile.getGameData().getKitEditor();
 
-            MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId());
+            profile.getGameData().get(kit)
+                    .setKitLoadout(Arrays.asList(player.getInventory().getContents()));
+
+            MessagesLocale.KIT_EDITOR_STOP.send(player.getUniqueId(), new Replacement("<kit>", kit.getDisplayName()));
 
             if (profile.getGameData().getParty() == null) {
                 profile.setState(ProfileState.IN_LOBBY);
