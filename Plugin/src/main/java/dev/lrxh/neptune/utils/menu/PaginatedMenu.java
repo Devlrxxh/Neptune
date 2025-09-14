@@ -1,5 +1,6 @@
 package dev.lrxh.neptune.utils.menu;
 
+import dev.lrxh.neptune.configs.impl.MenusLocale;
 import dev.lrxh.neptune.utils.menu.impl.DisplayButton;
 import lombok.Getter;
 import org.bukkit.Material;
@@ -54,10 +55,13 @@ public abstract class PaginatedMenu extends Menu {
             }
         }
 
-        buttons.add(new DisplayButton(9 - 5, Material.BOOK, "&fPage: &e" + page + "/" + getPages(player)));
+        buttons.add(new DisplayButton(MenusLocale.PAGINATION_CURRENT_PAGE_SLOT.getInt(),
+                Material.getMaterial(MenusLocale.PAGINATION_CURRENT_PAGE_MATERIAL.getString()),
+                MenusLocale.PAGINATION_CURRENT_PAGE_NAME.getString().replaceAll("<currentPage>", String.valueOf(page))
+                        .replaceAll("<maxPage>", String.valueOf(getPages(player)))));
+
         buttons.add(new PageButton(9 - 4, 1, this));
         buttons.add(new PageButton(9 - 6, -1, this));
-
 
         List<Button> global = getGlobalButtons(player);
 
