@@ -57,28 +57,32 @@ public class Party {
 
     public void invite(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
 
-        TextComponent accept =
-                new ClickableComponent(MessagesLocale.DUEL_ACCEPT.getString().replace("<leader>", getLeaderName()),
-                        "/party accept " + leader, MessagesLocale.PARTY_ACCEPT_HOVER.getString()).build();
+        TextComponent accept = new ClickableComponent(
+                MessagesLocale.PARTY_ACCEPT.getString().replace("<leader>", getLeaderName()),
+                "/party accept " + leader, MessagesLocale.PARTY_ACCEPT_HOVER.getString()).build();
 
         MessagesLocale.PARTY_INVITATION.send(playerUUID,
                 new Replacement("<accept>", accept),
                 new Replacement("<leader>", getLeaderName()));
 
         Profile profile = API.getProfile(playerUUID);
-        profile.getGameData().addRequest(new PartyRequest(leader, this), leader, ignore -> MessagesLocale.PARTY_EXPIRED.send(leader, new Replacement("<player>", player.getName())));
+        profile.getGameData().addRequest(new PartyRequest(leader, this), leader,
+                ignore -> MessagesLocale.PARTY_EXPIRED.send(leader, new Replacement("<player>", player.getName())));
     }
 
     public void accept(UUID playerUUID) {
-        if (users.size() + 1 > maxUsers) return;
+        if (users.size() + 1 > maxUsers)
+            return;
         setupPlayer(playerUUID);
     }
 
     private void setupPlayer(UUID playerUUID) {
         Player invitedPlayer = Bukkit.getPlayer(playerUUID);
-        if (invitedPlayer == null) return;
+        if (invitedPlayer == null)
+            return;
         users.add(playerUUID);
         Profile profile = API.getProfile(playerUUID);
         profile.getGameData().setParty(this);
@@ -112,7 +116,8 @@ public class Party {
         forEachMemberAsUUID(uuid -> {
             Profile profile = API.getProfile(uuid);
             profile.getGameData().setParty(null);
-            if (profile.getState().equals(ProfileState.IN_PARTY)) profile.setState(ProfileState.IN_LOBBY);
+            if (profile.getState().equals(ProfileState.IN_PARTY))
+                profile.setState(ProfileState.IN_LOBBY);
         });
 
         PartyService.get().removeParty(this);
@@ -151,7 +156,8 @@ public class Party {
 
     public void transfer(Player player, Player target) {
         this.setLeader(target.getUniqueId());
-        this.broadcast(MessagesLocale.PARTY_TRANSFER, new Replacement("<leader>", player.getName()), new Replacement("<target>", player.getName()));
+        this.broadcast(MessagesLocale.PARTY_TRANSFER, new Replacement("<leader>", player.getName()),
+                new Replacement("<target>", player.getName()));
     }
 
     public boolean advertise() {
@@ -165,14 +171,13 @@ public class Party {
                 TextComponent join = new ClickableComponent(
                         MessagesLocale.PARTY_ADVERTISE_JOIN.getString(),
                         "/party join " + getLeaderName(),
-                        MessagesLocale.PARTY_ADVERTISE_JOIN_HOVER.getString().replaceAll("<leader>", getLeaderName())
-                ).build();
+                        MessagesLocale.PARTY_ADVERTISE_JOIN_HOVER.getString().replaceAll("<leader>", getLeaderName()))
+                        .build();
 
                 MessagesLocale.PARTY_ADVERTISE_MESSAGE.send(
                         profile.getPlayerUUID(),
                         new Replacement("<join>", join),
-                        new Replacement("<leader>", getLeaderName())
-                );
+                        new Replacement("<leader>", getLeaderName()));
             }
 
             return true;
