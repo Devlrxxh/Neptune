@@ -8,6 +8,11 @@ import org.bukkit.entity.Player;
 public class MatchHistoryCommand {
     @Command(name = "", desc = "Open match history")
     public void open(@Sender Player player) {
-        new MatchHistoryMenu().open(player);
+        new MatchHistoryMenu(player).open(player);
+    }
+
+    @Command(name = "", desc = "", usage = "<player>")
+    public void open(@Sender Player player, Player target) {
+        new MatchHistoryMenu(target).open(player);
     }
 }
