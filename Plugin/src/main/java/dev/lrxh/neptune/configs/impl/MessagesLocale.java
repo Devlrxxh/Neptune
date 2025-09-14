@@ -225,6 +225,7 @@ public enum MessagesLocale implements IDataAccessor {
             "&b⚔ &b<player> &fwas diddled by &b<killer>",
             "&b⚔ &b<player> &fwas sent a j*b application by &b<killer>"),
     FFA_KILLSTREAK_ANNOUNCE_ENABLED("FFA.KILLSTREAK_ANNOUNCE.ENABLED", DataType.BOOLEAN, "false"),
+    IN_MATCH_BLOCKED_COMMAND_MESSAGE("IN_MATCH_BLOCKED_COMMAND", DataType.STRING_LIST, "&cThis command is blocked while in a match!"),
     FFA_KILLSTREAK_ANNOUNCE_MESSAGE("FFA.KILLSTREAK_ANNOUNCE.MESSAGE", DataType.STRING_LIST,
             " ", "&b<player> &fis now on a &b&l<killstreak> KILLSTREAK!", " ");
 

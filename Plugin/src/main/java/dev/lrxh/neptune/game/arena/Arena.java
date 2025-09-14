@@ -38,9 +38,6 @@ public class Arena implements IArena {
     private Arena owner;
     private boolean doneLoading;
 
-    private CompletableFuture<Arena> preloadedDuplicate;
-
-
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
         this.name = name;
         this.displayName = displayName;
@@ -56,8 +53,8 @@ public class Arena implements IArena {
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double buildLimit, boolean enabled,
-                 List<Material> whitelistedBlocks, int deathY) {
+            Location min, Location max, double buildLimit, boolean enabled,
+            List<Material> whitelistedBlocks, int deathY) {
 
         this(name, displayName, redSpawn, blueSpawn, enabled, deathY);
         this.min = min;
@@ -65,21 +62,18 @@ public class Arena implements IArena {
         this.buildLimit = buildLimit;
         this.whitelistedBlocks = (whitelistedBlocks != null ? whitelistedBlocks : new ArrayList<>());
 
-        if (min == null || max == null) {
-            return;
+        if (min != null && max != null) {
+            this.doneLoading = false;
+            CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
+                this.snapshot = cuboidSnapshot;
+                this.doneLoading = true;
+            });
         }
-
-        this.doneLoading = false;
-        CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
-            this.snapshot = cuboidSnapshot;
-            this.doneLoading = true;
-
-            this.preloadedDuplicate = createDuplicateInternal();
-        });
     }
+
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-                 Location min, Location max, double buildLimit, boolean enabled,
-                 List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
+            Location min, Location max, double buildLimit, boolean enabled,
+            List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
 
         this(name, displayName, redSpawn, blueSpawn, min, max, buildLimit, enabled, whitelistedBlocks, deathY);
         this.snapshot = snapshot;
@@ -102,19 +96,6 @@ public class Arena implements IArena {
     }
 
     public synchronized CompletableFuture<Arena> createDuplicate() {
-        if (preloadedDuplicate != null) {
-            CompletableFuture<Arena> ready = preloadedDuplicate;
-            preloadedDuplicate = createDuplicateInternal();
-            return ready;
-        }
-
-        preloadedDuplicate = createDuplicateInternal();
-        CompletableFuture<Arena> toReturn = preloadedDuplicate;
-        preloadedDuplicate = createDuplicateInternal();
-        return toReturn;
-    }
-
-    private CompletableFuture<Arena> createDuplicateInternal() {
         if (snapshot == null) {
             CompletableFuture<Arena> failed = new CompletableFuture<>();
             failed.completeExceptionally(new IllegalStateException("CuboidSnapshot not ready"));
@@ -137,8 +118,10 @@ public class Arena implements IArena {
         int offsetX = column * spacingX;
         int offsetZ = row * spacingZ;
 
-        Location redSpawn = (this.redSpawn != null ? LocationUtil.addOffset(this.redSpawn.clone(), offsetX, offsetZ) : null);
-        Location blueSpawn = (this.blueSpawn != null ? LocationUtil.addOffset(this.blueSpawn.clone(), offsetX, offsetZ) : null);
+        Location redSpawn = (this.redSpawn != null ? LocationUtil.addOffset(this.redSpawn.clone(), offsetX, offsetZ)
+                : null);
+        Location blueSpawn = (this.blueSpawn != null ? LocationUtil.addOffset(this.blueSpawn.clone(), offsetX, offsetZ)
+                : null);
         Location min = LocationUtil.addOffset(this.min.clone(), offsetX, offsetZ);
         Location max = LocationUtil.addOffset(this.max.clone(), offsetX, offsetZ);
 
@@ -156,8 +139,7 @@ public class Arena implements IArena {
                     whitelistedBlocks,
                     deathY,
                     cuboidSnapshot,
-                    this
-            );
+                    this);
         });
     }
 
@@ -192,8 +174,6 @@ public class Arena implements IArena {
             CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
                 this.snapshot = cuboidSnapshot;
                 this.doneLoading = true;
-
-                this.preloadedDuplicate = createDuplicateInternal();
             });
         }
     }
@@ -205,15 +185,12 @@ public class Arena implements IArena {
             CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
                 this.snapshot = cuboidSnapshot;
                 this.doneLoading = true;
-
-                this.preloadedDuplicate = createDuplicateInternal();
             });
         }
     }
 
     public void setRedSpawn(Location redSpawn) {
         this.redSpawn = redSpawn;
-
         if (buildLimit == 68321) {
             this.buildLimit = redSpawn.getBlockY() + 5;
         }
@@ -221,7 +198,6 @@ public class Arena implements IArena {
 
     public void setBlueSpawn(Location blueSpawn) {
         this.blueSpawn = blueSpawn;
-
         if (buildLimit == 68321) {
             this.buildLimit = blueSpawn.getBlockY() + 5;
         }

@@ -1,8 +1,10 @@
 package dev.lrxh.neptune.game.duel;
 
 import dev.lrxh.neptune.API;
+import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.game.arena.Arena;
 import dev.lrxh.neptune.game.kit.Kit;
+import dev.lrxh.neptune.game.kit.impl.KitRule;
 import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.game.match.impl.team.MatchTeam;
@@ -45,13 +47,12 @@ public class DuelRequest extends Request {
         Player sender = Bukkit.getPlayer(getSender());
         Player reciverPlayer = Bukkit.getPlayer(receiver);
 
-        if (reciverPlayer == null || sender == null) return;
+        if (reciverPlayer == null || sender == null)
+            return;
 
-        Participant participant1 =
-                new Participant(sender);
+        Participant participant1 = new Participant(sender);
 
-        Participant participant2 =
-                new Participant(reciverPlayer);
+        Participant participant2 = new Participant(reciverPlayer);
 
         List<Participant> participants = Arrays.asList(participant1, participant2);
 
@@ -70,7 +71,8 @@ public class DuelRequest extends Request {
 
             for (UUID userUUID : receiverProfile.getGameData().getParty().getUsers()) {
                 Player player = Bukkit.getPlayer(userUUID);
-                if (player == null) continue;
+                if (player == null)
+                    continue;
 
                 Participant participant = new Participant(player);
                 teamAList.add(participant);
@@ -81,7 +83,8 @@ public class DuelRequest extends Request {
 
             for (UUID userUUID : senderProfile.getGameData().getParty().getUsers()) {
                 Player player = Bukkit.getPlayer(userUUID);
-                if (player == null) continue;
+                if (player == null)
+                    continue;
 
                 Participant participant = new Participant(player);
                 teamBList.add(participant);
@@ -102,12 +105,16 @@ public class DuelRequest extends Request {
             if (!arena.isSetup() || !arena.isDoneLoading()) {
 
                 for (Participant participant : participants) {
-                    participant.sendMessage(CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
+                    participant.sendMessage(
+                            CC.error("Arena wasn't setup up properly! Please contact an admin if you see this."));
                 }
                 return;
             }
 
-            MatchService.get().startMatch(teamA, teamB, kit, arena);
+            Bukkit.getScheduler().runTask(Neptune.get(), () -> {
+                MatchService.get().startMatch(participants, kit, arena, false,
+                        kit.is(KitRule.BEST_OF_THREE) ? 3 : 1);
+            });
         });
     }
 }
