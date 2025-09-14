@@ -28,8 +28,8 @@ public class FastRunnable implements Runnable {
 
             FastBoard board = entry.getValue();
 
-            String rawTitle = manager.fastAdapter.getTitle(player);
-            List<String> rawLines = manager.fastAdapter.getLines(player);
+            String rawTitle = getSafeTitle(player);
+            List<String> rawLines = getSafeLines(player);
 
             String currentTitle = board.getTitle().toString();
             if (!currentTitle.equals(rawTitle)) {
@@ -50,4 +50,19 @@ public class FastRunnable implements Runnable {
         }
     }
 
+    private String getSafeTitle(Player player) {
+        try {
+            return manager.fastAdapter.getTitle(player);
+        } catch (Exception e) {
+            return "Default Title"; // Fallback title
+        }
+    }
+
+    private List<String> getSafeLines(Player player) {
+        try {
+            return manager.fastAdapter.getLines(player);
+        } catch (Exception e) {
+            return Collections.emptyList(); // Fallback to an empty list of lines
+        }
+    }
 }
