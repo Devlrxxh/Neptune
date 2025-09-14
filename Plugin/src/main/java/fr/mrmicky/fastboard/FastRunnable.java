@@ -4,6 +4,8 @@ import dev.lrxh.neptune.utils.CC;
 import fr.mrmicky.fastboard.adventure.FastBoard;
 import lombok.AllArgsConstructor;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.TextComponent;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -31,22 +33,13 @@ public class FastRunnable implements Runnable {
             String rawTitle = getSafeTitle(player);
             List<String> rawLines = getSafeLines(player);
 
-            String currentTitle = board.getTitle().toString();
-            if (!currentTitle.equals(rawTitle)) {
-                board.updateTitle(CC.color(rawTitle));
-            }
+            board.updateTitle(CC.color(rawTitle));
 
-            List<String> currentRawLines = board.getLines().stream()
-                    .map(Component::toString)
-                    .toList();
-
-            if (!currentRawLines.equals(rawLines)) {
-                List<Component> newLines = new ArrayList<>();
-                for (String line : rawLines) {
-                    newLines.add(CC.color(line));
-                }
-                board.updateLines(newLines);
+            List<Component> newLines = new ArrayList<>();
+            for (String line : rawLines) {
+                newLines.add(CC.color(line));
             }
+            board.updateLines(newLines);
         }
     }
 
