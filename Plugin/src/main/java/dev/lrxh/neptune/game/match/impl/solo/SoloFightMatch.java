@@ -35,6 +35,8 @@ import net.kyori.adventure.text.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,11 +115,12 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
         String kitName = getKit().getDisplayName();
         String arenaName = getArena().getDisplayName();
         String date = DateUtils.getDate();
+        String time = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         winnerProfile.getGameData().addHistory(
-                new MatchHistory(true, loserProfile.getUsername(), kitName, arenaName, date));
+                new MatchHistory(true, loserProfile.getUsername(), kitName, arenaName, date, time));
         loserProfile.getGameData().addHistory(
-                new MatchHistory(false, winnerProfile.getUsername(), kitName, arenaName, date));
+                new MatchHistory(false, winnerProfile.getUsername(), kitName, arenaName, date, time));
 
         GameData winnerData = winnerProfile.getGameData();
         GameData loserData = loserProfile.getGameData();
