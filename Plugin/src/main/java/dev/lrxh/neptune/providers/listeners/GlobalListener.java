@@ -41,7 +41,11 @@ public class GlobalListener implements Listener {
     public void PlayerCommandPreprocessEvent(PlayerCommandPreprocessEvent event) {
         String cmd = event.getMessage().toLowerCase().replaceAll("\\s+", "");
         for (String str : SettingsLocale.IN_MATCH_BLOCKED_COMMANDS.getStringList()) {
+            if (str.isEmpty())
+                break;
             if (cmd.startsWith(str)) {
+                if (API.getProfile(event.getPlayer()).getMatch() == null)
+                    break;
                 event.setCancelled(true);
                 MessagesLocale.IN_MATCH_BLOCKED_COMMAND_MESSAGE.send(event.getPlayer());
                 return;

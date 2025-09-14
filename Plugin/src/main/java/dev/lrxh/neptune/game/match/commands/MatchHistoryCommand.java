@@ -10,4 +10,9 @@ public class MatchHistoryCommand {
     public void open(@Sender Player player) {
         new MatchHistoryMenu().open(player);
     }
+
+    @Command(name = "", desc = "Open another players match history")
+    public void open(@Sender Player player, Player target) {
+        new MatchHistoryMenu().open(target);
+    }
 }
