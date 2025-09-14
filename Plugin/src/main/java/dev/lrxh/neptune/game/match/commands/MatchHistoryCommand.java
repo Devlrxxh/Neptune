@@ -6,6 +6,7 @@ import dev.lrxh.neptune.game.match.menu.MatchHistoryMenu;
 import org.bukkit.entity.Player;
 
 public class MatchHistoryCommand {
+
     @Command(name = "", desc = "Open match history")
     public void open(@Sender Player player) {
         new MatchHistoryMenu(player).open(player);

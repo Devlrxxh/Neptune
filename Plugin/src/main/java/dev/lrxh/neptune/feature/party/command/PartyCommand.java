@@ -44,7 +44,7 @@ public class PartyCommand {
             return;
         }
         if (!party.isOpen()) {
-            MessagesLocale.PARTY_PRIVATE.send(player.getUniqueId());
+            MessagesLocale.PARTY_PRIVATE.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
             return;
         }
 

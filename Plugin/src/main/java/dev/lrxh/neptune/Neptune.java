@@ -103,10 +103,10 @@ public final class Neptune extends JavaPlugin {
     private void initAPI() {
         getServer().getServicesManager().register(
                 NeptuneAPI.class,
-                new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get(), ArenaService.get(), DivisionService.get(), CosmeticService.get(), ItemBrowserService.get()),
+                new NeptuneAPIImpl(ProfileService.get(), MatchService.get(), KitService.get(), ScoreboardService.get(),
+                        ArenaService.get(), DivisionService.get(), CosmeticService.get(), ItemBrowserService.get()),
                 this,
-                ServicePriority.Normal
-        );
+                ServicePriority.Normal);
         ServerUtils.info("Neptune API Initialized");
     }
 
@@ -114,10 +114,12 @@ public final class Neptune extends JavaPlugin {
         ConfigService.get().load();
 
         loadExtensions();
-        if (!isEnabled()) return;
+        if (!isEnabled())
+            return;
 
         new DatabaseService();
-        if (!isEnabled()) return;
+        if (!isEnabled())
+            return;
 
         BlockChanger.initialize(this);
         ArenaService.get().load();
@@ -151,8 +153,8 @@ public final class Neptune extends JavaPlugin {
                 new MenuListener(),
                 new ArenaProcedureListener(),
                 new KitProcedureListener(),
-                new ItemBrowserListener()
-        ).forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
+                new ItemBrowserListener())
+                .forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
     private void loadExtensions() {
@@ -201,12 +203,13 @@ public final class Neptune extends JavaPlugin {
         drink.register(new QueueCommand(), "queue").registerSub(new QueueMenuCommand());
         drink.register(new DuelCommand(), "duel", "1v1").setDefaultCommandIsHelp(true);
         drink.register(new LeaveCommand(), "leave", "forfeit", "spawn", "l", "ff");
-        drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard").setDefaultCommandIsHelp(true);
+        drink.register(new LeaderboardCommand(), "leaderboard", "lbs", "lb", "leaderboard")
+                .setDefaultCommandIsHelp(true);
         drink.register(new SettingsCommand(), "settings").setDefaultCommandIsHelp(true);
         drink.register(new SpectateCommand(), "spec", "spectate");
         drink.register(new MainCommand(), "neptune");
         drink.register(new CosmeticsCommand(), "cosmetics");
-        drink.register(new MatchHistoryCommand(), "matchhistory");
+        drink.register(new MatchHistoryCommand(), "matchhistory").setDefaultCommandIsHelp(true);
         drink.register(new QuickQueueCommand(), "quickqueue");
         drink.registerCommands();
     }
