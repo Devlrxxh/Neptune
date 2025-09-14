@@ -10,7 +10,6 @@ import dev.lrxh.neptune.feature.party.impl.PartyRequest;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -37,15 +36,15 @@ public class PartyCommand {
         Party party = API.getProfile(target).getGameData().getParty();
 
         if (party == null) {
-            player.sendMessage(CC.error("Player isn't in any party"));
+            MessagesLocale.PARTY_NOT_IN_PARTY.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
             return;
         }
         if (!party.getLeader().equals(target.getUniqueId())) {
-            player.sendMessage(CC.error("Player isn't a leader of a party."));
+            MessagesLocale.PARTY_NOT_LEADER.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
             return;
         }
         if (!party.isOpen()) {
-            player.sendMessage(CC.error("Party is private"));
+            MessagesLocale.PARTY_PRIVATE.send(player.getUniqueId());
             return;
         }
 
@@ -81,7 +80,7 @@ public class PartyCommand {
         Party party = profile.getGameData().getParty();
 
         if (player == target) {
-            MessagesLocale.PARTY_INVITE_OWN.send(player);
+            MessagesLocale.PARTY_INVITE_OWN.send(player.getUniqueId());
             return;
         }
 
@@ -92,10 +91,7 @@ public class PartyCommand {
 
         if (party == null) {
             Party createdParty = profile.createParty();
-            if (createdParty == null)
-                party = profile.getGameData().getParty();
-            else
-                party = createdParty;
+            party = (createdParty == null) ? profile.getGameData().getParty() : createdParty;
         }
 
         if (!party.getLeader().equals(player.getUniqueId())) {
@@ -114,13 +110,10 @@ public class PartyCommand {
             return;
         }
 
-        if (profile.getGameData().getRequests().contains(player.getUniqueId())) {
-            MessagesLocale.PARTY_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
-            return;
-        }
-
-        if (targetProfile.getGameData().getRequests().contains(player.getUniqueId())) {
-            MessagesLocale.PARTY_ALREADY_SENT.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
+        if (profile.getGameData().getRequests().contains(player.getUniqueId()) ||
+                targetProfile.getGameData().getRequests().contains(player.getUniqueId())) {
+            MessagesLocale.PARTY_ALREADY_SENT.send(player.getUniqueId(),
+                    new Replacement("<player>", target.getName()));
             return;
         }
 
@@ -130,7 +123,8 @@ public class PartyCommand {
         }
 
         party.invite(target.getUniqueId());
-        MessagesLocale.PARTY_INVITED.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
+        MessagesLocale.PARTY_INVITED.send(player.getUniqueId(),
+                new Replacement("<player>", target.getName()));
     }
 
     @Command(name = "accept", desc = "", usage = "<uuid>")
@@ -138,10 +132,12 @@ public class PartyCommand {
         Profile profile = API.getProfile(player);
         if (!profile.getState().equals(ProfileState.IN_LOBBY))
             return;
+
         if (profile.getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;
         }
+
         PartyRequest request = (PartyRequest) profile.getGameData().getRequests().get(uuid);
         if (request != null) {
             request.getParty().accept(player.getUniqueId());
@@ -152,7 +148,8 @@ public class PartyCommand {
     public void kick(@Sender Player player, Player target) {
         Party party = API.getProfile(target).getGameData().getParty();
         if (party == null || !party.getLeader().equals(player.getUniqueId())) {
-            MessagesLocale.PARTY_NOT_IN_PARTY.send(player.getUniqueId(), new Replacement("<player>", player.getName()));
+            MessagesLocale.PARTY_NOT_IN.send(player.getUniqueId(),
+                    new Replacement("<player>", player.getName()));
             return;
         }
 
@@ -161,9 +158,8 @@ public class PartyCommand {
 
     @Command(name = "transfer", desc = "", usage = "<player>")
     public void transfer(@Sender Player player, Player target) {
-
         if (player == target) {
-            MessagesLocale.PARTY_TRANSFER_OWN.send(player);
+            MessagesLocale.PARTY_TRANSFER_OWN.send(player.getUniqueId());
             return;
         }
 
@@ -171,17 +167,19 @@ public class PartyCommand {
         Party targetParty = API.getProfile(target).getGameData().getParty();
 
         if (party == null) {
-            MessagesLocale.PARTY_NOT_IN.send(player);
+            MessagesLocale.PARTY_NOT_IN.send(player.getUniqueId());
             return;
         }
         if (!party.equals(targetParty)) {
-            MessagesLocale.PARTY_NOT_IN_SAME_PARTY.send(player, new Replacement("<player>", target.getName()));
+            MessagesLocale.PARTY_NOT_IN_SAME_PARTY.send(player.getUniqueId(),
+                    new Replacement("<player>", target.getName()));
             return;
         }
-        if (party.getLeader() != player.getUniqueId()) {
-            MessagesLocale.PARTY_NO_PERMISSION.send(player);
+        if (!party.getLeader().equals(player.getUniqueId())) {
+            MessagesLocale.PARTY_NO_PERMISSION.send(player.getUniqueId());
             return;
         }
+
         party.transfer(player, target);
     }
 
@@ -190,13 +188,14 @@ public class PartyCommand {
     public void advertise(@Sender Player player) {
         Party party = API.getProfile(player).getGameData().getParty();
         if (party == null) {
-            MessagesLocale.PARTY_NOT_IN.send(player);
+            MessagesLocale.PARTY_NOT_IN.send(player.getUniqueId());
             return;
         }
-        if (party.getLeader() != player.getUniqueId()) {
-            MessagesLocale.PARTY_NO_PERMISSION.send(player);
+        if (!party.getLeader().equals(player.getUniqueId())) {
+            MessagesLocale.PARTY_NO_PERMISSION.send(player.getUniqueId());
             return;
         }
+
         party.advertise();
     }
 }
