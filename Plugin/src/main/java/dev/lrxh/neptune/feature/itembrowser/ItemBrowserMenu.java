@@ -22,7 +22,8 @@ public class ItemBrowserMenu extends PaginatedMenu {
     private final Runnable returnConsumer;
     private final String search;
 
-    public ItemBrowserMenu(ItemBrowserService service, String section, Consumer<Material> itemConsumer, String search, Runnable returnConsumer) {
+    public ItemBrowserMenu(ItemBrowserService service, String section, Consumer<Material> itemConsumer, String search,
+            Runnable returnConsumer) {
         super("&fItem Browser", 54, Filter.NONE);
         this.service = service;
         this.section = section;
@@ -42,6 +43,8 @@ public class ItemBrowserMenu extends PaginatedMenu {
         List<Button> buttons = new ArrayList<>();
         int i = 0;
         for (Material mat : items) {
+            if (!mat.isItem())
+                continue;
             buttons.add(new Button(i++) {
                 @Override
                 public ItemStack getItemStack(Player p) {
