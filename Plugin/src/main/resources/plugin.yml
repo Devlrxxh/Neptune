@@ -8,3 +8,4 @@ load: POSTWORLD
 softdepend:
   - PlaceholderAPI
   - Multiverse-Core
+  - Worlds

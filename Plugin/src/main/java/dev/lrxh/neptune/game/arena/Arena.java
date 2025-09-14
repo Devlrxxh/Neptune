@@ -38,6 +38,9 @@ public class Arena implements IArena {
     private Arena owner;
     private boolean doneLoading;
 
+    private CompletableFuture<Arena> preloadedDuplicate;
+
+
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn, boolean enabled, int deathY) {
         this.name = name;
         this.displayName = displayName;
@@ -53,30 +56,35 @@ public class Arena implements IArena {
     }
 
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-            Location min, Location max, double buildLimit, boolean enabled,
-            List<Material> whitelistedBlocks, int deathY) {
+                 Location min, Location max, double buildLimit, boolean enabled,
+                 List<Material> whitelistedBlocks, int deathY) {
 
         this(name, displayName, redSpawn, blueSpawn, enabled, deathY);
         this.min = min;
         this.max = max;
         this.buildLimit = buildLimit;
-        this.whitelistedBlocks = whitelistedBlocks;
+        this.whitelistedBlocks = (whitelistedBlocks != null ? whitelistedBlocks : new ArrayList<>());
 
-        if (min == null || max == null)
+        if (min == null || max == null) {
             return;
+        }
+
+        this.doneLoading = false;
         CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
             this.snapshot = cuboidSnapshot;
             this.doneLoading = true;
+
+            this.preloadedDuplicate = createDuplicateInternal();
         });
     }
-
     public Arena(String name, String displayName, Location redSpawn, Location blueSpawn,
-            Location min, Location max, double buildLimit, boolean enabled,
-            List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
+                 Location min, Location max, double buildLimit, boolean enabled,
+                 List<Material> whitelistedBlocks, int deathY, CuboidSnapshot snapshot, Arena owner) {
 
         this(name, displayName, redSpawn, blueSpawn, min, max, buildLimit, enabled, whitelistedBlocks, deathY);
         this.snapshot = snapshot;
         this.owner = owner;
+        this.doneLoading = (snapshot != null);
     }
 
     public Arena(String name) {
@@ -88,18 +96,49 @@ public class Arena implements IArena {
         this.duplicateIndex = new AtomicInteger(1);
     }
 
+    @Override
     public boolean isSetup() {
         return !(redSpawn == null || blueSpawn == null || min == null || max == null);
     }
 
-    public CompletableFuture<Arena> createDuplicate() {
-        int currentIndex = this.duplicateIndex.getAndIncrement();
+    public synchronized CompletableFuture<Arena> createDuplicate() {
+        if (preloadedDuplicate != null) {
+            CompletableFuture<Arena> ready = preloadedDuplicate;
+            preloadedDuplicate = createDuplicateInternal();
+            return ready;
+        }
 
-        int offsetX = Math.abs(currentIndex) * SettingsLocale.ARENA_COPY_OFFSET_X.getInt();
-        int offsetZ = Math.abs(currentIndex) * SettingsLocale.ARENA_COPY_OFFSET_Z.getInt();
+        preloadedDuplicate = createDuplicateInternal();
+        CompletableFuture<Arena> toReturn = preloadedDuplicate;
+        preloadedDuplicate = createDuplicateInternal();
+        return toReturn;
+    }
 
-        Location redSpawn = LocationUtil.addOffset(this.redSpawn.clone(), offsetX, offsetZ);
-        Location blueSpawn = LocationUtil.addOffset(this.blueSpawn.clone(), offsetX, offsetZ);
+    private CompletableFuture<Arena> createDuplicateInternal() {
+        if (snapshot == null) {
+            CompletableFuture<Arena> failed = new CompletableFuture<>();
+            failed.completeExceptionally(new IllegalStateException("CuboidSnapshot not ready"));
+            return failed;
+        }
+
+        AtomicInteger indexCounter = (this.owner != null ? this.owner.duplicateIndex : this.duplicateIndex);
+        int currentIndex = indexCounter.getAndIncrement();
+
+        int arenaWidth = Math.abs(max.getBlockX() - min.getBlockX()) + 1;
+        int arenaDepth = Math.abs(max.getBlockZ() - min.getBlockZ()) + 1;
+
+        int copiesPerRow = 5;
+        int row = currentIndex / copiesPerRow;
+        int column = currentIndex % copiesPerRow;
+
+        int spacingX = alignToChunks(arenaWidth + SettingsLocale.ARENA_COPY_OFFSET_X.getInt());
+        int spacingZ = alignToChunks(arenaDepth + SettingsLocale.ARENA_COPY_OFFSET_Z.getInt());
+
+        int offsetX = column * spacingX;
+        int offsetZ = row * spacingZ;
+
+        Location redSpawn = (this.redSpawn != null ? LocationUtil.addOffset(this.redSpawn.clone(), offsetX, offsetZ) : null);
+        Location blueSpawn = (this.blueSpawn != null ? LocationUtil.addOffset(this.blueSpawn.clone(), offsetX, offsetZ) : null);
         Location min = LocationUtil.addOffset(this.min.clone(), offsetX, offsetZ);
         Location max = LocationUtil.addOffset(this.max.clone(), offsetX, offsetZ);
 
@@ -107,7 +146,7 @@ public class Arena implements IArena {
             cuboidSnapshot.restore(true);
             return new Arena(
                     this.name + "#" + currentIndex,
-                    displayName,
+                    this.displayName,
                     redSpawn,
                     blueSpawn,
                     min,
@@ -117,8 +156,13 @@ public class Arena implements IArena {
                     whitelistedBlocks,
                     deathY,
                     cuboidSnapshot,
-                    this);
+                    this
+            );
         });
+    }
+
+    private int alignToChunks(int value) {
+        return ((value + 15) / 16) * 16;
     }
 
     public List<String> getWhitelistedBlocksAsString() {
@@ -148,6 +192,8 @@ public class Arena implements IArena {
             CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
                 this.snapshot = cuboidSnapshot;
                 this.doneLoading = true;
+
+                this.preloadedDuplicate = createDuplicateInternal();
             });
         }
     }
@@ -159,6 +205,8 @@ public class Arena implements IArena {
             CuboidSnapshot.create(min, max).thenAccept(cuboidSnapshot -> {
                 this.snapshot = cuboidSnapshot;
                 this.doneLoading = true;
+
+                this.preloadedDuplicate = createDuplicateInternal();
             });
         }
     }

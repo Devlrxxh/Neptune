@@ -81,9 +81,11 @@ public class ArenaSelectMenu extends Menu {
                 public void onClick(ClickType type, Player p) {
                     Profile profile = API.getProfile(receiver);
                     if (profile == null) return;
-                    DuelRequest duelRequest = new DuelRequest(p.getUniqueId(), kit, arena, false, round);
-                    profile.sendDuel(duelRequest);
-                    Bukkit.getScheduler().runTask(Neptune.get(), () -> p.closeInventory());
+                    player.closeInventory();
+                    arena.createDuplicate().thenAccept(duplicate -> {
+                        DuelRequest duelRequest = new DuelRequest(p.getUniqueId(), kit, duplicate, false, round);
+                        profile.sendDuel(duelRequest);
+                    });
                 }
             });
         }
