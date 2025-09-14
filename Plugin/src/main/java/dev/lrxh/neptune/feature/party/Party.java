@@ -157,7 +157,7 @@ public class Party {
     public void transfer(Player player, Player target) {
         this.setLeader(target.getUniqueId());
         this.broadcast(MessagesLocale.PARTY_TRANSFER, new Replacement("<leader>", player.getName()),
-                new Replacement("<target>", player.getName()));
+                new Replacement("<target>", target.getName()));
     }
 
     public boolean advertise() {

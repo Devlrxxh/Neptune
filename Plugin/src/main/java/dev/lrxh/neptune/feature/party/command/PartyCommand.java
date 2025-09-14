@@ -1,6 +1,5 @@
 package dev.lrxh.neptune.feature.party.command;
 
-
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Require;
 import com.jonahseguin.drink.annotation.Sender;
@@ -18,7 +17,6 @@ import java.util.UUID;
 
 public class PartyCommand {
 
-
     @Command(name = "help", desc = "")
     public void help(@Sender Player player) {
         MessagesLocale.PARTY_HELP.send(player.getUniqueId());
@@ -33,7 +31,6 @@ public class PartyCommand {
         }
         profile.createParty();
     }
-
 
     @Command(name = "join", desc = "", usage = "<player>")
     public void join(@Sender Player player, Player target) {
@@ -95,8 +92,10 @@ public class PartyCommand {
 
         if (party == null) {
             Party createdParty = profile.createParty();
-            if (createdParty == null) party = profile.getGameData().getParty();
-            else party = createdParty;
+            if (createdParty == null)
+                party = profile.getGameData().getParty();
+            else
+                party = createdParty;
         }
 
         if (!party.getLeader().equals(player.getUniqueId())) {
@@ -110,7 +109,8 @@ public class PartyCommand {
         }
 
         if (targetProfile.getGameData().getParty() != null) {
-            MessagesLocale.PARTY_ALREADY_PARTY.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
+            MessagesLocale.PARTY_ALREADY_PARTY.send(player.getUniqueId(),
+                    new Replacement("<player>", target.getName()));
             return;
         }
 
@@ -136,7 +136,8 @@ public class PartyCommand {
     @Command(name = "accept", desc = "", usage = "<uuid>")
     public void accept(@Sender Player player, UUID uuid) {
         Profile profile = API.getProfile(player);
-        if (!profile.getState().equals(ProfileState.IN_LOBBY)) return;
+        if (!profile.getState().equals(ProfileState.IN_LOBBY))
+            return;
         if (profile.getGameData().getParty() != null) {
             MessagesLocale.PARTY_ALREADY_IN.send(player.getUniqueId());
             return;
@@ -160,6 +161,12 @@ public class PartyCommand {
 
     @Command(name = "transfer", desc = "", usage = "<player>")
     public void transfer(@Sender Player player, Player target) {
+
+        if (player == target) {
+            MessagesLocale.PARTY_TRANSFER_OWN.send(player);
+            return;
+        }
+
         Party party = API.getProfile(player).getGameData().getParty();
         Party targetParty = API.getProfile(target).getGameData().getParty();
 
