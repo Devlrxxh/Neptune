@@ -47,8 +47,9 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             API.getProfile(player.getUniqueId()).setState(ProfileState.IN_LOBBY);
-            QueueService.get().remove(player.getUniqueId());
-            MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId());
+            QueueEntry queueEntry = QueueService.get().remove(player.getUniqueId());
+            MessagesLocale.QUEUE_LEAVE.send(player.getUniqueId(),
+                    new Replacement("<kit>", queueEntry.getKit().getDisplayName()));
         }
     },
     KIT_EDITOR() {
@@ -154,7 +155,8 @@ public enum ItemAction {
         public void execute(Player player) {
             Profile profile = API.getProfile(player);
             Match match = profile.getMatch();
-            if (match == null) return;
+            if (match == null)
+                return;
             Participant participant = match.getParticipant(player);
             participant.setDisconnected(true);
             PlayerUtil.reset(participant.getPlayer());
@@ -169,19 +171,24 @@ public enum ItemAction {
         @Override
         public void execute(Player player) {
             Profile profile = API.getProfile(player);
-            if (profile == null) return;
+            if (profile == null)
+                return;
             SoloFightMatch match = (SoloFightMatch) profile.getMatch();
-            if (match == null) return;
+            if (match == null)
+                return;
             match.getKit().getRandomArena().thenAccept(arena -> {
                 if (arena == null) {
                     player.sendMessage(CC.error("No arenas were found!"));
                     return;
                 }
-                DuelRequest duelRequest = new DuelRequest(profile.getPlayerUUID(), match.getKit(), arena, false, match.getRounds());
+                DuelRequest duelRequest = new DuelRequest(profile.getPlayerUUID(), match.getKit(), arena, false,
+                        match.getRounds());
                 Player opponent = match.getParticipant(player).getOpponent().getPlayer();
-                if (opponent == null) return;
+                if (opponent == null)
+                    return;
                 Profile opponentProfile = API.getProfile(opponent);
-                if (opponentProfile == null) return;
+                if (opponentProfile == null)
+                    return;
                 opponentProfile.sendRematch(duelRequest);
             });
         }
