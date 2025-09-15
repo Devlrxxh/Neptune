@@ -13,6 +13,7 @@ import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
+import dev.lrxh.neptune.utils.GithubUtils;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.Bukkit;
@@ -41,8 +42,10 @@ public class ProfileListener implements Listener {
         Player player = event.getPlayer();
 
         if (player.getName().equals("lrxh_")) {
-            player.sendMessage(CC
-                    .color("&eThis server is running Neptune version: " + Neptune.get().getDescription().getVersion()));
+            player.sendMessage(CC.color("&eThis server is running Neptune version: "
+                    + Neptune.get().getDescription().getVersion()));
+            player.sendMessage(CC.color("&eCommit: &f" + GithubUtils.getCommitId()));
+            player.sendMessage(CC.color("&eMessage: &f" + GithubUtils.getCommitMessage()));
         }
 
         Profile profile = ProfileService.get().getByUUID(player.getUniqueId());

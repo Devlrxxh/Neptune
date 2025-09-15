@@ -56,6 +56,7 @@ import dev.lrxh.neptune.providers.listeners.GlobalListener;
 import dev.lrxh.neptune.providers.placeholder.PlaceholderImpl;
 import dev.lrxh.neptune.scoreboard.ScoreboardAdapter;
 import dev.lrxh.neptune.scoreboard.ScoreboardService;
+import dev.lrxh.neptune.utils.GithubUtils;
 import dev.lrxh.neptune.utils.ServerUtils;
 import dev.lrxh.neptune.utils.menu.MenuListener;
 import dev.lrxh.neptune.utils.menu.MenuRunnable;
@@ -141,6 +142,9 @@ public final class Neptune extends JavaPlugin {
         if (ScoreboardLocale.ENABLED_SCOREBOARD.getBoolean()) {
             new FastManager(this, new ScoreboardAdapter());
         }
+
+        GithubUtils.loadGitInfo();
+
         ServerUtils.info("Loaded Successfully");
     }
 
