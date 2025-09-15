@@ -118,16 +118,19 @@ public abstract class Match implements IMatch {
         profile.setState(ProfileState.IN_SPECTATOR);
         profile.setMatch(this);
 
-        if (add) spectators.add(player.getUniqueId());
+        if (add)
+            spectators.add(player.getUniqueId());
 
         showPlayerForSpectators();
 
-        if (sendMessage) broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
+        if (sendMessage)
+            broadcast(MessagesLocale.SPECTATE_START, new Replacement("<player>", player.getName()));
 
         player.setHealth(20);
         player.setFoodLevel(20);
         player.teleportAsync(target.getLocation()).thenAccept(success -> {
-            if (!success) return;
+            if (!success)
+                return;
 
             forEachPlayer(alivePlayer -> {
                 if (!alivePlayer.equals(player)) {
@@ -141,7 +144,6 @@ public abstract class Match implements IMatch {
                 player.setFlying(true);
             }, 5L);
         });
-
 
         player.setGameMode(GameMode.SURVIVAL);
         player.setAllowFlight(true);
@@ -180,7 +182,8 @@ public abstract class Match implements IMatch {
 
     public void forEachParticipant(Consumer<Participant> action) {
         for (Participant participant : participants) {
-            if (participant.isDisconnected() || participant.isLeft()) continue;
+            if (participant.isDisconnected() || participant.isLeft())
+                continue;
             Player player = participant.getPlayer();
             if (player != null) {
                 action.accept(participant);
@@ -204,44 +207,54 @@ public abstract class Match implements IMatch {
 
     public List<String> getScoreboard(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return new ArrayList<>();
+        if (player == null)
+            return new ArrayList<>();
 
         if (this instanceof SoloFightMatch) {
             MatchState matchState = this.getState();
 
             if (kit.is(KitRule.BEST_OF_THREE) && matchState.equals(MatchState.STARTING)) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()),
+                        player);
             }
 
             switch (matchState) {
                 case STARTING:
-                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()), player);
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_STARTING.getStringList()),
+                            player);
                 case IN_ROUND:
                     if (this.getRounds() > 1) {
-                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()), player);
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEST_OF.getStringList()),
+                                player);
                     }
                     if (this.getKit().is(KitRule.BOXING)) {
-                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()), player);
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING.getStringList()),
+                                player);
                     }
                     if (this.getKit().is(KitRule.BED_WARS)) {
-                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS.getStringList()), player);
+                        return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS.getStringList()),
+                                player);
                     }
                     return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME.getStringList()), player);
                 case ENDING:
-                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()), player);
+                    return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_ENDED.getStringList()),
+                            player);
                 default:
                     break;
             }
         } else if (this instanceof TeamFightMatch) {
             if (this.getKit().is(KitRule.BED_WARS)) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS_TEAM.getStringList()), player);
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BEDWARS_TEAM.getStringList()),
+                        player);
             } else if (this.getKit().is(KitRule.BOXING)) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING_TEAM.getStringList()), player);
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING_TEAM.getStringList()),
+                        player);
             }
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_TEAM.getStringList()), player);
         } else if (this instanceof FfaFightMatch) {
             if (this.getKit().is(KitRule.BOXING)) {
-                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING_FFA.getStringList()), player);
+                return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_BOXING_FFA.getStringList()),
+                        player);
             }
             return PlaceholderUtil.format(new ArrayList<>(ScoreboardLocale.IN_GAME_FFA.getStringList()), player);
         }
@@ -251,15 +264,18 @@ public abstract class Match implements IMatch {
 
     public void removeSpectator(UUID playerUUID, boolean sendMessage) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
         Profile profile = API.getProfile(playerUUID);
 
-        if (profile.getMatch() == null) return;
+        if (profile.getMatch() == null)
+            return;
         PlayerUtil.reset(player);
         profile.setMatch(null);
         spectators.remove(playerUUID);
         PlayerUtil.teleportToSpawn(playerUUID);
-        profile.setState(ProfileState.IN_LOBBY);
+
+        profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
 
         if (sendMessage) {
             broadcast(MessagesLocale.SPECTATE_STOP, new Replacement("<player>", player.getName()));
@@ -270,7 +286,8 @@ public abstract class Match implements IMatch {
 
     public void setupPlayer(UUID playerUUID) {
         Player player = Bukkit.getPlayer(playerUUID);
-        if (player == null) return;
+        if (player == null)
+            return;
         Profile profile = API.getProfile(playerUUID);
         profile.setMatch(this);
         profile.setState(ProfileState.IN_GAME);
@@ -311,11 +328,13 @@ public abstract class Match implements IMatch {
 
             if (!kit.is(KitRule.SATURATION)) {
                 Player player = participant.getPlayer();
-                if (player == null) return;
+                if (player == null)
+                    return;
                 player.setSaturation(0.0F);
             } else {
                 Player player = participant.getPlayer();
-                if (player == null) return;
+                if (player == null)
+                    return;
                 player.setSaturation(20.0f);
             }
 
@@ -355,13 +374,13 @@ public abstract class Match implements IMatch {
             Objective objective = player.getScoreboard().getObjective(DisplaySlot.BELOW_NAME);
 
             if (objective == null) {
-                objective = player.getScoreboard().registerNewObjective("neptune_health", Criteria.HEALTH, CC.color("&c❤"));
+                objective = player.getScoreboard().registerNewObjective("neptune_health", Criteria.HEALTH,
+                        CC.color("&c❤"));
             }
             try {
                 objective.setDisplaySlot(DisplaySlot.BELOW_NAME);
             } catch (IllegalStateException ignored) {
             }
-
 
             player.damage(0.001);
         });
@@ -369,7 +388,8 @@ public abstract class Match implements IMatch {
 
     public void removeEntities() {
         for (Entity entity : new HashSet<>(entities)) {
-            if (entity == null) continue;
+            if (entity == null)
+                continue;
             entity.remove();
             entities.remove(entity);
         }
@@ -388,8 +408,7 @@ public abstract class Match implements IMatch {
             broadcast(
                     deadParticipant.getDeathCause().getMessage(),
                     new Replacement("<player>", deadParticipant.getNameColored()),
-                    new Replacement("<killer>", deadParticipant.getLastAttackerName())
-            );
+                    new Replacement("<killer>", deadParticipant.getLastAttackerName()));
         } else {
             broadcast(deathMessage);
         }
@@ -402,10 +421,12 @@ public abstract class Match implements IMatch {
     }
 
     public void teleportPlayerToPosition(Participant participant) {
-        Location location = participant.getColor().equals(ParticipantColor.RED) ? arena.getRedSpawn() : arena.getBlueSpawn();
+        Location location = participant.getColor().equals(ParticipantColor.RED) ? arena.getRedSpawn()
+                : arena.getBlueSpawn();
 
         Player player = participant.getPlayer();
-        if (player == null) return;
+        if (player == null)
+            return;
         player.teleport(location);
     }
 
