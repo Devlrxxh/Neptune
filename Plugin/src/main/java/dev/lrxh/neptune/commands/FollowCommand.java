@@ -7,6 +7,9 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
+
+import java.util.Objects;
+
 import org.bukkit.entity.Player;
 
 public class FollowCommand {
@@ -18,8 +21,10 @@ public class FollowCommand {
             return;
         Profile taProfile = API.getProfile(target);
         Profile profile = API.getProfile(player);
-        if (taProfile.getGameData().getParty().equals(profile.getGameData().getParty()))
+
+        if (Objects.equals(taProfile.getGameData().getParty(), profile.getGameData().getParty())) {
             return;
+        }
 
         if (followingSettingData.getFollowings().contains(player.getUniqueId())) {
             followingSettingData.removeFollower(player.getUniqueId());
