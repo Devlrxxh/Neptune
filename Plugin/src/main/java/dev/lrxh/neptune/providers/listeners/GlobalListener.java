@@ -78,18 +78,8 @@ public class GlobalListener implements Listener {
         Player player = event.getPlayer();
         if (player.getGameMode().equals(GameMode.CREATIVE)) return;
         Profile profile = API.getProfile(player);
-        if (isPlayerNotInMatch(profile)) {
+        if (isPlayerNotInMatch(profile) && profile.getState() != ProfileState.IN_CUSTOM) {
             event.setCancelled(true);
-            if (profile != null) {
-                ProfileState state = profile.getState();
-                if (state.equals(ProfileState.IN_KIT_EDITOR)) {
-                    player.sendMessage(CC.color("&cYou can't place blocks in the kit editor!"));
-                } else if (state.equals(ProfileState.IN_QUEUE)) {
-                    player.sendMessage(CC.color("&cYou can't place blocks while in queue!"));
-                } else {
-                    player.sendMessage(CC.color("&cYou can't place blocks here!"));
-                }
-            }
         }
     }
 
