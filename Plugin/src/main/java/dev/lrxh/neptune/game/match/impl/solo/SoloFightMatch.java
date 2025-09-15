@@ -152,8 +152,8 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
                         new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), getKit()))
         );
 
-        winnerProfile.save();
-        loserProfile.save();
+        if(winnerProfile.isFake()) winnerProfile.save();
+        if(loserProfile.isFake()) loserProfile.save();
     }
 
 
