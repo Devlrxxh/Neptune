@@ -37,7 +37,7 @@ public class PartyDuelButton extends Button {
         for (UUID userUUID : targetParty.getUsers()) {
             Player playerInParty = Bukkit.getPlayer(userUUID);
             if (playerInParty != null) {
-                names.add(playerInParty.getName());
+                names.add("&f" + playerInParty.getName());
             }
         }
 
