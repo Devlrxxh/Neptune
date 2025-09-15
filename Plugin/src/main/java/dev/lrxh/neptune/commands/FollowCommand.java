@@ -22,7 +22,9 @@ public class FollowCommand {
         Profile taProfile = API.getProfile(target);
         Profile profile = API.getProfile(player);
 
-        if (Objects.equals(taProfile.getGameData().getParty(), profile.getGameData().getParty())) {
+        if (taProfile.getGameData().getParty() != null
+                && profile.getGameData().getParty() != null
+                && taProfile.getGameData().getParty().equals(profile.getGameData().getParty())) {
             return;
         }
 

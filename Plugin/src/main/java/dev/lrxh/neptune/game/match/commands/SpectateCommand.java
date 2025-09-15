@@ -1,11 +1,11 @@
 package dev.lrxh.neptune.game.match.commands;
 
-
 import com.jonahseguin.drink.annotation.Command;
 import com.jonahseguin.drink.annotation.Flag;
 import com.jonahseguin.drink.annotation.Sender;
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.configs.impl.MessagesLocale;
+import dev.lrxh.neptune.game.match.menu.MatchListMenu;
 import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
@@ -13,6 +13,11 @@ import dev.lrxh.neptune.utils.CC;
 import org.bukkit.entity.Player;
 
 public class SpectateCommand {
+
+    @Command(name = "", desc = "", usage = "")
+    public void menu(@Sender Player player) {
+        new MatchListMenu().open(player);
+    }
 
     @Command(name = "", desc = "", usage = "<player> [-s: silent]")
     public void spectate(@Sender Player player, Player target, @Flag('s') boolean silent) {
@@ -39,7 +44,8 @@ public class SpectateCommand {
         }
 
         if (!targetProfile.getSettingData().isAllowSpectators()) {
-            MessagesLocale.SPECTATE_NOT_ALLOWED.send(player.getUniqueId(), new Replacement("<player>", target.getName()));
+            MessagesLocale.SPECTATE_NOT_ALLOWED.send(player.getUniqueId(),
+                    new Replacement("<player>", target.getName()));
             return;
         }
 
