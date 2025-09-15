@@ -127,13 +127,12 @@ public class PlaceholderUtil {
                             String.valueOf(PlayerUtil.getPing(red != null ? red.getPlayer() : null)));
                     line = line.replaceAll("<playerBlue_ping>",
                             String.valueOf(PlayerUtil.getPing(blue != null ? blue.getPlayer() : null)));
-                    line = line.replaceAll("<time>", match.getTime().formatTime());
-                    
+
                     if (match.getKit().is(KitRule.BED_WARS)) {
                         line = line.replaceAll("<red-bed-status>", red != null && !red.isBedBroken() ? "&a✔" : "&c✘");
-                        line = line.replaceAll("<blue-bed-status>", blue != null && !blue.isBedBroken() ? "&a✔" : "&c✘");
+                        line = line.replaceAll("<blue-bed-status>",
+                                blue != null && !blue.isBedBroken() ? "&a✔" : "&c✘");
                     }
-                                
                 } else if (match instanceof TeamFightMatch teamFightMatch) {
                     MatchTeam red = teamFightMatch.getTeamA();
                     MatchTeam blue = teamFightMatch.getTeamB();
@@ -148,24 +147,25 @@ public class PlaceholderUtil {
                         line = line.replaceAll("<blue-bed-status>", !blue.isBedBroken() ? "&a✔" : "&c✘");
                     }
                 } else if (match instanceof FfaFightMatch ffaFightMatch) {
-                    line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
-                    line = line.replaceAll("<max>", String.v
-                            alueOf(ffaFightMatch.getParticipants().size()));
+                    line = line.replaceAll("<alive>", String
+                            .valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
+                    line = line.replaceAll("<max>", String.valueOf(ffaFightMatch.getParticipants().size()));
                 }
 
                 line = line.replaceAll("<kit>", match.getKit().getDisplayName());
                 line = line.replaceAll("<arena>", match.getArena().getDisplayName());
+                line = line.replaceAll("<time>", match.getTime().formatTime());
 
                 return line;
             }
 
-            if (participant == null) return line;
+            if (participant == null)
+                return line;
 
-                
             line = line.replaceAll("<hits>", String.valueOf(participant.getHits()));
-            line = line.replaceAll("<combo>", participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
-            line = line.replaceAll("<time>", 
-                    atch.getTime().formatTime());
+            line = line.replaceAll("<combo>",
+                    participant.getCombo() > 1 ? "&e(" + participant.getCombo() + " Combo)" : "");
+            line = line.replaceAll("<time>", match.getTime().formatTime());
 
             if (match instanceof SoloFightMatch soloFightMatch) {
 
@@ -176,12 +176,12 @@ public class PlaceholderUtil {
                     Participant opponent = participant.getOpponent();
                     Player opponentPlayer = participant.getOpponent().getPlayer();
                     line = line.replaceAll("<opponent>", participant.getOpponent().getNameUnColored());
-                    line = line.replaceAll("<opponent-ping>", String.valueOf(opponentPlayer == null ? 0 : opponentPlayer.getPing()));
+                    line = line.replaceAll("<opponent-ping>",
+                            String.valueOf(opponentPlayer == null ? 0 : opponentPlayer.getPing()));
 
-                            
-                    line = line.replaceAll("<opponent-combo>", opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
-                    line = line.replaceAll("<opponent-hits>", 
-                            tring.valueOf(opponent.getHits()));
+                    line = line.replaceAll("<opponent-combo>",
+                            opponent.getCombo() > 1 ? "&e(" + opponent.getCombo() + " Combo)" : "");
+                    line = line.replaceAll("<opponent-hits>", String.valueOf(opponent.getHits()));
                     line = line.replaceAll("<diffrence>", participant.getHitsDifference(opponent));
 
                     if (match.getRounds() > 1) {
@@ -200,11 +200,11 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<playerRed_name>", redPlayer.getNameUnColored());
                     line = line.replaceAll("<playerBlue_name>", bluePlayer.getNameUnColored());
 
-                    line = line.replaceAll("<playerRed_ping>", String.valueOf(PlayerUtil.getPing(redPlayer.getPlayer())));
-                    line = line.replaceAll("<playerBlue_ping>"
-                             String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayer())));
+                    line = line.replaceAll("<playerRed_ping>",
+                            String.valueOf(PlayerUtil.getPing(redPlayer.getPlayer())));
+                    line = line.replaceAll("<playerBlue_ping>",
+                            String.valueOf(PlayerUtil.getPing(bluePlayer.getPlayer())));
 
-                            
                     if (match.getKit().is(KitRule.BED_WARS)) {
                         line = line.replaceAll("<red-bed-status>", !redPlayer.isBedBroken() ? "&a✔" : "&c1");
                         line = line.replaceAll("<blue-bed-status>", !bluePlayer.isBedBroken() ? "&a✔" : "&c1");
@@ -213,11 +213,11 @@ public class PlaceholderUtil {
                 }
             }
             if (match instanceof TeamFightMatch teamFightMatch) {
-                MatchTeam matchTeam = teamFightMatch.getParticipantTeam(teamFightMatch.getParticipant(player.getUniqueId()));
-                MatchTeam opponentTeam = matchTeam.e
-                        quals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB() : teamFightMatch.getTeamA();
+                MatchTeam matchTeam = teamFightMatch
+                        .getParticipantTeam(teamFightMatch.getParticipant(player.getUniqueId()));
+                MatchTeam opponentTeam = matchTeam.equals(teamFightMatch.getTeamA()) ? teamFightMatch.getTeamB()
+                        : teamFightMatch.getTeamA();
 
-                        
                 if (profile.getState().equals(ProfileState.IN_GAME)) {
                     line = line.replaceAll("<alive>", String.valueOf(matchTeam.getAliveParticipants()));
                     line = line.replaceAll("<max>", String.valueOf(matchTeam.getParticipants().size()));
@@ -231,11 +231,11 @@ public class PlaceholderUtil {
                     }
 
                     if (match.getKit().is(KitRule.BED_WARS)) {
-                        line = line.replaceAll("<team-bed-status>", !matchTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
-                        line = line.replaceAll("<opponent-team-bed-
-                                tatus>", !opponentTeam.isBedBroken() ? "&a✔" : "&c" + opponentTeam.getAliveParticipants());
+                        line = line.replaceAll("<team-bed-status>",
+                                !matchTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
+                        line = line.replaceAll("<opponent-team-bed-status>",
+                                !opponentTeam.isBedBroken() ? "&a✔" : "&c" + opponentTeam.getAliveParticipants());
                     }
-                                
                 }
 
                 if (profile.getState().equals(ProfileState.IN_SPECTATOR)) {
@@ -248,18 +248,18 @@ public class PlaceholderUtil {
                     line = line.replaceAll("<max-blue>", String.valueOf(blueTeam.getParticipants().size()));
 
                     if (match.getKit().is(KitRule.BED_WARS)) {
-                        line = line.replaceAll("<red-bed-status>", !redTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
+                        line = line.replaceAll("<red-bed-status>",
+                                !redTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
                         line = line.replaceAll("<red-bed-status>",
                                 !blueTeam.isBedBroken() ? "&a✔" : "&c" + matchTeam.getAliveParticipants());
                     }
-                                
                 }
             }
 
             if (match instanceof FfaFightMatch ffaFightMatch) {
-                line = line.replaceAll("<alive>", String.valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
-                line = line.replaceAll("<max>", S
-                        ring.valueOf(ffaFightMatch.getParticipants().size()));
+                line = line.replaceAll("<alive>",
+                        String.valueOf(ffaFightMatch.getParticipants().size() - ffaFightMatch.deadParticipants.size()));
+                line = line.replaceAll("<max>", String.valueOf(ffaFightMatch.getParticipants().size()));
             }
 
             line = line.replaceAll("<kit>", match.getKit().getDisplayName());
