@@ -36,6 +36,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -115,7 +116,7 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
         String kitName = getKit().getDisplayName();
         String arenaName = getArena().getDisplayName();
         String date = DateUtils.getDate();
-        String time = LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        String time = LocalDateTime.now().atOffset(ZoneOffset.UTC).format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
 
         winnerProfile.getGameData().addHistory(
                 new MatchHistory(true, loserProfile.getUsername(), kitName, arenaName, date, time));
@@ -151,8 +152,8 @@ public class SoloFightMatch extends Match implements ISoloFightMatch {
                         new LeaderboardPlayerEntry(participant.getNameUnColored(), participant.getPlayerUUID(), getKit()))
         );
 
-        if (winnerProfile.isFake()) winnerProfile.save();
-        if (loserProfile.isFake()) loserProfile.save();
+        winnerProfile.save();
+        loserProfile.save();
     }
 
 

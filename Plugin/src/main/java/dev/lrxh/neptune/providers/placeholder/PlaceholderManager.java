@@ -70,7 +70,8 @@ public class PlaceholderManager {
                 new RedMaxPlaceholder(),
                 new BlueMaxPlaceholder(),
                 new LossesPlaceholder(),
-                new PartyMaxPlaceholder()
+                new PartyMaxPlaceholder(),
+                new RecentMatchPlaceholder()
         ));
     }
 
