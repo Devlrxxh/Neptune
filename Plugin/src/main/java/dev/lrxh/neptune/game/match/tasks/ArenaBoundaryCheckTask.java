@@ -9,6 +9,7 @@ import dev.lrxh.neptune.game.match.MatchService;
 import dev.lrxh.neptune.game.match.impl.MatchState;
 import dev.lrxh.neptune.game.match.impl.participant.DeathCause;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.LocationUtil;
 import dev.lrxh.neptune.utils.tasks.NeptuneRunnable;
@@ -35,6 +36,9 @@ public class ArenaBoundaryCheckTask extends NeptuneRunnable {
                 if (profile == null || profile.getMatch() != match)
                     continue;
 
+                if (profile.getState().equals(ProfileState.IN_SPECTATOR) || participant.isDead())
+                    continue;
+
                 if (!LocationUtil.isInside(player.getLocation(), arena.getMin(), arena.getMax())) {
                     if (match.getKit().is(KitRule.PARKOUR)) {
                         player.teleport(participant.getSpawn(match));
@@ -53,6 +57,9 @@ public class ArenaBoundaryCheckTask extends NeptuneRunnable {
                         player.teleport(participant.getSpawn(match));
                         return;
                     }
+
+                    if (profile.getState().equals(ProfileState.IN_SPECTATOR) || participant.isDead())
+                        continue;
 
                     player.damage(5);
                     participant.sendTitle(MessagesLocale.MATCH_OUT_OF_BOUNDS_TITLE_HEADER,
