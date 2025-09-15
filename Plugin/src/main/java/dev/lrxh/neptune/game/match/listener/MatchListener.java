@@ -90,7 +90,7 @@ public class MatchListener implements Listener {
             return;
 
         // Cancel if not in match
-        if (!isPlayerInMatch(profile)) {
+        if (!isPlayerInMatch(profile) && profile.getState() != ProfileState.IN_CUSTOM) {
             event.setCancelled(true);
             return;
         }
