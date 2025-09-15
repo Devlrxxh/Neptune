@@ -62,6 +62,7 @@ public class PlaceholderUtil {
         line = line.replaceAll("<in-match>", String.valueOf(MatchService.get().matches.size()));
         line = line.replaceAll("<player>", player.getName());
         line = line.replaceAll("<ping>", String.valueOf((PlayerUtil.getPing(player))));
+        line = line.replaceAll("<division>", profile.getGameData().getGlobalStats().getDivision().getDisplayName());
 
         GlobalStats globalStats = profile.getGameData().getGlobalStats();
         line = line.replaceAll("<wins>", String.valueOf(globalStats.getWins()));
@@ -75,6 +76,7 @@ public class PlaceholderUtil {
             line = line.replaceAll("<kit>", queueEntry.getKit().getDisplayName());
             line = line.replaceAll("<maxPing>", String.valueOf(profile.getSettingData().getMaxPing()));
             line = line.replaceAll("<time>", String.valueOf(queueEntry.getTime().formatTime()));
+            line = line.replaceAll("<kit_division>", profile.getGameData().get(queueEntry.getKit()).getDivision().getDisplayName());
         }
 
         if (state.equals(ProfileState.IN_KIT_EDITOR)) {
@@ -155,7 +157,7 @@ public class PlaceholderUtil {
                 line = line.replaceAll("<kit>", match.getKit().getDisplayName());
                 line = line.replaceAll("<arena>", match.getArena().getDisplayName());
                 line = line.replaceAll("<time>", match.getTime().formatTime());
-
+                line = line.replaceAll("<kit_division>", profile.getGameData().get(profile.getMatch().getKit()).getDivision().getDisplayName());
                 return line;
             }
 
