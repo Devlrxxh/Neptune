@@ -7,6 +7,7 @@ import dev.lrxh.neptune.game.match.Match;
 import dev.lrxh.neptune.game.match.impl.MatchState;
 import dev.lrxh.neptune.game.match.impl.ffa.FfaFightMatch;
 import dev.lrxh.neptune.game.match.impl.participant.Participant;
+import dev.lrxh.neptune.profile.data.ProfileState;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.providers.clickable.Replacement;
 import dev.lrxh.neptune.utils.CC;
@@ -35,7 +36,6 @@ public class MatchStartRunnable extends NeptuneRunnable {
         match.getTime().setZero();
     }
 
-
     @Override
     public void run() {
         if (match.isEnded()) {
@@ -50,7 +50,6 @@ public class MatchStartRunnable extends NeptuneRunnable {
             checkFollowings();
             match.getTime().setStop(false);
 
-
             for (Participant participant : match.getParticipantsList()) {
                 participant.setTime(new Time());
             }
@@ -62,8 +61,11 @@ public class MatchStartRunnable extends NeptuneRunnable {
         }
         if (match.getState().equals(MatchState.STARTING)) {
             match.playSound(Sound.UI_BUTTON_CLICK);
-            match.sendTitle(CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>", String.valueOf(startTimer))),
-                    CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>", String.valueOf(startTimer))),
+            match.sendTitle(
+                    CC.color(MessagesLocale.MATCH_STARTING_TITLE_HEADER.getString().replace("<countdown-time>",
+                            String.valueOf(startTimer))),
+                    CC.color(MessagesLocale.MATCH_STARTING_TITLE_FOOTER.getString().replace("<countdown-time>",
+                            String.valueOf(startTimer))),
                     19);
             match.sendMessage(MessagesLocale.MATCH_STARTING, new Replacement("<timer>", String.valueOf(startTimer)));
         }
@@ -81,6 +83,8 @@ public class MatchStartRunnable extends NeptuneRunnable {
             for (UUID uuid : settingData.getFollowings()) {
                 Player follower = Bukkit.getPlayer(uuid);
                 if (follower == null) continue;
+
+                if (API.getProfile(follower).getState().equals(ProfileState.IN_GAME)) continue;
 
                 Player particpiantPlayer = participant.getPlayer();
                 if (particpiantPlayer == null) continue;
