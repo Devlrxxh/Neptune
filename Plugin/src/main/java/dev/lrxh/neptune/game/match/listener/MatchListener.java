@@ -731,10 +731,19 @@ public class MatchListener implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player player) {
-            Optional<Profile> profileOpt = getMatchProfile(player);
-            if (ProfileService.get().getByUUID(player.getUniqueId()).getState().equals(ProfileState.IN_CUSTOM)) {
+            ProfileService profileService = ProfileService.get();
+            Profile profileDirect = profileService.getByUUID(player.getUniqueId());
+
+            if (profileDirect == null) {
+                event.setCancelled(true);
                 return;
             }
+
+            if (profileDirect.getState() == ProfileState.IN_CUSTOM) {
+                return;
+            }
+
+            Optional<Profile> profileOpt = getMatchProfile(player);
             if (!profileOpt.isPresent()) {
                 event.setCancelled(true);
                 return;
@@ -744,12 +753,12 @@ public class MatchListener implements Listener {
             Match match = profile.getMatch();
             Kit kit = match.getKit();
 
-            if (match.getState().equals(MatchState.STARTING) || match.getState().equals(MatchState.ENDING)) {
+            if (match.getState() == MatchState.STARTING || match.getState() == MatchState.ENDING) {
                 event.setCancelled(true);
                 return;
             }
 
-            if (event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+            if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                 if (!kit.is(KitRule.FALL_DAMAGE)) {
                     event.setCancelled(true);
                     return;
@@ -766,7 +775,7 @@ public class MatchListener implements Listener {
                 return;
             }
 
-            if (!event.getCause().equals(EntityDamageEvent.DamageCause.FALL)) {
+            if (event.getCause() != EntityDamageEvent.DamageCause.FALL) {
                 event.setDamage(event.getDamage() * kit.getDamageMultiplier());
             }
         }
@@ -775,8 +784,10 @@ public class MatchListener implements Listener {
     @EventHandler
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         if (event.getEntity() instanceof Player player) {
-            if (API.getProfile(player) == null) return;
-            if (API.getProfile(player).getState().equals(ProfileState.IN_CUSTOM)) return;
+            if (API.getProfile(player) == null)
+                return;
+            if (API.getProfile(player).getState().equals(ProfileState.IN_CUSTOM))
+                return;
             Optional<Profile> profileOpt = getMatchProfile(player);
             if (!profileOpt.isPresent()) {
                 event.setCancelled(true);
