@@ -128,6 +128,7 @@ public abstract class Match implements IMatch {
 
         player.setHealth(20);
         player.setFoodLevel(20);
+        player.setCollidable(false);
         player.teleportAsync(target.getLocation()).thenAccept(success -> {
             if (!success)
                 return;
@@ -274,6 +275,7 @@ public abstract class Match implements IMatch {
         profile.setMatch(null);
         spectators.remove(playerUUID);
         PlayerUtil.teleportToSpawn(playerUUID);
+        player.setCollidable(true);
 
         profile.setState(profile.getGameData().getParty() == null ? ProfileState.IN_LOBBY : ProfileState.IN_PARTY);
 
