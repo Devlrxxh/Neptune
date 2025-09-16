@@ -6,6 +6,8 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
+
+import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;
 
@@ -33,17 +35,19 @@ public class MongoDatabase implements IDatabase {
     public CompletableFuture<DataDocument> getUserData(UUID playerUUID) {
         return CompletableFuture.supplyAsync(() -> {
             Document document = collection.find(Filters.eq("uuid", playerUUID.toString())).first();
-            if (document == null) return null;
+            if (document == null)
+                return null;
             return new DataDocument(document);
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
     public CompletableFuture<Void> replace(UUID playerUUID, DataDocument newDocument) {
         return CompletableFuture.runAsync(() -> {
             Document document = newDocument.toDocument();
-            collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document, new ReplaceOptions().upsert(true));
-        });
+            collection.replaceOne(Filters.eq("uuid", playerUUID.toString()), document,
+                    new ReplaceOptions().upsert(true));
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -51,7 +55,7 @@ public class MongoDatabase implements IDatabase {
         return CompletableFuture.runAsync(() -> {
             Document document = newDocument.toDocument();
             collection.replaceOne(Filters.eq("uuid", playerUUID), document, new ReplaceOptions().upsert(true));
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -67,6 +71,6 @@ public class MongoDatabase implements IDatabase {
                 ServerUtils.error("Error retrieving documents from MongoDB: " + e.getMessage());
             }
             return allDocuments;
-        });
+        }, DatabaseService.get().getExecutor());
     }
 }

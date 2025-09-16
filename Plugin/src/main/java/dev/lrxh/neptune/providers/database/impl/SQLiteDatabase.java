@@ -2,6 +2,7 @@ package dev.lrxh.neptune.providers.database.impl;
 
 import com.google.gson.JsonParseException;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -51,7 +52,7 @@ public class SQLiteDatabase implements IDatabase {
                 ServerUtils.error("Error fetching user data from SQLite: " + e.getMessage());
             }
             return null;
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -65,7 +66,7 @@ public class SQLiteDatabase implements IDatabase {
             } catch (SQLException e) {
                 ServerUtils.error("Error replacing user data in SQLite: " + e.getMessage());
             }
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -79,7 +80,7 @@ public class SQLiteDatabase implements IDatabase {
             } catch (SQLException e) {
                 ServerUtils.error("Error replacing user data in SQLite: " + e.getMessage());
             }
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -101,7 +102,7 @@ public class SQLiteDatabase implements IDatabase {
                 ServerUtils.error("Error retrieving all documents from SQLite: " + e.getMessage());
             }
             return allDocuments;
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     public boolean isValidJSON(String jsonString) {

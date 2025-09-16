@@ -6,12 +6,17 @@ import dev.lrxh.neptune.providers.database.impl.DatabaseType;
 import dev.lrxh.neptune.providers.database.impl.IDatabase;
 import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.bukkit.Bukkit;
 
 @Getter
 public class DatabaseService {
     private static DatabaseService instance;
     private IDatabase database = null;
+    private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
 
     public DatabaseService() {
         String uri = SettingsLocale.URI.getString();
@@ -29,7 +34,8 @@ public class DatabaseService {
     }
 
     public static DatabaseService get() {
-        if (instance == null) instance = new DatabaseService();
+        if (instance == null)
+            instance = new DatabaseService();
 
         return instance;
     }

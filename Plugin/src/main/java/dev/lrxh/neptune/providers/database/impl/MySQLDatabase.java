@@ -2,6 +2,7 @@ package dev.lrxh.neptune.providers.database.impl;
 
 import com.google.gson.JsonParseException;
 import dev.lrxh.neptune.Neptune;
+import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;
 import org.bukkit.Bukkit;
@@ -46,7 +47,7 @@ public class MySQLDatabase implements IDatabase {
                 ServerUtils.error("Error fetching user data from MySQL: " + e.getMessage());
             }
             return null;
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -60,7 +61,7 @@ public class MySQLDatabase implements IDatabase {
             } catch (SQLException e) {
                 ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
             }
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -74,7 +75,7 @@ public class MySQLDatabase implements IDatabase {
             } catch (SQLException e) {
                 ServerUtils.error("Error replacing user data in MySQL: " + e.getMessage());
             }
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     @Override
@@ -96,7 +97,7 @@ public class MySQLDatabase implements IDatabase {
                 ServerUtils.error("Error retrieving all documents from MySQL: " + e.getMessage());
             }
             return allDocuments;
-        });
+        }, DatabaseService.get().getExecutor());
     }
 
     public boolean isValidJSON(String jsonString) {
