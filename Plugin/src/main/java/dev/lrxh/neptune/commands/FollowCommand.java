@@ -7,9 +7,6 @@ import dev.lrxh.neptune.configs.impl.MessagesLocale;
 import dev.lrxh.neptune.profile.data.SettingData;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.clickable.Replacement;
-
-import java.util.Objects;
-
 import org.bukkit.entity.Player;
 
 public class FollowCommand {

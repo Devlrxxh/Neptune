@@ -6,17 +6,16 @@ import dev.lrxh.neptune.providers.database.impl.DatabaseType;
 import dev.lrxh.neptune.providers.database.impl.IDatabase;
 import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.Getter;
+import org.bukkit.Bukkit;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.bukkit.Bukkit;
-
 @Getter
 public class DatabaseService {
     private static DatabaseService instance;
-    private IDatabase database = null;
     private final ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+    private IDatabase database = null;
 
     public DatabaseService() {
         String uri = SettingsLocale.URI.getString();

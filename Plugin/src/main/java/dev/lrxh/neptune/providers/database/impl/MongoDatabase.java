@@ -6,7 +6,6 @@ import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.ReplaceOptions;
-
 import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bson.Document;

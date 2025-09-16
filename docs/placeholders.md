@@ -2,19 +2,19 @@
 
 ## Globally Available
 
-| Plugin           | PlaceholderAPI                      | Description                                   |
-|------------------|-------------------------------------|-----------------------------------------------|
-| \<online>        | None<sup style="color: red">*</sup> | Use server expansion for PAPI                 |
-| \<queued>        | %neptune_queued%                    | Get the number of players in queue            |
-| \<in-match>      | %neptune_in-match%                  | Get the number of players in matches          |
-| \<player>        | None<sup style="color: red">*</sup> | The name of the player                        |
-| \<ping>          | %neptune_ping%                      | The ping of the player in milliseconds        |
-| \<wins>          | %neptune_wins%                      | The number of wins a player has accumulated   |
-| \<losses>        | %neptune_losses%                   | The number of losses a player has accumulated |
-| \<currentStreak> | %neptune_currentStreak%             | The current win streak of the player          |
-| \<division> | %neptune_division% | The global division name of the player |
-| \<kit_division> | %neptune_(kit)_division% | The kit-specific division name of the player |
-| None | %neptune_recent_match_(num)_(opponent/arena/kit/date/time/unix_timestamp)% | Get details about a recent match. Unix timestamp is in seconds, not ms |
+| Plugin           | PlaceholderAPI                                                             | Description                                                            |
+|------------------|----------------------------------------------------------------------------|------------------------------------------------------------------------|
+| \<online>        | None<sup style="color: red">*</sup>                                        | Use server expansion for PAPI                                          |
+| \<queued>        | %neptune_queued%                                                           | Get the number of players in queue                                     |
+| \<in-match>      | %neptune_in-match%                                                         | Get the number of players in matches                                   |
+| \<player>        | None<sup style="color: red">*</sup>                                        | The name of the player                                                 |
+| \<ping>          | %neptune_ping%                                                             | The ping of the player in milliseconds                                 |
+| \<wins>          | %neptune_wins%                                                             | The number of wins a player has accumulated                            |
+| \<losses>        | %neptune_losses%                                                           | The number of losses a player has accumulated                          |
+| \<currentStreak> | %neptune_currentStreak%                                                    | The current win streak of the player                                   |
+| \<division>      | %neptune_division%                                                         | The global division name of the player                                 |
+| \<kit_division>  | %neptune_(kit)_division%                                                   | The kit-specific division name of the player                           |
+| None             | %neptune_recent_match_(num)_(opponent/arena/kit/date/time/unix_timestamp)% | Get details about a recent match. Unix timestamp is in seconds, not ms |
 
 ## In Queue
 

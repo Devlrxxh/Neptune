@@ -48,7 +48,7 @@ public class DuelCommand {
         if (userProfile.getState().equals(ProfileState.IN_PARTY)
                 && !targetProfile.getState().equals(ProfileState.IN_PARTY)
                 || targetProfile.getState().equals(ProfileState.IN_PARTY)
-                        && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
+                && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
             MessagesLocale.YOU_CANT_SEND_DUEL.send(player.getUniqueId());
             return;
         }
@@ -127,7 +127,7 @@ public class DuelCommand {
         if (userProfile.getState().equals(ProfileState.IN_PARTY)
                 && !targetProfile.getState().equals(ProfileState.IN_PARTY)
                 || targetProfile.getState().equals(ProfileState.IN_PARTY)
-                        && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
+                && !userProfile.getState().equals(ProfileState.IN_PARTY)) {
             MessagesLocale.YOU_CANT_SEND_DUEL.send(player.getUniqueId());
             return;
         }
