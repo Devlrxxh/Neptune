@@ -16,11 +16,14 @@ public class ColorPlaceholder implements Placeholder {
     @Override
     public String parse(OfflinePlayer player, String string) {
         Profile profile = API.getProfile(player);
-        if (profile == null) return string;
+        if (profile == null)
+            return "";
         Match match = profile.getMatch();
-        if (match == null) return string;
+        if (match == null)
+            return "";
         Participant participant = match.getParticipant(player.getUniqueId());
-        if (participant == null) return string;
+        if (participant == null)
+            return "";
         return participant.getColor().getColor();
     }
 }
