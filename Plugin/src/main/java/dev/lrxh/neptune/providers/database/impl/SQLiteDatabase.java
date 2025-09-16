@@ -1,10 +1,8 @@
 package dev.lrxh.neptune.providers.database.impl;
 
-import com.google.gson.JsonParseException;
 import dev.lrxh.neptune.Neptune;
 import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.utils.ServerUtils;
-import org.bson.Document;
 import org.bukkit.Bukkit;
 
 import java.sql.*;
@@ -42,11 +40,7 @@ public class SQLiteDatabase implements IDatabase {
                 ResultSet resultSet = statement.executeQuery();
                 if (resultSet.next()) {
                     String dataString = resultSet.getString("data");
-                    if (isValidJSON(dataString)) {
                         return new DataDocument(dataString);
-                    } else {
-                        ServerUtils.error("Invalid JSON data for UUID: " + playerUUID);
-                    }
                 }
             } catch (SQLException e) {
                 ServerUtils.error("Error fetching user data from SQLite: " + e.getMessage());
@@ -92,26 +86,13 @@ public class SQLiteDatabase implements IDatabase {
                 ResultSet resultSet = statement.executeQuery();
                 while (resultSet.next()) {
                     String jsonString = resultSet.getString("data");
-                    if (isValidJSON(jsonString)) {
                         allDocuments.add(new DataDocument(jsonString));
-                    } else {
-                        ServerUtils.error("Invalid JSON found in database: " + jsonString);
-                    }
                 }
             } catch (SQLException e) {
                 ServerUtils.error("Error retrieving all documents from SQLite: " + e.getMessage());
             }
             return allDocuments;
         }, DatabaseService.get().getExecutor());
-    }
-
-    public boolean isValidJSON(String jsonString) {
-        try {
-            Document.parse(jsonString);
-            return true;
-        } catch (JsonParseException e) {
-            return false;
-        }
     }
 
     private void createTableIfNotExists() {
