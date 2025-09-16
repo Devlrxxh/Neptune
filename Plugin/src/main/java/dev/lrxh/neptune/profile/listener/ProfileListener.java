@@ -49,13 +49,13 @@ public class ProfileListener implements Listener {
             player.sendMessage(CC.color("&eCommit: &f" + GithubUtils.getCommitId()));
             player.sendMessage(CC.color("&eMessage: &f" + GithubUtils.getCommitMessage()));
         }
+        event.joinMessage(null);
 
         ProfileService.get().createProfile(player).thenAccept(unused -> TaskScheduler.get().startTaskCurrentTick(new NeptuneRunnable() {
             @Override
             public void run() {
                 PlayerUtil.teleportToSpawn(player.getUniqueId());
 
-                event.joinMessage(null);
                 if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
                     ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE, new Replacement("<player>", player.getName()));
                 }
