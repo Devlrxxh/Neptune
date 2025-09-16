@@ -2,6 +2,7 @@ package dev.lrxh.neptune.providers.placeholder.impl;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.game.match.Match;
+import dev.lrxh.neptune.game.match.impl.participant.Participant;
 import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.providers.placeholder.Placeholder;
 import org.bukkit.OfflinePlayer;
@@ -17,6 +18,9 @@ public class ColorPlaceholder implements Placeholder {
         Profile profile = API.getProfile(player);
         if (profile == null) return string;
         Match match = profile.getMatch();
-        return match != null ? match.getParticipant(player.getUniqueId()).getColor().getColor() : "";
+        if (match == null) return string;
+        Participant participant = match.getParticipant(player.getUniqueId());
+        if (participant == null) return string;
+        return participant.getColor().getColor();
     }
 }
