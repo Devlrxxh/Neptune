@@ -150,14 +150,14 @@ public final class Neptune extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                new ProfileListener(),
-                new MatchListener(),
-                new GlobalListener(),
-                new ItemListener(),
-                new MenuListener(),
-                new ArenaProcedureListener(),
-                new KitProcedureListener(),
-                new ItemBrowserListener())
+                        new ProfileListener(),
+                        new MatchListener(),
+                        new GlobalListener(),
+                        new ItemListener(),
+                        new MenuListener(),
+                        new ArenaProcedureListener(),
+                        new KitProcedureListener(),
+                        new ItemBrowserListener())
                 .forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
