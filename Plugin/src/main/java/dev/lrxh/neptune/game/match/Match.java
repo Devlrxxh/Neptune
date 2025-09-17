@@ -398,16 +398,11 @@ public abstract class Match implements IMatch {
     }
 
     public void setupParticipants() {
-        forEachPlayer(player -> {
-            setupPlayer(player.getUniqueId());
-            forEachPlayer(otherP -> {
-                if (!otherP.equals(player)) {
-                    player.showPlayer(Neptune.get(), otherP);
-                    otherP.showPlayer(Neptune.get(), player);
-                }
-            });
+        forEachPlayer(player -> setupPlayer(player.getUniqueId()));
+        forEachParticipant(par -> {
+            par.reset();
+            showParticipant(par);
         });
-        forEachParticipant(Participant::reset);
     }
 
     public void sendDeathMessage(Participant deadParticipant) {
