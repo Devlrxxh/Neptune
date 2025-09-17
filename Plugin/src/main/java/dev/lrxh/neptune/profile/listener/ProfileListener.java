@@ -51,18 +51,20 @@ public class ProfileListener implements Listener {
         }
         event.joinMessage(null);
 
-        ProfileService.get().createProfile(player).thenAccept(unused -> TaskScheduler.get().startTaskCurrentTick(new NeptuneRunnable() {
-            @Override
-            public void run() {
-                PlayerUtil.teleportToSpawn(player.getUniqueId());
+        ProfileService.get().createProfile(player)
+                .thenAccept(unused -> TaskScheduler.get().startTaskCurrentTick(new NeptuneRunnable() {
+                    @Override
+                    public void run() {
+                        PlayerUtil.teleportToSpawn(player.getUniqueId());
 
-                if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
-                    ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE, new Replacement("<player>", player.getName()));
-                }
-                PlayerUtil.reset(player);
-                HotbarService.get().giveItems(player);
-            }
-        }));
+                        if (!MessagesLocale.JOIN_MESSAGE.getString().equals("NONE")) {
+                            ServerUtils.broadcast(MessagesLocale.JOIN_MESSAGE,
+                                    new Replacement("<player>", player.getName()));
+                        }
+                        PlayerUtil.reset(player);
+                        HotbarService.get().giveItems(player);
+                    }
+                }));
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
@@ -72,6 +74,7 @@ public class ProfileListener implements Listener {
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event) {
+        event.quitMessage(null);
         Player player = event.getPlayer();
         Profile profile = API.getProfile(player);
         if (profile == null)
@@ -92,7 +95,6 @@ public class ProfileListener implements Listener {
             }
         }
 
-        event.quitMessage(null);
         if (!MessagesLocale.LEAVE_MESSAGE.getString().equals("NONE")) {
             ServerUtils.broadcast(MessagesLocale.LEAVE_MESSAGE, new Replacement("<player>", player.getName()));
         }

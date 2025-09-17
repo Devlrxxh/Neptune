@@ -399,7 +399,10 @@ public abstract class Match implements IMatch {
 
     public void setupParticipants() {
         forEachPlayer(player -> setupPlayer(player.getUniqueId()));
-        forEachParticipant(Participant::reset);
+        forEachParticipant(par -> {
+            par.reset();
+            showParticipant(par);
+        });
     }
 
     public void sendDeathMessage(Participant deadParticipant) {
