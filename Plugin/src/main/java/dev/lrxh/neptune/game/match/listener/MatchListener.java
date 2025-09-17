@@ -504,7 +504,8 @@ public class MatchListener implements Listener {
             return;
 
         if (API.getProfile(player) == null) return;
-        if (API.getProfile(player).getState().equals(ProfileState.IN_CUSTOM)) return;
+        Profile profile = API.getProfile(player);
+        if (profile != null && profile.getState() != null && profile.getState().equals(ProfileState.IN_CUSTOM)) return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
         if (!profileOpt.isPresent()) {
