@@ -122,8 +122,6 @@ public class LeaderboardService {
                                 String username = document.getString("username");
                                 UUID uuid = UUID.fromString(document.getString("uuid"));
 
-                                System.out.println(username);
-
                                 KitData kitData = getKitData(document, kit);
 
                                 if (kitData == null)
