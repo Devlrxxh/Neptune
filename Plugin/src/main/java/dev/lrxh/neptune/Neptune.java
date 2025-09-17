@@ -132,7 +132,7 @@ public final class Neptune extends JavaPlugin {
 
         DivisionService.get().load();
 
-        LeaderboardService.get();
+        LeaderboardService.get().load();
 
         registerListeners();
         loadCommandManager();

@@ -105,12 +105,12 @@ public class Profile implements IProfile {
                                         ? kit.getItems()
                                         : ItemUtils.deserialize(kitDocument.getString("kit")));
 
-                        DataDocument customPersistentData = kitDocument.getDataDocument("customPersistentData");
-                        if (customPersistentData != null) {
-                            for (String key : customPersistentData.data.keySet()) {
-                                profileKitData.setPersistentData(key, customPersistentData.data.get(key));
-                            }
-                        }
+                        // DataDocument customPersistentData = kitDocument.getDataDocument("customPersistentData");
+                        // if (customPersistentData != null) {
+                        //     for (String key : customPersistentData.data.keySet()) {
+                        //         profileKitData.setPersistentData(key, customPersistentData.data.get(key));
+                        //     }
+                        // }
 
                         profileKitData.updateDivision();
                     }
@@ -127,12 +127,12 @@ public class Profile implements IProfile {
                     settingData.setKillMessagePackage(
                             CosmeticService.get().getDeathMessagePackage(settings.getString("deathMessagePackage")));
 
-                    DataDocument globalCustomPersistentData = dataDocument.getDataDocument("customPersistentData");
-                    if (globalCustomPersistentData != null) {
-                        for (String key : globalCustomPersistentData.data.keySet()) {
-                            gameData.setPersistentData(key, globalCustomPersistentData.data.get(key));
-                        }
-                    }
+                    // DataDocument globalCustomPersistentData = dataDocument.getDataDocument("customPersistentData");
+                    // if (globalCustomPersistentData != null) {
+                    //     for (String key : globalCustomPersistentData.data.keySet()) {
+                    //         gameData.setPersistentData(key, globalCustomPersistentData.data.get(key));
+                    //     }
+                    // }
 
                     gameData.getGlobalStats().update();
 

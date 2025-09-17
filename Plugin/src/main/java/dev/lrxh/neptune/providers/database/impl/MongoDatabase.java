@@ -82,21 +82,36 @@ public class MongoDatabase implements IDatabase {
     }
 
     @Override
-    public CompletableFuture<List<DataDocument>> getAll() {
+    public CompletableFuture<List<DataDocument>> getAllByKitType(String kitName, String type) {
         return CompletableFuture.supplyAsync(() -> {
-            List<DataDocument> allDocuments = new ArrayList<>();
+            List<DataDocument> results = new ArrayList<>();
             if (collection == null) {
                 ServerUtils.error("MongoDB collection is not initialized!");
-                return allDocuments;
+                return results;
             }
-            try (MongoCursor<Document> cursor = collection.find().iterator()) {
-                while (cursor.hasNext()) {
-                    allDocuments.add(new DataDocument(cursor.next()));
-                }
+
+            try {
+                collection.find(Filters.exists("data.kitData." + kitName + "." + type))
+                        .sort(new Document("data.kitData." + kitName + "." + type, -1))
+                        .limit(10)
+                        .forEach(doc -> {
+                            String jsonString = doc.getString("data");
+
+                            if (jsonString != null) {
+                                DataDocument dataDoc = new DataDocument(jsonString);
+                                results.add(dataDoc);
+                            } else {
+                                ServerUtils
+                                        .error("[DEBUG] Missing 'data' field for document with _id: " + doc.get("_id"));
+                            }
+                        });
             } catch (MongoException e) {
-                ServerUtils.error("Error retrieving documents from MongoDB: " + e.getMessage());
+                ServerUtils.error("Error fetching data by kit/type from MongoDB: " + e.getMessage());
+                e.printStackTrace();
             }
-            return allDocuments;
+
+            return results;
         }, DatabaseService.get().getExecutor());
     }
+
 }

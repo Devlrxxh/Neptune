@@ -19,7 +19,7 @@ public enum SettingsLocale implements IDataAccessor {
     SPAWN_LOCATION("SPAWN.LOCATION", DataType.STRING, "NONE"),
     LEADERBOARD_UPDATE_TIME("LEADERBOARD.UPDATE_TIME",
             "How often leaderboards should check in ticks (20 ticks = 1 second).", DataType.INT, "10"),
-    DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, MYSQL, SQLITE", DataType.STRING, "SQLITE"),
+    DATABASE_TYPE("DATABASE.TYPE", "Database Type. MONGO, SQLITE", DataType.STRING, "SQLITE"),
     URI("DATABASE.URI", "Connection URI.", DataType.STRING, "NONE"),
     DATABASE("DATABASE.DATABASE_NAME", "Database Name", DataType.STRING, "neptune"),
     PARTICIPANT_COLOR_BLUE("PARTICIPANT.COLOR.BLUE", "", DataType.STRING, "&9"),
@@ -31,7 +31,10 @@ public enum SettingsLocale implements IDataAccessor {
             "0"),
     IN_MATCH_BLOCKED_COMMANDS("IN_MATCH.BLOCK_COMMANDS", "Commands which the player can't run during a match.",
             DataType.STRING_LIST,
-            ""), PARTY_ADVERTISE_TIME("PARTY.ADVERTISE_TIME", "The time it should take for sending each message for party advertisements, in ticks (20 ticks = 1 second).", DataType.INT, "6000");
+            ""),
+    PARTY_ADVERTISE_TIME("PARTY.ADVERTISE_TIME",
+            "The time it should take for sending each message for party advertisements, in ticks (20 ticks = 1 second).",
+            DataType.INT, "6000");
 
     private final String path;
     private final String comment;
