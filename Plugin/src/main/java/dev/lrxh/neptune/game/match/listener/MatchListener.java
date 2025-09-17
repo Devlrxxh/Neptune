@@ -503,6 +503,7 @@ public class MatchListener implements Listener {
         if (player.getGameMode().equals(GameMode.CREATIVE))
             return;
 
+        if (API.getProfile(player) == null) return;
         if (API.getProfile(player).getState().equals(ProfileState.IN_CUSTOM)) return;
 
         Optional<Profile> profileOpt = getMatchProfile(player);
