@@ -262,6 +262,23 @@ public class Profile implements IProfile {
         return this.customState.equals(customState);
     }
 
+    @Override
+    public String getProfileState() {
+        if (state != ProfileState.IN_CUSTOM) {
+            return switch (state) {
+                case IN_LOBBY -> "neptune:in_lobby";
+                case IN_GAME -> "neptune:in_game";
+                case IN_KIT_EDITOR -> "neptune:in_kiteditor";
+                case IN_PARTY -> "neptune:in_party";
+                case IN_SPECTATOR -> "neptune:spectating";
+                case IN_QUEUE -> "neptune:in_queue";
+                default -> "neptune:unknown";
+            };
+        }
+        return customState != null && !customState.isEmpty() ? customState : "neptune:unknown";
+    }
+
+
     public boolean hasState(ProfileState... profileStates) {
         for (ProfileState profileState : profileStates) {
             if (profileState.equals(state)) {
