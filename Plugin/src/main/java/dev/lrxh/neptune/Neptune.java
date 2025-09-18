@@ -47,7 +47,6 @@ import dev.lrxh.neptune.game.match.commands.MatchHistoryCommand;
 import dev.lrxh.neptune.game.match.commands.SpectateCommand;
 import dev.lrxh.neptune.game.match.listener.MatchListener;
 import dev.lrxh.neptune.game.match.tasks.ArenaBoundaryCheckTask;
-import dev.lrxh.neptune.game.match.tasks.XPBarRunnable;
 import dev.lrxh.neptune.main.MainCommand;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.listener.ProfileListener;
@@ -150,14 +149,14 @@ public final class Neptune extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                        new ProfileListener(),
-                        new MatchListener(),
-                        new GlobalListener(),
-                        new ItemListener(),
-                        new MenuListener(),
-                        new ArenaProcedureListener(),
-                        new KitProcedureListener(),
-                        new ItemBrowserListener())
+                new ProfileListener(),
+                new MatchListener(),
+                new GlobalListener(),
+                new ItemListener(),
+                new MenuListener(),
+                new ArenaProcedureListener(),
+                new KitProcedureListener(),
+                new ItemBrowserListener())
                 .forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
@@ -190,7 +189,6 @@ public final class Neptune extends JavaPlugin {
         new LeaderboardTask().start(SettingsLocale.LEADERBOARD_UPDATE_TIME.getInt());
         new ArenaBoundaryCheckTask().start(20L);
         new MenuRunnable().start(20L);
-        new XPBarRunnable().start(2L);
     }
 
     private void loadCommandManager() {
