@@ -14,10 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.*;
 import org.bukkit.event.entity.*;
 import org.bukkit.event.hanging.HangingBreakEvent;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.event.weather.WeatherChangeEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
@@ -38,6 +35,17 @@ public class GlobalListener implements Listener {
             return;
         }
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onShiftRightClick(PlayerInteractEntityEvent event) {
+        Player player = event.getPlayer();
+
+        if (event.getRightClicked() instanceof Player clicked) {
+            if (!player.isSneaking()) return;
+
+            player.chat("/duel " + clicked.getName());
+        }
     }
 
     @EventHandler
