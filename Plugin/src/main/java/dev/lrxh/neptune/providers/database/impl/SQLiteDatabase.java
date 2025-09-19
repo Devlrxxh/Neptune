@@ -1,7 +1,6 @@
 package dev.lrxh.neptune.providers.database.impl;
 
 import dev.lrxh.neptune.Neptune;
-import dev.lrxh.neptune.providers.database.DatabaseService;
 import dev.lrxh.neptune.utils.ServerUtils;
 import org.bukkit.Bukkit;
 
@@ -10,16 +9,15 @@ import java.util.*;
 import java.util.concurrent.*;
 
 public class SQLiteDatabase implements IDatabase {
-    private final String dbPath;
-    private Connection connection;
-    private final ExecutorService dbExecutor;
-
     private static final String SQL_CREATE_TABLE = "CREATE TABLE IF NOT EXISTS playerData (" +
             "uuid VARCHAR(36) NOT NULL PRIMARY KEY, " +
             "data TEXT NOT NULL" +
             ")";
     private static final String SQL_UPSERT = "INSERT INTO playerData(uuid, data) VALUES (?, ?) " +
             "ON CONFLICT(uuid) DO UPDATE SET data = excluded.data";
+    private final String dbPath;
+    private final ExecutorService dbExecutor;
+    private Connection connection;
 
     public SQLiteDatabase() {
         this.dbPath = "jdbc:sqlite:" + Neptune.get().getDataFolder() + "/neptune.db";
@@ -82,7 +80,7 @@ public class SQLiteDatabase implements IDatabase {
             try {
                 ensureConnectionOpen();
                 try (Statement stmt = connection.createStatement();
-                        ResultSet rs = stmt.executeQuery(sql)) {
+                     ResultSet rs = stmt.executeQuery(sql)) {
 
                     ResultSetMetaData meta = rs.getMetaData();
                     int columnCount = meta.getColumnCount();

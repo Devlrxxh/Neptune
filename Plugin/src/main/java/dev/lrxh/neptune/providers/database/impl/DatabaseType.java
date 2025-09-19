@@ -6,7 +6,7 @@ import lombok.Getter;
 public enum DatabaseType {
     MONGO(new MongoDatabase()),
     SQLITE(new SQLiteDatabase());
-    
+
     private final IDatabase iDatabase;
 
     DatabaseType(IDatabase iDatabase) {

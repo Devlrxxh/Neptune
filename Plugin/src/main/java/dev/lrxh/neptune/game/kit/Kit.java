@@ -14,7 +14,6 @@ import dev.lrxh.neptune.profile.impl.Profile;
 import dev.lrxh.neptune.utils.ItemUtils;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import dev.lrxh.neptune.utils.PotionEffectUtils;
-import dev.lrxh.neptune.utils.ServerUtils;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -224,7 +223,6 @@ public class Kit implements IKit {
         player.addPotionEffects(potionEffects);
 
         player.updateInventory();
-        ServerUtils.info(Arrays.toString(player.getActivePotionEffects().toArray()));
     }
 
     public void giveLoadout(Participant participant) {

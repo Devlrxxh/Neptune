@@ -36,6 +36,8 @@ public class Visibility {
             if (!viewerProfile.getSettingData().isPlayerVisibility()) {
                 viewerPlayer.hidePlayer(Neptune.get(), otherPlayer);
                 return;
+            } else {
+                viewerPlayer.showPlayer(Neptune.get(), otherPlayer);
             }
         }
 
@@ -43,17 +45,20 @@ public class Visibility {
             if (!otherProfile.getSettingData().isPlayerVisibility()) {
                 otherPlayer.hidePlayer(Neptune.get(), viewerPlayer);
                 return;
+            } else {
+                otherPlayer.showPlayer(Neptune.get(), viewerPlayer);
             }
         }
 
         if (viewerProfile.hasState(ProfileState.IN_KIT_EDITOR)) {
             viewerPlayer.hidePlayer(Neptune.get(), otherPlayer);
+            otherPlayer.hidePlayer(Neptune.get(), viewerPlayer);
             return;
         }
 
         if (otherProfile.hasState(ProfileState.IN_KIT_EDITOR)) {
             otherPlayer.hidePlayer(Neptune.get(), viewerPlayer);
-            return;
+            viewerPlayer.hidePlayer(Neptune.get(), otherPlayer);
         }
     }
 

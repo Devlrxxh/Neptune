@@ -335,7 +335,10 @@ public class Profile implements IProfile {
                 new Replacement("<arena>", duelRequest.getArena().getDisplayName()));
 
         gameData.addRequest(duelRequest, senderUUID,
-                ignore -> MessagesLocale.DUEL_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName())));
+                ignore -> {
+                    MessagesLocale.DUEL_EXPIRED.send(senderUUID, new Replacement("<player>", player.getName()));
+                    duelRequest.getArena().remove();
+                });
 
         TextComponent accept = new ClickableComponent(MessagesLocale.DUEL_ACCEPT.getString(),
                 "/duel accept-uuid " + duelRequest.getSender().toString(), MessagesLocale.DUEL_ACCEPT_HOVER.getString())

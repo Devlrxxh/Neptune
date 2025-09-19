@@ -9,8 +9,6 @@ import dev.lrxh.neptune.game.kit.menu.KitManagementMenu;
 import dev.lrxh.neptune.game.kit.menu.KitsManagementMenu;
 import dev.lrxh.neptune.profile.ProfileService;
 import dev.lrxh.neptune.profile.impl.Profile;
-import dev.lrxh.neptune.providers.database.DatabaseService;
-import dev.lrxh.neptune.providers.database.impl.DataDocument;
 import dev.lrxh.neptune.utils.CC;
 import dev.lrxh.neptune.utils.PlayerUtil;
 import io.papermc.paper.event.player.AsyncChatEvent;

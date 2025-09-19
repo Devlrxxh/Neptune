@@ -2,7 +2,6 @@ package dev.lrxh.neptune.feature.leaderboard;
 
 import dev.lrxh.neptune.API;
 import dev.lrxh.neptune.feature.divisions.DivisionService;
-import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardEntry;
 import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardPlayerEntry;
 import dev.lrxh.neptune.feature.leaderboard.impl.LeaderboardType;
 import dev.lrxh.neptune.feature.leaderboard.impl.PlayerEntry;
@@ -194,7 +193,7 @@ public class LeaderboardService {
     }
 
     private CompletableFuture<Void> loadLB(LeaderboardType leaderboardType,
-            LeaderboardPlayerEntry leaderboardPlayerEntry) {
+                                           LeaderboardPlayerEntry leaderboardPlayerEntry) {
         Kit kit = leaderboardPlayerEntry.getKit();
         UUID playerUUID = leaderboardPlayerEntry.getPlayerUUID();
         String username = leaderboardPlayerEntry.getUsername();
