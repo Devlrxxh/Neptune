@@ -829,6 +829,9 @@ public class MatchListener implements Listener {
         if (player.getGameMode() == GameMode.CREATIVE)
             return;
 
+        Profile playerProfile = API.getProfile(player);
+        if (playerProfile != null && playerProfile.getState().equals(ProfileState.IN_CUSTOM)) return;
+
         Optional<Profile> profileOpt = getProfile(player);
         if (!profileOpt.isPresent()) {
             event.setCancelled(true);
@@ -881,6 +884,9 @@ public class MatchListener implements Listener {
         Player player = event.getPlayer();
         if (player.getGameMode() == GameMode.CREATIVE)
             return;
+
+        Profile playerProfile = API.getProfile(player);
+        if (playerProfile != null && playerProfile.getState().equals(ProfileState.IN_CUSTOM)) return;
 
         Optional<Profile> profileOpt = getProfile(player);
         if (!profileOpt.isPresent()) {
