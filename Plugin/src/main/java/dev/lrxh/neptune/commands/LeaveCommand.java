@@ -34,7 +34,7 @@ public class LeaveCommand {
                 break;
         }
         PlayerUtil.teleportToSpawn(player.getUniqueId());
-        PlayerLeaveEvent event = new PlayerLeaveEvent(previousStatus);
+        PlayerLeaveEvent event = new PlayerLeaveEvent(profile, previousStatus);
         Bukkit.getPluginManager().callEvent(event);
     }
 }
