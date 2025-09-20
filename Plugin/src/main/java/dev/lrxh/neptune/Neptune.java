@@ -74,6 +74,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Consumer;
+import com.jonahseguin.drink.annotation.Text;
 
 @Getter
 public final class Neptune extends JavaPlugin {
@@ -149,14 +150,14 @@ public final class Neptune extends JavaPlugin {
 
     private void registerListeners() {
         Arrays.asList(
-                        new ProfileListener(),
-                        new MatchListener(),
-                        new GlobalListener(),
-                        new ItemListener(),
-                        new MenuListener(),
-                        new ArenaProcedureListener(),
-                        new KitProcedureListener(),
-                        new ItemBrowserListener())
+                new ProfileListener(),
+                new MatchListener(),
+                new GlobalListener(),
+                new ItemListener(),
+                new MenuListener(),
+                new ArenaProcedureListener(),
+                new KitProcedureListener(),
+                new ItemBrowserListener())
                 .forEach(listener -> getServer().getPluginManager().registerEvents(listener, this));
     }
 
@@ -197,6 +198,7 @@ public final class Neptune extends JavaPlugin {
         drink.bind(Arena.class).toProvider(new ArenaProvider());
         drink.bind(UUID.class).toProvider(new UUIDProvider());
         drink.bind(Setting.class).toProvider(new SettingProvider());
+        drink.bind(Kit.class).annotatedWith(Text.class).toProvider(new KitProvider());
 
         drink.register(new KitEditorCommand(), "kiteditor").setDefaultCommandIsHelp(true);
         drink.register(new StatsCommand(), "stats").setDefaultCommandIsHelp(true);

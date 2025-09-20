@@ -134,7 +134,7 @@ public class Arena implements IArena {
         CompletableFuture<Arena> future = new CompletableFuture<>();
         snapshot.offset(offsetBlocksX, offsetBlocksZ)
                 .thenApplyAsync(cuboidSnapshot -> {
-                    cuboidSnapshot.restore(true);
+                    cuboidSnapshot.restore(false);
                     return new Arena(
                             this.name + "#" + currentIndex,
                             this.displayName,
